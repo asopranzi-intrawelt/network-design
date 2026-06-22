@@ -1,0 +1,27 @@
+# --- Sistema di progetto portabile: livello privato e ignorato ---
+
+# Livello privato e verboso
+_notes/
+
+# Override personali e permessi personali
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Estratti temporanei dei .docx (cartelle scratch)
+_notes/.tmp-docx-*/
+.tmp-docx-*/
+
+# Documenti Word grezzi (binari)
+*.docx
+*.doc
+
+# Ambiente materializzato
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+
+# --- Output script Proxmox: artefatti generati, potenzialmente sensibili ---
+# Contengono dettagli completi dell'infrastruttura (IP, nomi VM, configurazioni di rete).
+# Non si versionano: si generano a runtime e si usano come contesto nella sessione.
+output/
