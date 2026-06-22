@@ -1,0 +1,56 @@
+---
+description: Topologia di rete Proxmox VE - Intrawelt
+source: output/proxmox-config.md (snapshot 2026-06-19)
+node: pve @ 192.168.20.11
+subnet: 192.168.20.0/19, gw 192.168.20.1
+---
+
+graph TB
+    subgraph NET["Rete: 192.168.20.0/19 — gw 192.168.20.1"]
+        SW([Switch aziendale])
+    end
+
+    subgraph PVE["pve — Xeon Gold 6126 48c @ 192.168.20.11"]
+        BCM["BCM5719 quad-port\nPCI 0000:02:00.x — IOMMU group 40"]
+
+        B0["vmbr0 / eno1\n192.168.20.11/19"]
+        B1["vmbr1 / eno2"]
+        B2["vmbr2 / eno3"]
+        B3["vmbr3 / eno4"]
+
+        BCM --> B0 & B1 & B2 & B3
+
+        subgraph PS["Pool: Servizi"]
+            V100["VM100 WinServer2022\nnet0 -&gt; vmbr0: .12\nnet1 -&gt; vmbr1: .13\nos: win11, UEFI, 65GB RAM"]
+            V202["VM202 PasswordManager\nvmbr0: .21\nfw ON, Docker x2"]
+            V803["VM803 Ubuntu-eGetrad\nvmbr0: stopped"]
+            V810["VM810 TESTNEWEGETRADBOOT\nvmbr0: no guest agent"]
+            V203["VM203 templateMicroservice\nvmbr3: stopped"]
+            V204["VM204 ConvertitoreRuoliniENI\nvmbr3: .22"]
+            V205["VM205 GanttTool\nvmbr3: .61\nDocker x4 networks"]
+            V206["VM206 intrasite\nvmbr2: .23\nDocker x2"]
+        end
+
+        subgraph PP["Pool: Programmazione"]
+            V602["VM602 ITdeveloping\nvmbr3: no guest agent\n200GB PROGRAMMAZIONE"]
+        end
+
+        B0 --> V100 & V202 & V803 & V810
+        B1 --> V100
+        B2 --> V206
+        B3 --> V203 & V204 & V205 & V602
+    end
+
+    subgraph STOR["Storage"]
+        SLVM["SERVIZI lvmthin\n1TB locale — 630GB usati"]
+        PLVM["PROGRAMMAZIONE lvmthin\n1.5TB locale — 100GB usati"]
+        NI[("NAS_INTRA\n5.5TB CIFS\nbackup primario")]
+        NI2[("NAS_INTRA2\n22TB CIFS")]
+        NH[("NAS_HERO\nCIFS — VM100\ndoppia copia")]
+    end
+
+    SW --> BCM
+    PVE -. "backup CIFS (9 job notturni)" .-> NI
+    PVE -. "backup VM100" .-> NH
+    V100 & V202 & V203 & V204 & V205 & V206 & V802 & V810 -.-> SLVM
+    V602 -.-> PLVM
