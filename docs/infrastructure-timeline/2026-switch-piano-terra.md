@@ -24,12 +24,47 @@ il nodo n8n ufficiale Zep era già deprecato; alternativa community
 (n8n-nodes-zep-v3) non adottata per instabilità.
 Stack rimasto: ChromaDB + Ollama + n8n (senza memoria persistente tra sessioni).
 
-## 08/01/2026 - Attacco phishing
+## 13-15/01/2026 - Incidente phishing/compromissione regole Exchange
 
-[TBC: dettagli attacco phishing 08/01/2026. Sezione dedicata nel documento Word
-non estratta nell'ingestion iniziale. Necessari: screenshot delle mail ricevute,
-sistemi coinvolti, azioni di risposta e remediation, eventuale comunicazione
-agli utenti, modifiche alle regole di sicurezza applicate a seguito dell'attacco.]
+### Account coinvolti e sintomi
+
+Tre account coinvolti in modo diverso:
+- **emonterubbianesi@intrawelt.com** (Elisa): regola inbox sospetta trovata tramite PowerShell EXO
+- **mrenzi@intrawelt.com** (Martina): email arrivate il 14/01/2026 scomparse dall'inbox (es. notifica cambio SDI da Sollini Gino srl)
+- **anasini@intrawelt.com**: email arrivate ma non visibili (possibile quarantena)
+
+### Analisi Purview (Microsoft Defender/Compliance)
+
+Rilevata attività "**MailRedirect**" su info@intrawelt.com:
+- Operazione: `Set-InboxRule` (modifica regola posta in arrivo)
+- Regola modificata: intercetta email da `procurement.it@bayer.com` con oggetto contenente "ordine d'acquisto", applica categoria "Inoltro OK", inoltra a tre indirizzi interni, ferma elaborazione altre regole.
+- ClientIP: **193.124.241.5** (indirizzo IP pubblico Intrawelt → modifica dall'interno della rete o VPN). NON un attaccante esterno.
+
+Purview classifica qualsiasi regola che inoltra messaggi come "RISKYACTIVITY MailRedirect" anche se legittima.
+
+### Regola sospetta su Elisa (PowerShell ExchangeOnline)
+
+```powershell
+Connect-ExchangeOnline
+Get-InboxRule -Mailbox emonterubbianesi@intrawelt.com | Format-List
+```
+
+Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO PowerShell):
+- Regola "Junk": marca messaggio come Letto, sposta in "Cronologia conversazioni", ferma elaborazione.
+
+### Remediation
+
+- Regola sospetta rimossa via PowerShell EXO
+- Creata regola firewall "Blocco_Gruppo_IP_Phishing_Elisa" sul Zyxel USG FLEX 500
+  → ma la regola aveva erroneamente `action=ALLOW` invece di `DENY` (gap FW-001)
+- Analisi malware: file `Malware-List_2026-01-13_2026-01-15_UTC.xlsx` (lista IP/domini bloccati)
+- Email scomparse: verificato che Alessandro stava eliminando da info (auto-quarantena)
+
+### Lezioni apprese
+
+- Le regole di posta M365 non sono tutte visibili da Outlook → monitorare via Purview periodicamente
+- La regola firewall FW-001 deve essere corretta (action=DENY); vedi docs/runbook-anomalie.md
+- Necessità di formazione anti-phishing per tutti i dipendenti (gap ISO-003)
 
 ## Aprile 2026 - Installazione switch Piano Terra: Zyxel XGS2220-30HP
 
@@ -194,6 +229,22 @@ Incontro con myOffice/Vianova il 09/06/2026 per la migrazione al centralino clou
 la transizione, timeline. Alessio ha screenshot nella cartella steps.]
 
 ---
+
+## Aprile-Giugno 2026 - Redesign sito intrawelt.com
+
+Cappelli Design (referente Anna Caruso) avvia il redesign del sito intrawelt.com.
+Piattaforma: WordPress. Gestore IT: Tommaso Vezeni.
+
+10/04/2026: Cappelli Design inizia a condividere contenuti per il nuovo sito.
+Creato utente WordPress `marketing_cappelli` con ruolo Editor → escalato a Amministratore
+per consentire l'export dei contenuti (blog, news).
+
+20/04/2026: richiesta ambiente di test (copia 1:1 del sito attuale) da parte di Cappelli.
+Ambiente test creato su infrastruttura IT Intrawelt.
+
+Primo rilascio escluse: Ricerca, Solution Finder, slider homepage azienda,
+modulo richiesta consulenza; pagine "Certificazioni" e "Policy" (aggiunte in scope ma
+fuori dal primo rilascio). Tempistiche secondo rilascio: TBD.
 
 ## 07/05/2026 - Guasto NAS INTRA2 e sostituzione
 
