@@ -56,6 +56,34 @@ NAS e pulizia parziale dei backup piu' vecchi nella cartella "Backup anni vecchi
 Il problema di fondo rimane. Soluzione definitiva decisa in conseguenza: sostituzione
 uno-a-uno dei 4 dischi con dischi da 8 TB ciascuno.
 
+## Novembre 2024 - Sviluppo app ENI ruolini (desktop Python)
+
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Progetto ENI ruolini (nov24)/Sviluppo app ENI ruolini.docx`
+
+Prima soluzione per automazione conversione ruolini ENI: app desktop Python + PyQt6.
+Problema: i ruolini ENI arrivano come file `.docx` Word con campi diversi da quelli
+che T-Rex accetta nell'import Excel. Soluzione: script Python che legge il Word e
+produce un `.xlsx` con i campi rinominati per T-Rex.
+
+| Data | Milestone |
+|------|-----------|
+| 12/11/2024 | Verifica output regex con T-Rex test: primo approccio parsing Word |
+| 14/11/2024 | Francesca Caricchia inizia `ENI_word_to_excel.py` (parsing + mapping campi) |
+| 15/11/2024 | Studio formato `.xlsx` e formattazione date (problema Date vs Testo in openpyxl) |
+| 18/11/2024 | Installazione PyQt6 + Visual C++ Build Tools; prima GUI PyQt6 funzionante |
+| 18/11/2024 | Fix: eliminare file `.xlsx` vuoto esistente prima di "Run Script" |
+| 19/11/2024 | Pulizia Qt Designer mockup + integrazione GUI con script `ENI_word_to_excel_date.py` |
+
+Stack: Python 3.12 (venv), python-docx, openpyxl, PyQt6. GUI creata con Qt Designer
+(`.ui` → `main_mod_icon.py`). Campi mappati: "Operatore"→"Richiedente",
+"Lingua Transizione"→"Lingua di transizione", "Tipo attività"→"Servizio Aggiuntivo".
+
+Questa è la PRIMA versione dell'automazione ruolini ENI (app desktop locale).
+La seconda versione (IntraPanel React+Flask su PC-GIORDANO) è quella attualmente in
+produzione (documentata in helpdesk-operations.md §ENI VIPA).
+
+Repository GitHub: eni-report-api, intrapanel-UI (link URL nel progetto).
+
 ## Ottobre-Novembre 2024 - Analisi costi TIM e servizi inutili
 
 Identificati in fattura TIM i seguenti servizi inutili o sospesi senza che siano
