@@ -205,6 +205,49 @@ Gap attuale: procedura non ancora integrata con la catena notifica SCENIA
 
 ---
 
+## Questionari sicurezza clienti B2B
+
+Fonte: `Cybersec & IT Governance/_QUESTIONARI FORNITORI/`
+Gestione attiva tramite skill `questionnaire-compiler` (`.claude/skills/questionnaire-compiler/`).
+
+| Cliente | Questionario | Data | Stato |
+|---------|-------------|------|-------|
+| ENI Servizi S.p.A. | Questionario Cyber Security B (xlsx) | 29/04/2025 | Compilato (Questionario_B_alesop 29042025.xlsx) |
+| Fidelity Investments | ESR questionnaire (8 sezioni: ISO27001, PT, VA, asset mgmt, DLP, password, logging, 3rd party) | Set/Ott 2025 | Compilato (.fi.docx versions); Issues log 30/09/2025 |
+| LB Research | FT_DP_017_03 Checklist (Sub)Responsabile + Nomina + Allegati (DPA, Data flow, BCD) | 2025-2026 | In corso/completato |
+| Wind Tre / RFQ 10714 | Busta Tecnica: Information Security Annex Part II + AI Questionnaire + SLA requirements | 2026 (rev 28/05/2026) | In corso gara traduz. specialistiche |
+| ACEA | Documenti gara (link) | 2025 | — |
+| BCE | Link esterno | 2025 | — |
+| Advice Pharma | Link esterno | 2025 | — |
+| Elena (fornitore) | 2 domande (feb 2026): accesso con user/pass; procedura sicurezza dati cliente | Feb 2026 | Completato |
+
+I questionari compilati costituiscono evidenza dell'implementazione ISO 27001 e del
+livello di maturità security dichiarato verso i clienti. Wind Tre (RFQ 10714) è la
+gara piu' significativa per volume e complessita' (busta tecnica + commerciale + legale).
+
+---
+
+## Registro utilizzo sistemi informatici – stato firme
+
+Fonte: `Cybersec & IT Governance/Regolamento utilizzo sistemi informatici/Registro_accettazione.docx`
+Documento: lista di 21 dipendenti + 4 righe vuote per nuovi assunti.
+Prima versione inviata: 19/04/2021 come allegato email.
+File disponibile su: `\\192.168.20.170\utili\Privacy\Regolamento utilizzo sistemi informatici\`
+
+**Stato attuale (verificato giugno 2026): 0 firme su 21 dipendenti elencati.**
+
+Tutti i campi FIRMA e DATA sono vuoti per:
+Apollonio Luigi, Bartolucci Elena, Carlacchiani Marcello, Cenerini Marika, Coppola Luigi,
+Guidali Fabio, Kaemmer Oliver, Mandolesi Giordano, Marini Marsk, Marini Sergio,
+Martellini Sonia, Martinelli Mery, Monterubbianesi Elisa, Nasini Alessia, Natale Joanne,
+Nazziconi Alessia, Ripa Roberta, Scattolini Sara, Sconciafurno Pasquale, Stasi Daniel,
+Stratmann Ulrike.
+
+Gap: ISO-001 confermato ad alta priorità. Necessaria campagna di raccolta firme formale.
+Vedi GAP-TBC.md riga ISO-001 per dettaglio.
+
+---
+
 ## Incident Response – Gap
 
 Non esiste un processo formale di incident response. In caso di incidente, il flusso attuale è:

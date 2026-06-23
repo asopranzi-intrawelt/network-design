@@ -82,13 +82,18 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 ### Regolamento utilizzo sistemi informatici
 - [x] `Regolamento Intrawelt per l'utilizzo degli strumenti informatici_rev1.docx` → 201 § estratti — documento ESISTE. Gap ISO-001 aggiornato in GAP-TBC: mancano firme in Registro_accettazione
-- [ ] `Registro_accettazione.docx` — ALTA (verifica quante firme raccolte)
+- [x] `Registro_accettazione.docx` → cybersecurity-governance.md §Registro utilizzo sistemi (0/21 firme — gap ISO-001 confermato; prima versione 19/04/2021)
 
 ### Documenti NinjaOne
 - [ ] `Privacy policy NinjaOne` — MEDIA (DPIA input)
 
 ### _QUESTIONARI FORNITORI
-- [ ] questionari sicurezza clienti B2B — ALTA (supply chain compliance)
+- [x] `Questionario Cybersecurity ENI/` → cybersecurity-governance.md §Questionari B2B + timeline 29/04/2025
+- [x] `Fidelity/` ESR questionnaire (8 sezioni) → cybersecurity-governance.md §Questionari B2B
+- [x] `LB Research/` DPA checklist → cybersecurity-governance.md §Questionari B2B
+- [x] `WindTre/` RFQ 10714 (gara traduzioni specialistiche) → cybersecurity-governance.md §Questionari B2B
+- [-] `.claude/` folder — skip (questionnaire-compiler skill files, metadati strumento AI)
+- [-] altri link e bozze — SKIP (derivati dalle compilazioni sopra)
 
 ### _VA e Pentest assessment
 - [x] `Onova VA Nov 2025` → vulnerability-assessment-nov2025.md (8 criticità)
@@ -335,7 +340,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `creazione ambienti.docx` → creazione_ambienti.txt (133 §) → vendor-management.md (Cappelli Design)
 - [x] `IntraPanel/flask_service.py` → via enivipa_servizi.txt → helpdesk-operations.md (SEC-009)
 - [ ] `Notes (thinking lab) 12012026.docx` — MEDIA (note tecniche Alessio)
-- [ ] `Progetto ENI ruolini (nov24)/` — ALTA (contesto IntraPanel/ENIVIPA)
+- [x] `Progetto ENI ruolini (nov24)/` → 2024-infra.md §Novembre 2024 app desktop (Python/PyQt6, pipeline Word→Excel per T-Rex, 12-19 nov 2024, Francesca Caricchia)
 - [ ] `[TBC] PASSWORD MANAGER/` — ALTA (gap SEC-007 in GAP-TBC)
 - [ ] `[TBC] SERVER DNS PERSONALIZZATO/` — MEDIA
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
