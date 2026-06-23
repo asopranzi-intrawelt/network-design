@@ -222,6 +222,7 @@ sono esplicitamente nel documento Word.
 | 79 | SEC-006 | Privacy policy NinjaOne non distribuita a tutti gli utenti | task_20 |
 | 80 | SEC-007 | Dischi USB non bloccati sulle postazioni (task pending) | task_25 |
 | 81 | SEC-008 | OneDrive personale non bloccato (policy mancante) | task_24 |
+| 96 | SEC-009 | IntraPanel (React/Flask per ENI Servizi) installata su PC-GIORDANO (ex-dipendente); app non migrata né presidiata | docs/helpdesk-operations.md – ENIVIPA |
 
 ---
 
@@ -268,7 +269,7 @@ sono esplicitamente nel documento Word.
 | Firewall USG FLEX 500 | 54-63 |
 | Voice VLAN e telefonia | 64-67 |
 | Network Security (task_47) | 68-73 |
-| Cybersecurity (piano attività) | 74-81 |
+| Cybersecurity (piano attività) | 74-81, 96 |
 | SCENIA gaps (DPA Allegato II) | 82-89 |
 | ISO 27001 (Serafino 18/04/2025) | 90-95 |
-| **Totale identificati** | **95** |
+| **Totale identificati** | **96** |

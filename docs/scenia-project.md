@@ -144,6 +144,62 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 
 ---
 
+## Meeting DPIA/DPA – 27/05/2026
+
+Sessione di lavoro tecnico su DPIA ScenIA (template EDPB v1.0). Presenti: Alessio + AIDAPT.
+
+**Architettura e flussi SCENIA:**
+- Rotta "translate diretta": traduzione senza passaggio per vector store per documenti usa-e-getta
+  (load → vector store solo per documenti da riutilizzare come knowledge base)
+- Logica ottimizzazione punti Qdrant: eliminazione punti con <4 caratteri, filtraggio caratteri speciali
+- Segregazione: i dati di ogni organizzazione sono logicamente separati nel vector store
+
+**GDPR / DPIA – Dati trattati:**
+
+| Categoria | Scopo | Storage limitation |
+|-----------|-------|--------------------|
+| Documenti da tradurre (.sdlxliff, testo) | Traduzione | Rotta translate non salva; altri rimangono → serve meccanismo eliminazione esplicita |
+| Mail e hint utente | Traduzione e context | Data minimization applicabile |
+| Dati aziendali (P.IVA, telefono, mail) | Registrazione | Limitare al minimo |
+| Knowledge base (segmenti validati) | RAG per traduzioni contestuali | Conservazione necessaria; diritto all'oblio supportato |
+| Feedback utente | Miglioramento qualità | Separare da dati traduzione |
+
+**Principi GDPR e stato:**
+
+| Principio | Stato | Note |
+|-----------|-------|------|
+| Trasparenza | Da implementare | Dialog "Carica" con spiegazione trattamento dati; "Non mostrare più" successivo |
+| Limitazione di conservazione | Parziale | Rotta translate OK; documenti "test" rimangono senza scadenza |
+| Minimizzazione | Pianificato | Non raccogliere dati aziendali non necessari; data minimization su segmenti |
+| Accuratezza | OK | RAG su esempi validati da linguisti + post-validazione umana |
+| Diritto all'oblio | Supportato | Eliminazione documenti singoli da interfaccia |
+| Portabilità | Da implementare | Export documenti caricati (almeno per documento singolo) |
+| Diritto alla rettifica | Da verificare | Eliminazione documento caricato in precedenza |
+
+**PII Filter (OpenAI Privacy Filter):**
+- Algoritmo LLM che riconosce e maschera dati personali (nomi, dati biometrici, ecc.) in testo
+- Stato: **PLANNED** – da abilitare come opzione utente (default on/off da decidere)
+- Disponibile come open source su HuggingFace: https://huggingface.co/spaces/openai/privacy-filter
+- Supporta italiano e multilingual; funziona anche su portatile (leggero)
+- Alternativa: NLP classica senza LLM (meno precisa per nomi propri contestuali)
+
+**Rischio principale identificato:**
+Il meccanismo RAG crea un canale potenziale di diffusione dati: segmenti di un documento di
+organizzazione A potrebbero essere usati come contesto per tradurre documenti di organizzazione B.
+Mitigazione: segregazione logica Qdrant per organizzazione è architetturale; l'LLM riceve in
+prompt esplicito che gli esempi servono solo come contesto, non arricchiscono il documento.
+L'impatto è limitato: singoli segmenti non contengono informazioni auto-contenute.
+
+**Documento DPIA:**
+- Template EDPB v1.0 2026 in compilazione (DPIA_SCENIA_2026.docx)
+- Sezione 2 (analisi) da rivedere con avvocato
+- Privacy policy utente da scrivere (spiega come funziona il trattamento)
+- DPO: non obbligatorio per Intrawelt
+
+**Aggiunto al riferimento documenti:** `SCENIA/SECURITY/DPA/Meeting 27.05.2026.docx`
+
+---
+
 ## Stato attuale (giugno 2026)
 
 Il prodotto ScenIA è in produzione. La compliance GDPR (DPA con clienti, DPIA) è in fase
@@ -151,3 +207,10 @@ finale di redazione. I gap di sicurezza tecnici (SAST/DAST, VA/PT, Qdrant audit 
 stati identificati e portati all'attenzione di AIDAPT tramite questionario formale.
 Il DPA richiede completamento dei placeholder delle Parti (dati Cliente per ogni contratto)
 e negoziazione dei massimali di responsabilità prima della firma.
+
+**Pending DPIA (post-meeting 27/05/2026):**
+- Scrivere privacy policy per utenti ScenIA (trasparenza trattamento)
+- Implementare meccanismo eliminazione esplicita documenti "test" (storage limitation)
+- Implementare PII filter come opzione utente (planned)
+- Aggiungere diritto portabilità (export documenti caricati)
+- Completare sezione 2 DPIA con avvocato (analisi legal)

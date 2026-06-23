@@ -219,6 +219,68 @@ Documentata in note SYSADMIN del piano attività.
 
 ---
 
+## ENI Servizi (ENIVIPA) – Procedura fatturazione mensile
+
+### Cos'è
+
+ENI Servizi è un ufficio ENI che commissiona traduzioni a Intrawelt. A fine mese invia un
+file `.xls` con il riepilogo degli ordini del periodo → Intrawelt genera il report corretto
+tramite IntraPanel e lo resubmits con eventuali correzioni → poi fattura.
+
+### IntraPanel – App React/Flask (PC-GIORDANO)
+
+**RISCHIO CRITICO**: L'app è installata su `PC-GIORDANO` (account Giordano, ex-dipendente).
+Giordano è uscito dall'azienda; l'app non ha mai sido migrata. Stato: presumibilmente ancora
+accessibile ma non presidiata. Backlog: task_27 (manutenzione app). Da migrare urgentemente.
+
+| Componente | Dettaglio |
+|------------|-----------|
+| Frontend | React, `npm start`, porta localhost:3000 |
+| Backend | Flask (`flask_service.py`), progetto `odoo_service` su PyCharm |
+| IDE necessario | VsCode (frontend) + PyCharm (backend), su PC-GIORDANO |
+| Output | Report `.xlsx` con foglio "Control" aggiunto al file ENI originale |
+| Storico report | Desktop PC-Tommaso → cartella "Report Eni" |
+
+**Procedura mensile:**
+1. ENI invia file `.xls` ogni primo del mese → convertire in `.xlsx`
+2. Aprire VsCode: `cd frontend` → `cd` → `npm start`
+3. Aprire PyCharm: eseguire `flask_service.py`
+4. Caricare `.xlsx` su localhost:3000 → "Update Report" → attendere
+5. Scaricare report aggiornato e inviarlo ad ENI tramite PM
+
+**Check nel foglio "Control":**
+- Colonna I: check transito (lingua di transito coincide?)
+- Colonna X: check urgenza (discrepanza tra ENI e TREX?)
+- Colonna AG: VERO = importo totale diverso dal nostro in TREX → da sistemare
+
+**Flusso di validazione:**
+Alessia confronta file intermedio vs TREX (export xlsx ordini per ID) → segnala discrepanze
+a ENI → ENI valida → Intrawelt fattura. Attenzione: export TREX mostra solo pagina attiva
+(es. 80/114 invece di 114/114 → usare paginazione o export completo).
+
+---
+
+## Odoo 18 – Scope migrazione T-Rex (task_3)
+
+Analisi flussi condotta con Openforce (novembre 2025). Moduli da migrare da Odoo 12 a Odoo 18:
+
+| Modulo | Flusso/attività principale |
+|--------|---------------------------|
+| CRM e Sales | Lead → Opportunità → Preventivo → Ordine; permessi commerciali; reportistica periodo |
+| Prodotti/Servizi | Tabelle lingue, settori, UM; listini vendita e fornitore |
+| Task | Classificazione tags; gestione vincoli; dati tecnici; assegnazione freelance per skill |
+| Acquisti/PO | Attributi su righe; nuovo calcolo listini; fatturazione passiva |
+| Project | Fasi per creazione PO e fatturazione; forecast; multi-project-manager |
+| Risorse umane | Profilo freelance: skill, lavori da accettare, valutazione; candidatura |
+| Pannello clienti | Richiesta preventivi con file da tradurre; accesso materiale tradotto |
+| Amministrazione | Validazione anagrafica; fatturazione; pagamenti; solleciti; export Unicredit |
+| Portale Freelancer | Area caricamento file (Intrawelt ↔ fornitore); chiusura progetti |
+
+**Stato:** Analisi flussi completata (scaletta nov 2025). Openforce ha preventivato i costi.
+Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione T-Rex).
+
+---
+
 ## Software rimozione prioritaria (task_14)
 
 Presenti su alcune macchine: **AnyDesk**, **TeamViewer** e altri software di accesso remoto non presidiati.  
