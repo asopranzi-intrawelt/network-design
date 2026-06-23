@@ -66,6 +66,14 @@ Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO 
 - La regola firewall FW-001 deve essere corretta (action=DENY); vedi docs/runbook-anomalie.md
 - Necessità di formazione anti-phishing per tutti i dipendenti (gap ISO-003)
 
+## 04/03/2026 - Meeting Odoo portale SCENIA (Susanna Ortini, OpenForce)
+
+Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo.
+Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopranzi@intrawelt.com
+(dedicato, senza licenza aggiuntiva). Ambiente test: intrawelt-test.openforce.it.
+Warning: xml-rpc deprecato da v19, rimosso da v20 → migrare a json-rpc in futuro.
+Dettagli tecnici: docs/helpdesk-operations.md §Integrazione portale SCENIA.
+
 ## Aprile 2026 - Installazione switch Piano Terra: Zyxel XGS2220-30HP
 
 ### Stato pre-installazione
@@ -274,6 +282,35 @@ Risultato: la dorsale Piano Terra - Piano 2 negozia e comunica a 10 Gbps
 (confermato da Nebula: Speed 10G, full duplex, su entrambe le porte SFP+ coinvolte).
 
 ---
+
+## Gennaio-Aprile 2026 - SCENIA sviluppo full-stack (Fabio Giorgini)
+
+Sviluppo principale su branch con Fabio Giorgini (collaboratore esterno, modello
+fork + PR). Snapshot repository analizzato: staging 27/02/2026 → main 22/04/2026
+(analisi prodotta in 13_Maggio 2026 / analysis-output/).
+
+8 cluster funzionali sviluppati nel periodo:
+
+| Cluster | Descrizione principale |
+|---------|----------------------|
+| A - files_storage | Upload file con BusboyAdapter (multipart/preservazione dir), buildFileTree utility, STORAGE_PATH env var (breaking change 11/03/2026: chmod 750, nginx proxy_buffering) |
+| B - translation_form_ui | Form traduzione lato frontend TypeScript |
+| C - email_mjml | Template email MJML |
+| D - sessions_hydration | Gestione sessioni e hydration state |
+| E - estimate_summary_planner | Preventivi, sommari, planner traduzioni |
+| F - trados_integration | Integrazione API Trados RWS (SDLXLIFF → API → progetto) |
+| G - contactus_cors | Modulo "Contact us", configurazione CORS |
+| H - admin_users | Gestione utenti admin, permessi |
+
+Breaking change 11/03/2026: aggiunta variabile d'ambiente STORAGE_PATH per
+configurare il path del filesystem condiviso; nginx `proxy_buffering off` per
+upload grandi; chmod 750 sulle directory storage.
+
+ER diagram: diagrammaER 18052025.png (18/05/2025, primo schema E/R definitivo);
+note database e diagramma.docx (evoluzione successiva).
+
+28/05/2026: studio integrazione Odoo-SCENIA documentato in
+`studio_integrazione Odoo 28052026.docx` (cartella odoo-related del progetto).
 
 ## Maggio-Giugno 2026 - SCENIA DPA e DPIA ScenIA
 
