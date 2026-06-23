@@ -1,0 +1,226 @@
+# Helpdesk Operations – Intrawelt S.a.s.
+
+Procedure operative helpdesk IT. Owner: Alessio Sopranzi.
+Aggiornato: giugno 2026.
+
+---
+
+## T-Rex (Odoo ERP Gestionale)
+
+### Cos'è T-Rex
+
+T-Rex è il gestionale di project management e workflow traduzioni di Intrawelt,
+basato su **Odoo** e ospitato da **OpenForce** (partner Odoo).
+
+Accesso: via browser (URL produzione gestito da OpenForce).  
+Ambiente di test: disponibile (URL separato).  
+Chat interna: "T-Rex | All PM" su Microsoft Teams.
+
+**Egetrad**: vecchio gestionale precedente (usato fino al 2021). Ora solo archivio statico.
+VM Ubuntu su Proxmox (192.168.20.5), porta 8080 pubblica e privata.
+Regola firewall `EGETRAD_WEB` da disabilitare quando dismessa definitivamente (task_27).
+
+### Apertura ticket con OpenForce
+
+OpenForce è il fornitore di supporto Odoo/T-Rex.
+
+1. Inviare mail a `intrawelt@openforce.it` con oggetto = breve descrizione problema
+2. OpenForce crea un ticket dal messaggio (con pre-validazione)
+3. Risposta arriva da `portal@openforce.it` – rispondere su quella stessa mail
+4. Le risposte via mail vengono registrate nel portale front-end Odoo
+5. Per ticket specifici fatturazione: mettere in CC il referente OpenForce dedicato
+
+**Note operative:**
+- OpenForce lavora sullo stesso sistema Odoo che usiamo: i ticket sono visibili come "opportunità" nel front-end
+- Le mail inviate a portal vengono registrate sul chatter (visibile a tutti i follower del ticket)
+- Non usare portal@openforce.it per comunicazioni generali: solo per rispondere a ticket aperti
+
+### Migrazione T-Rex (task_3, task_82)
+
+| Campo | Dettaglio |
+|-------|-----------|
+| Stato | Bloccata, 0% – PRIORITY 1 |
+| Stima | 120h di supporto tecnico verso OpenForce |
+| Scopo | Migrazione gestionale a nuova versione o nuova architettura |
+| Dipendenza | Completare formazione T-Rex (task_1), allineamento test/prod (task_92) |
+| GroupShare migration | Separata: target primavera 2026 (task_82, 20h) |
+
+---
+
+## Microsoft 365
+
+### Accesso admin
+
+Portal M365: `https://admin.cloud.microsoft/#/homepage`  
+Account admin: asopranzi@intrawelt.com (MFA obbligatorio dal 01/10/2025)  
+Entra ID admin: `https://entra.microsoft.com`
+
+**Tenant**: intrawelt.com  
+**Exchange**: Exchange Online (cloud, non on-premise)  
+**SharePoint gruppi**: IT, Sito del team, Projects, Resources
+
+### Apertura ticket Microsoft
+
+1. Da `admin.cloud.microsoft` → Supporto → Nuova richiesta di servizio
+2. Per Azure: canale separato tramite portale Azure (non l'admin M365)
+3. Cronologia ticket: `admin.cloud.microsoft → Home → Cronologia richiesta di servizio`
+
+**Caso precedente**: ticket #2411131420003269 (nov 2024) – fattura Azure non visibile nel portale M365;
+il caso è passato a Microsoft Azure team dopo chiamata del 14/11/2024.
+
+### SharePoint e OneDrive
+
+| Gruppo | Contenuto |
+|--------|-----------|
+| IT | Documenti IT, appunti procedurali, eredità documentazione Pasquale |
+| Projects | Memorie di traduzione TM + MultiTerm (link OneDrive locale) |
+| Resources | Strumenti condivisi (TOOLS folder sincronizzato su OneDrive locale) |
+
+Percorso locale sincronizzato: `C:\Users\Alessio Sopranzi\OneDrive - Intrawelt S.a.s\Documenti – IT`
+
+### Gestione caselle posta (Exchange Online)
+
+| Attività | Stato | Note |
+|----------|-------|------|
+| Pulizia cassette postali utenti | In corso (0%) | Analisi spazio per utente in progress |
+| Retention policy | Da definire | Piano Exchange 2: 100GB primary + 1.5TB archive con espansione auto |
+| Backup .pst su NAS | Pianificato | Dipende da task_61 (backup posta) |
+| Aggiornamento deleghe | Da fare | File 2025-09-01_Aggiornamento_caselle_posta.xlsx su SharePoint |
+| Licenze e account | Da fare | Pulizia licenze non necessarie (task_62) |
+| Phishing analisi | Da fare | Tracciamento mail sospette (caso Alessia Nasini maggio 2025) |
+
+### Account utenti dimessi
+
+**Pasquale e Giordano** (task_34): Mail chiuse da Microsoft in settembre 2025.
+Cleanup dettagliato pendente (molti servizi/account terzi associati alle loro mail).
+File di analisi: `mail_pasquale_giordano_analisi 23042025.xlsx`.
+Esempio da gestire: Heroku richiede pass attraverso le loro mail.
+
+**Francesca**: Cartella OneDrive allineata dopo uscita (task_91, completata entro 08/09/2025).
+Flussi SCENIA/Trados che dipendevano dal suo account: da ripristinare (task_97).
+
+### Azure MFA (task_65)
+
+- Deadline: 01/10/2025 – completata (enforcement Microsoft attivo)
+- Account coinvolti: asopranzi, anasini, tvezeni, atrovato
+- Documentazione: docs/cybersecurity-governance.md + _notes/.tmp-docx-HELPDESK/mfa_action_plan.txt
+
+---
+
+## RWS GroupShare e Trados Studio
+
+### GroupShare
+
+Server: WINGROUPSHARE (IP LAN: 10.1.116.3, sotto Seeweb firewall cloud)  
+VM parallela: WINSRV2019 (IP LAN: 10.1.116.4, sotto Seeweb firewall cloud)  
+Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
+
+**Problemi storici documentati:**
+- Post-migrazione provider (TIM → Vianova): GroupShare inaccessibile fino a risoluzione ticket Seeweb. Causa: cambio configurazione LAN/WAN non replicata correttamente (task_9).
+- Ticket Seeweb ha portato via tempo significativo prima di risoluzione.
+
+**Migrazione GroupShare (task_82):**
+- Target: primavera 2026 (potenzialmente già in ritardo a giugno 2026)
+- Stima: 20h – PRIORITY 2
+- Operazione "molto impegnativa" secondo nota nel piano attività
+
+### Trados Studio
+
+**Problemi tipici:**
+- Disconnessione licenze: solitamente non è un problema server (vedi caso Tommaso Duranti 07/04/2025)
+- Repair licenza: procedura documentata in Helpdesk_RWS-Groupshare-Studio/STUDIO-RWS-GROUPSHARE.docx
+- Time licenza: 8h stima per troubleshooting (task_71)
+
+---
+
+## Timbracartellini (BioStar)
+
+| Campo | Dettaglio |
+|-------|-----------|
+| Sistema | BioStar (lettore impronte digitali) |
+| Dispositivo | 192.168.20.199 (switch Piano Terra, port 0-10-1) |
+| VLAN | LAN utenti (VLAN 20) |
+| Tempo speso | ~1 mese netto nei 2 anni (task_83) |
+| Tipo attività | Varie problematiche hardware/software, gestione badge |
+
+---
+
+## Onboarding / Outboarding
+
+**Procedura completa:** `_notes/.tmp-docx-HELPDESK/onboarding_outboarding.txt`
+
+### Onboarding nuovo dipendente
+
+1. Creare account M365: `ncognome@intrawelt.com` (es. tvezeni@intrawelt.com)
+2. Password casuale, licenza "Microsoft Power Automate Free" (o equivalente base)
+3. SharePoint: Projects → Documents → INTERSCAMBIO → crea cartella Nome_Cognome
+4. Collegare cartella SharePoint su OneDrive del dipendente (Add Shortcut)
+5. Account T-Rex (se PM)
+6. Account GroupShare/Trados Studio (se traduttore/PM)
+7. NinjaOne: agent su macchina
+8. Registrare in registro onboarding (Mantis/ticket interno)
+
+**Caso esempio (Greta Cavalieri, 14/11/2024):**
+- Ticket Mantis #1428, aperto 13/11/2024 da Alessia Nasini
+- Postazione preparata (PC), account M365 creato, Trados Studio installato
+
+### Outboarding
+
+1. Disabilitare account M365 immediatamente
+2. Cambiare tutte le password dei servizi condivisi associati
+3. Revocare accessi NAS, GroupShare, T-Rex, NinjaOne
+4. Valutare delega casella mail (con tracciamento IT)
+5. Aggiornare registro deleghe mail (2025-09-01_Aggiornamento_caselle_posta.xlsx)
+6. Per dipendenti con accesso a servizi terzi (es. Heroku): procedura specifica per ogni servizio
+
+---
+
+## NinjaOne RMM
+
+| Funzione | Dettaglio |
+|----------|-----------|
+| Monitoring | Tutte le postazioni Windows |
+| Remote access | Accesso remoto controllato alle macchine |
+| Patch management | Aggiornamenti software (da completare – task_14) |
+| Alert | Da configurare su Teams (documentazione ufficiale disponibile – task_112) |
+| Inventario | Monitoraggio periodico hardware (task_111) |
+| Backup cloud | In valutazione (task_113) |
+| Accessi | Da definire chi ha accesso a cosa (task_114) |
+| Notifiche Telegram | Da configurare (task_43) |
+
+**Attività helpdesk quotidiane NinjaOne:**
+- Monitoraggio macchine (task_77)
+- Troubleshooting patch/update
+- Installazione software da remoto
+- Supporto utenti (task_73)
+
+---
+
+## Helpdesk quotidiano
+
+| Tipo attività | Frequenza | Note |
+|---------------|-----------|------|
+| Troubleshooting vario | Quotidiano | Stampe, scanner, programmi, postazioni (task_73) |
+| Supporto connessione VPN | Su richiesta | Guida utente disponibile (BREVE GUIDA VPN) |
+| Ticket verso Microsoft/Seeweb | Su richiesta | Worst case: 3 mesi/4h settimana (ticket AWS) |
+| Compilazione questionari clienti | Occasionale | Solo Fidelity ha richiesto >20h (task_74) |
+| Manutenzione hardware | Occasionale | task_69 |
+| Web scraping preventivi | Occasionale | task_70 |
+| Gestione turni Teams | 2x/anno | Inserimento turni pianificazione |
+
+---
+
+## Infrastruttura Seeweb e GroupShare – problemi noti
+
+**Ticket Amazon AWS** (task_51): ha impegnato 3 mesi consecutivi a 4h/settimana default.  
+**Ticket Seeweb** (task_9): dopo migrazione TIM → Vianova, GroupShare (10.1.116.3) non raggiungibile.
+Risoluzione: Seeweb ha replicato la configurazione LAN che Alessio aveva già configurato manualmente.
+Documentata in note SYSADMIN del piano attività.
+
+---
+
+## Software rimozione prioritaria (task_14)
+
+Presenti su alcune macchine: **AnyDesk**, **TeamViewer** e altri software di accesso remoto non presidiati.  
+Rischio: vulnerabilità sfruttabile → accesso non autorizzato alla macchina da remoto.  
+Azione: rimuovere da tutte le macchine dove non necessario, tramite NinjaOne.

@@ -8,24 +8,12 @@
 ## Principio
 
 I comandi git restano sempre manuali dell'utente. Quando l'agente li presenta, li scrive
-in un formato immediatamente copiabile senza modifiche ne' su Windows PowerShell ne'
-su bash Linux: una riga per comando, nessuna sintassi specifica di un solo terminale,
-nessun heredoc multi-riga.
+in un blocco PowerShell immediatamente copiabile: una riga per comando, nessun heredoc
+multi-riga. Standard di sistema: Windows PowerShell 5.1.
 
 ## Formato richiesto
 
-Ogni sessione di comandi git si presenta come due blocchi separati: uno per PowerShell
-(Windows) e uno per bash (Linux). I blocchi contengono le stesse operazioni nella stessa
-sequenza, adattate solo per le differenze di sintassi minime (che nella pratica di
-`git add`, `git commit -m` e `git push` sono quasi nessuna).
-
 ```powershell
-git add "percorso/file-uno" "percorso/file-due" "percorso/file-tre"
-git commit -m "Messaggio sintetico del commit"
-git push
-```
-
-```bash
 git add "percorso/file-uno" "percorso/file-due" "percorso/file-tre"
 git commit -m "Messaggio sintetico del commit"
 git push

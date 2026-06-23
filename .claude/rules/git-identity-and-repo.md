@@ -40,7 +40,7 @@ relativo `~/.ssh/config` senza inventarli.
 Una sola impostazione globale, da fare una volta per macchina, fa si che git rifiuti di
 committare in un repository dove non e stata impostata l'identita locale.
 
-```bash
+```powershell
 git config --global user.useConfigOnly true
 ```
 
@@ -55,14 +55,14 @@ Dalla cartella del progetto, l'inizializzazione di un repo nuovo e l'aggancio al
 seguono questa sequenza. La parte di identita e remoto e quella che la skill prepara; il primo
 commit e il push li esegue l'utente.
 
-```bash
-cd "<path cartella>"
+```powershell
+Set-Location "<path cartella>"
 
 # Inizializza il repo e nomina main il branch di default
 git init
 git branch -M main
 
-# Forza l'OpenSSH di sistema e l'identita SOLO per questo repo (Windows)
+# Forza l'OpenSSH di sistema e l'identita SOLO per questo repo
 git config --local core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe"
 git config --local user.name "alesop95"
 git config --local user.email "alessio.sopranzi.95@gmail.com"
@@ -76,28 +76,20 @@ L'alias `github-personal` e definito in `C:\Users\Utente\.ssh\config` e usa la c
 `github.com/alesop95/<nome repo>` con quella chiave. Per il profilo di lavoro si sostituiscono
 identita e alias con quelli `github-corp` e l'owner con l'organizzazione di destinazione.
 
-Differenza per sistema operativo: su Windows si forza `core.sshCommand` all'eseguibile OpenSSH
-indicato perche git per Windows porta un proprio `ssh` che potrebbe non leggere lo stesso
-config; su Linux questo passaggio e di norma superfluo, perche `ssh` di sistema e gia sul PATH
-e legge `~/.ssh/config`, quindi si omette `core.sshCommand` oppure lo si imposta a `ssh`.
+`core.sshCommand` viene forzato all'eseguibile OpenSSH di sistema perche git per Windows porta
+un proprio `ssh` che potrebbe non leggere lo stesso config di `C:\Users\Utente\.ssh\config`.
 
 ## Verifica della configurazione
 
 Dopo aver impostato identita e remoto, verificare che tutto sia coerente.
 
 ```powershell
-# Windows PowerShell
 git config --local --list | Select-String "user\.|remote\.|core\.ssh"
-```
-
-```bash
-# Linux / bash
-git config --local --list | grep -E "user\.|remote\.|core\.ssh"
 ```
 
 Test opzionale della connessione SSH verso l'alias scelto.
 
-```bash
+```powershell
 ssh -T git@github-personal
 ```
 
@@ -105,7 +97,7 @@ ssh -T git@github-personal
 
 Le operazioni seguenti sono dell'utente, non dell'agente.
 
-```bash
+```powershell
 git add .
 git commit -m "Initial commit: <note del primo commit>"
 git push -u origin main
@@ -113,14 +105,14 @@ git push -u origin main
 
 Subito dopo il primo commit conviene confermare con quale identita e stato firmato.
 
-```bash
+```powershell
 git log -1 --format="%an <%ae>"
 ```
 
 Se il repository su GitHub e stato creato con un README o una licenza automatica, esiste gia un
 commit remoto e il push diretto verrebbe rifiutato. Si allinea con un rebase prima di pushare.
 
-```bash
+```powershell
 git pull origin main --rebase
 git push -u origin main
 ```

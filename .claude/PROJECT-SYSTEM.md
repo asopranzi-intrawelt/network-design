@@ -255,19 +255,20 @@ Il flag si imposta a tre livelli, con precedenza crescente: nel `settings.json` 
 
 Anche con il flag a `false`, sessioni passate possono aver lasciato residui nel magazzino nascosto, oppure una sessione con il flag temporaneamente a `true` può non essere stata riportata a `false` in tempo. Per questo il sistema prevede un *wipe* del magazzino nascosto come operazione di manutenzione esplicita, mai automatica, da eseguire quando si vogliono azzerare i residui. Il wipe non tocca mai i file dei progetti su disco né la memoria versionata dentro le cartelle di progetto: agisce solo sugli store che Claude Code tiene nella home dell'account. Si distinguono due livelli. Il livello *per-progetto* rimuove, sotto `projects/<slug>/`, i transcript di sessione `*.jsonl`, le cartelle uuid omonime e la `memory/` nascosta, e si applica a ciascuno slug che si vuole pulire preservando per nome quelli da tenere. Il livello *totale* aggiunge gli store per-account effimeri, ovvero `sessions/`, `session-env/`, `shell-snapshots/`, `history.jsonl`, `file-history/`, `plans/`, `tasks/`, `paste-cache/`, `backups/` e l'eventuale `memory/` a livello di account, lasciando intatti configurazione, credenziali, skill e plugin, cioè `settings.json`, `.credentials.json`, `.claude.json`, `skills/` e `plugins/`. Prima di un wipe totale va verificato che quegli store non contengano l'unica copia di qualcosa che serve, perché artefatti come gli script salvati sotto `plans/` o i backup di `file-history/` spariscono con essi.
 
-```sh
-# Wipe per-progetto del magazzino nascosto. KEEP elenca gli slug da preservare;
+```powershell
+# Wipe per-progetto del magazzino nascosto. $KEEP elenca i prefissi slug da preservare;
 # l'insieme e specifico della macchina (qui i progetti di sviluppo stanno sotto D:).
 # Agisce solo nella home dell'account, mai sul codice dei progetti su disco.
-KEEP="D-- D--scenia-"
-find "$CLAUDE_CONFIG_DIR/projects" -mindepth 1 -maxdepth 1 -type d | while read -r p; do
-  case " $KEEP " in *" $(basename "$p") "*) continue ;; esac
-  rm -rf "$p"
-done
+$KEEP = @("D--", "D--scenia-")
+Get-ChildItem "$env:CLAUDE_CONFIG_DIR\projects" -Directory | Where-Object {
+    $n = $_.Name
+    -not ($KEEP | Where-Object { $n -like "$_*" })
+} | ForEach-Object { Remove-Item $_.FullName -Recurse -Force }
 
 # Wipe totale: aggiunge gli store per-account effimeri. Preserva config, login, skill, plugin.
-rm -rf "$CLAUDE_CONFIG_DIR"/{sessions,session-env,shell-snapshots,file-history,plans,tasks,paste-cache,backups,memory}/* \
-       "$CLAUDE_CONFIG_DIR/history.jsonl"
+"sessions","session-env","shell-snapshots","file-history","plans","tasks","paste-cache","backups","memory" |
+    ForEach-Object { Remove-Item "$env:CLAUDE_CONFIG_DIR\$_\*" -Recurse -Force -ErrorAction SilentlyContinue }
+Remove-Item "$env:CLAUDE_CONFIG_DIR\history.jsonl" -Force -ErrorAction SilentlyContinue
 ```
 
 L'esecuzione manuale di questo wipe resta in mano all'utente come ogni operazione difficilmente reversibile: l'agente lo propone, mostra prima cosa verrebbe rimosso e cosa preservato, e procede solo su conferma esplicita.
