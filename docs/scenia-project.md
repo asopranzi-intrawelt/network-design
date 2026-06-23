@@ -23,6 +23,9 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 - Backend: AIDAPT S.r.l. (infrastruttura AWS Organization dedicata per Intrawelt)
 - Sviluppatore esterno: Fabio Giorgini
 
+**Repository:**
+- GitHub: `asopranzi-intrawelt/full_stack_unimc` (privato, accesso tramite account asopranzi-intrawelt)
+
 **Ruoli GDPR:**
 - Intrawelt = Responsabile del trattamento (Processor)
 - Clienti finali = Titolari del trattamento (Controller)
@@ -53,6 +56,8 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 |------|--------|
 | Apr 2025 | Avvio tracciamento mensile sviluppo SCENIA (SECURITY folder "00_Aprile 2025") |
 | 2025 (Q2-Q3) | Passaggio da architettura UNIMC/LangChain ad AIDAPT come partner industriale |
+| 25/08/2025 | Call con Francesca Caricchia: integrazione Power Automate / OneDrive per gestione file. Folder "backend_Trados_RWS" creato nella repo `full_stack_unimc`. |
+| 08/09/2025 | Merge branch `homepage_superadmin` → main. PR creata e approvata senza conflitti. "Base stabile" post-cleanup. |
 | Mag-Dic 2025 | Sviluppo fullstack SCENIA (portale AI): frontend, backend AWS, integrazione Trados, Qdrant Vector Store |
 | Set-Dic 2025 | Integrazione Azure OpenAI gpt-4.1, embedding, RAG su Vector Store |
 | Dic 2025 | ETSI EN 304 223 V2.1.1 adottato (08/12/2025) – standard sicurezza AI (recepimento nazionale entro 30/09/2026) |
