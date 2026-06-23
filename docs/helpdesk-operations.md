@@ -219,6 +219,27 @@ Documentata in note SYSADMIN del piano attività.
 
 ---
 
+## IntraLino – Assistente IT Interno (RAG Chatbot)
+
+IntraLino è l'assistente virtuale IT di Intrawelt. È un chatbot RAG addestrato sui documenti
+tecnici IT interni (la stessa `Documenti - IT` folder che stiamo ingestionando).
+
+**Caratteristiche:**
+- Nome: IntraLino, "assistente IT personale targato Intrawelt"
+- Funzione: risolvere problemi IT comuni, guide passo-passo, escalation al team IT se necessario
+- Training: documenti tecnici IT Intrawelt (errori comuni, procedure, policy, VPN, stampanti, Outlook, password)
+- Admin mode: se loggato come admin, fornisce soluzioni complete senza suggerire escalation
+- Architettura: RAG (Retrieval-Augmented Generation) su Qdrant/Zep (Zep abbandonato mar 2026)
+- Stato: avviato fine 2024 con UNIMC/VRAI Lab; Zep abbandonato 25/03/2026; architettura attuale TBC
+
+**Knowledge base:** profilo addestramento (`IntraLino_profilo_addestramento.docx`):
+IntraLino sa rispondere su: errori Outlook, connessione VPN aziendale, stampante, reset password,
+problemi comuni IT aziendali. Non accede direttamente al PC utente, non modifica configurazioni avanzate.
+
+**Gap:** migrazione RAG post-Zep non documentata in dettaglio (stack attuale da confermare).
+
+---
+
 ## ENI Servizi (ENIVIPA) – Procedura fatturazione mensile
 
 ### Cos'è
@@ -257,6 +278,27 @@ accessibile ma non presidiata. Backlog: task_27 (manutenzione app). Da migrare u
 Alessia confronta file intermedio vs TREX (export xlsx ordini per ID) → segnala discrepanze
 a ENI → ENI valida → Intrawelt fattura. Attenzione: export TREX mostra solo pagina attiva
 (es. 80/114 invece di 114/114 → usare paginazione o export completo).
+
+### Procedura VIPA – Inserimento richieste in T-Rex (Wizard)
+
+Fonte: `Helpdesk_T-Rex/Storico ticket/2022-11-23_EniVipa/ENI_VIPA_Guida_inserimento_SO.docx`
+
+1. App Vendite → **Create request service** → form dedicato per ruolini VIPA
+2. Caricare file `.xls` (ruolini) + file `.docx` associato per ogni ruolino
+3. **Verify request files** → riepilogo dati ruolino → **Send**
+4. `Services Request Customer`: richieste in stato **Draft** (azzurro)
+5. Filtrare/raggruppare per lingua source, lingua target, richiedente
+6. Selezionare gruppo richieste → **Generate SO** → caricare analisi XML Trados Studio → **Create SO**
+7. Verificare dati SO: Cliente = Eniservizi S.p.A., Richiedente (match anagrafica), Riferimento cliente = N° richiesta ruolino
+8. Aggiungere riga Imposta di bollo 16€ se richiesta asseverazione (quantità = 0, valorizzata a consegna)
+9. **Conferma** SO → stato Ordine di Vendita → progetto creato automaticamente
+10. Assegnare task interni/esterni direttamente (NO Suggested Freelance per VIPA)
+    - Task traduzione: dati tecnici già inseriti dall'XML Trados
+    - Task asseverazione/legalizzazione (Doubinina, Mansour): UdM = 1 Documento per listino fornitore
+11. Fine mese: creazione PO per rendicontazione traduttori
+
+**Nota:** se il Richiedente non è in anagrafica, crearlo come nuovo contatto e associarlo a Eniservizi S.p.A.
+Il campo Nome Progetto duplicato per stessa persona in più ruolini → fix in sviluppo (aggiunge tipo documento).
 
 ---
 

@@ -205,6 +205,144 @@ L'impatto è limitato: singoli segmenti non contengono informazioni auto-contenu
 
 ---
 
+## Dati Intrawelt per DPA ScenIA (compilati 11/06/2026)
+
+Da `Domande_interne_Intrawelt_2026-06-11.md` — risposte già inserite da Intrawelt.
+
+| Campo | Valore |
+|-------|--------|
+| Ragione sociale | Intrawelt di Alessandro Potalivo & C. s.a.s. |
+| Sede legale | Via Elpidiense 14, 63821 Porto Sant'Elpidio (FM) |
+| P.IVA | 01287540445 |
+| Legale rappresentante | Alessandro Potalivo |
+| Referente privacy | Alessandro Potalivo — privacy@intrawelt.com |
+| DPO | Alessandro Potalivo (designato internamente; soglia art. 37 da verificare con legale) |
+| Foro competente | Fermo |
+| Massimali responsabilità | Nessun cap proposto (no limite ex art. 82 GDPR) |
+| Retention log/cronologie | 1 anno (standard dichiarato ai clienti) |
+| Comunicazione cambi sub-responsabili | Email ai referenti dei clienti |
+| Linguisti terzi HitL | Sì, tutti in UE |
+| Avvio servizio ScenIA | Aprile 2026 |
+| Team DPIA | Alessandro Potalivo (DPO, CEO, Referente) |
+| Prima stesura DPIA | 11/06/2026 |
+
+**Pending blocchi DPA firma:** A1-A4 (dati Intrawelt ✅ completati), E1-E2 (dati Cliente, per ogni contratto),
+B2 massimali (nessun cap), C3 trasparenza AI Act art. 50, C4 informativa utenti, D2-D3 AI Act + revisione legale.
+
+---
+
+## Requisiti di Sicurezza a AIDAPT — aree a/b/c/d (giu 2026)
+
+Da `SCENIA/SECURITY/Condivisione con AIDAPT/a), b), c), d)/` — note Intrawelt con i
+requisiti tecnici da formalizzare per scritto da AIDAPT.
+
+**a) Sicurezza applicativa:** cifratura E2E TLS 1.2/1.3 (client→API→LLM) e a riposo (KMS?);
+IAM con least privilege, rotazione chiavi, chiavi separate per DB/vector store/backup;
+multitenant isolation: backend deve impedire interrogazione risorse di altro cliente;
+protezione rotte API (token temporizzati, replay attack, rate limiting, lock per brute force);
+SAST sul codice sorgente, DAST sull'applicazione in esecuzione; SDLC sicuro (branch protection,
+dipendenze/CVE patching continuo).
+
+**b) Sicurezza operativa:** audit trail e supervisione eventi (eventuale SIEM/SOC); backup con
+dettaglio per ogni componente (RDS, vector store, S3, config, segreti): tecnologia, verifica
+integrità (checksum/hash), versionamento, account separati, retention + cancellazione alla
+scadenza, test di restore periodici; RPO/RTO concordati; modello responsabilità AIDAPT vs AWS;
+differenziazione backup operativi / compliance / DR; log audit delle operazioni di backup.
+
+**c) Governance del dato:** classificazione dati + regole conservazione per categoria; versioning
+glossari/TM; onboarding/offboarding clienti con garanzie di cancellazione reale; auditabilità
+verso clienti; gestione richieste interessati (artt. 15-22 GDPR); documentazione data breach;
+registro trattamenti formalizzato.
+
+**d) LLM security e governance:** prompt hardening (separazione system/developer/user prompt,
+sanitizzazione input); validazione output e controlli hallucination (confidence scoring RAG);
+versioning prompt + test regressione dopo update modelli; filtraggio contesto vector store
+prima dell'LLM; logging sicuro interazioni (prompt, contesto, output, metadata — senza PII
+e senza segreti); retention log LLM separata da dati applicativi; limiti etici documentati;
+monitoraggio drift comportamentale modelli.
+
+> **Nota:** AIDAPT è responsabile della sicurezza applicativa in quanto sviluppatori
+> delle rotte API — non sufficiente dire "è tutto su AWS". Il cliente finale B2B verrà
+> a chiedere queste garanzie e Intrawelt dovrà rispondervi in quanto erogatore del SaaS.
+
+---
+
+## Questionario AIDAPT — Stato 30 punti (precompilato 11/06/2026)
+
+`Questionario_AIDAPT_PRECOMPILATO_2026-06-11.md` — NON è risposta AIDAPT: ricostruzione
+Intrawelt da documenti ricevuti (RT 9/02/2026, RM 19/02/2026, SLA, DRP, BCP, DPIA meeting).
+
+**Sintesi: ✅ 1 / ⚠️ 11 / ❌ 18**
+
+| Area | # | Punto | Stato |
+|------|---|-------|-------|
+| Cifratura | 1 | Rotazione chiavi AWS KMS | ⚠️ Segregate per account, policy rotazione non esplicitata |
+| Cifratura | 2 | Filtro PII | ❌ PLANNED, non attivo |
+| Accessi | 3 | MFA amministrativa | ✅ Attiva su infrastruttura |
+| Accessi | 4 | PAM / just-in-time | ❌ Non trattato |
+| Accessi | 5 | Revoca credenziali personale cessato | ❌ Non trattato |
+| Accessi | 6 | Separazione dev/staging/prod | ❌ Non risposto da AIDAPT |
+| Riservatezza | 7 | Policy interne + revisione | ⚠️ Esistono, frequenza revisione non indicata |
+| Riservatezza | 8 | Formazione protezione dati | ❌ Non trattato |
+| Riservatezza | 9 | Formazione AI-security (ETSI) | ❌ Non trattato |
+| Riservatezza | 10 | Separazione compiti dev/ops | ❌ Least privilege dichiarato, segregazione formale non dettagliata |
+| Integrità | 12 | Audit log Qdrant | ❌ Gap confermato — docker default, ETA non fornita |
+| Integrità | 13 | Audit log modifiche system prompt (ETSI) | ❌ Non trattato |
+| Disponibilità | 14 | Test ripristino periodici | ❌ Backup app-consistent dichiarati, test restore non menzionati |
+| Disponibilità | 15 | Rate limiting API | ⚠️ Non implementato; ETA in conflitto tra documenti |
+| Disponibilità | 16 | DRP adattato ad attacchi IA (ETSI) | ⚠️ DRP esiste, non tarato su IA-specific |
+| Sviluppo | 17 | SAST / DAST | ❌ Assente (confermato da RM §5) |
+| Sviluppo | 18 | Patch management / dipendenze | ⚠️ Dependabot attivo, code review obbligatorie, no SLA patching formale |
+| Sviluppo | 19 | Procedura rollback formale | ❌ Non trattato |
+| Sviluppo | 20 | Supply chain / SBOM (ETSI) | ⚠️ Dependabot, no SBOM formale |
+| Sviluppo | 21 | Vulnerability disclosure policy (ETSI) | ❌ Non trattato |
+| Test | 22 | VA / Penetration test | ❌ Nessun pentest menzionato |
+| Test | 23 | Threat modelling IA (ETSI) | ❌ Non fornito |
+| Test | 24 | Robustezza adversariale (ETSI) | ⚠️ Prompt hardening + Azure Content Safety; no valutazione formale |
+| Test | 25 | Inventario asset IA (ETSI) | ⚠️ System Card documenta modelli; inventario formale non confermato |
+| Monitoraggio | 26 | Monitoraggio drift / data poisoning (ETSI) | ❌ Solo Grafana infrastrutturale |
+| Monitoraggio | 27 | Cancellazione sicura backup | ⚠️ Proposta registro cancellazioni ~1gg lavorativo, non attivo |
+| Monitoraggio | 28 | Casi d'uso vietati / limiti (ETSI) | ⚠️ Questionario esclusione art.9, Azure Content Safety; comunicazione formale mancante |
+| Notifica | 29 | Tempistiche breach (allineamento) | ❌ DRP §6 = 48h fissa vs "senza ingiustificato ritardo" |
+| Notifica | 30 | Momento T₀ della "conoscenza" | ❌ Incerto senza audit log Qdrant |
+
+**3 discrepanze da riconciliare prima di aggiornare il DPA:**
+1. **Retention backup:** RT = 7-10 gg; DRP §4 = 60 gg → NON aggiornare All. II finché non chiarito
+2. **Rate limiting ETA:** RT = "prossima release"; RM = "non pianificato prossimo rilascio (apr 2026)" → confermare
+3. **Modello tenant:** DRP = multi-tenancy logico; RT §2.2 = AWS Organization dedicata → dichiarare "segregazione infrastrutturale a livello di account + separazione logica organization_id" (non "isolamento fisico")
+
+**Fatti confermati → All. II DPA:**
+- MFA admin ✅; KMS segregate per account tenant dedicato; AWS Organization dedicata Intrawelt
+- Code review obbligatorie PR; secret via GitHub Actions Secrets; Dependabot CVE monitoring
+- Commit GPG/SSH **non firmati** (gap confermato); SAST/DAST **assenti** (confermato)
+- Bedrock non attivo; tutto in UE (eu-west-1 + Sweden Central); ZDR Azure OpenAI dichiarato
+
+---
+
+## Memo Notifica Violazioni — Catena breach ScenIA (11/06/2026)
+
+```
+AIDAPT (Sub-resp.) ──▶ Intrawelt (Resp.) ──▶ Cliente (Titolare) ──▶ Autorità
+   art. 33(2) GDPR       art. 33(2) GDPR       art. 33(1): 72h
+```
+
+**Problema nel DRP §6:** soglia fissa "48h" → può erodere le 72h del Titolare verso l'Autorità.
+
+**Soluzione DPA v1.3:** tutto allineato a "senza ingiustificato ritardo" (EDPB Linee guida 9/2022).
+Le indicazioni orarie restano obiettivi operativi interni non vincolanti.
+
+**Azioni richieste ad AIDAPT (da Memo 11/06/2026):**
+1. Aggiornare DRP §6 → "senza ingiustificato ritardo"
+2. Recepire clausola breach back-to-back nel DPA Intrawelt–AIDAPT
+3. Notifica con contenuto minimo art. 33(3) + possibilità integrazioni progressive
+4. Indicare referente e canale dedicati (email/PEC + reperibile urgente)
+5. Fornire log e supporto tecnico su richiesta Intrawelt
+
+**Punto aperto:** T₀ della "conoscenza" incerto finché audit log Qdrant non configurato
+→ AIDAPT deve chiarire come rilevano e datano una violazione su backend/RDS/S3/Qdrant.
+
+---
+
 ## Stato attuale (giugno 2026)
 
 Il prodotto ScenIA è in produzione. La compliance GDPR (DPA con clienti, DPIA) è in fase

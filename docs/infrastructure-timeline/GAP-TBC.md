@@ -245,7 +245,7 @@ sono esplicitamente nel documento Word.
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
-| 90 | ISO-001 | Disciplinare lavoratori (regolamento gestione sistemi informativi) non prodotto | riunione_serafino_18042025.txt |
+| 90 | ISO-001 | Disciplinare lavoratori: documento **esiste** (`Regolamento_rev1.docx`, 9 sezioni: postazione lavoro, password, antivirus, salvataggio dati, PC portatili, internet/email, trasmissione doc, videosorveglianza, sanzioni). Gap residuo = distribuzione formale + firme nel `Registro_accettazione.docx` (ancora vuoto) | Cybersec & IT Governance/Regolamento utilizzo sistemi informatici/ |
 | 91 | ISO-002 | Badge accesso sala server non implementato | riunione_serafino_18042025.txt |
 | 92 | ISO-003 | Formazione strutturata anti-phishing non erogata ai dipendenti | riunione_serafino_18042025.txt |
 | 93 | ISO-004 | Politica BYOD (dispositivi personali) non formalizzata | riunione_serafino_18042025.txt |
