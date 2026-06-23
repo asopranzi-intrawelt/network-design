@@ -72,13 +72,13 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] altri doc BCP/DRP interni Intrawelt — ALTA
 
 ### Cybersec/Privacy (GDPR e Contratti)
-- [ ] `Confidentiality_Segretezza/` — ALTA (NDA template con clienti)
+- [ ] `Confidentiality_Segretezza/` — ALTA (NDA template con clienti, 5 file .doc)
 - [ ] `GDPR-Privacy/` — ALTA (informative privacy, DPA clienti)
 - [ ] `Informative/` — ALTA (informative trattamento)
-- [ ] `Procedura_Data_Breach/` — ALTA (procedura notifica violazione dati art.33 GDPR)
+- [x] `Procedura_Data_Breach/` → cybersecurity-governance.md §Procedura Data Breach (4 fasi, soglie 72h Garante, registro breach)
 - [ ] `Procedura_Esercizio_Diritti_Interessati/` — ALTA
 - [ ] `Regolamento_utilizzo_sistemi_informatici/` — vedi sotto
-- [ ] `SubResponsabili Intrawelt/` — ALTA (registro sub-responsabili)
+- [x] `SubResponsabili Intrawelt/Elenco SubResponsabili Intrawelt.docx` → cybersecurity-governance.md §Registro Sub-Responsabili (11 fornitori: Microsoft, Bitdefender, NinjaOne, Zyxel, RWS, Odoo SA, QNAP, Seeweb, OpenForce, Punto Informatica, Eter)
 
 ### Regolamento utilizzo sistemi informatici
 - [x] `Regolamento Intrawelt per l'utilizzo degli strumenti informatici_rev1.docx` → 201 § estratti — documento ESISTE. Gap ISO-001 aggiornato in GAP-TBC: mancano firme in Registro_accettazione
@@ -197,7 +197,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `TREX tour/` — BASSA
 - [ ] `cheklist-interventi (old).docx` — BASSA
 - [ ] `Interrogare attività utente specifico in Odoo.docx` — MEDIA
-- [ ] `102025 - Note migrazione gestionale.txt` — ALTA (call Favale, note migrazione T-Rex)
+- [x] `102025 - Note migrazione gestionale.txt` → 2025-q3-q4.md §Ottobre 2025 migrazione T-Rex (timeline Jan-Mar 2026, OpenForce fasi)
 - [ ] `2026-01-21_Monitoraggio_app_T-Rex.xlsx` — MEDIA
 - [-] `PROCEDURA PER AUTOFATTURE.pdf` — BASSA
 
@@ -293,21 +293,21 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [-] `RispostaMail Sicurezza.pdf` — MEDIA
 
 ### SCENIA/Sviluppo full-stack (snapshot mensili)
-- [x] `00_Aprile 2025/` → scenia_sep2025_base_stabile.txt (PARZIALE: 200/764 §)
-- [ ] `01_Maggio 2025/` — MEDIA
-- [ ] `02_Giugno 2025/` — MEDIA
-- [ ] `03_Luglio 2025/` — MEDIA
-- [ ] `04_Agosto 2025/` — MEDIA
-- [ ] `05_Settembre 2025/` — MEDIA
-- [ ] `06_Ottobre 2025/` — MEDIA
-- [ ] `07_Novembre 2025/` — MEDIA
-- [ ] `08_Dicembre 2025/` — MEDIA
-- [ ] `09_Gennaio 2026/` — MEDIA
-- [ ] `10_Febbraio 2026/` — MEDIA
-- [ ] `11_Marzo 2026/` — MEDIA
-- [ ] `12_Aprile 2026/` — MEDIA
-- [ ] `13_Maggio 2026/` — MEDIA (più recente)
-- [ ] `_GESTIONE OUTSOURCING CON F.GIORGINI/` — ALTA (contratto/gestione Fabio Giorgini)
+- [x] `00_Aprile 2025/` → 2025-q3-q4.md §02-11/04 SCENIA VM601 setup + Codepen/ER prototipi (txt files; screenshots non estratti)
+- [-] `01_Maggio 2025/` — SKIP (solo HTML frontend templates + screenshots, no text docs)
+- [-] `02_Giugno 2025/` — SKIP (solo screenshots)
+- [-] `03_Luglio 2025/` — SKIP (solo screenshots)
+- [-] `04_Agosto 2025/` — SKIP (solo screenshots)
+- [x] `05_Settembre 2025/` → 2025-q3-q4.md §SCENIA luglio-set milestones (pipeline.md + PULIZIA BASE STABILE.docx: Francesca Caricchia calls aug 25/29, PR #1 merged sep 8, base stabile sep 10, commit 44537be)
+- [-] `06_Ottobre 2025/` — SKIP (solo screenshots)
+- [-] `07_Novembre 2025/` — SKIP (solo screenshots)
+- [-] `08_Dicembre 2025/` — SKIP (solo screenshots)
+- [-] `09_Gennaio 2026/` — SKIP (solo screenshots)
+- [-] `10_Febbraio 2026/` — SKIP (solo screenshots)
+- [-] `11_Marzo 2026/` — SKIP (solo screenshots)
+- [-] `12_Aprile 2026/` — SKIP (solo screenshots)
+- [x] `13_Maggio 2026/` → 2026-switch-piano-terra.md §SCENIA gen-apr 2026 dev (8 cluster: files_storage, translation_form_ui, email_mjml, sessions, estimate_planner, trados, cors, admin_users; changelog mar-apr 2026)
+- [x] `_GESTIONE OUTSOURCING CON F.GIORGINI/` → 2025-q3-q4.md §Ottobre 2025 onboarding Giorgini (fork+PR model, branch strategy, cost analysis Render/Netlify/S3, proposta 29/10/2025)
 
 ### SCENIA/File condivisi da AIDAPT
 - [x] `Caity_BCP, Caity_DRP, Caity_SLA.pdf` → già ingestionati
@@ -365,8 +365,8 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 - [x] `Odoo_18/2025-11-24_Scaletta.docx` → odoo18_scaletta.txt (25 §) → helpdesk-operations.md
 - [x] `Odoo_18/2025-11-24_Scaletta_flussi.docx` → odoo18_flussi.txt (52 §) → helpdesk-operations.md
-- [ ] `Integrazione Odoo - portale/` — ALTA (blocco attuale task_3)
-- [ ] `Integrazione Odoo - centralino cloud vianova/` — ALTA (integrazione PBX Vianova)
+- [x] `Integrazione Odoo - portale/` → helpdesk-operations.md §Integrazione portale SCENIA + 2026-switch-piano-terra.md §04/03/2026 (meeting Susanna Ortini: xml-rpc, user asopranzi, deprecation v19/v20)
+- [x] `Integrazione Odoo - centralino cloud vianova/` → helpdesk-operations.md §Studio centralino (2 modalità: SIP Trunk + IP PBX vs API REST Vianova; nessun connettore nativo)
 - [ ] `Appina per query gestionale, webhook (2025)/` — MEDIA
 - [ ] `Odoo_12/28052025 - Risoluzione fix.docx` (7 MB) — MEDIA (storia bug pre-migrazione)
 - [ ] `[TBC] STUDIO - INTEGRAZIONE ODOO NINJAONE (RMM).txt` — MEDIA

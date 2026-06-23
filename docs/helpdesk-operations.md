@@ -323,6 +323,64 @@ Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione 
 
 ---
 
+## Odoo – Integrazione portale SCENIA (04/03/2026)
+
+Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - portale/Notes - Meeting integrazione Odoo - portale 04032026.txt`
+Referente OpenForce: Susanna Ortini.
+
+**Esigenza**: il portale SaaS SCENIA (clienti autenticati) deve creare SO in T-Rex/Odoo
+quando un cliente avvia una richiesta di traduzione con servizi aggiuntivi (freelancer).
+
+**Approccio tecnico**:
+- Protocol: Odoo xml-rpc (standard, nessun modulo aggiuntivo)
+- Auth: login con credenziali Odoo obbligatorio per ogni operazione (security layer nativo)
+- Utente servizio: `asopranzi@intrawelt.com` come account dedicato (compromise tra utente
+  per ogni PM vs. account admin anonimo; evita licenze aggiuntive)
+- Test env: `intrawelt-test.openforce.it`, db: `test_intrawelt` [credenziali in env var, non qui]
+- Warning migrazione: xml-rpc deprecato da v19, rimosso da v20 → pianificare json-rpc in futuro
+
+**Flusso SO dal portale**:
+1. Cliente loggato nel portale avvia richiesta
+2. Portale chiama API Odoo → crea SO con dati: cliente, servizio mappato, coppie linguistiche, PM
+3. PM riceve notifica in T-Rex → assegna task interni/freelancer
+4. Fatturazione: tramite Budget Order (BO) concordato offline per clienti enterprise;
+   primo periodo: BO inserito manualmente dal PM assegnato
+
+**CRM website**: stesso approccio xml-rpc per CTA del nuovo sito intrawelt.com (Cappelli Design,
+apr 2026) → crea opportunità Odoo CRM. Redirect area riservata clienti (Odoo) → da mantenere
+nel nuovo sito come semplice link.
+
+Documenti correlati nel folder:
+- `wrapper per creare SO in Odoo da portale.docx` (231 KB): wrapper tecnico xml-rpc
+- `Case study con GIT FORK.docx` (546 KB): case study sviluppo collaborativo fork+PR
+- `xml_rpc.py`, `odoo_meta.js`: script test connessione
+- `odoo-xmlrpc-ts` (npm): package TypeScript per Odoo xml-rpc
+
+---
+
+## Odoo – Studio integrazione centralino cloud Vianova (in analisi, 2026)
+
+Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - centralino cloud vianova/Notes.txt`
+
+**Obiettivo**: aggancio Vianova UCC al CRM Odoo — chiamate inbound/outbound come eventi
+contestualizzati (log, notifiche, recupero contatto in tempo reale).
+
+**Stato**: nessun connettore nativo ufficiale Odoo-Vianova (verificato 2026).
+Integrazione tecnicamente realizzabile via due modalità:
+
+| Modalità | Descrizione | Note |
+|----------|-------------|------|
+| IP PBX + SIP Trunk | PBX intermedio (SIP-compatibile) collegato a Vianova via SIP Trunk; Odoo dialoga con il PBX via websocket SIP/WebRTC | Architettura più robusta; Odoo nativo SIP; Vianova fornisce SIP Trunk (IP-based o registrato, SIP/TLS, SRTP) |
+| API REST Vianova | Integrazione eventi chiamata, click-to-call, screen-pop via API REST Vianova (endpoint OpenAPI su help.vianova.io) | Più flessibile ma richiede sviluppo custom; docs su https://help.vianova.io/docs/api-documentation |
+
+Prerequisiti Odoo lato SIP: provider SIP esponga server accessibile via websocket +
+supporto WebRTC (vedi docs.odoo.com/18.0/applications/productivity/voip).
+
+Dipendenza: in attesa di migrazione centralino fisico Panasonic → Vianova UCC (cloud),
+documentata in `telefono-pbx-voip.md` e `2026-switch-piano-terra.md`.
+
+---
+
 ## Software rimozione prioritaria (task_14)
 
 Presenti su alcune macchine: **AnyDesk**, **TeamViewer** e altri software di accesso remoto non presidiati.  

@@ -145,6 +145,66 @@ Punti chiave emersi dalla riunione Serafino (18/04/2025):
 
 ---
 
+## Registro Sub-Responsabili del Trattamento (GDPR Art. 28)
+
+Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/SubResponsabili Intrawelt/`
+`Elenco SubResponsabili Intrawelt.docx` — documento formale, aggiornato 2025-2026.
+
+| Fornitore | Attività | Dati | Ubicazione | Scadenza DPA |
+|-----------|----------|------|-----------|--------------|
+| Microsoft Ireland Operations Ltd. (Dublino, IE) | M365, Azure | Email, documenti, file | Data center EU (IE, NL) | 2027 (rinnovo annuale; sottoscritto 2018) |
+| Bitdefender | EDR/XDR endpoint security | File di sistema, traffico rete, dati nei dispositivi | EU + paesi terzi (GDPR compliant) | 2026 (rinnovo annuale; sottoscritto 15/09/2025) |
+| NinjaOne LLC (Oldsmar FL, USA) | RMM, patching, backup remoto | Inventario SW, log attività, dati nei dispositivi | USA + altre regioni (GDPR/HIPAA) | 2027 (rinnovo annuale; sottoscritto 2026) |
+| Zyxel / Nebula | Firewall, switch, AP (cloud mgmt Nebula) | Config rete, log, IP/MAC | AWS Irlanda + repliche | 2027 (rinnovo annuale; sottoscritto 2020) |
+| RWS Holdings plc (Chalfont St Peter, UK) | Trados, GroupShare, Language Weaver | File da tradurre, TM, glossari, metadati | EU + UK (adequacy EU→UK val. 27/12/2031) | 2027 (rinnovo annuale) |
+| Odoo SA (Ramillies, BE) | ERP/CRM, fatturazione, contratti | Dati aziendali, clienti, fatture | Data center EU (BE, FR) | 2028 (rinnovo triennale; sottoscritto 19/09/2019) |
+| QNAP Cloud | NAS cloud backup | File, log, config, accessi remoti | Data center globali (13 sedi, incluse EU e USA) | 2027 (rinnovo annuale) |
+| Seeweb Srl (Frosinone, IT) | Hosting, cloud server, housing | Dati di sistema, backup, config | Italia e Svizzera | N/A (sottoscritto 26/09/2014, in corso) |
+| Openforce Srls (Pedaso FM, IT) | Implementazione/personalizzazione Odoo ERP | Dati contabili, ordini, fatture, CRM | Server cloud EU (Odoo Enterprise) | 2027 (rinnovo annuale; sottoscritto 24/05/2018) |
+| Punto Informatica SNC (Porto San Giorgio, IT) | Vendita HW/SW, assistenza tecnica | Dati cliente, ordini, fatture | Server locali/gestionali interni | 2026 (rinnovo annuale; sottoscritto 01/02/2025) |
+| Eter Biometric Technologies Srl (Modena, IT) | Sistemi biometrici, controllo accessi, presenze | Dati biometrici, log presenze, accessi | Server locali o cloud EU | 2027 (rinnovo annuale; sottoscritto 2020) |
+
+Nota: AIDAPT S.r.l. (sub-processor SCENIA) documentato separatamente in `docs/scenia-project.md`
+(DPA SCENIA Art. 28 v1.7 in negoziazione a giugno 2026).
+
+---
+
+## Procedura Data Breach
+
+Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Procedura_Data_Breach/`
+Documento principale: `PROCEDURA DATA BREACH INTRAWELT_X.docx` (82 KB)
+Registro: `Registro_Data_Breach.xlsx`; Modello notifica: `Modello notifica Data Breach.pdf`
+
+### 4 fasi operative
+
+1. **Identificazione e indagine preliminare**: ricezione segnalazione via Allegato A
+   (Modulo comunicazione interna), valutazione se breach effettivo, registrazione univoca.
+2. **Risk assessment**: valutazione gravità con Allegato B (Modulo rischio), individua:
+   (a) misure correttive immediate; (b) necessità notifica Garante (art. 33); 
+   (c) necessità comunicazione interessati (art. 34).
+3. **Notifica all'Autorità Garante**: entro 72h se probabile rischio per diritti/libertà
+   delle persone fisiche (art. 33 GDPR). Titolare: Alessandro Potalivo.
+4. **Comunicazione agli interessati**: se rischio elevato (art. 34); comunicazione diretta
+   (no newsletter), chiara e trasparente.
+
+### Soglie di notifica
+- Art. 33 (→ Garante): rischio non trascurabile per i diritti degli interessati.
+- Art. 34 (→ interessati): rischio elevato per i diritti degli interessati.
+
+### Monitoraggio eventi
+- ICT: addetti Sistemi Informativi (Alessio Sopranzi) segnalano al Titolare.
+- Fisico: chiunque rilevi violazione fisic (furto dispositivi, scasso archivi) segnala al Titolare.
+
+### Documentazione obbligatoria
+Ogni breach (anche sotto soglia notifica) va registrato nel Registro Data Breach con:
+n. scheda, data, luogo, cause, banche dati coinvolte, tipologia dati, conseguenze,
+piano intervento, esito notifiche.
+
+Gap attuale: procedura non ancora integrata con la catena notifica SCENIA
+(Titolare ScenIA → AIDAPT 48h vs. art. 33 GDPR 72h — vedi scenia-project.md §DRP §6).
+
+---
+
 ## Incident Response – Gap
 
 Non esiste un processo formale di incident response. In caso di incidente, il flusso attuale è:
