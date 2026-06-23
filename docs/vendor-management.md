@@ -212,10 +212,36 @@ Aggiornato: giugno 2026.
 
 ---
 
-## MyOffice – [TBC]
+## MyOffice – Reseller Vianova
 
 | Campo | Valore |
 |-------|--------|
-| Tipologia | [TBC] |
-| Servizi | [TBC] |
-| Note | Da documentare |
+| Tipologia | Reseller/intermediario Vianova |
+| Referente | Referente-Vianova-1 (referente-vianova-1@myofficegroup.it) |
+| Servizi | Preventivo, contratto e gestione commerciale Vianova FTTO; centralino cloud |
+| Note | MyOffice gestisce la relazione con Vianova. Riunione in sede 17/12/2024 (preventivo). Riunione centralino cloud 09/06/2026. |
+
+---
+
+## INFOCERT – Firma digitale
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | CA (Certification Authority) firma digitale |
+| Piano | GoSign Pro (certificati firma digitale su dominio INFOCERT) |
+| Intestatario | Persona-A (a nome azienda) |
+| Rinnovo | 22/11/2024 (verifica rinnovo eseguita); rinnovo periodico |
+| Portale | mysign.infocert.it (credenziali in Cartella_riservata_IT) |
+
+---
+
+## Cappelli Design – Sito web intrawelt.com
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Agenzia web design |
+| Contatto | Referente-CappelliDesign-1 (marketing@cappellidesign.com) |
+| Progetto | Redesign sito intrawelt.com (aprile 2026) |
+| Stato | In corso: primo rilascio esclusi Ricerca, Solution finder, slider, modulo consulenza; secondo rilascio TBD |
+| CMS | WordPress (https://intrawelt.com/wp-login.php) – accesso Cappelli Design: utente <utente-amministratore-wordpress> (ruolo Amministratore) |
+| Gestore WordPress | Persona-E (persona-e@intrawelt.com) |
