@@ -491,6 +491,27 @@ DHCP server classe .90 pendente come da GAP-TBC.md e 2026-switch-piano-terra.md)
 
 ---
 
+## T-Rex – Matrice permessi Odoo (analisi pre-migrazione)
+
+Fonte: `Helpdesk_T-Rex/2026-01-21_Monitoraggio_app_T-Rex.xlsx` (21/01/2026).
+Sheet "PERMESSI": matrice **46 righe × 13 colonne** — moduli Odoo vs. profili ruolo.
+Sheet "Dati": dati operativi aggiuntivi (non estratti per errore di encoding).
+
+Scopo: analisi dei permessi vigenti in Odoo 12 da replicare/revisionare in Odoo 18.
+
+**Ruoli colonna:** PM Standard, PM Senior, Agente esterno, Agente interno,
+Vendor Manager, Power User, Amministrazione, Admin, Portal.
+
+**Moduli riga (parziale):** Comunicazioni, Calendario, Contatti, CRM, Vendite,
+Sito Web, Job Queue, Acquisti, Helpdesk, Monitoraggio Link, Magazzino, Fatturazione,
+Contabilità, Progetto, Fogli ore, Marketing via email, Dipendenti,
+Selezione del personale, Permessi (Employee leaves) — e altri fino a 46 righe totali.
+
+Nota: estrazione completa bloccata da `UnicodeEncodeError` (carattere `​` nel file).
+La matrice completa è disponibile direttamente nel file xlsx sorgente.
+
+---
+
 ## Software rimozione prioritaria (task_14)
 
 Presenti su alcune macchine: **AnyDesk**, **TeamViewer** e altri software di accesso remoto non presidiati.  
