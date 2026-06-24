@@ -354,6 +354,27 @@ Le indicazioni orarie restano obiettivi operativi interni non vincolanti.
 
 ---
 
+## FAQ portale ScenIA (documento clienti)
+
+Fonte: `SCENIA/FAQ portale AI.docx` (25 KB)
+
+Documento di supporto commerciale/utente. Punti chiave:
+
+| # | Domanda | Risposta sintetica |
+|---|---------|-------------------|
+| 1 | Tempi dipendono dalla lunghezza? | Sì, parzialmente. Dipende anche dal formato e dai servizi (post-editing, revisione). |
+| 2 | Formati supportati? | Tutti i formati diffusi. PDF/Excel: raccomandato pre-processing. |
+| 3 | Affidabilità traduzione automatica? | Molto elevata su contenuti standardizzati. Consigliato post-editing umano per contenuti critici. |
+| 4 | Sicurezza vs motori pubblici? | LLM riceve solo unità di traduzione isolate; dati non conservati né usati per training; isolamento per cliente. |
+| 5 | Modello di costo? | A crediti: prevedibile, scalabile. Crediti acquistati contattando customer service. |
+| 6 | Integrazione con PIM industriale? | Sì, via connettori API dedicati (sviluppo custom). |
+| 7 | Vantaggi vs gestione interna? | Standardizzazione terminologia, automazione, tracciabilità, scalabilità multi-lingua. |
+| 8 | Coesistenza con fornitori tradizionali? | Sistema si affianca al fornitore tradizionale per volumi ricorrenti; il fornitore rimane per contenuti critici. |
+| 9 | Crediti inutilizzati scadono? | No, rimangono per tutta la durata dell'abbonamento. Extra crediti disponibili a condizioni agevolate. |
+| 10 | ROI vs spesa storica? | Sistema progettato per ridurre costo medio su volumi standard; difficile superare la spesa storica annuale. |
+
+---
+
 ## Stato attuale (giugno 2026)
 
 Il prodotto ScenIA è in produzione. La compliance GDPR (DPA con clienti, DPIA) è in fase

@@ -21,7 +21,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `analisi PHISING (e outlook-related)/dettaglio anasini.docx` → phish_anasini_dettaglio.txt (4 §) → 2026-switch-piano-terra.md
 - [x] `Physical Security.docx` → physical_security.txt (1 § placeholder, documento vuoto)
 - [ ] `Analisi mail/` — MEDIA priorità (analisi messaggi sospetti)
-- [ ] `Problema DHCP kickout Elisa/` — MEDIA (correlato a incidente gen 2026)
+- [x] `Problema DHCP kickout Elisa/` → helpdesk-operations.md §Incidente DHCP (TP-Link AC600 DHCP conflict, utente rete pubblica; nessuna data documentata)
 - [ ] `PROXMOX/` — BASSA (già gestito in C:\Scripts\proxmox-snapshot)
 - [ ] `QNAP cloud/` — BASSA
 - [ ] `Ninjaone backup/` — BASSA
@@ -248,7 +248,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ### Root SCENIA (file)
 - [x] `MEETINGS WITH AIDAPT.docx` (76 MB) → estratto completo → scenia-project.md
 - [x] `Documento Riepilogativo Call AIDAPT 27042026.docx` → metadata in scenia-project.md
-- [ ] `FAQ portale AI.docx` — MEDIA (FAQ utenti SCENIA)
+- [x] `FAQ portale AI.docx` → scenia-project.md §FAQ portale ScenIA (10 FAQ: formati, sicurezza, crediti, PIM, coesistenza traduttori, ROI)
 - [ ] `script .docx` — MEDIA
 - [!] `APIKEY_mailtrap.txt` — MAI INGESTIRE (API key)
 - [!] `Credenziali e Info Utili Ambiente Staging e Produzione.txt` — MAI INGESTIRE
@@ -345,7 +345,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `[TBC] SERVER DNS PERSONALIZZATO/` — MEDIA
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
 - [ ] `[TBC] STUDIO - CHERSHIRE CAT/` — BASSA
-- [ ] `OpenProject/` — MEDIA (project management interno)
+- [x] `OpenProject/` → helpdesk-operations.md §OpenProject VM205 (openproject.local:9001, 3 utenti, disk resize 13/10/2025)
 - [ ] `Script e Documentazione per Export Giornaliero.../` — MEDIA
 - [ ] `TOOL AI coding assistance/` — BASSA
 - [-] `Qdrant + Ollama + Ubuntu + n8n self-hosting/` — BASSA (ricerca esterna)
@@ -374,7 +374,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `Integrazione Odoo - centralino cloud vianova/` → helpdesk-operations.md §Studio centralino (2 modalità: SIP Trunk + IP PBX vs API REST Vianova; nessun connettore nativo)
 - [ ] `Appina per query gestionale, webhook (2025)/` — MEDIA
 - [ ] `Odoo_12/28052025 - Risoluzione fix.docx` (7 MB) — MEDIA (storia bug pre-migrazione)
-- [ ] `[TBC] STUDIO - INTEGRAZIONE ODOO NINJAONE (RMM).txt` — MEDIA
+- [x] `[TBC] STUDIO - INTEGRAZIONE ODOO NINJAONE (RMM).txt` → helpdesk-operations.md §Odoo-NinjaOne RMM TBC (API REST + webhook Python, post-migrazione Odoo)
 - [-] `Odoo_12/Sviluppo Odoo Alessio.docx` (62 MB) — SKIP (impraticabile, prevalentemente screenshot)
 - [-] `VIDEOs/` — SKIP (multimedia)
 

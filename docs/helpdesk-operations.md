@@ -411,6 +411,26 @@ Documenti correlati nel folder:
 
 ---
 
+## Odoo – Studio integrazione NinjaOne RMM (TBC, post-migrazione)
+
+Fonte: `Sviluppo_T-Rex (Odoo)/[TBC] STUDIO - INTEGRAZIONE ODOO NINJAONE (RMM).txt`
+
+Idea esplorata da Alessio Sopranzi (nota interna, nessuna data; indicato "post migrazione
+gestionale" come prerequisito). Obiettivo: integrare NinjaOne RMM con Odoo per
+centralizzare dati IT nel gestionale.
+
+Possibili flussi:
+- **API + webhook**: NinjaOne API REST → script Python → Odoo JSON-RPC (endpoint, patch,
+  inventario HW/SW, alert → ticket Odoo o moduli custom asset management)
+- **Automazione via middleware**: Python/PowerShell; alert critici NinjaOne → ticket
+  automatici Odoo via script o webhook intermediari
+- **Reporting centralizzato**: aggregare dati NinjaOne in Odoo (SLA compliance, asset
+  lifecycle, performance IT)
+
+Stato: **TBC** — da studiare con Fabio Giorgini + OpenForce dopo migrazione Odoo 12→18.
+
+---
+
 ## Odoo – Studio integrazione centralino cloud Vianova (in analisi, 2026)
 
 Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - centralino cloud vianova/Notes.txt`
@@ -431,6 +451,43 @@ supporto WebRTC (vedi docs.odoo.com/18.0/applications/productivity/voip).
 
 Dipendenza: in attesa di migrazione centralino fisico Panasonic → Vianova UCC (cloud),
 documentata in `telefono-pbx-voip.md` e `2026-switch-piano-terra.md`.
+
+---
+
+## OpenProject – Gantt tool interno (VM205)
+
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/OpenProject/`
+
+**Strumento**: OpenProject (self-hosted) su **VM205** (Ubuntu, Proxmox).  
+**URL interno**: `http://openproject.local:9001`  
+**Utilizzo**: project management interno, Gantt chart attività IT.
+
+Utenti configurati: asopranzi@intrawelt.com (alesop95), atrovato@intrawelt.com, tvezeni@intrawelt.com.
+
+**Note operative:**
+- Invitare membro da: `http://openproject.local:9001/projects/<nome>/members`
+- Si possono mettere WATCHERS su attività per notifiche mail
+- Modifiche di massa: CTRL + seleziona più task → tre pallini → "Modifica di massa"
+- Viste personalizzate con filtri salvabili
+
+**Evento infrastrutturale**: 13/10/2025 disk resize VM205 (file `13102025_disk_resize.7z`).
+
+---
+
+## Incidente DHCP kickout Elisa (rete pubblica / TP-Link AC600)
+
+Fonte: `_DA SISTEMARE (Alessio)/Problema DHCP kickout Elisa/` (file di testo vuoti, info nei nomi)
+
+Due note nel folder:
+1. "fare prova con TP LINK ac 600 e capire perchè kickout" — dispositivo TP-Link AC600
+   (adattatore WiFi consumer) ha probabilmente generato un proprio DHCP server in LAN,
+   causando conflitto con il DHCP del firewall Zyxel.
+2. "Elena si è messa in rete pubblica e quindi per questo è andata in DHCP" — utente
+   connessa involontariamente alla rete "pubblica" (VLAN guest) invece che alla LAN
+   aziendale, ricevendo IP dal DHCP di quella rete.
+
+Nessuna data documentata nel folder. Correlato al gap DHCP ancora aperto (rimozione
+DHCP server classe .90 pendente come da GAP-TBC.md e 2026-switch-piano-terra.md).
 
 ---
 
