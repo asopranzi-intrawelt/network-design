@@ -107,8 +107,20 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ### Phising and spoofing protection
 - [ ] doc protezione phishing/spoofing — MEDIA
 
+### Data protection
+- [x] `Data protection/Data protection.docx` → cybersecurity-governance.md §Data Protection Statement (DPO status, retention 1-3yr NAS, BYOD vietato, gap: no TLS 1.2, no DLP endpoint, no log encryption, no full disk encryption)
+- [-] `Data protection/Architecture Diagram Intrawelt.jpeg` — immagine, info già in network-design
+- [-] `Data protection/Data flow Diagram Intrawelt.jpeg` — immagine, info già in docs
+
+### Procedura Data Breach
+- [x] `Procedura Data Breach INTRAWELT.docx` → cybersecurity-governance.md §Procedura Data Breach (4 fasi, Allegato A+B, registro)
+- [x] `Registro_Data_Breach.xlsx` → cybersecurity-governance.md §Registro Data Breach + 2023-baseline.md §05/04/2021 (scheda 001: ransomware Server Axios, Aruba Enterprise, no notifica Garante)
+- [-] `Modello notifica Data Breach.pdf` — modello PDF, info già in procedura
+- [-] `Data Branch-bando.docx` — Q&A sub-contractor questionnaire, derivato dalla procedura principale
+
 ### Criptare dati a riposo / Operation security
-- [ ] procedure cifratura, hardening — MEDIA
+- [-] `2. Manuale SGIQA rev. 1 del 12.01.2024 firmato.pdf` (6.6 MB) — manuale SGIQA qualità/ambiente, fuori scope IT
+- [-] `risposte.docx` (23 KB) — risposte questionario, skip
 
 ### _ 📜 GDPR E ISO27001
 - [x] Serafino ISO 27001 gap analysis 18/04/2025 — in 2025-q3-q4.md (metadata)
