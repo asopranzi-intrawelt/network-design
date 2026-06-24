@@ -479,3 +479,71 @@ Documento BCP/DRP aziendale. Aggiornamento 2026.
 
 Cadenza revisione: **biennale**.
 Responsabile revisione: Alessio Sopranzi (Responsabile Servizi Tecnici).
+
+---
+
+## Procedura Data Breach
+
+Fonte: `Cybersec & IT Governance/Procedura Data Breach + registro data breach + notifica al Garante/PROCEDURA DATA BREACH INTRAWELT.docx`
+Riferimento normativo: GDPR art. 33 (notifica Autorità), art. 34 (comunicazione interessati).
+
+### Tipologie di violazione coperte
+
+- Divulgazione dati confidenziali a persone non autorizzate
+- Perdita o furto di dati / dispositivi / documenti cartacei
+- Infedeltà aziendale (data breach da interno autorizzato)
+- Accesso abusivo ai sistemi informatici
+- Pirateria informatica; virus e attacchi alla rete
+- Banche dati alterate/distrutte senza autorizzazione
+- Violazione sicurezza fisica (accesso non autorizzato ad archivi/locali)
+- Smarrimento PC portatili o devices aziendali
+- Invio email con dati personali a destinatario errato
+
+### Processo a 4 fasi
+
+| # | Fase | Attività chiave |
+|---|------|----------------|
+| 1 | Identificazione e indagine preliminare | Compilazione Allegato A (Modulo comunicazione interna); valutazione: data scoperta, soggetto segnalante, natura violazione, categorie/numero interessati, azioni già attuate |
+| 2 | Risk assessment e individuazione misure | Misure correttive e tempi; decisione su notifica Garante e comunicazione interessati |
+| 3 | Notifica all'Autorità Garante | Entro **72 ore** dalla scoperta (se rischio per gli interessati); tramite portale Garante |
+| 4 | Comunicazione agli interessati | Se rischio elevato; comunicazione diretta e trasparente, privilegiando canale principale; descrivere conseguenze e misure adottate |
+
+**Monitoraggio preventivo:** Addetti IT monitorano eventi ICT (log, alert Bitdefender).
+Responsabile: personale IT (Alessio Sopranzi).
+
+### Registro Data Breach (art. 33, c.5 GDPR)
+
+Registro creato: 24/05/2018. Ultimo aggiornamento: 08/04/2021. Schede compilate: **1**.
+
+| n. scheda | Data | Luogo/Sistema | Causa | Dati coinvolti | Conseguenze | Notifica Garante |
+|-----------|------|---------------|-------|----------------|-------------|-----------------|
+| 001 | 05/04/2021 | Server Axios c/o Aruba Enterprise | Attacco ransomware su portale cloud | Tutte le banche dati (dati comuni + particolari) | Temporanea indisponibilità accesso | Nessuna — dalle comunicazioni ufficiali non si ravvisano presupposti per notifica |
+
+Allegati procedura:
+- **Allegato A**: Modulo di comunicazione interna di Data Breach
+- **Allegato B**: Modulo di valutazione del rischio connesso al Data Breach
+- **Modello notifica**: Modello notifica Data Breach.pdf (per eventuale notifica al Garante)
+
+---
+
+## Data Protection Statement – Gap e Stato Implementazione
+
+Fonte: `Cybersec & IT Governance/Data protection/Data protection.docx`
+Documento usato come base per risposte a questionari B2B (fornitori, clienti enterprise).
+
+### Stato attuale (giugno 2026)
+
+| Area | Stato | Gap / Note |
+|------|-------|-----------|
+| DPO | Non nominato (size-exempt) | Valutare con crescita GDPR obligations |
+| Data retention | 1-3 anni su NAS on-premises + archivio offline | — |
+| Dispositivi | Solo corporate-managed; BYOD non consentito | — |
+| Accesso dati | File integrity monitoring via Bitdefender GravityZone | — |
+| Terze parti | Nessun provider terzo ha accesso diretto ai dati cliente | — |
+| Dati in transito | Protetti via VPN IPsec; TLS 1.2 non implementato esplicitamente | Gap: no TLS 1.2 forzato |
+| Role-based access | RBAC implementato; richieste elevated access via email/ticketing | [TBC] completa struttura RBAC |
+| Password management | Folder dedicata accessibile solo IT Manager (no password manager) | Gap SEC-007 (Vaultwarden non implementato) |
+| Audit logs | Non cifrati a riposo | Gap: mancanza log encryption |
+| DLP endpoint | Non implementato (mitigato da RBAC + segmentazione rete) | Gap: no endpoint DLP |
+| Disk encryption | Non implementata (eccetto 2 laptop ibridi) | Gap: no full disk encryption |
+| Backup | Replica NAS + backup M365 + Cobian Backup | [TBC] completezza schedule backup |
