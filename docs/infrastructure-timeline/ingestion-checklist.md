@@ -38,8 +38,11 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ## ARCHITETTURA SERVER-CLOUD-LINEE — 127 file
 
 - [x] `ARCHITETTURA.docx` (300 MB) → estratto completo → network-design/ (base dell'intero progetto)
-- [ ] `Telefono-PBX/` (×6 doc) — MEDIA (config centralino Vianova, Yealink)
+- [x] `Telefono-PBX/` → telephony-pbx.md (centralino Panasonic KX-TDA100, procedure deviazione standard/gruppo, intercetta gruppo, segreteria personale, IVR messaggi bilingue, softphone opzioni; Centralino.doc = .doc non estraibile)
 - [ ] `ZYXEL XGS2220/` (×3 doc) — MEDIA (config switch Piano Terra e Piano 2)
+- [x] `ZYXEL FIREWALL e VPN/myZYXEL - 18122025.docx` → 2025-q3-q4.md §18/12/2025 ZYXEL licenze (USG FLEX 500 Gold Security Pack S232L12101347, XGS2220-54HP S242L06000292, procedura rinnovo Nebula/myZyxel)
+- [x] `ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx` → 2026-switch-piano-terra.md §23/03/2026 (7 subnet VoIP verificate, nessun blocco firewall, causa non USG FLEX 500)
+- [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (193.124.241.5, SecuExtender, ncognome, 2FA email, RDP)
 - [-] `USG20/` — BASSA/skip (legacy, sostituito da USG FLEX 500)
 - [ ] altri doc architettura (AP WiFi, VLAN tables, UPS) — BASSA (già coperto in ARCHITETTURA.docx)
 
@@ -64,7 +67,9 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ## Cybersec & IT Governance — 3734 file
 
 ### Access Authentication
-- [ ] docs autenticazione (MFA, SSO, policy) — MEDIA
+- [x] `Configurazione-PC-Password.docx` → cybersecurity-governance.md §Policy Password e Gestione PC (admin+standard user, screen lock 5 min, pwd 6 mesi, min 8 chars, history 5)
+- [-] `Regolamento Intrawelt per l'utilizzo degli strumenti informatici_rev1.pdf` — MEDIA (regolamento aziendale sistemi IT)
+- [-] `Gestione PC e Password/` subfolder — duplicati/varianti degli stessi doc
 
 ### Business Continuity e Disaster Recovery
 - [x] `Caity_BCP (1).pdf` → già ingestionato (via SCENIA/SECURITY/DPA) → scenia-project.md SLA
@@ -220,7 +225,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `IntraLino_profilo_addestramento.docx` → helpdesk-operations.md §IntraLino: chatbot IT RAG, trained on IT docs, admin mode, knowledge base
 - [-] `IntraLino_profilo_addestramento.pdf` — stessa fonte, skip
 - [ ] `Backup postazioni di lavoro con Veeam_DRAFT.pdf` — MEDIA (procedura backup workstation)
-- [ ] `BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.pdf` — BASSA
+- [-] `BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.pdf` — PDF version, .docx già processato
 - [ ] `Nas Hero Irraggiungibile.pdf` — BASSA (troubleshooting NAS)
 
 ---
