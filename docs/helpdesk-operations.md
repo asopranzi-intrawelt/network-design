@@ -536,6 +536,37 @@ La matrice completa è disponibile direttamente nel file xlsx sorgente.
 
 ---
 
+## Firma Digitale Remota – Procedura (INFOCERT / GoSign Pro)
+
+Fonte: `Helpdesk_INFOCERT/Procedura_firma_digitale.docx` (1.2 MB, con screenshot procedura GoSign)
+
+**Nota sicurezza:** il file sorgente contiene le credenziali di accesso al servizio di firma remota.
+Le credenziali vengono gestite a runtime e NON sono documentate in questo file (public repo).
+
+### Firmare un documento P7M (firma CAdES)
+
+1. Aprire GoSign Pro → selezionare file da firmare
+2. Scegliere tipo firma: **P7M** (estensione .p7m)
+3. Inserire il codice PIN del certificato (gestito dall'IT, non documentato qui)
+4. Inserire codice OTP ricevuto via SMS
+5. Confermare → firma aggiunta con successo
+
+### Firmare un documento PDF (firma PAdES, visibile)
+
+1. Aprire GoSign Pro → selezionare file PDF
+2. Scegliere tipo firma: **PDF con firma visibile**
+3. Posizionare il riquadro firma nel documento → premere Conferma
+4. Inserire il codice PIN del certificato
+5. Inserire codice OTP ricevuto via SMS
+6. Firma PDF aggiunta correttamente
+
+### Riattivare la firma remota (se necessario)
+
+Procedura di ri-attivazione disponibile in GoSign Pro (accesso con credenziali account servizio).
+Credenziali gestite dall'IT Manager → richiederle a runtime.
+
+---
+
 ## Software rimozione prioritaria (task_14)
 
 Presenti su alcune macchine: **AnyDesk**, **TeamViewer** e altri software di accesso remoto non presidiati.  

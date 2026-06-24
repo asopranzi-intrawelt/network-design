@@ -557,3 +557,33 @@ Nota: Intrawelt è su macchina dedicata → modalità flessibili concordabili ca
   attiva → dato di traduzione transitoriamente accessibile per monitoring Azure.
 - **Memory / Qdrant**: similarity search injectata nel prompt ad ogni invocazione;
   non disattivabile dall'utente finale.
+
+---
+
+## Checklist Sicurezza SCENIA (gap analysis in corso)
+
+Fonte: `SCENIA/SECURITY/DPA/Checklist_Sicurezza_Dropdown.xlsx`
+Stato: tutti gli item "Da fare" — documento di gap analysis preparato da Alessio Sopranzi.
+
+### A) Sicurezza applicativa
+Cifratura transito+riposo, TLS 1.2/1.3, chiamate LLM su rete privata AWS, IAM/POLP/rotazione
+chiavi, segregazione chiavi DB/vector store/backup, separazione tenant, RBAC, protezione API
+(token/firme/anti-replay/rate limiting), SAST, DAST, CI/CD sicuro, Secure SDLC, commit
+firmati/branch protection, gestione CVE/patching, hardening container.
+
+### B) Sicurezza operativa
+Audit trail accessi, integrazione SIEM/SOC, snapshot RDS/backup logici/export, verifica
+integrità backup (checksum), frequenza/posizione/versionamento backup, account separati per
+backup, retention policy GDPR/ISO27001, RPO/RTO definiti, test di restore, piano DR,
+modello responsabilità AIDAPT vs AWS, log e audit trail backup.
+
+### C) Governance del dato
+Classificazione dati, regole conservazione per categoria, portabilità, versionamento
+glossari/TM, minimizzazione, processi onboarding/offboarding documentati, auditabilità,
+DSAR GDPR, documentazione data breach, SLA informativi, registro trattamenti formalizzato.
+
+### D) LLM Security & Governance
+Hardening prompt (system/developer/user), sanitizzazione input, validazione output
+anti-hallucination (RAG scoring), scelta/manutenzione modelli, versioning prompt,
+monitoring model drift, test regressione output, filtraggio contesto pre-LLM,
+documentazione limiti etici, logging sicuro (esclusione PII dai log), retention log LLM.
