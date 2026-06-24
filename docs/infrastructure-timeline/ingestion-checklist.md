@@ -69,7 +69,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ### Business Continuity e Disaster Recovery
 - [x] `Caity_BCP (1).pdf` → già ingestionato (via SCENIA/SECURITY/DPA) → scenia-project.md SLA
 - [x] `Caity_DRP (4).pdf` → già ingestionato → scenia-project.md
-- [ ] altri doc BCP/DRP interni Intrawelt — ALTA
+- [x] `BCD_2026.docx` → cybersecurity-governance.md §BCP 2026 (Comitato Crisi 4 ruoli, sedi primaria/secondaria, T-BOND failover 3 linee, UPS 15 min, DR cloud M365/SharePoint/T-Rex, Punto Informatica SLA 2h, 6 fasi recovery, revisione biennale)
 
 ### Cybersec/Privacy (GDPR e Contratti)
 - [x] `Confidentiality_Segretezza/` → cybersecurity-governance.md §NDA Framework (6 template: standard, interpreting, ENG, ENG rev, ITA, TUV_draft)
@@ -111,7 +111,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 ### Varie (root Cybersec)
 - [ ] `Physical Security.docx` — vedi _DA SISTEMARE (stesso file)
-- [ ] `[TBC] Data deletion and disposal.docx` — MEDIA (GDPR retention)
+- [-] `[TBC] Data deletion and disposal.docx` — documento vuoto (1 § solo "Per il momento non sembra ci siano documentazioni in merito")
 - [ ] `Creazione e Setup Ambiente di Test sito Intrawelt.docx` — già in creazione_ambienti.txt
 - [ ] `RAEE.docx` — BASSA
 - [-] `_ 🧰 Resources/` — SKIP (libri/guide esterni)
@@ -203,7 +203,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `cheklist-interventi (old).docx` — BASSA
 - [ ] `Interrogare attività utente specifico in Odoo.docx` — MEDIA
 - [x] `102025 - Note migrazione gestionale.txt` → 2025-q3-q4.md §Ottobre 2025 migrazione T-Rex (timeline Jan-Mar 2026, OpenForce fasi)
-- [ ] `2026-01-21_Monitoraggio_app_T-Rex.xlsx` — MEDIA
+- [x] `2026-01-21_Monitoraggio_app_T-Rex.xlsx` → helpdesk-operations.md §Matrice permessi Odoo (sheet PERMESSI 46×13: moduli vs ruoli, analisi pre-migrazione; sheet Dati non estratto per encoding error)
 - [-] `PROCEDURA PER AUTOFATTURE.pdf` — BASSA
 
 ---
@@ -274,7 +274,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `Domande_interne_Intrawelt_2026-06-11.md` → scenia-project.md (dati anagrafici compilati: sede, P.IVA, foro Fermo)
 - [x] `DPIA_SCENIA_2026.docx` → template EDPB vuoto (solo intestazioni sezioni, contenuto non compilato nel file principale — lavorazione in copia backup .BACKUP_2026)
 - [x] `Allegati.docx` → scenia-project.md §SLA service credits (Allegato E), §Change Control (Allegato G), §Sub-processor (Allegato K), §Descrizione Servizio (Allegato B: workflow, 2 modalità traduzione, Vector Store, logging, limiti)
-- [ ] `Elenco SubResponsabili Intrawelt.docx` — ALTA
+- [-] `Elenco SubResponsabili Intrawelt.docx` (SCENIA/SECURITY/DPA) — duplicato del registro già in cybersecurity-governance.md §Registro Sub-Responsabili (estratto dalla cartella Privacy root)
 - [x] `SaaS security.docx` (9.6 MB) → scenia-project.md §Infrastruttura VPS Aruba, §Domini scenia.it, §Security Architecture (Cloudflare Zero Trust), §CVE History; 2026-switch-piano-terra.md §13/02/2026 ticket Aruba, §Gen-Feb 2026 CVE patch, §11/05/2026 Cloudflare
 - [-] `che tipo di dati DI PERSONE FISICHE trattiamo.txt` — file non in locale (OneDrive-only)
 - [ ] `Checklist_Sicurezza_Dropdown.xlsx` — MEDIA

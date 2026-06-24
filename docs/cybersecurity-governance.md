@@ -386,3 +386,70 @@ Non esiste un processo formale di incident response. In caso di incidente, il fl
 - Playbook per ransomware, phishing successo, data breach
 - Comunicazione al garante entro 72h in caso di data breach (GDPR art. 33)
 - Post-mortem strutturato
+
+---
+
+## Business Continuity Plan 2026 (BCD_2026)
+
+Fonte: `Cybersec & IT Governance/Business Continuity/BCD_2026.docx` (135 KB, 142 §).
+Documento BCP/DRP aziendale. Aggiornamento 2026.
+
+### Comitato di Gestione Crisi
+
+| Ruolo | Nome | Telefono |
+|-------|------|----------|
+| Responsabile Continuità Operativa (RCO) | Alessia Nasini | [redacted] |
+| Responsabile Servizi Tecnici | Alessio Sopranzi | [redacted] |
+| Rappresentante Legale | Alessandro Potalivo | [redacted] |
+| Direzione | Sonia Martellini | — |
+
+### Sedi operative
+
+| Sede | Indirizzo | Ruolo |
+|------|-----------|-------|
+| Primaria | Via Pescolla 2A, Porto Sant'Elpidio (FM) | Operatività ordinaria |
+| Secondaria DR | Via Elpidiense 14 | Ripristino emergenza |
+
+### Resilienza TLC
+
+- 3 linee internet **T-BOND failover** configurate (failover automatico)
+- **UPS** autonomia 15 minuti (protezione da brevi interruzioni di corrente)
+- PC portatili preconfigurati per continuità operativa da sede alternativa
+
+### Scenari di crisi coperti
+
+| Scenario | Risposta |
+|----------|----------|
+| Sede indisponibile | Attivazione sede secondaria Via Elpidiense 14 |
+| Mancanza corrente | UPS 15 min + escalation a sede alternativa |
+| Mancanza internet | Failover T-BOND su linea disponibile tra le 3 |
+
+### DR Cloud
+
+| Strumento | Capacità | Contenuto |
+|-----------|----------|-----------|
+| Microsoft 365 / SharePoint | 1.000 GB | File utenti, documentazione operativa |
+| GroupShare (SDL) | — | Memorie di traduzione (TM), glossari |
+| T-Rex / Odoo online | — | Gestionale accessibile da remoto via browser |
+
+### SLA hardware – Punto Informatica
+
+- Intervento garantito: **2 ore** (bloccante per il piano di recovery)
+- Modalità: da remoto o on-site
+- Fornitore: Punto Informatica S.r.l.
+
+### Fasi di Recovery
+
+| # | Fase | Attività |
+|---|------|----------|
+| 1 | Attivazione | Dichiarazione emergenza, convocazione Comitato di Gestione Crisi |
+| 2 | Supervisione | Coordinamento attività e comunicazioni interne |
+| 3 | Coordinamento | Gestione relazioni esterne (clienti, fornitori, partner) |
+| 4 | Recovery tecnologie | Ripristino sistemi, accesso remoto VPN, NAS, GroupShare, T-Rex |
+| 5 | Gestione sede secondaria | Piena operatività da Via Elpidiense 14 |
+| 6 | Rientro | Rientro sede primaria, verifica normalizzazione, post-mortem |
+
+### Revisione piano
+
+Cadenza revisione: **biennale**.
+Responsabile revisione: Alessio Sopranzi (Responsabile Servizi Tecnici).
