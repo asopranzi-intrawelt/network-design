@@ -132,6 +132,17 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 | Rilascio ciclo | Trimestrale; bugfix urgenti fuori ciclo |
 | Preavviso modifiche impattanti | ≥ 7 giorni |
 
+**Service Credit (da Allegato E DPA):**
+| Uptime | Credito |
+|--------|---------|
+| 98.0–98.9% | 5% |
+| 95.0–97.9% | 10% |
+| < 95% | 20% |
+Cap massimo annuo: 20%.
+
+**Esclusioni SLA:** malfunzionamenti AWS/Azure/OpenAI, superamento flussi LLM o
+mancata ricarica credito, manutenzioni programmate, errori logici modelli (allucinazioni).
+
 ---
 
 ## Documenti di riferimento
@@ -357,3 +368,171 @@ e negoziazione dei massimali di responsabilità prima della firma.
 - Implementare PII filter come opzione utente (planned)
 - Aggiungere diritto portabilità (export documenti caricati)
 - Completare sezione 2 DPIA con avvocato (analisi legal)
+
+---
+
+## Infrastruttura VPS SCENIA (Aruba Cloud)
+
+Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx`
+
+### VPS produzione
+
+| Parametro | Valore |
+|-----------|--------|
+| Provider | Aruba Cloud (ID ARU-340414) |
+| Piano | O2A4 |
+| CPU | 4 vCPUs |
+| RAM | 8 GB |
+| Storage | 80 GB |
+| Data transfer | 50 TB/mese (in + out) |
+| OS | Ubuntu 22.04 LTS |
+| IP pubblico | 80.211.141.50 |
+| Hypervisor | OpenStack (Aruba-managed) |
+
+**Stack applicativo:**
+- Nginx (reverse proxy, HTTP 80 → Next.js 3000)
+- Next.js / TypeScript (portale ScenIA)
+- Certbot (TLS, chiavi in /etc/letsencrypt/live e /archive → incluse nel backup VPS)
+
+### VPS staging
+
+| Parametro | Valore |
+|-----------|--------|
+| Piano | O2A4 (piano simile a produzione) |
+| IP pubblico | 93.186.255.24 |
+| Ruolo | staging-portal.scenia.it (proxato Cloudflare) |
+
+### Backup VPS
+
+Ticket Aruba **18346774A** (13/02/2026): analisi opzioni backup.
+- Backup disponibile tramite funzionalità cloud Aruba (guida kb.cloud.it/public-cloud/backup)
+- INIZIALIZZA: reset a stato iniziale (perde tutti i dati)
+- Codice sorgente: GitHub (asopranzi-intrawelt/full_stack_unimc → Intrawelt-SaaS organization)
+- Priorità: backup DB + dati caricati (file); codice su GitHub
+
+---
+
+## Architettura domini scenia.it (stato aprile 2026)
+
+Dominio acquistato su Register.it. Nameserver delegati a Cloudflare (kaiser.ns.cloudflare.com,
+tara.ns.cloudflare.com).
+
+| Sottodominio | IP / Destinazione | Ruolo |
+|-------------|-------------------|-------|
+| scenia.it | 80.211.141.50 | Sito istituzionale (one-page, vendor management) |
+| portal.scenia.it | 80.211.141.50 | Portale produzione → Trados Accelerate (Flowhandler) |
+| contact.scenia.it | 80.211.141.50 | Landing form contatti (design Attilio) |
+| staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare Zero Trust) |
+| scenia.intrawelt.com | wildcard cert intrawelt.com | Landing interna sito Intrawelt (TBC) |
+
+---
+
+## Security Architecture SCENIA VPS (post-Fabio Giorgini, 2026)
+
+Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` — decisione architetturale 11/05/2026.
+
+### Cloudflare Zero Trust (Free)
+
+- cloudflared daemon installato su VPS
+- Porte 80/443 chiuse con `ufw deny` → unico canale HTTP = tunnel Cloudflare
+- IP server mascherato: attacchi DDoS diretti non raggiungono la VPS
+- Team name: scenia.cloudflareaccess.com
+
+### Controlli accesso
+
+- SSH: solo chiavi ED25519 (root login disabilitato), porta consentita solo da
+  IP Intrawelt pubblico e IP Fabio Giorgini (95.236.26.239)
+- Fail2Ban: ban automatico dopo 3-4 tentativi SSH falliti
+- ufw: policy DROP su input/forward, ACCEPT su output (eccetto regole esplicite)
+
+### Email transazionale
+
+- Provider: Mailtrap (form contatto sito, webhook portale)
+- Register.it: 5.000 invii/giorno a €15.68/mese come alternativa valutata
+
+### Audit
+
+- Lynis: tool di auditing OS VPS
+- pnpm audit: scansione dipendenze npm periodica
+
+---
+
+## CVE History SCENIA (2026)
+
+| Data | CVE | Componente | CVSS | Impatto | Fix |
+|------|-----|-----------|------|---------|-----|
+| Gen 2026 | CVE-2025-66478 / CVE-2025-55182 | React.js / Next.js | 10.0 (critical) | Server-side RCE via React Server Components | Migrazione versione patchata + rotazione credenziali. Fine gen 2026. |
+| Feb 2026 | CVE-2026-23864 | Next.js App Router (RSC) | Alta | DoS remoto: deserializzazione HTTP non limitata → OOM/CPU spike | Next.js ≥ 16.1.5 |
+| Feb 2026 | CVE-2025-59471 | Next.js Image Optimizer | Alta | Memory bomb: arrayBuffer() scarica file intero prima di validare | Next.js ≥ 16.1.5 (streaming + size limit) |
+
+Processo: `pnpm audit` + monitoraggio advisory nextjs.org e NVD.
+
+---
+
+## Descrizione Servizio ScenIA (Allegato B DPA)
+
+Workflow end-to-end:
+```
+UI → Backend Intrawelt → Trados Online → API AIDAPT → gpt-4.1 → Ritorno → Trados Online → UI
+```
+
+**Due modalità di traduzione:**
+
+| Modalità | Attivazione | Stack |
+|----------|-------------|-------|
+| Automatica | Cliente NON seleziona servizi aggiuntivi | gpt-4.1 + memory vettoriale Qdrant |
+| Assistita (Human-in-the-Loop) | Cliente seleziona almeno un servizio aggiuntivo | OM/PM umano + linguisti madrelingua + Trados |
+
+**Vector Store (Qdrant):**
+- Interrogato ad ogni invocazione del modello (memory non disattivabile dall'utente)
+- Metadata: trans_unit_id, document_id, language, argument, organization_id, content_hash
+- Nessun audit log Qdrant configurato
+
+**Logging e conservazione:**
+- Tracciati: progetti, upload, traduzioni, PM, task memory, glossari, cancellazioni
+- Conservazione Trados: 90 giorni → eliminazione automatica
+- AIDAPT non accede ai contenuti dei progetti di traduzione
+
+**Limiti attuali:**
+- Rate limiting non ancora implementato (nessuna ETA)
+- Nessun audit log Qdrant
+- Retention backup non configurabile da Intrawelt
+
+---
+
+## Change Control ScenIA (Allegato G DPA)
+
+Canale CR: **help@caity.it**
+
+| Voce | Dettaglio |
+|------|-----------|
+| Classificazione CR | Bug vs Feature (no classificazione minor/major/breaking formale) |
+| Ciclo rilascio | Trimestrale (4 rilasci/anno); bugfix urgenti fuori ciclo |
+| Preavviso impatto | ≥ 7 giorni |
+| Changelog | Fornito dopo ogni rilascio |
+| Analisi CR | Sviluppatore specializzato AIDAPT: fattibilità + effort (gg/uomo) |
+| Costo bugfix | A carico AIDAPT (zero per Intrawelt) |
+| Costo nuove funzionalità | Plafond annuale Intrawelt; stima gg/uomo da validare |
+| Test | Solo test funzionali interni; no SAST/DAST, no staging formale |
+| Rollback | Non fornito da AIDAPT (gap DPA) |
+
+Nota: Intrawelt è su macchina dedicata → modalità flessibili concordabili caso per caso.
+
+---
+
+## Sub-processor SCENIA (Allegato K DPA)
+
+| Sub-processor | Funzione | Regione AWS/Azure |
+|---------------|----------|-------------------|
+| AWS | Hosting core, RDS (PostgreSQL), S3, Cognito, Vector Store (Qdrant) | eu-west-1 (Irlanda) |
+| Azure OpenAI | LLM (gpt-4.1), embedding | Sweden (EU) |
+| Amazon Bedrock | Potenziale provider LLM futuro | EU (non attivo) |
+
+**Definizioni chiave (Allegato A DPA):**
+
+- **Zero Data Retention (ZDR)**: Azure OpenAI stateless per default; abuse monitoring
+  NON disattivato nel setup AIDAPT (richiede approvazione Microsoft).
+- **Abuse Monitoring**: disattivazione completa richiede approvazione MS, non ancora
+  attiva → dato di traduzione transitoriamente accessibile per monitoring Azure.
+- **Memory / Qdrant**: similarity search injectata nel prompt ad ogni invocazione;
+  non disattivabile dall'utente finale.

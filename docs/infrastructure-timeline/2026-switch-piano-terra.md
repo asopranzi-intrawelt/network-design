@@ -95,6 +95,55 @@ Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO 
 - La regola firewall FW-001 deve essere corretta (action=DENY); vedi docs/runbook-anomalie.md
 - Necessità di formazione anti-phishing per tutti i dipendenti (gap ISO-003)
 
+## 13/02/2026 - Ticket Aruba: analisi backup e WAF VPS SCENIA
+
+Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §Ticket Aruba
+
+Alessio apre ticket Aruba ARU-340414, ID **18346774A** per chiarire le opzioni di
+backup e WAF della VPS di produzione SCENIA (O2A4: 4 vCPUs, 8 GB RAM, 80 GB storage,
+50 TB/mese data transfer, Ubuntu 22.04 LTS, IP 80.211.141.50).
+
+**Risposta Aruba su backup VPS:**
+- SWITCH OFF SERVER = spegnimento, RESET = riavvio, INIZIALIZZA = reset a stato
+  iniziale (perde tutti i dati).
+- Limite 25 TB/mese = somma traffico in entrata + in uscita.
+- Backup disponibili tramite guida: kb.cloud.it/public-cloud/backup/cloud-backup.aspx
+
+**Risposta Aruba su WAF (27/02/2026, ticket ID 18401201A):**
+- WAF su VPS non supportato da Aruba (le VPS sono macchine standalone senza rete
+  virtuale configurabile).
+- WAF disponibile solo su server dedicati VMware con firewall Pfsense/Fortinet FortiGate 40F.
+- Soluzione dichiarata da Aruba: "per VPS usare soluzioni open-source per gestione custom."
+
+Decisione post-ticket: ModSecurity v3 + OWASP valutato ma abbandonato (troppo pesante
+su risorse). Cloudflare Free come soluzione alternativa (vedi sezione 11/05/2026).
+
+## Gennaio-Febbraio 2026 - CVE patch SCENIA (React / Next.js)
+
+Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §CVE tracking
+
+### CVE-2025-66478 (React/Next.js – critical 10.0, gen 2026)
+
+Server-side vulnerability in React.js tracked as CVE-2025-55182 (React) e
+CVE-2025-66478 (Next.js). Remediazione: migrazione alla versione patchata + rotazione
+di tutte le credenziali. Completata fine gennaio 2026. Rilevato tramite advisory
+nextjs.org/blog/CVE-2025-66478.
+
+### CVE-2026-23864 (Next.js DoS – feb 2026)
+
+Vulnerabilità in React Server Components App Router: deserializzazione HTTP non
+limitata → incremento incontrollato CPU, out-of-memory, crash Node.js → DoS remoto
+senza prerequisiti. Fix: aggiornamento Next.js a ≥ 16.1.5.
+
+### CVE-2025-59471 (Next.js Image Optimizer – feb 2026)
+
+Image Optimizer self-hosted scarica l'intero file remoto in memoria via arrayBuffer()
+prima di validare → memory bomb. Attacco: fornire file immagine enorme.
+Fix: Next.js ≥ 16.1.5 (streaming + controllo dimensioni).
+
+Processo di rilevamento: `pnpm audit` eseguito periodicamente. Prisma dependency
+vulnerability rilevata nella stessa sessione.
+
 ## 04/03/2026 - Meeting Odoo portale SCENIA (Susanna Ortini, OpenForce)
 
 Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo.
@@ -204,6 +253,47 @@ Necessaria sostituzione di entrambi i connettori SFP+.
 Situazione DHCP: il problema e' che se sta attaccato il cavo della classe .90 e
 si spengono e riaccendono gli switch senza VLAN taggate si crea un conflitto.
 Rimozione del DHCP server classe .90 e' pendente come task (vedi GAP-TBC.md).
+
+## 11/05/2026 - Architettura sicurezza VPS SCENIA: Cloudflare Zero Trust (con Fabio Giorgini)
+
+Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §Ragionamento con Fabio architettura sicurezza VPS
+
+Decisione architetturale presa il 11/05/2026 in riunione con Fabio Giorgini.
+
+**Scelta: Cloudflare Free + cloudflared tunnel (al posto di ModSecurity WAF locale)**
+
+Motivazione:
+- ModSecurity su VPS staging già causava degrado prestazioni.
+- ModSecurity richiede configurazione manuale delle rule; Cloudflare ha DDoS,
+  caching, image optimization incluse nel piano gratuito.
+- Con cloudflared tunnel le porte 80/443 della VPS vengono chiuse (ufw deny):
+  unico canale di comunicazione HTTP è Cloudflare → IP del server mascherato.
+  Attacco DDoS diretto all'IP del server viene bloccato a monte.
+
+**Setup staging (eseguito):**
+- Account Cloudflare: dash.cloudflare.com (piano Free)
+- Zero Trust: scenia.cloudflareaccess.com (team name)
+- NS delegati a Cloudflare: kaiser.ns.cloudflare.com, tara.ns.cloudflare.com
+  (già delegati da Register.it)
+- cloudflared installato su VPS staging (93.186.255.24) via apt GPG key
+- Porte 80/443 chiuse con `ufw deny`; accesso SSH consentito solo da IP Intrawelt
+  e IP Fabio (95.236.26.239)
+- Nginx proxy su porta 80 → Next.js porta 3000
+
+**DNS scenia.it (stato al momento del setup):**
+| Dominio | A record | Ruolo |
+|---------|----------|-------|
+| scenia.it | 80.211.141.50 | Sito istituzionale (one-page) |
+| portal.scenia.it | 80.211.141.50 | Portale produzione (Trados Accelerate) |
+| contact.scenia.it | 80.211.141.50 | Landing form contatti (design Attilio) |
+| staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare) |
+
+**Produzione:** cloudflared tunnel pianificato anche per VPS produzione nella fase
+successiva. Fail2Ban attivo su entrambe le VPS (ban IP dopo 3-4 tentativi SSH falliti).
+Mailtrap usato per email transazionale (form contatto, webhook portale).
+Lynis come tool di auditing OS della VPS.
+
+Repository sicurezza: github.com/Intrawelt-SaaS/security (README con dettaglio setup).
 
 ## 29/05/2026 - Interventi Voice VLAN e fibra NAS
 
