@@ -196,7 +196,8 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 ## Helpdesk_Onboarding — 4 file
 
-- [ ] procedure onboarding nuovo dipendente — MEDIA (ISO-001)
+- [x] `ONBOARDING_OUTBOARDING.docx` → helpdesk-operations.md §Onboarding/Offboarding (M365 account ncognome@, SharePoint INTERSCAMBIO, Trados, T-Rex via Fabio, NinjaOne rinomina PC; 09/01/2025 trigger; casi reali: Greta Cavalieri 14/11/2024, Aurora Golino 21/01/2025, Rosy Bartuccio 14/03/2025) — file sorgente CONTIENE credenziali, NON ingestate
+- [-] `graphify-out/converted/ONBOARDING_OUTBOARDING_dc2b858c.md` — conversione graphify con credenziali in chiaro, non versionare
 
 ---
 
