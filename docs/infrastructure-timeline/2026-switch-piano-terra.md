@@ -24,6 +24,35 @@ il nodo n8n ufficiale Zep era già deprecato; alternativa community
 (n8n-nodes-zep-v3) non adottata per instabilità.
 Stack rimasto: ChromaDB + Ollama + n8n (senza memoria persistente tra sessioni).
 
+## 12/01/2026 - Notes thinking lab: studio Thinking Machines / Tinker API
+
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Notes (thinking lab) 12012026.docx`
+
+Ricerca tecnica personale di Alessio su infrastruttura AI avanzata. Documento analizza
+Thinking Machines (fondata 2025 da Mira Murati, ex-CTO OpenAI; investitori: a16z, Nvidia,
+AMD, Cisco) e il loro prodotto flagship **Tinker API** (fine-tuning e training LLM).
+
+Punti chiave del documento:
+
+- **Tinker API**: primitivi Python (`forward_backward()`, `optim_step()`, `sample()`,
+  `save_state()`) per definire custom training loop con GPU cluster managed by Thinking
+  Machines. Supporta modelli da 1B a 235B parametri (inclusi MoE e vision-language).
+  Fine-tuning via **LoRA** (layer adapter, non modifica pesi base → multi-tenant efficiente).
+- **Output**: pesi esportabili per deploy su propri backend SaaS o inference endpoint.
+
+Case study elaborato nel documento: **Enterprise Technical Documentation SaaS**
+con n8n + Ollama + Tinker:
+- Dataset: manuali tecnici, API reference, procedure operative con metadata per
+  dipartimento/sistema.
+- Pipeline: n8n gestisce preprocessing e ingestion automatica dei documenti aggiornati.
+- Fine-tuning incrementale: LoRA su Tinker triggered da n8n su nuovi documenti.
+- Deploy: pesi esportati come inference endpoint; RAG via Ollama in LAN per query
+  real-time; interfaccia utente per ingegneri/operations.
+
+Rilevanza per IntraLino roadmap: questo studio documenta il ragionamento su come
+evolvere IntraLino (attualmente ChromaDB + Ollama + n8n) verso fine-tuning specializzato
+su documentazione tecnica Intrawelt, senza dipendenza da API cloud esterne.
+
 ## 13-15/01/2026 - Incidente phishing/compromissione regole Exchange
 
 ### Account coinvolti e sintomi
