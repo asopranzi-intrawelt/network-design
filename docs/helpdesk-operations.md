@@ -5,6 +5,46 @@ Aggiornato: giugno 2026.
 
 ---
 
+## Onboarding / Offboarding dipendenti e collaboratori
+
+Fonte: `Helpdesk_Onboarding/ONBOARDING_OUTBOARDING.docx` (444 KB)
+Trigger: mail Alessia Nasini a Fabio Guidali del 09/01/2025 → avvio formalizzazione procedura.
+
+**Nota:** le credenziali degli account creati sono registrate in `Cartella_riservata_IT/Email_Usr-Pwd_Office365.xlsx` (MAI ingestire, file riservato locale).
+
+### Account da creare/disabilitare per ogni collaboratore
+
+| Account/Risorsa | Creazione | Disabilitazione |
+|-----------------|-----------|-----------------|
+| Microsoft 365 (M365) | Admin portal Microsoft 365 | Immediata al termine collaborazione |
+| Email `ncognome@intrawelt.com` | Contestuale account M365 | Disattivazione + risposta automatica |
+| T-Rex (Odoo) | Fabio Guidali (referente T-Rex) | Fabio Guidali |
+| SharePoint INTERSCAMBIO | Cartella `INTERSCAMBIO/Nome_Cognome` + Add Shortcut to OneDrive | Rimozione accesso |
+| Trados Studio | Licenza associata alla macchina fisica | Revoca licenza |
+| GroupShare | Se applicabile | Rimozione |
+| NinjaOne | Agente già presente su PC + rinomina PC in `PC-NOMEUTENTE` | — |
+
+### Procedura onboarding nuovo dipendente (standard)
+
+1. **M365 admin** → aggiungi utente → `ncognome@intrawelt.com` → licenza Microsoft 365 Business Standard (o Power Automate Free per periodi prova brevi)
+2. **SharePoint** → `Projects → Documents → INTERSCAMBIO` → crea cartella `Nome_Cognome` → accedi con account nuovo → Add Shortcut to OneDrive
+3. **Trados Studio**: installa Trados Studio (versione corrente) + licenza su macchina
+4. **T-Rex**: delegare creazione profilo a Fabio Guidali
+5. **NinjaOne**: rinomina PC da `PC-LALATI` o nome precedente a `PC-NOMEUTENTE`
+6. **Password**: registrare credenziali create in `Cartella_riservata_IT/Email_Usr-Pwd_Office365.xlsx`
+
+### Procedura offboarding
+
+1. Disattivare account M365 **immediatamente** al termine collaborazione
+2. T-Rex: Fabio Guidali gestisce la disabilitazione
+3. Modificare password account M365 prima di disattivare (tracciare in xlsx)
+4. `.pst` retention: definire policy (TBC, azione da meeting Serafino 18/04/2025)
+5. Metadati email: max 21 gg dopo disattivazione (indicazione Serafino/Garante)
+
+**Sistema ticketing**: fino a fine 2024 usato MANTIS; da 2025 NinjaOne.
+
+---
+
 ## VPN aziendale – guida connessione
 
 Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx`
