@@ -248,6 +248,132 @@ Vedi GAP-TBC.md riga ISO-001 per dettaglio.
 
 ---
 
+## NDA Framework e DPA nomina sub-responsabili
+
+### Accordo riservatezza con OpenForce (09/04/2021)
+
+Documento: `GDPR-Privacy/xOpenforce/AccordoDiRiservatezza.docx` + PDF firmati da entrambe le parti.
+
+**Accordo Reciproco di Riservatezza** stipulato il **9 aprile 2021** tra:
+- Intrawelt di Alessandro Potalivo & C. Sas (via Elpidiense, 14 – Porto Sant'Elpidio FM)
+- Openforce SRLS unipersonale (via Mercantini, 2 – Pedaso FM)
+
+Scopo: "personalizzazione, configurazione, installazione e manutenzione di un software gestionale"
+(= T-Rex / Odoo). Accordo bilaterale. La relazione commerciale precede l'arrivo di Alessio
+Sopranzi (giu 2024); firmato da Alessandro Potalivo per Intrawelt.
+
+Allegati siglati da entrambe le parti presenti in:
+- `AccordoDiRiservatezza_signedIntrawelt_IW.pdf.p7m` (firma digitale)
+- `NominaTrattamentodati_signedIntrawelt_IW.pdf.p7m` (DPA art. 28 nomina)
+
+OpenForce è elencata anche nel Registro Sub-Responsabili (DPA sottoscritto 24/05/2018,
+rinnovato annualmente).
+
+### 5 Nomina Responsabile Trattamento – Agenti/Traduttori commerciali
+
+Documenti: `GDPR-Privacy/xCommerciali/5 Nomina Responsabile Trattamento_*.pdf`
+
+Nomine DPA Art. 28 firmate per cinque collaboratori commerciali esterni:
+
+| Collaboratore | File nomina |
+|---------------|-------------|
+| Alessandro Raiola | 5 Nomina Responsabile Trattamento_Alessandro Raiola.pdf |
+| Nicolas Pena Ugarte | 5 Nomina Responsabile Trattamento_Nicolas Pena Ugarte.pdf |
+| Roberta Vergani | 5 Nomina Responsabile Trattamento_Roberta Vergani.pdf |
+| Stephan Unser | 5 Nomina Responsabile Trattamento_Stephan Unser.pdf |
+| Tim John | 5 Nomina Responsabile Trattamento_Tim John.pdf |
+
+Modello base: `5 Nomina Responsabile Trattamento.docx`. Le nomine coprono il trattamento
+di dati di clienti e fornitori da parte degli agenti commerciali durante lo svolgimento
+della loro attività per conto di Intrawelt.
+
+### Template NDA (6 varianti)
+
+Cartella: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Confidentiality_Segretezza/`
+
+| File | Variante |
+|------|---------|
+| Confidentiality Agreement.doc | Standard |
+| Confidentiality Agreement.Interpreting.doc | Variante interpreti |
+| Confidentiality Agreement_ENG_def.doc | Inglese definitivo |
+| Confidentiality Agreement_ENG_def_rev.doc | Inglese revisione |
+| Confidentiality Agreement_Ita.doc | Italiano |
+| Confidentiality Agreement_TUV_draft.doc | Bozza per TUV (possibile cliente audit) |
+
+Tutti i template sono in formato .doc (vecchio Word). Usati per accordi di riservatezza
+con traduttori, interpreti e collaboratori freelance.
+
+---
+
+## Procedura Esercizio Diritti Interessati
+
+Fonte: `GDPR-Privacy/PROCEDURA IN MATERIA DI GESTIONE DEI DIRITTI DEGLI INTERESSATI.docx`
+Redatta da: 4ward s.r.l. (consulenza GDPR). Canale dedicato: **privacy@intrawelt.it**
+
+### Diritti coperti (Capo III GDPR)
+
+| Diritto | Art. GDPR | Scopo |
+|---------|-----------|-------|
+| Accesso | 15 | Conferma trattamento + copia dati |
+| Rettifica | 16 | Correzione dati inesatti |
+| Cancellazione | 17 | "Diritto all'oblio" |
+| Limitazione | 18 | Contrassegno per limitare uso futuro |
+| Portabilità | 20 | Formato strutturato, leggibile automaticamente |
+| Opposizione | 21 | Stop trattamento (salvo motivi legittimi prevalenti) |
+
+### Flusso operativo
+
+1. Interessato invia richiesta a **privacy@intrawelt.it** (o altri canali → reindirizzare)
+2. Amministrazione notifica il Titolare del Trattamento (Alessandro Potalivo)
+3. Verifica identità interessato: dubbi → richiedere ulteriori informazioni
+4. Valutazione tipologia richiesta; supporto IT (Alessio Sopranzi) per cancellazione tecnica
+5. Risposta entro **1 mese** (prorogabile di 2 mesi per complessità, con comunicazione)
+6. Se rifiuto: comunicare motivazione + diritto di reclamo al Garante
+
+Categorie di interessati nel registro trattamenti:
+- Risorse Umane: candidati, dipendenti, ex dipendenti, liberi professionisti
+- Amministrazione: clienti, fornitori, consulenti, studi professionali
+- Altri: traduttori, revisori, qualsiasi persona fisica esterna
+
+---
+
+## Studio Password Manager Aziendale (gap SEC-007)
+
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/[TBC] PASSWORD MANAGER/`
+Documento: `Password manager (Alessio).docx` (1.1 MB). Status: **studio completo, non implementato**.
+
+### Comparazione tecnologie
+
+| Soluzione | Hosting | Multiutente | Audit | Note |
+|-----------|---------|-------------|-------|------|
+| KeePass | Self (file .kdbx AES-256) | Manuale | Plugin | Offline totale, conflitti scrittura concorrente |
+| Bitwarden (free) | Cloud | Sì (con limiti) | No | Sync automatica, 2FA incluso |
+| Bitwarden Self-Hosted (ufficiale) | Self / Docker | Sì + AD/SSO | Sì | Licenza a pagamento, funzioni enterprise |
+| **Vaultwarden** | Self / Docker | Sì | Limitato | Reimplementazione Rust di Bitwarden, gratuita, leggera |
+
+### Decisione tecnica: Vaultwarden su LAN
+
+Architettura scelta:
+- **Docker container `vaultwarden`** su server Ubuntu 24.04 LTS in LAN
+- **Nginx reverse proxy** → URL interno: `https://passwordvault.intrawelt.local`
+- Certificato HTTPS self-signed (o CA interna)
+- **2FA obbligatorio** per tutti gli utenti
+- Backup automatico volume `/vw-data`
+
+Funzionalità IT manager tramite Vaultwarden:
+- Creare organizzazione e vault condivisi (es. "Accounting", "IT team", "Administration")
+- Aggiungere/rimuovere utenti, assegnare ruoli
+- Revocare accessi centralmente
+- NON può leggere password private (end-to-end encrypted lato client)
+
+Gap: Vaultwarden non supporta SSO/LDAP (solo Bitwarden ufficiale a pagamento).
+Per Intrawelt PMI: sufficiente per fase attuale; SSO da valutare con crescita organizzativa.
+
+Gap attuale: SEC-007 — nessun password manager aziendale in produzione a giugno 2026.
+Strumento attuale: password salvate in browser locali o file non cifrati.
+
+---
+
 ## Incident Response – Gap
 
 Non esiste un processo formale di incident response. In caso di incidente, il flusso attuale è:

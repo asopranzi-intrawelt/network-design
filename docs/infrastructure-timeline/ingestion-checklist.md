@@ -72,8 +72,8 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] altri doc BCP/DRP interni Intrawelt — ALTA
 
 ### Cybersec/Privacy (GDPR e Contratti)
-- [ ] `Confidentiality_Segretezza/` — ALTA (NDA template con clienti, 5 file .doc)
-- [ ] `GDPR-Privacy/` — ALTA (informative privacy, DPA clienti)
+- [x] `Confidentiality_Segretezza/` → cybersecurity-governance.md §NDA Framework (6 template: standard, interpreting, ENG, ENG rev, ITA, TUV_draft)
+- [x] `GDPR-Privacy/` → cybersecurity-governance.md §NDA Framework (OpenForce NDA 09/04/2021, 5 Nomina sub-responsabili agenti, Procedura Diritti Interessati 4ward s.r.l., canale privacy@intrawelt.it)
 - [ ] `Informative/` — ALTA (informative trattamento)
 - [x] `Procedura_Data_Breach/` → cybersecurity-governance.md §Procedura Data Breach (4 fasi, soglie 72h Garante, registro breach)
 - [ ] `Procedura_Esercizio_Diritti_Interessati/` — ALTA
@@ -339,9 +339,9 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 - [x] `creazione ambienti.docx` → creazione_ambienti.txt (133 §) → vendor-management.md (Cappelli Design)
 - [x] `IntraPanel/flask_service.py` → via enivipa_servizi.txt → helpdesk-operations.md (SEC-009)
-- [ ] `Notes (thinking lab) 12012026.docx` — MEDIA (note tecniche Alessio)
+- [x] `Notes (thinking lab) 12012026.docx` → 2026-switch-piano-terra.md §12/01/2026 (ricerca Thinking Machines/Tinker API, LoRA fine-tuning, case study n8n+Ollama+Tinker SaaS)
 - [x] `Progetto ENI ruolini (nov24)/` → 2024-infra.md §Novembre 2024 app desktop (Python/PyQt6, pipeline Word→Excel per T-Rex, 12-19 nov 2024, Francesca Caricchia)
-- [ ] `[TBC] PASSWORD MANAGER/` — ALTA (gap SEC-007 in GAP-TBC)
+- [x] `[TBC] PASSWORD MANAGER/` → cybersecurity-governance.md §Studio Password Manager (Vaultwarden Docker LAN, gap SEC-007 non implementato)
 - [ ] `[TBC] SERVER DNS PERSONALIZZATO/` — MEDIA
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
 - [ ] `[TBC] STUDIO - CHERSHIRE CAT/` — BASSA
