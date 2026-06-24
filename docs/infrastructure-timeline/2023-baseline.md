@@ -216,6 +216,19 @@ PC-server-stampanti-attivi.xlsx, Studio Intrawelt bozza.xlsx.
 File rinominato e archiviato come punti-informatica_ADDED.rar con Studio Intrawelt
 bozza_ALE.xlsx.
 
+## 05/04/2021 – Incidente ransomware Server Axios (pre-Alessio)
+
+Fonte: `Cybersec & IT Governance/Procedura Data Breach + registro data breach + notifica al Garante/Registro_Data_Breach.xlsx` (scheda 001).
+
+Attacco ransomware al portale cloud "Server Axios presso Aruba Enterprise".
+Tutte le banche dati colpite (dati comuni + particolari).
+Conseguenza: temporanea indisponibilità accesso.
+Gestione: comunicazione ricevuta tempestivamente ai sensi di procedura.
+Notifica Garante: **nessuna** — dalle comunicazioni ufficiali non si ravvisano presupposti.
+
+Questo è l'unico data breach registrato nel Registro Data Breach Intrawelt (creato 24/05/2018).
+Evento precedente all'ingresso di Alessio Sopranzi (ottobre 2024).
+
 ## Aprile 2024 - Prima fattura Vianova
 
 Prima fattura Vianova per Intrawelt S.a.s. per servizio voce e ponte radio.
