@@ -157,7 +157,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ## Helpdesk_MIcrosoft 365 — 7 file
 
 - [x] `MICROSOFT 365.docx` (49 MB) → estratto completo → 2026-switch-piano-terra.md, vendor-management.md
-- [ ] `Problema Delega Caselle.docx` — MEDIA (correlato incidente phishing gen 2026)
+- [-] `Problema Delega Caselle.docx` — file non in locale (OneDrive-only)
 - [ ] altri sub-doc — BASSA
 
 ---
@@ -194,9 +194,9 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `TREX.docx` (44 MB) → estratto completo → helpdesk-operations.md (sistema tour operator)
 - [x] `Storico ticket - case-studies/2022-11-23_EniVipa/ENI_VIPA_Guida_inserimento_SO.docx` → helpdesk-operations.md §Procedura VIPA in T-Rex (wizard, SO, task, fine mese PO)
 - [ ] `Storico ticket - case-studies/` altri file (prevalentemente JPG/allegati) — BASSA (archivio storico immagini)
-- [ ] `Configurazione server IMAP in Odoo.docx` — MEDIA
-- [ ] `Mancata Ricezione Mail Gestionale TRex_Odoo.docx` — MEDIA
-- [ ] `Problema CSRF Token T_Rex.docx` — MEDIA
+- [-] `Configurazione server IMAP in Odoo.docx` — file non in locale (OneDrive-only)
+- [x] `Mancata Ricezione Mail Gestionale TRex_Odoo.docx` → helpdesk-operations.md §T-Rex Sblocco IMAP (procedura periodica: sblocco token ricezione mail, 2 caselle trex/opportunita)
+- [x] `Problema CSRF Token T_Rex.docx` → helpdesk-operations.md §T-Rex CSRF Token + 2026-switch-piano-terra.md §19/02/2026 (Chiara Ippoliti, batch upload XML fallito, sessione corrotta)
 - [ ] `2022-10-20_Gestione_bolli_magazzino/` — BASSA
 - [ ] `Cambio sequenze fatturazione anno nuovo/` — BASSA
 - [ ] `TREX tour/` — BASSA
