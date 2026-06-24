@@ -45,6 +45,59 @@ OpenForce è il fornitore di supporto Odoo/T-Rex.
 | Dipendenza | Completare formazione T-Rex (task_1), allineamento test/prod (task_92) |
 | GroupShare migration | Separata: target primavera 2026 (task_82, 20h) |
 
+### T-Rex – Sblocco ricezione mail IMAP (procedura periodica)
+
+Fonte: `Helpdesk_T-Rex/Mancata Ricezione Mail Gestionale TRex_Odoo.docx`
+
+Il server IMAP di T-Rex perde periodicamente la connessione alle caselle di posta in arrivo.
+Sintomo: mail non ricevute nel gestionale nonostante arrivino nelle caselle Outlook.
+
+**Procedura sblocco (ripetibile manualmente):**
+
+1. Aprire browser in modalità **Incognito**.
+2. Accedere a T-Rex con account admin: `tvezeni@intrawelt.com` (o altro admin).
+3. Navigare a: `https://intrawelt.openforce.it/web?debug=1#menu_id=107&action=121`
+   → ri-autenticarsi con le stesse credenziali.
+4. Andare su **Ricezione → Edit Settings**.
+5. Inserire credenziali server IMAP della casella principale (`trex@intrawelt.com` /
+   `[redacted]`) → cliccare **Preleva Ora**.
+6. Aprire nuova finestra incognito con:
+   `https://intrawelt.openforce.it/web?debug=1#id=2&action=121&model=fetchmail.server&view_type=form&menu_id=`
+7. Ri-autenticarsi (tvezeni@intrawelt.com) → **Edit Settings** casella opportunità
+   (`opportunita@intrawelt.com` / `[redacted]`) → **Preleva Ora**.
+
+Entrambe le caselle di posta in arrivo risultano sbloccate. Causa profonda: bug noto
+Odoo/OpenForce; non è stata identificata una soluzione strutturale permanente.
+
+### T-Rex – CSRF Token invalido e batch upload fallito (procedura pulizia sessione)
+
+Fonte: `Helpdesk_T-Rex/Problema CSRF Token T_Rex.docx`  
+Incidente: **19/02/2026** — Chiara Ippoliti segnala a Tommaso Vezeni.
+
+**Sintomi:**
+- Batch upload file XML analisi bloccato (caricamento infinito)
+- Alert "Session expired (invalid CSRF token)" in vista preventivi
+- Problema limitato a una singola postazione; stampa preventivi fallisce se eseguita
+  subito dopo altra stampa
+
+**Causa:** sessione utente Odoo corrotta (sessioni duplicate/scadute, service worker
+obsoleto) → CSRF token invalidato → richieste POST batch non autorizzate.
+Il caricamento singolo funziona perché non genera richieste simultanee/sequenziali ravvicinate.
+
+**Procedura risoluzione:**
+
+1. **Chiudi tutte le tab T-Rex** (Odoo usa sessioni persistenti: tab datate sovrascrivono
+   token recenti). Logout completo (in alto a destra → "Esci").
+2. Chiudi completamente il browser (inclusi processi in background).
+3. **Pulizia cookie/cache sito specifico:** navigare a `https://trex.intrawelt.com/`,
+   click sull'icona lucchetto nella barra → "Impostazioni sito" → "Elimina dati"
+   (rimuove solo cookie/cache di quel dominio).
+4. **Pulizia avanzata DevTools:** F12 → scheda "Application" → "Storage" → "Clear site data".
+5. **Flush DNS:** aprire prompt comandi come Amministratore → `ipconfig /flushdns`.
+
+**Risultato:** al primo accesso successivo Odoo ricostruisce sessione, token CSRF validi,
+cache JS e service worker. L'utente deve reinserire le proprie credenziali.
+
 ---
 
 ## Microsoft 365

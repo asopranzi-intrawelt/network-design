@@ -144,6 +144,20 @@ Fix: Next.js ≥ 16.1.5 (streaming + controllo dimensioni).
 Processo di rilevamento: `pnpm audit` eseguito periodicamente. Prisma dependency
 vulnerability rilevata nella stessa sessione.
 
+## 19/02/2026 - CSRF Token T-Rex/Odoo (Chiara Ippoliti)
+
+Fonte: `Helpdesk_T-Rex/Problema CSRF Token T_Rex.docx`
+
+Chiara Ippoliti segnala a Tommaso Vezeni: batch upload XML analisi in T-Rex bloccato
+(caricamento infinito) + alert "Session expired (invalid CSRF token)" + stampa preventivi
+fallisce se eseguita subito dopo altra stampa. Problema specifico della postazione di
+Chiara; gli altri utenti non riscontrano problemi.
+
+Diagnosi: sessione Odoo corrotta → CSRF invalido → richieste POST batch non autorizzate.
+Risoluzione: pulizia completa sessione browser (logout, chiusura browser, eliminazione
+cookie/cache dominio trex.intrawelt.com, DevTools Clear site data, ipconfig /flushdns).
+Procedura operativa completa in helpdesk-operations.md §T-Rex CSRF Token.
+
 ## 04/03/2026 - Meeting Odoo portale SCENIA (Susanna Ortini, OpenForce)
 
 Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo.
