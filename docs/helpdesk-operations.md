@@ -5,6 +5,30 @@ Aggiornato: giugno 2026.
 
 ---
 
+## VPN aziendale – guida connessione
+
+Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx`
+
+**Client:** ZyWall SecuExtender (Zyxel VPN SSL client)
+**Server VPN:** `193.124.241.5` (IP pubblico Vianova, subnet .x/28)
+**Protocollo:** SSL/TLS (SecuExtender)
+
+### Procedura connessione
+
+1. Aprire ZyWall SecuExtender
+2. Campo **Server**: `193.124.241.5`
+3. **Username**: formato `ncognome` (es. `tvezeni`)
+4. **Password**: fornita dall'IT in fase di onboarding
+5. Cliccare Connetti → arriva email 2FA all'indirizzo aziendale
+6. Cliccare **Authorize** nell'email → VPN attiva
+7. Aprire **Connessione Desktop Remoto** di Windows
+8. Inserire IP interno del proprio PC aziendale + credenziali Windows
+
+> Nota: se la password non viene riconosciuta, inserirla manualmente senza copia-incolla
+> (il client SecuExtender può avere problemi con il clipboard).
+
+---
+
 ## T-Rex (Odoo ERP Gestionale)
 
 ### Cos'è T-Rex
