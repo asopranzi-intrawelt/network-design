@@ -59,6 +59,32 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ---
 
+## Policy Password e Gestione PC
+
+Fonte: `Cybersec & IT Governance/Access Authentication/Configurazione-PC-Password.docx`
+
+### Gestione account PC
+
+Ogni postazione Windows ha due account locali:
+
+| Account | Accesso | Permessi |
+|---------|---------|----------|
+| Amministratore | Solo personale IT | Installazione software, configurazioni sistema |
+| Utente standard | Dipendente assegnato alla postazione | Operatività quotidiana; no install/update |
+
+Blocco schermo automatico dopo **5 minuti** di inattività.
+
+### Politica password
+
+| Parametro | Valore |
+|-----------|--------|
+| Durata | 6 mesi (180 giorni) |
+| Lunghezza minima | 8 caratteri |
+| History | Ultime 5 password non riutilizzabili |
+| Reset | IT reset via account amministratore locale; utente reimposta al primo accesso |
+
+---
+
 ## Bitdefender GravityZone – Stato implementazione
 
 | Funzionalità | Stato | Note |

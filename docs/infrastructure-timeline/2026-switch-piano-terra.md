@@ -158,6 +158,29 @@ Risoluzione: pulizia completa sessione browser (logout, chiusura browser, elimin
 cookie/cache dominio trex.intrawelt.com, DevTools Clear site data, ipconfig /flushdns).
 Procedura operativa completa in helpdesk-operations.md §T-Rex CSRF Token.
 
+## 23/03/2026 – Analisi blocco traffico centralino (Vianova / USG FLEX 500)
+
+Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx`
+Trigger: mail da referente-vianova-1@myofficegroup.it (Vianova/MyOffice) del 23/03/2026 con richiesta di verifica.
+
+Analisi su Zyxel USG FLEX 500: verifica se il firewall blocca il traffico VoIP/SIP del centralino Panasonic.
+
+**IP e porte verificate (Address + Service Objects creati):**
+
+| Subnet / IP | Porta / Range | Protocollo |
+|-------------|---------------|------------|
+| <RANGE-VIANOVA-SIP-1> | TCP 5061 | SIP |
+| <RANGE-VIANOVA-SIP-1> | UDP 20000–40000 | RTP media |
+| <RANGE-VIANOVA-SIP-2> | TCP 5039 | — |
+| <IP-VIANOVA-MGMT> | TCP 433 | — |
+| <IP-VIANOVA-SIP-3> | TCP 5222 | — |
+| <IP-VIANOVA-MEDIA-1> | TCP 6050, UDP 6050 | — |
+| <RANGE-VIANOVA-MEDIA-2> | TCP 14000–14999, UDP 15000–15999 | — |
+
+**Esito:** nessuna Security Policy blocca le subnet sopra in uscita; i log
+(`Monitor → Log`) non riportano alcun blocco per nessuno degli IP/porte verificati.
+Conclusione: il firewall USG FLEX 500 **non è la causa** del problema centralino.
+
 ## 04/03/2026 - Meeting Odoo portale SCENIA (Referente-OpenForce-1, OpenForce)
 
 Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo.
