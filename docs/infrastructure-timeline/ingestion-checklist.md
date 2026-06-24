@@ -79,10 +79,10 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ### Cybersec/Privacy (GDPR e Contratti)
 - [x] `Confidentiality_Segretezza/` → cybersecurity-governance.md §NDA Framework (6 template: standard, interpreting, ENG, ENG rev, ITA, TUV_draft)
 - [x] `GDPR-Privacy/` → cybersecurity-governance.md §NDA Framework (OpenForce NDA 09/04/2021, 5 Nomina sub-responsabili agenti, Procedura Diritti Interessati 4ward s.r.l., canale privacy@intrawelt.it)
-- [ ] `Informative/` — ALTA (informative trattamento)
+- [-] `Informative/` — vecchi template GDPR 2018 (.doc non estraibili + dati anagrafici clienti/fornitori sensibili), skip
 - [x] `Procedura_Data_Breach/` → cybersecurity-governance.md §Procedura Data Breach (4 fasi, soglie 72h Garante, registro breach)
-- [ ] `Procedura_Esercizio_Diritti_Interessati/` — ALTA
-- [ ] `Regolamento_utilizzo_sistemi_informatici/` — vedi sotto
+- [x] `Procedura_Esercizio_Dirittti_Interessati/` (nota: typo 3 t nel nome) → cybersecurity-governance.md §Procedura Esercizio Diritti Interessati (6 diritti GDPR, 3 fasi operativa, canale privacy@intrawelt.it, 1 mese risposta, firmata 25/05/2018)
+- [x] `Regolamento_utilizzo_sistemi_informatici/` → cybersecurity-governance.md §Regolamento utilizzo sistemi (firmato 19/04/2021; Registro_accettazione gap ISO-001: 0/21 firme)
 - [x] `SubResponsabili Intrawelt/Elenco SubResponsabili Intrawelt.docx` → cybersecurity-governance.md §Registro Sub-Responsabili (11 fornitori: Microsoft, Bitdefender, NinjaOne, Zyxel, RWS, Odoo SA, QNAP, Seeweb, OpenForce, Punto Informatica, Eter)
 
 ### Regolamento utilizzo sistemi informatici
@@ -105,7 +105,8 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `Proelium preventivo PT` — MEDIA (metadata già in vendor-management.md)
 
 ### Phising and spoofing protection
-- [ ] doc protezione phishing/spoofing — MEDIA
+- [x] `Notes.docx` → cybersecurity-governance.md §Email Authentication DMARC (DMARC configurato su intrawelt.com, RUA ricevuti da Microsoft/Google/Aruba/Mimecast/Yahoo/GMX/Terna/ESA/Amazon SES, novembre 2025)
+- [-] DMARC .eml report files — dati operativi, info già estratta da Notes.docx
 
 ### Data protection
 - [x] `Data protection/Data protection.docx` → cybersecurity-governance.md §Data Protection Statement (DPO status, retention 1-3yr NAS, BYOD vietato, gap: no TLS 1.2, no DLP endpoint, no log encryption, no full disk encryption)
@@ -166,7 +167,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 ## Helpdesk_INFOCERT — 8 file
 
 - [x] `infocert.docx` (45 §) → infocert.txt → vendor-management.md (metadata, NO credenziali)
-- [ ] `Procedura_firma_digitale.docx` — MEDIA (procedura completa GoSign Pro)
+- [!] `Procedura_firma_digitale.docx` — FILE CONTIENE CREDENZIALI in chiaro (username, password, PIN) → helpdesk-operations.md §Firma Digitale Remota (solo procedura, senza credenziali)
 - [!] eventuali file credenziali — MAI INGESTIRE
 
 ---
@@ -300,7 +301,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [-] `Elenco SubResponsabili Intrawelt.docx` (SCENIA/SECURITY/DPA) — duplicato del registro già in cybersecurity-governance.md §Registro Sub-Responsabili (estratto dalla cartella Privacy root)
 - [x] `SaaS security.docx` (9.6 MB) → scenia-project.md §Infrastruttura VPS Aruba, §Domini scenia.it, §Security Architecture (Cloudflare Zero Trust), §CVE History; 2026-switch-piano-terra.md §13/02/2026 ticket Aruba, §Gen-Feb 2026 CVE patch, §11/05/2026 Cloudflare
 - [-] `che tipo di dati DI PERSONE FISICHE trattiamo.txt` — file non in locale (OneDrive-only)
-- [ ] `Checklist_Sicurezza_Dropdown.xlsx` — MEDIA
+- [x] `Checklist_Sicurezza_Dropdown.xlsx` → scenia-project.md §Checklist Sicurezza SCENIA (4 sezioni: A)applicativa 15 item, B)operativa 19 item, C)governance dato 13 item, D)LLM security 12 item — tutti "Da fare")
 - [-] `edpb_dpia_template_explainer_2026_v1_en.pdf` — SKIP (EDPB guide ufficiale, non interno)
 - [-] `en_304223v020101p.pdf` — SKIP (ETSI standard ufficiale)
 

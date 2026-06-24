@@ -369,6 +369,29 @@ Cartella: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Confidentiality_S
 Tutti i template sono in formato .doc (vecchio Word). Usati per accordi di riservatezza
 con traduttori, interpreti e collaboratori freelance.
 
+### NDA con Fabio Giorgini (developer SCENIA, ott 2025)
+
+Documento: `_ 📜 GDPR E ISO27001/_GDPR compliance/Accordi di non riservatezza (NDA)/Fabio Giorgini/AccordoDiRiservatezza_rev1.docx`
+
+NDA reciproco Intrawelt ↔ Fabio Giorgini (libero professionista IT).
+Firmato contestualmente alla proposta di collaborazione del 29/10/2025.
+Copertura: codice sorgente, architetture, dati clienti SCENIA, API keys, credenziali.
+
+---
+
+## Email Authentication – DMARC / SPF / DKIM
+
+Fonte: `Cybersec & IT Governance/Phising and spoofing protection/Notes.docx`
+(report DMARC aggregati ricevuti novembre 2025 da provider terzi)
+
+DMARC configurato su `intrawelt.com` con tag `rua=` per ricezione report aggregati.
+
+**Provider che inviano report DMARC a Intrawelt:**
+Microsoft, Google, Aruba.it, Mimecast, Yahoo, GMX, Terna, ESA, Amazon SES.
+
+Struttura report aggregato: org name, report ID, date range, policy DMARC applicata,
+dati per IP sorgente (pass/fail SPF+DKIM, allineamento header From vs SPF/DKIM domain).
+
 ---
 
 ## Procedura Esercizio Diritti Interessati
