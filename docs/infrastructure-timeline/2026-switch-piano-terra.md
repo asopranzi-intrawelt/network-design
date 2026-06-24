@@ -550,3 +550,26 @@ Wi-Fi su VLAN separata dalla classe .10.
 Completamento implementazione nuova fonia Vianova (centralino cloud).
 Dismissione HP G5 (VMware ESXi fisico) e migrazione VM su Proxmox.
 Restituzione materiale TIM (Huawei AR651W, AR1220E, Taurus Bond): ancora in sede.
+
+## 16-17/06/2026 – Mancata consegna mail Eni VIPA (Power Platform Flow)
+
+Fonte: `_DA SISTEMARE (Alessio)/Analisi mail/marsk-17062026/analisi-problema-consegna.md`
+(Claude Code M365 trace analysis, 17/06/2026)
+
+**Mittente**: `ADM_DWIT_TEST_POWERPLATFORM@enispa.onmicrosoft.com` (Eni Power Automate Flow)
+IP sorgente: `20.86.93.66` (Azure Cloud), Tenant Eni: `c16e514b-893e-4a01-9a30-b8fef514a650`
+**Destinatario**: `enivipa@intrawelt.com` (+ `mmarini@intrawelt.com` in parallelo scoperto da trace)
+**Oggetto tipo**: `Traduzione per [Nome Cognome] - [ID]` (richieste VIPA)
+
+**Episodi di mancata consegna:**
+- 16/06/2026 ore 13:15–13:35 IT: 7 mail mancanti (CASAROTTI, MACCARIELLO x2, FIORUCCI x2, FRASSONI, CHEZZI)
+- 17/06/2026 ore 15:57 IT: ulteriori mail non arrivate
+
+**Indagine M365 (EAC Message Trace):**
+- Trace con filtro "Tutti gli stati" eseguito su finestra 16/06 11:00–17/06 16:30 UTC
+- Risultato: 18 righe, tutte complete; le mail mancanti **assenti** dal trace
+- Conclusione: le mail non hanno mai raggiunto i server Microsoft di intrawelt.com
+
+**Conclusione: problema lato Eni** (Power Platform Flow intermittente).
+Prove da comunicare a Eni VIPA: trace M365 "tutti gli stati" non le mostra + gap orari precisi.
+Eni deve verificare log esecuzione Power Automate per le run degli orari anomali.

@@ -20,7 +20,9 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `analisi PHISING (e outlook-related)/notes analisi martina.docx` → phish_martina_notes.txt (118 §) → 2026-switch-piano-terra.md
 - [x] `analisi PHISING (e outlook-related)/dettaglio anasini.docx` → phish_anasini_dettaglio.txt (4 §) → 2026-switch-piano-terra.md
 - [x] `Physical Security.docx` → physical_security.txt (1 § placeholder, documento vuoto)
-- [ ] `Analisi mail/` — MEDIA priorità (analisi messaggi sospetti)
+- [x] `Analisi mail/marsk-17062026/analisi-problema-consegna.md` → 2026-switch-piano-terra.md §16-17/06/2026 (7 mail Eni VIPA Power Platform Flow mai arrivate a M365, conclusione: problema lato Eni, trace M365 "tutti stati" non le mostra)
+- [-] `Analisi mail/problema Ahmed 23032026/` — Yahoo domain filtering issue, solo immagini screenshot, nessun doc testuale estraibile
+- [-] `Analisi mail/aggiornamento export mail/` — immagini e .eml (eliminazione Pasquale da Azure, Adobe annullamento) — BASSA, già documentato in timeline
 - [x] `Problema DHCP kickout Elisa/` → helpdesk-operations.md §Incidente DHCP (TP-Link AC600 DHCP conflict, utente rete pubblica; nessuna data documentata)
 - [ ] `PROXMOX/` — BASSA (già gestito in C:\Scripts\proxmox-snapshot)
 - [ ] `QNAP cloud/` — BASSA
