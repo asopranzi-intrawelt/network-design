@@ -123,8 +123,14 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [-] `risposte.docx` (23 KB) — risposte questionario, skip
 
 ### _ 📜 GDPR E ISO27001
-- [x] Serafino ISO 27001 gap analysis 18/04/2025 — in 2025-q3-q4.md (metadata)
-- [ ] documentazione gap analysis completa — MEDIA
+- [x] `riunione_con_Serafino 18042025.docx` → 2025-q3-q4.md §18/04/2025 (espanso: 12 action item operativi, email metadata 21gg, badge sala server, CISSP, Exchange policy)
+- [x] `PSGSI POLITICA DELLA SICUREZZA DELLA INFORMAZIONI rev. 1 16.10.2025.docx` → cybersecurity-governance.md §SGSI (scope: Networking/SI/SaaS/Servizi; 5 obiettivi: CIA+Conformità+Miglioramento; processo risk management 4 step; milestone ISO 27001)
+- [x] `_GDPR compliance/DPA (3rd party providers).xlsx` → cybersecurity-governance.md nota (4 provider: Microsoft, QNAP, Seeweb, Odoo — registro semplificato)
+- [-] `Miscellaneous/` — link, lnk, email, file vuoti, link a risorse esterne
+- [-] `_ISO27001/27001.it.pdf` — copia standard ISO (non documentazione interna)
+- [-] `_ISO27001/ISO27001 CHECKLIST_rev4.xlsm` — template checklist esterno, info già in gap analysis
+- [-] `DORA (brief GPT explanation).docx` — nota informativa, non documentazione operativa
+- [-] altri link e PDF normativi — skip (informativo, non operativo)
 
 ### Varie (root Cybersec)
 - [ ] `Physical Security.docx` — vedi _DA SISTEMARE (stesso file)

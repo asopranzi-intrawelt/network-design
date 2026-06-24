@@ -59,6 +59,46 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ---
 
+## SGSI – Politica della Sicurezza delle Informazioni (PSGSI)
+
+Fonte: `_ 📜 GDPR E ISO27001/PSGSI POLITICA DELLA SICUREZZA DELLA INFORMAZIONI rev. 1 16.10.2025.docx`
+Riferimento: ISO/IEC 27001:2022. Rev. 1 del 16/10/2025.
+
+### Scope SGSI
+
+Il SGSI (Sistema di Gestione della Sicurezza delle Informazioni) di Intrawelt copre:
+- Networking e sistemi informativi
+- Sviluppo e gestione di soluzioni SaaS (SCENIA)
+- Servizi (traduzione, project management)
+
+### Obiettivi strategici SGSI
+
+| Obiettivo | Descrizione |
+|-----------|-------------|
+| Riservatezza | Accesso solo a personale autorizzato |
+| Integrità | Protezione da modifiche non autorizzate |
+| Disponibilità | Servizi accessibili su richiesta da parti autorizzate |
+| Conformità | Rispetto requisiti legali, regolamentari, contrattuali |
+| Miglioramento continuo | Audit + revisione per adattarsi all'evoluzione delle minacce |
+
+### Processo di gestione dei rischi
+
+1. **Identificazione**: minacce interne ed esterne agli asset informativi
+2. **Valutazione**: probabilità + impatto → classificazione priorità
+3. **Trattamento**: misure di mitigazione + BCP + strategie di risposta
+4. **Monitoraggio**: audit interni/esterni, reportistica, riesame periodico
+
+### Milestone ISO 27001
+
+| Data | Evento |
+|------|--------|
+| 18/04/2025 | Prima riunione con Serafino Bartolomei (consulente), gap analysis |
+| 16/10/2025 | PSGSI rev. 1 firmata (avvio formale SGSI) |
+| 2026 (in corso) | Audit interno pianificato |
+| 2026-2027 | Obiettivo audit esterno ente accreditato |
+
+---
+
 ## Policy Password e Gestione PC
 
 Fonte: `Cybersec & IT Governance/Access Authentication/Configurazione-PC-Password.docx`
