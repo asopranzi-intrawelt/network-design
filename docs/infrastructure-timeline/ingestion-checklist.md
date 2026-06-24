@@ -273,10 +273,10 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `Intrawelt_dati_e_misure_da_fornire_2026-06-11.md` → scenia-project.md §Dati Intrawelt per DPA
 - [x] `Domande_interne_Intrawelt_2026-06-11.md` → scenia-project.md (dati anagrafici compilati: sede, P.IVA, foro Fermo)
 - [x] `DPIA_SCENIA_2026.docx` → template EDPB vuoto (solo intestazioni sezioni, contenuto non compilato nel file principale — lavorazione in copia backup .BACKUP_2026)
-- [ ] `Allegati.docx` — ALTA (allegati DPA)
+- [x] `Allegati.docx` → scenia-project.md §SLA service credits (Allegato E), §Change Control (Allegato G), §Sub-processor (Allegato K), §Descrizione Servizio (Allegato B: workflow, 2 modalità traduzione, Vector Store, logging, limiti)
 - [ ] `Elenco SubResponsabili Intrawelt.docx` — ALTA
-- [ ] `SaaS security.docx` (9.8 MB) — ALTA
-- [ ] `che tipo di dati DI PERSONE FISICHE trattiamo.txt` — ALTA (DPIA input)
+- [x] `SaaS security.docx` (9.6 MB) → scenia-project.md §Infrastruttura VPS Aruba, §Domini scenia.it, §Security Architecture (Cloudflare Zero Trust), §CVE History; 2026-switch-piano-terra.md §13/02/2026 ticket Aruba, §Gen-Feb 2026 CVE patch, §11/05/2026 Cloudflare
+- [-] `che tipo di dati DI PERSONE FISICHE trattiamo.txt` — file non in locale (OneDrive-only)
 - [ ] `Checklist_Sicurezza_Dropdown.xlsx` — MEDIA
 - [-] `edpb_dpia_template_explainer_2026_v1_en.pdf` — SKIP (EDPB guide ufficiale, non interno)
 - [-] `en_304223v020101p.pdf` — SKIP (ETSI standard ufficiale)
