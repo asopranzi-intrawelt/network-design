@@ -230,6 +230,7 @@ Flussi SCENIA/Trados che dipendevano dal suo account: da ripristinare (task_97).
 
 Server: WINGROUPSHARE (IP LAN: 10.1.116.3, sotto Seeweb firewall cloud)  
 VM parallela: WINSRV2019 (IP LAN: 10.1.116.4, sotto Seeweb firewall cloud)  
+URL interno: `http://gs.intrawelt.com/`  
 Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
 
 **Problemi storici documentati:**
@@ -310,6 +311,24 @@ Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
 - Troubleshooting patch/update
 - Installazione software da remoto
 - Supporto utenti (task_73)
+
+### Politica trasparenza RMM (rev.1)
+
+Fonte: `Cybersec & IT Governance/Documenti NinjaOne/Privacy Policy - NinjaOne RMM Management_rev1.docx` (1.3 MB)
+
+Documento informativo interno per i dipendenti sull'uso di NinjaOne RMM.
+
+**Punti chiave:**
+- Accesso remoto effettuato da IT Manager (Alessio Sopranzi) e, in casi eccezionali, da Punto Informatica snc
+- Politica **"Request Confirmation"** attivata per tutti: pop-up di conferma appare all'utente prima di ogni connessione remota
+- Ogni sessione di teleassistenza è **tracciata nel dashboard NinjaOne**; log sempre disponibile
+- Accesso "idle" (macchina incustodita) solo previo accordo esplicito con l'utente → stessa regola applicata al 100% dei casi documentati
+- IT Manager tiene traccia di ogni azione/intervento
+- Operazioni non invasive eseguibili senza connessione remota: script in background, cambio policy da dashboard, alert su disco
+- Funzione monitoring hardware: rilevamento disco in procinto di guasto → intervento asincrono senza bloccare operatività utente
+- Tutto comunicato ai dipendenti al momento dell'introduzione del tool
+
+**Nota privacy:** NinjaOne è un trattamento dati a fini di legittimo interesse aziendale (manutenzione, continuità operativa). La "Request Confirmation" policy garantisce il doppio consenso per il controllo remoto.
 
 ---
 
@@ -604,6 +623,53 @@ Le credenziali vengono gestite a runtime e NON sono documentate in questo file (
 
 Procedura di ri-attivazione disponibile in GoSign Pro (accesso con credenziali account servizio).
 Credenziali gestite dall'IT Manager → richiederle a runtime.
+
+---
+
+## Automazione export TM GroupShare (GroupShare_TM_Backup)
+
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/GroupShare_TM_Backup/`
+Autore: Alessio Sopranzi. Versione 1.1.0 – 2025-11-04.
+
+Sistema PowerShell + AutoHotKey per l'esportazione giornaliera automatica delle Translation Memories da GroupShare sul NAS aziendale.
+
+### Componenti
+
+| Componente | Funzione |
+|------------|----------|
+| `Export-TMBackup.ps1` | Script principale: crea cartella `YYYY_MM_DD` sul NAS, modifica attributo `outputPath` nel file XML job, coordina MigratingTMs |
+| `AutomateExport.ahk` | Automazione GUI di MigratingTMs (AutoHotKey): carica job, avvia export, gestisce dialoghi |
+| `config.json` | Configurazione centralizzata (percorsi, XML, log) |
+| `Create-ScheduledTask.ps1` | Script di setup Windows Task Scheduler |
+
+### Configurazione
+
+| Parametro | Valore |
+|-----------|--------|
+| GroupShare server | `http://gs.intrawelt.com/` |
+| Backup NAS (UNC) | `\\192.168.20.177\Backup_TM_Groupshare` |
+| Backup NAS (mapped) | `M:\Backup_TM_Groupshare` |
+| Job XML | `C:\ProgramData\Kaleidoscope\MigratingTMs\tasks\export_TM.xml` |
+| XPath attributo output | `/Task/@outputPath` |
+| Schedule | Windows Task Scheduler, daily 02:00 |
+| Tool terzo | MigratingTMs di Kaleidoscope/RWS |
+
+**Nota tecnica:** Il path di output nel file XML di MigratingTMs è un **attributo** del nodo `<Task>` (`outputPath`), non un nodo figlio. XPath per nodi tradizionali (`//OutputFolder`) non funziona. Richiede `GetAttribute()`/`SetAttribute()` in PowerShell.
+
+### Changelog
+
+| Versione | Data | Modifiche |
+|----------|------|-----------|
+| 1.0.0 | 2025-11-03 | Release iniziale: script PS, AutoHotKey, config.json, Task Scheduler setup |
+| 1.1.0 | 2025-11-04 | Fix: adattamento struttura XML reale MigratingTMs (attributo vs nodo), aggiornamento XPath, fix config.json, retrocompatibilità |
+
+**Stato (04/11/2025):** "Pronto per il test" — non ancora schedulato in produzione.
+
+### Retention backup
+
+- Log PS: rotazione automatica a 10 MB (backup con timestamp)
+- Cartelle backup: pulizia manuale >30 gg con script separato
+- Raccomandazione: schedulare pulizia mensile via Task Scheduler
 
 ---
 
