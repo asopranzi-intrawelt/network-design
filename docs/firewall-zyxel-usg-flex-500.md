@@ -3,8 +3,17 @@
 Fonte: backup startup-config.conf del 19/05/2026 (generato automaticamente alle 05:59:32).
 Analisi condotta il 29/05/2026 (Analisi_Zyxel_USG_FLEX_500.docx).
 Piano di revisione e DMZ prodotto il 05/06/2026 (Revisione_Rete_DMZ_Proxmox.docx,
-Piano_Operativo_Migrazione.docx).
+Piano_Operativo_Migrazione.docx, LE SEI FASI.txt).
 Firmware: Zyxel ZLD 5.42(ABUJ.1). File di 2215 righe.
+
+**Stato al 01/07/2026: piano non ancora applicato.** Il file `startup-config.conf`
+datato 05/06/2026 e' la configurazione target preparata per il caricamento, non un
+backup post-applicazione: il changelog in testa al file descrive gli interventi
+previsti, non quelli eseguiti. Confermato con l'utente che la Fase 0 (correzione
+della regola phishing, la sola anomalia critica) non e' ancora stata applicata sul
+dispositivo fisico. Tutte le anomalie FW-001/FW-002/FW-004/FW-008/FW-009 nella
+tabella in fondo alla scheda restano quindi aperte in produzione fino al prossimo
+intervento; vedi la roadmap tracciata in `.claude/context/roadmap.md`.
 
 ---
 
@@ -231,6 +240,20 @@ La DMZ non e' in serie tra Internet e LAN: e' un braccio parallelo con centro
 nel firewall (topologia a stella). LAN esce da P4 (ge4), DMZ esce da P7 (ge6).
 I percorsi non si incrociano.
 
+L'analisi comparativa del 29/05/2026 (`zyxel-dmz-proxmox.md`, diagrammi
+`dmz_con_trunk.svg` e `dmz_senza_trunk.svg` archiviati in
+`.claude/context/diagrams/firewall-dmz-2026/`) aveva messo a confronto due
+opzioni per collocare una VM Proxmox in DMZ: un secondo cavo dedicato da P7 a
+una seconda NIC del server, con Proxmox dotato di due bridge fisici separati
+(vmbr0 LAN, vmbr1 DMZ), oppure il trunk 802.1Q qui descritto. La prima opzione
+e' stata scartata perche' rigida, consuma una porta fisica aggiuntiva e non
+scala; il trunk e' stato scelto perche' un solo cavo, lato firewall e lato
+Proxmox, porta sia il traffico LAN sia la VLAN 201 DMZ, distinti dal tag,
+lasciando al bridge Proxmox VLAN-aware il compito di separarli internamente.
+L'unico prerequisito non confermato al momento dell'analisi comparativa era il
+supporto 802.1Q dello switch XGS2220-54HP, verificato poi in Fase 1 del piano
+operativo (sezione successiva).
+
 ### Implementazione VLAN 201
 
 Il firewall non esegue tagging VLAN: resta a L3. Il tagging 802.1Q e' delegato allo switch.
@@ -261,25 +284,77 @@ interface dmz
 
 **Prima VM DMZ**: nginx reverse proxy a 192.168.201.10, esposto su wan1:2 (193.124.241.3).
 
-### Sequenza di applicazione
+### Sequenza di applicazione: le sei fasi (LE SEI FASI.txt, 05/06/2026)
 
-1. Correzione immediata regola phishing (fuori finestra, subito).
-2. Preparazione: backup datato firewall/switch, test console seriale (115200 baud)
-   e sessione iLO, verifica 802.1Q su XGS2220-54HP, pianificazione finestra notturna.
-3. Switch: VLAN 201, porta P7 in access, porta Proxmox in trunk.
-4. Proxmox: bridge-vlan-aware da console iLO, VM di test con tag 201.
-5. Cablaggio P7 -> switch, verifica L2 con arping (il ping puo' non rispondere
-   finche' le policy DMZ non sono caricate: normale).
-6. Caricamento startup-config aggiornato da console seriale:
+Il piano operativo (`Piano_Operativo_Migrazione.docx`) organizza l'applicazione
+in sei fasi numerate da 0, ciascuna con un proprio punto di ritorno esplicito:
+se una fase fallisce la verifica, si torna allo stato precedente invece di
+proseguire alla successiva.
+
+**Fase 0 - Correzione immediata.** Chiude subito la falla della regola phishing
+via GUI, senza attendere la finestra di manutenzione notturna: e' l'unica fase
+che non richiede downtime ne' preparazione.
+
+**Fase 1 - Preparazione.** Backup datato di firewall e switch, verifica fisica
+di console seriale (115200 baud) e accesso iLO, conferma del prerequisito non
+ancora validato che lo switch XGS2220-54HP supporti 802.1Q, pianificazione
+della finestra notturna.
+
+**Fasi 2 e 3 - Switch e bridge Proxmox.** VLAN 201 sullo switch (porta P7 in
+access, porta verso Proxmox in trunk) e bridge-vlan-aware su Proxmox (da
+console iLO, con `ifreload -a`): a impatto nullo sulla produzione, perche' il
+cavo fisico non e' ancora spostato e nessuna VM ha ancora il tag 201.
+
+**Fase 4 - Cablaggio e validazione L2.** Posa del cavo da P7 allo switch e
+verifica della catena con `arping`/`tcpdump` prima di toccare la configurazione
+del firewall: un ping ordinario puo' legittimamente non rispondere in questo
+momento, perche' le policy DMZ non sono ancora caricate.
+
+**Fase 5 - Applicazione dal seriale.** Caricamento della configurazione
+aggiornata con doppia rete di protezione: lo startup-config precedente resta
+intatto finche' la verifica non e' conclusa, e un meccanismo di `lastgood`
+automatico lato firewall interviene se il caricamento produce una
+configurazione non raggiungibile.
    ```
    Router# apply /conf/startup-config-2026-06.conf
    # solo dopo verifica completa:
    Router# copy running-config startup-config
    ```
    Effetti previsti durante il caricamento: caduta sessioni VPN, shutdown wan2.
-7. Verifica: LAN naviga, SSL VPN risponde, tunnel IPsec si rinuncia,
-   VM DMZ raggiunge Internet e non raggiunge LAN (allarme in log = conferma).
-8. 48h di osservazione log.
+
+**Fase 6 - Verifica e chiusura.** Verifica nell'ordine in cui gli utenti se ne
+accorgerebbero: prima la navigazione LAN, poi la SSL VPN, poi il tunnel IPsec,
+infine il raggiungimento della VM DMZ (che deve uscire su Internet e *non*
+raggiungere la LAN: un allarme in log su questo tentativo e' la conferma che
+la segregazione funziona). Consolidamento con 48 ore di osservazione log e
+chiusura con le pulizie fisiche del cablaggio provvisorio.
+
+**Stato: fasi 0-6 non ancora eseguite sul dispositivo fisico** (verificato con
+l'utente il 01/07/2026). Il file di configurazione datato 05/06/2026 e' il
+target preparato per la Fase 5, non un log di quanto gia' applicato.
+
+---
+
+## Diagrammi
+
+Diagrammi prodotti durante l'analisi del 29/05-05/06/2026, archiviati in
+`.claude/context/diagrams/firewall-dmz-2026/` (risolve FW-010).
+
+| File | Data | Contenuto |
+|------|------|-----------|
+| `zyxel_usg_flex500_network_29052026.drawio` | 29/05/2026 | Schema di rete generale del firewall, stato rilevato dal backup del 19/05 |
+| `zyxel_usg_flex500_detailed_29052026.drawio` | 29/05/2026 | Schema dettagliato interfacce/VPN/NAT del firewall |
+| `rete_stato_attuale_29052026.drawio` | 29/05/2026 | Topologia di rete completa, stato attuale pre-intervento |
+| `dmz_con_trunk.svg` / `dmz_senza_trunk.svg` | 29/05/2026 | Confronto architetturale trunk 802.1Q vs cavo dedicato per la DMZ Proxmox |
+| `zyxel_usg_flex500_network_target_05062026.drawio` | 05/06/2026 | Schema di rete del firewall nello stato target post-revisione |
+| `rete_stato_target_05062026.drawio` | 05/06/2026 | Topologia di rete completa nello stato target |
+| `topologia_stella_lan_dmz_proxmox_05062026.svg` | 05/06/2026 | Topologia a stella LAN/DMZ/Proxmox del piano finale |
+
+Nota: i diagrammi "target" descrivono lo stato pianificato, non ancora applicato
+(vedi sezione precedente). Il consolidamento in un unico diagramma Mermaid
+versionato in `.claude/context/diagrams/network-topology.mmd` e' rimandato al
+termine della fase di ottimizzazione, per non ricostruirlo a ogni singolo
+micro-intervento (vedi `.claude/context/roadmap.md`).
 
 ---
 
@@ -312,4 +387,6 @@ Backup datato del 19/05/2026 usato come base per l'analisi del 29/05/2026.
 | FW-007 | Presenza di due profili IPsec verso 37.9.228.27 (PSE-SEEWEB e WIZ_VPN) | Verificare se transizione in corso o residuo |
 | FW-008 | WAN_TRUNK con wan2 primary ma TIM non connessa da maggio 2025 | Da rimuovere nella revisione |
 | FW-009 | DMZ pool DHCP presente: incompatibile con server a IP statico | Da rimuovere nella revisione |
-| FW-010 | File draw.io prodotti dal lavoro di analisi: zyxel_usg_flex500_network.drawio e zyxel_usg_flex500_detailed.drawio - localizzare e archiviare | Da fare |
+| FW-010 | File draw.io prodotti dal lavoro di analisi: zyxel_usg_flex500_network.drawio e zyxel_usg_flex500_detailed.drawio - localizzare e archiviare | Fatto (01/07/2026, `.claude/context/diagrams/firewall-dmz-2026/`) |
+| FW-011 | Il piano di revisione a sei fasi (05/06/2026) non e' ancora stato applicato al dispositivo fisico: FW-001/002/004/008/009 restano aperte in produzione | Da applicare (prossima finestra di manutenzione) |
+| FW-012 | Porta 8 dello switch 54HP (MAC F4:4D:5C:8F:7C:39) rinominata "Vianova DHCP server fonia" e passata a PVID 2 il 09/06/2026: verificare la funzione effettiva e se sostituisce il DHCP server classe .90 da rimuovere (vedi network-diagram.md) | Verificare |

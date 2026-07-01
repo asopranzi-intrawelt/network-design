@@ -7,24 +7,41 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: PENDING-FIRST-COMMIT
-Data snapshot:         2026-06-22
+Commit di riferimento: 207690c (HEAD al 01/07/2026; modifiche di questa sessione non ancora committate)
+Data snapshot:         2026-07-01
 ```
+
+Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
+dal 2026-06-22 nonostante cinque commit successivi (fino a 207690c, 24/06/2026).
+Il riferimento e' stato riportato a HEAD in questa sessione; da qui in avanti
+va aggiornato a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Stato di verifica delle schede
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | PENDING-FIRST-COMMIT | da ancorare |
+| STACK.md | PENDING-FIRST-COMMIT | da ancorare (nessuna modifica sostanziale dal 2026-06-22, ma il commit va ancorato) |
 | design-and-security.md | PENDING-FIRST-COMMIT | da ancorare |
 | deployment.md | PENDING-FIRST-COMMIT | da ancorare |
 | dev-testing.md | PENDING-FIRST-COMMIT | da ancorare |
-| current-work.md | PENDING-FIRST-COMMIT | da ancorare |
-| roadmap.md | PENDING-FIRST-COMMIT | da ancorare |
+| current-work.md | 2026-07-01 | aggiornata questa sessione |
+| roadmap.md | 2026-07-01 | aggiornata questa sessione (Fase 3 a micro-step) |
 
 ## Punto di ripresa
 
-Progetto appena inizializzato (2026-06-22). Struttura completa creata, script e regole
-copiati. Prossimi passi: primo commit, creazione repo remota su GitHub, poi iniziare
-l'ingestione della documentazione storica della rete e popolare le schede di contesto.
-Invocare sync-context dopo il primo commit per ancorare tutti i PENDING-FIRST-COMMIT.
+Ingestione della cartella "[TBC] Diagramma di rete e analisi firewall,
+centralino" completata il 01/07/2026 (vedi `memory/progress.md`). Roadmap di
+ottimizzazione Proxmox/firewall tracciata in `context/roadmap.md`, Fase 3,
+19 micro-step (M1-M19). Prossima azione concreta: M1, correzione della regola
+firewall `Blocco_Gruppo_IP_Phishing_Elisa` (action allow -> deny), operazione
+manuale dell'utente sulla GUI del firewall, non delegabile all'agente.
+
+In sospeso: conferma finale dell'utente per la cancellazione della cartella
+sorgente "[TBC] Diagramma di rete e analisi firewall, centralino" (contenuto
+integralmente riversato in docs/ e in `context/diagrams/firewall-dmz-2026/`).
+In sospeso anche il commit di tutte le modifiche di questa sessione, a cura
+dell'utente.
+
+Invocare `sync-context` alla prossima sessione per verificare drift tra
+STACK.md/design-and-security.md/deployment.md/dev-testing.md e il codice reale,
+e per ancorare i `last-verified` rimasti a `PENDING-FIRST-COMMIT`.

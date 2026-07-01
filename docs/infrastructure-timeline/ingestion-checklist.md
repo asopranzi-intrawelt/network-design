@@ -42,6 +42,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `ARCHITETTURA.docx` (300 MB) → estratto completo → network-design/ (base dell'intero progetto)
 - [x] `Telefono-PBX/` → telephony-pbx.md (centralino Panasonic KX-TDA100, procedure deviazione standard/gruppo, intercetta gruppo, segreteria personale, IVR messaggi bilingue, softphone opzioni; Centralino.doc = .doc non estraibile)
 - [ ] `ZYXEL XGS2220/` (×3 doc) — MEDIA (config switch Piano Terra e Piano 2)
+- [x] `[TBC] Diagramma di rete e analisi firewall, centralino/` (root progetto, non OneDrive — 29052026, 05062026, 08062026 (steps)) → firewall-zyxel-usg-flex-500.md, network-diagram.md, telefono-pbx-voip.md, 2026-switch-piano-terra.md, GAP-TBC.md #97-100, diagrammi in `.claude/context/diagrams/firewall-dmz-2026/` (01/07/2026 — cartella sorgente da eliminare dopo conferma utente, era marcata [TBC] esplicitamente per completa ingestione e cancellazione)
 - [x] `ZYXEL FIREWALL e VPN/myZYXEL - 18122025.docx` → 2025-q3-q4.md §18/12/2025 ZYXEL licenze (USG FLEX 500 Gold Security Pack S232L12101347, XGS2220-54HP S242L06000292, procedura rinnovo Nebula/myZyxel)
 - [x] `ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx` → 2026-switch-piano-terra.md §23/03/2026 (7 subnet VoIP verificate, nessun blocco firewall, causa non USG FLEX 500)
 - [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (193.124.241.5, SecuExtender, ncognome, 2FA email, RDP)
@@ -407,6 +408,19 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [-] `VIDEOs/` — SKIP (multimedia)
 
 ---
+
+## Nota di riallineamento (01/07/2026)
+
+Il "Riepilogo priorità" sotto risale al 2026-06-23 e non e' stato aggiornato di
+pari passo con le singole voci `[x]` marcate sopra: diversi item elencati come
+ALTA (Storico ticket T-Rex, Integrazione Odoo portale, Progetto ENI ruolini,
+_GESTIONE OUTSOURCING F.GIORGINI) risultano gia' `[x]` nel corpo della checklist.
+L'ingestione della cartella OneDrive IT resta sospesa qui per dare priorita',
+su richiesta esplicita dell'utente, all'ottimizzazione di Proxmox e del
+firewall (vedi `.claude/context/roadmap.md`). Alla ripresa dell'ingestione
+generale, il primo passo e' rigenerare questo riepilogo dallo stato reale
+delle spunte prima di riprendere nuovi documenti, cosi' che la tabella torni
+a essere la fonte di verita' invece di un residuo non sincronizzato.
 
 ## Riepilogo priorità
 

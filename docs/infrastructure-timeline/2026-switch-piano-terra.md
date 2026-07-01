@@ -386,11 +386,113 @@ La configurazione e' propedeutica alla migrazione al centralino cloud Vianova:
 i telefoni Yealink possono operare in SIP direttamente senza passare dal
 centralino fisico Panasonic KX-NCP1000.
 
-### Con myOffice 09/06/2026 - centralino cloud
+## 29/05/2026 - Analisi configurazione Zyxel USG FLEX 500
 
-Incontro con myOffice/Vianova il 09/06/2026 per la migrazione al centralino cloud.
-[TBC: steps, piano di numerazione, configurazione Patton SmartNode durante
-la transizione, timeline. Alessio ha screenshot nella cartella steps.]
+Fonte: `Analisi_Zyxel_USG_FLEX_500.docx`, backup `startup-config.conf` datato
+19/05/2026 (2215 righe, firmware ZLD 5.42(ABUJ.1)).
+
+Prima analisi strutturata del file di configurazione del firewall: porte fisiche
+e port-grouping (P4/P5/P6 in bridge L2 sotto lan1, nonostante le etichette logiche
+lan2/dmz), interfacce WAN/LAN/DMZ, VPN (due tunnel IPsec verso lo stesso peer
+SEEWEB, VPN remote-access IKEv2, SSL VPN), NAT/virtual server, security policy
+e UTM. Individuate dieci anomalie (FW-001 - FW-010), la piu' critica delle quali
+e' la regola `Blocco_Gruppo_IP_Phishing_Elisa` con `action allow` invece di
+`deny`, introdotta durante la remediation dell'incidente phishing del
+13-15/01/2026: la regola, essendo la prima valutata dal motore, fa passare
+indisturbato qualunque traffico dagli undici IP della lista invece di bloccarlo.
+Dettaglio completo delle dieci anomalie in `docs/firewall-zyxel-usg-flex-500.md`.
+
+Parallelamente viene prodotta un'analisi comparativa su come collocare
+correttamente una VM Proxmox in DMZ (`zyxel-dmz-proxmox.md` e i diagrammi
+`dmz_con_trunk.svg` / `dmz_senza_trunk.svg`, archiviati in
+`.claude/context/diagrams/firewall-dmz-2026/`): la porta DMZ del firewall (P7)
+e' oggi fisicamente isolata dal segmento su cui e' collegato Proxmox, quindi
+una VM raggiunta via NAT ma con IP in subnet LAN non e' realmente in DMZ, e'
+un host LAN con port forwarding. Le due opzioni valutate sono un secondo cavo
+dedicato da P7 a una seconda NIC del server (scartata: rigida, consuma porte,
+non scala) e un trunk 802.1Q che porta la VLAN DMZ sullo stesso cavo fisico
+gia' usato dalla LAN, smistata poi da un bridge Proxmox VLAN-aware. La seconda
+opzione e' quella adottata nel piano di revisione del 05/06/2026.
+
+## 05/06/2026 - Piano di revisione rete DMZ/Proxmox (sei fasi)
+
+Fonte: `Revisione_Rete_DMZ_Proxmox.docx`, `Piano_Operativo_Migrazione.docx`,
+`LE SEI FASI.txt`.
+
+Il piano operativo traduce l'anomalia FW-001 e l'architettura DMZ a trunk in
+una sequenza di sei fasi con applicazione dal seriale del firewall, ciascuna
+con un proprio punto di ritorno esplicito: Fase 0 corregge subito, via GUI e
+senza attendere la finestra di manutenzione, la regola phishing (allow -> deny,
+rimozione dell'IP del firewall stesso dal gruppo); Fase 1 prepara backup,
+verifica fisicamente console seriale e accesso iLO, e conferma il prerequisito
+non ancora validato che lo switch XGS2220-54HP supporti 802.1Q; le Fasi 2 e 3
+configurano VLAN 201 sullo switch e bridge VLAN-aware su Proxmox a impatto
+nullo sulla produzione (nessun cavo ancora spostato); la Fase 4 posa il cavo
+da P7 e valida la catena L2 con `arping`/`tcpdump` prima di toccare il firewall,
+spiegando perche' un ping ordinario possa legittimamente non rispondere in
+quel momento; la Fase 5 applica la configurazione aggiornata dalla console
+seriale con una doppia rete di protezione, lo startup-config precedente resta
+intatto finche' la verifica non e' conclusa, piu' un meccanismo di
+`lastgood` automatico lato firewall; la Fase 6 verifica nell'ordine in cui gli
+utenti se ne accorgerebbero (prima la navigazione LAN, poi la SSL VPN, poi il
+tunnel IPsec, poi il raggiungimento della VM DMZ), consolida con 48 ore di
+osservazione log e chiude con le pulizie fisiche del cablaggio provvisorio.
+
+Il file `startup-config.conf` datato 05/06/2026 e conservato con il piano
+contiene gia' in testa un changelog che descrive gli otto interventi previsti
+(rimozione WAN_TRUNK e delle rotte statiche legate a LAN2, correzione delle due
+regole allow->deny, attivazione della zona DMZ senza pool DHCP, pubblicazione
+web via `wan1:2`): e' la configurazione target preparata per il caricamento
+in Fase 5, **non** un backup post-applicazione. Alla data del 01/07/2026 la
+Fase 0 (fix della regola phishing) non risulta ancora eseguita sul dispositivo
+fisico: verificato con l'utente che l'intera sequenza resta da applicare nella
+prossima finestra di manutenzione. La regola `Blocco_Gruppo_IP_Phishing_Elisa`
+con `action allow` e' quindi ancora attiva in produzione: vedi runbook-anomalie.md
+e la nuova priorita' assegnata in `.claude/context/roadmap.md`.
+
+## 09/06/2026 - Provisioning utente e app Vianova One (centralino cloud)
+
+Fonte: screenshot cartella `08062026 (steps)`, mail `Messagistica centrale
+telefonica.eml` (09/06/2026, telefonia@myofficegroup.it).
+
+Riunione con myOffice/Vianova per la migrazione al centralino cloud (Alessia
+Liberati). Nella stessa giornata Alessio esegue due interventi operativi
+concreti, indipendenti dal piano di revisione firewall.
+
+Sullo switch Nebula (MAC `F4:4D:5C:8F:7C:39`) vengono rinominate e riconfigurate
+due porte: la porta 8, rinominata "Vianova DHCP server fonia", passa da Voice
+VLAN con PVID 1 a PVID 2 (traffico voce nativo, non piu' solo dati con voice
+overlay); la porta 3, rinominata "SIP-T34W Alessandro Potalivo", resta Voice
+VLAN con PVID 1. [TBC: lo switch con questo MAC ha 54 porte visibili nel
+pannello Nebula, compatibile solo con lo XGS2220-54HP di Piano 2, ma
+`interventi 29052026.docx` (11 giorni prima) colloca esplicitamente Potalivo
+con il suo T34W su Piano Terra, switch XGS2220-30HP porte 21/23, e riserva le
+porte 3/5/44 del Piano 2 ai due T31G di Marini e Sala Conero. L'etichetta
+sulla porta 3 e' quindi probabilmente un errore di etichettatura, non un
+reale spostamento fisico: da verificare con Alessio prima di consolidare la
+mappatura IP/MAC dei telefoni, gap GAP-TBC #67/#99.]
+
+Sul portale Area Clienti Vianova (areaclienti.vianova.it) Alessio crea un
+nuovo utente, Tommaso Vezeni (reparto IT), profilo "Base", senza privilegi di
+amministratore Area Clienti ne' di amministratore PBX Centrex. L'invito viene
+inviato via mail alle 10:46, il link di conferma ha validita' 15 giorni;
+Vezeni completa la registrazione lo stesso giorno impostando password e
+numero di cellulare per il 2FA via SMS. Viene inoltre scaricato l'installer
+di Vianova One (`VianovaOneInstaller-1.4.0.6.exe`), l'app unificata di
+comunicazione (chiamate, chat, videoconferenza) inclusa nella licenza
+Collaboration UC, per verificarne il funzionamento su una seconda postazione
+oltre a quella di Alessio.
+
+Separatamente, lo stesso giorno myOffice (Alessandro Mancinelli, reparto
+Telefonia) chiede via mail il testo dei messaggi da caricare sulla centrale
+telefonica cloud: un messaggio GIORNO, a scelta tra un semplice messaggio di
+attesa ("SIETE IN LINEA CON INTRAWELT, SIETE PREGATI DI ATTENDERE, GRAZIE",
+con eventuale sottofondo musicale e squillo su uno o piu' interni dopo 3-4
+squilli) oppure un IVR con instradamento per reparto ("PREMERE 1 PER
+L'AMMINISTRAZIONE, PREMERE 2 PER IL COMMERCIALE"), e un messaggio NOTTE con gli
+orari di apertura. **Decisione ancora aperta**: alla data del 01/07/2026 non
+risulta una risposta di Alessio a myOffice su quale testo/modalita' adottare;
+vedi gap aperto in GAP-TBC.md.
 
 ---
 
@@ -504,7 +606,9 @@ citato in DPA Allegato II.
 Riunione con Alessia Liberati (myOffice) per la migrazione al centralino cloud Vianova.
 La Voice VLAN 2 configurata il 29/05/2026 è propedeutica: i Yealink T31G/T34W
 supportano SIP diretto verso il centralino cloud eliminando la dipendenza dal
-Panasonic KX-NCP1000 fisico.
+Panasonic KX-NCP1000 fisico. Dettaglio operativo della stessa giornata (provisioning
+utente Area Clienti, Vianova One, decisione IVR ancora aperta) nella sezione
+"09/06/2026 - Provisioning utente e app Vianova One" sopra.
 
 [TBC: piano di numerazione definitivo, configurazione Patton SmartNode durante
 la transizione, timeline attivazione numeri cloud.]

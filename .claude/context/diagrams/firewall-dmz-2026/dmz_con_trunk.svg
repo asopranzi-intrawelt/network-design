@@ -1,0 +1,107 @@
+<svg viewBox="0 0 880 560" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="880" height="560" fill="#F4F6F8"/>
+
+  <!-- Title bar -->
+  <rect width="880" height="46" fill="#1E8449" rx="0"/>
+  <text x="380" y="29" fill="white" font-size="15" font-weight="700" text-anchor="middle">CON TRUNK VLAN — Singolo cavo 802.1Q</text>
+  <rect x="660" y="8" width="200" height="30" fill="#196F3D" rx="5"/>
+  <text x="760" y="28" fill="#A9DFBF" font-size="11" font-weight="700" text-anchor="middle">✔  Approccio raccomandato</text>
+
+  <!-- ── ZYXEL USG FLEX 500 ── -->
+  <rect x="200" y="65" width="460" height="80" fill="#FADBD8" stroke="#C0392B" stroke-width="2" rx="7"/>
+  <text x="430" y="90" fill="#922B21" font-size="14" font-weight="700" text-anchor="middle">Zyxel USG FLEX 500</text>
+  <text x="430" y="108" fill="#7B241C" font-size="10" text-anchor="middle">Firewall / Router / VPN Gateway</text>
+
+  <!-- VLAN tags inside Zyxel -->
+  <rect x="290" y="113" width="105" height="22" fill="#2471A3" stroke="#1A5276" stroke-width="1" rx="3"/>
+  <text x="342" y="128" fill="white" font-size="9" font-weight="700" text-anchor="middle">VLAN LAN (ge4)</text>
+  <rect x="405" y="113" width="115" height="22" fill="#D35400" stroke="#A04000" stroke-width="1" rx="3"/>
+  <text x="462" y="128" fill="white" font-size="9" font-weight="700" text-anchor="middle">VLAN DMZ 201 (ge6)</text>
+
+  <!-- Trunk port badge on Zyxel -->
+  <rect x="375" y="142" width="110" height="26" fill="#7D3C98" stroke="#6C3483" stroke-width="1.5" rx="5"/>
+  <text x="430" y="160" fill="white" font-size="10" font-weight="700" text-anchor="middle">ge4  —  TRUNK</text>
+
+  <!-- Trunk cable Zyxel → Switch -->
+  <line x1="430" y1="168" x2="430" y2="215" stroke="#7D3C98" stroke-width="3"/>
+  <!-- 802.1Q label on trunk -->
+  <rect x="448" y="178" width="105" height="20" fill="#F5EEF8" stroke="#7D3C98" stroke-width="1.5" rx="3"/>
+  <text x="500" y="192" fill="#6C3483" font-size="9" font-weight="700" text-anchor="middle">802.1Q tagged</text>
+  <!-- VLAN annotations on cable -->
+  <rect x="310" y="178" width="130" height="20" fill="#EBF5FB" stroke="#7D3C98" stroke-width="1" rx="3"/>
+  <text x="375" y="192" fill="#154360" font-size="8.5" text-anchor="middle">VLAN LAN + VLAN DMZ 201</text>
+
+  <!-- ── SWITCH ZYXEL 54p (managed 802.1Q) ── -->
+  <rect x="220" y="215" width="420" height="58" fill="#FEF9E7" stroke="#D4AC0D" stroke-width="2" rx="7"/>
+  <text x="430" y="241" fill="#7D6608" font-size="12" font-weight="700" text-anchor="middle">Switch Zyxel 54p GbE  —  Managed 802.1Q</text>
+  <text x="430" y="258" fill="#7D6608" font-size="9" text-anchor="middle">porta verso Zyxel: trunk tagged  •  porta verso Proxmox: trunk tagged</text>
+
+  <!-- Trunk cable Switch → Proxmox -->
+  <line x1="430" y1="273" x2="430" y2="318" stroke="#7D3C98" stroke-width="3"/>
+  <rect x="448" y="282" width="105" height="20" fill="#F5EEF8" stroke="#7D3C98" stroke-width="1.5" rx="3"/>
+  <text x="500" y="296" fill="#6C3483" font-size="9" font-weight="700" text-anchor="middle">802.1Q tagged</text>
+  <rect x="310" y="282" width="130" height="20" fill="#EBF5FB" stroke="#7D3C98" stroke-width="1" rx="3"/>
+  <text x="375" y="296" fill="#154360" font-size="8.5" text-anchor="middle">VLAN LAN + VLAN DMZ 201</text>
+
+  <!-- ── PROXMOX HP GEN10 ── -->
+  <rect x="150" y="318" width="560" height="220" fill="#EAFAF1" stroke="#1E8449" stroke-width="2.5" rx="8"/>
+  <text x="430" y="342" fill="#1A5632" font-size="13" font-weight="700" text-anchor="middle">Proxmox — HP Gen10</text>
+
+  <!-- Single NIC with trunk -->
+  <rect x="350" y="350" width="160" height="28" fill="#D7BDE2" stroke="#7D3C98" stroke-width="1.5" rx="5"/>
+  <text x="430" y="368" fill="#4A235A" font-size="10" font-weight="700" text-anchor="middle">NIC 1  —  TRUNK 802.1Q</text>
+
+  <!-- Linux bridge label -->
+  <text x="430" y="400" fill="#1A5632" font-size="9" text-anchor="middle">Linux bridge VLAN-aware</text>
+
+  <!-- vmbr0 (LAN) -->
+  <rect x="175" y="408" width="190" height="30" fill="#A9DFBF" stroke="#27AE60" stroke-width="1.5" rx="5"/>
+  <text x="270" y="427" fill="#1E8449" font-size="10" font-weight="700" text-anchor="middle">vmbr0  —  LAN</text>
+  <text x="270" y="441" fill="#1E8449" font-size="8" text-anchor="middle">(192.168.10.x / 20.x)</text>
+
+  <!-- Connector NIC → vmbr0 -->
+  <polyline points="380,378 270,378 270,408" fill="none" stroke="#27AE60" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- vmbr1 (DMZ) -->
+  <rect x="495" y="408" width="190" height="30" fill="#FAD7A0" stroke="#D35400" stroke-width="1.5" rx="5"/>
+  <text x="590" y="427" fill="#A04000" font-size="10" font-weight="700" text-anchor="middle">vmbr1  —  DMZ  (VLAN 201)</text>
+  <text x="590" y="441" fill="#A04000" font-size="8" text-anchor="middle">(192.168.201.x)</text>
+
+  <!-- Connector NIC → vmbr1 -->
+  <polyline points="480,378 590,378 590,408" fill="none" stroke="#D35400" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- VM LAN (greyed out, not the focus) -->
+  <rect x="175" y="462" width="190" height="44" fill="#D5F5E3" stroke="#27AE60" stroke-width="1" rx="6" opacity="0.6"/>
+  <text x="270" y="481" fill="#1E8449" font-size="10" font-weight="600" text-anchor="middle" opacity="0.7">VM  —  LAN</text>
+  <text x="270" y="497" fill="#1E8449" font-size="8" text-anchor="middle" opacity="0.7">192.168.10.x o 20.x</text>
+  <line x1="270" y1="438" x2="270" y2="462" stroke="#27AE60" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- VM DMZ (focus) -->
+  <rect x="495" y="462" width="190" height="44" fill="#F5CBA7" stroke="#A04000" stroke-width="2" rx="6"/>
+  <text x="590" y="481" fill="#6E2C00" font-size="11" font-weight="700" text-anchor="middle">VM  —  DMZ</text>
+  <text x="590" y="497" fill="#6E2C00" font-size="9" text-anchor="middle">192.168.201.x/24</text>
+  <line x1="590" y1="438" x2="590" y2="462" stroke="#D35400" stroke-width="1.5"/>
+
+  <!-- ── BENEFIT BOX ── -->
+  <rect x="25" y="383" width="115" height="130" fill="#EBF5FB" stroke="#2471A3" stroke-width="1.5" rx="7"/>
+  <text x="82" y="400" fill="#1A5276" font-size="9" font-weight="700" text-anchor="middle">✔  Vantaggi</text>
+  <text x="35" y="418" fill="#1A5276" font-size="8.5">• 1 solo cavo fisico</text>
+  <text x="35" y="434" fill="#1A5276" font-size="8.5">• Nessuna NIC extra</text>
+  <text x="35" y="450" fill="#1A5276" font-size="8.5">• Scalabile: nuove</text>
+  <text x="35" y="463" fill="#1A5276" font-size="8.5">  zone = nuove VLAN</text>
+  <text x="35" y="479" fill="#1A5276" font-size="8.5">• Infrastruttura</text>
+  <text x="35" y="492" fill="#1A5276" font-size="8.5">  esistente riutilizzata</text>
+  <text x="35" y="505" fill="#1A5276" font-size="8.5">• Switch: conf. VLAN</text>
+
+  <!-- ── LEGEND ── -->
+  <rect x="620" y="383" width="235" height="68" fill="#FDFEFE" stroke="#BDC3C7" stroke-width="1" rx="5"/>
+  <line x1="632" y1="398" x2="662" y2="398" stroke="#7D3C98" stroke-width="3"/>
+  <text x="668" y="402" fill="#4A235A" font-size="9">Trunk 802.1Q (LAN + DMZ VLAN 201)</text>
+  <line x1="632" y1="418" x2="662" y2="418" stroke="#2471A3" stroke-width="2"/>
+  <text x="668" y="422" fill="#1A5276" font-size="9">Connessione LAN</text>
+  <line x1="632" y1="438" x2="662" y2="438" stroke="#D35400" stroke-width="2"/>
+  <text x="668" y="442" fill="#A04000" font-size="9">Connessione DMZ (VLAN 201)</text>
+
+</svg>

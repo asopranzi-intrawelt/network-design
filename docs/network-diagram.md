@@ -162,6 +162,14 @@ Cambiato gruppo di continuita: febbraio 2025.
 |-----|-------------|
 | Mappatura IP AP | Tutti gli AP (tetto, Piano 1, CED, esterno) hanno IP [TBC] |
 | Switch mgmt VLAN | Switch 192.168.90.37 va spostato su VLAN management |
-| WAN_TRUNK | Configurazione WRR ancora presente su firewall, da rimuovere (TIM dismessa) |
-| DMZ VLAN 201 | Architettura pianificata, non ancora implementata |
+| WAN_TRUNK | Configurazione WRR ancora presente su firewall, da rimuovere (TIM dismessa); previsto nel piano di revisione del 05/06/2026, non ancora applicato |
+| DMZ VLAN 201 | Architettura pianificata (piano del 05/06/2026, sei fasi), non ancora implementata |
 | Patch panel | Mappatura patch panel -> porte switch Piano 2 non completata |
+| Porta Potalivo (nuovo, 01/07/2026) | Screenshot del 09/06/2026 mostrano il telefono SIP-T34W di Alessandro Potalivo etichettato sulla porta 3 di uno switch a 54 porte (MAC F4:4D:5C:8F:7C:39, compatibile solo con XGS2220-54HP Piano 2), ma sia questa scheda sia `interventi 29052026.docx` lo collocano su Piano Terra, switch XGS2220-30HP, porte 21/23. Probabile errore di etichettatura sulla porta 3 (che dovrebbe ospitare un T31G, non un T34W), da verificare con Alessio prima di consolidare la mappatura IP/MAC telefoni (GAP-TBC #67, #99) |
+
+Diagrammi sorgente (drawio/svg) dell'analisi firewall/DMZ del 29/05-05/06/2026
+sono archiviati in `.claude/context/diagrams/firewall-dmz-2026/` e registrati
+nella tabella diagrammi di `docs/firewall-zyxel-usg-flex-500.md`. Il
+consolidamento in un unico diagramma Mermaid aggiornato di questa topologia
+e' rimandato alla fine della fase di ottimizzazione rete in corso (vedi
+`.claude/context/roadmap.md`), per evitare di ricostruirlo a ogni micro-intervento.
