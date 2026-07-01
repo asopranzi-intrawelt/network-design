@@ -4,6 +4,36 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-01 — Anonimizzazione Fase A: perimetro network-design (sessione 6, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati (sostituzione deterministica via script, non a mano):
+  - docs/firewall-zyxel-usg-flex-500.md, docs/firewall-zyxel-usg-flex-500-live.conf
+  - docs/network-diagram.md, docs/telefono-pbx-voip.md
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md, GAP-TBC.md
+  - CLAUDE.md, .claude/context/STACK.md, .claude/context/deployment.md
+  - .claude/context/diagrams/network-topology.mmd
+  - .claude/context/diagrams/firewall-dmz-2026/ (8 file drawio/svg)
+  - .claude/rules/anonymization.md (nuovo, tracciato: convenzione per sessioni future)
+  - _notes/.anonymization-map.md (nuovo, NON tracciato: mappatura reale)
+  - _notes/.git-filter-replacements.txt (nuovo, NON tracciato: preparazione riscrittura storia)
+Motivo: verificato che il repository e' pubblico su GitHub (HTTP 200 via API non
+autenticata). Trovati IP pubblici reali (193.124.241.x, 31.197.194.x), IP privati
+RFC1918 reali, un MAC address reale e oltre venti occorrenze di nomi propri di
+dipendenti e referenti esterni nei file del perimetro network-design attivo,
+alcuni presenti da sessioni precedenti a questa. Con conferma esplicita
+dell'utente: repository resta pubblico, anonimizzazione completa (inclusi IP
+privati e nomi host) da qui in avanti, riscrittura della storia git pianificata
+ma rimandata a dopo la Fase B (audit dell'intero repository, registrata come
+Fase 3bis in roadmap.md) per evitare due round separati di force-push.
+Eccezione deliberata: i nomi di oggetto firewall reali che contengono "Elisa"
+restano verbatim per fedelta' operativa (necessari per guidare i prossimi
+micro-step sulla GUI); le menzioni narrative della stessa persona sono
+anonimizzate in "Persona-I". Il nome e l'email dell'utente (Alessio/asopranzi)
+restano reali, coerentemente con il fatto che sono gia' nei metadati di ogni
+commit git.
+Verificato con grep case-insensitive su tutti i file toccati: nessun residuo.
+
 ## 2026-07-01 — M1: correzione guidata regole firewall allow->deny (sessione 6)
 
 Commit: PENDING (da fare manualmente)

@@ -16,12 +16,12 @@
         </mxCell>
 
         <!-- ISP1 -->
-        <mxCell id="isp1" value="&lt;b&gt;ISP 1 (WAN1)&lt;/b&gt;&#10;Gateway: 193.124.241.1&#10;Subnet: 193.124.241.0/28" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="isp1" value="&lt;b&gt;ISP 1 (WAN1)&lt;/b&gt;&#10;Gateway: 203.0.113.1&#10;Subnet: 203.0.113.0/28" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="340" y="220" width="240" height="80" as="geometry" />
         </mxCell>
 
         <!-- ISP2 -->
-        <mxCell id="isp2" value="&lt;b&gt;ISP 2 (WAN2)&lt;/b&gt;&#10;Gateway: 31.197.194.217&#10;Subnet: 31.197.194.216/29" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="isp2" value="&lt;b&gt;ISP 2 (WAN2)&lt;/b&gt;&#10;Gateway: 198.51.100.217&#10;Subnet: 198.51.100.216/29" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1060" y="220" width="240" height="80" as="geometry" />
         </mxCell>
 
@@ -50,12 +50,12 @@
         </mxCell>
 
         <!-- WAN1 interface in firewall -->
-        <mxCell id="if-wan1" value="&lt;b&gt;ge2 / wan1&lt;/b&gt;&#10;193.124.241.5/28&#10;Up: 100 Mb &#8212; Down: 1 Gb&#10;&lt;i&gt;Alias: .2, .3, .4, .254 (shutdown)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;fontSize=11;" vertex="1" parent="1">
+        <mxCell id="if-wan1" value="&lt;b&gt;ge2 / wan1&lt;/b&gt;&#10;203.0.113.5/28&#10;Up: 100 Mb &#8212; Down: 1 Gb&#10;&lt;i&gt;Alias: .2, .3, .4, .254 (shutdown)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;fontSize=11;" vertex="1" parent="1">
           <mxGeometry x="310" y="410" width="220" height="80" as="geometry" />
         </mxCell>
 
         <!-- WAN2 interface in firewall -->
-        <mxCell id="if-wan2" value="&lt;b&gt;ge3 / wan2&lt;/b&gt;&#10;31.197.194.218/29&#10;Up: 700 Mb &#8212; Down: 1 Gb" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;fontSize=11;" vertex="1" parent="1">
+        <mxCell id="if-wan2" value="&lt;b&gt;ge3 / wan2&lt;/b&gt;&#10;198.51.100.218/29&#10;Up: 700 Mb &#8212; Down: 1 Gb" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;fontSize=11;" vertex="1" parent="1">
           <mxGeometry x="550" y="410" width="220" height="80" as="geometry" />
         </mxCell>
 
@@ -110,24 +110,24 @@
           <mxGeometry x="30" y="640" width="500" height="400" as="geometry" />
         </mxCell>
 
-        <mxCell id="lan1-main" value="&lt;b&gt;lan1&lt;/b&gt;  &#8212;  192.168.10.1/19&#10;DHCP: 192.168.10.200 &#43;55 (LAN1_POOL)&#10;DNS: ZyWALL &#8212; Lease 2 giorni" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+        <mxCell id="lan1-main" value="&lt;b&gt;lan1&lt;/b&gt;  &#8212;  10.61.10.1/19&#10;DHCP: 10.61.10.200 &#43;55 (LAN1_POOL)&#10;DNS: ZyWALL &#8212; Lease 2 giorni" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
           <mxGeometry x="50" y="680" width="460" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="lan1-1" value="&lt;b&gt;lan1:1&lt;/b&gt;  &#8212;  Subnet Server  192.168.20.1/19&#10;Server di produzione, NAS, OpenVPN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+        <mxCell id="lan1-1" value="&lt;b&gt;lan1:1&lt;/b&gt;  &#8212;  Subnet Server  10.61.20.1/19&#10;Server di produzione, NAS, OpenVPN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
           <mxGeometry x="50" y="750" width="460" height="50" as="geometry" />
         </mxCell>
 
         <!-- Server list -->
-        <mxCell id="servers" value="&lt;b&gt;Server in 192.168.20.0&lt;/b&gt;&#10;• EGETRAD .5 / EGETRAD_TEST .111&#10;• DEMO_SERVER .92&#10;• DOMV .116&#10;• SERVER_OPEN_VPN .114&#10;• NAS-FTP .167 / NAS-INTRA .168&#10;• NAS-HERO .169 / NAS-INTRA2 .177" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="servers" value="&lt;b&gt;Server in 10.61.20.0&lt;/b&gt;&#10;• EGETRAD .5 / EGETRAD_TEST .111&#10;• DEMO_SERVER .92&#10;• DOMV .116&#10;• SERVER_OPEN_VPN .114&#10;• NAS-FTP .167 / NAS-INTRA .168&#10;• NAS-HERO .169 / NAS-INTRA2 .177" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="50" y="810" width="220" height="130" as="geometry" />
         </mxCell>
 
-        <mxCell id="pcs" value="&lt;b&gt;PC utenti (192.168.10.0)&lt;/b&gt;&#10;Address-object configurati per:&#10;alessia, alessianazz, daniel,&#10;elena, elisa, fabio, giordano,&#10;federica, giuseppe, marcello,&#10;mery, pasquale, roberta, sara,&#10;sergio, sonia, ulrike&#10;+ Mac: alessandro, marcello,&#10;sara, sergio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="pcs" value="&lt;b&gt;PC utenti (10.61.10.0)&lt;/b&gt;&#10;Address-object configurati per:&#10;alessia, alessianazz, daniel,&#10;elena, elisa, fabio, giordano,&#10;federica, giuseppe, marcello,&#10;mery, pasquale, roberta, sara,&#10;sergio, sonia, ulrike&#10;+ Mac: alessandro, marcello,&#10;sara, sergio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="290" y="810" width="220" height="130" as="geometry" />
         </mxCell>
 
-        <mxCell id="lan1-2" value="&lt;b&gt;lan1:2&lt;/b&gt;  &#8212;  Subnet Stampanti  192.168.30.1/19" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+        <mxCell id="lan1-2" value="&lt;b&gt;lan1:2&lt;/b&gt;  &#8212;  Subnet Stampanti  10.61.30.1/19" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
           <mxGeometry x="50" y="960" width="460" height="40" as="geometry" />
         </mxCell>
 
@@ -136,11 +136,11 @@
           <mxGeometry x="560" y="640" width="270" height="200" as="geometry" />
         </mxCell>
 
-        <mxCell id="lan2-main" value="&lt;b&gt;lan2&lt;/b&gt;  &#8212;  192.168.200.1/24&#10;DHCP: 192.168.200.33 &#43;200&#10;DNS: ZyWALL&#10;Lease 2 giorni" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="lan2-main" value="&lt;b&gt;lan2&lt;/b&gt;  &#8212;  10.61.200.1/24&#10;DHCP: 10.61.200.33 &#43;200&#10;DNS: ZyWALL&#10;Lease 2 giorni" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=left;fontSize=10;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="580" y="680" width="230" height="80" as="geometry" />
         </mxCell>
 
-        <mxCell id="lan2-note" value="Route statica:&#10;192.168.200.0/24 → 192.168.100.1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;" vertex="1" parent="1">
+        <mxCell id="lan2-note" value="Route statica:&#10;10.61.200.0/24 → 10.61.100.1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;" vertex="1" parent="1">
           <mxGeometry x="580" y="770" width="230" height="50" as="geometry" />
         </mxCell>
 
@@ -149,7 +149,7 @@
           <mxGeometry x="860" y="640" width="270" height="200" as="geometry" />
         </mxCell>
 
-        <mxCell id="dmz-main" value="&lt;b&gt;dmz&lt;/b&gt;  &#8212;  192.168.201.1/24&#10;DHCP: 192.168.201.33 &#43;200&#10;DNS: ZyWALL&#10;Lease 2 giorni" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff8f0;strokeColor=#d79b00;align=left;fontSize=10;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="dmz-main" value="&lt;b&gt;dmz&lt;/b&gt;  &#8212;  10.61.201.1/24&#10;DHCP: 10.61.201.33 &#43;200&#10;DNS: ZyWALL&#10;Lease 2 giorni" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff8f0;strokeColor=#d79b00;align=left;fontSize=10;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="880" y="680" width="230" height="80" as="geometry" />
         </mxCell>
 
@@ -158,7 +158,7 @@
           <mxGeometry x="1160" y="640" width="270" height="200" as="geometry" />
         </mxCell>
 
-        <mxCell id="opt-main" value="&lt;b&gt;guest&lt;/b&gt;  &#8212;  192.168.90.1/24&#10;DHCP: 192.168.90.33 &#43;200&#10;DNS: 8.8.8.8 / 8.8.4.4&#10;(rete Wi-Fi ospiti, DNS pubblici)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fffbe6;strokeColor=#d6b656;align=left;fontSize=10;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="opt-main" value="&lt;b&gt;guest&lt;/b&gt;  &#8212;  10.61.90.1/24&#10;DHCP: 10.61.90.33 &#43;200&#10;DNS: 8.8.8.8 / 8.8.4.4&#10;(rete Wi-Fi ospiti, DNS pubblici)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fffbe6;strokeColor=#d6b656;align=left;fontSize=10;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1180" y="680" width="230" height="80" as="geometry" />
         </mxCell>
 
@@ -171,7 +171,7 @@
           <mxGeometry x="1460" y="640" width="220" height="200" as="geometry" />
         </mxCell>
 
-        <mxCell id="sslvpn-policy" value="&lt;b&gt;ssl_vpn_intrawelt&lt;/b&gt;&#10;Pool client:&#10;192.168.230.10-250&#10;Network extension:&#10;• LAN1_SUBNET&#10;• LAN1_SUBNET_20&#10;• LAN1_SUBNET_30&#10;• lan_remota_fs_seeweb&#10;GEO-IP filter: IT, US" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="sslvpn-policy" value="&lt;b&gt;ssl_vpn_intrawelt&lt;/b&gt;&#10;Pool client:&#10;10.61.230.10-250&#10;Network extension:&#10;• LAN1_SUBNET&#10;• LAN1_SUBNET_20&#10;• LAN1_SUBNET_30&#10;• lan_remota_fs_seeweb&#10;GEO-IP filter: IT, US" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1480" y="680" width="190" height="150" as="geometry" />
         </mxCell>
 
@@ -181,7 +181,7 @@
         </mxCell>
 
         <!-- IPSec tunnels -->
-        <mxCell id="ipsec-pse" value="&lt;b&gt;Crypto map: PSE-SEEWEB&lt;/b&gt;&#10;Site-to-Site &#8212; ATTIVO&#10;Peer: 37.9.228.27&#10;ISAKMP: FS-SEEWEB (IKEv1 aggressive)&#10;Auth: pre-shared key&#10;Encrypt: AES128-SHA, DH group2&#10;Lifetime: 86400 s&#10;Local policy: RFC1918_3 (192.168.0.0/16)&#10;Remote policy: lan_remota_fs_seeweb (10.1.116.0/24)&#10;PFS: group2 &#8212; ESP AES128-SHA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="ipsec-pse" value="&lt;b&gt;Crypto map: PSE-SEEWEB&lt;/b&gt;&#10;Site-to-Site &#8212; ATTIVO&#10;Peer: 37.9.228.27&#10;ISAKMP: FS-SEEWEB (IKEv1 aggressive)&#10;Auth: pre-shared key&#10;Encrypt: AES128-SHA, DH group2&#10;Lifetime: 86400 s&#10;Local policy: RFC1918_3 (10.61.0.0/16)&#10;Remote policy: lan_remota_fs_seeweb (10.1.116.0/24)&#10;PFS: group2 &#8212; ESP AES128-SHA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="50" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
@@ -189,7 +189,7 @@
           <mxGeometry x="450" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
-        <mxCell id="ipsec-wiz-ra" value="&lt;b&gt;Crypto map: RemoteAccess_Wiz&lt;/b&gt;&#10;IKEv2 Remote Access (mobile/EAP)&#10;Local: wan1 / Peer: any&#10;Auth: RSA-sig + EAP MSCHAPv2&#10;Cert: RemoteAccess_193.124.241.5&#10;Encrypt: AES128-SHA256&#10;DH: group2/14/21&#10;Address pool: 192.168.50.0/27&#10;DNS push: 192.168.10.1&#10;User group: RemoteAccess_Wiz_USER_GRP&#10;Zone aggiuntiva: VPN_To_WAN_SNAT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="ipsec-wiz-ra" value="&lt;b&gt;Crypto map: RemoteAccess_Wiz&lt;/b&gt;&#10;IKEv2 Remote Access (mobile/EAP)&#10;Local: wan1 / Peer: any&#10;Auth: RSA-sig + EAP MSCHAPv2&#10;Cert: RemoteAccess_203.0.113.5&#10;Encrypt: AES128-SHA256&#10;DH: group2/14/21&#10;Address pool: 10.61.50.0/27&#10;DNS push: 10.61.10.1&#10;User group: RemoteAccess_Wiz_USER_GRP&#10;Zone aggiuntiva: VPN_To_WAN_SNAT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="850" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
@@ -230,7 +230,7 @@
           <mxGeometry x="50" y="1410" width="380" height="70" as="geometry" />
         </mxCell>
 
-        <mxCell id="vs-list-off" value="&lt;b&gt;DISATTIVATI (deactivate)&lt;/b&gt;&#10;• DOMV_WEB → DOMV (192.168.20.116)&#10;• NAS_FTP_WEB → NAS-FTP (.167)&#10;• NAS_HERO_SUPPORT → NAS-HERO (.169)&#10;• EGETRAD_WEB → EGETRAD (.5)&#10;• DEMO_SERVER_WEB → DEMO_SERVER (.92)&#10;• OpenVpn udp/1194 → SERVER_OPEN_VPN (.114)&#10;• VPN_auth_LAN2 (wan2) → 192.168.100.2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="vs-list-off" value="&lt;b&gt;DISATTIVATI (deactivate)&lt;/b&gt;&#10;• DOMV_WEB → DOMV (10.61.20.116)&#10;• NAS_FTP_WEB → NAS-FTP (.167)&#10;• NAS_HERO_SUPPORT → NAS-HERO (.169)&#10;• EGETRAD_WEB → EGETRAD (.5)&#10;• DEMO_SERVER_WEB → DEMO_SERVER (.92)&#10;• OpenVpn udp/1194 → SERVER_OPEN_VPN (.114)&#10;• VPN_auth_LAN2 (wan2) → 10.61.100.2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="440" y="1410" width="400" height="70" as="geometry" />
         </mxCell>
 
@@ -239,7 +239,7 @@
           <mxGeometry x="870" y="1380" width="800" height="110" as="geometry" />
         </mxCell>
 
-        <mxCell id="routes-list" value="&lt;b&gt;Static routes&lt;/b&gt;&#10;• 192.168.2.0/24 → 192.168.10.1&#10;• 192.168.200.0/24 → 192.168.100.1&#10;• 192.168.100.0/24 → 192.168.10.1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0f8ff;strokeColor=#6c8ebf;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="routes-list" value="&lt;b&gt;Static routes&lt;/b&gt;&#10;• 10.61.2.0/24 → 10.61.10.1&#10;• 10.61.200.0/24 → 10.61.100.1&#10;• 10.61.100.0/24 → 10.61.10.1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0f8ff;strokeColor=#6c8ebf;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="890" y="1410" width="270" height="70" as="geometry" />
         </mxCell>
 

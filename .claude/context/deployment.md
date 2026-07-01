@@ -8,7 +8,7 @@ last-verified: PENDING-FIRST-COMMIT
 
 ```powershell
 # Dalla radice del progetto
-.\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 192.168.20.11
+.\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 10.61.20.11
 ```
 
 Lo script chiede username e password a runtime. Le credenziali non vengono mai salvate
@@ -21,7 +21,7 @@ Output prodotto in `output/` (ignorato da git):
 ## Prerequisiti
 
 - PowerShell 5.1 o superiore
-- Accesso di rete a `192.168.20.11:8006` (TCP 8006)
+- Accesso di rete a `10.61.20.11:8006` (TCP 8006)
 - Credenziali Proxmox con permessi API (root o utente PVEAudit)
 - Nessun modulo esterno richiesto
 

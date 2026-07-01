@@ -21,7 +21,7 @@
           <mxGeometry x="500" y="160" width="180" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="firewall" value="FIREWALL ZYXEL USG FLEX 500&#10;WAN1 attiva (193.124.241.5) — WAN2 shutdown&#10;ge4/lan1 = LAN untagged • ge6/dmz (P7) = DMZ untagged&#10;Solo routing L3: nessun tagging VLAN sul firewall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="firewall" value="FIREWALL ZYXEL USG FLEX 500&#10;WAN1 attiva (203.0.113.5) — WAN2 shutdown&#10;ge4/lan1 = LAN untagged • ge6/dmz (P7) = DMZ untagged&#10;Solo routing L3: nessun tagging VLAN sul firewall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="430" y="250" width="320" height="80" as="geometry" />
         </mxCell>
 
@@ -29,7 +29,7 @@
           <mxGeometry x="400" y="380" width="380" height="80" as="geometry" />
         </mxCell>
 
-        <mxCell id="proxmox" value="SERVER HP Gen10 — PROXMOX&#10;NIC trunk → vmbr0 VLAN-aware&#10;VM LAN: tag none (192.168.10/20.x)&#10;VM DMZ: tag 201 (192.168.201.x)&#10;nginx reverse proxy: 192.168.201.10&#10;ILO + NIC restanti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#1e8449;fontSize=11;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="proxmox" value="SERVER HP Gen10 — PROXMOX&#10;NIC trunk → vmbr0 VLAN-aware&#10;VM LAN: tag none (10.61.10/20.x)&#10;VM DMZ: tag 201 (10.61.201.x)&#10;nginx reverse proxy: 10.61.201.10&#10;ILO + NIC restanti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#1e8449;fontSize=11;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="430" y="520" width="320" height="110" as="geometry" />
         </mxCell>
 
@@ -41,7 +41,7 @@
           <mxGeometry x="140" y="400" width="180" height="80" as="geometry" />
         </mxCell>
 
-        <mxCell id="guest" value="Wi-Fi GUEST (zona OPT)&#10;ge7/P8 — 192.168.90.0/24&#10;Solo Internet: deny verso LAN1 e DMZ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10" vertex="1" parent="1">
+        <mxCell id="guest" value="Wi-Fi GUEST (zona OPT)&#10;ge7/P8 — 10.61.90.0/24&#10;Solo Internet: deny verso LAN1 e DMZ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10" vertex="1" parent="1">
           <mxGeometry x="850" y="270" width="220" height="60" as="geometry" />
         </mxCell>
 
@@ -70,7 +70,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="flow" value="&lt;b&gt;Flusso esposizione web&lt;/b&gt;&lt;br&gt;Internet → WAN_IP_DMZ_WEB&lt;br&gt;(193.124.241.3, alias wan1:2)&lt;br&gt;NAT 80/443 → 192.168.201.10&lt;br&gt;(VM nginx in DMZ)&lt;br&gt;nginx → upstream applicativi&lt;br&gt;(gestione a livello applicativo)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eafaf1;strokeColor=#1e8449;align=left;spacing=8;fontSize=10" vertex="1" parent="1">
+        <mxCell id="flow" value="&lt;b&gt;Flusso esposizione web&lt;/b&gt;&lt;br&gt;Internet → WAN_IP_DMZ_WEB&lt;br&gt;(203.0.113.3, alias wan1:2)&lt;br&gt;NAT 80/443 → 10.61.201.10&lt;br&gt;(VM nginx in DMZ)&lt;br&gt;nginx → upstream applicativi&lt;br&gt;(gestione a livello applicativo)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eafaf1;strokeColor=#1e8449;align=left;spacing=8;fontSize=10" vertex="1" parent="1">
           <mxGeometry x="40" y="520" width="240" height="120" as="geometry" />
         </mxCell>
       </root>

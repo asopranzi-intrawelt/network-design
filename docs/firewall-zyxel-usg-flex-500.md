@@ -58,11 +58,11 @@ contribuiscono al bridge della LAN principale.
 
 ### WAN
 
-**wan1** (P2): 193.124.241.5/28, gateway 193.124.241.1 (Vianova FTTO).
-Alias definiti ma in stato shutdown: 193.124.241.2, .3, .4, .254.
-L'alias wan1:2 (193.124.241.3) e' previsto per la DMZ web (vedi sezione DMZ).
+**wan1** (P2): 203.0.113.5/28, gateway 203.0.113.1 (Vianova FTTO).
+Alias definiti ma in stato shutdown: 203.0.113.2, .3, .4, .254.
+L'alias wan1:2 (203.0.113.3) e' previsto per la DMZ web (vedi sezione DMZ).
 
-**wan2** (P3): 31.197.194.218/29, gateway 31.197.194.217 (TIM, linea non piu' connessa
+**wan2** (P3): 198.51.100.218/29, gateway 198.51.100.217 (TIM, linea non piu' connessa
 fisicamente da maggio 2025). Pianificato shutdown amministrativo nella revisione.
 
 **WAN_TRUNK**: gruppo logico che unisce wan1 e wan2 con algoritmo Weighted Round Robin
@@ -81,39 +81,39 @@ system default-interface-group WAN_TRUNK
 
 ### LAN
 
-**lan1** (P4+P5+P6 bridge): 192.168.10.1/19.
+**lan1** (P4+P5+P6 bridge): 10.61.10.1/19.
 Le tre sottoreti condividono lo stesso segmento broadcast fisico.
-DHCP pool LAN1_POOL: 192.168.10.200, 55 assegnazioni, lease 2 giorni.
-22 PC fissi dichiarati come address-object con IP statici (range 192.168.10.18-84).
+DHCP pool LAN1_POOL: 10.61.10.200, 55 assegnazioni, lease 2 giorni.
+22 PC fissi dichiarati come address-object con IP statici (range 10.61.10.18-84).
 
-**lan1:1** (subnet server): 192.168.20.1/19. 9 host nominati come address-object:
+**lan1:1** (subnet server): 10.61.20.1/19. 9 host nominati come address-object:
 NAS FTP (.168), INTRA (.168), INTRA2 (.177), HERO (.169), EGETRAD, EGETRAD_TEST,
 DOMV (.116), server demo, server OpenVPN.
 
-**lan1:2** (subnet stampanti): 192.168.30.1/19.
+**lan1:2** (subnet stampanti): 10.61.30.1/19.
 
-**lan2**: interfaccia logica 192.168.200.x, nessuna porta fisica assegnata.
-Raggiungibile solo via rotta statica attraverso router downstream 192.168.100.1
+**lan2**: interfaccia logica 10.61.200.x, nessuna porta fisica assegnata.
+Raggiungibile solo via rotta statica attraverso router downstream 10.61.100.1
 (non piu' presente). Prevista dismissione.
 
-**dmz** (ge6/P7): 192.168.201.1/24. Pool DHCP presente nella config attuale
+**dmz** (ge6/P7): 10.61.201.1/24. Pool DHCP presente nella config attuale
 (prevista rimozione: server DMZ devono usare IP statici). Porta da cablare
 verso lo switch per la nuova architettura DMZ.
 
 **guest** (ge7/P8 nella config corrente - nota: l'etichetta "OPT" in zona):
-192.168.90.1/24. DNS Google (8.8.8.8, 8.8.4.4). Zona ospiti.
+10.61.90.1/24. DNS Google (8.8.8.8, 8.8.4.4). Zona ospiti.
 
 ---
 
 ## Rotte statiche
 
 ```
-ip route 192.168.2.0/24    via 192.168.10.1    (ricorsiva via LAN1)
-ip route 192.168.100.0/24  via 192.168.10.1    (ricorsiva via LAN1)
-ip route 192.168.200.0/24  via 192.168.100.1   (router downstream)
+ip route 10.61.2.0/24    via 10.61.10.1    (ricorsiva via LAN1)
+ip route 10.61.100.0/24  via 10.61.10.1    (ricorsiva via LAN1)
+ip route 10.61.200.0/24  via 10.61.100.1   (router downstream)
 ```
 
-**Anomalia**: le rotte dipendono da un router downstream 192.168.100.1 che non e'
+**Anomalia**: le rotte dipendono da un router downstream 10.61.100.1 che non e'
 monitorato dal firewall. Con il router assente (LAN2 dismessa) le rotte puntano
 a un gateway inesistente. Prevista rimozione completa di tutte e tre le rotte
 statiche nella revisione (la tabella si riduce alle reti direttamente connesse
@@ -125,10 +125,10 @@ piu' la rotta di default verso wan1).
 
 ### Tunnel IPsec site-to-site verso SEEWEB
 
-Due profili verso lo stesso peer 37.9.228.27 (infrastruttura SEEWEB):
+Due profili verso lo stesso peer <IP-SEEWEB-PEER> (infrastruttura SEEWEB):
 
 **PSE-SEEWEB**: IKEv1 modalita' aggressive, PSK, AES-128/SHA-1/DH2, lifetime 24h,
-DPD 30s. Local-policy: RFC1918_3 (192.168.0.0/16). Remote-policy: 10.1.116.0/24.
+DPD 30s. Local-policy: RFC1918_3 (10.61.0.0/16). Remote-policy: 10.77.116.0/24.
 PFS gruppo DH2.
 
 **WIZ_VPN**: IKEv1 modalita' main, stessi parametri di cifratura.
@@ -140,23 +140,23 @@ configurazione ridondante.
 ### VPN remote-access IKEv2
 
 **RemoteAccess_Wiz**: IKEv2 server, autenticazione RSA + EAP/MSCHAPv2.
-Certificato: RemoteAccess_193.124.241.5. AES-128/SHA-256, gruppi DH 2/14/21.
-Pool client: 192.168.50.0/27. DNS push: 192.168.10.1. Zona dedicata: VPN_To_WAN_SNAT.
+Certificato: RemoteAccess_203.0.113.5. AES-128/SHA-256, gruppi DH 2/14/21.
+Pool client: 10.61.50.0/27. DNS push: 10.61.10.1. Zona dedicata: VPN_To_WAN_SNAT.
 Traffico client: 0.0.0.0/0 (tutto attraverso il tunnel).
 
 ### SSL VPN
 
 **ssl_vpn_intrawelt**: porta TCP 443, TLS. Gruppo utenti: vpn-users.
-Reti raggiungibili dai client: 192.168.10.0/19, 192.168.20.0/19,
-192.168.30.0/19, 10.1.116.0/24.
-Pool client: 192.168.230.10-250.
+Reti raggiungibili dai client: 10.61.10.0/19, 10.61.20.0/19,
+10.61.30.0/19, 10.77.116.0/24.
+Pool client: 10.61.230.10-250.
 Filtro geografico: solo Italia e USA (regole 5 e 6 della security policy).
 
 ### 2FA
 
 Google Authenticator (TOTP). Canale alternativo: email o SMS. Validita' codice: 5 minuti.
 Attivo su: SSL VPN, accesso admin via SSH e Web UI, accesso NAS (URL aggiornato
-a luglio 2025 da 5.98.88.x a 193.124.241.x).
+a luglio 2025 da 5.98.88.x a 203.0.113.x).
 
 ---
 
@@ -180,7 +180,7 @@ Per riattivare la pubblicazione basta togliere `deactivate` dal virtual server;
 se la pubblicazione non e' desiderata, disattivare anche le secure-policy.
 
 **Pianificato (revisione 05/06/2026):**
-- `DMZ_WEB_HTTPS`: wan1:2 (193.124.241.3) -> SRV-DMZ-WEB (192.168.201.10) porta 443.
+- `DMZ_WEB_HTTPS`: wan1:2 (203.0.113.3) -> SRV-DMZ-WEB (10.61.201.10) porta 443.
 - `DMZ_WEB_HTTP`: wan1:2 -> SRV-DMZ-WEB porta 80.
 
 ---
@@ -193,11 +193,11 @@ Organizzate per coppia di zone (sorgente, destinazione).
 **Regola 1 - Anomalia critica**: `Blocco_Gruppo_IP_Phishing_Elisa`
 - Sorgente: WAN. Action: **allow** (dovrebbe essere deny).
 - Contiene 11 IP raccolti dall'incidente phishing 08/01/2026.
-- Includeva anche 193.124.241.5 (IP pubblico del firewall stesso, rimosso).
+- Includeva anche 203.0.113.5 (IP pubblico del firewall stesso, rimosso).
 - Poiche' e' la prima regola e il motore si ferma alla prima corrispondenza,
   quegli IP scavalcano tutti i controlli successivi.
 - **Fix immediato**: cambiare action in deny, aggiungere log alert,
-  rimuovere 193.124.241.5 dal gruppo Bad_IP_Phishing_Elisa_2026.
+  rimuovere 203.0.113.5 dal gruppo Bad_IP_Phishing_Elisa_2026.
 
 **Regola gemella - Anomalia**: `malicious_IP_12052025`
 - Blocco in uscita verso 4.207.164.234, anche questa con action allow.
@@ -272,20 +272,20 @@ bridge-vlan-aware yes
 bridge-vids 2-4094
 # applicazione a caldo da console iLO: ifreload -a
 ```
-- VM senza tag: traffico LAN, IP 192.168.20.x, gateway 192.168.20.1.
-- VM con tag 201: traffico DMZ, IP 192.168.201.x, gateway 192.168.201.1.
+- VM senza tag: traffico LAN, IP 10.61.20.x, gateway 10.61.20.1.
+- VM con tag 201: traffico DMZ, IP 10.61.201.x, gateway 10.61.201.1.
 - Il bridge mantiene i due domini L2 separati anche tra VM sullo stesso host fisico.
 
 **Firewall - interfaccia dmz** (config aggiornata):
 ```
 interface dmz
-  ip address 192.168.201.1 255.255.255.0
+  ip address 10.61.201.1 255.255.255.0
   type internal
   mtu 1500
   ! nessun ip dhcp-pool: indirizzamento statico
 ```
 
-**Prima VM DMZ**: nginx reverse proxy a 192.168.201.10, esposto su wan1:2 (193.124.241.3).
+**Prima VM DMZ**: nginx reverse proxy a 10.61.201.10, esposto su wan1:2 (203.0.113.3).
 
 ### Sequenza di applicazione: le sei fasi (LE SEI FASI.txt, 05/06/2026)
 
@@ -381,15 +381,15 @@ Backup datato del 19/05/2026 usato come base per l'analisi del 29/05/2026.
 
 | ID | Descrizione | Stato |
 |----|-------------|-------|
-| FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | **Corretto 01/07/2026** (deny + log alert, IP_09_phishing_2026_Elisa/193.124.241.5 rimosso dal gruppo) |
+| FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | **Corretto 01/07/2026** (deny + log alert, IP_09_phishing_2026_Elisa/203.0.113.5 rimosso dal gruppo) |
 | FW-002 | Regola malicious_IP_12052025: action allow invece di deny | **Corretto 01/07/2026** (deny, log gia' presente) |
 | FW-003 | secure-policy 8/9/10 attive ma virtual server corrispondenti deactivate | Verificare intento |
-| FW-004 | Rotte statiche dipendono da router downstream 192.168.100.1 non monitorato | Da rimuovere con dismissione LAN2 |
+| FW-004 | Rotte statiche dipendono da router downstream 10.61.100.1 non monitorato | Da rimuovere con dismissione LAN2 |
 | FW-005 | Alias wan1 (.2/.3/.4/.254) in shutdown: verificare se alcuni servono ancora | Verificare |
 | FW-006 | VPN IKEv1/AES-128/SHA-1/DH2 PSE-SEEWEB: parametri sotto best practice attuali | Da aggiornare |
-| FW-007 | Presenza di due profili IPsec verso 37.9.228.27 (PSE-SEEWEB e WIZ_VPN) | Verificare se transizione in corso o residuo |
+| FW-007 | Presenza di due profili IPsec verso <IP-SEEWEB-PEER> (PSE-SEEWEB e WIZ_VPN) | Verificare se transizione in corso o residuo |
 | FW-008 | WAN_TRUNK con wan2 primary ma TIM non connessa da maggio 2025 | Da rimuovere nella revisione |
 | FW-009 | DMZ pool DHCP presente: incompatibile con server a IP statico | Da rimuovere nella revisione |
 | FW-010 | File draw.io prodotti dal lavoro di analisi: zyxel_usg_flex500_network.drawio e zyxel_usg_flex500_detailed.drawio - localizzare e archiviare | Fatto (01/07/2026, `.claude/context/diagrams/firewall-dmz-2026/`) |
 | FW-011 | Il piano di revisione a sei fasi (05/06/2026): Fase 0 applicata 01/07/2026 (FW-001/002 risolte), Fasi 1-6 non ancora eseguite: FW-004/008/009 restano aperte in produzione | Fasi 1-6 da applicare (prossima finestra di manutenzione) |
-| FW-012 | Porta 8 dello switch 54HP (MAC F4:4D:5C:8F:7C:39) rinominata "Vianova DHCP server fonia" e passata a PVID 2 il 09/06/2026: verificare la funzione effettiva e se sostituisce il DHCP server classe .90 da rimuovere (vedi network-diagram.md) | Verificare |
+| FW-012 | Porta 8 dello switch 54HP (MAC AA:BB:CC:00:00:01) rinominata "Vianova DHCP server fonia" e passata a PVID 2 il 09/06/2026: verificare la funzione effettiva e se sostituisce il DHCP server classe .90 da rimuovere (vedi network-diagram.md) | Verificare |
