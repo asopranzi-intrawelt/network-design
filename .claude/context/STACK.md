@@ -25,10 +25,10 @@ last-verified: PENDING-FIRST-COMMIT
 
 ## Infrastruttura target
 
-- Proxmox VE su `192.168.20.11:8006`
+- Proxmox VE su `10.61.20.11:8006`
 - Singolo nodo `pve`
 - Tre storage pool: local, local-lvm, NAS_INTRA, NAS_HERO
-- 4 bridge Linux: vmbr0 (192.168.20.x), vmbr1-3 (porte fisiche dedicate)
+- 4 bridge Linux: vmbr0 (10.61.20.x), vmbr1-3 (porte fisiche dedicate)
 - 10 VM QEMU, 0 LXC al momento dello snapshot v3
 
 ## Dipendenze PowerShell

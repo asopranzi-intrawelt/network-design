@@ -7,7 +7,7 @@ per supporto su conformità NIS2 e data protection. Referente: avvocato Proelium
 Primo documento prodotto: analisi NIS2 applicabilità a Intrawelt (PMI settore
 servizi di traduzione → valutazione soggetto critico / importante).
 
-Parallelo con Serafino (ISO 27001): due percorsi distinti, coordinati da Alessio.
+Parallelo con Consulente-ISO27001-1 (ISO 27001): due percorsi distinti, coordinati da Alessio.
 
 ## Gennaio-Marzo 2026 - IntraLino: sviluppo architettura n8n stabile
 
@@ -58,24 +58,24 @@ su documentazione tecnica Intrawelt, senza dipendenza da API cloud esterne.
 ### Account coinvolti e sintomi
 
 Tre account coinvolti in modo diverso:
-- **emonterubbianesi@intrawelt.com** (Elisa): regola inbox sospetta trovata tramite PowerShell EXO
-- **mrenzi@intrawelt.com** (Martina): email arrivate il 14/01/2026 scomparse dall'inbox (es. notifica cambio SDI da Sollini Gino srl)
-- **anasini@intrawelt.com**: email arrivate ma non visibili (possibile quarantena)
+- **persona-i@intrawelt.com** (Persona-I): regola inbox sospetta trovata tramite PowerShell EXO
+- **persona-c@intrawelt.com** (Martina): email arrivate il 14/01/2026 scomparse dall'inbox (es. notifica cambio SDI da Sollini Gino srl)
+- **persona-j@intrawelt.com**: email arrivate ma non visibili (possibile quarantena)
 
 ### Analisi Purview (Microsoft Defender/Compliance)
 
 Rilevata attività "**MailRedirect**" su info@intrawelt.com:
 - Operazione: `Set-InboxRule` (modifica regola posta in arrivo)
 - Regola modificata: intercetta email da `procurement.it@bayer.com` con oggetto contenente "ordine d'acquisto", applica categoria "Inoltro OK", inoltra a tre indirizzi interni, ferma elaborazione altre regole.
-- ClientIP: **193.124.241.5** (indirizzo IP pubblico Intrawelt → modifica dall'interno della rete o VPN). NON un attaccante esterno.
+- ClientIP: **203.0.113.5** (indirizzo IP pubblico Intrawelt → modifica dall'interno della rete o VPN). NON un attaccante esterno.
 
 Purview classifica qualsiasi regola che inoltra messaggi come "RISKYACTIVITY MailRedirect" anche se legittima.
 
-### Regola sospetta su Elisa (PowerShell ExchangeOnline)
+### Regola sospetta su Persona-I (PowerShell ExchangeOnline)
 
 ```powershell
 Connect-ExchangeOnline
-Get-InboxRule -Mailbox emonterubbianesi@intrawelt.com | Format-List
+Get-InboxRule -Mailbox persona-i@intrawelt.com | Format-List
 ```
 
 Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO PowerShell):
@@ -101,7 +101,7 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §Ticket Aruba
 
 Alessio apre ticket Aruba ARU-340414, ID **18346774A** per chiarire le opzioni di
 backup e WAF della VPS di produzione SCENIA (O2A4: 4 vCPUs, 8 GB RAM, 80 GB storage,
-50 TB/mese data transfer, Ubuntu 22.04 LTS, IP 80.211.141.50).
+50 TB/mese data transfer, Ubuntu 22.04 LTS, IP <IP-SCENIA-VPS-PROD>).
 
 **Risposta Aruba su backup VPS:**
 - SWITCH OFF SERVER = spegnimento, RESET = riavvio, INIZIALIZZA = reset a stato
@@ -144,11 +144,11 @@ Fix: Next.js ≥ 16.1.5 (streaming + controllo dimensioni).
 Processo di rilevamento: `pnpm audit` eseguito periodicamente. Prisma dependency
 vulnerability rilevata nella stessa sessione.
 
-## 19/02/2026 - CSRF Token T-Rex/Odoo (Chiara Ippoliti)
+## 19/02/2026 - CSRF Token T-Rex/Odoo (Persona-F)
 
 Fonte: `Helpdesk_T-Rex/Problema CSRF Token T_Rex.docx`
 
-Chiara Ippoliti segnala a Tommaso Vezeni: batch upload XML analisi in T-Rex bloccato
+Persona-F segnala a Persona-E: batch upload XML analisi in T-Rex bloccato
 (caricamento infinito) + alert "Session expired (invalid CSRF token)" + stampa preventivi
 fallisce se eseguita subito dopo altra stampa. Problema specifico della postazione di
 Chiara; gli altri utenti non riscontrano problemi.
@@ -161,7 +161,7 @@ Procedura operativa completa in helpdesk-operations.md §T-Rex CSRF Token.
 ## 23/03/2026 – Analisi blocco traffico centralino (Vianova / USG FLEX 500)
 
 Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx`
-Trigger: mail da a.liberati@myofficegroup.it (Vianova/MyOffice) del 23/03/2026 con richiesta di verifica.
+Trigger: mail da referente-vianova-1@myofficegroup.it (Vianova/MyOffice) del 23/03/2026 con richiesta di verifica.
 
 Analisi su Zyxel USG FLEX 500: verifica se il firewall blocca il traffico VoIP/SIP del centralino Panasonic.
 
@@ -169,19 +169,19 @@ Analisi su Zyxel USG FLEX 500: verifica se il firewall blocca il traffico VoIP/S
 
 | Subnet / IP | Porta / Range | Protocollo |
 |-------------|---------------|------------|
-| 185.158.118.128/26 | TCP 5061 | SIP |
-| 185.158.118.128/26 | UDP 20000–40000 | RTP media |
-| 103.26.124.0/24 | TCP 5039 | — |
-| 185.158.118.27 | TCP 433 | — |
-| 185.158.116.29 | TCP 5222 | — |
-| 94.138.161.187 | TCP 6050, UDP 6050 | — |
-| 94.138.161.180/30 | TCP 14000–14999, UDP 15000–15999 | — |
+| <RANGE-VIANOVA-SIP-1> | TCP 5061 | SIP |
+| <RANGE-VIANOVA-SIP-1> | UDP 20000–40000 | RTP media |
+| <RANGE-VIANOVA-SIP-2> | TCP 5039 | — |
+| <IP-VIANOVA-MGMT> | TCP 433 | — |
+| <IP-VIANOVA-SIP-3> | TCP 5222 | — |
+| <IP-VIANOVA-MEDIA-1> | TCP 6050, UDP 6050 | — |
+| <RANGE-VIANOVA-MEDIA-2> | TCP 14000–14999, UDP 15000–15999 | — |
 
 **Esito:** nessuna Security Policy blocca le subnet sopra in uscita; i log
 (`Monitor → Log`) non riportano alcun blocco per nessuno degli IP/porte verificati.
 Conclusione: il firewall USG FLEX 500 **non è la causa** del problema centralino.
 
-## 04/03/2026 - Meeting Odoo portale SCENIA (Susanna Ortini, OpenForce)
+## 04/03/2026 - Meeting Odoo portale SCENIA (Referente-OpenForce-1, OpenForce)
 
 Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo.
 Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopranzi@intrawelt.com
@@ -250,7 +250,7 @@ ma la velocita' effettiva dipende dal transceiver e dal dispositivo collegato al
 estremita'. Al momento del rilevamento Nebula la porta vede ancora lo switch vecchio
 Piano Terra.
 
-Porta verso QNAP QSW-1208-8c: connessione a 10 Gbps solo per Marcello Carlacchiani
+Porta verso QNAP QSW-1208-8c: connessione a 10 Gbps solo per Persona-G
 (collegamento dedicato al suo workstation).
 
 ### Configurazione Nebula post-installazione
@@ -274,7 +274,7 @@ Procedura di risoluzione:
    Configure > Switch ports dello switch Piano 2, porta 40).
 2. Staccata la fibra tra Piano Terra e Piano 2, poi riattaccata.
 3. Lo switch Piano Terra prende ora la classe .10 (DHCP server del firewall).
-4. Rimesso in DHCP: 192.168.10.10 (assegnato dal DHCP server firewall, classe .10).
+4. Rimesso in DHCP: 10.61.10.10 (assegnato dal DHCP server firewall, classe .10).
 
 Dettaglio porta 30 dello switch Piano Terra (uplink SFP+):
 Configurata come uplink. Attiva a 10 Gbps verso il Piano 2.
@@ -291,11 +291,11 @@ Situazione DHCP: il problema e' che se sta attaccato il cavo della classe .90 e
 si spengono e riaccendono gli switch senza VLAN taggate si crea un conflitto.
 Rimozione del DHCP server classe .90 e' pendente come task (vedi GAP-TBC.md).
 
-## 11/05/2026 - Architettura sicurezza VPS SCENIA: Cloudflare Zero Trust (con Fabio Giorgini)
+## 11/05/2026 - Architettura sicurezza VPS SCENIA: Cloudflare Zero Trust (con Collaboratore-Esterno-1)
 
 Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §Ragionamento con Fabio architettura sicurezza VPS
 
-Decisione architetturale presa il 11/05/2026 in riunione con Fabio Giorgini.
+Decisione architetturale presa il 11/05/2026 in riunione con Collaboratore-Esterno-1.
 
 **Scelta: Cloudflare Free + cloudflared tunnel (al posto di ModSecurity WAF locale)**
 
@@ -312,18 +312,18 @@ Motivazione:
 - Zero Trust: scenia.cloudflareaccess.com (team name)
 - NS delegati a Cloudflare: kaiser.ns.cloudflare.com, tara.ns.cloudflare.com
   (già delegati da Register.it)
-- cloudflared installato su VPS staging (93.186.255.24) via apt GPG key
+- cloudflared installato su VPS staging (<IP-SCENIA-VPS-STAGING>) via apt GPG key
 - Porte 80/443 chiuse con `ufw deny`; accesso SSH consentito solo da IP Intrawelt
-  e IP Fabio (95.236.26.239)
+  e IP Fabio (<IP-COLLABORATORE-ESTERNO>)
 - Nginx proxy su porta 80 → Next.js porta 3000
 
 **DNS scenia.it (stato al momento del setup):**
 | Dominio | A record | Ruolo |
 |---------|----------|-------|
-| scenia.it | 80.211.141.50 | Sito istituzionale (one-page) |
-| portal.scenia.it | 80.211.141.50 | Portale produzione (Trados Accelerate) |
-| contact.scenia.it | 80.211.141.50 | Landing form contatti (design Attilio) |
-| staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare) |
+| scenia.it | <IP-SCENIA-VPS-PROD> | Sito istituzionale (one-page) |
+| portal.scenia.it | <IP-SCENIA-VPS-PROD> | Portale produzione (Trados Accelerate) |
+| contact.scenia.it | <IP-SCENIA-VPS-PROD> | Landing form contatti (design Attilio) |
+| staging-portal.scenia.it | <IP-SCENIA-VPS-STAGING> | Portale staging (proxato Cloudflare) |
 
 **Produzione:** cloudflared tunnel pianificato anche per VPS produzione nella fase
 successiva. Fail2Ban attivo su entrambe le VPS (ban IP dopo 3-4 tentativi SSH falliti).
@@ -336,11 +336,11 @@ Repository sicurezza: github.com/Intrawelt-SaaS/security (README con dettaglio s
 
 ### NAS INTRA2 - migrazione da Ethernet a fibra 10GbE
 
-Il NAS INTRA2 (QNAP TS-435XeU-4G, 192.168.20.177) viene migrato dalla scheda
+Il NAS INTRA2 (QNAP TS-435XeU-4G, 10.61.20.177) viene migrato dalla scheda
 Ethernet (Adapter 4, 2.5GbE) alla scheda fibra 10GbE (Adapter 1). Procedura:
 disabilitare la scheda Ethernet, assegnare lo stesso IP statico alla scheda fibra
 via DHCP poi configurazione statica, disconnettere fisicamente il cavo Ethernet.
-[TBC: IP di management durante la migrazione era 192.168.10.210:8080 - verificare
+[TBC: IP di management durante la migrazione era 10.61.10.210:8080 - verificare
 configurazione definitiva Adapter 1 10GbE]. Job di backup PC-ALESSIO testato e
 funzionante dopo la migrazione.
 
@@ -349,11 +349,11 @@ funzionante dopo la migrazione.
 Configurazione Voice VLAN sui due switch Zyxel via Nebula (nebula.zyxel.com).
 
 **Telefoni attivi e posizione**:
-- Alessandro Potalivo: Yealink SIP-T34W (Piano Terra, XGS2220-30HP, porte 21/23)
-- Sonia Martellini: Yealink SIP-T34W (Piano Terra)
-- Martina Renzi: Yealink SIP-T34W (Piano Terra)
-- Marsk Marini: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porte 3/5 PoE)
-- Sala Conero: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porta 44 PoE)
+- Persona-A: Yealink SIP-T34W (Piano Terra, XGS2220-30HP, porte 21/23)
+- Persona-B: Yealink SIP-T34W (Piano Terra)
+- Persona-C: Yealink SIP-T34W (Piano Terra)
+- Persona-D: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porte 3/5 PoE)
+- Sala-1: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porta 44 PoE)
 
 **Configurazione Voice VLAN**:
 - VLAN ID: 2 (voce).
@@ -456,34 +456,34 @@ Fonte: screenshot cartella `08062026 (steps)`, mail `Messagistica centrale
 telefonica.eml` (09/06/2026, telefonia@myofficegroup.it).
 
 Riunione con myOffice/Vianova per la migrazione al centralino cloud (Alessia
-Liberati). Nella stessa giornata Alessio esegue due interventi operativi
+Referente-Vianova-1). Nella stessa giornata Alessio esegue due interventi operativi
 concreti, indipendenti dal piano di revisione firewall.
 
-Sullo switch Nebula (MAC `F4:4D:5C:8F:7C:39`) vengono rinominate e riconfigurate
+Sullo switch Nebula (MAC `AA:BB:CC:00:00:01`) vengono rinominate e riconfigurate
 due porte: la porta 8, rinominata "Vianova DHCP server fonia", passa da Voice
 VLAN con PVID 1 a PVID 2 (traffico voce nativo, non piu' solo dati con voice
-overlay); la porta 3, rinominata "SIP-T34W Alessandro Potalivo", resta Voice
+overlay); la porta 3, rinominata "SIP-T34W Persona-A", resta Voice
 VLAN con PVID 1. [TBC: lo switch con questo MAC ha 54 porte visibili nel
 pannello Nebula, compatibile solo con lo XGS2220-54HP di Piano 2, ma
-`interventi 29052026.docx` (11 giorni prima) colloca esplicitamente Potalivo
+`interventi 29052026.docx` (11 giorni prima) colloca esplicitamente Persona-A
 con il suo T34W su Piano Terra, switch XGS2220-30HP porte 21/23, e riserva le
-porte 3/5/44 del Piano 2 ai due T31G di Marini e Sala Conero. L'etichetta
+porte 3/5/44 del Piano 2 ai due T31G di Persona-D e Sala-1. L'etichetta
 sulla porta 3 e' quindi probabilmente un errore di etichettatura, non un
 reale spostamento fisico: da verificare con Alessio prima di consolidare la
 mappatura IP/MAC dei telefoni, gap GAP-TBC #67/#99.]
 
 Sul portale Area Clienti Vianova (areaclienti.vianova.it) Alessio crea un
-nuovo utente, Tommaso Vezeni (reparto IT), profilo "Base", senza privilegi di
+nuovo utente, Persona-E (reparto IT), profilo "Base", senza privilegi di
 amministratore Area Clienti ne' di amministratore PBX Centrex. L'invito viene
 inviato via mail alle 10:46, il link di conferma ha validita' 15 giorni;
-Vezeni completa la registrazione lo stesso giorno impostando password e
+Persona-E completa la registrazione lo stesso giorno impostando password e
 numero di cellulare per il 2FA via SMS. Viene inoltre scaricato l'installer
 di Vianova One (`VianovaOneInstaller-1.4.0.6.exe`), l'app unificata di
 comunicazione (chiamate, chat, videoconferenza) inclusa nella licenza
 Collaboration UC, per verificarne il funzionamento su una seconda postazione
 oltre a quella di Alessio.
 
-Separatamente, lo stesso giorno myOffice (Alessandro Mancinelli, reparto
+Separatamente, lo stesso giorno myOffice (Referente-MyOffice-1, reparto
 Telefonia) chiede via mail il testo dei messaggi da caricare sulla centrale
 telefonica cloud: un messaggio GIORNO, a scelta tra un semplice messaggio di
 attesa ("SIETE IN LINEA CON INTRAWELT, SIETE PREGATI DI ATTENDERE, GRAZIE",
@@ -506,7 +506,7 @@ Eseguita la Fase 0 del piano del 05/06/2026, indipendentemente dal resto della
 sequenza a sei fasi (che resta da applicare). Sulla regola
 `Blocco_Gruppo_IP_Phishing_Elisa` (Policy Control, riga 1): action corretta da
 `allow` a `deny`, log impostato su `log alert`, e l'oggetto
-`IP_09_phishing_2026_Elisa` (193.124.241.5, l'IP pubblico del firewall stesso)
+`IP_09_phishing_2026_Elisa` (203.0.113.5, l'IP pubblico del firewall stesso)
 rimosso dal gruppo `Bad_IP_Phishing_Elisa_2026`, che nel frattempo si conferma
 composto da undici membri (IP_01-IP_11). Sulla regola gemella
 `malicious_IP_12052025` (riga 4): action corretta da `allow` a `deny`, il log
@@ -522,8 +522,8 @@ prossimo giro di riconciliazione della scheda, non urgente.
 
 ## Aprile-Giugno 2026 - Redesign sito intrawelt.com
 
-Cappelli Design (referente Anna Caruso) avvia il redesign del sito intrawelt.com.
-Piattaforma: WordPress. Gestore IT: Tommaso Vezeni.
+Cappelli Design (referente Referente-CappelliDesign-1) avvia il redesign del sito intrawelt.com.
+Piattaforma: WordPress. Gestore IT: Persona-E.
 
 10/04/2026: Cappelli Design inizia a condividere contenuti per il nuovo sito.
 Creato utente WordPress `marketing_cappelli` con ruolo Editor → escalato a Amministratore
@@ -538,9 +538,9 @@ fuori dal primo rilascio). Tempistiche secondo rilascio: TBD.
 
 ## 07/05/2026 - Guasto NAS INTRA2 e sostituzione
 
-Il NAS INTRA2 (QNAP TS-451U, 192.168.20.177) subisce un guasto. L'apparato viene
+Il NAS INTRA2 (QNAP TS-451U, 10.61.20.177) subisce un guasto. L'apparato viene
 sostituito con un QNAP TS-435XeU-4G. I 4 dischi da 8 TB (RAID 5) installati a
-gennaio 2025 vengono migrati nel nuovo chassis. L'indirizzo IP rimane 192.168.20.177.
+gennaio 2025 vengono migrati nel nuovo chassis. L'indirizzo IP rimane 10.61.20.177.
 
 [TBC: dettagli del guasto TS-451U (tipo di errore, log QNAP), procedura esatta
 di migrazione dischi nel nuovo chassis TS-435XeU-4G, eventuali problemi riscontrati,
@@ -565,9 +565,9 @@ Risultato: la dorsale Piano Terra - Piano 2 negozia e comunica a 10 Gbps
 
 ---
 
-## Gennaio-Aprile 2026 - SCENIA sviluppo full-stack (Fabio Giorgini)
+## Gennaio-Aprile 2026 - SCENIA sviluppo full-stack (Collaboratore-Esterno-1)
 
-Sviluppo principale su branch con Fabio Giorgini (collaboratore esterno, modello
+Sviluppo principale su branch con Collaboratore-Esterno-1 (collaboratore esterno, modello
 fork + PR). Snapshot repository analizzato: staging 27/02/2026 → main 22/04/2026
 (analisi prodotta in 13_Maggio 2026 / analysis-output/).
 
@@ -599,7 +599,7 @@ note database e diagramma.docx (evoluzione successiva).
 ### DPA ScenIA v1.0 → v1.7
 
 Redazione del Data Processing Agreement (GDPR Art. 28) tra Intrawelt (Processor)
-e il Titolare del trattamento ScenIA. Fabio Giorgini (AIDAPT) come sub-processor.
+e il Titolare del trattamento ScenIA. Collaboratore-Esterno-1 (AIDAPT) come sub-processor.
 
 Versioni DPA:
 - v1.1 (08/06/2026): prima bozza condivisa con AIDAPT
@@ -627,7 +627,7 @@ citato in DPA Allegato II.
 
 ## 09/06/2026 - Riunione myOffice: migrazione centralino cloud Vianova
 
-Riunione con Alessia Liberati (myOffice) per la migrazione al centralino cloud Vianova.
+Riunione con Referente-Vianova-1 (myOffice) per la migrazione al centralino cloud Vianova.
 La Voice VLAN 2 configurata il 29/05/2026 è propedeutica: i Yealink T31G/T34W
 supportano SIP diretto verso il centralino cloud eliminando la dipendenza dal
 Panasonic KX-NCP1000 fisico. Dettaglio operativo della stessa giornata (provisioning
@@ -641,7 +641,7 @@ la transizione, timeline attivazione numeri cloud.]
 
 ### Topologia
 
-WAN: Vianova FTTO 1 Gbps simmetrica nominale. IP pubblici: 193.124.241.x/28
+WAN: Vianova FTTO 1 Gbps simmetrica nominale. IP pubblici: 203.0.113.x/28
 (gateway .1, IP WAN Intrawelt .5). Backup: Vianova ponte radio Line Recovery
 Standard (100 Mbps download, 20 Mbps upload). Failover automatico con mantenimento
 IP pubblici via HSRP tra Router R-1000 principale e Router R-1000 backup.
@@ -649,24 +649,24 @@ IP pubblici via HSRP tra Router R-1000 principale e Router R-1000 backup.
 Switch Vianova S-1000 distribuisce: una porta dati verso WAN1 del firewall Zyxel,
 una porta per la linea fonia VoIP.
 
-Firewall: Zyxel USG FLEX 500. IP LAN: 192.168.20.1. Porta verso switch Piano 2:
-1 Gbps rame (collo di bottiglia fisico per l'uscita WAN). VPN SSL: 193.124.241.x:443.
+Firewall: Zyxel USG FLEX 500. IP LAN: 10.61.20.1. Porta verso switch Piano 2:
+1 Gbps rame (collo di bottiglia fisico per l'uscita WAN). VPN SSL: 203.0.113.x:443.
 
 Switch Piano 2: Zyxel XGS2220-54HP (48 porte GbE PoE++ + 6 SFP+ 10 Gbps, L3,
 Nebula). Porta 33: firewall 1 Gbps rame. Porta SFP+ 52: dorsale verso Piano Terra
 10 Gbps fibra (operativa dall'08/05/2026). HP ProLiant DL380 Gen10 (Proxmox VE
-8.3.4, 192.168.20.11:8006, iLO5 192.168.20.9). NAS HERO (.169), NAS INTRA (.168),
+8.3.4, 10.61.20.11:8006, iLO5 10.61.20.9). NAS HERO (.169), NAS INTRA (.168),
 NAS INTRA2 (.177 TS-435XeU-4G), NAS INTRA3 (.172 vuoto), NAS documenti (.170).
 
 Switch Piano Terra: Zyxel XGS2220-30HP (24 porte GbE PoE+ + 4 SFP+ 10 Gbps, L3,
 Nebula, installato aprile 2026). Uplink SFP+: 10 Gbps verso Piano 2 (operativo
-dall'08/05/2026). IP management: 192.168.10.10 (DHCP classe .10 del firewall).
+dall'08/05/2026). IP management: 10.61.10.10 (DHCP classe .10 del firewall).
 
 Cloud SEEWEB (tunnel IPsec operativo dal 24/06/2025):
-Firewall OPNsense: 10.1.116.1 (user1 / [redacted]).
-WINGROUPSHARE: 10.1.116.3 (Windows Server, GroupShare Trados, Cobian Backup, RDP
+Firewall OPNsense: 10.77.116.1 (user1 / [redacted]).
+WINGROUPSHARE: 10.77.116.3 (Windows Server, GroupShare Trados, Cobian Backup, RDP
 Administrator / [redacted], WAN: 212.35.202.x).
-WINSRV2019: 10.1.116.4 (Windows Server 2019, desktop remoti DTP e PM, utente analisi1).
+WINSRV2019: 10.77.116.4 (Windows Server 2019, desktop remoti DTP e PM, utente analisi1).
 
 ### Lavori aperti
 
@@ -685,8 +685,8 @@ Fonte: `_DA SISTEMARE (Alessio)/Analisi mail/marsk-17062026/analisi-problema-con
 (Claude Code M365 trace analysis, 17/06/2026)
 
 **Mittente**: `ADM_DWIT_TEST_POWERPLATFORM@enispa.onmicrosoft.com` (Eni Power Automate Flow)
-IP sorgente: `20.86.93.66` (Azure Cloud), Tenant Eni: `c16e514b-893e-4a01-9a30-b8fef514a650`
-**Destinatario**: `enivipa@intrawelt.com` (+ `mmarini@intrawelt.com` in parallelo scoperto da trace)
+IP sorgente: `<IP-ENI-AZURE-SOURCE>` (Azure Cloud), Tenant Eni: `c16e514b-893e-4a01-9a30-b8fef514a650`
+**Destinatario**: `enivipa@intrawelt.com` (+ `persona-d@intrawelt.com` in parallelo scoperto da trace)
 **Oggetto tipo**: `Traduzione per [Nome Cognome] - [ID]` (richieste VIPA)
 
 **Episodi di mancata consegna:**

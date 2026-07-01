@@ -127,6 +127,32 @@ unico commit cumulativo di fine fase.
 | M20 | Diagnosticare l'intermittenza "offline" degli switch su Nebula (rete dati funzionante, solo il canale di gestione cade): raccogliere orari degli eventi offline da Nebula e correlarli con i log del firewall (failover wan2, eventi SSL inspection sul traffico verso il cloud Zyxel) | MEDIA | NEB-001 | Nessuna (diagnosi indipendente da M1-M9) | Da fare |
 | M21 | Ricontrollare M20 dopo l'esecuzione di M7 (rimozione WAN_TRUNK): se l'intermittenza sparisce, FW-008 era la causa; se persiste, approfondire l'ipotesi SSL inspection | MEDIA | NEB-001 | M7, M20 | Da fare |
 
+## Fase 3bis - Anonimizzazione repository pubblico (AVVIATA)
+
+Il repository e' pubblico su GitHub (verificato via API il 01/07/2026). Fase A
+completata il 01/07/2026: anonimizzati IP pubblici/privati, MAC address e nomi
+propri nei sei file del perimetro network-design attivo (`firewall-zyxel-usg-flex-500.md`
+e `-live.conf`, `network-diagram.md`, `telefono-pbx-voip.md`,
+`2026-switch-piano-terra.md`, `GAP-TBC.md`), piu' `CLAUDE.md`, `STACK.md`,
+`deployment.md`, `network-topology.mmd` e gli 8 diagrammi archiviati in
+`context/diagrams/firewall-dmz-2026/` (stesso IP Proxmox, corretto per
+contatto diretto). Convenzione documentata in `.claude/rules/anonymization.md`,
+mappatura reale privata in `_notes/.anonymization-map.md` (non versionata).
+
+Fase B, da fare: audit completo del resto del repository (SCENIA, cybersecurity,
+helpdesk, timeline storica pre-2026, onboarding/offboarding) per lo stesso tipo
+di dati — IP, MAC, nomi propri di dipendenti e clienti accumulati su piu'
+sessioni. E' un lavoro della stessa scala dell'ingestione iniziale, da trattare
+come workstream a parte, non da fare di fretta in coda a un'altra sessione.
+
+Riscrittura della storia git: pianificata **una sola volta**, dopo che anche la
+Fase B e' completa, invece che due round separati di force-push. I comandi
+`git filter-repo` con il file di sostituzioni sono preparati in
+`_notes/.git-filter-replacements.txt` (non versionato, da estendere durante la
+Fase B) e vanno eseguiti dall'utente, mai dall'agente: e' un'operazione che
+riscrive quasi tutta la storia del repository (il valore piu' vecchio risale
+al secondo commit del progetto) e richiede force-push coordinato.
+
 ## Fase 4 - Piano interventi futuri residui (DA PIANIFICARE)
 
 Steps non coperti dalla Fase 3, da pianificare dopo la chiusura dei micro-step

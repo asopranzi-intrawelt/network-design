@@ -59,7 +59,7 @@
   <!-- vmbr0 (LAN) -->
   <rect x="175" y="408" width="190" height="30" fill="#A9DFBF" stroke="#27AE60" stroke-width="1.5" rx="5"/>
   <text x="270" y="427" fill="#1E8449" font-size="10" font-weight="700" text-anchor="middle">vmbr0  —  LAN</text>
-  <text x="270" y="441" fill="#1E8449" font-size="8" text-anchor="middle">(192.168.10.x / 20.x)</text>
+  <text x="270" y="441" fill="#1E8449" font-size="8" text-anchor="middle">(10.61.10.x / 20.x)</text>
 
   <!-- Connector NIC → vmbr0 -->
   <polyline points="380,378 270,378 270,408" fill="none" stroke="#27AE60" stroke-width="1.5" stroke-dasharray="3,2"/>
@@ -67,7 +67,7 @@
   <!-- vmbr1 (DMZ) -->
   <rect x="495" y="408" width="190" height="30" fill="#FAD7A0" stroke="#D35400" stroke-width="1.5" rx="5"/>
   <text x="590" y="427" fill="#A04000" font-size="10" font-weight="700" text-anchor="middle">vmbr1  —  DMZ  (VLAN 201)</text>
-  <text x="590" y="441" fill="#A04000" font-size="8" text-anchor="middle">(192.168.201.x)</text>
+  <text x="590" y="441" fill="#A04000" font-size="8" text-anchor="middle">(10.61.201.x)</text>
 
   <!-- Connector NIC → vmbr1 -->
   <polyline points="480,378 590,378 590,408" fill="none" stroke="#D35400" stroke-width="1.5" stroke-dasharray="3,2"/>
@@ -75,13 +75,13 @@
   <!-- VM LAN (greyed out, not the focus) -->
   <rect x="175" y="462" width="190" height="44" fill="#D5F5E3" stroke="#27AE60" stroke-width="1" rx="6" opacity="0.6"/>
   <text x="270" y="481" fill="#1E8449" font-size="10" font-weight="600" text-anchor="middle" opacity="0.7">VM  —  LAN</text>
-  <text x="270" y="497" fill="#1E8449" font-size="8" text-anchor="middle" opacity="0.7">192.168.10.x o 20.x</text>
+  <text x="270" y="497" fill="#1E8449" font-size="8" text-anchor="middle" opacity="0.7">10.61.10.x o 20.x</text>
   <line x1="270" y1="438" x2="270" y2="462" stroke="#27AE60" stroke-width="1.5" opacity="0.6"/>
 
   <!-- VM DMZ (focus) -->
   <rect x="495" y="462" width="190" height="44" fill="#F5CBA7" stroke="#A04000" stroke-width="2" rx="6"/>
   <text x="590" y="481" fill="#6E2C00" font-size="11" font-weight="700" text-anchor="middle">VM  —  DMZ</text>
-  <text x="590" y="497" fill="#6E2C00" font-size="9" text-anchor="middle">192.168.201.x/24</text>
+  <text x="590" y="497" fill="#6E2C00" font-size="9" text-anchor="middle">10.61.201.x/24</text>
   <line x1="590" y1="438" x2="590" y2="462" stroke="#D35400" stroke-width="1.5"/>
 
   <!-- ── BENEFIT BOX ── -->

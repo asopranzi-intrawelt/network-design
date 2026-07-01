@@ -35,10 +35,11 @@ un clone.
 
 ## Script Proxmox
 
-`scripts/Get-ProxmoxSnapshot.ps1` interroga l'API REST di Proxmox VE 192.168.20.11 e
-produce lo snapshot completo dell'infrastruttura in `output/proxmox-snapshot.json` e
-`output/proxmox-config.md`. L'output e' ignorato da git (dati infrastrutturali sensibili).
-Eseguire dalla radice del progetto: `.\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 192.168.20.11`
+`scripts/Get-ProxmoxSnapshot.ps1` interroga l'API REST di Proxmox VE (IP reale in
+`_notes/.anonymization-map.md`, non qui: repo pubblico) e produce lo snapshot completo
+dell'infrastruttura in `output/proxmox-snapshot.json` e `output/proxmox-config.md`.
+L'output e' ignorato da git (dati infrastrutturali sensibili). Eseguire dalla radice
+del progetto passando l'host reale a `-ProxmoxHost` (vedi `.claude/rules/anonymization.md`).
 
 ## Indice dei file satellite tracciati
 
@@ -75,6 +76,7 @@ Regole modulari caricate su necessita', sotto `.claude/rules/`.
 .claude/rules/token-economy.md         pratiche di risparmio di contesto (caricare sempre)
 .claude/rules/git-identity-and-repo.md profili SSH, identita git, bootstrap del remoto
 .claude/rules/manual-screenshots.md    flusso di cattura screenshot per verifica visiva
+.claude/rules/anonymization.md         anonimizzazione IP/MAC/nomi propri (repo pubblico, caricare sempre)
 ```
 
 Skill richiamabili, sotto `.claude/skills/`.

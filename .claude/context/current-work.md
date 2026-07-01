@@ -6,18 +6,28 @@ last-verified: 2026-07-01
 
 ## Stato
 
-**Ingestione "[TBC] Diagramma di rete e analisi firewall, centralino" COMPLETATA
-(01/07/2026).** La cartella (radice progetto, non OneDrive) copriva tre snapshot
-datati (29/05, 05/06, 08/06 "steps") dell'analisi firewall Zyxel USG FLEX 500,
-del piano di revisione DMZ/Proxmox e del provisioning del centralino cloud
-Vianova. Contenuto integralmente riversato nella documentazione tecnica; la
-cartella sorgente resta in attesa di conferma finale dell'utente per la
-cancellazione (era marcata [TBC] esplicitamente per essere ingestita e rimossa).
+**M1 completato (01/07/2026).** Le due regole firewall critiche
+(`Blocco_Gruppo_IP_Phishing_Elisa`, `malicious_IP_12052025`) sono state
+corrette da `allow` a `deny` via GUI, guidate passo-passo con verifica
+screenshot, e l'IP pubblico del firewall e' stato rimosso dal gruppo
+`Bad_IP_Phishing_Elisa_2026`. Dettaglio 1:1 in
+`docs/firewall-zyxel-usg-flex-500-live.conf`, il changelog incrementale del
+firewall live. Il resto del piano di revisione DMZ/firewall (Fasi 1-6 del
+05/06/2026) resta da applicare.
 
-La roadmap di ottimizzazione (`.claude/context/roadmap.md`, Fase 3) e' ora
-tracciata a 19 micro-step (M1-M19), a partire dalla correzione critica della
-regola firewall `Blocco_Gruppo_IP_Phishing_Elisa` (M1), ancora attiva in
-produzione con `action allow` invece di `deny`.
+Aggiunto in corsa il gap **NEB-001**: gli switch Nebula risultano offline in
+modo intermittente sul pannello cloud pur con rete dati funzionante, ipotesi
+principale legata a FW-008 (WAN_TRUNK/wan2 morto). Nuovi micro-step M20/M21.
+
+Racconto completo della sessione e convenzioni operative stabilite (workflow
+screenshot, changelog live, un commit per micro-step) in
+`_notes/RESUME-PROMPT.md`, da leggere per la ripresa narrativa oltre a questo
+file.
+
+Ingestione "[TBC] Diagramma di rete e analisi firewall, centralino" COMPLETATA
+e cartella sorgente eliminata (01/07/2026). La roadmap (`.claude/context/roadmap.md`,
+Fase 3) e' tracciata a 21 micro-step (M1-M21); M1 fatto, M2 e M20 sono i
+prossimi due, indipendenti tra loro.
 
 ## File toccati in questa sessione (01/07/2026)
 
@@ -52,13 +62,15 @@ produzione con `action allow` invece di `deny`.
 
 ## Prossimi step
 
-1. Eseguire M1 (correzione regola phishing) — richiede accesso GUI firewall,
-   operazione dell'utente, non delegabile all'agente.
+1. M2 (verifica console seriale/iLO, conferma 802.1Q su XGS2220-54HP) oppure
+   M20 (diagnosi intermittenza Nebula, indipendente da M2) — a scelta
+   dell'utente, entrambi guidati passo-passo con screenshot come M1.
 2. Rieseguire `Get-ProxmoxSnapshot.ps1` per fotografare lo stato Proxmox
    corrente prima di procedere con M4-M5 (VLAN/bridge).
 3. Alla chiusura di ogni micro-step: aggiornare la riga corrispondente in
-   `roadmap.md`, appendere una voce a `memory/progress.md`, e lasciare che
-   l'utente esegua il commit dedicato a quello step.
+   `roadmap.md`, appendere una voce a `memory/progress.md`, aggiornare
+   `firewall-zyxel-usg-flex-500-live.conf` se il micro-step tocca il
+   firewall, e lasciare che l'utente esegua il commit dedicato a quello step.
 4. Nota di verita': lo stato "fatto/da fare" delle schede vive in
    `memory/index.md` e nel log di `memory/progress.md`, non nelle spunte di
    questo file.

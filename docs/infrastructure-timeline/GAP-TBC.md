@@ -58,7 +58,7 @@ Tutta la sezione va integrata con screenshot del diagramma di rete 2026
 | 8 | TBC | Proxmox post-install (pve postinstall) | Screenshot terminale Proxmox dopo installazione |
 | 9 | TBC | VM101 configurazione completa | Screenshot Proxmox VM list |
 | 10 | TBC | Migrazione VM da ESXi G5 a Proxmox (roadmap) | Screenshot wizard import VMware |
-| 11 | TBC | Data precisa installazione fisica Proxmox nel rack DX | Mail/chat Daniele Colo' fine gennaio 2025 |
+| 11 | TBC | Data precisa installazione fisica Proxmox nel rack DX | Mail/chat Persona-H fine gennaio 2025 |
 
 ---
 
@@ -91,7 +91,7 @@ Tutta la sezione va integrata con screenshot del diagramma di rete 2026
 |---|---|---|---|
 | 16 | TBC | Preventivo Vianova dettagliato (costi voce, dati, radio) | File preventivo PDF myOffice |
 | 17 | TBC | Confronto costi TIM vs Vianova (prima/dopo) | File TIM.xlsx + fatture Vianova |
-| 18 | TBC | Configurazione pool IP pubblici 193.124.241.x/28 | Screenshot configurazione firewall |
+| 18 | TBC | Configurazione pool IP pubblici 203.0.113.x/28 | Screenshot configurazione firewall |
 
 ---
 
@@ -108,7 +108,7 @@ Questa sezione e' esplicitamente marcata [TBC] nel titolo.
 | 23 | TBC | Screenshot router R-1000 consegnato 01/04/2025 (screenshot_07, _08) | Cartella screenshot_07/08 del 31/03/2025 |
 | 24 | TBC | Screenshot 09 ordine di lavoro 02/04/2025 | Cartella screenshot_09 |
 | 25 | TBC | Cartella foto 11042025 (secondo router) | Cartella 11042025 |
-| 26 | TBC | Risposta Alessia Liberati ordine di lavoro 21/03/2025 (immagine) | Screenshot allegato mail |
+| 26 | TBC | Risposta Referente-Vianova-1 ordine di lavoro 21/03/2025 (immagine) | Screenshot allegato mail |
 
 ---
 
@@ -123,7 +123,7 @@ Questa sezione e' esplicitamente marcata [TBC] nel titolo.
 | 31 | TBC | Prove 15/05 â†’ 23/05 debugging tunnel SEEWEB | Screenshot log Zyxel + tracert |
 | 32 | TBC | Disdetta TIM: procedura restituzione materiale | Mail TIM + tracking reso |
 | 33 | TBC | Test porte 500/4500 da yougetsignal.com | Screenshot test 27/05/2025 |
-| 34 | TBC | Marco Perri: porta 8008 "” test 26/06/2025 | Screenshot client Zywall |
+| 34 | TBC | Persona-K: porta 8008 "” test 26/06/2025 | Screenshot client Zywall |
 | 35 | TBC | Risparmio costi netti post-migrazione (calcolo preciso) | File TIM.xlsx + fatture comparative |
 
 ---
@@ -138,10 +138,10 @@ sono esplicitamente nel documento Word.
 | 36 | 2023-baseline.md | SSL VPN rinnovo | Screenshot procedura ZeroSSL completa |
 | 37 | 2023-baseline.md | Inventario Punto Informatica | File allegati della mail del 03/07/2024 |
 | 38 | 2024-infra.md | Blackout 21/11 NAS INTRA2 | Screenshot log errori NAS INTRA2 |
-| 39 | 2025-q1.md | Proxmox in rack: data precisa | Chat WhatsApp Daniele Colo' fine gennaio |
+| 39 | 2025-q1.md | Proxmox in rack: data precisa | Chat WhatsApp Persona-H fine gennaio |
 | 40 | 2025-q1.md | BioStar2 migrazione | Dettagli chiamata 13/02/2025 + firmware aggiornato |
 | 41 | 2025-q1.md | Cablaggio rack DX foto | Screenshot/foto layout definitivo |
-| 42 | 2025-q2.md | Attivazione fisica 17/04 | Screenshot configurazione switch S-1000 + note Mancinelli |
+| 42 | 2025-q2.md | Attivazione fisica 17/04 | Screenshot configurazione switch S-1000 + note Referente-MyOffice-1 |
 | 43 | 2025-q2.md | Log Zyxel durante switch WAN1 08/05 | Screenshot log firewall |
 | 44 | 2025-q2.md | Ticket SEEWEB N.1317639 risposta completa | Screenshot ticket + risposta SEEWEB |
 | 45 | 2025-q3-q4.md | Restituzione materiale TIM | Mail TIM + ricevuta di reso |
@@ -163,16 +163,16 @@ sono esplicitamente nel documento Word.
 | 54 | FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | **Corretto 01/07/2026** — vedi firewall-zyxel-usg-flex-500-live.conf |
 | 55 | FW-002 | Regola malicious_IP_12052025: action allow invece di deny | **Corretto 01/07/2026** — vedi firewall-zyxel-usg-flex-500-live.conf |
 | 56 | FW-003 | secure-policy 8/9/10 attive ma virtual server DOMV_WEB/DEMO_SERVER_WEB/EGETRAD_WEB deactivate | Verificare intento con Alessio |
-| 57 | FW-004 | Rotte statiche dipendono da router 192.168.100.1 non monitorato - da rimuovere con dismissione LAN2 | Backup config + revisione 05/06/2026 |
+| 57 | FW-004 | Rotte statiche dipendono da router 10.61.100.1 non monitorato - da rimuovere con dismissione LAN2 | Backup config + revisione 05/06/2026 |
 | 58 | FW-005 | Alias wan1 (.2/.3/.4/.254) in shutdown: verificare quali servono ancora | Backup startup-config.conf |
 | 59 | FW-006 | VPN PSE-SEEWEB usa IKEv1/AES-128/SHA-1/DH2: parametri sotto best practice | Piano aggiornamento |
-| 60 | FW-007 | Due profili IPsec verso 37.9.228.27 (PSE-SEEWEB e WIZ_VPN): transizione in corso o residuo? | Verificare con Alessio |
+| 60 | FW-007 | Due profili IPsec verso <IP-SEEWEB-PEER> (PSE-SEEWEB e WIZ_VPN): transizione in corso o residuo? | Verificare con Alessio |
 | 61 | FW-010 | File draw.io analisi firewall: localizzare e archiviare | **Fatto 01/07/2026** — archiviati in `.claude/context/diagrams/firewall-dmz-2026/`, registro in firewall-zyxel-usg-flex-500.md |
 | 62 | FW-009 | DMZ VLAN 201 + bridge Proxmox VLAN-aware: intervento pianificato, non ancora eseguito | Piano_Operativo_Migrazione.docx 05/06/2026 — **confermato ancora non applicato al 01/07/2026** |
 | 63 | FW-010bis | Meeting myOffice 09/06/2026 centralino cloud: steps documentati (provisioning utente Area Clienti, Vianova One, riconfigurazione porte switch) | **Fatto 01/07/2026** — cartella steps ingestionata, dettaglio in telefono-pbx-voip.md e 2026-switch-piano-terra.md |
 | 97 | FW-011 | Piano di revisione a sei fasi (05/06/2026) non ancora applicato al firewall fisico: FW-001/002/004/008/009 restano aperte in produzione | Confermato con l'utente 01/07/2026 |
-| 98 | FW-012 | Porta 8 switch 54HP (MAC F4:4D:5C:8F:7C:39) rinominata "Vianova DHCP server fonia", PVID 2 dal 09/06/2026: funzione effettiva da verificare, possibile collegamento con rimozione DHCP classe .90 | Screenshot 08062026 (steps) |
-| 99 | NET-007 | Probabile errore di etichettatura: screenshot 09/06/2026 mostrano la porta 3 dello switch a 54 porte (Piano 2) rinominata "SIP-T34W Alessandro Potalivo", ma interventi 29052026.docx (29/05/2026) colloca esplicitamente Potalivo (T34W) su Piano Terra porte 21/23 e riserva le porte 3/5/44 del Piano 2 ai T31G (Marini, Sala Conero) | Screenshot 08062026 (steps) vs interventi 29052026.docx |
+| 98 | FW-012 | Porta 8 switch 54HP (MAC AA:BB:CC:00:00:01) rinominata "Vianova DHCP server fonia", PVID 2 dal 09/06/2026: funzione effettiva da verificare, possibile collegamento con rimozione DHCP classe .90 | Screenshot 08062026 (steps) |
+| 99 | NET-007 | Probabile errore di etichettatura: screenshot 09/06/2026 mostrano la porta 3 dello switch a 54 porte (Piano 2) rinominata "SIP-T34W Persona-A", ma interventi 29052026.docx (29/05/2026) colloca esplicitamente Persona-A (T34W) su Piano Terra porte 21/23 e riserva le porte 3/5/44 del Piano 2 ai T31G (Persona-D, Sala-1) | Screenshot 08062026 (steps) vs interventi 29052026.docx |
 | 100 | TEL-001 | Testo messaggi IVR centrale telefonica cloud (giorno: attesa semplice o instradamento reparti; notte: orari apertura) — risposta di Alessio a myOffice non ancora inviata | Messagistica centrale telefonica.eml 09/06/2026 |
 | 101 | NEB-001 | Switch Nebula (XGS2220-54HP e XGS2220-30HP) segnalati offline in modo intermittente sul pannello Nebula pur con rete dati funzionante — sintomo di canale di gestione (heartbeat cloud), non di switching reale. Ipotesi principale: FW-008 (WAN_TRUNK con wan2 ancora primario, linea morta da maggio 2025) causa fallimento periodico di sessioni a vita lunga verso il cloud Zyxel prima del failover su wan1. Ipotesi alternativa: interferenza SSL inspection sul traffico TLS del client Nebula. Nessun log a supporto ancora raccolto | Segnalato dall'utente 01/07/2026, foto app Nebula |
 
@@ -184,7 +184,7 @@ sono esplicitamente nel documento Word.
 |---|-------------|-------|
 | 64 | DSCP Voice VLAN: default Nebula mostra 44, standard e' 46 (EF) - verificare se e' stato modificato | Nebula > Configure > Switch settings > Voice VLAN |
 | 65 | 28 porte Piano Terra configurate come Access via selezione multipla: verificare che il salvataggio sia avvenuto | Nebula XGS2220-30HP switch ports |
-| 66 | NAS INTRA2 (192.168.20.177): configurazione definitiva dopo migrazione a fibra 10GbE (IP, adapter attivo, job backup) | QNAP QTS interfaccia + Qfinder |
+| 66 | NAS INTRA2 (10.61.20.177): configurazione definitiva dopo migrazione a fibra 10GbE (IP, adapter attivo, job backup) | QNAP QTS interfaccia + Qfinder |
 | 67 | IP e MAC telefoni Yealink T31G/T34W: mappatura completa porta switch - telefono - utente | Nebula switch ports + QTS |
 
 ---
@@ -207,7 +207,7 @@ sono esplicitamente nel documento Word.
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
 | 68 | NET-001 | VLAN 10/20/90 non isolate a livello firewall: un host su .90 può vedere hosts su .10 se usa IP fisso compatibile | task_47 – Piano Attività IT v3.xlsx |
-| 69 | NET-002 | VPN IKEv2 (192.168.50.0/27) vede rete LAN .10 locale senza ACL tra loro | task_47 |
+| 69 | NET-002 | VPN IKEv2 (10.61.50.0/27) vede rete LAN .10 locale senza ACL tra loro | task_47 |
 | 70 | NET-003 | Ethernet non segmentata: host esterno può usare IP fisso su qualsiasi classe | task_47 |
 | 71 | NET-004 | Due server DHCP sospetti (Proxmox: ha ricevuto .10.239 e .90.103 su due porte dello stesso switch) | task_37 |
 | 72 | NET-005 | WiFi "intrawelt" non su VLAN dedicata: dovrebbe essere .10 ma non c'è isolamento reale da .90 | task_47 |
@@ -219,10 +219,10 @@ sono esplicitamente nel documento Word.
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
-| 74 | SEC-001 | Bitdefender non installato su WINGROUPSHARE (10.1.116.3), WINSRV2019 (10.1.116.4), WIN-V712I9QHQT9 (192.168.20.13) | task_31/32 – Piano Attività |
+| 74 | SEC-001 | Bitdefender non installato su WINGROUPSHARE (10.77.116.3), WINSRV2019 (10.77.116.4), WIN-V712I9QHQT9 (10.61.20.13) | task_31/32 – Piano Attività |
 | 75 | SEC-002 | Password policy: solo 25% completata – NAS randomizzate, mancano altri sistemi | task_33 – Piano Attività |
 | 76 | SEC-003 | AnyDesk e TeamViewer presenti su macchine aziendali (accesso remoto non presidiato) | task_14 – Piano Attività |
-| 77 | SEC-004 | VM Egetrad (Ubuntu obsoleto, 192.168.20.5) ancora attiva; regole firewall EGETRAD_WEB da disabilitare | task_27 – Piano Attività + docs/it-backlog.md |
+| 77 | SEC-004 | VM Egetrad (Ubuntu obsoleto, 10.61.20.5) ancora attiva; regole firewall EGETRAD_WEB da disabilitare | task_27 – Piano Attività + docs/it-backlog.md |
 | 78 | SEC-005 | MFA non attivo su account non-admin M365 (enforcement solo Azure admin) | task_65 + MFA action plan |
 | 79 | SEC-006 | Privacy policy NinjaOne non distribuita a tutti gli utenti | task_20 |
 | 80 | SEC-007 | Dischi USB non bloccati sulle postazioni (task pending) | task_25 |
@@ -246,15 +246,15 @@ sono esplicitamente nel documento Word.
 
 ---
 
-## ISO 27001 – Gaps identificati da Serafino (18/04/2025)
+## ISO 27001 – Gaps identificati da Consulente-ISO27001-1 (18/04/2025)
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
 | 90 | ISO-001 | Disciplinare lavoratori: documento **esiste** (`Regolamento_rev1.docx`, 9 sezioni: postazione lavoro, password, antivirus, salvataggio dati, PC portatili, internet/email, trasmissione doc, videosorveglianza, sanzioni). Gap residuo = distribuzione formale + firme nel `Registro_accettazione.docx` (ancora vuoto) | Cybersec & IT Governance/Regolamento utilizzo sistemi informatici/ |
-| 91 | ISO-002 | Badge accesso sala server non implementato | riunione_serafino_18042025.txt |
-| 92 | ISO-003 | Formazione strutturata anti-phishing non erogata ai dipendenti | riunione_serafino_18042025.txt |
-| 93 | ISO-004 | Politica BYOD (dispositivi personali) non formalizzata | riunione_serafino_18042025.txt |
-| 94 | ISO-005 | Politica chiavette USB non formalizzata e non tecnicamente applicata | riunione_serafino_18042025.txt + task_25 |
+| 91 | ISO-002 | Badge accesso sala server non implementato | riunione_consulente-iso27001-1_18042025.txt |
+| 92 | ISO-003 | Formazione strutturata anti-phishing non erogata ai dipendenti | riunione_consulente-iso27001-1_18042025.txt |
+| 93 | ISO-004 | Politica BYOD (dispositivi personali) non formalizzata | riunione_consulente-iso27001-1_18042025.txt |
+| 94 | ISO-005 | Politica chiavette USB non formalizzata e non tecnicamente applicata | riunione_consulente-iso27001-1_18042025.txt + task_25 |
 | 95 | ISO-006 | Incident response process non formalizzato (nessun playbook) | docs/cybersecurity-governance.md |
 
 ---
@@ -276,7 +276,7 @@ sono esplicitamente nel documento Word.
 | Network Security (task_47) | 68-73 |
 | Cybersecurity (piano attività) | 74-81, 96 |
 | SCENIA gaps (DPA Allegato II) | 82-89 |
-| ISO 27001 (Serafino 18/04/2025) | 90-95 |
+| ISO 27001 (Consulente-ISO27001-1 18/04/2025) | 90-95 |
 | Firewall/rete — ingestione [TBC] Diagramma di rete (01/07/2026) | 97-99 |
 | Telefonia — ingestione [TBC] Diagramma di rete (01/07/2026) | 100 |
 | Nebula switch offline intermittente (01/07/2026) | 101 |

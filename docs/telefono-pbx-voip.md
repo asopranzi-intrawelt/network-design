@@ -14,11 +14,11 @@ centralino cloud previsto).
 ### Terminali VoIP installati
 
 Telefoni Yealink connessi alla rete:
-- Alessandro Potalivo: SIP-T34W (Piano Terra, switch XGS2220-30HP)
-- Sonia Martellini: SIP-T34W (Piano Terra)
-- Martina Renzi: SIP-T34W (Piano Terra)
-- Marsk Marini: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 3 o 5 PoE)
-- Sala Conero: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 44 PoE)
+- Persona-A: SIP-T34W (Piano Terra, switch XGS2220-30HP)
+- Persona-B: SIP-T34W (Piano Terra)
+- Persona-C: SIP-T34W (Piano Terra)
+- Persona-D: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 3 o 5 PoE)
+- Sala-1: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 44 PoE)
 
 [TBC: modello esatto, IP e MAC dei telefoni. Numero totale terminali da aggiornare.]
 
@@ -83,20 +83,20 @@ e invia il traffico voce taggato VLAN 2. Il traffico PC che attraversa il telefo
 
 ## Porte SIP/RTP per centralino virtuale Vianova
 
-Verifica del 23/03/2026 (mail myOffice/Vianova a.liberati@myofficegroup.it):
+Verifica del 23/03/2026 (mail myOffice/Vianova referente-vianova-1@myofficegroup.it):
 nessuno dei seguenti range e' bloccato dal firewall Zyxel USG FLEX 500 in uscita.
 Verifica condotta su policy e log del 23/03/2026.
 
 | Destinazione         | Protocollo | Porte           | Uso              |
 |----------------------|-----------|-----------------|------------------|
-| 185.158.118.128/26   | TCP       | 5061            | SIP              |
-| 185.158.118.128/26   | UDP       | 20000-40000     | RTP (media)      |
-| 103.26.124.0/24      | TCP       | 5039            | SIP alternativo  |
-| 185.158.118.27       | TCP       | 433             | gestione         |
-| 185.158.116.29       | TCP       | 5222            | XMPP/segnalazione|
-| 94.138.161.187       | TCP/UDP   | 6050            | media            |
-| 94.138.161.180/30    | TCP       | 14000-14999     | media            |
-| 94.138.161.180/30    | UDP       | 15000-15999     | media            |
+| <RANGE-VIANOVA-SIP-1>   | TCP       | 5061            | SIP              |
+| <RANGE-VIANOVA-SIP-1>   | UDP       | 20000-40000     | RTP (media)      |
+| <RANGE-VIANOVA-SIP-2>      | TCP       | 5039            | SIP alternativo  |
+| <IP-VIANOVA-MGMT>       | TCP       | 433             | gestione         |
+| <IP-VIANOVA-SIP-3>       | TCP       | 5222            | XMPP/segnalazione|
+| <IP-VIANOVA-MEDIA-1>       | TCP/UDP   | 6050            | media            |
+| <RANGE-VIANOVA-MEDIA-2>    | TCP       | 14000-14999     | media            |
+| <RANGE-VIANOVA-MEDIA-2>    | UDP       | 15000-15999     | media            |
 
 Risultato: nessun blocco esistente. La migrazione al centralino virtuale Vianova
 non richiede modifiche alle security policy del firewall per il traffico in uscita.
@@ -114,7 +114,7 @@ TCP_433, TCP_5222, TCP_6050, UDP_6050, TCP_14000_14999, UDP_15000_15999.
 ### Stato (giugno 2026)
 
 La migrazione al centralino cloud Vianova e' in corso. Il meeting con myOffice
-e' avvenuto il 09/06/2026 (Alessia Liberati). Nella stessa giornata sono stati
+e' avvenuto il 09/06/2026 (Referente-Vianova-1). Nella stessa giornata sono stati
 eseguiti i primi passi operativi concreti, documentati dagli screenshot della
 cartella `08062026 (steps)` e dalla mail `Messagistica centrale telefonica.eml`.
 
@@ -122,12 +122,12 @@ cartella `08062026 (steps)` e dalla mail `Messagistica centrale telefonica.eml`.
 
 Il portale di gestione del centralino cloud e' Area Clienti Vianova
 (areaclienti.vianova.it). Alessio (asopranzi@intrawelt.com, profilo
-Amministratore Area Clienti) ha creato un secondo utente, Tommaso Vezeni
+Amministratore Area Clienti) ha creato un secondo utente, Persona-E
 (reparto IT), profilo "Base", senza privilegi di amministratore Area Clienti
 ne' di amministratore PBX Centrex. Procedura osservata:
 
 1. Impostazioni > Utenti > Aggiungi: inserire nome, cognome, reparto, email.
-2. Il sistema segnala se il dominio email e' esterno al cliente (caso Vezeni,
+2. Il sistema segnala se il dominio email e' esterno al cliente (caso Persona-E,
    dominio intrawelt.com diverso dal dominio Vianova): la password verra'
    impostata dall'utente stesso alla conferma dell'invito, non da chi crea
    l'account.
@@ -147,24 +147,24 @@ il funzionamento su una seconda postazione.
 
 ### Riconfigurazione porte switch (09/06/2026)
 
-Sullo switch Nebula con MAC `F4:4D:5C:8F:7C:39` sono state rinominate e
+Sullo switch Nebula con MAC `AA:BB:CC:00:00:01` sono state rinominate e
 riconfigurate due porte: la porta 8 ("Vianova DHCP server fonia") e' passata
 da PVID 1 a PVID 2 restando di tipo Voice VLAN; la porta 3 ("SIP-T34W
-Alessandro Potalivo") resta Voice VLAN con PVID 1. [TBC: il pannello Nebula di
+Persona-A") resta Voice VLAN con PVID 1. [TBC: il pannello Nebula di
 questo switch mostra 54 porte, compatibili solo con lo XGS2220-54HP di Piano 2,
 mentre `interventi 29052026.docx` (29/05/2026) descrive esplicitamente
 un'assegnazione diversa e coerente con quanto gia' scritto sopra in questa
-scheda: i tre T34W (Potalivo, Martellini, Renzi) sulle porte 21/23 dello
-switch Piano Terra XGS2220-30HP, i due T31G (Marini, Sala Conero) sulle porte
+scheda: i tre T34W (Persona-A, Persona-B, Persona-C) sulle porte 21/23 dello
+switch Piano Terra XGS2220-30HP, i due T31G (Persona-D, Sala-1) sulle porte
 3/5/44 dello switch Piano 2 XGS2220-54HP con PoE. L'etichetta "SIP-T34W
-Alessandro Potalivo" sulla porta 3 del Piano 2, undici giorni dopo, e' quindi
+Persona-A" sulla porta 3 del Piano 2, undici giorni dopo, e' quindi
 piu' probabilmente un errore di etichettatura, forse per riferimento incrociato
 con il modello di telefono sbagliato, che un reale spostamento fisico: da
 verificare con Alessio prima di consolidare la mappatura IP/MAC/porta.]
 
 ### Messaggistica IVR - decisione aperta (09/06/2026)
 
-myOffice (Alessandro Mancinelli, reparto Telefonia) ha richiesto via mail il
+myOffice (Referente-MyOffice-1, reparto Telefonia) ha richiesto via mail il
 testo dei messaggi da caricare sulla centrale telefonica cloud:
 
 Messaggio GIORNO, a scelta tra due modalita'. La prima e' un semplice
