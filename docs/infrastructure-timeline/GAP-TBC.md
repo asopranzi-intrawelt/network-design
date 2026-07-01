@@ -141,7 +141,7 @@ sono esplicitamente nel documento Word.
 | 39 | 2025-q1.md | Proxmox in rack: data precisa | Chat WhatsApp Persona-H fine gennaio |
 | 40 | 2025-q1.md | BioStar2 migrazione | Dettagli chiamata 13/02/2025 + firmware aggiornato |
 | 41 | 2025-q1.md | Cablaggio rack DX foto | Screenshot/foto layout definitivo |
-| 42 | 2025-q2.md | Attivazione fisica 17/04 | Screenshot configurazione switch S-1000 + note Mancinelli |
+| 42 | 2025-q2.md | Attivazione fisica 17/04 | Screenshot configurazione switch S-1000 + note Referente-MyOffice-1 |
 | 43 | 2025-q2.md | Log Zyxel durante switch WAN1 08/05 | Screenshot log firewall |
 | 44 | 2025-q2.md | Ticket SEEWEB <ticket-seeweb> risposta completa | Screenshot ticket + risposta SEEWEB |
 | 45 | 2025-q3-q4.md | Restituzione materiale TIM | Mail TIM + ricevuta di reso |
@@ -172,7 +172,7 @@ sono esplicitamente nel documento Word.
 | 63 | FW-010bis | Meeting myOffice 09/06/2026 centralino cloud: steps documentati (provisioning utente Area Clienti, Vianova One, riconfigurazione porte switch) | **Fatto 01/07/2026** — cartella steps ingestionata, dettaglio in telefono-pbx-voip.md e 2026-switch-piano-terra.md |
 | 97 | FW-011 | Piano di revisione a sei fasi (05/06/2026) non ancora applicato al firewall fisico: FW-001/002/004/008/009 restano aperte in produzione | Confermato con l'utente 01/07/2026 |
 | 98 | FW-012 | Porta 8 switch 54HP (MAC AA:BB:CC:00:00:01) rinominata "Vianova DHCP server fonia", PVID 2 dal 09/06/2026: funzione effettiva da verificare, possibile collegamento con rimozione DHCP classe .90 | Screenshot 08062026 (steps) |
-| 99 | NET-007 | Probabile errore di etichettatura: screenshot 09/06/2026 mostrano la porta 3 dello switch a 54 porte (Piano 2) rinominata "SIP-T34W Persona-A", ma interventi 29052026.docx (29/05/2026) colloca esplicitamente Persona-A (T34W) su Piano Terra porte 21/23 e riserva le porte 3/5/44 del Piano 2 ai T31G (Marini, Sala Conero) | Screenshot 08062026 (steps) vs interventi 29052026.docx |
+| 99 | NET-007 | Probabile errore di etichettatura: screenshot 09/06/2026 mostrano la porta 3 dello switch a 54 porte (Piano 2) rinominata "SIP-T34W Persona-A", ma interventi 29052026.docx (29/05/2026) colloca esplicitamente Persona-A (T34W) su Piano Terra porte 21/23 e riserva le porte 3/5/44 del Piano 2 ai T31G (Persona-D, Sala-1) | Screenshot 08062026 (steps) vs interventi 29052026.docx |
 | 100 | TEL-001 | Testo messaggi IVR centrale telefonica cloud (giorno: attesa semplice o instradamento reparti; notte: orari apertura) — risposta di Alessio a myOffice non ancora inviata | Messagistica centrale telefonica.eml 09/06/2026 |
 | 101 | NEB-001 | Switch Nebula (XGS2220-54HP e XGS2220-30HP) segnalati offline in modo intermittente sul pannello Nebula pur con rete dati funzionante — sintomo di canale di gestione (heartbeat cloud), non di switching reale. Ipotesi principale: FW-008 (WAN_TRUNK con wan2 ancora primario, linea morta da maggio 2025) causa fallimento periodico di sessioni a vita lunga verso il cloud Zyxel prima del failover su wan1. Ipotesi alternativa: interferenza SSL inspection sul traffico TLS del client Nebula. Nessun log a supporto ancora raccolto | Segnalato dall'utente 01/07/2026, foto app Nebula |
 

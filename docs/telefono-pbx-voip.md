@@ -18,7 +18,7 @@ Telefoni Yealink connessi alla rete:
 - Persona-B: SIP-T34W (Piano Terra)
 - Persona-C: SIP-T34W (Piano Terra)
 - Persona-D: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 3 o 5 PoE)
-- Sala Conero: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 44 PoE)
+- Sala-1: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 44 PoE)
 
 [TBC: modello esatto, IP e MAC dei telefoni. Numero totale terminali da aggiornare.]
 
@@ -127,7 +127,7 @@ Amministratore Area Clienti) ha creato un secondo utente, Persona-E
 ne' di amministratore PBX Centrex. Procedura osservata:
 
 1. Impostazioni > Utenti > Aggiungi: inserire nome, cognome, reparto, email.
-2. Il sistema segnala se il dominio email e' esterno al cliente (caso Vezeni,
+2. Il sistema segnala se il dominio email e' esterno al cliente (caso Persona-E,
    dominio intrawelt.com diverso dal dominio Vianova): la password verra'
    impostata dall'utente stesso alla conferma dell'invito, non da chi crea
    l'account.
@@ -154,8 +154,8 @@ Persona-A") resta Voice VLAN con PVID 1. [TBC: il pannello Nebula di
 questo switch mostra 54 porte, compatibili solo con lo XGS2220-54HP di Piano 2,
 mentre `interventi 29052026.docx` (29/05/2026) descrive esplicitamente
 un'assegnazione diversa e coerente con quanto gia' scritto sopra in questa
-scheda: i tre T34W (Persona-A, Persona-B, Renzi) sulle porte 21/23 dello
-switch Piano Terra XGS2220-30HP, i due T31G (Marini, Sala Conero) sulle porte
+scheda: i tre T34W (Persona-A, Persona-B, Persona-C) sulle porte 21/23 dello
+switch Piano Terra XGS2220-30HP, i due T31G (Persona-D, Sala-1) sulle porte
 3/5/44 dello switch Piano 2 XGS2220-54HP con PoE. L'etichetta "SIP-T34W
 Persona-A" sulla porta 3 del Piano 2, undici giorni dopo, e' quindi
 piu' probabilmente un errore di etichettatura, forse per riferimento incrociato

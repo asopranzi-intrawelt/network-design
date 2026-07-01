@@ -67,8 +67,8 @@ INTERNET
    Piano 2 (AP 2-5-1 CED, AP 2-7-1 tetto esterno)
 
    Yealink IP phones (Voice VLAN 2, LLDP-MED, CoS 5 / DSCP 46):
-     T34W Piano Terra: Persona-A 1-1, Persona-B 1-2, Renzi 0-x
-     T31G Piano 2:     Marini 2-x, Sala Conero 2-x
+     T34W Piano Terra: Persona-A 1-1, Persona-B 1-2, Persona-C 0-x
+     T31G Piano 2:     Persona-D 2-x, Sala-1 2-x
      PBX cloud Vianova [TBC: transizione in corso]
 ```
 

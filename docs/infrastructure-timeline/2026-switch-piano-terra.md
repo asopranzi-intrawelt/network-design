@@ -58,7 +58,7 @@ su documentazione tecnica Intrawelt, senza dipendenza da API cloud esterne.
 ### Account coinvolti e sintomi
 
 Tre account coinvolti in modo diverso:
-- **persona-i@intrawelt.com** (Elisa): regola inbox sospetta trovata tramite PowerShell EXO
+- **persona-i@intrawelt.com** (Persona-I): regola inbox sospetta trovata tramite PowerShell EXO
 - **persona-c@intrawelt.com** (Persona-C): email arrivate il 14/01/2026 scomparse dall'inbox (es. notifica cambio SDI da Sollini Gino srl)
 - **persona-j@intrawelt.com**: email arrivate ma non visibili (possibile quarantena)
 
@@ -71,7 +71,7 @@ Rilevata attività "**MailRedirect**" su info@intrawelt.com:
 
 Purview classifica qualsiasi regola che inoltra messaggi come "RISKYACTIVITY MailRedirect" anche se legittima.
 
-### Regola sospetta su Elisa (PowerShell ExchangeOnline)
+### Regola sospetta su Persona-I (PowerShell ExchangeOnline)
 
 ```powershell
 Connect-ExchangeOnline
@@ -353,7 +353,7 @@ Configurazione Voice VLAN sui due switch Zyxel via Nebula (nebula.zyxel.com).
 - Persona-B: Yealink SIP-T34W (Piano Terra)
 - Persona-C: Yealink SIP-T34W (Piano Terra)
 - Persona-D: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porte 3/5 PoE)
-- Sala Conero: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porta 44 PoE)
+- Sala-1: Yealink SIP-T31G (Piano 2, XGS2220-54HP, porta 44 PoE)
 
 **Configurazione Voice VLAN**:
 - VLAN ID: 2 (voce).
@@ -456,7 +456,7 @@ Fonte: screenshot cartella `08062026 (steps)`, mail `Messagistica centrale
 telefonica.eml` (09/06/2026, telefonia@myofficegroup.it).
 
 Riunione con myOffice/Vianova per la migrazione al centralino cloud (Alessia
-Liberati). Nella stessa giornata Alessio esegue due interventi operativi
+Referente-Vianova-1). Nella stessa giornata Alessio esegue due interventi operativi
 concreti, indipendenti dal piano di revisione firewall.
 
 Sullo switch Nebula (MAC `AA:BB:CC:00:00:01`) vengono rinominate e riconfigurate
@@ -467,7 +467,7 @@ VLAN con PVID 1. [TBC: lo switch con questo MAC ha 54 porte visibili nel
 pannello Nebula, compatibile solo con lo XGS2220-54HP di Piano 2, ma
 `interventi 29052026.docx` (11 giorni prima) colloca esplicitamente Persona-A
 con il suo T34W su Piano Terra, switch XGS2220-30HP porte 21/23, e riserva le
-porte 3/5/44 del Piano 2 ai due T31G di Marini e Sala Conero. L'etichetta
+porte 3/5/44 del Piano 2 ai due T31G di Persona-D e Sala-1. L'etichetta
 sulla porta 3 e' quindi probabilmente un errore di etichettatura, non un
 reale spostamento fisico: da verificare con Alessio prima di consolidare la
 mappatura IP/MAC dei telefoni, gap GAP-TBC #67/#99.]
@@ -476,7 +476,7 @@ Sul portale Area Clienti Vianova (areaclienti.vianova.it) Alessio crea un
 nuovo utente, Persona-E (reparto IT), profilo "Base", senza privilegi di
 amministratore Area Clienti ne' di amministratore PBX Centrex. L'invito viene
 inviato via mail alle 10:46, il link di conferma ha validita' 15 giorni;
-Vezeni completa la registrazione lo stesso giorno impostando password e
+Persona-E completa la registrazione lo stesso giorno impostando password e
 numero di cellulare per il 2FA via SMS. Viene inoltre scaricato l'installer
 di Vianova One (`VianovaOneInstaller-1.4.0.6.exe`), l'app unificata di
 comunicazione (chiamate, chat, videoconferenza) inclusa nella licenza
