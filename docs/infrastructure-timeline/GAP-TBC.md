@@ -160,8 +160,8 @@ sono esplicitamente nel documento Word.
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
-| 54 | FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | Firewall web UI > Security Policy > regola 1 |
-| 55 | FW-002 | Regola malicious_IP_12052025: action allow invece di deny | Firewall web UI > Security Policy |
+| 54 | FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | **Corretto 01/07/2026** — vedi firewall-zyxel-usg-flex-500-live.conf |
+| 55 | FW-002 | Regola malicious_IP_12052025: action allow invece di deny | **Corretto 01/07/2026** — vedi firewall-zyxel-usg-flex-500-live.conf |
 | 56 | FW-003 | secure-policy 8/9/10 attive ma virtual server DOMV_WEB/DEMO_SERVER_WEB/EGETRAD_WEB deactivate | Verificare intento con Alessio |
 | 57 | FW-004 | Rotte statiche dipendono da router 192.168.100.1 non monitorato - da rimuovere con dismissione LAN2 | Backup config + revisione 05/06/2026 |
 | 58 | FW-005 | Alias wan1 (.2/.3/.4/.254) in shutdown: verificare quali servono ancora | Backup startup-config.conf |
@@ -174,6 +174,7 @@ sono esplicitamente nel documento Word.
 | 98 | FW-012 | Porta 8 switch 54HP (MAC F4:4D:5C:8F:7C:39) rinominata "Vianova DHCP server fonia", PVID 2 dal 09/06/2026: funzione effettiva da verificare, possibile collegamento con rimozione DHCP classe .90 | Screenshot 08062026 (steps) |
 | 99 | NET-007 | Probabile errore di etichettatura: screenshot 09/06/2026 mostrano la porta 3 dello switch a 54 porte (Piano 2) rinominata "SIP-T34W Alessandro Potalivo", ma interventi 29052026.docx (29/05/2026) colloca esplicitamente Potalivo (T34W) su Piano Terra porte 21/23 e riserva le porte 3/5/44 del Piano 2 ai T31G (Marini, Sala Conero) | Screenshot 08062026 (steps) vs interventi 29052026.docx |
 | 100 | TEL-001 | Testo messaggi IVR centrale telefonica cloud (giorno: attesa semplice o instradamento reparti; notte: orari apertura) — risposta di Alessio a myOffice non ancora inviata | Messagistica centrale telefonica.eml 09/06/2026 |
+| 101 | NEB-001 | Switch Nebula (XGS2220-54HP e XGS2220-30HP) segnalati offline in modo intermittente sul pannello Nebula pur con rete dati funzionante — sintomo di canale di gestione (heartbeat cloud), non di switching reale. Ipotesi principale: FW-008 (WAN_TRUNK con wan2 ancora primario, linea morta da maggio 2025) causa fallimento periodico di sessioni a vita lunga verso il cloud Zyxel prima del failover su wan1. Ipotesi alternativa: interferenza SSL inspection sul traffico TLS del client Nebula. Nessun log a supporto ancora raccolto | Segnalato dall'utente 01/07/2026, foto app Nebula |
 
 ---
 
@@ -278,5 +279,6 @@ sono esplicitamente nel documento Word.
 | ISO 27001 (Serafino 18/04/2025) | 90-95 |
 | Firewall/rete — ingestione [TBC] Diagramma di rete (01/07/2026) | 97-99 |
 | Telefonia — ingestione [TBC] Diagramma di rete (01/07/2026) | 100 |
-| **Totale identificati** | **100** |
-| **Di cui risolti** | **2** (61, 63 — vedi stato "Fatto") |
+| Nebula switch offline intermittente (01/07/2026) | 101 |
+| **Totale identificati** | **101** |
+| **Di cui risolti** | **4** (54, 55, 61, 63 — vedi stato "Corretto"/"Fatto") |
