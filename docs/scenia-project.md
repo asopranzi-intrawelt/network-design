@@ -560,6 +560,69 @@ Nota: Intrawelt è su macchina dedicata → modalità flessibili concordabili ca
 
 ---
 
+## Ricerca UNIMC – Benchmark ScenIA
+
+Fonte: `SCENIA/Ricerca Unimc/Benchmark Study per Intrawelt.docx` (31 KB)
+Autori: UNIMC/VRAI Lab (Frontoni, Sernani, Santini). Periodo: 2024-2025.
+
+### Obiettivi
+
+Misurare l'accuratezza della tecnologia ScenIA usando le TM Intrawelt come dataset di valutazione. Identificare le metriche che riflettono meglio le esigenze di Intrawelt e dei clienti.
+
+### Dataset
+
+Intrawelt dispone di memorie di traduzione su **oltre 140 combinazioni linguistiche** sfruttabili per costruire un benchmark MT multidimensionale (language pair, dominio, generalizzabilità).
+
+**Strategia proposta:**
+
+| Split | Coppie | Campione | Totale frasi |
+|-------|--------|----------|-------------|
+| High-resource (10 coppie più frequenti) | 10 | 100 doc × 10 frasi/doc | 10.000 |
+| Low-resource (10 coppie meno frequenti) | 10 | 10-50 doc × 10 frasi | 1.000–5.000 |
+
+**Nota critica (data leakage):** ScenIA esegue RAG su knowledge base contenente le stesse TM. Per evitare leakage, i documenti del dataset devono essere rimossi temporaneamente dalla knowledge base prima del testing.
+
+### Metriche
+
+| Metrica | Tipo | Note |
+|---------|------|------|
+| COMET-22 (Rei et al., 2020) | Neurale (cross-encoder) | Standard di fatto MT; input: source + hypothesis + reference → score 0-1 |
+| XCOMET-XL (Guerreiro et al., 2023) | Neurale (MQM-based) | Stato dell'arte; fornisce score + annotazione errori classificati per tassonomia MQM |
+| BLEU (Papineni et al., 2002) | String-based | N-gram overlap; ancora valido per bassa variazione attesa dal gold standard |
+
+ScenIA confrontabile con: ChatGPT (solo prompt, no TM) e modelli open-source specializzati MT.
+
+### Architettura SCENIA descritta da UNIMC
+
+> "ScenIA è un agente basato su ChatGPT che opera facendo retrieval augmented generation su basi di conoscenza che contengono memorie di traduzione."
+
+(Conferma indipendente dell'architettura RAG+LLM documentata in § Cos'è SCENIA.)
+
+---
+
+## Knowledge Base ScenIA – Metriche (25/05/2026)
+
+Fonte: `SCENIA/analisi knowledgebase/metriche_documenti_25-05-2026.json` (83 KB)
+Snapshot del Vector Store (Qdrant) al 25/05/2026.
+
+**Struttura dati (per documento):**
+
+| Campo | Descrizione |
+|-------|-------------|
+| `document_id` | UUID documento nel Vector Store |
+| `language` | Lingua (Italian, EnglishGB, ChineseSimplified, …) |
+| `argument` | Categoria dominio (finance, marketing, …) |
+| `organization_id` | "common" (KB condivisa) o ID cliente |
+| `total_chunks` | Numero totale chunk del documento |
+| `chunks_for_knowledge` | Chunk indicizzati per retrieval |
+| `chunks_available` | Chunk attualmente disponibili (0 = documento non disponibile) |
+| `is_for_knowledge` | Flag: se il documento contribuisce alla knowledge base |
+| `available` | True/False |
+
+**Nota:** alcuni documenti risultano `available: False` (es. `chunks_available: 0`) — documenti disabilitati o in errore di indicizzazione. La dimensione dei chunk varia molto (da 10 a 55.386 per documento); i documenti finanziari sono tipicamente i più voluminosi.
+
+---
+
 ## Checklist Sicurezza SCENIA (gap analysis in corso)
 
 Fonte: `SCENIA/SECURITY/DPA/Checklist_Sicurezza_Dropdown.xlsx`

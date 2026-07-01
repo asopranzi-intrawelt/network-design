@@ -92,7 +92,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `Registro_accettazione.docx` → cybersecurity-governance.md §Registro utilizzo sistemi (0/21 firme — gap ISO-001 confermato; prima versione 19/04/2021)
 
 ### Documenti NinjaOne
-- [ ] `Privacy policy NinjaOne` — MEDIA (DPIA input)
+- [x] `Privacy Policy - NinjaOne RMM Management_rev1.docx` → helpdesk-operations.md §NinjaOne RMM §Politica trasparenza RMM (Request Confirmation policy, log sessioni, accesso consensuale, uso per manutenzione asincrona)
 
 ### _QUESTIONARI FORNITORI
 - [x] `Questionario Cybersecurity ENI/` → cybersecurity-governance.md §Questionari B2B + timeline 29/04/2025
@@ -276,7 +276,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `MEETINGS WITH AIDAPT.docx` (76 MB) → estratto completo → scenia-project.md
 - [x] `Documento Riepilogativo Call AIDAPT 27042026.docx` → metadata in scenia-project.md
 - [x] `FAQ portale AI.docx` → scenia-project.md §FAQ portale ScenIA (10 FAQ: formati, sicurezza, crediti, PIM, coesistenza traduttori, ROI)
-- [ ] `script .docx` — MEDIA
+- [-] `script .docx` — SKIP (file 0 byte, non sincronizzato da OneDrive)
 - [!] `APIKEY_mailtrap.txt` — MAI INGESTIRE (API key)
 - [!] `Credenziali e Info Utili Ambiente Staging e Produzione.txt` — MAI INGESTIRE
 - [!] `Credenziali e Info Utili Ambiente Staging.txt` — MAI INGESTIRE
@@ -319,10 +319,10 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `Documento riassuntivo security.docx` → formalizzazione requisiti sicurezza (§2 sicurezza applicativa, §3 operativa, §4 governance, §5 LLM)
 - [x] `Requisiti di Sicurezza, Governance del Dato e Architettura.docx` → versione ampliata stessa struttura; entrambi già sintetizzati in scenia-project.md §Requisiti Sicurezza a/b/c/d
 - [ ] `Risposte Tecniche ai Requisiti di Sicurezza.docx` — ALTA (risposte AIDAPT — file non trovato in Condivisione, cercare in File condivisi da AIDAPT)
-- [ ] `Re_ Call per smarcare punti security.eml` — MEDIA
+- [x] `Re_ Call per smarcare punti security.eml` → scenia-project.md §Change Control (thread Jan 28 – Feb 20 2026: CR process, release trimestrale 4×/anno, canale help@caity.it, 7gg preavviso, changelog post-rilascio — fonte primaria per Allegato G DPA)
 - [-] `Caity_BCP, Caity_DRP, Caity_SLA.pdf` — già ingestionati
 - [-] `Intrawelt__documento_tecnico_.pdf` — BASSA (overview tecnica base)
-- [-] `RispostaMail Sicurezza.pdf` — MEDIA
+- [-] `RispostaMail Sicurezza.pdf` — MEDIA (allegato al thread già ingestionato via eml)
 
 ### SCENIA/Sviluppo full-stack (snapshot mensili)
 - [x] `00_Aprile 2025/` → 2025-q3-q4.md §02-11/04 SCENIA VM601 setup + Codepen/ER prototipi (txt files; screenshots non estratti)
@@ -343,13 +343,14 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 ### SCENIA/File condivisi da AIDAPT
 - [x] `Caity_BCP, Caity_DRP, Caity_SLA.pdf` → già ingestionati
-- [ ] altri file — MEDIA
+- [-] altri file — SKIP (prevalentemente .sdlxliff file di progetto traduzione RWS Trados; non IT ops. File non-traduzione: attività_unimc.xlsx, Intrawelt-CAITY.pdf, presentazione intrawelt Alborino.pdf — BASSA)
 
 ### SCENIA/Ricerca Unimc
-- [ ] documenti ricerca UNIMC/VRAI Lab — MEDIA
+- [x] `Benchmark Study per Intrawelt.docx` → scenia-project.md §Ricerca UNIMC – Benchmark ScenIA (metodologia: 140+ coppie ling., high/low-resource split, metriche COMET-22/XCOMET-XL/BLEU, nota data leakage)
+- [-] paper accademici (6 PDF: BLASER META, Experts Errors Context, ecc.) — SKIP (letteratura esterna, non IT ops)
 
 ### SCENIA/analisi knowledgebase
-- [ ] analisi knowledge base SCENIA — MEDIA
+- [x] `metriche_documenti_25-05-2026.json` → scenia-project.md §Knowledge Base ScenIA Metriche (snapshot Vector Store Qdrant 25/05/2026: document_id, language, argument, organization_id, chunks)
 
 ### SCENIA/BUGFIX
 - [ ] log bugfix — BASSA
@@ -373,7 +374,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
 - [ ] `[TBC] STUDIO - CHERSHIRE CAT/` — BASSA
 - [x] `OpenProject/` → helpdesk-operations.md §OpenProject VM205 (openproject.local:9001, 3 utenti, disk resize 13/10/2025)
-- [ ] `Script e Documentazione per Export Giornaliero.../` — MEDIA
+- [x] `Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/` → 2025-q3-q4.md §03-04/11/2025 + helpdesk-operations.md §Automazione export TM GroupShare (v1.0.0 03/11, v1.1.0 04/11; PS+AHK+MigratingTMs, NAS \\192.168.20.177, gs.intrawelt.com, daily 02:00)
 - [ ] `TOOL AI coding assistance/` — BASSA
 - [-] `Qdrant + Ollama + Ubuntu + n8n self-hosting/` — BASSA (ricerca esterna)
 - [-] `[studying] Automazione bozza per commerciali/` — BASSA
