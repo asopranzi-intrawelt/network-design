@@ -6,14 +6,17 @@ Piano di revisione e DMZ prodotto il 05/06/2026 (Revisione_Rete_DMZ_Proxmox.docx
 Piano_Operativo_Migrazione.docx, LE SEI FASI.txt).
 Firmware: Zyxel ZLD 5.42(ABUJ.1). File di 2215 righe.
 
-**Stato al 01/07/2026: piano non ancora applicato.** Il file `startup-config.conf`
-datato 05/06/2026 e' la configurazione target preparata per il caricamento, non un
-backup post-applicazione: il changelog in testa al file descrive gli interventi
-previsti, non quelli eseguiti. Confermato con l'utente che la Fase 0 (correzione
-della regola phishing, la sola anomalia critica) non e' ancora stata applicata sul
-dispositivo fisico. Tutte le anomalie FW-001/FW-002/FW-004/FW-008/FW-009 nella
-tabella in fondo alla scheda restano quindi aperte in produzione fino al prossimo
-intervento; vedi la roadmap tracciata in `.claude/context/roadmap.md`.
+**Stato al 01/07/2026: Fase 0 applicata, Fasi 1-6 ancora da eseguire.** Il file
+`startup-config.conf` datato 05/06/2026 resta la configurazione target preparata
+per il caricamento in blocco (Fase 5), non ancora eseguito. La sola Fase 0
+(correzione immediata della regola phishing) e' stata applicata via GUI il
+01/07/2026, guidata passo per passo e verificata su screenshot indipendenti:
+dettaglio completo in `docs/firewall-zyxel-usg-flex-500-live.conf`, il changelog
+incrementale delle modifiche live sul dispositivo. FW-001 e FW-002 sono quindi
+**risolte**; FW-004, FW-008, FW-009 (rimozione LAN2/WAN_TRUNK, attivazione DMZ)
+restano aperte in attesa della finestra di manutenzione per le Fasi 1-6. Vedi la
+roadmap tracciata in `.claude/context/roadmap.md`, micro-step M1 (fatto) e M2
+(prossimo).
 
 ---
 
@@ -378,8 +381,8 @@ Backup datato del 19/05/2026 usato come base per l'analisi del 29/05/2026.
 
 | ID | Descrizione | Stato |
 |----|-------------|-------|
-| FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | Da correggere (urgente) |
-| FW-002 | Regola malicious_IP_12052025: action allow invece di deny | Da correggere |
+| FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | **Corretto 01/07/2026** (deny + log alert, IP_09_phishing_2026_Elisa/193.124.241.5 rimosso dal gruppo) |
+| FW-002 | Regola malicious_IP_12052025: action allow invece di deny | **Corretto 01/07/2026** (deny, log gia' presente) |
 | FW-003 | secure-policy 8/9/10 attive ma virtual server corrispondenti deactivate | Verificare intento |
 | FW-004 | Rotte statiche dipendono da router downstream 192.168.100.1 non monitorato | Da rimuovere con dismissione LAN2 |
 | FW-005 | Alias wan1 (.2/.3/.4/.254) in shutdown: verificare se alcuni servono ancora | Verificare |
@@ -388,5 +391,5 @@ Backup datato del 19/05/2026 usato come base per l'analisi del 29/05/2026.
 | FW-008 | WAN_TRUNK con wan2 primary ma TIM non connessa da maggio 2025 | Da rimuovere nella revisione |
 | FW-009 | DMZ pool DHCP presente: incompatibile con server a IP statico | Da rimuovere nella revisione |
 | FW-010 | File draw.io prodotti dal lavoro di analisi: zyxel_usg_flex500_network.drawio e zyxel_usg_flex500_detailed.drawio - localizzare e archiviare | Fatto (01/07/2026, `.claude/context/diagrams/firewall-dmz-2026/`) |
-| FW-011 | Il piano di revisione a sei fasi (05/06/2026) non e' ancora stato applicato al dispositivo fisico: FW-001/002/004/008/009 restano aperte in produzione | Da applicare (prossima finestra di manutenzione) |
+| FW-011 | Il piano di revisione a sei fasi (05/06/2026): Fase 0 applicata 01/07/2026 (FW-001/002 risolte), Fasi 1-6 non ancora eseguite: FW-004/008/009 restano aperte in produzione | Fasi 1-6 da applicare (prossima finestra di manutenzione) |
 | FW-012 | Porta 8 dello switch 54HP (MAC F4:4D:5C:8F:7C:39) rinominata "Vianova DHCP server fonia" e passata a PVID 2 il 09/06/2026: verificare la funzione effettiva e se sostituisce il DHCP server classe .90 da rimuovere (vedi network-diagram.md) | Verificare |

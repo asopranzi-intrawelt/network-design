@@ -4,6 +4,34 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-01 — M1: correzione guidata regole firewall allow->deny (sessione 6)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/firewall-zyxel-usg-flex-500-live.conf (nuovo — changelog incrementale live del firewall)
+  - docs/firewall-zyxel-usg-flex-500.md (FW-001/FW-002 marcate corrette, FW-011 aggiornata, callout di stato)
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md (voce datata 01/07/2026)
+  - docs/infrastructure-timeline/GAP-TBC.md (item 54/55 risolti)
+  - .claude/context/roadmap.md (M1 marcato Fatto, stato riepilogativo Fase 3 aggiornato)
+Motivo: eseguito M1 della roadmap Fase 3, guidando l'utente passo-passo dentro la
+Web UI del firewall Zyxel USG FLEX 500 con verifica su screenshot Screenpresso a
+ogni passaggio (11 screenshot, screenshot_01.png-screenshot_15.png). Corretta la
+regola `Blocco_Gruppo_IP_Phishing_Elisa` (allow->deny, log alert, rimosso
+193.124.241.5/IP_09_phishing_2026_Elisa dal gruppo Bad_IP_Phishing_Elisa_2026,
+confermato a 11 membri totali) e la regola gemella `malicious_IP_12052025`
+(allow->deny). Entrambe verificate scritte sul dispositivo senza necessita' di
+un Apply separato. Introdotto su richiesta esplicita dell'utente un changelog
+incrementale (`firewall-zyxel-usg-flex-500-live.conf`) che traccia 1:1, con
+riferimento agli screenshot, ogni modifica live applicata via GUI, distinto dal
+config target del 05/06/2026 (mai applicato in blocco). Rilevate due regole non
+censite (BLOCCO_IP_SOSPETTI, EGETRAD_WEB_TEST) da riconciliare in seguito.
+Aggiunto anche il gap NEB-001 (switch Nebula segnalati offline in modo
+intermittente pur con rete dati funzionante, foto app Nebula dell'utente) con
+ipotesi di correlazione a FW-008 (WAN_TRUNK/wan2 morto); nuovi micro-step M20
+(diagnosi log) e M21 (ricontrollo dopo M7) in roadmap.md.
+Prossimo micro-step: M2 (verifica console seriale/iLO, conferma 802.1Q) o M20
+(diagnosi Nebula) a scelta dell'utente.
+
 ## 2026-07-01 — Ingestione "[TBC] Diagramma di rete e analisi firewall, centralino" + roadmap ottimizzazione (sessione 5)
 
 Commit: PENDING (da fare manualmente)

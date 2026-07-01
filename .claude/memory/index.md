@@ -29,18 +29,21 @@ va aggiornato a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
-Ingestione della cartella "[TBC] Diagramma di rete e analisi firewall,
-centralino" completata il 01/07/2026 (vedi `memory/progress.md`). Roadmap di
-ottimizzazione Proxmox/firewall tracciata in `context/roadmap.md`, Fase 3,
-19 micro-step (M1-M19). Prossima azione concreta: M1, correzione della regola
-firewall `Blocco_Gruppo_IP_Phishing_Elisa` (action allow -> deny), operazione
-manuale dell'utente sulla GUI del firewall, non delegabile all'agente.
+M1 della roadmap (Fase 3) completato il 01/07/2026: regole
+`Blocco_Gruppo_IP_Phishing_Elisa` e `malicious_IP_12052025` corrette da allow
+a deny via GUI, guidato passo-passo con verifica screenshot, changelog in
+`docs/firewall-zyxel-usg-flex-500-live.conf`. Prossima azione concreta: M2
+(verifica console seriale/iLO, conferma 802.1Q su XGS2220-54HP), oppure il
+nuovo micro-step segnalato dall'utente sull'intermittenza Nebula degli switch
+(vedi `context/roadmap.md`, da inserire nella tabella micro-step).
 
-In sospeso: conferma finale dell'utente per la cancellazione della cartella
-sorgente "[TBC] Diagramma di rete e analisi firewall, centralino" (contenuto
-integralmente riversato in docs/ e in `context/diagrams/firewall-dmz-2026/`).
-In sospeso anche il commit di tutte le modifiche di questa sessione, a cura
-dell'utente.
+Cartella sorgente "[TBC] Diagramma di rete e analisi firewall, centralino"
+eliminata dall'utente dopo l'ingestione completa (contenuto integralmente
+riversato in docs/ e in `context/diagrams/firewall-dmz-2026/`).
+
+In sospeso: commit di tutte le modifiche di questa sessione (sessioni 5 e 6),
+a cura dell'utente. Comandi git proposti nella chat, non ancora eseguiti al
+momento di questo snapshot.
 
 Invocare `sync-context` alla prossima sessione per verificare drift tra
 STACK.md/design-and-security.md/deployment.md/dev-testing.md e il codice reale,

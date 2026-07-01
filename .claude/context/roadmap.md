@@ -105,7 +105,7 @@ unico commit cumulativo di fine fase.
 
 | # | Intervento | Priorita' | Gap/fonte | Dipendenza | Stato |
 |---|-----------|-----------|-----------|------------|-------|
-| M1 | Correggere `Blocco_Gruppo_IP_Phishing_Elisa` (allow -> deny) e `malicious_IP_12052025` (allow -> deny) via GUI firewall, fuori finestra di manutenzione | CRITICA | FW-001, FW-002 (Fase 0 del piano) | Nessuna | Da fare |
+| M1 | Correggere `Blocco_Gruppo_IP_Phishing_Elisa` (allow -> deny) e `malicious_IP_12052025` (allow -> deny) via GUI firewall, fuori finestra di manutenzione | CRITICA | FW-001, FW-002 (Fase 0 del piano) | Nessuna | **Fatto 01/07/2026** |
 | M2 | Verificare fisicamente console seriale (115200 baud) e accesso iLO; confermare supporto 802.1Q su XGS2220-54HP | ALTA | Fase 1 del piano | M1 | Da fare |
 | M3 | Backup datato di firewall e switch prima di ogni modifica strutturale | ALTA | Fase 1 del piano | M2 | Da fare |
 | M4 | Configurare VLAN 201 sullo switch Piano 2 (P7 access, porta Proxmox trunk) | ALTA | Fase 2 del piano, FW-009 | M3 | Da fare |
@@ -124,6 +124,8 @@ unico commit cumulativo di fine fase.
 | M17 | Rispondere a myOffice sul testo IVR (giorno: attesa semplice o instradamento reparti; notte: orari) e completare la migrazione centralino cloud | MEDIA | TEL-001, GAP-TBC #47 | Indipendente (traccia telefonia, non firewall) | Da fare |
 | M18 | Rigenerare `output/proxmox-snapshot.json` con `Get-ProxmoxSnapshot.ps1` per fotografare lo stato Proxmox post-M5/M16 | ALTA | Fase 2 step 2 | M5, M16 | Da fare |
 | M19 | Consolidare il diagramma Mermaid finale (`network-topology.mmd`) con lo stato post-ottimizzazione e riconciliare tutte le schede tecniche coinvolte | BASSA (fine fase) | Chiusura Fase 3 | M1-M18 | Da fare |
+| M20 | Diagnosticare l'intermittenza "offline" degli switch su Nebula (rete dati funzionante, solo il canale di gestione cade): raccogliere orari degli eventi offline da Nebula e correlarli con i log del firewall (failover wan2, eventi SSL inspection sul traffico verso il cloud Zyxel) | MEDIA | NEB-001 | Nessuna (diagnosi indipendente da M1-M9) | Da fare |
+| M21 | Ricontrollare M20 dopo l'esecuzione di M7 (rimozione WAN_TRUNK): se l'intermittenza sparisce, FW-008 era la causa; se persiste, approfondire l'ipotesi SSL inspection | MEDIA | NEB-001 | M7, M20 | Da fare |
 
 ## Fase 4 - Piano interventi futuri residui (DA PIANIFICARE)
 
@@ -151,6 +153,6 @@ Steps:
 | Fase 0 | COMPLETATA | Alta |
 | Fase 1 | COMPLETATA | Alta |
 | Fase 2 | Sostanzialmente completata (residuo: NAS fleet, ISO27001 Annex A) | Alta |
-| Fase 3 | CORRENTE — 19 micro-step tracciati, M1 (fix regola phishing) primo da eseguire | Critica |
+| Fase 3 | CORRENTE — 19 micro-step tracciati, M1 completato 01/07/2026 (fix regola phishing via GUI), M2 successivo | Critica |
 | Fase 4 | Da pianificare | Media |
 | Fase 5 | Da pianificare | Media |

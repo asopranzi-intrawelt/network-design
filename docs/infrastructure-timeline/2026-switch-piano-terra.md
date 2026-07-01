@@ -496,6 +496,30 @@ vedi gap aperto in GAP-TBC.md.
 
 ---
 
+## 01/07/2026 - M1: correzione guidata delle due regole allow->deny
+
+Fonte: sessione guidata passo-passo sulla GUI del firewall, con screenshot
+Screenpresso a ogni passaggio. Dettaglio riga per riga in
+`docs/firewall-zyxel-usg-flex-500-live.conf`.
+
+Eseguita la Fase 0 del piano del 05/06/2026, indipendentemente dal resto della
+sequenza a sei fasi (che resta da applicare). Sulla regola
+`Blocco_Gruppo_IP_Phishing_Elisa` (Policy Control, riga 1): action corretta da
+`allow` a `deny`, log impostato su `log alert`, e l'oggetto
+`IP_09_phishing_2026_Elisa` (193.124.241.5, l'IP pubblico del firewall stesso)
+rimosso dal gruppo `Bad_IP_Phishing_Elisa_2026`, che nel frattempo si conferma
+composto da undici membri (IP_01-IP_11). Sulla regola gemella
+`malicious_IP_12052025` (riga 4): action corretta da `allow` a `deny`, il log
+era gia' attivo. Entrambe le modifiche si sono rivelate scritte immediatamente
+sul dispositivo al click di OK sul dialogo di modifica, senza richiedere un
+Apply separato sulla pagina Policy Control. Verificato su due screenshot
+indipendenti per ciascuna modifica (prima e dopo).
+
+Osservazione incidentale: la lista delle security policy mostra due regole non
+ancora censite in `docs/firewall-zyxel-usg-flex-500.md`, `BLOCCO_IP_SOSPETTI`
+(riga 7, action reject) e `EGETRAD_WEB_TEST` (riga 11): da includere nel
+prossimo giro di riconciliazione della scheda, non urgente.
+
 ## Aprile-Giugno 2026 - Redesign sito intrawelt.com
 
 Cappelli Design (referente Anna Caruso) avvia il redesign del sito intrawelt.com.
