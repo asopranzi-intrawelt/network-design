@@ -4,6 +4,35 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-01 — Ingestione "[TBC] Diagramma di rete e analisi firewall, centralino" + roadmap ottimizzazione (sessione 5)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/firewall-zyxel-usg-flex-500.md (stato applicazione, sei fasi, registro diagrammi, FW-011/FW-012)
+  - docs/network-diagram.md (nota discrepanza NET-007, riferimento diagrammi)
+  - docs/telefono-pbx-voip.md (provisioning Vianova Area Clienti, Vianova One, TEL-001)
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md (voci datate 29/05, 05/06, 09/06)
+  - docs/infrastructure-timeline/GAP-TBC.md (item 61/63 risolti, nuovi 97-100, totale 100)
+  - docs/infrastructure-timeline/ingestion-checklist.md (voce TBC ingestita, nota riallineamento)
+  - .claude/context/roadmap.md (Fase 2 sostanzialmente completa, nuova Fase 3 a 19 micro-step M1-M19, rinumerazione Fase 4/5)
+  - .claude/context/current-work.md (riscritto: focus Fase 3, domande aperte/risolte)
+  - .claude/context/diagrams/firewall-dmz-2026/ (8 file drawio/svg archiviati, risolve FW-010)
+Motivo: ingestione completa della cartella non tracciata "[TBC] Diagramma di rete e
+analisi firewall, centralino" (tre snapshot datati 29/05, 05/06, 08/06/2026), su
+richiesta esplicita dell'utente di completarla e poi cancellarla. Confermato con
+l'utente che il piano di correzione firewall del 05/06/2026 e' una configurazione
+target preparata, non ancora applicata al dispositivo fisico: le anomalie critiche
+(regola phishing action=allow) restano aperte in produzione. Prodotta una roadmap
+tracciata a micro-step (Fase 3) per l'ottimizzazione di Proxmox e del firewall,
+sostituendo la Fase 3 generica precedente. Allineamento a
+E:\template-claude-developing verificato (gap: skill init-project-system/onboard
+e cartella templates/ mancanti) ma importazione rimandata su richiesta dell'utente.
+Segnalata nella checklist di ingestione la deriva tra il "Riepilogo priorita'" e
+le spunte reali, come richiesto dall'utente per riprendere l'ingestione OneDrive
+IT in modo ordinato quando la Fase 3 sara' chiusa.
+Cartella sorgente "[TBC] Diagramma di rete e analisi firewall, centralino" non
+ancora eliminata: in attesa di conferma finale dell'utente a fine sessione.
+
 ## 2026-06-23 — Aggiornamento GAP-TBC e timeline (sessione 4)
 
 Commit: PENDING (da fare manualmente)
