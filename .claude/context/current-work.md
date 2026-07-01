@@ -1,91 +1,64 @@
 ---
-last-verified: 2026-06-23
+last-verified: 2026-07-01
 ---
 
-# Lavoro corrente: Fase 4 – GAP-TBC e timeline complete
+# Lavoro corrente: Fase 3 - Ottimizzazione Proxmox e firewall
 
 ## Stato
 
-**Fase 4 COMPLETATA.** GAP-TBC aggiornato a 95 voci. Timeline biennale completa
-con tutti gli eventi cybersecurity, SCENIA, IntraLino, Proelium.
-Commit da fare manualmente dall'utente (tutte le sessioni 1-4 insieme).
+**Ingestione "[TBC] Diagramma di rete e analisi firewall, centralino" COMPLETATA
+(01/07/2026).** La cartella (radice progetto, non OneDrive) copriva tre snapshot
+datati (29/05, 05/06, 08/06 "steps") dell'analisi firewall Zyxel USG FLEX 500,
+del piano di revisione DMZ/Proxmox e del provisioning del centralino cloud
+Vianova. Contenuto integralmente riversato nella documentazione tecnica; la
+cartella sorgente resta in attesa di conferma finale dell'utente per la
+cancellazione (era marcata [TBC] esplicitamente per essere ingestita e rimossa).
 
-## File prodotti in Fase 3
+La roadmap di ottimizzazione (`.claude/context/roadmap.md`, Fase 3) e' ora
+tracciata a 19 micro-step (M1-M19), a partire dalla correzione critica della
+regola firewall `Blocco_Gruppo_IP_Phishing_Elisa` (M1), ancora attiva in
+produzione con `action allow` invece di `deny`.
 
-| File | Stato | Note |
-|------|-------|------|
-| `docs/network-diagram.md` | Completo | Topologia ASCII: FW, switch, NAS, AP, VLAN, DMZ, VPN |
-| `docs/runbook-anomalie.md` | Completo | FW-001, FW-002, DMZ VLAN 201, AP Debian7, UPS guest |
-| `docs/vendor-management.md` | Completo | Vianova, Zyxel, Punto Info, NinjaOne, Bitdefender, Seeweb, M365, Onova, Proelium, RWS, QNAP, Aruba, Serafino |
-| `docs/design-and-security.md` | Completo | SoA ISO27001:2022 Annex A (tutti i controlli A.5-A.18) |
-| `docs/cybersecurity-governance.md` | Completo | Timeline sicurezza 2024-2026: MFA, VA, ISO27001, Bitdefender |
-| `docs/scenia-project.md` | Completo | Timeline SCENIA ott2024-giu2026, stack, DPA v1.7, gap sicurezza |
-| `docs/sviluppo-interno.md` | Completo | IntraLino (Ollama+ChromaDB+n8n), scripting, automazioni |
-| `scripts/Check-SecurityAnomalies.ps1` | Completo | Check FW-001, FW-002, UPS, EOL, Proxmox snapshot, MFA |
-| `.mcp.json` | Completo | ProxmoxMCP (uvx proxmox-mcp, 192.168.20.11:8006, PROXMOX_PASSWORD runtime) |
-| `.claude/rules/git-commands-format.md` | Aggiornato | PowerShell only (rimosso bash) |
-| `.claude/rules/git-identity-and-repo.md` | Aggiornato | PowerShell only (rimosso bash) |
-| `.claude/PROJECT-SYSTEM.md` | Aggiornato | Wipe script PowerShell (rimosso sh POSIX) |
+## File toccati in questa sessione (01/07/2026)
 
-## Documenti IT ingestati in Fase 3
+| File | Modifica |
+|------|----------|
+| `docs/firewall-zyxel-usg-flex-500.md` | Stato "piano non applicato", sei fasi dettagliate, registro diagrammi, anomalie FW-011/FW-012 |
+| `docs/network-diagram.md` | Nota discrepanza porta Potalivo (NET-007), riferimento diagrammi archiviati |
+| `docs/telefono-pbx-voip.md` | Provisioning Area Clienti Vianova, Vianova One, decisione IVR aperta (TEL-001) |
+| `docs/infrastructure-timeline/2026-switch-piano-terra.md` | Voci datate 29/05, 05/06, 09/06 sostituiscono i TBC precedenti |
+| `docs/infrastructure-timeline/GAP-TBC.md` | Item 61/63 risolti, nuovi item 97-100 |
+| `docs/infrastructure-timeline/ingestion-checklist.md` | Voce ingestione TBC, nota di riallineamento sul riepilogo priorita' stale |
+| `.claude/context/roadmap.md` | Fase 2 marcata sostanzialmente completa, nuova Fase 3 a micro-step, rinumerazione Fase 4/5 |
+| `.claude/context/diagrams/firewall-dmz-2026/` | 8 file drawio/svg archiviati dalla cartella TBC |
 
-| File | Output | Dimensione |
-|------|--------|------------|
-| ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx | .tmp-docx-ARCHITETTURA/ | 10240 par, 91 TBC |
-| data_protection.txt | .tmp-docx-CYBERSEC/ | 74 par |
-| bitdefender_protezione_lan.txt | .tmp-docx-CYBERSEC/ | 203 par |
-| iso27001_state_of_art.txt | .tmp-docx-CYBERSEC/ | 20 par |
-| riunione_serafino_18042025.txt | .tmp-docx-CYBERSEC/ | 52 par |
-| piano_intervento_rete.txt | .tmp-docx-CYBERSEC/ | 168 par |
-| phishing_notes.txt | .tmp-docx-CYBERSEC/ | 58 par |
-| va_executive_summary.txt | .tmp-docx-VA/ | 8 par |
-| pentest_executive_summary.txt | .tmp-docx-VA/ | 10 par |
-| va_esterno_proelium_19012026.txt | .tmp-docx-VA/ | 11 par |
-| mfa_action_plan.txt | .tmp-docx-HELPDESK/ | 62 par |
-| onboarding_outboarding.txt | .tmp-docx-HELPDESK/ | 76 par |
-| meetings_with_aidapt.txt | .tmp-docx-SCENIA/ | 2027 par |
-| implementazione.txt (IntraLino) | .tmp-docx-INTRALINO/ | 3790 par |
-| SCENIA/SECURITY/DPA/CLAUDE.md | letto direttamente | 89 righe |
-| SCENIA/SECURITY/DPA/DPA_ScenIA_Intrawelt_v1.0_bozza.md | letto parzialmente | 669 righe |
+## Domande aperte risolte in questa sessione
 
-## Ancora da ingestare (priorità)
+- Il file `startup-config.conf` del 05/06/2026 e' una configurazione **target
+  preparata**, non un backup post-applicazione: confermato con l'utente. Le
+  anomalie critiche del firewall restano aperte in produzione.
+- Allineamento a `E:\template-claude-developing`: skill `init-project-system`,
+  `onboard` e cartella `templates/` mancanti, importazione **rimandata** su
+  richiesta esplicita dell'utente per dare priorita' all'ottimizzazione di rete.
 
-| Documento | Priorità | Note |
-|-----------|----------|------|
-| _Piano_Attivita_IT_v3.xlsx | ALTA | Timeline biennale attività – Excel COM |
-| SCENIA/Documento Riepilogativo Call AIDAPT 27042026.docx | MEDIA | Milestone specifiche aprile 2026 |
-| Intrawelt_Report_Risk_Priority (classe 10,20,30).docx | MEDIA | Solo intro estratta, mancano sezioni |
-| Helpdesk_T-Rex/TREX.docx | MEDIA | T-Rex/Odoo timeline |
-| Helpdesk_MIcrosoft 365/MICROSOFT 365.docx | MEDIA | M365 operations |
-| Helpdesk_RWS-Groupshare-Studio/STUDIO-RWS-GROUPSHARE.docx | MEDIA | GroupShare procedure |
-| myZYXEL - 18122025.docx (3.5MB) | BASSA | Log/export Zyxel Nebula |
-| BCD_2026.docx | MEDIA | Business Continuity |
-| PSGSI Politica Sicurezza Informazioni.docx | MEDIA | ISO27001 input |
+## Domande aperte non risolte
 
-## Da creare ancora
-
-| File | Priorità | Prerequisito |
-|------|----------|-------------|
-| `docs/helpdesk-operations.md` | ALTA | Leggere STUDIO-RWS-GROUPSHARE, MICROSOFT 365, TREX |
-| Aggiornare GAP-TBC.md | MEDIA | Nuovi gap trovati (MFA, ISO, phishing rule) |
-
-## Anomalie confermate in Fase 3 (aggiunte a FW-*)
-
-| ID | Fonte | Aggiunto a |
-|----|-------|-----------|
-| FW-001 | VA Onova nov 2025 | runbook-anomalie.md, Check-SecurityAnomalies.ps1 |
-| FW-002 | VA Onova nov 2025 | runbook-anomalie.md, Check-SecurityAnomalies.ps1 |
-| UPS-001 | VA Onova nov 2025 | runbook-anomalie.md |
-| EOL-001 | VA Onova nov 2025 | network-diagram.md |
-| EOL-002 | VA Onova nov 2025 | network-diagram.md |
-| AP-001 | VA Onova nov 2025 | runbook-anomalie.md |
-| SCENIA gap | DPA Allegato II | scenia-project.md |
+- Contraddizione porta/switch del telefono di Alessandro Potalivo (NET-007,
+  M10 in roadmap).
+- Testo IVR per il centralino cloud non ancora comunicato a myOffice (TEL-001,
+  M17 in roadmap).
+- Funzione esatta della porta 8 riconfigurata "Vianova DHCP server fonia"
+  (FW-012, M11 in roadmap).
 
 ## Prossimi step
 
-1. Commit manuale utente (Alessio)
-2. Leggere _Piano_Attivita_IT_v3.xlsx via Excel COM per timeline attività biennale
-3. Ingestare TREX.docx, MICROSOFT 365.docx, STUDIO-RWS-GROUPSHARE.docx
-4. Scrivere docs/helpdesk-operations.md
-5. Aggiornare GAP-TBC.md con nuove voci
-6. Aggiornare timeline/ con eventi SCENIA, IntraLino, cybersec
+1. Eseguire M1 (correzione regola phishing) — richiede accesso GUI firewall,
+   operazione dell'utente, non delegabile all'agente.
+2. Rieseguire `Get-ProxmoxSnapshot.ps1` per fotografare lo stato Proxmox
+   corrente prima di procedere con M4-M5 (VLAN/bridge).
+3. Alla chiusura di ogni micro-step: aggiornare la riga corrispondente in
+   `roadmap.md`, appendere una voce a `memory/progress.md`, e lasciare che
+   l'utente esegua il commit dedicato a quello step.
+4. Nota di verita': lo stato "fatto/da fare" delle schede vive in
+   `memory/index.md` e nel log di `memory/progress.md`, non nelle spunte di
+   questo file.

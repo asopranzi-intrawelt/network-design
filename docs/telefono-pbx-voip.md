@@ -114,8 +114,77 @@ TCP_433, TCP_5222, TCP_6050, UDP_6050, TCP_14000_14999, UDP_15000_15999.
 ### Stato (giugno 2026)
 
 La migrazione al centralino cloud Vianova e' in corso. Il meeting con myOffice
-e' avvenuto il 09/06/2026. [TBC: dettagli steps dal meeting 09/06/2026 - Alessio
-ha screenshot nella cartella steps.]
+e' avvenuto il 09/06/2026 (Alessia Liberati). Nella stessa giornata sono stati
+eseguiti i primi passi operativi concreti, documentati dagli screenshot della
+cartella `08062026 (steps)` e dalla mail `Messagistica centrale telefonica.eml`.
+
+### Provisioning utente Area Clienti Vianova (09/06/2026)
+
+Il portale di gestione del centralino cloud e' Area Clienti Vianova
+(areaclienti.vianova.it). Alessio (asopranzi@intrawelt.com, profilo
+Amministratore Area Clienti) ha creato un secondo utente, Tommaso Vezeni
+(reparto IT), profilo "Base", senza privilegi di amministratore Area Clienti
+ne' di amministratore PBX Centrex. Procedura osservata:
+
+1. Impostazioni > Utenti > Aggiungi: inserire nome, cognome, reparto, email.
+2. Il sistema segnala se il dominio email e' esterno al cliente (caso Vezeni,
+   dominio intrawelt.com diverso dal dominio Vianova): la password verra'
+   impostata dall'utente stesso alla conferma dell'invito, non da chi crea
+   l'account.
+3. L'utente riceve una mail da Vianova (info@vianova.it) con un link di
+   conferma valido 15 giorni.
+4. Al primo accesso l'utente sceglie una password, indica un numero di
+   cellulare per il 2FA via SMS ed eventualmente un indirizzo email
+   alternativo per i codici.
+5. Registrazione completata: l'utente accede da quel momento con le proprie
+   credenziali.
+
+E' stato inoltre scaricato l'installer di **Vianova One**
+(`VianovaOneInstaller-1.4.0.6.exe`, versione 1.4.0.6), l'applicazione unificata
+Vianova per chiamate, chat e videoconferenza inclusa nella licenza
+Collaboration UC, disponibile per Windows/macOS/iOS/Android, per verificarne
+il funzionamento su una seconda postazione.
+
+### Riconfigurazione porte switch (09/06/2026)
+
+Sullo switch Nebula con MAC `F4:4D:5C:8F:7C:39` sono state rinominate e
+riconfigurate due porte: la porta 8 ("Vianova DHCP server fonia") e' passata
+da PVID 1 a PVID 2 restando di tipo Voice VLAN; la porta 3 ("SIP-T34W
+Alessandro Potalivo") resta Voice VLAN con PVID 1. [TBC: il pannello Nebula di
+questo switch mostra 54 porte, compatibili solo con lo XGS2220-54HP di Piano 2,
+mentre `interventi 29052026.docx` (29/05/2026) descrive esplicitamente
+un'assegnazione diversa e coerente con quanto gia' scritto sopra in questa
+scheda: i tre T34W (Potalivo, Martellini, Renzi) sulle porte 21/23 dello
+switch Piano Terra XGS2220-30HP, i due T31G (Marini, Sala Conero) sulle porte
+3/5/44 dello switch Piano 2 XGS2220-54HP con PoE. L'etichetta "SIP-T34W
+Alessandro Potalivo" sulla porta 3 del Piano 2, undici giorni dopo, e' quindi
+piu' probabilmente un errore di etichettatura, forse per riferimento incrociato
+con il modello di telefono sbagliato, che un reale spostamento fisico: da
+verificare con Alessio prima di consolidare la mappatura IP/MAC/porta.]
+
+### Messaggistica IVR - decisione aperta (09/06/2026)
+
+myOffice (Alessandro Mancinelli, reparto Telefonia) ha richiesto via mail il
+testo dei messaggi da caricare sulla centrale telefonica cloud:
+
+Messaggio GIORNO, a scelta tra due modalita'. La prima e' un semplice
+messaggio di attesa ("SIETE IN LINEA CON INTRAWELT, SIETE PREGATI DI
+ATTENDERE, GRAZIE"), con eventuale sottofondo musicale royalty-free, in cui
+squilla uno o piu' interni oppure prima la reception e poi, dopo 3-4 squilli,
+altri interni. La seconda e' un IVR con instradamento per reparto ("SIETE IN
+LINEA CON INTRAWELT, PREMERE 1 PER L'AMMINISTRAZIONE, PREMERE 2 PER IL
+COMMERCIALE, ATTENDERE IN LINEA PER UN OPERATORE"), in cui la selezione fa
+squillare un gruppo di interni distinto per reparto, e l'assenza di selezione
+instrada al gruppo operatore generico.
+
+Messaggio NOTTE, unico: comunica gli orari di apertura ("SIETE IN LINEA CON
+INTRAWELT, I NOSTRI UFFICI SONO APERTI DAL LUNEDI' AL VENERDI' DALLE 9 ALLE 13
+E DALLE 14 ALLE 17, GRAZIE PER AVER CHIAMATO"), con o senza squillo di un
+interno prima del messaggio.
+
+**Decisione ancora aperta al 01/07/2026**: non risulta una risposta di Alessio
+a myOffice su quale modalita' adottare per il messaggio giorno (semplice
+attesa o IVR con instradamento reparti) ne' sui dettagli del messaggio notte.
 
 ### Prerequisiti verificati
 
@@ -124,12 +193,15 @@ ha screenshot nella cartella steps.]
 - Voice VLAN 2 configurata sugli switch (interventi 29/05/2026).
 - Telefoni Yealink T31G e T34W supportano LLDP-MED e SIP.
 - VPN Unmanaged Vianova attiva (prerequisito per IPsec, attivata 04/06/2025).
+- Provisioning utente Area Clienti e app Vianova One verificati (09/06/2026).
 
 ### Aperto
 
-[TBC: piano di migrazione completo dal centralino fisico Panasonic KX-NCP1000
-al centralino cloud. Routing interno, piano di numerazione, eventuali IVR,
-deviazioni di chiamata, configurazione Patton SmartNode durante la transizione.]
+Piano di migrazione completo dal centralino fisico Panasonic KX-NCP1000 al
+centralino cloud: routing interno, piano di numerazione, testo IVR (vedi
+sopra, decisione pendente), deviazioni di chiamata, configurazione Patton
+SmartNode durante la transizione. [TBC: nessuna di queste voci risulta ancora
+formalizzata nei documenti disponibili al 01/07/2026.]
 
 ---
 

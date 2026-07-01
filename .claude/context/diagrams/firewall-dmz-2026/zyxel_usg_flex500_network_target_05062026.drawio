@@ -1,0 +1,70 @@
+<mxfile host="app.diagrams.net" modified="2026-06-05T10:00:00.000Z" agent="Claude" version="24.0.0">
+  <diagram id="logico" name="USG FLEX 500 - Logico Target">
+    <mxGraphModel dx="1422" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="hdr" value="ZYXEL USG FLEX 500 — usgflex500 — CONFIGURAZIONE TARGET 06/2026&#10;Rimossi: WAN_TRUNK • LAN2 • rotte statiche • router downstream — Corretto: blocco phishing Elisa (deny) — Aggiunto: DMZ→Proxmox via switch trunk" style="text;html=1;fontSize=14;fontStyle=1;align=center;fillColor=#1a5276;fontColor=#ffffff;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="1280" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="inet" value="INTERNET" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="620" y="100" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="wan1" value="&lt;b&gt;ge2 / wan1 — ATTIVA&lt;/b&gt;&#10;193.124.241.5/28 — GW 193.124.241.1&#10;Alias attivo: wan1:2 = 193.124.241.3 (WAN_IP_DMZ_WEB)&#10;Alias spenti: .2, .4, .254&#10;Nessun trunk: default route diretta su wan1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="420" y="180" width="280" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="wan2" value="&lt;b&gt;ge3 / wan2 — SHUTDOWN&lt;/b&gt;&#10;31.197.194.218/29&#10;(balancing gestito dall'ISP a monte:&#10;link non più utilizzato dal firewall)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;spacing=6;dashed=1;fontColor=#777777" vertex="1" parent="1">
+          <mxGeometry x="720" y="180" width="260" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fw" value="🛡 ZYXEL USG FLEX 500 — Firewall / Router L3 / VPN Gateway — NESSUN TAGGING VLAN (solo instradamento L3)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="300" width="1000" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="zlan1" value="&lt;b&gt;Zone LAN1 — ge4 (P4,P5,P6)&lt;/b&gt;&#10;lan1 — 192.168.10.1/19 (DHCP .200+55)&#10;lan1:1 — Server 192.168.20.1/19&#10;lan1:2 — Stampanti 192.168.30.1/19&#10;&#10;Server legacy in .20.x (NAS, EGETRAD,&#10;DOMV, DEMO, OpenVPN) + PC utenti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#2471a3;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="100" y="390" width="280" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="zdmz" value="&lt;b&gt;Zone DMZ — ge6 (P7, access untagged)&lt;/b&gt;&#10;dmz — 192.168.201.1/24 — NO DHCP (IP statici)&#10;&#10;P7 → switch (access VLAN 201) → trunk 802.1Q&#10;→ Proxmox vmbr0 VLAN-aware (tag 201)&#10;&#10;SRV-DMZ-WEB = 192.168.201.10&#10;VM Linux nginx reverse proxy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fde9d9;strokeColor=#d35400;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="410" y="390" width="300" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="zopt" value="&lt;b&gt;Zone OPT (Guest) — ge7 (P8)&lt;/b&gt;&#10;guest — 192.168.90.1/24&#10;DHCP .33+200 — DNS 8.8.8.8/8.8.4.4&#10;&#10;Solo Internet (to WAN allow)&#10;Deny esplicito + log verso LAN1 e DMZ&#10;Rimossa regola RDP guest→LAN1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="740" y="390" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="zlan2" value="&lt;b&gt;Zone LAN2 — ge5 — DISMESSA&lt;/b&gt;&#10;interfaccia azzerata (0.0.0.0)&#10;pool DHCP, policy e route rimossi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;fontSize=10;align=left;spacing=6;fontColor=#777777" vertex="1" parent="1">
+          <mxGeometry x="1050" y="390" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="vpn" value="&lt;b&gt;Zone VPN (invariate)&lt;/b&gt;&#10;SSL_VPN: ssl_vpn_intrawelt (pool 192.168.230.10-250, GEO IT/US)&#10;IPSec_VPN: PSE-SEEWEB, WIZ_VPN, RemoteAccess_Wiz (IKEv2 EAP)&#10;2FA attivo su VPN e accesso admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="100" y="560" width="430" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="nat" value="&lt;b&gt;NAT / Virtual Server&lt;/b&gt;&#10;ATTIVI:&#10;• DMZ_WEB_HTTP: WAN_IP_DMZ_WEB tcp/80 → SRV-DMZ-WEB (NUOVO)&#10;• DMZ_WEB_HTTPS: WAN_IP_DMZ_WEB tcp/443 → SRV-DMZ-WEB (NUOVO)&#10;• Subnet_nat (1-to-1 loopback) • VPN_UDP_500 • VPN_UDP_4500&#10;DISATTIVATI: DOMV, NAS_FTP, NAS_HERO, EGETRAD, DEMO, OpenVpn&#10;RIMOSSO: VPN_auth_LAN2 (→192.168.100.2, router downstream)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eafaf1;strokeColor=#1e8449;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="560" y="560" width="440" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="routes" value="&lt;b&gt;Routing&lt;/b&gt;&#10;Rotte statiche: NESSUNA (rimosse le 3 verso&#10;192.168.2.0, .100.0, .200.0)&#10;Default: wan1 — niente interface-group" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;align=left;spacing=6" vertex="1" parent="1">
+          <mxGeometry x="1030" y="560" width="280" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sec" value="&lt;b&gt;Secure Policy — correzioni e nuove regole&lt;/b&gt;&#10;1. Blocco_Gruppo_IP_Phishing_Elisa: from WAN, sourceip Bad_IP_Phishing_Elisa_2026 → &lt;b&gt;DENY + log alert&lt;/b&gt; (era ALLOW per errore)&#10;   • Rimosso IP_09 = 193.124.241.5 (IP WAN del firewall stesso, inserito per errore nella blocklist)&#10;4. malicious_IP_12052025: destinationip 4.207.164.234 → &lt;b&gt;DENY&lt;/b&gt; (era ALLOW)&#10;19. WAN_to_DMZ_WEB: WAN → DMZ, dest SRV-DMZ-WEB, HTTP/HTTPS, allow (NUOVA)&#10;22. DMZ_to_WAN: allow (ATTIVATA) — 23. DMZ_to_LAN1_Deny: deny + log alert (NUOVA, difesa in profondità)&#10;19-20. OPT_to_LAN1_Deny / OPT_to_DMZ_Deny: isolamento guest (NUOVE) — GUEST_Outgoing limitata a WAN&#10;28. DMZ_to_Device: solo DNS verso ZyWALL (ATTIVATA) — Policy LAN2 e RDP-da-guest RIMOSSE — default-rule: deny log alert" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#ca6f1e;fontSize=10;align=left;spacing=8" vertex="1" parent="1">
+          <mxGeometry x="100" y="720" width="1210" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="l1" style="endArrow=none;html=1;strokeColor=#6c8ebf;strokeWidth=2" edge="1" parent="1" source="inet" target="wan1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="l2" style="endArrow=none;html=1;strokeColor=#999999;strokeWidth=2;dashed=1" edge="1" parent="1" source="inet" target="wan2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="l3" style="endArrow=none;html=1;strokeColor=#82b366;strokeWidth=2" edge="1" parent="1" source="wan1" target="fw"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="l4" style="endArrow=none;html=1;strokeColor=#2471a3;strokeWidth=2" edge="1" parent="1" source="fw" target="zlan1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="l5" style="endArrow=none;html=1;strokeColor=#d35400;strokeWidth=2" edge="1" parent="1" source="fw" target="zdmz"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="l6" style="endArrow=none;html=1;strokeColor=#9673a6;strokeWidth=2" edge="1" parent="1" source="fw" target="zopt"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="l7" style="endArrow=none;html=1;strokeColor=#999999;strokeWidth=1;dashed=1" edge="1" parent="1" source="fw" target="zlan2"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

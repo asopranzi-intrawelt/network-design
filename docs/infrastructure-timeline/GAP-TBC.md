@@ -167,9 +167,13 @@ sono esplicitamente nel documento Word.
 | 58 | FW-005 | Alias wan1 (.2/.3/.4/.254) in shutdown: verificare quali servono ancora | Backup startup-config.conf |
 | 59 | FW-006 | VPN PSE-SEEWEB usa IKEv1/AES-128/SHA-1/DH2: parametri sotto best practice | Piano aggiornamento |
 | 60 | FW-007 | Due profili IPsec verso 37.9.228.27 (PSE-SEEWEB e WIZ_VPN): transizione in corso o residuo? | Verificare con Alessio |
-| 61 | FW-008 | File draw.io analisi firewall (zyxel_usg_flex500_network.drawio, zyxel_usg_flex500_detailed.drawio): localizzare e archiviare | Prodotti il 29/05/2026 |
-| 62 | FW-009 | DMZ VLAN 201 + bridge Proxmox VLAN-aware: intervento pianificato, non ancora eseguito | Piano_Operativo_Migrazione.docx 05/06/2026 |
-| 63 | FW-010 | Meeting myOffice 09/06/2026 centralino cloud: steps da documentare | Screenshot cartella steps Alessio |
+| 61 | FW-010 | File draw.io analisi firewall: localizzare e archiviare | **Fatto 01/07/2026** — archiviati in `.claude/context/diagrams/firewall-dmz-2026/`, registro in firewall-zyxel-usg-flex-500.md |
+| 62 | FW-009 | DMZ VLAN 201 + bridge Proxmox VLAN-aware: intervento pianificato, non ancora eseguito | Piano_Operativo_Migrazione.docx 05/06/2026 — **confermato ancora non applicato al 01/07/2026** |
+| 63 | FW-010bis | Meeting myOffice 09/06/2026 centralino cloud: steps documentati (provisioning utente Area Clienti, Vianova One, riconfigurazione porte switch) | **Fatto 01/07/2026** — cartella steps ingestionata, dettaglio in telefono-pbx-voip.md e 2026-switch-piano-terra.md |
+| 97 | FW-011 | Piano di revisione a sei fasi (05/06/2026) non ancora applicato al firewall fisico: FW-001/002/004/008/009 restano aperte in produzione | Confermato con l'utente 01/07/2026 |
+| 98 | FW-012 | Porta 8 switch 54HP (MAC F4:4D:5C:8F:7C:39) rinominata "Vianova DHCP server fonia", PVID 2 dal 09/06/2026: funzione effettiva da verificare, possibile collegamento con rimozione DHCP classe .90 | Screenshot 08062026 (steps) |
+| 99 | NET-007 | Probabile errore di etichettatura: screenshot 09/06/2026 mostrano la porta 3 dello switch a 54 porte (Piano 2) rinominata "SIP-T34W Alessandro Potalivo", ma interventi 29052026.docx (29/05/2026) colloca esplicitamente Potalivo (T34W) su Piano Terra porte 21/23 e riserva le porte 3/5/44 del Piano 2 ai T31G (Marini, Sala Conero) | Screenshot 08062026 (steps) vs interventi 29052026.docx |
+| 100 | TEL-001 | Testo messaggi IVR centrale telefonica cloud (giorno: attesa semplice o instradamento reparti; notte: orari apertura) — risposta di Alessio a myOffice non ancora inviata | Messagistica centrale telefonica.eml 09/06/2026 |
 
 ---
 
@@ -272,4 +276,7 @@ sono esplicitamente nel documento Word.
 | Cybersecurity (piano attività) | 74-81, 96 |
 | SCENIA gaps (DPA Allegato II) | 82-89 |
 | ISO 27001 (Serafino 18/04/2025) | 90-95 |
-| **Totale identificati** | **96** |
+| Firewall/rete — ingestione [TBC] Diagramma di rete (01/07/2026) | 97-99 |
+| Telefonia — ingestione [TBC] Diagramma di rete (01/07/2026) | 100 |
+| **Totale identificati** | **100** |
+| **Di cui risolti** | **2** (61, 63 — vedi stato "Fatto") |
