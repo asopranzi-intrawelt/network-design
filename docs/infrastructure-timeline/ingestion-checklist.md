@@ -11,6 +11,12 @@ lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-07.
 
 Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai ingestire (credenziali)
 
+Eccezione di anonimizzazione dichiarata (vedi `.claude/rules/anonymization.md`):
+i nomi di file e cartelle tra backtick sono percorsi letterali della cartella
+OneDrive sorgente e restano verbatim anche quando contengono nomi propri,
+perche' un placeholder li renderebbe introvabili. La prosa descrittiva fuori
+dai percorsi usa i placeholder.
+
 ---
 
 ## Root
@@ -232,7 +238,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `Storico ticket - case-studies/` altri file (prevalentemente JPG/allegati) — BASSA (archivio storico immagini)
 - [-] `Configurazione server IMAP in Odoo.docx` — file non in locale (OneDrive-only)
 - [x] `Mancata Ricezione Mail Gestionale TRex_Odoo.docx` → helpdesk-operations.md §T-Rex Sblocco IMAP (procedura periodica: sblocco token ricezione mail, 2 caselle trex/opportunita)
-- [x] `Problema CSRF Token T_Rex.docx` → helpdesk-operations.md §T-Rex CSRF Token + 2026-switch-piano-terra.md §19/02/2026 (Chiara Ippoliti, batch upload XML fallito, sessione corrotta)
+- [x] `Problema CSRF Token T_Rex.docx` → helpdesk-operations.md §T-Rex CSRF Token + 2026-switch-piano-terra.md §19/02/2026 (Persona-F, batch upload XML fallito, sessione corrotta)
 - [ ] `2022-10-20_Gestione_bolli_magazzino/` — BASSA
 - [ ] `Cambio sequenze fatturazione anno nuovo/` — BASSA
 - [ ] `TREX tour/` — BASSA
@@ -327,7 +333,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `Commenti security parte relativa ad AIDAPT.docx` → note review Alessio: ISO 27001 §A.8.13 retention configurabilità, ZDR evidenza richiesta, AWS non isolamento fisico ma segregazione account, rate limiting pending
 - [x] `Documento riassuntivo security.docx` → formalizzazione requisiti sicurezza (§2 sicurezza applicativa, §3 operativa, §4 governance, §5 LLM)
 - [x] `Requisiti di Sicurezza, Governance del Dato e Architettura.docx` → versione ampliata stessa struttura; entrambi già sintetizzati in scenia-project.md §Requisiti Sicurezza a/b/c/d
-- [ ] `Risposte Tecniche ai Requisiti di Sicurezza.docx` — ALTA (risposte AIDAPT — file non trovato in Condivisione, cercare in File condivisi da AIDAPT)
+- [x] `Risposte Tecniche ai Requisiti di Sicurezza.docx` → trovato come estratto in `SCENIA/SECURITY/DPA/extracted/Risposte Tecniche ... AIDAPT.md` → scenia-project.md §Risposte Tecniche AIDAPT (07/07/2026)
 - [x] `Re_ Call per smarcare punti security.eml` → scenia-project.md §Change Control (thread Jan 28 – Feb 20 2026: CR process, release trimestrale 4×/anno, canale help@caity.it, 7gg preavviso, changelog post-rilascio — fonte primaria per Allegato G DPA)
 - [-] `Caity_BCP, Caity_DRP, Caity_SLA.pdf` — già ingestionati
 - [-] `Intrawelt__documento_tecnico_.pdf` — BASSA (overview tecnica base)
@@ -339,7 +345,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [-] `02_Giugno 2025/` — SKIP (solo screenshots)
 - [-] `03_Luglio 2025/` — SKIP (solo screenshots)
 - [-] `04_Agosto 2025/` — SKIP (solo screenshots)
-- [x] `05_Settembre 2025/` → 2025-q3-q4.md §SCENIA luglio-set milestones (pipeline.md + PULIZIA BASE STABILE.docx: Francesca Caricchia calls aug 25/29, PR #1 merged sep 8, base stabile sep 10, commit 44537be)
+- [x] `05_Settembre 2025/` → 2025-q3-q4.md §SCENIA luglio-set milestones (pipeline.md + PULIZIA BASE STABILE.docx: Persona-N calls aug 25/29, PR #1 merged sep 8, base stabile sep 10, commit 44537be)
 - [-] `06_Ottobre 2025/` — SKIP (solo screenshots)
 - [-] `07_Novembre 2025/` — SKIP (solo screenshots)
 - [-] `08_Dicembre 2025/` — SKIP (solo screenshots)
@@ -348,7 +354,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [-] `11_Marzo 2026/` — SKIP (solo screenshots)
 - [-] `12_Aprile 2026/` — SKIP (solo screenshots)
 - [x] `13_Maggio 2026/` → 2026-switch-piano-terra.md §SCENIA gen-apr 2026 dev (8 cluster: files_storage, translation_form_ui, email_mjml, sessions, estimate_planner, trados, cors, admin_users; changelog mar-apr 2026)
-- [x] `_GESTIONE OUTSOURCING CON F.GIORGINI/` → 2025-q3-q4.md §Ottobre 2025 onboarding Giorgini (fork+PR model, branch strategy, cost analysis Render/Netlify/S3, proposta 29/10/2025)
+- [x] `_GESTIONE OUTSOURCING CON F.GIORGINI/` → 2025-q3-q4.md §Ottobre 2025 onboarding Collaboratore-Esterno-1 (fork+PR model, branch strategy, cost analysis Render/Netlify/S3, proposta 29/10/2025)
 
 ### SCENIA/File condivisi da AIDAPT
 - [x] `Caity_BCP, Caity_DRP, Caity_SLA.pdf` → già ingestionati
@@ -377,7 +383,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [x] `creazione ambienti.docx` → creazione_ambienti.txt (133 §) → vendor-management.md (Cappelli Design)
 - [x] `IntraPanel/flask_service.py` → via enivipa_servizi.txt → helpdesk-operations.md (SEC-009)
 - [x] `Notes (thinking lab) 12012026.docx` → 2026-switch-piano-terra.md §12/01/2026 (ricerca Thinking Machines/Tinker API, LoRA fine-tuning, case study n8n+Ollama+Tinker SaaS)
-- [x] `Progetto ENI ruolini (nov24)/` → 2024-infra.md §Novembre 2024 app desktop (Python/PyQt6, pipeline Word→Excel per T-Rex, 12-19 nov 2024, Francesca Caricchia)
+- [x] `Progetto ENI ruolini (nov24)/` → 2024-infra.md §Novembre 2024 app desktop (Python/PyQt6, pipeline Word→Excel per T-Rex, 12-19 nov 2024, Persona-N)
 - [x] `[TBC] PASSWORD MANAGER/` → cybersecurity-governance.md §Studio Password Manager (Vaultwarden Docker LAN, gap SEC-007 non implementato)
 - [ ] `[TBC] SERVER DNS PERSONALIZZATO/` — MEDIA
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
@@ -407,7 +413,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 - [x] `Odoo_18/2025-11-24_Scaletta.docx` → odoo18_scaletta.txt (25 §) → helpdesk-operations.md
 - [x] `Odoo_18/2025-11-24_Scaletta_flussi.docx` → odoo18_flussi.txt (52 §) → helpdesk-operations.md
-- [x] `Integrazione Odoo - portale/` → helpdesk-operations.md §Integrazione portale SCENIA + 2026-switch-piano-terra.md §04/03/2026 (meeting Susanna Ortini: xml-rpc, user asopranzi, deprecation v19/v20)
+- [x] `Integrazione Odoo - portale/` → helpdesk-operations.md §Integrazione portale SCENIA + 2026-switch-piano-terra.md §04/03/2026 (meeting Referente-OpenForce-1: xml-rpc, user asopranzi, deprecation v19/v20)
 - [x] `Integrazione Odoo - centralino cloud vianova/` → helpdesk-operations.md §Studio centralino (2 modalità: SIP Trunk + IP PBX vs API REST Vianova; nessun connettore nativo)
 - [ ] `Appina per query gestionale, webhook (2025)/` — MEDIA
 - [ ] `Odoo_12/28052025 - Risoluzione fix.docx` (7 MB) — MEDIA (storia bug pre-migrazione)
@@ -426,7 +432,7 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 - [x] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` → cybersecurity-governance.md §Crittografia dati a riposo + GAP-TBC #104/SEC-010 (07/07/2026; dettagli di derivazione password NON riportati nel repo, restano nel sorgente)
 - [ ] `Cybersec/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/` — MEDIA (revisione chiarimenti WindTre RFQ 10714, file datati 06-07/07/2026: evento timeline da aggiungere a questionari B2B gia' documentati)
 - [ ] `Helpdesk_ABBYY/ABBYY.docx` — MEDIA (nuovo documento consolidato; la cartella era skip "solo screenshot")
-- [ ] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti (DPIA versioni 29/06-02/07, extracted/, scripts/) — ALTA (evoluzione DPA/DPIA rispetto a quanto gia' in scenia-project.md)
+- [x] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti → scenia-project.md §Allegati A-L, §DPIA stato 02/07, §Risposte Tecniche AIDAPT, Fase 3 timeline (07/07/2026; estratti F/H/I/J via python-docx, DPIA via diff tra versioni extracted/)
 - [ ] `SCENIA/Checklist caricamento nuovo customer su Scenia.docx` — MEDIA
 - [ ] `SCENIA/Documentazione scenia/` (6 manuali utente/admin IT/EN) — BASSA (manuali prodotto)
 - [ ] `SCENIA/Useful Resources/call aidapt 6.7.2026.docx` — MEDIA (call recente, probabile aggiornamento stato DPA)

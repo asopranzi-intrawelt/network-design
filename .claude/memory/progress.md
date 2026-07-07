@@ -4,6 +4,26 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Ingestione delta SCENIA: Allegati A-L, DPIA compilata, Risposte AIDAPT (sessione 7, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/scenia-project.md (Fase 3 estesa a 29/06-06/07; nuove sezioni: DPIA
+    stato 02/07 con necessita'/proporzionalita' compilate, Risposte Tecniche
+    AIDAPT con nota di riconciliazione retention 7/10gg vs 60gg e breach 48h
+    vs EDPB, Allegati separati A-L con contenuti F/H/I/J; bonifica nomi reali
+    residui: Persona-A, Collaboratore-Esterno-1, Persona-N nuova, IP
+    collaboratore rimosso)
+  - docs/infrastructure-timeline/ingestion-checklist.md (2 voci ALTA [x]:
+    delta SCENIA e Risposte Tecniche, trovate negli estratti DPA/extracted/)
+  - _notes/.anonymization-map.md (Persona-N), _notes/.git-filter-replacements.txt
+Motivo: voce ALTA del delta 23/06-07/07. Metodo token-economy: usati gli
+estratti .md gia' presenti in DPA/extracted/ (INDEX, diff tra le due versioni
+DPIA invece di rilettura integrale: 64 righe cambiate), python-docx per i
+soli 4 allegati non ancora coperti (F/H/I/J). Resta da ingerire la call
+AIDAPT del 06/07 (MEDIA). Dati personali del referente privacy (telefono,
+anagrafica completa) lasciati solo nel sorgente.
+
 ## 2026-07-07 — Tagging in corso (gap 102-104), architettura LAN telefoni, audit crittografia (sessione 7, continua)
 
 Commit: PENDING (da fare manualmente)

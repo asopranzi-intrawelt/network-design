@@ -21,7 +21,7 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 - CAT/TM: Trados Online (RWS, UK – adequacy decision UE rinnovata 19/12/2025)
 - Monitoring: Grafana
 - Backend: AIDAPT S.r.l. (infrastruttura AWS Organization dedicata per Intrawelt)
-- Sviluppatore esterno: Fabio Giorgini
+- Sviluppatore esterno: Collaboratore-Esterno-1
 
 **Repository:**
 - GitHub: `asopranzi-intrawelt/full_stack_unimc` (privato, accesso tramite account asopranzi-intrawelt)
@@ -56,7 +56,7 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 |------|--------|
 | Apr 2025 | Avvio tracciamento mensile sviluppo SCENIA (SECURITY folder "00_Aprile 2025") |
 | 2025 (Q2-Q3) | Passaggio da architettura UNIMC/LangChain ad AIDAPT come partner industriale |
-| 25/08/2025 | Call con Francesca Caricchia: integrazione Power Automate / OneDrive per gestione file. Folder "backend_Trados_RWS" creato nella repo `full_stack_unimc`. |
+| 25/08/2025 | Call con Persona-N: integrazione Power Automate / OneDrive per gestione file. Folder "backend_Trados_RWS" creato nella repo `full_stack_unimc`. |
 | 08/09/2025 | Merge branch `homepage_superadmin` → main. PR creata e approvata senza conflitti. "Base stabile" post-cleanup. |
 | Mag-Dic 2025 | Sviluppo fullstack SCENIA (portale AI): frontend, backend AWS, integrazione Trados, Qdrant Vector Store |
 | Set-Dic 2025 | Integrazione Azure OpenAI gpt-4.1, embedding, RAG su Vector Store |
@@ -84,7 +84,33 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 | 11/06/2026 | DPA bozza v1.6: propagati fatti confermati AIDAPT in Allegato II (MFA admin, tenant dedicato, SAST/DAST assenti, Qdrant audit log non configurato) |
 | 11/06/2026 | DPA bozza v1.7: dati Intrawelt inseriti (sede, P.IVA, legale rappresentante, foro Fermo) |
 | Giu 2026 | DPIA ScenIA in progress (edpb_dpia_template_2026_v1_en.docx adattato) |
-| **Pending** | Invio Questionario_AIDAPT_misure_sicurezza a AIDAPT (30 punti tecnici); completare placeholder Parti DPA; negoziare massimali |
+| 29/06/2026 | DPIA: compilate le sezioni di necessita' ed efficacia (alternative considerate, opzione meno intrusiva) e di proporzionalita' (balancing test); data documento aggiornata al 29.06.2026 |
+| 02/07/2026 | Allegati contrattuali scorporati in file separati A-K (piu' schema L definito); DPIA "ultima versione" consolidata; ricevute le Risposte Tecniche AIDAPT (chiude l'item ALTA che risultava da cercare) |
+| 06/07/2026 | Call AIDAPT (call aidapt 6.7.2026.docx) — da ingerire |
+| **Pending** | Completare placeholder Parti DPA per ciascun contratto (canale supporto, referente escalation, anagrafica Titolare); negoziare massimali (Allegato J: nessun massimale previsto, regole ordinarie art. 82 GDPR e 1229 c.c.) |
+
+---
+
+## DPIA ScenIA — stato al 02/07/2026
+
+La DPIA (base: template EDPB 2026) non e' piu' un template vuoto: le sezioni
+valutative centrali sono compilate. La valutazione di necessita' documenta le
+alternative considerate e le scelte meno intrusive adottate: modalita' di
+traduzione diretta in-memory senza persistenza come default; memoria di
+traduzione opt-in segregata per organization_id (e, dalla versione ultima,
+anche per argument); modalita' "common organization" confermata da AIDAPT per
+tradurre da esempi condivisi senza caricare documenti propri; provider LLM in
+stateless/Zero Data Retention senza training sui dati; trattamento solo SEE
+(AWS eu-west-1, Azure Sweden Central; Bedrock non attivo) con unico
+trasferimento verso il Regno Unito (RWS/Trados) coperto da decisione di
+adeguatezza UE valida fino al 27/12/2031, senza necessita' di SCC. Il
+balancing test conclude per la proporzionalita': nessuna profilazione ne'
+decisione automatizzata con effetti giuridici, severita' tipica bassa-media
+per contenuti B2B, alta solo in caso di dati art. 9 accidentali, mitigata da
+esclusione contrattuale, filtro PII lato client (PLANNED) e misure tecniche.
+Nelle misure e' entrata la non-ritenzione del contenuto tradotto con
+cancellazione automatica delle Translation Unit dopo la generazione. Il
+documento resta materiale di lavoro e non sostituisce il parere legale.
 
 ---
 
@@ -107,12 +133,12 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 
 | Soggetto | Ruolo | Contatto |
 |----------|-------|---------|
-| Intrawelt S.a.s. | Responsabile del trattamento, sviluppo prodotto | privacy@intrawelt.com, Alessandro Potalivo |
+| Intrawelt S.a.s. | Responsabile del trattamento, sviluppo prodotto | privacy@intrawelt.com, Persona-A |
 | AIDAPT S.r.l. | Sub-responsabile, infrastruttura AWS/Azure | help@caity.it |
 | Alessio Sopranzi | IT Manager, responsabile compliance GDPR/sicurezza lato IT | asopranzi@intrawelt.com |
 | Francesca | Processo workflow traduzione | |
 | Alessia Nasini | Coordinamento, GDPR, dati clienti | anasini@intrawelt.com |
-| Fabio Giorgini | Sviluppatore esterno fullstack | |
+| Collaboratore-Esterno-1 | Sviluppatore esterno fullstack | |
 | Prof. Frontoni / VRAI Lab (UNIMC) | Partner accademico originario (fase 0) | |
 | GAIA S.r.l. | Consulenza AI compliance (spin-off UNIMC, Benedetta Giovanola) | |
 
@@ -222,19 +248,19 @@ Da `Domande_interne_Intrawelt_2026-06-11.md` — risposte già inserite da Intra
 
 | Campo | Valore |
 |-------|--------|
-| Ragione sociale | Intrawelt di Alessandro Potalivo & C. s.a.s. |
+| Ragione sociale | Intrawelt di Persona-A & C. s.a.s. |
 | Sede legale | Via Elpidiense 14, 63821 Porto Sant'Elpidio (FM) |
 | P.IVA | 01287540445 |
-| Legale rappresentante | Alessandro Potalivo |
-| Referente privacy | Alessandro Potalivo — privacy@intrawelt.com |
-| DPO | Alessandro Potalivo (designato internamente; soglia art. 37 da verificare con legale) |
+| Legale rappresentante | Persona-A |
+| Referente privacy | Persona-A — privacy@intrawelt.com |
+| DPO | Persona-A (designato internamente; soglia art. 37 da verificare con legale) |
 | Foro competente | Fermo |
 | Massimali responsabilità | Nessun cap proposto (no limite ex art. 82 GDPR) |
 | Retention log/cronologie | 1 anno (standard dichiarato ai clienti) |
 | Comunicazione cambi sub-responsabili | Email ai referenti dei clienti |
 | Linguisti terzi HitL | Sì, tutti in UE |
 | Avvio servizio ScenIA | Aprile 2026 |
-| Team DPIA | Alessandro Potalivo (DPO, CEO, Referente) |
+| Team DPIA | Persona-A (DPO, CEO, Referente) |
 | Prima stesura DPIA | 11/06/2026 |
 
 **Pending blocchi DPA firma:** A1-A4 (dati Intrawelt ✅ completati), E1-E2 (dati Cliente, per ogni contratto),
@@ -277,6 +303,32 @@ monitoraggio drift comportamentale modelli.
 > a chiedere queste garanzie e Intrawelt dovrà rispondervi in quanto erogatore del SaaS.
 
 ---
+
+## Risposte Tecniche AIDAPT (allegato tecnico, ricevute — estratto in DPA/extracted)
+
+Documento di risposta di AIDAPT ai requisiti a/b/c/d, perimetrato al backend
+e all'infrastruttura AWS secondo il modello di responsabilita' condivisa
+(Intrawelt: autenticazione utenti finali, UI, logica frontend; AIDAPT:
+backend traduzione e AI). Punti salienti: tenant dedicato con AWS
+Organization autonoma per Intrawelt (segregazione a livello di account, non
+solo logica; chiavi di cifratura non condivise); cifratura AES-256 su RDS e
+SSE-S3 su snapshot Qdrant, TLS >= 1.2 in transito con endpoint LLM in region
+europee; API key dedicate con rotazione e JWT via Cognito per la dashboard;
+rate limiting dichiarato "in deploy nella prossima release"; CI/CD con
+linting e test piu' Dependabot per le CVE; log centralizzati su Grafana di
+natura tecnica senza payload (niente PII nei log); backup giornalieri
+application-consistent con retention tecnica 7 giorni RDS e 10 giorni Vector
+Store; RPO < 24 ore e RTO 8-12 ore lavorative da DRP; garanzia No Training
+sancita dal DPA (Art A.5.3) con accordi Enterprise Zero Data Retention verso
+i provider; filtri contenuti nativi (Azure Content Safety); notifica breach
+a Intrawelt entro 48 ore dalla conoscenza; export via API dei glossari e
+primitive di cancellazione puntuale e massiva per organizzazione.
+
+Nota di riconciliazione: la retention tecnica dei backup dichiarata qui
+(7/10 giorni) e' piu' stretta dei 60 giorni massimi di rotazione indicati
+nell'Allegato I; e la notifica breach "entro 48 ore" e' piu' specifica dello
+standard EDPB 9/2022 "senza ingiustificato ritardo" recepito nel DPA. Da
+armonizzare in sede di consolidamento contrattuale.
 
 ## Questionario AIDAPT — Stato 30 punti (precompilato 11/06/2026)
 
@@ -448,7 +500,7 @@ tara.ns.cloudflare.com).
 
 ---
 
-## Security Architecture SCENIA VPS (post-Fabio Giorgini, 2026)
+## Security Architecture SCENIA VPS (post-Collaboratore-Esterno-1, 2026)
 
 Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` — decisione architetturale 11/05/2026.
 
@@ -462,7 +514,7 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` — decisione architetturale 11/
 ### Controlli accesso
 
 - SSH: solo chiavi ED25519 (root login disabilitato), porta consentita solo da
-  IP Intrawelt pubblico e IP Fabio Giorgini (95.236.26.239)
+  IP Intrawelt pubblico e IP Collaboratore-Esterno-1 (IP nella mappa locale)
 - Fail2Ban: ban automatico dopo 3-4 tentativi SSH falliti
 - ufw: policy DROP su input/forward, ACCEPT su output (eccetto regole esplicite)
 
@@ -557,6 +609,54 @@ Nota: Intrawelt è su macchina dedicata → modalità flessibili concordabili ca
   attiva → dato di traduzione transitoriamente accessibile per monitoring Azure.
 - **Memory / Qdrant**: similarity search injectata nel prompt ad ogni invocazione;
   non disattivabile dall'utente finale.
+
+---
+
+## Allegati contrattuali separati A-L (02/07/2026)
+
+Il 02/07/2026 gli allegati del contratto ScenIA sono stati scorporati in
+file autonomi sotto `SCENIA/SECURITY/Allegati/` (A Definizioni, B
+Descrizione servizio, E SLA, F Supporto, G Change Control, H Sicurezza, I
+Backup/Retention/DR, J DPA, K Subprocessor; lo schema complessivo in
+`definizioni allegati.txt` prevede anche C Trial, D Prezzi e L
+Audit/certificazioni). B, E, G e K erano gia' documentati nelle sezioni
+dedicate di questa scheda; i contenuti nuovi sono F, H, I e J.
+
+Allegato F, supporto tecnico: orario 9-18 CET lun-ven con eventuale
+reperibilita' H24 per severita' critica; escalation a tre livelli (supporto
+Intrawelt, team tecnico del gestore del framework, management) con trigger
+automatico al superamento dei tempi; matrice severita' S1-S4 con risposta
+2/4/8/24 ore e obiettivi di risoluzione da 8 ore lavorative (S1, workaround)
+a 10 giorni (S4). Canale di supporto e referente escalation restano
+placeholder da completare per contratto.
+
+Allegato H, sicurezza: consolida le TOM lungo la catena Intrawelt/AIDAPT con
+i gap dichiarati in trasparenza: rate limiting applicativo non implementato,
+audit log Qdrant non configurato, SAST/DAST assenti, commit non firmati,
+nessun VA/PT formale eseguito, nessuna certificazione formale (percorso in
+corso). MFA utenti finali e filtro PII lato client sono esplicitamente in
+carico a Intrawelt/Cliente. Allineamento volontario a ETSI EN 304 223.
+
+Allegato I, backup e DR: backup giornalieri cifrati nel SEE con rotazione a
+60 giorni massimi non configurabile; progetti Trados eliminati dopo 90
+giorni, log 90 giorni, TU e glossari per la durata contrattuale cancellabili
+per organization_id; diritto all'oblio sui backup gestito tramite registro
+delle cancellazioni AIDAPT (in fase di attivazione) piu' rotazione; RPO < 24
+ore e RTO 8-12 ore lavorative unici per tutti gli scenari (guasto
+componente, outage regionale best effort, ransomware); BCP approvato il
+30/04/2026, DRP revisionato il 27/02/2026, test periodici di ripristino non
+documentati (gap da colmare).
+
+Allegato J, DPA in forma sintetica: Intrawelt come Responsabile ex art. 28
+(referente privacy Persona-A, privacy@intrawelt.com; anagrafica completa nel
+sorgente locale, non qui); categorie di dati (TU con eventuali dati di terzi,
+metadati, glossari e memorie, dati di onboarding, dati dei linguisti, log
+pseudonimi) con esclusione artt. 9-10 su dichiarazione del Titolare e
+clausola di salvaguardia; sub-responsabili con autorizzazione generale
+(AIDAPT, AWS eu-west-1, Azure OpenAI Sweden Central, RWS/Trados UE-UK in
+adeguatezza); breach notification "senza ingiustificato ritardo" secondo
+EDPB 9/2022 con le 72 ore verso l'autorita' a carico del solo Titolare;
+nessun massimale di responsabilita' (art. 82 GDPR, art. 1229 c.c.).
 
 ---
 
