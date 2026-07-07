@@ -238,6 +238,71 @@ Contenuto trovato: solo backup del 2020, 2021 e 2022 di Glossari, Multiterm e TM
 in Via Pescolla, anni di dismissione 2022). NAS formattato. Il dispositivo rimane
 fisicamente presente ma vuoto e disponibile.
 
+## 27/02-24/03/2025 - Migrazione licenze ABBYY FineReader 15 sul nuovo server
+
+Fonte: `Helpdesk_ABBYY/ABBYY.docx` (documento consolidato del 03/07/2026, 166
+screenshot; testo estratto in `_notes/.tmp-docx-abbyy/`). Questa sezione e'
+scritta in forma anonimizzata secondo `.claude/rules/anonymization.md`: IP
+sullo schema 10.61.x.x, persone come Persona-X; il sorgente contiene inoltre
+credenziali amministrative in chiaro che non vengono mai riportate (gap #105).
+
+Contesto licenze. Le 5 licenze concurrent di ABBYY FineReader PDF 15 Corporate
+sono state acquistate a luglio 2021 tramite il fornitore Novadys
+(Referente-Novadys-1, in contatto con Persona-P). Le licenze sono perpetue; la
+Software Maintenance and Upgrade Assurance[^1] era valida dal 15/07/2021 al
+14/07/2022 e non e' mai stata rinnovata (il preventivo di rinnovo di agosto
+2022 non ha avuto seguito). Il license server storico e' una VM Windows Server
+2012 R2 ("licserver", 10.61.20.114) ospitata sul vecchio host HP Gen 5 con
+vSphere (10.61.20.8); i client risolvono il nome `\\licserver` tramite riga
+statica nel file hosts di Windows che punta a quell'IP, anche in VPN.
+
+Il 27/02/2025 Persona-E apre un ticket al supporto ABBYY (in CC Alessio)
+chiedendo la procedura per migrare il License Manager sul nuovo server HP Gen
+10, idealmente conservando lo stesso IP. Il supporto (Referente-ABBYY-1)
+risponde che la manutenzione e' scaduta dal 14/07/2022, quindi l'assistenza si
+limita ad attivazioni e kit di installazione, e fornisce il link al
+distribution kit di FineReader PDF 15 (i kit non sono scaricabili
+pubblicamente: servono link individuali del supporto).
+
+Il 14/03/2025 inizia lo studio della procedura. Un primo tentativo con il
+pacchetto scaricabile in autonomia dal sito installa il License Manager in
+versione 16, incompatibile con le licenze della versione 15, e viene
+disinstallato. Con il kit corretto della versione 15 fornito dal supporto si
+esegue l'Installazione di massa: License Server e License Manager 15 installati
+insieme sul nuovo server Windows Server 2022. Il 19/03/2025 il supporto invia
+anche un file di licenza per l'attivazione offline, ma la procedura guidata del
+wizard non corrisponde alle schermate documentate e non va a buon fine;
+l'attivazione riesce in seguito via internet, dopo che un tentativo di copia
+diretta delle cartelle licenze dal server vecchio si era rivelato inutile (la
+configurazione non vive nei file copiabili a mano).
+
+Ad attivazione riuscita il nuovo License Manager espone tutte e 5 le licenze
+libere, mentre il vecchio license server risulta ancora attivo con lo stesso
+seriale: durante la transizione la concorrenza effettiva sarebbe superiore al
+perimetro licenziato. Il 21/03/2025 Persona-A e Alessio decidono di completare
+rapidamente la re-installazione dei client dal nuovo punto di installazione
+amministrativa e di dismettere poi completamente il vecchio license server,
+disattivando le licenze residue sul 10.61.20.114.
+
+Per il rollout viene creata sul nuovo server la cartella condivisa `abbyy_15`
+(punto di installazione amministrativa) con un utente guest dedicato senza
+scadenza password, utilizzabile da qualsiasi PC della LAN; la re-installazione
+riguarda circa 18 postazioni. La prima postazione pilota viene completata con
+successo il 24/03/2025 (licenza floating correttamente letta dal nuovo License
+Manager); su una postazione il setup abortiva con codice errore 250 (dati
+interni del programma danneggiati), risolto rinominando le cartelle residue
+ABBYY in ProgramData, AppData e Program Files prima di rilanciare il setup.
+
+Note da verificare: il sorgente alterna due hostname diversi per il nuovo
+server (refuso probabile in una delle due forme) e cita una "VM101 (node pve,
+Windows)" che non compare nell'inventario dello snapshot v3 del 2026, dove il
+Windows Server 2022 e' VM100 (gap #106).
+
+[^1]: *SMUA*, Software Maintenance and Upgrade Assurance - contratto di
+manutenzione ABBYY che da' diritto a supporto completo e upgrade di versione;
+senza SMUA valida le licenze perpetue restano funzionanti ma il supporto si
+limita ad attivazioni e kit di installazione.
+
 ## 20/03/2025 - Posatura fibra FTTO (non avvisata)
 
 Un'azienda incaricata da Fibercop posa fisicamente la fibra ottica fino all'armadio
