@@ -740,3 +740,42 @@ RWS di Persona-E senza download visibili, invito al nuovo Account Portal mai
 arrivato a persona-e@intrawelt.com); email a support@rws.com pronta nel
 documento sorgente, da inviare. Rischio: la criticita' si estende a ogni
 cliente che aggiorna a Studio 2026.
+
+## 07/07/2026 - Tagging VLAN sui due switch per il centralino cloud: intervento in corso
+
+Fonte: comunicazione verbale dell'utente in sessione, 07/07/2026. Le evidenze
+dell'intervento (16 screenshot, 2 foto, una nota testuale con estratto chat
+delle 13:14-13:17) sono salvate in `_notes/[TBC] screenshot e note myoffice/`,
+non versionate: il racconto completo e la documentazione strutturata
+dell'intervento arriveranno a lavori conclusi, quando tutti gli endpoint
+(telefoni inclusi) funzioneranno (vedi nota PORT-TAGGING in
+`ingestion-checklist.md`).
+
+Dalla nota testuale emerge intanto l'architettura della LAN telefonica, che
+chiude la domanda aperta FW-012 sulla funzione della porta 8: la LAN telefoni
+Vianova non e' raggiungibile dalla LAN aziendale, per progetto. Il DHCP
+server e il gateway della LAN telefonica sono forniti da Vianova e connessi
+untagged alla porta 8 dello switch, senza passare per il firewall; i
+telefoni prendono l'indirizzo dal DHCP Vianova; Vianova stabilisce una VPN
+verso myOffice come sede per arrivare alla porta 8. Caso di riferimento
+citato: presso un altro cliente myOffice la VPN saturava la banda e i
+telefoni cadevano, e li' myOffice entra attraverso il firewall raggiungendo
+i telefoni come oggetto IP; e' l'anomalia da tenere presente come rischio
+noto dell'architettura.
+
+Due fatti osservati oggi, gia' registrati come gap:
+
+Primo (NET-008, GAP-TBC #102): su entrambi gli switch XGS2220 la VLAN ID 1
+non puo' assumere valore Tx tagging sulla dorsale: quando la si tagga, gli
+endpoint Windows collegati allo switch perdono le connessioni di rete verso
+il NAS-HERO (10.61.20.169), senza alcuna modifica al file hosts degli
+endpoint. La causa non e' ancora compresa. Ipotesi da verificare, non
+confermata: la VLAN 1 e' la native/untagged della dorsale, e taggarla in
+uscita produce un native VLAN mismatch sul lato ricevente che separa a
+livello 2 gli endpoint dal NAS; in quel caso il file hosts non c'entra
+perche' il guasto e' di inoltro, non di risoluzione dei nomi.
+
+Secondo (TEL-002, GAP-TBC #103): i telefoni del piano inferiore collegati
+attraverso il vano ascensore non passano le VLAN, causa non compresa.
+[TBC: topologia esatta del tratto che attraversa il vano ascensore, da
+chiarire con il racconto finale.]

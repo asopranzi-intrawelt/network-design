@@ -121,7 +121,7 @@ unico commit cumulativo di fine fase.
 | M8 | Verifica post-applicazione nell'ordine di impatto utente (LAN, SSL VPN, IPsec, VM DMZ) + 48h di osservazione log | ALTA | Fase 6 del piano | M7 | Da fare |
 | M9 | Prima VM DMZ operativa (nginx reverse proxy 10.61.201.10, esposta su 203.0.113.3) | MEDIA | Piano_Operativo_Migrazione.docx | M8 | Da fare |
 | M10 | Verificare quale switch ospita realmente la porta del telefono di Persona-A (contraddizione Piano 2 vs Piano Terra) prima di chiudere la mappatura IP/MAC telefoni | MEDIA | NET-007, GAP-TBC #67 | Nessuna (indipendente dal piano firewall) | Da fare |
-| M11 | Verificare la funzione della porta 8 riconfigurata "Vianova DHCP server fonia" (PVID 2) e valutare se sostituisce la rimozione del DHCP server classe .90 | MEDIA | FW-012 | M10 | Da fare |
+| M11 | Verificare la funzione della porta 8 riconfigurata "Vianova DHCP server fonia" (PVID 2) e valutare se sostituisce la rimozione del DHCP server classe .90 | MEDIA | FW-012 | M10 | Parziale 07/07/2026: funzione confermata (DHCP+gateway Vianova untagged, isolati dal firewall); resta la valutazione sul DHCP .90 |
 | M12 | Rimuovere il DHCP server residuo classe .90 e spostare lo switch di management (10.61.90.37) sulla VLAN corretta | ALTA | NET-001, NET-004, NET-005 | M11 | Da fare |
 | M13 | Segmentare la VLAN Wi-Fi "intrawelt" dalla classe .90, isolamento reale da LAN/management | MEDIA | NET-005 | M12 | Da fare |
 | M14 | Aggiornare le VPN IPsec da IKEv1/AES-128/SHA-1/DH2 a parametri correnti; chiarire se PSE-SEEWEB e WIZ_VPN sono transizione o residuo | MEDIA | FW-006, FW-007 | M8 | Da fare |

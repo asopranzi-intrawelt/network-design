@@ -423,7 +423,7 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 `Check-OneDriveDelta.ps1` (esclusi artefatti graphify-out, cache, mirror scraping).
 
 - [x] `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md` — ingestita (vedi sezione Helpdesk_T-Rex)
-- [ ] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` — MEDIA (nuovo inventario audit crittografia dati a riposo; la sezione era skip perche' conteneva solo il manuale SGIQA)
+- [x] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` → cybersecurity-governance.md §Crittografia dati a riposo + GAP-TBC #104/SEC-010 (07/07/2026; dettagli di derivazione password NON riportati nel repo, restano nel sorgente)
 - [ ] `Cybersec/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/` — MEDIA (revisione chiarimenti WindTre RFQ 10714, file datati 06-07/07/2026: evento timeline da aggiungere a questionari B2B gia' documentati)
 - [ ] `Helpdesk_ABBYY/ABBYY.docx` — MEDIA (nuovo documento consolidato; la cartella era skip "solo screenshot")
 - [ ] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti (DPIA versioni 29/06-02/07, extracted/, scripts/) — ALTA (evoluzione DPA/DPIA rispetto a quanto gia' in scenia-project.md)
@@ -433,16 +433,21 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 - [ ] `Sviluppo_interno/Qdrant + Ollama + Ubuntu + n8n/` — MEDIA (era BASSA "ricerca esterna": ora contiene benchmark IntraLino C1-C4, guide e workflow n8n interni)
 - [-] `Miscellaneous/Web scraping - Downloaded Web sites/` — SKIP (mirror di un sito esterno, non IT ops)
 
-## Nota PORT-TAGGING (in attesa di input utente, 07/07/2026)
+## Nota PORT-TAGGING (in attesa di input utente, aggiornata 07/07/2026 pomeriggio)
 
 Il tagging delle porte dei due switch (XGS2220-54HP Piano 2, XGS2220-30HP
-Piano Terra) eseguito in occasione della migrazione al centralino cloud
-Vianova NON e' ancora documentato per intero: nei documenti ingestiti finora
-compaiono solo modifiche puntuali (porta 8 del 54HP a PVID 2 il 09/06/2026,
-Voice VLAN dei telefoni in telefono-pbx-voip.md). L'utente fornira' i
-dettagli completi a voce quando l'analisi cronologica arrivera' al punto in
-cui i due switch sono stati taggati: la fonte dedicata da ingerire prima e'
-`Mappatura porte fisiche/` (vedi sezione ARCHITETTURA).
+Piano Terra) per la migrazione al centralino cloud Vianova e' **in corso**:
+l'utente ha eseguito interventi il 07/07/2026 e ha salvato le evidenze in
+`_notes/[TBC] screenshot e note myoffice/` (16 screenshot, 2 foto e una nota
+testuale; non versionati, da analizzare al momento del racconto — dalla nota
+e' gia' stata estratta l'architettura della LAN telefoni, vedi timeline
+07/07/2026 e FW-012). Il racconto completo arrivera' **a lavori conclusi**, quando
+tutti gli endpoint (telefoni inclusi) funzioneranno. Nel frattempo sono
+tracciati i fatti gia' noti: voce 07/07/2026 in
+`2026-switch-piano-terra.md`, gap NET-008 (VLAN 1 non taggabile sulla
+dorsale senza perdere connettivita' verso NAS-HERO) e TEL-002 (telefoni via
+vano ascensore non passano le VLAN) in GAP-TBC #102/#103. `Mappatura porte
+fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
 
 ## Riepilogo priorità (rigenerato 07/07/2026 dallo stato reale delle spunte)
 

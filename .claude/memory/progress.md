@@ -4,6 +4,33 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Tagging in corso (gap 102-104), architettura LAN telefoni, audit crittografia (sessione 7, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md (voce 07/07/2026:
+    tagging VLAN in corso sui due switch, evidenze in _notes, architettura LAN
+    telefoni Vianova dalla nota utente)
+  - docs/infrastructure-timeline/GAP-TBC.md (#102 NET-008: VLAN 1 non taggabile
+    sulla dorsale senza perdere NAS-HERO, ipotesi native VLAN mismatch da
+    verificare; #103 TEL-002: telefoni via vano ascensore non passano le VLAN;
+    #104 SEC-010: password archivi cifrati in chiaro; #98 FW-012 funzione
+    confermata; totale 104)
+  - docs/firewall-zyxel-usg-flex-500.md (FW-012 confermata: DHCP+gateway
+    Vianova untagged su porta 8, isolati dal firewall, VPN Vianova->myOffice)
+  - docs/cybersecurity-governance.md (nuova sezione Crittografia dati a riposo
+    da AUDIT_INVENTORY.md: due schemi paralleli VeraCrypt/.z 2009-2022,
+    password in chiaro su filesystem, azioni P0/P1/P2; dettagli di derivazione
+    password NON riportati, repo pubblico)
+  - docs/infrastructure-timeline/ingestion-checklist.md (AUDIT_INVENTORY [x],
+    nota PORT-TAGGING aggiornata: racconto a lavori conclusi)
+  - .claude/context/roadmap.md (M11 parziale), .claude/context/current-work.md
+Motivo: l'utente ha eseguito il 07/07 gli interventi di tagging (racconto
+completo rimandato a endpoint funzionanti; evidenze in
+`_notes/[TBC] screenshot e note myoffice/`: 16 screenshot, 2 foto, note.txt).
+Tracciati subito i fatti noti e ingerita la prima voce MEDIA del delta
+(audit crittografia dati a riposo).
+
 ## 2026-07-07 — Ingestione completa Mappatura porte fisiche (sessione 7, continua)
 
 Commit: PENDING (da fare manualmente)

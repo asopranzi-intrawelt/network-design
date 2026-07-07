@@ -26,15 +26,19 @@ GroupShare SR1 -> SR2+CU15 bloccato su download RWS) -> voce 06/07/2026 in
 `2026-switch-piano-terra.md`. Il sorgente contiene credenziali in chiaro,
 non riportate.
 
-## Nota PORT-TAGGING (input utente atteso)
+## Nota PORT-TAGGING (racconto rimandato a lavori conclusi)
 
-Il tagging delle porte dei due switch Nebula (XGS2220-54HP e XGS2220-30HP),
-eseguito in occasione della migrazione al centralino cloud Vianova, non e'
-ancora emerso per intero dai documenti ingestiti. L'utente ha chiesto
-esplicitamente di fermarsi e chiedere a lui i dettagli quando l'analisi
-cronologica arriva al punto in cui i due switch sono stati taggati.
-Prerequisito: ingerire `ARCHITETTURA SERVER-CLOUD-LINEE/Mappatura porte
-fisiche/` (voce ALTA in checklist).
+Il tagging dei due switch Nebula (XGS2220-54HP e XGS2220-30HP) per la
+migrazione al centralino cloud e' **in corso**: interventi eseguiti
+dall'utente il 07/07/2026, evidenze in
+`_notes/[TBC] screenshot e note myoffice/` (16 screenshot, 2 foto, note.txt;
+gli screenshot si analizzano al momento del racconto). Il racconto completo
+arrivera' quando tutti gli endpoint (telefoni) funzioneranno. Gia' tracciati:
+voce timeline 07/07/2026 (inclusa l'architettura LAN telefoni dalla nota:
+DHCP+gateway Vianova untagged su porta 8, isolati dal firewall, VPN Vianova
+verso myOffice — chiude la domanda FW-012), gap NET-008 (#102, VLAN 1 non
+taggabile sulla dorsale senza perdere il NAS-HERO) e TEL-002 (#103, telefoni
+via vano ascensore non passano le VLAN).
 
 **Mappatura porte fisiche ingestita per intero il 07/07/2026**
 (`docs/mappatura-porte-fisiche.md` riscritto): xlsx completo (Piano 0 uffici

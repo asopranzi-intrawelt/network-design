@@ -29,7 +29,7 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 | Data | Evento | Dettaglio |
 |------|--------|-----------|
 | 17/09/2025 | Email Microsoft MFA enforcement | Microsoft comunica obbligo MFA per account Azure admin dal 01/10/2025. |
-| 19/09/2025 | Analisi account Azure admin | Identificati 4 account con ruoli Azure: asopranzi, anasini, tvezeni, atrovato. Test MFA su tvezeni (già configurato → ok) e atrovato (non configurato → scollegato da tutte le risorse MS). |
+| 19/09/2025 | Analisi account Azure admin | Identificati 4 account con ruoli Azure: asopranzi, persona-j, persona-e, persona-m. Test MFA su persona-e (già configurato → ok) e persona-m (non configurato → scollegato da tutte le risorse MS). |
 | 19/09/2025 | Decisione MFA rolling | Rinviare configurazione per account non precedentemente impostati: Microsoft applica enforcement automaticamente da 01/10/2025, ma solo per operazioni Azure (non Office 365). |
 | 01/10/2025 | MFA enforcement attivo | Microsoft attiva enforcement. Account Azure admin devono completare setup MFA al primo login. |
 
@@ -298,7 +298,7 @@ gara piu' significativa per volume e complessita' (busta tecnica + commerciale +
 Fonte: `Cybersec & IT Governance/Regolamento utilizzo sistemi informatici/Registro_accettazione.docx`
 Documento: lista di 21 dipendenti + 4 righe vuote per nuovi assunti.
 Prima versione inviata: 19/04/2021 come allegato email.
-File disponibile su: `\\192.168.20.170\utili\Privacy\Regolamento utilizzo sistemi informatici\`
+File disponibile su: `\\10.61.20.170\utili\Privacy\Regolamento utilizzo sistemi informatici\`
 
 **Stato attuale (verificato giugno 2026): 0 firme su 21 dipendenti elencati.**
 
@@ -460,6 +460,40 @@ Per Intrawelt PMI: sufficiente per fase attuale; SSO da valutare con crescita or
 
 Gap attuale: SEC-007 — nessun password manager aziendale in produzione a giugno 2026.
 Strumento attuale: password salvate in browser locali o file non cifrati.
+
+---
+
+## Crittografia dati a riposo – Audit inventario (luglio 2026)
+
+Fonte: `Cybersec & IT Governance/Criptare dati a riposo/AUDIT_INVENTORY.md`
+(inventario generato il 07/2026 con supporto del knowledge graph, dichiarato
+parziale). Gli archivi storici aziendali sono cifrati con due schemi paralleli
+per gli stessi anni, senza un criterio scritto di scelta: container VeraCrypt
+`.hc` per anno (censiti 2009, 2010, 2020, 2021; la sequenza 2011-2019 e 2022+
+non e' censita e va verificata sugli storage fisici) e archivi compressi `.z`
+protetti da password (2009-2022, quattordici anni; tool e modalita' di
+cifratura non documentati, e un eventuale ZipCrypto legacy sarebbe debole).
+
+Rischio critico rilevato dall'audit: le password e la regola di derivazione
+risiedono in chiaro in file di testo sullo stesso filesystem aziendale
+condiviso (i dettagli restano nel file sorgente locale e non vengono mai
+riportati in questo repository): chiunque acceda a OneDrive con un account
+amministrativo ottiene insieme container e password, azzerando la cifratura
+at-rest nel threat model interno. Non esiste un custodian designato delle
+chiavi, non esiste una policy crittografica documentata (ISO 27001 A.8.24
+assente), i parametri VeraCrypt dei container non sono documentati (cifrario,
+PRF, PIM, keyfile), non c'e' audit log di mount/dismount ne' verifica
+periodica di integrita' (GDPR Art. 32(1)(d) assente).
+
+Azioni proposte dall'audit, per priorita': P0 entro 30 giorni (spostare le
+password in un vault aziendale con accesso ristretto, designare un custodian
+formale con sostituto, censire fisicamente tutti i container); P1 entro 90
+giorni (scegliere e documentare lo schema unico, documentare i parametri di
+ogni container, redigere la policy crittografica firmata); P2 entro 180
+giorni (valutare TPM-binding, test annuale di mount e integrita', recovery
+drill sulla perdita del custodian). Il rischio password-in-chiaro e' la
+stessa radice del gap SEC-007 (password manager aziendale mai implementato):
+la voce e' registrata come SEC-010 in GAP-TBC #104.
 
 ---
 
