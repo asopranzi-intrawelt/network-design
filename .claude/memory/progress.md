@@ -4,6 +4,34 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Sync-context post 594ec07 + ingestione revisione WindTre e BitLocker endpoint (sessione 8)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - .claude/context/*.md (bump last-verified 1ad2cb7 -> 594ec07 su tutte e sei
+    le schede, dimenticato nei commit 6e1d4b6..594ec07; current-work.md
+    aggiornata: voci ALTA chiuse, prossimo blocco delta MEDIA)
+  - .claude/memory/index.md (commit di riferimento 594ec07, tabella schede,
+    punto di ripresa riscritto)
+  - docs/cybersecurity-governance.md (timeline Q3 2026: BitLocker endpoint
+    attivo dal 03/07 con escrow chiavi su NinjaOne, revisione WindTre;
+    nuova sezione §Revisione chiarimenti WindTre RFQ 10714 06-07/07;
+    raccordo endpoint nella sezione Crittografia dati a riposo; riga
+    WindTre della tabella questionari aggiornata)
+  - docs/infrastructure-timeline/ingestion-checklist.md (voce WindTre [x],
+    riepilogo priorita': ALTA vuota, MEDIA aggiornata)
+Motivo: ripresa sessione con sync-context (schede con frontmatter mai
+bumpato dopo 1ad2cb7 ma contenuti gia' coerenti; solo current-work e index
+davvero stale). Il delta OneDrive di avvio (2 nuovi + 1 modificato, tutti
+WindTre Busta Tecnica _WIP) coincideva con la prima voce MEDIA: ingerita
+dalle due NOTA-INTERNA (fonti .md, nessun docx da estrarre). Fatti chiave:
+BitLocker full-disk XTS-AES 128 su tutti gli endpoint dal 03/07 (migliora
+righi 77/190/191 annex), SCC nuove ex art. 46 GDPR con 4 sub-responsabili
+extra-SEE (RWS/UK, NinjaOne/USA, QNAP e Zyxel/Taiwan), correzione del
+file-base dell'annex (prima revisione applicata a copia non allineata).
+Consegna a WindTre attesa entro il 08/07. Baseline OneDrive da aggiornare
+con -UpdateBaseline a valle del triage.
+
 ## 2026-07-07 — Ingestione delta SCENIA: Allegati A-L, DPIA compilata, Risposte AIDAPT (sessione 7, continua)
 
 Commit: PENDING (da fare manualmente)

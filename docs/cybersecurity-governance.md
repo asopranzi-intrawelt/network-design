@@ -57,6 +57,13 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 | Mag 2026 | Audit interno pianificato | Pianificato audit interno pre-certificazione ISO 27001. |
 | Giu 2026 | Audit esterno pianificato | Pianificato audit esterno da ente accreditato per certificazione ISO 27001:2022. |
 
+### 2026 – Q3
+
+| Data | Evento | Dettaglio |
+|------|--------|-----------|
+| 03/07/2026 | BitLocker attivo su tutti gli endpoint | Cifratura full-disk XTS-AES 128 bit sui dischi principali delle macchine aziendali Windows 11; chiavi di ripristino in escrow centralizzato su NinjaOne, accesso riservato all'IT previa autenticazione per solo disaster recovery. |
+| 06-07/07/2026 | Revisione chiarimenti WindTre RFQ 10714 | Due tornate di chiarimenti sulla Busta Tecnica (annex, checklist fornitori, DPA, SCC); dettaglio nella sezione Questionari B2B. |
+
 ---
 
 ## SGSI – Politica della Sicurezza delle Informazioni (PSGSI)
@@ -281,7 +288,7 @@ Gestione attiva tramite skill `questionnaire-compiler` (`.claude/skills/question
 | ENI Servizi S.p.A. | Questionario Cyber Security B (xlsx) | 29/04/2025 | Compilato (Questionario_B_alesop 29042025.xlsx) |
 | Fidelity Investments | ESR questionnaire (8 sezioni: ISO27001, PT, VA, asset mgmt, DLP, password, logging, 3rd party) | Set/Ott 2025 | Compilato (.fi.docx versions); Issues log 30/09/2025 |
 | LB Research | FT_DP_017_03 Checklist (Sub)Responsabile + Nomina + Allegati (DPA, Data flow, BCD) | 2025-2026 | In corso/completato |
-| Wind Tre / RFQ 10714 | Busta Tecnica: Information Security Annex Part II + AI Questionnaire + SLA requirements | 2026 (rev 28/05/2026) | In corso gara traduz. specialistiche |
+| Wind Tre / RFQ 10714 | Busta Tecnica: Information Security Annex Part II + AI Questionnaire + SLA requirements | 2026 (rev chiarimenti 06-07/07/2026) | Revisione chiarimenti completata, consegna attesa entro 08/07/2026 |
 | ACEA | Documenti gara (link) | 2025 | — |
 | BCE | Link esterno | 2025 | — |
 | Advice Pharma | Link esterno | 2025 | — |
@@ -290,6 +297,47 @@ Gestione attiva tramite skill `questionnaire-compiler` (`.claude/skills/question
 I questionari compilati costituiscono evidenza dell'implementazione ISO 27001 e del
 livello di maturità security dichiarato verso i clienti. Wind Tre (RFQ 10714) è la
 gara piu' significativa per volume e complessita' (busta tecnica + commerciale + legale).
+
+### Revisione chiarimenti WindTre RFQ 10714 (06-07/07/2026)
+
+Fonte: `_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/_WIP/` (due note interne
+del 06/07 e 07/07/2026 e i file con suffisso `_rev-chiarimenti-WindTre`).
+WindTre ha restituito la Busta Tecnica con osservazioni puntuali e scadenza di
+riconsegna al 08/07/2026; la revisione le ha recepite tutte.
+
+Sull'annex (Information Security Annex Part II) il miglioramento sostanziale
+deriva da un cambiamento di postura reale e verificabile, l'attivazione di
+BitLocker su tutti gli endpoint dal 03/07/2026 (vedi timeline Q3): i righi 77
+(cifratura in caso di riutilizzo dei dispositivi), 190 (politica sui controlli
+crittografici), 191 (gestione delle chiavi, in escrow su NinjaOne per gli
+endpoint e sul firewall per VPN e certificati), 210 (separazione
+sviluppo/test/produzione, gia' separati tra Proxmox e infrastruttura OpenForce)
+e 294 (accessi privilegiati) passano a Pienamente Efficace. I righi 84
+(designazione individuale degli incaricati) e 285 (etichettatura delle
+informazioni) passano a Parzialmente Efficace: il controllo esiste in sostanza
+tramite RBAC e classificazione di fatto, manca la formalizzazione in corso con
+l'ISO 27001. I righi 91-94 (cookie e sito web) passano a Non Applicabile
+perche' la fornitura non eroga alcun sito web. Su richiesta di WindTre sono
+stati svuotati i 93 righi degli ambiti CAPS, VDS, TMVS e PROFILING, estranei a
+una fornitura di traduzioni, e i fogli 4.2 e 4.3 (sviluppo e rilascio sicuro)
+portano un'unica nota "Fuori ambito". Nel foglio 3.16 la dichiarazione privacy
+sui righi di trasparenza e consenso passa da Non Applicabile a CONFORME.
+
+La prima revisione del 06/07 era stata applicata per errore a una copia non
+allineata dell'annex; il 07/07 e' stata rifatta sul file effettivamente
+consegnato a WindTre, con struttura verificata identica. La seconda tornata
+del 07/07 estende la revisione agli allegati: la checklist fornitori dichiara
+la scadenza password a 60 giorni gestita via NinjaOne con blocco dopo 6
+tentativi (ora coerente con l'annex, rigo 31) e marca Non Applicabile la
+sezione sui dati di traffico telefonico e telematico; il DPA completa la
+sezione 5 con i dati comuni trattati e le categorie di interessati; le SCC,
+documento nuovo non incluso nella prima consegna, vengono compilate come atto
+ex art. 46 GDPR con Intrawelt importatore e i quattro sub-responsabili con
+sede extra-SEE (RWS/UK, NinjaOne/USA, QNAP e Zyxel/Taiwan), con validazione
+legale ancora da fare. Restano dichiarati SI ma non ancora formalizzati su
+carta la designazione degli autorizzati e la nomina dell'Amministratore di
+sistema (indicato nominativamente nella checklist con casella
+asopranzi@intrawelt.com): se WindTre chiede gli atti, vanno prodotti.
 
 ---
 
@@ -494,6 +542,13 @@ giorni (valutare TPM-binding, test annuale di mount e integrita', recovery
 drill sulla perdita del custodian). Il rischio password-in-chiaro e' la
 stessa radice del gap SEC-007 (password manager aziendale mai implementato):
 la voce e' registrata come SEC-010 in GAP-TBC #104.
+
+Sul fronte endpoint la copertura at-rest e' invece cambiata il 03/07/2026 con
+l'attivazione di BitLocker su tutti i dischi principali delle macchine
+aziendali (XTS-AES 128 bit, chiavi di ripristino in escrow centralizzato su
+NinjaOne, non possedute dall'utente): il problema descritto in questa sezione
+resta quindi circoscritto agli archivi storici cifrati e alla custodia delle
+loro password, non alla cifratura delle postazioni.
 
 ---
 

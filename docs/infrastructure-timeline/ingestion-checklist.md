@@ -430,7 +430,7 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 
 - [x] `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md` — ingestita (vedi sezione Helpdesk_T-Rex)
 - [x] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` → cybersecurity-governance.md §Crittografia dati a riposo + GAP-TBC #104/SEC-010 (07/07/2026; dettagli di derivazione password NON riportati nel repo, restano nel sorgente)
-- [ ] `Cybersec/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/` — MEDIA (revisione chiarimenti WindTre RFQ 10714, file datati 06-07/07/2026: evento timeline da aggiungere a questionari B2B gia' documentati)
+- [x] `Cybersec/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/` → cybersecurity-governance.md §Revisione chiarimenti WindTre RFQ 10714 + timeline Q3 (BitLocker endpoint 03/07, revisione 06-07/07) + §Crittografia (raccordo endpoint). Ingerite le due NOTA-INTERNA; copre anche il delta OneDrive del 07/07 (Annex Part II 2026-07-06.xlsx nuovo, NOTA-INTERNA 07/07 nuova, NOTA-INTERNA 06/07 modificata/superata)
 - [ ] `Helpdesk_ABBYY/ABBYY.docx` — MEDIA (nuovo documento consolidato; la cartella era skip "solo screenshot")
 - [x] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti → scenia-project.md §Allegati A-L, §DPIA stato 02/07, §Risposte Tecniche AIDAPT, Fase 3 timeline (07/07/2026; estratti F/H/I/J via python-docx, DPIA via diff tra versioni extracted/)
 - [ ] `SCENIA/Checklist caricamento nuovo customer su Scenia.docx` — MEDIA
@@ -459,7 +459,7 @@ fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
 
 | Priorità | Da fare |
 |----------|---------|
-| ALTA | `Mappatura porte fisiche/` (prerequisito nota PORT-TAGGING); `SCENIA/Risposte Tecniche ai Requisiti di Sicurezza.docx` (cercare in File condivisi da AIDAPT); delta SCENIA SECURITY/Allegati + DPIA |
-| MEDIA | delta: AUDIT_INVENTORY, WindTre rev. luglio, ABBYY.docx, Checklist customer Scenia, call aidapt 6.7, IntraLino/n8n benchmark; preesistenti: Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix 28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT, Regolamento strumenti informatici rev1.pdf |
+| ALTA | nessuna voce aperta (Mappatura porte fisiche, Risposte Tecniche AIDAPT e delta SCENIA ingeriti il 07/07) |
+| MEDIA | delta: ABBYY.docx, Checklist customer Scenia, call aidapt 6.7, IntraLino/n8n benchmark (AUDIT_INVENTORY e WindTre rev. luglio ingeriti il 07/07); preesistenti: Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix 28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT, Regolamento strumenti informatici rev1.pdf |
 | BASSA | tutto il resto (PROXMOX, QNAP cloud, NinjaOne, PC formatting, ticketing old, RAEE, OpenAI, Ricerche, manuali Scenia, ecc.) |
 | SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB |

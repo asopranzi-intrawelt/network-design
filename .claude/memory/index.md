@@ -7,7 +7,7 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 6e1d4b6 (HEAD al 07/07/2026, in corso il blocco mappatura porte)
+Commit di riferimento: 594ec07 (HEAD al 07/07/2026, delta SCENIA ingerito)
 Data snapshot:         2026-07-07
 ```
 
@@ -19,12 +19,12 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | 1ad2cb7 | allineata |
-| design-and-security.md | 1ad2cb7 | allineata (bonifica IP inclusa in 1ad2cb7) |
-| deployment.md | 1ad2cb7 | allineata |
-| dev-testing.md | 1ad2cb7 | allineata (bonifica IP inclusa in 1ad2cb7) |
-| current-work.md | 1ad2cb7 | riscritta il 07/07: pivot su Fase 1bis (ingestione OneDrive) |
-| roadmap.md | 1ad2cb7 | aggiornata il 07/07: Fase 3 sospesa, nuova Fase 1bis corrente |
+| STACK.md | 594ec07 | allineata |
+| design-and-security.md | 594ec07 | allineata |
+| deployment.md | 594ec07 | allineata |
+| dev-testing.md | 594ec07 | allineata |
+| current-work.md | 594ec07 | aggiornata da sync-context: voci ALTA chiuse, prossimo blocco delta MEDIA |
+| roadmap.md | 594ec07 | allineata (M11 parziale registrato in 552d96c) |
 
 ## Punto di ripresa
 
@@ -35,16 +35,19 @@ dei due anni di ristrutturazione della rete. Dettaglio operativo in
 `.claude/context/current-work.md`; stato ingestione e priorita' in
 `docs/infrastructure-timeline/ingestion-checklist.md` (riallineata 07/07).
 
-Fatto in questa sessione: ancoraggio schede e bonifica anonimizzazione dei
-file vivi `.claude/` e degli otto diagrammi (commit 1ad2cb7); creato
-`scripts/Check-OneDriveDelta.ps1` con baseline in `_notes/.onedrive-manifest.json`
-e hook SessionStart in `settings.local.json` (il delta OneDrive arriva in
-contesto a ogni avvio); delta 23/06-07/07 triato in checklist; ingestita la
-voce GroupShare SR2+CU15 (timeline 06/07/2026).
+Fatto nelle sessioni del 07/07: gestione delta OneDrive con hook di avvio e
+ingestione GroupShare (6e1d4b6); mappatura porte fisiche completa da rilievo
+2020 e xlsx 2026 (6d65a87); tagging in corso con gap 102-104, architettura
+LAN telefoni Vianova e audit crittografia (552d96c); delta SCENIA con
+Allegati A-L, DPIA compilata e Risposte Tecniche AIDAPT (594ec07). Le voci
+ALTA della checklist sono chiuse; il prossimo blocco sono le voci MEDIA del
+delta, a partire dalla revisione WindTre di luglio (nuovi file nel delta
+OneDrive del 07/07).
 
-Attesa dall'utente la nota PORT-TAGGING (tagging dei due switch per la
-migrazione al centralino cloud): chiederla quando l'analisi cronologica
-arriva a quel punto, dopo aver ingerito `Mappatura porte fisiche/`.
+La nota PORT-TAGGING (tagging dei due switch per la migrazione al centralino
+cloud) resta in attesa: il racconto completo arriva a lavori conclusi, quando
+gli endpoint telefonici funzioneranno; le evidenze sono gia' raccolte in
+`_notes/[TBC] screenshot e note myoffice/`.
 
 M1 resta l'unico micro-step Fase 3 chiuso. Fase B anonimizzazione (Fase 3bis)
 non iniziata; riscrittura storia git rimandata a dopo la Fase B
