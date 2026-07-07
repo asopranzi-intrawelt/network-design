@@ -1,5 +1,5 @@
 ---
-last-verified: PENDING-FIRST-COMMIT
+last-verified: 34a9dd7
 ---
 
 # Design e sicurezza della rete — angolo ISO27001
@@ -15,8 +15,8 @@ supportata da firewall attivi o VLAN tagging.
 
 | Bridge | Porta | Subnet | Scopo |
 |---|---|---|---|
-| vmbr0 | eno1 | 192.168.20.0/24 | Rete principale servizi |
-| vmbr1 | eno2 | 192.168.20.0/24 | Seconda NIC VM100 WinServer2022 |
+| vmbr0 | eno1 | 10.61.20.0/24 | Rete principale servizi |
+| vmbr1 | eno2 | 10.61.20.0/24 | Seconda NIC VM100 WinServer2022 |
 | vmbr2 | eno3 | — | Intrasite (VM206) |
 | vmbr3 | eno4 | — | Servizi separati (VM203/204/205/206/602) |
 

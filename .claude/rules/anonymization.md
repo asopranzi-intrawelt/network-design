@@ -12,7 +12,7 @@
 
 Ogni indirizzo IP pubblico reale di Intrawelt o di un fornitore/collaboratore
 (blocco WAN, peer VPN, VPS di progetti clienti), ogni indirizzo IP privato
-RFC1918 reale (192.168.x.x e ogni altra subnet interna), ogni MAC address di
+RFC1918 reale (di qualunque blocco: 10.x.x.x, 172.16-31.x.x, 192.168.x.x), ogni MAC address di
 un dispositivo reale, e ogni nome proprio completo di una persona fisica
 (dipendenti, referenti di fornitori, collaboratori esterni), vanno sostituiti
 con un placeholder prima di scrivere in un file tracciato.
@@ -43,8 +43,11 @@ documentazione RFC 5737 (`203.0.113.0/24`, `198.51.100.0/24`,
 privati vanno spostati su un blocco RFC1918 diverso da quello reale
 mantenendo invariati gli ottetti che portano significato (VLAN, ruolo host),
 cosi' la documentazione resta leggibile e coerente con se stessa: per esempio
-se la LAN reale usa `192.168.20.0/24` per i server, il placeholder puo' essere
-`10.61.20.0/24`, preservando il ".20" che identifica la subnet server. I MAC
+se una LAN reale usasse `172.30.40.0/24` per la videosorveglianza, il
+placeholder potrebbe essere `10.9.40.0/24`, preservando il ".40" che
+identifica quella subnet (valori di puro esempio, estranei sia alla rete
+reale sia ai placeholder in uso: l'esempio non deve mai rivelare la
+mappatura vera). I MAC
 address diventano `AA:BB:CC:00:00:NN` progressivi. Le persone diventano
 `Persona-A`, `Persona-B` in ordine di prima apparizione nel documento
 corrente, oppure un'etichetta di ruolo quando il ruolo e' piu' informativo del

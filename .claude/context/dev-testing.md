@@ -1,5 +1,5 @@
 ---
-last-verified: PENDING-FIRST-COMMIT
+last-verified: 34a9dd7
 ---
 
 # Verifica output snapshot e casi limite
@@ -31,7 +31,7 @@ VM602 e VM810 non hanno il guest agent installato o attivo. I warning sono norma
 | VM stopped (203, 803) | IP non disponibile, dati statici OK | Normal |
 | Adaptec RAID controller | `/disks/list` restituisce array vuoto | Controller HW nasconde i fisici |
 | BCM5719 PCIe passthrough | IOMMU group 40 = tutte 4 le porte insieme | No passthrough individuale |
-| iLO5 IP 192.168.1.71 | Appare in corosync totem addr | Normale OOB management |
+| iLO5 IP 10.61.1.71 | Appare in corosync totem addr | Normale OOB management |
 | Firewall cluster inattivo | 0 regole, 0 ipset | Gap di sicurezza documentato |
 | SDN non configurato | Array vuoti per zones/vnets/controllers | Normale |
 | HA non configurato | Array vuoti | Normale |

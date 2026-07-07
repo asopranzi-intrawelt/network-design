@@ -4,6 +4,39 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Ancoraggio schede e bonifica anonimizzazione file vivi .claude/ (sessione 7)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - .claude/context/STACK.md, deployment.md, design-and-security.md, dev-testing.md,
+    current-work.md, roadmap.md (frontmatter `last-verified` ancorato a 34a9dd7;
+    per le prime quattro era il primo ancoraggio da PENDING-FIRST-COMMIT)
+  - .claude/context/design-and-security.md (subnet server reale -> 10.61.20.0/24)
+  - .claude/context/dev-testing.md (IP iLO reale -> 10.61.1.71)
+  - .claude/context/roadmap.md (M9: IP DMZ e IP pubblico -> placeholder; M10: nome
+    proprio -> Persona-A; M12: IP switch management -> 10.61.90.37)
+  - .claude/memory/progress.md (due IP pubblici reali nelle voci del 01/07 -> placeholder)
+  - .claude/rules/anonymization.md (l'esempio della convenzione usava la coppia
+    reale/placeholder vera, rivelando la mappatura: sostituito con valori fittizi)
+  - .claude/memory/index.md (commit di riferimento e tabella schede)
+  - .claude/context/diagrams/firewall-dmz-2026/ (2 drawio su 8 file: username
+    reali delle utenze VPN del firewall -> persona-a/b/e/k/l, IP peer Seeweb
+    -> 192.0.2.27, subnet remota Seeweb -> 10.77.116.x; sostituzione
+    deterministica via script Python, verificata a zero residui)
+  - _notes/.anonymization-map.md (voce iLO, utenze VPN, elenco correzioni odierne)
+  - _notes/.git-filter-replacements.txt (regole per gli username delle utenze VPN)
+Motivo: sync-context a inizio sessione (passo 0, primo ancoraggio). Durante
+l'ancoraggio trovati valori reali residui nei file "vivi" sotto `.claude/`,
+fuori dal perimetro Fase A del 01/07: corretti al tip secondo la regola di
+anonimizzazione (la storia git li conserva; la pulizia resta demandata alla
+riscrittura unica post-Fase B, il file di sostituzioni copre tutti i valori).
+Gli username delle utenze VPN nei diagrammi erano candidati all'eccezione
+operativa dei nomi oggetto letterali, ma su decisione esplicita dell'utente
+sono stati anonimizzati come tutto il resto: la traduzione per operare sulla
+GUI reale sta nella mappa privata. Restano verbatim, come da eccezione gia'
+dichiarata, i soli nomi regola/oggetto contenenti "Elisa" e le caselle
+funzionali (mailer@, it@).
+
 ## 2026-07-01 — Anonimizzazione Fase A: perimetro network-design (sessione 6, continua)
 
 Commit: PENDING (da fare manualmente)
@@ -18,7 +51,8 @@ File toccati (sostituzione deterministica via script, non a mano):
   - _notes/.anonymization-map.md (nuovo, NON tracciato: mappatura reale)
   - _notes/.git-filter-replacements.txt (nuovo, NON tracciato: preparazione riscrittura storia)
 Motivo: verificato che il repository e' pubblico su GitHub (HTTP 200 via API non
-autenticata). Trovati IP pubblici reali (193.124.241.x, 31.197.194.x), IP privati
+autenticata). Trovati IP pubblici reali (i blocchi WAN, oggi mappati sui
+placeholder 203.0.113.x e 198.51.100.x), IP privati
 RFC1918 reali, un MAC address reale e oltre venti occorrenze di nomi propri di
 dipendenti e referenti esterni nei file del perimetro network-design attivo,
 alcuni presenti da sessioni precedenti a questa. Con conferma esplicita
@@ -47,7 +81,7 @@ Motivo: eseguito M1 della roadmap Fase 3, guidando l'utente passo-passo dentro l
 Web UI del firewall Zyxel USG FLEX 500 con verifica su screenshot Screenpresso a
 ogni passaggio (11 screenshot, screenshot_01.png-screenshot_15.png). Corretta la
 regola `Blocco_Gruppo_IP_Phishing_Elisa` (allow->deny, log alert, rimosso
-193.124.241.5/IP_09_phishing_2026_Elisa dal gruppo Bad_IP_Phishing_Elisa_2026,
+203.0.113.5/IP_09_phishing_2026_Elisa dal gruppo Bad_IP_Phishing_Elisa_2026,
 confermato a 11 membri totali) e la regola gemella `malicious_IP_12052025`
 (allow->deny). Entrambe verificate scritte sul dispositivo senza necessita' di
 un Apply separato. Introdotto su richiesta esplicita dell'utente un changelog
