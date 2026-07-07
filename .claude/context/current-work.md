@@ -36,11 +36,20 @@ cronologica arriva al punto in cui i due switch sono stati taggati.
 Prerequisito: ingerire `ARCHITETTURA SERVER-CLOUD-LINEE/Mappatura porte
 fisiche/` (voce ALTA in checklist).
 
+**Mappatura porte fisiche ingestita per intero il 07/07/2026**
+(`docs/mappatura-porte-fisiche.md` riscritto): xlsx completo (Piano 0 uffici
+1-4, Piano 1 uffici 1-6, Piano 2, colonna "nome porta attuale") piu' il
+rilievo manoscritto originale del 20/08/2020 (Luciani Impianti, scansione
+PDF letta come immagini). Le etichette delle prese risultano permutate in
+modo sistematico gia' dal rilievo 2020 e mai ricorrette: questo rafforza
+l'ipotesi che NET-007 (porta telefono di Persona-A) sia un errore di
+etichettatura, non uno spostamento fisico. Nelle fonti non c'e' alcuna
+informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
+
 ## Prossimi step
 
-1. Ingerire `Mappatura porte fisiche/` (`intrawelt rete dati.pdf`,
-   `porte_fisiche_via_pescolla_2.xlsx`), poi chiedere all'utente i dettagli
-   del tagging porte (nota PORT-TAGGING).
+1. FATTO: `Mappatura porte fisiche/` ingestita (vedi sopra). ORA: chiedere
+   all'utente i dettagli del tagging porte (nota PORT-TAGGING).
 2. Voci ALTA della checklist: delta SCENIA SECURITY/Allegati + DPIA;
    `Risposte Tecniche ai Requisiti di Sicurezza.docx` (da cercare in File
    condivisi da AIDAPT).
@@ -56,7 +65,9 @@ fisiche/` (voce ALTA in checklist).
 ## Domande aperte non risolte
 
 - PORT-TAGGING: dettagli del tagging dei due switch (input utente atteso).
-- Contraddizione porta/switch telefono di Persona-A (NET-007, M10).
+- Contraddizione porta/switch telefono di Persona-A (NET-007, M10): la
+  mappatura porte 2020-2026 documenta permutazioni sistematiche di etichette
+  mai ricorrette, ipotesi errore di etichettatura rafforzata.
 - Testo IVR centralino cloud non ancora comunicato a myOffice (TEL-001, M17).
 - Funzione porta 8 "Vianova DHCP server fonia" (FW-012, M11).
 - GroupShare: download installer SR2 bloccato, email a support@rws.com da

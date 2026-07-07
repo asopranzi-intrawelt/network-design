@@ -4,6 +4,28 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Ingestione completa Mappatura porte fisiche (sessione 7, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/mappatura-porte-fisiche.md (riscritto completo: prima era un estratto
+    parziale con nomi propri e IP reali)
+  - docs/infrastructure-timeline/ingestion-checklist.md (voce marcata [x])
+  - .claude/context/current-work.md (stato e NET-007 aggiornati)
+Motivo: prima voce ALTA della Fase 1bis. Estratto integrale deterministico di
+porte_fisiche_via_pescolla_2.xlsx (openpyxl: 4 fogli; rispetto all'estratto
+precedente mancavano Piano 0 uffici 2-4 completi, Piano 1 uffici 4-6, la
+colonna "nome porta attuale" e i totali) e lettura visiva del PDF (scansione
+del rilievo manoscritto "Prese dati" di Luciani Impianti, 20/08/2020, tre
+pagine, convertite in PNG con PyMuPDF: e' la fonte originale della mappatura,
+con la colonna "attuale" delle etichette permutate e i "da fare" mai chiusi).
+Scoperte: permutazione sistematica delle etichette dal 2020 mai ricorretta
+(rafforza NET-007 come errore di etichettatura); discrepanza xlsx/PDF sul
+numero porte Ufficio 2 Piano 0 (13 vs 14, nuovo TBC); nessuna informazione
+VLAN/tagging nelle fonti (la nota PORT-TAGGING resta in attesa dell'input
+utente). Anonimizzazione applicata: nomi uffici -> Persona-A/Persona-B, nomi
+delle postazioni Ufficio 4 Piano 0 lasciati solo nel sorgente, IP -> 10.61.x.
+
 ## 2026-07-07 — Pivot su ingestione OneDrive: gestione delta, hook di avvio, GroupShare (sessione 7, continua)
 
 Commit: PENDING (da fare manualmente)
