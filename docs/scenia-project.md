@@ -86,7 +86,7 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 | Giu 2026 | DPIA ScenIA in progress (edpb_dpia_template_2026_v1_en.docx adattato) |
 | 29/06/2026 | DPIA: compilate le sezioni di necessita' ed efficacia (alternative considerate, opzione meno intrusiva) e di proporzionalita' (balancing test); data documento aggiornata al 29.06.2026 |
 | 02/07/2026 | Allegati contrattuali scorporati in file separati A-K (piu' schema L definito); DPIA "ultima versione" consolidata; ricevute le Risposte Tecniche AIDAPT (chiude l'item ALTA che risultava da cercare) |
-| 06/07/2026 | Call AIDAPT (call aidapt 6.7.2026.docx) — da ingerire |
+| 06/07/2026 | Call AIDAPT: quantizzazione Qdrant, RAM a 32 GB, igiene della Knowledge Base, seconda collezione per la specific knowledge (vedi sezione dedicata) |
 | **Pending** | Completare placeholder Parti DPA per ciascun contratto (canale supporto, referente escalation, anagrafica Titolare); negoziare massimali (Allegato J: nessun massimale previsto, regole ordinarie art. 82 GDPR e 1229 c.c.) |
 
 ---
@@ -111,6 +111,38 @@ esclusione contrattuale, filtro PII lato client (PLANNED) e misure tecniche.
 Nelle misure e' entrata la non-ritenzione del contenuto tradotto con
 cancellazione automatica delle Translation Unit dopo la generazione. Il
 documento resta materiale di lavoro e non sostituisce il parere legale.
+
+---
+
+## Call AIDAPT 06/07/2026 — Qdrant e Knowledge Base
+
+Fonte: `SCENIA/Useful Resources/call aidapt 6.7.2026.docx`. Sul fronte
+infrastrutturale AIDAPT ha introdotto la quantizzazione per alleggerire il
+carico su Qdrant nella ricerca degli esempi di traduzione e ha scalato
+l'istanza a 32 GB di RAM; la versione 18 di Qdrant portera' la quantizzazione
+turbo a 2 bit, con il vettore principale diviso in tre parti e le informazioni
+principali concentrate nella prima.
+
+Sul fronte della qualita' dei dati resta aperta la domanda se abbia senso
+inserire tutti i segmenti nella Knowledge Base: a oggi circa lo 0,1 per cento
+dei punti su Qdrant e' costituito da soli link. Le strade discusse sono la
+pulizia con tecniche deterministiche standard (regex) oppure l'appalto del
+lavoro a un agente AI, valutando ogni punto sia nelle sue caratteristiche
+proprie sia in relazione agli altri (case sensitivity, numeri, caratteri
+speciali). Per la specific knowledge i referenti AIDAPT (Referente-AIDAPT-1 e
+Referente-AIDAPT-2) hanno consigliato una seconda collezione dentro la stessa
+istanza Qdrant, perche' l'aggiunta di documenti nella specific knowledge mette
+in difficolta' la collezione principale: in una traduzione con specific
+knowledge le Translation Unit si pescano prima dalla collezione dedicata, con
+la collezione principale come fallback.
+
+## Checklist operativa caricamento nuovo customer (01/07/2026)
+
+Fonte: `SCENIA/Checklist caricamento nuovo customer su Scenia.docx`. La
+checklist interna per l'onboarding di un nuovo cliente sulla piattaforma
+richiede sei elementi: combinazione linguistica, organigramma aziendale con le
+email, project manager da associare, settori, nome esatto del customer e
+documentazione del portale da consegnare al cliente.
 
 ---
 

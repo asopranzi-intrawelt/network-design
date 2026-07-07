@@ -4,6 +4,41 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Delta MEDIA completato: ABBYY, Checklist/call SCENIA, benchmark IntraLino (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/infrastructure-timeline/2025-q1-server-vianova.md (§Migrazione
+    licenze ABBYY FineReader 15, 27/02-24/03/2025: contesto acquisto 2021 e
+    SMUA mai rinnovata, ticket supporto, errore LM v16, attivazione sul
+    nuovo server, decisione 21/03 di dismettere il vecchio licserver,
+    rollout ~18 postazioni con utente guest)
+  - docs/infrastructure-timeline/2024-infra.md (voce 06/11/2024: falso
+    allarme licenza ABBYY, licenza trial pescata oltre le 5 concurrent)
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md (§Benchmark DoE
+    IntraLino maggio-luglio 2026: C1/C2/C3, GPU RTX 5060 Ti installata
+    08/06, embedder bge-m3 fisso dal 04/06, report differenziali 29/06,
+    C4 Qwen3-14B fuori benchmark su ambiente test :4443)
+  - docs/scenia-project.md (§Call AIDAPT 06/07/2026 Qdrant/KB, §Checklist
+    operativa caricamento nuovo customer, riga timeline Fase 3 aggiornata)
+  - docs/infrastructure-timeline/GAP-TBC.md (#105 SEC-011 credenziali in
+    chiaro in ABBYY.docx; #106 SRV-001 hostname alternati e VM101 vs VM100;
+    #107 SRV-002 host IntraLino .58/.60 dichiarati VM ma .58 con hardware
+    fisico, assenti dallo snapshot v3; totale 107)
+  - docs/infrastructure-timeline/ingestion-checklist.md (4 voci MEDIA [x],
+    riepilogo: delta MEDIA esaurito)
+  - .claude/context/current-work.md (step 3 chiuso, prossimo blocco MEDIA
+    preesistenti), _notes/.anonymization-map.md (Persona-O/P,
+    Referente-Novadys/ABBYY/AIDAPT, IP .58/.60/.114/.8/.170),
+    _notes/.manifest-docx.json e _notes/.tmp-docx-abbyy/ (estrazione ABBYY)
+Motivo: prosecuzione Fase 1bis su richiesta utente ("Procedi"). Metodo:
+ABBYY.docx (17 MB, 166 immagini) estratto una volta con python-docx (42 KB
+testo) e manifesto anti-rilettura creato; per IntraLino letti solo lo stato
+progetto, la guida C4 e le conclusioni dei due report (disclosure
+progressiva); i file di credenziali della cartella n8n mai aperti. Tutto il
+nuovo contenuto tracciato e' anonimizzato (10.61.x, Persona-X); password,
+seriali licenze e lista nominativa postazioni restano solo nei sorgenti.
+
 ## 2026-07-07 — Sync-context post 594ec07 + ingestione revisione WindTre e BitLocker endpoint (sessione 8)
 
 Commit: PENDING (da fare manualmente)

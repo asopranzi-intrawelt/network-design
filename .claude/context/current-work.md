@@ -1,5 +1,5 @@
 ---
-last-verified: 594ec07
+last-verified: 68216f0
 ---
 
 # Lavoro corrente: Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa
@@ -61,12 +61,17 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 2. FATTO (594ec07): voci ALTA della checklist chiuse. Delta SCENIA
    SECURITY/Allegati + DPIA e Risposte Tecniche AIDAPT ingerite in
    `scenia-project.md`.
-3. FATTO (07/07, questa sessione): WindTre revisione luglio ingerita dalle
-   due NOTA-INTERNA in `_WIP` -> `cybersecurity-governance.md` (sezione
-   dedicata sotto Questionari B2B, timeline Q3 con BitLocker endpoint dal
-   03/07, raccordo nella sezione Crittografia). ORA: delta MEDIA restanti in
-   ordine — ABBYY.docx, Checklist customer Scenia, call aidapt 6.7,
-   IntraLino/n8n; poi MEDIA preesistenti in ordine cronologico delle fonti.
+3. FATTO (07/07, questa sessione): tutte le voci MEDIA del delta ingerite.
+   WindTre revisione luglio -> `cybersecurity-governance.md` (sezione sotto
+   Questionari B2B, timeline Q3 con BitLocker endpoint dal 03/07, raccordo
+   Crittografia); ABBYY.docx -> `2025-q1-server-vianova.md` §Migrazione
+   licenze ABBYY + voce 06/11/2024 in `2024-infra.md` + gap #105-106;
+   Checklist customer e call AIDAPT 06/07 -> `scenia-project.md`; benchmark
+   IntraLino C1-C4 -> `2026-switch-piano-terra.md` §Benchmark DoE IntraLino
+   + gap #107. ORA: MEDIA preesistenti in ordine cronologico delle fonti
+   (Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix
+   28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT,
+   Regolamento strumenti informatici rev1.pdf).
 4. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
    (verificare con grep prima di chiudere il passo); i documenti voluminosi
    si ingeriscono con `docx-ingest` a disclosure progressiva.

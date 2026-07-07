@@ -35,6 +35,15 @@ viene importato nel firewall ZYXEL USG FLEX 500 via Configuration > Object > Cer
 Durante il cambio certificato l'utente Alessandro Nebbia viene disconnesso e poi
 riconnesso manualmente. Il certificato viene archiviato in \\192.168.20.170\vpn\Certificati SSL.
 
+## 06/11/2024 - Falso allarme licenza ABBYY scaduta
+
+Persona-G riceve da ABBYY FineReader un messaggio di licenza scaduta. La causa
+non e' una scadenza reale: superate le 5 licenze concurrent disponibili sul
+license server, il client pesca in automatico la licenza Evaluation (trial,
+effettivamente scaduta) e mostra l'avviso. Il problema rientra quando una
+delle 5 licenze di rete si libera. Fonte: `Helpdesk_ABBYY/ABBYY.docx`
+(contenuto anonimizzato secondo `.claude/rules/anonymization.md`).
+
 ## 20/11/2024 - Rinnovo licenza annuale Zyxel marketplace
 
 Rinnovo abbonamento annuale Zyxel marketplace con carta di credito terminante con
