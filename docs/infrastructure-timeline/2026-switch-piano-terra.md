@@ -702,6 +702,58 @@ IP sorgente: `<IP-ENI-AZURE-SOURCE>` (Azure Cloud), Tenant Eni: `c16e514b-893e-4
 Prove da comunicare a Eni VIPA: trace M365 "tutti gli stati" non le mostra + gap orari precisi.
 Eni deve verificare log esecuzione Power Automate per le run degli orari anomali.
 
+## Maggio-Luglio 2026 - Benchmark DoE IntraLino (C1/C2/C3), GPU RTX 5060 Ti e test C4
+
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Qdrant + Ollama + Ubuntu + n8n
+self-hosting/_File Benchmark e implement/` (stato progetto, guide, due report
+differenziali). Contenuto anonimizzato secondo `.claude/rules/anonymization.md`;
+la cartella sorgente contiene anche file di credenziali, mai riportati.
+
+Il benchmark applica un impianto DoE[^1] alla pipeline RAG[^2] self-hosted
+IntraLino per isolare due fattori: l'impatto della GPU a parita' di modello
+(C1, CPU con llama3.2:3B, contro C2, GPU con lo stesso modello) e l'impatto
+del modello a parita' di hardware (C2 contro C3, llama3.1:8b). Il confronto
+diretto C1-C3 e' vietato dalla metodologia perche' varierebbe due fattori
+insieme. Le misure quantitative (matrice A: TTFT, throughput, durata, CPU,
+RAM, VRAM, latenza embedding) interrogano Ollama in isolamento; quelle
+qualitative (matrice B: aderenza, coerenza, recall@k, preferenza pairwise)
+attraversano la pipeline completa e sono affidate a un panel di 5 valutatori
+con stimoli anchor ripresentati in cieco per misurare la deriva di giudizio.
+
+L'infrastruttura sotto benchmark e' su due host della LAN: l'host Ollama
+(10.61.20.58, Ubuntu 25.04, i7-7700, 16 GB RAM, Ollama su porta 11500) e lo
+stack Docker IntraLino (10.61.20.60, hostname `intralino`: n8n con workflow
+LangChain, Qdrant 1.17.1, backend Node.js, nginx con TLS da CA privata, UFW
+su 22/80/443). La fonte descrive i due host come "due VM Proxmox" ma
+attribuisce alla .58 hardware fisico dedicato, incluso l'alloggiamento
+fisico della GPU: incoerenza da verificare (gap #107).
+
+Passi salienti. Il 04/06/2026 l'embedding viene affidato al modello dedicato
+bge-m3 (1024 dimensioni), fisso per tutte le casistiche: tra C2 e C3 cambia
+solo il modello di generazione e la collezione Qdrant resta invariata, senza
+re-ingest. L'08/06/2026 viene installata la GPU RTX 5060 Ti 16 GB GDDR7
+sull'host Ollama (driver NVIDIA 595.71.05, CUDA 13.2, uso in generazione
+verificato). Il 29/06/2026 vengono prodotti i due report differenziali
+quantitativi: a parita' di modello la GPU porta un guadagno di ordine di
+grandezza statisticamente significativo su tutte le metriche; il passaggio
+da 3B a 8B costa circa il doppio in tempo per token e memoria video senza
+penalizzare la reattivita'. Le sezioni qualitative dei report restano da
+compilare dopo le sessioni del panel (valutatori non ancora reclutati).
+
+Tra il 30/06 e il 02/07/2026 si aggiunge la casistica esplorativa C4
+(Qwen3-14B), dichiaratamente fuori dal benchmark DoE: per non toccare lo
+stato C3 della produzione viene allestito sulla .60 un ambiente di test
+parallelo (stack nginx e backend dedicati su porta 4443, con JWT secret
+separato da quello di produzione), cosi' la raccolta C4 avviene interamente
+sul test e la produzione resta invariata.
+
+[^1]: *DoE*, Design of Experiments - impianto sperimentale che varia un solo
+fattore per confronto, cosi' che le differenze misurate siano attribuibili a
+quel fattore e non a cambiamenti concomitanti.
+[^2]: *RAG*, Retrieval-Augmented Generation - architettura in cui il modello
+linguistico genera risposte a partire da frammenti di documenti recuperati da
+un archivio vettoriale, qui Qdrant.
+
 ## 06/07/2026 - GroupShare 2020: upgrade SR1 -> SR2+CU15 necessario, bloccato sul download
 
 Fonte: `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md`

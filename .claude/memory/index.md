@@ -7,7 +7,7 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 594ec07 (HEAD al 07/07/2026, delta SCENIA ingerito)
+Commit di riferimento: 68216f0 (HEAD al 07/07/2026, sync schede + WindTre; delta MEDIA in commit successivo)
 Data snapshot:         2026-07-07
 ```
 
@@ -39,10 +39,11 @@ Fatto nelle sessioni del 07/07: gestione delta OneDrive con hook di avvio e
 ingestione GroupShare (6e1d4b6); mappatura porte fisiche completa da rilievo
 2020 e xlsx 2026 (6d65a87); tagging in corso con gap 102-104, architettura
 LAN telefoni Vianova e audit crittografia (552d96c); delta SCENIA con
-Allegati A-L, DPIA compilata e Risposte Tecniche AIDAPT (594ec07). Le voci
-ALTA della checklist sono chiuse; il prossimo blocco sono le voci MEDIA del
-delta, a partire dalla revisione WindTre di luglio (nuovi file nel delta
-OneDrive del 07/07).
+Allegati A-L, DPIA compilata e Risposte Tecniche AIDAPT (594ec07); sync
+schede e revisione WindTre con BitLocker endpoint (68216f0); tutte le voci
+MEDIA del delta ingerite in sessione 8 (ABBYY, Checklist/call SCENIA,
+benchmark IntraLino, gap 105-107). Prossimo blocco: MEDIA preesistenti in
+ordine cronologico delle fonti (elenco in current-work.md, step 3).
 
 La nota PORT-TAGGING (tagging dei due switch per la migrazione al centralino
 cloud) resta in attesa: il racconto completo arriva a lavori conclusi, quando

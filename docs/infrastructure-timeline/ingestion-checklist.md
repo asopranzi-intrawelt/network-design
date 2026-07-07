@@ -431,12 +431,12 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 - [x] `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md` — ingestita (vedi sezione Helpdesk_T-Rex)
 - [x] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` → cybersecurity-governance.md §Crittografia dati a riposo + GAP-TBC #104/SEC-010 (07/07/2026; dettagli di derivazione password NON riportati nel repo, restano nel sorgente)
 - [x] `Cybersec/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/` → cybersecurity-governance.md §Revisione chiarimenti WindTre RFQ 10714 + timeline Q3 (BitLocker endpoint 03/07, revisione 06-07/07) + §Crittografia (raccordo endpoint). Ingerite le due NOTA-INTERNA; copre anche il delta OneDrive del 07/07 (Annex Part II 2026-07-06.xlsx nuovo, NOTA-INTERNA 07/07 nuova, NOTA-INTERNA 06/07 modificata/superata)
-- [ ] `Helpdesk_ABBYY/ABBYY.docx` — MEDIA (nuovo documento consolidato; la cartella era skip "solo screenshot")
+- [x] `Helpdesk_ABBYY/ABBYY.docx` → 2025-q1-server-vianova.md §Migrazione licenze ABBYY (27/02-24/03/2025) + 2024-infra.md voce 06/11/2024 + GAP-TBC #105/SEC-011 (credenziali in chiaro nel sorgente) e #106/SRV-001 (hostname alternati, VM101 vs VM100). Estratto testo in _notes/.tmp-docx-abbyy/, manifesto docx creato (07/07/2026)
 - [x] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti → scenia-project.md §Allegati A-L, §DPIA stato 02/07, §Risposte Tecniche AIDAPT, Fase 3 timeline (07/07/2026; estratti F/H/I/J via python-docx, DPIA via diff tra versioni extracted/)
-- [ ] `SCENIA/Checklist caricamento nuovo customer su Scenia.docx` — MEDIA
+- [x] `SCENIA/Checklist caricamento nuovo customer su Scenia.docx` → scenia-project.md §Checklist operativa caricamento nuovo customer (07/07/2026)
 - [ ] `SCENIA/Documentazione scenia/` (6 manuali utente/admin IT/EN) — BASSA (manuali prodotto)
-- [ ] `SCENIA/Useful Resources/call aidapt 6.7.2026.docx` — MEDIA (call recente, probabile aggiornamento stato DPA)
-- [ ] `Sviluppo_interno/Qdrant + Ollama + Ubuntu + n8n/` — MEDIA (era BASSA "ricerca esterna": ora contiene benchmark IntraLino C1-C4, guide e workflow n8n interni)
+- [x] `SCENIA/Useful Resources/call aidapt 6.7.2026.docx` → scenia-project.md §Call AIDAPT 06/07/2026 + timeline Fase 3 (contenuto tecnico Qdrant/KB, nessun tema DPA nella call) (07/07/2026)
+- [x] `Sviluppo_interno/Qdrant + Ollama + Ubuntu + n8n/_File Benchmark e implement/` → 2026-switch-piano-terra.md §Benchmark DoE IntraLino + GAP-TBC #107/SRV-002 (07/07/2026; fonti lette: CLAUDE_STATO_PROGETTO.md, GUIDA_test_C4_qwen.md, conclusioni dei due report differenziali; file credenziali della cartella MAI letti ne' riportati). Restano non ingerite le guide Parte_1-3 e Implementazione.docx (17 MB): dettaglio implementativo n8n/Docker, riclassificato BASSA
 - [-] `Miscellaneous/Web scraping - Downloaded Web sites/` — SKIP (mirror di un sito esterno, non IT ops)
 
 ## Nota PORT-TAGGING (in attesa di input utente, aggiornata 07/07/2026 pomeriggio)
@@ -460,6 +460,6 @@ fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
 | Priorità | Da fare |
 |----------|---------|
 | ALTA | nessuna voce aperta (Mappatura porte fisiche, Risposte Tecniche AIDAPT e delta SCENIA ingeriti il 07/07) |
-| MEDIA | delta: ABBYY.docx, Checklist customer Scenia, call aidapt 6.7, IntraLino/n8n benchmark (AUDIT_INVENTORY e WindTre rev. luglio ingeriti il 07/07); preesistenti: Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix 28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT, Regolamento strumenti informatici rev1.pdf |
+| MEDIA | delta: tutte ingerite il 07/07 (AUDIT_INVENTORY, WindTre rev. luglio, ABBYY.docx, Checklist customer Scenia, call aidapt 6.7, IntraLino/n8n benchmark); preesistenti: Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix 28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT, Regolamento strumenti informatici rev1.pdf |
 | BASSA | tutto il resto (PROXMOX, QNAP cloud, NinjaOne, PC formatting, ticketing old, RAEE, OpenAI, Ricerche, manuali Scenia, ecc.) |
 | SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB |
