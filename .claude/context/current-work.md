@@ -1,5 +1,5 @@
 ---
-last-verified: 2026-07-01
+last-verified: 34a9dd7
 ---
 
 # Lavoro corrente: Fase 3 - Ottimizzazione Proxmox e firewall

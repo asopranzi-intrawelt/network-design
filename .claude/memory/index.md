@@ -7,8 +7,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 7811e93 (HEAD al 01/07/2026, tutto committato e pushato)
-Data snapshot:         2026-07-01
+Commit di riferimento: 34a9dd7 (HEAD al 07/07/2026, working tree con modifiche da committare)
+Data snapshot:         2026-07-07
 ```
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
@@ -19,12 +19,12 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | PENDING-FIRST-COMMIT | da ancorare (toccata solo per anonimizzazione IP, contenuto sostanziale invariato dal 2026-06-22) |
-| design-and-security.md | PENDING-FIRST-COMMIT | da ancorare |
-| deployment.md | PENDING-FIRST-COMMIT | da ancorare (idem STACK.md) |
-| dev-testing.md | PENDING-FIRST-COMMIT | da ancorare |
-| current-work.md | 2026-07-01 | aggiornata questa sessione |
-| roadmap.md | 2026-07-01 | aggiornata questa sessione (Fase 3 a micro-step, Fase 3bis anonimizzazione) |
+| STACK.md | 34a9dd7 | ancorata il 2026-07-07, contenuto invariato |
+| design-and-security.md | 34a9dd7 | ancorata il 2026-07-07, corretti IP privati reali residui (subnet server) |
+| deployment.md | 34a9dd7 | ancorata il 2026-07-07, contenuto invariato |
+| dev-testing.md | 34a9dd7 | ancorata il 2026-07-07, corretto IP iLO reale residuo |
+| current-work.md | 34a9dd7 | allineata (aggiornata dal commit di chiusura del 01/07) |
+| roadmap.md | 34a9dd7 | ancorata il 2026-07-07, corretti IP reali e un nome proprio (M9, M10, M12) |
 
 ## Punto di ripresa
 

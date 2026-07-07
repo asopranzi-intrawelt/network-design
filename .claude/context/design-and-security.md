@@ -1,5 +1,5 @@
 ---
-last-verified: PENDING-FIRST-COMMIT
+last-verified: 34a9dd7
 ---
 
 # Design e sicurezza della rete — angolo ISO27001

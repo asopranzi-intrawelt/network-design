@@ -64,7 +64,7 @@ Client pool: 10.61.230.10-250
 • Italia + USA
 
 2FA: Google Auth + Email" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=8;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="1310" y="660" width="195" height="320" as="geometry"/></mxCell><mxCell id="z1l" value="" style="endArrow=classic;html=1;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="p4" target="z1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="z2l" value="" style="endArrow=classic;html=1;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="p5" target="z2"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="z3l" value="" style="endArrow=classic;html=1;strokeColor=#d79b00;strokeWidth=2;" edge="1" parent="1" source="p6" target="z3"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="z4l" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;strokeWidth=2;" edge="1" parent="1" source="p7" target="z4"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="z5l" value="" style="endArrow=classic;html=1;strokeColor=#9673a6;strokeWidth=2;dashed=1;" edge="1" parent="1" source="mod4" target="z5"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="z6" value="Zone: IPSec_VPN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;verticalAlign=top;fontSize=12;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="20" y="1020" width="1500" height="280" as="geometry"/></mxCell><mxCell id="z6a" value="&lt;b&gt;Crypto map: PSE-SEEWEB&lt;/b&gt;  (ATTIVO)
-Site-to-Site verso <IP-SEEWEB-PEER>
+Site-to-Site verso 192.0.2.27
 
 &lt;b&gt;VPN Gateway:&lt;/b&gt; FS-SEEWEB (IKEv1 aggressive)
 Auth: pre-shared key
@@ -77,7 +77,7 @@ Scenario: site-to-site-static
 Local:  RFC1918_3 (10.61.0.0/16)
 Remote: lan_remota_fs_seeweb (10.77.116.0/24)
 Adjust-MSS: auto" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=8;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="40" y="1060" width="340" height="220" as="geometry"/></mxCell><mxCell id="z6b" value="&lt;b&gt;Crypto map: WIZ_VPN&lt;/b&gt;  (in concentrator)
-Site-to-Site verso <IP-SEEWEB-PEER>
+Site-to-Site verso 192.0.2.27
 
 &lt;b&gt;VPN Gateway:&lt;/b&gt; WIZ_VPN (IKEv1 main)
 Auth: pre-shared key
@@ -113,10 +113,10 @@ User: RemoteAccess_Wiz_USER_GRP
 
 &lt;b&gt;vpn-users (S2S+SSL)&lt;/b&gt;
 persona-j, asopranzi,
-persona-a, mperri,
-mperri_old, persona-e,
+persona-a, persona-k,
+persona-k_old, persona-e,
 persona-m, anazziconi,
-mlmoran, persona-b,
+persona-l, persona-b,
 fguidali" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=8;verticalAlign=top;" vertex="1" parent="1"><mxGeometry x="1090" y="1060" width="210" height="220" as="geometry"/></mxCell><mxCell id="z6e" value="&lt;b&gt;Auth method&lt;/b&gt;
 RemoteAccess_Wiz_LOCAL_Auth
 Type: local

@@ -1,5 +1,5 @@
 ---
-last-verified: PENDING-FIRST-COMMIT
+last-verified: 34a9dd7
 ---
 
 # Verifica output snapshot e casi limite
