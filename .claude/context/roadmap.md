@@ -1,5 +1,5 @@
 ---
-last-verified: 34a9dd7
+last-verified: 1ad2cb7
 ---
 
 # Roadmap e fasi del progetto
@@ -76,7 +76,13 @@ Steps:
 7. Completare gap analysis ISO27001 Annex A (aggiornare design-and-security.md).
    Non ancora ripreso in questa sessione.
 
-## Fase 3 - Ottimizzazione Proxmox e firewall: roadmap a micro-step (CORRENTE)
+## Fase 3 - Ottimizzazione Proxmox e firewall: roadmap a micro-step (SOSPESA il 07/07/2026)
+
+Sospensione: su decisione dell'utente del 07/07/2026 i micro-step operativi
+(M2 in avanti) sono in pausa finche' non e' completata la ripresa
+dell'ingestione OneDrive (Fase 1bis sotto): prima si consolida la timeline
+cronologica completa dei due anni di ristrutturazione della rete, poi si
+torna agli interventi. M1 resta l'unico micro-step chiuso.
 
 Obiettivo: applicare le correzioni e le ottimizzazioni identificate dall'analisi
 firewall/DMZ/Proxmox, un micro-step alla volta, con commit e aggiornamento di
@@ -126,6 +132,20 @@ unico commit cumulativo di fine fase.
 | M19 | Consolidare il diagramma Mermaid finale (`network-topology.mmd`) con lo stato post-ottimizzazione e riconciliare tutte le schede tecniche coinvolte | BASSA (fine fase) | Chiusura Fase 3 | M1-M18 | Da fare |
 | M20 | Diagnosticare l'intermittenza "offline" degli switch su Nebula (rete dati funzionante, solo il canale di gestione cade): raccogliere orari degli eventi offline da Nebula e correlarli con i log del firewall (failover wan2, eventi SSL inspection sul traffico verso il cloud Zyxel) | MEDIA | NEB-001 | Nessuna (diagnosi indipendente da M1-M9) | Da fare |
 | M21 | Ricontrollare M20 dopo l'esecuzione di M7 (rimozione WAN_TRUNK): se l'intermittenza sparisce, FW-008 era la causa; se persiste, approfondire l'ipotesi SSL inspection | MEDIA | NEB-001 | M7, M20 | Da fare |
+
+## Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa (CORRENTE dal 07/07/2026)
+
+Obiettivo: completare l'ingestione della cartella OneDrive "Documenti - IT"
+secondo `docs/infrastructure-timeline/ingestion-checklist.md` (riepilogo
+priorita' rigenerato il 07/07/2026), estraendo in massimo dettaglio la storia
+cronologica dei due anni di ristrutturazione dell'infrastruttura di rete.
+Il drift della cartella e' controllato a ogni avvio di sessione da
+`scripts/Check-OneDriveDelta.ps1` (hook SessionStart, baseline non versionata
+in `_notes/`). Primo obiettivo: `Mappatura porte fisiche/` e la nota
+PORT-TAGGING della checklist (tagging dei due switch per la migrazione al
+centralino cloud, dettagli attesi dall'utente quando l'analisi arriva a quel
+punto). Ordine di lavoro: voci ALTA, poi delta 23/06-07/07, poi MEDIA in
+ordine cronologico delle fonti.
 
 ## Fase 3bis - Anonimizzazione repository pubblico (AVVIATA)
 

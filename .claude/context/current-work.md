@@ -1,68 +1,64 @@
 ---
-last-verified: 34a9dd7
+last-verified: 1ad2cb7
 ---
 
-# Lavoro corrente: Fase 3 - Ottimizzazione Proxmox e firewall
+# Lavoro corrente: Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa
 
 ## Stato
 
-**Sessione chiusa il 01/07/2026 con working tree pulito** (HEAD 7811e93,
-pushato). Due blocchi di lavoro completati in questa sessione, entrambi
-descritti per esteso in `_notes/RESUME-PROMPT.md`.
+**Pivot del 07/07/2026, deciso dall'utente**: prima di proseguire con i
+micro-step operativi della Fase 3 (M2/M20, ora SOSPESI in roadmap), si
+completa l'ingestione della cartella OneDrive "Documenti - IT" per costruire
+la timeline cronologica dei due anni di ristrutturazione dell'infrastruttura
+di rete in massimo dettaglio. La fonte di verita' su cosa e' ingestito e cosa
+no e' `docs/infrastructure-timeline/ingestion-checklist.md`, riallineata il
+07/07/2026 (riepilogo priorita' rigenerato, delta 23/06-07/07 triato).
 
-**M1 completato.** Le due regole firewall critiche
-(`Blocco_Gruppo_IP_Phishing_Elisa`, `malicious_IP_12052025`) sono state
-corrette da `allow` a `deny` via GUI, guidate passo-passo con verifica
-screenshot, e l'IP pubblico del firewall e' stato rimosso dal gruppo
-`Bad_IP_Phishing_Elisa_2026`. Dettaglio 1:1 in
-`docs/firewall-zyxel-usg-flex-500-live.conf`, il changelog incrementale del
-firewall live. Il resto del piano di revisione DMZ/firewall (Fasi 1-6 del
-05/06/2026) resta da applicare.
+**Gestione del delta operativa dal 07/07/2026**: lo script
+`scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive con una
+baseline locale (`_notes/.onedrive-manifest.json`, 44.515 file censiti, non
+versionata) e gira automaticamente a ogni avvio di sessione tramite hook
+SessionStart in `.claude/settings.local.json`. Quando segnala variazioni:
+triage nella checklist, poi rilancio con `-UpdateBaseline`.
 
-**Anonimizzazione Fase A completata.** Il repository e' pubblico su GitHub
-(verificato via API). IP pubblici/privati, MAC address e nomi propri reali
-sono stati sostituiti con placeholder nel perimetro network-design attivo
-(sei file `docs/` piu' `CLAUDE.md`, `STACK.md`, `deployment.md`,
-`network-topology.mmd` e gli 8 diagrammi in `context/diagrams/firewall-dmz-2026/`).
-Convenzione vincolante per ogni nuova scrittura in `.claude/rules/anonymization.md`
-(caricare sempre): niente IP reali, niente MAC reali, niente nomi propri
-completi nei file tracciati. La mappatura reale vive in
-`_notes/.anonymization-map.md`, mai versionata. Fase B (il resto del
-repository: SCENIA, cybersecurity, helpdesk, timeline storica) e' tracciata
-come Fase 3bis in `roadmap.md` ma non iniziata: workstream a parte.
+**Gia' ingestito dal delta**: `groupshare-upgrade-handoff.md` (upgrade
+GroupShare SR1 -> SR2+CU15 bloccato su download RWS) -> voce 06/07/2026 in
+`2026-switch-piano-terra.md`. Il sorgente contiene credenziali in chiaro,
+non riportate.
 
-Aggiunto in corsa il gap **NEB-001**: gli switch Nebula risultano offline in
-modo intermittente sul pannello cloud pur con rete dati funzionante, ipotesi
-principale legata a FW-008 (WAN_TRUNK/wan2 morto). Nuovi micro-step M20/M21.
+## Nota PORT-TAGGING (input utente atteso)
+
+Il tagging delle porte dei due switch Nebula (XGS2220-54HP e XGS2220-30HP),
+eseguito in occasione della migrazione al centralino cloud Vianova, non e'
+ancora emerso per intero dai documenti ingestiti. L'utente ha chiesto
+esplicitamente di fermarsi e chiedere a lui i dettagli quando l'analisi
+cronologica arriva al punto in cui i due switch sono stati taggati.
+Prerequisito: ingerire `ARCHITETTURA SERVER-CLOUD-LINEE/Mappatura porte
+fisiche/` (voce ALTA in checklist).
 
 ## Prossimi step
 
-1. M2 (verifica console seriale/iLO, conferma 802.1Q su XGS2220-54HP) oppure
-   M20 (diagnosi intermittenza Nebula, indipendente da M2) — a scelta
-   dell'utente, entrambi guidati passo-passo con screenshot come M1.
-2. Ogni nuova scheda o voce di timeline scritta da qui in avanti segue
-   `.claude/rules/anonymization.md`: placeholder per IP/MAC/nomi, mai il
-   valore reale, verificato con un grep mirato prima di considerare il passo
-   chiuso.
-3. Rieseguire `Get-ProxmoxSnapshot.ps1` per fotografare lo stato Proxmox
-   corrente prima di procedere con M4-M5 (VLAN/bridge); l'output resta
-   ignorato da git (dati reali, mai da anonimizzare in un file non tracciato).
-4. Alla chiusura di ogni micro-step: aggiornare la riga corrispondente in
-   `roadmap.md`, appendere una voce a `memory/progress.md`, aggiornare
-   `firewall-zyxel-usg-flex-500-live.conf` se il micro-step tocca il
-   firewall, e lasciare che l'utente esegua il commit dedicato a quello step.
-5. Nota di verita': lo stato "fatto/da fare" delle schede vive in
-   `memory/index.md` e nel log di `memory/progress.md`, non nelle spunte di
-   questo file. Il racconto esteso vive in `_notes/RESUME-PROMPT.md`.
+1. Ingerire `Mappatura porte fisiche/` (`intrawelt rete dati.pdf`,
+   `porte_fisiche_via_pescolla_2.xlsx`), poi chiedere all'utente i dettagli
+   del tagging porte (nota PORT-TAGGING).
+2. Voci ALTA della checklist: delta SCENIA SECURITY/Allegati + DPIA;
+   `Risposte Tecniche ai Requisiti di Sicurezza.docx` (da cercare in File
+   condivisi da AIDAPT).
+3. Delta MEDIA (AUDIT_INVENTORY, WindTre rev. luglio, ABBYY.docx, Checklist
+   customer Scenia, call aidapt 6.7, IntraLino/n8n), poi MEDIA preesistenti
+   in ordine cronologico delle fonti.
+4. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
+   (verificare con grep prima di chiudere il passo); i documenti voluminosi
+   si ingeriscono con `docx-ingest` a disclosure progressiva.
+5. Alla chiusura di ogni blocco: spunta in checklist, voce in
+   `memory/progress.md`, commit manuale dell'utente.
 
 ## Domande aperte non risolte
 
-- Contraddizione porta/switch del telefono di Persona-A (NET-007, M10 in
-  roadmap): probabile errore di etichettatura, non spostamento fisico reale.
-- Testo IVR per il centralino cloud non ancora comunicato a myOffice (TEL-001,
-  M17 in roadmap).
-- Funzione esatta della porta 8 riconfigurata "Vianova DHCP server fonia"
-  (FW-012, M11 in roadmap).
-- Allineamento a `E:\template-claude-developing`: skill `init-project-system`,
-  `onboard` e cartella `templates/` mancanti, importazione rimandata su
-  richiesta esplicita dell'utente.
+- PORT-TAGGING: dettagli del tagging dei due switch (input utente atteso).
+- Contraddizione porta/switch telefono di Persona-A (NET-007, M10).
+- Testo IVR centralino cloud non ancora comunicato a myOffice (TEL-001, M17).
+- Funzione porta 8 "Vianova DHCP server fonia" (FW-012, M11).
+- GroupShare: download installer SR2 bloccato, email a support@rws.com da
+  inviare (fuori scope progetto rete, tracciato in timeline).
+- Allineamento a `E:\template-claude-developing` rimandato.

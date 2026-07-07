@@ -7,7 +7,7 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 34a9dd7 (HEAD al 07/07/2026, working tree con modifiche da committare)
+Commit di riferimento: 1ad2cb7 (HEAD al 07/07/2026, working tree con modifiche da committare)
 Data snapshot:         2026-07-07
 ```
 
@@ -19,36 +19,34 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | 34a9dd7 | ancorata il 2026-07-07, contenuto invariato |
-| design-and-security.md | 34a9dd7 | ancorata il 2026-07-07, corretti IP privati reali residui (subnet server) |
-| deployment.md | 34a9dd7 | ancorata il 2026-07-07, contenuto invariato |
-| dev-testing.md | 34a9dd7 | ancorata il 2026-07-07, corretto IP iLO reale residuo |
-| current-work.md | 34a9dd7 | allineata (aggiornata dal commit di chiusura del 01/07) |
-| roadmap.md | 34a9dd7 | ancorata il 2026-07-07, corretti IP reali e un nome proprio (M9, M10, M12) |
+| STACK.md | 1ad2cb7 | allineata |
+| design-and-security.md | 1ad2cb7 | allineata (bonifica IP inclusa in 1ad2cb7) |
+| deployment.md | 1ad2cb7 | allineata |
+| dev-testing.md | 1ad2cb7 | allineata (bonifica IP inclusa in 1ad2cb7) |
+| current-work.md | 1ad2cb7 | riscritta il 07/07: pivot su Fase 1bis (ingestione OneDrive) |
+| roadmap.md | 1ad2cb7 | aggiornata il 07/07: Fase 3 sospesa, nuova Fase 1bis corrente |
 
 ## Punto di ripresa
 
-Sessione chiusa il 01/07/2026 con working tree pulito (`git status` senza
-modifiche pendenti, HEAD 7811e93, pushato). Racconto narrativo completo e
-convenzioni operative in `_notes/RESUME-PROMPT.md`: leggerlo subito dopo
-questo file per il contesto esteso prima di agire.
+Aggiornato il 07/07/2026 (sessione 7, in corso). **Pivot deciso dall'utente:
+la Fase 3 operativa (M2/M20) e' sospesa; la fase corrente e' la 1bis, ripresa
+dell'ingestione OneDrive IT** per costruire la timeline cronologica completa
+dei due anni di ristrutturazione della rete. Dettaglio operativo in
+`.claude/context/current-work.md`; stato ingestione e priorita' in
+`docs/infrastructure-timeline/ingestion-checklist.md` (riallineata 07/07).
 
-In sintesi: **M1 fatto** (due regole firewall corrette allow->deny, changelog
-in `docs/firewall-zyxel-usg-flex-500-live.conf`). **Anonimizzazione Fase A
-fatta** (repository pubblico confermato via API GitHub; IP/MAC/nomi propri
-sostituiti nel perimetro network-design + file di contesto con lo stesso IP
-Proxmox; convenzione in `.claude/rules/anonymization.md`, sempre da applicare
-a ogni nuova scrittura). Prossima azione concreta, a scelta dell'utente: **M2**
-(verifica console seriale/iLO, prerequisito 802.1Q) oppure **M20** (diagnosi
-intermittenza Nebula, indipendente). Nessuna delle due e' stata ancora avviata.
+Fatto in questa sessione: ancoraggio schede e bonifica anonimizzazione dei
+file vivi `.claude/` e degli otto diagrammi (commit 1ad2cb7); creato
+`scripts/Check-OneDriveDelta.ps1` con baseline in `_notes/.onedrive-manifest.json`
+e hook SessionStart in `settings.local.json` (il delta OneDrive arriva in
+contesto a ogni avvio); delta 23/06-07/07 triato in checklist; ingestita la
+voce GroupShare SR2+CU15 (timeline 06/07/2026).
 
-Fase B (anonimizzazione del resto del repository, SCENIA/cybersecurity/helpdesk/
-timeline storica) e' tracciata in `roadmap.md` come Fase 3bis ma non iniziata:
-e' un workstream a parte, non da fare in coda a un'altra sessione. La
-riscrittura della storia git (`_notes/.git-filter-replacements.txt`, non
-versionato) resta rimandata a dopo la Fase B, per un solo force-push invece
-di due.
+Attesa dall'utente la nota PORT-TAGGING (tagging dei due switch per la
+migrazione al centralino cloud): chiederla quando l'analisi cronologica
+arriva a quel punto, dopo aver ingerito `Mappatura porte fisiche/`.
 
-Invocare `sync-context` quando si riprende a lavorare su STACK.md,
-design-and-security.md, deployment.md o dev-testing.md, per ancorarne i
-`last-verified` rimasti a `PENDING-FIRST-COMMIT`.
+M1 resta l'unico micro-step Fase 3 chiuso. Fase B anonimizzazione (Fase 3bis)
+non iniziata; riscrittura storia git rimandata a dopo la Fase B
+(`_notes/.git-filter-replacements.txt` pronto, esteso il 07/07 con gli
+username VPN).

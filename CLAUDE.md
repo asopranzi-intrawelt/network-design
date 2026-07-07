@@ -41,6 +41,17 @@ dell'infrastruttura in `output/proxmox-snapshot.json` e `output/proxmox-config.m
 L'output e' ignorato da git (dati infrastrutturali sensibili). Eseguire dalla radice
 del progetto passando l'host reale a `-ProxmoxHost` (vedi `.claude/rules/anonymization.md`).
 
+## Script di controllo delta OneDrive
+
+`scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive "Documenti - IT"
+con una baseline locale (`_notes/.onedrive-manifest.json`, ignorata da git perche'
+contiene nomi di file reali) e riporta file nuovi, modificati ed eliminati rispetto
+all'ultimo triage della checklist di ingestione
+(`docs/infrastructure-timeline/ingestion-checklist.md`). Gira automaticamente a ogni
+avvio di sessione tramite hook SessionStart in `.claude/settings.local.json` (non
+versionato, percorsi di macchina). Dopo aver registrato in checklist le variazioni
+segnalate, rieseguirlo con `-UpdateBaseline`.
+
 ## Indice dei file satellite tracciati
 
 Memoria e meta-stato, sotto `.claude/memory/`, letti sempre a inizio sessione.

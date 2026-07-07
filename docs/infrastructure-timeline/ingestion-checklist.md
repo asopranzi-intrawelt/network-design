@@ -1,7 +1,13 @@
 # Checklist Ingestion Documenti IT – Intrawelt
 
 Cartella sorgente: `C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT`  
-Aggiornato: 2026-06-23 | Owner: Alessio Sopranzi
+Aggiornato: 2026-07-07 | Owner: Alessio Sopranzi
+
+Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta la cartella con una
+baseline locale (`_notes/.onedrive-manifest.json`, non versionata) e viene eseguito
+automaticamente a ogni avvio di sessione (hook SessionStart in `settings.local.json`).
+Quando il report segnala variazioni, le voci rilevanti si registrano qui e si riesegue
+lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-07.
 
 Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai ingestire (credenziali)
 
@@ -41,11 +47,11 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 - [x] `ARCHITETTURA.docx` (300 MB) → estratto completo → network-design/ (base dell'intero progetto)
 - [x] `Telefono-PBX/` → telephony-pbx.md (centralino Panasonic KX-TDA100, procedure deviazione standard/gruppo, intercetta gruppo, segreteria personale, IVR messaggi bilingue, softphone opzioni; Centralino.doc = .doc non estraibile)
-- [ ] `ZYXEL XGS2220/` (×3 doc) — MEDIA (config switch Piano Terra e Piano 2)
+- [ ] `Mappatura porte fisiche/` — ALTA: `intrawelt rete dati.pdf` (feb 2025) + `porte_fisiche_via_pescolla_2.xlsx` (apr 2026). Base per il tema tagging porte switch (vedi nota PORT-TAGGING sotto). Nota: la voce compariva come `ZYXEL XGS2220/ (×3 doc)` ma quella cartella non esiste piu' sotto ARCHITETTURA (verificato 07/07/2026); questa e' la fonte reale sulla mappatura porte.
 - [x] `[TBC] Diagramma di rete e analisi firewall, centralino/` (root progetto, non OneDrive — 29052026, 05062026, 08062026 (steps)) → firewall-zyxel-usg-flex-500.md, network-diagram.md, telefono-pbx-voip.md, 2026-switch-piano-terra.md, GAP-TBC.md #97-100, diagrammi in `.claude/context/diagrams/firewall-dmz-2026/` (01/07/2026 — cartella sorgente da eliminare dopo conferma utente, era marcata [TBC] esplicitamente per completa ingestione e cancellazione)
 - [x] `ZYXEL FIREWALL e VPN/myZYXEL - 18122025.docx` → 2025-q3-q4.md §18/12/2025 ZYXEL licenze (USG FLEX 500 Gold Security Pack S232L12101347, XGS2220-54HP S242L06000292, procedura rinnovo Nebula/myZyxel)
 - [x] `ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx` → 2026-switch-piano-terra.md §23/03/2026 (7 subnet VoIP verificate, nessun blocco firewall, causa non USG FLEX 500)
-- [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (193.124.241.5, SecuExtender, ncognome, 2FA email, RDP)
+- [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (203.0.113.5, SecuExtender, ncognome, 2FA email, RDP)
 - [-] `USG20/` — BASSA/skip (legacy, sostituito da USG FLEX 500)
 - [ ] altri doc architettura (AP WiFi, VLAN tables, UPS) — BASSA (già coperto in ARCHITETTURA.docx)
 
@@ -219,6 +225,8 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 ## Helpdesk_T-Rex — 208 file
 
+- [x] `aggiornamento groupshare/groupshare-upgrade-handoff.md` (delta 06/07/2026) → 2026-switch-piano-terra.md §06/07/2026 (upgrade GroupShare SR1→SR2+CU15, bloccato su download RWS). ATTENZIONE: il sorgente contiene credenziali in chiaro, ingestita solo la parte tecnica.
+
 - [x] `TREX.docx` (44 MB) → estratto completo → helpdesk-operations.md (sistema tour operator)
 - [x] `Storico ticket - case-studies/2022-11-23_EniVipa/ENI_VIPA_Guida_inserimento_SO.docx` → helpdesk-operations.md §Procedura VIPA in T-Rex (wizard, SO, task, fine mese PO)
 - [ ] `Storico ticket - case-studies/` altri file (prevalentemente JPG/allegati) — BASSA (archivio storico immagini)
@@ -375,7 +383,7 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
 - [ ] `[TBC] STUDIO - CHERSHIRE CAT/` — BASSA
 - [x] `OpenProject/` → helpdesk-operations.md §OpenProject VM205 (openproject.local:9001, 3 utenti, disk resize 13/10/2025)
-- [x] `Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/` → 2025-q3-q4.md §03-04/11/2025 + helpdesk-operations.md §Automazione export TM GroupShare (v1.0.0 03/11, v1.1.0 04/11; PS+AHK+MigratingTMs, NAS \\192.168.20.177, gs.intrawelt.com, daily 02:00)
+- [x] `Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/` → 2025-q3-q4.md §03-04/11/2025 + helpdesk-operations.md §Automazione export TM GroupShare (v1.0.0 03/11, v1.1.0 04/11; PS+AHK+MigratingTMs, NAS \\10.61.20.177, gs.intrawelt.com, daily 02:00)
 - [ ] `TOOL AI coding assistance/` — BASSA
 - [-] `Qdrant + Ollama + Ubuntu + n8n self-hosting/` — BASSA (ricerca esterna)
 - [-] `[studying] Automazione bozza per commerciali/` — BASSA
@@ -409,24 +417,38 @@ Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai in
 
 ---
 
-## Nota di riallineamento (01/07/2026)
+## Delta 23/06 -> 07/07/2026 (triage del 07/07/2026)
 
-Il "Riepilogo priorità" sotto risale al 2026-06-23 e non e' stato aggiornato di
-pari passo con le singole voci `[x]` marcate sopra: diversi item elencati come
-ALTA (Storico ticket T-Rex, Integrazione Odoo portale, Progetto ENI ruolini,
-_GESTIONE OUTSOURCING F.GIORGINI) risultano gia' `[x]` nel corpo della checklist.
-L'ingestione della cartella OneDrive IT resta sospesa qui per dare priorita',
-su richiesta esplicita dell'utente, all'ottimizzazione di Proxmox e del
-firewall (vedi `.claude/context/roadmap.md`). Alla ripresa dell'ingestione
-generale, il primo passo e' rigenerare questo riepilogo dallo stato reale
-delle spunte prima di riprendere nuovi documenti, cosi' che la tabella torni
-a essere la fonte di verita' invece di un residuo non sincronizzato.
+File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
+`Check-OneDriveDelta.ps1` (esclusi artefatti graphify-out, cache, mirror scraping).
 
-## Riepilogo priorità
+- [x] `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md` — ingestita (vedi sezione Helpdesk_T-Rex)
+- [ ] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` — MEDIA (nuovo inventario audit crittografia dati a riposo; la sezione era skip perche' conteneva solo il manuale SGIQA)
+- [ ] `Cybersec/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/` — MEDIA (revisione chiarimenti WindTre RFQ 10714, file datati 06-07/07/2026: evento timeline da aggiungere a questionari B2B gia' documentati)
+- [ ] `Helpdesk_ABBYY/ABBYY.docx` — MEDIA (nuovo documento consolidato; la cartella era skip "solo screenshot")
+- [ ] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti (DPIA versioni 29/06-02/07, extracted/, scripts/) — ALTA (evoluzione DPA/DPIA rispetto a quanto gia' in scenia-project.md)
+- [ ] `SCENIA/Checklist caricamento nuovo customer su Scenia.docx` — MEDIA
+- [ ] `SCENIA/Documentazione scenia/` (6 manuali utente/admin IT/EN) — BASSA (manuali prodotto)
+- [ ] `SCENIA/Useful Resources/call aidapt 6.7.2026.docx` — MEDIA (call recente, probabile aggiornamento stato DPA)
+- [ ] `Sviluppo_interno/Qdrant + Ollama + Ubuntu + n8n/` — MEDIA (era BASSA "ricerca esterna": ora contiene benchmark IntraLino C1-C4, guide e workflow n8n interni)
+- [-] `Miscellaneous/Web scraping - Downloaded Web sites/` — SKIP (mirror di un sito esterno, non IT ops)
+
+## Nota PORT-TAGGING (in attesa di input utente, 07/07/2026)
+
+Il tagging delle porte dei due switch (XGS2220-54HP Piano 2, XGS2220-30HP
+Piano Terra) eseguito in occasione della migrazione al centralino cloud
+Vianova NON e' ancora documentato per intero: nei documenti ingestiti finora
+compaiono solo modifiche puntuali (porta 8 del 54HP a PVID 2 il 09/06/2026,
+Voice VLAN dei telefoni in telefono-pbx-voip.md). L'utente fornira' i
+dettagli completi a voce quando l'analisi cronologica arrivera' al punto in
+cui i due switch sono stati taggati: la fonte dedicata da ingerire prima e'
+`Mappatura porte fisiche/` (vedi sezione ARCHITETTURA).
+
+## Riepilogo priorità (rigenerato 07/07/2026 dallo stato reale delle spunte)
 
 | Priorità | Da fare |
 |----------|---------|
-| ALTA | Regolamento utilizzo sistemi, SCENIA/SECURITY/Condivisione .docx ×5, DPIA_SCENIA_2026.docx, Questionario_PRECOMPILATO.md, Memo/Intrawelt_dati/Domande.md, Storico ticket T-Rex, Integrazione Odoo portale, Progetto ENI ruolini, _GESTIONE OUTSOURCING F.GIORGINI |
-| MEDIA | Privacy GDPR e Contratti, IntraLino_profilo_addestramento, snapshot SCENIA mensili, FAQ portale AI, Commenti/Documento riassuntivo security, mail incidente IMAP/CSRF |
-| BASSA | tutto il resto |
-| SKIP | Cartella_riservata_IT, credenziali SCENIA root, ABBYY, NinjaOne backup, TEST/, dati raw ENIVIPA, VIDEO/, Sviluppo Odoo Alessio.docx 62MB |
+| ALTA | `Mappatura porte fisiche/` (prerequisito nota PORT-TAGGING); `SCENIA/Risposte Tecniche ai Requisiti di Sicurezza.docx` (cercare in File condivisi da AIDAPT); delta SCENIA SECURITY/Allegati + DPIA |
+| MEDIA | delta: AUDIT_INVENTORY, WindTre rev. luglio, ABBYY.docx, Checklist customer Scenia, call aidapt 6.7, IntraLino/n8n benchmark; preesistenti: Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix 28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT, Regolamento strumenti informatici rev1.pdf |
+| BASSA | tutto il resto (PROXMOX, QNAP cloud, NinjaOne, PC formatting, ticketing old, RAEE, OpenAI, Ricerche, manuali Scenia, ecc.) |
+| SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB |
