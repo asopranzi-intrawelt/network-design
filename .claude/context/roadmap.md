@@ -1,5 +1,5 @@
 ---
-last-verified: 2026-07-01
+last-verified: 34a9dd7
 ---
 
 # Roadmap e fasi del progetto
@@ -113,10 +113,10 @@ unico commit cumulativo di fine fase.
 | M6 | Cablare P7 verso lo switch, validare L2 con `arping`/`tcpdump` | ALTA | Fase 4 del piano | M5 | Da fare |
 | M7 | Caricare la configurazione target dal seriale (rimozione WAN_TRUNK, rimozione LAN2 e rotte statiche, attivazione DMZ, pubblicazione web `wan1:2`) | CRITICA | Fase 5 del piano, FW-004, FW-008, FW-009 | M6 | Da fare |
 | M8 | Verifica post-applicazione nell'ordine di impatto utente (LAN, SSL VPN, IPsec, VM DMZ) + 48h di osservazione log | ALTA | Fase 6 del piano | M7 | Da fare |
-| M9 | Prima VM DMZ operativa (nginx reverse proxy 192.168.201.10, esposta su 193.124.241.3) | MEDIA | Piano_Operativo_Migrazione.docx | M8 | Da fare |
-| M10 | Verificare quale switch ospita realmente la porta del telefono di Alessandro Potalivo (contraddizione Piano 2 vs Piano Terra) prima di chiudere la mappatura IP/MAC telefoni | MEDIA | NET-007, GAP-TBC #67 | Nessuna (indipendente dal piano firewall) | Da fare |
+| M9 | Prima VM DMZ operativa (nginx reverse proxy 10.61.201.10, esposta su 203.0.113.3) | MEDIA | Piano_Operativo_Migrazione.docx | M8 | Da fare |
+| M10 | Verificare quale switch ospita realmente la porta del telefono di Persona-A (contraddizione Piano 2 vs Piano Terra) prima di chiudere la mappatura IP/MAC telefoni | MEDIA | NET-007, GAP-TBC #67 | Nessuna (indipendente dal piano firewall) | Da fare |
 | M11 | Verificare la funzione della porta 8 riconfigurata "Vianova DHCP server fonia" (PVID 2) e valutare se sostituisce la rimozione del DHCP server classe .90 | MEDIA | FW-012 | M10 | Da fare |
-| M12 | Rimuovere il DHCP server residuo classe .90 e spostare lo switch di management (192.168.90.37) sulla VLAN corretta | ALTA | NET-001, NET-004, NET-005 | M11 | Da fare |
+| M12 | Rimuovere il DHCP server residuo classe .90 e spostare lo switch di management (10.61.90.37) sulla VLAN corretta | ALTA | NET-001, NET-004, NET-005 | M11 | Da fare |
 | M13 | Segmentare la VLAN Wi-Fi "intrawelt" dalla classe .90, isolamento reale da LAN/management | MEDIA | NET-005 | M12 | Da fare |
 | M14 | Aggiornare le VPN IPsec da IKEv1/AES-128/SHA-1/DH2 a parametri correnti; chiarire se PSE-SEEWEB e WIZ_VPN sono transizione o residuo | MEDIA | FW-006, FW-007 | M8 | Da fare |
 | M15 | Attivare firewall Proxmox con policy di default DROP | MEDIA | Fase 3 originale (roadmap storica) | M9 | Da fare |

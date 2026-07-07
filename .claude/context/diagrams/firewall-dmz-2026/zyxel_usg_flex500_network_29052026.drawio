@@ -181,11 +181,11 @@
         </mxCell>
 
         <!-- IPSec tunnels -->
-        <mxCell id="ipsec-pse" value="&lt;b&gt;Crypto map: PSE-SEEWEB&lt;/b&gt;&#10;Site-to-Site &#8212; ATTIVO&#10;Peer: 37.9.228.27&#10;ISAKMP: FS-SEEWEB (IKEv1 aggressive)&#10;Auth: pre-shared key&#10;Encrypt: AES128-SHA, DH group2&#10;Lifetime: 86400 s&#10;Local policy: RFC1918_3 (10.61.0.0/16)&#10;Remote policy: lan_remota_fs_seeweb (10.1.116.0/24)&#10;PFS: group2 &#8212; ESP AES128-SHA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="ipsec-pse" value="&lt;b&gt;Crypto map: PSE-SEEWEB&lt;/b&gt;&#10;Site-to-Site &#8212; ATTIVO&#10;Peer: 192.0.2.27&#10;ISAKMP: FS-SEEWEB (IKEv1 aggressive)&#10;Auth: pre-shared key&#10;Encrypt: AES128-SHA, DH group2&#10;Lifetime: 86400 s&#10;Local policy: RFC1918_3 (10.61.0.0/16)&#10;Remote policy: lan_remota_fs_seeweb (10.77.116.0/24)&#10;PFS: group2 &#8212; ESP AES128-SHA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="50" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
-        <mxCell id="ipsec-wiz" value="&lt;b&gt;Crypto map: WIZ_VPN&lt;/b&gt;&#10;Site-to-Site (concentrator: WizVPNTest)&#10;Peer: 37.9.228.27&#10;ISAKMP: WIZ_VPN (IKEv1 main)&#10;Auth: pre-shared key&#10;Encrypt: AES128-SHA, DH group2&#10;Lifetime: 86400 / 28800 s&#10;Local policy: RFC1918_3&#10;Remote policy: lan_remota_fs_seeweb&#10;PFS: group2 &#8212; ESP AES128-SHA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="ipsec-wiz" value="&lt;b&gt;Crypto map: WIZ_VPN&lt;/b&gt;&#10;Site-to-Site (concentrator: WizVPNTest)&#10;Peer: 192.0.2.27&#10;ISAKMP: WIZ_VPN (IKEv1 main)&#10;Auth: pre-shared key&#10;Encrypt: AES128-SHA, DH group2&#10;Lifetime: 86400 / 28800 s&#10;Local policy: RFC1918_3&#10;Remote policy: lan_remota_fs_seeweb&#10;PFS: group2 &#8212; ESP AES128-SHA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5eef8;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="450" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
@@ -193,7 +193,7 @@
           <mxGeometry x="850" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
-        <mxCell id="vpn-users" value="&lt;b&gt;User group VPN&lt;/b&gt;&#10;groupname: vpn-users&#10;• anasini&#10;• mperri / mperri_old&#10;• asopranzi&#10;• apotalivo&#10;• tvezeni&#10;• atrovato&#10;• anazziconi&#10;• mlmoran&#10;• smartellini&#10;• fguidali&#10;&#10;groupname: RemoteAccess_Wiz_USER_GRP&#10;• asopranzi" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="vpn-users" value="&lt;b&gt;User group VPN&lt;/b&gt;&#10;groupname: vpn-users&#10;• anasini&#10;• persona-k / persona-k_old&#10;• asopranzi&#10;• persona-a&#10;• persona-e&#10;• atrovato&#10;• anazziconi&#10;• persona-l&#10;• persona-b&#10;• fguidali&#10;&#10;groupname: RemoteAccess_Wiz_USER_GRP&#10;• asopranzi" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1250" y="1120" width="220" height="220" as="geometry" />
         </mxCell>
 
@@ -243,7 +243,7 @@
           <mxGeometry x="890" y="1410" width="270" height="70" as="geometry" />
         </mxCell>
 
-        <mxCell id="services-list" value="&lt;b&gt;Mail server SMTP&lt;/b&gt;&#10;smtp.office365.com:587 TLS&#10;mail-from: mailer@intrawelt.com&#10;&#10;&lt;b&gt;Backup config schedulato&lt;/b&gt;&#10;Daily 06:00 → asopranzi/tvezeni@intrawelt.com" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0f8ff;strokeColor=#6c8ebf;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="services-list" value="&lt;b&gt;Mail server SMTP&lt;/b&gt;&#10;smtp.office365.com:587 TLS&#10;mail-from: mailer@intrawelt.com&#10;&#10;&lt;b&gt;Backup config schedulato&lt;/b&gt;&#10;Daily 06:00 → asopranzi/persona-e@intrawelt.com" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0f8ff;strokeColor=#6c8ebf;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1170" y="1410" width="240" height="70" as="geometry" />
         </mxCell>
 
