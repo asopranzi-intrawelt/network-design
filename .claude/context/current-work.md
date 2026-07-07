@@ -1,5 +1,5 @@
 ---
-last-verified: 1ad2cb7
+last-verified: 594ec07
 ---
 
 # Lavoro corrente: Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa
@@ -23,8 +23,11 @@ triage nella checklist, poi rilancio con `-UpdateBaseline`.
 
 **Gia' ingestito dal delta**: `groupshare-upgrade-handoff.md` (upgrade
 GroupShare SR1 -> SR2+CU15 bloccato su download RWS) -> voce 06/07/2026 in
-`2026-switch-piano-terra.md`. Il sorgente contiene credenziali in chiaro,
-non riportate.
+`2026-switch-piano-terra.md`, sorgente con credenziali in chiaro non
+riportate; `AUDIT_INVENTORY.md` -> `cybersecurity-governance.md`
+sezione Crittografia dati a riposo piu' gap #104/SEC-010 (commit 552d96c);
+delta SCENIA (Allegati A-L, DPIA compilata, Risposte Tecniche AIDAPT) ->
+`scenia-project.md` (commit 594ec07).
 
 ## Nota PORT-TAGGING (racconto rimandato a lavori conclusi)
 
@@ -52,14 +55,18 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 
 ## Prossimi step
 
-1. FATTO: `Mappatura porte fisiche/` ingestita (vedi sopra). ORA: chiedere
-   all'utente i dettagli del tagging porte (nota PORT-TAGGING).
-2. Voci ALTA della checklist: delta SCENIA SECURITY/Allegati + DPIA;
-   `Risposte Tecniche ai Requisiti di Sicurezza.docx` (da cercare in File
-   condivisi da AIDAPT).
-3. Delta MEDIA (AUDIT_INVENTORY, WindTre rev. luglio, ABBYY.docx, Checklist
-   customer Scenia, call aidapt 6.7, IntraLino/n8n), poi MEDIA preesistenti
-   in ordine cronologico delle fonti.
+1. FATTO: `Mappatura porte fisiche/` ingestita. La nota PORT-TAGGING resta
+   in attesa: racconto a lavori conclusi (endpoint telefonici funzionanti),
+   evidenze gia' raccolte in `_notes/[TBC] screenshot e note myoffice/`.
+2. FATTO (594ec07): voci ALTA della checklist chiuse. Delta SCENIA
+   SECURITY/Allegati + DPIA e Risposte Tecniche AIDAPT ingerite in
+   `scenia-project.md`.
+3. FATTO (07/07, questa sessione): WindTre revisione luglio ingerita dalle
+   due NOTA-INTERNA in `_WIP` -> `cybersecurity-governance.md` (sezione
+   dedicata sotto Questionari B2B, timeline Q3 con BitLocker endpoint dal
+   03/07, raccordo nella sezione Crittografia). ORA: delta MEDIA restanti in
+   ordine — ABBYY.docx, Checklist customer Scenia, call aidapt 6.7,
+   IntraLino/n8n; poi MEDIA preesistenti in ordine cronologico delle fonti.
 4. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
    (verificare con grep prima di chiudere il passo); i documenti voluminosi
    si ingeriscono con `docx-ingest` a disclosure progressiva.
