@@ -1,5 +1,5 @@
 ---
-last-verified: 34a9dd7
+last-verified: 1ad2cb7
 ---
 
 # Stack e struttura del progetto
@@ -9,6 +9,7 @@ last-verified: 34a9dd7
 | Componente | Ruolo |
 |---|---|
 | `scripts/Get-ProxmoxSnapshot.ps1` | Snapshot completo infrastruttura Proxmox via REST API |
+| `scripts/Check-OneDriveDelta.ps1` | Delta cartella OneDrive IT vs baseline locale (hook SessionStart) |
 | `.claude/context/diagrams/network-topology.mmd` | Diagramma Mermaid topologia di rete |
 | `docs/infrastructure-timeline/` | Storia cronologica interventi di rete (Markdown) |
 | `_notes/` | Layer narrativo locale (ignorato da git) |

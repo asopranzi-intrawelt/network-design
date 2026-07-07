@@ -665,7 +665,7 @@ dall'08/05/2026). IP management: 10.61.10.10 (DHCP classe .10 del firewall).
 Cloud SEEWEB (tunnel IPsec operativo dal 24/06/2025):
 Firewall OPNsense: 10.77.116.1 (user1 / [redacted]).
 WINGROUPSHARE: 10.77.116.3 (Windows Server, GroupShare Trados, Cobian Backup, RDP
-Administrator / [redacted], WAN: 212.35.202.x).
+Administrator / [redacted], WAN: 192.0.2.x).
 WINSRV2019: 10.77.116.4 (Windows Server 2019, desktop remoti DTP e PM, utente analisi1).
 
 ### Lavori aperti
@@ -690,7 +690,7 @@ IP sorgente: `<IP-ENI-AZURE-SOURCE>` (Azure Cloud), Tenant Eni: `c16e514b-893e-4
 **Oggetto tipo**: `Traduzione per [Nome Cognome] - [ID]` (richieste VIPA)
 
 **Episodi di mancata consegna:**
-- 16/06/2026 ore 13:15–13:35 IT: 7 mail mancanti (CASAROTTI, MACCARIELLO x2, FIORUCCI x2, FRASSONI, CHEZZI)
+- 16/06/2026 ore 13:15–13:35 IT: 7 mail mancanti (6 persone fisiche destinatarie delle traduzioni; i cognomi restano nel documento sorgente locale, non qui)
 - 17/06/2026 ore 15:57 IT: ulteriori mail non arrivate
 
 **Indagine M365 (EAC Message Trace):**
@@ -701,3 +701,42 @@ IP sorgente: `<IP-ENI-AZURE-SOURCE>` (Azure Cloud), Tenant Eni: `c16e514b-893e-4
 **Conclusione: problema lato Eni** (Power Platform Flow intermittente).
 Prove da comunicare a Eni VIPA: trace M365 "tutti gli stati" non le mostra + gap orari precisi.
 Eni deve verificare log esecuzione Power Automate per le run degli orari anomali.
+
+## 06/07/2026 - GroupShare 2020: upgrade SR1 -> SR2+CU15 necessario, bloccato sul download
+
+Fonte: `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md`
+(handoff sessione Claude.ai del 06/07/2026). Il documento sorgente contiene
+credenziali in chiaro (accessi firewall Seeweb, ESXi, VM, SQL `sa`): non sono
+riportate qui e il file va trattato come materiale riservato (stesso gap
+SEC-007 del password manager mai implementato).
+
+Una traduttrice cliente, aggiornata a Trados Studio 2026 (build 19.0.0.3043),
+non apre piu' i progetti dal portale `gs.intrawelt.com`: errore "versione del
+server non piu' supportata". Il server e' GroupShare 2020 SR1 build 15.1.12529
+sulla VM WINGROUPSHARE (Windows Server 2019, 8 vCPU, 64 GB RAM, 250 GB disco)
+su host ESXi 7.0 U2 nel cloud Seeweb, raggiunto via VPN IPsec sulla rete
+remota 10.77.116.0/24 (firewall .1, host ESXi .2, VM .3; IP pubblico della VM
+mappato su 192.0.2.121). Causa accertata da documentazione RWS: Studio 2026
+interroga la API REST MultiTerm v2 (`/api/multiterm/v2`), introdotta solo in
+GroupShare 2020 SR2 CU14; SR1 espone solo le API v1, quindi il client
+conclude che il server non sia supportato. Non e' un problema di rete,
+firewall, credenziali o IIS. Gli altri clienti, ancora su Studio 2024 o
+precedenti, non sono impattati, ma lo saranno a ogni upgrade client.
+
+Percorso stabilito: upgrade a SR2 e poi CU15 (requisito minimo per Studio
+2026; le CU sono cumulative, SR2 -> CU15 diretto). Compatibilita' confermata
+con WinServer 2019 + IIS 10; SR2 migra da solo i compatibility level SQL e
+il runtime .NET da 6 a 8; retrocompatibile con Studio 2022/2024. Piano
+operativo pronto: snapshot ESXi `Pre-upgrade-GroupShare-SR2` (con memoria,
+~70 GB richiesti sul datastore), backup dei sei database SQL (SDLSystem,
+TMServiceSystem, TMContainer, MTMaster, WebHooks, CPSService), annotazione
+del codice licenza, installazione SR2, poi CU15, verifica finale su portale
+e Swagger. Workaround per la traduttrice non ancora attivato (pacchetto
+`.sdlppx`/`.sdlrpx` offline).
+
+Stato al 06/07: **bloccato sul download dell'installer SR2**. Tre tentativi
+falliti sul portale RWS (redirect loop su gateway.sdl.com, account aziendale
+RWS di Persona-E senza download visibili, invito al nuovo Account Portal mai
+arrivato a persona-e@intrawelt.com); email a support@rws.com pronta nel
+documento sorgente, da inviare. Rischio: la criticita' si estende a ogni
+cliente che aggiorna a Studio 2026.

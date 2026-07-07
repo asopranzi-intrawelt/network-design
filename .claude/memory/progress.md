@@ -4,6 +4,37 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-07 — Pivot su ingestione OneDrive: gestione delta, hook di avvio, GroupShare (sessione 7, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - scripts/Check-OneDriveDelta.ps1 (nuovo: confronto deterministico della cartella
+    OneDrive IT con baseline locale; esclusioni per dati raw/artefatti; baseline
+    creata il 07/07 con 44.515 file in _notes/.onedrive-manifest.json, non versionata)
+  - .claude/settings.local.json (non versionato: hook SessionStart che esegue lo
+    script a ogni avvio, delta riportato in contesto automaticamente)
+  - docs/infrastructure-timeline/ingestion-checklist.md (data e nota drift, voce
+    ZYXEL XGS2220 corretta in "Mappatura porte fisiche" ALTA, sezione Delta
+    23/06->07/07 triata, nota PORT-TAGGING, riepilogo priorita' rigenerato)
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md (nuova voce 06/07/2026:
+    upgrade GroupShare 2020 SR1->SR2+CU15 bloccato su download RWS, da handoff con
+    credenziali in chiaro NON riportate; corretti 6 cognomi reali residui nella
+    voce Eni VIPA del 16-17/06)
+  - .claude/context/roadmap.md (Fase 3 SOSPESA, nuova Fase 1bis CORRENTE)
+  - .claude/context/current-work.md (riscritta: focus Fase 1bis, nota PORT-TAGGING)
+  - .claude/memory/index.md (punto di ripresa, ancoraggi a 1ad2cb7)
+  - frontmatter schede bumpato a 1ad2cb7 (commit dell'utente con ancoraggio+bonifica)
+  - _notes/.anonymization-map.md (IP pubblico WINGROUPSHARE, host Seeweb per ruolo,
+    nota cognomi Eni)
+Motivo: decisione utente del 07/07: sospendere la Fase 3 operativa e completare
+prima la timeline cronologica dei due anni di lavoro sulla rete ingerendo il
+resto di OneDrive IT. Il delta 23/06->07/07 (checklist ferma al 23/06) e' stato
+rilevato, triato in checklist e coperto per la voce ALTA (GroupShare); il
+controllo del drift diventa strutturale con script + hook SessionStart. La
+questione del tagging porte dei due switch (migrazione centralino cloud) non
+e' ancora emersa per intero dai documenti: tracciata come nota PORT-TAGGING,
+dettagli attesi dall'utente al momento giusto dell'analisi cronologica.
+
 ## 2026-07-07 — Ancoraggio schede e bonifica anonimizzazione file vivi .claude/ (sessione 7)
 
 Commit: PENDING (da fare manualmente)
