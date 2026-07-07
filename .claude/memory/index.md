@@ -7,7 +7,7 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 1ad2cb7 (HEAD al 07/07/2026, working tree con modifiche da committare)
+Commit di riferimento: 6e1d4b6 (HEAD al 07/07/2026, in corso il blocco mappatura porte)
 Data snapshot:         2026-07-07
 ```
 
