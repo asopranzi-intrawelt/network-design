@@ -1,5 +1,5 @@
 ---
-last-verified: 594ec07
+last-verified: 347f79c
 ---
 
 # Stack e struttura del progetto
@@ -10,7 +10,7 @@ last-verified: 594ec07
 |---|---|
 | `scripts/Get-ProxmoxSnapshot.ps1` | Snapshot completo infrastruttura Proxmox via REST API |
 | `scripts/Check-OneDriveDelta.ps1` | Delta cartella OneDrive IT vs baseline locale (hook SessionStart) |
-| `scripts/Build-TimelineSvg.ps1` | Timeline SVG anonimizzata dai md della timeline (hook SessionStart); copia in E:\projects (MkDocs) |
+| `scripts/Build-TimelineSvg.ps1` | Timeline SVG anonimizzata dai md della timeline (hook SessionStart); scrive solo dentro questo repo, vedi CLAUDE.md "Confine con E:\projects" |
 | `.claude/context/diagrams/network-topology.mmd` | Diagramma Mermaid topologia di rete |
 | `docs/infrastructure-timeline/` | Storia cronologica interventi di rete (Markdown) |
 | `_notes/` | Layer narrativo locale (ignorato da git) |

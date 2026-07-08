@@ -1,5 +1,5 @@
 ---
-last-verified: 594ec07
+last-verified: 347f79c
 ---
 
 # Verifica output snapshot e casi limite

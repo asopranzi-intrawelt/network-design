@@ -4,23 +4,25 @@
 # pubblico). Perimetro: dal 2024 (ingresso IT manager), solo intestazioni
 # datate. Ogni evento e' classificato in un'area di competenza (skill) con
 # colore categoriale validato + tag testuale (identita' mai affidata al solo
-# colore). Output: docs/infrastructure-timeline/timeline.svg (versionato) e
-# una copia nel sito MkDocs dei progetti (E:\projects), pagina "Progettazione
-# e documentazione della rete aziendale".
+# colore). Output: solo docs/infrastructure-timeline/timeline.svg
+# (versionato in questo repository).
+#
+# Questo script NON scrive in nessun altro repository. Il sito MkDocs dei
+# progetti personali (E:\projects) e' un consumatore esterno: se vuole
+# l'asset aggiornato lo legge da questo repository per conto proprio, non lo
+# riceve per copia in push da qui (vedi CLAUDE.md, sezione "Confine con
+# E:\projects").
 #
 # Deterministico: nessuna chiamata LLM. I titoli legacy con nomi reali sono
 # anonimizzati a valle tramite _notes/.svg-name-replacements.txt (privato);
 # un guard-rail avvisa se compare un IP privato non-placeholder.
 #
 # Uso:
-#   .\scripts\Build-TimelineSvg.ps1                # genera e copia
-#   .\scripts\Build-TimelineSvg.ps1 -NoCopy        # solo il file nel repo
+#   .\scripts\Build-TimelineSvg.ps1
 
 param(
     [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),
-    [string]$MkDocsAsset = "E:\projects\docs\company\assets\network-timeline.svg",
-    [int]$FromYear = 2024,
-    [switch]$NoCopy
+    [int]$FromYear = 2024
 )
 
 $ErrorActionPreference = "Stop"
@@ -201,10 +203,3 @@ $enc = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText($outSvg, $sb.ToString(), $enc)
 Write-Output "SVG: $outSvg ($($events.Count) eventi dal $FromYear, $H px)"
 Write-Output ("Aree: " + (($categorie | ForEach-Object { "$($_.Tag)=$($counts[$_.Tag])" }) -join " "))
-
-if (-not $NoCopy) {
-    $destDir = Split-Path -Parent $MkDocsAsset
-    if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
-    Copy-Item $outSvg $MkDocsAsset -Force
-    Write-Output "Copia MkDocs: $MkDocsAsset"
-}
