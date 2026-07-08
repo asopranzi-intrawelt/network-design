@@ -4,6 +4,38 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-08 — Rimossa scrittura verso E:\projects, nuova regola di confine (sessione 9)
+
+Commit: PENDING (da fare manualmente)
+File toccati: scripts/Build-TimelineSvg.ps1 (rimosso parametro -MkDocsAsset,
+-NoCopy e il blocco Copy-Item finale), CLAUDE.md (nuova sezione "Confine con
+E:\projects", sezione "Script timeline SVG" aggiornata), .claude/context/STACK.md
+(riga Build-TimelineSvg.ps1 aggiornata)
+Motivo: l'utente ha segnalato che questo repository non deve scrivere dentro
+`E:\projects` (sito MkDocs dei progetti personali); la direzione corretta e'
+che sia quel progetto a leggere l'asset da qui, non il contrario. Lo script
+ora scrive solo `docs/infrastructure-timeline/timeline.svg` in questo repo.
+Nota: la copia gia' esistente in `E:\projects\docs\company\assets\network-timeline.svg`
+(scritta dalle sessioni precedenti prima di questa correzione) resta
+orfana finche' l'utente non predispone un meccanismo di lettura dal lato
+E:\projects; non toccata da questa sessione perche' fuori dall'albero di
+D:\network-design.
+
+## 2026-07-08 — sync-context: bump timbri last-verified a HEAD (sessione 9)
+
+Commit: PENDING (da fare manualmente)
+File toccati: .claude/context/STACK.md, deployment.md, design-and-security.md,
+dev-testing.md, roadmap.md, current-work.md (frontmatter last-verified),
+.claude/memory/index.md (commit di riferimento e tabella di stato)
+Motivo: sync-context ha rilevato che tutte le sei schede avevano contenuto
+gia' coerente con HEAD (347f79c) ma il timbro last-verified era rimasto
+disallineato per un errore di bookkeeping nelle sessioni precedenti (il
+timbro veniva impostato al commit precedente a quello che conteneva davvero
+la modifica: es. design-and-security.md portava 594ec07 ma il contenuto v4
+risale al successivo 0e4b837). Nessuna modifica di contenuto, solo
+riallineamento dei timbri e del riferimento in memory/index.md, fermo dal
+07/07/2026 a 68216f0.
+
 ## 2026-07-08 — Token MCP Proxmox creato e verificato (sessione 8, continua)
 
 Commit: PENDING (da fare manualmente)
