@@ -4,6 +4,34 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-08 — Token MCP Proxmox creato e verificato (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: .claude/memory/decisions.md (esito ADR-007), .gitignore
+(pattern .env/.env.* aggiunti, mancavano), .env creato in radice (backup
+umano del segreto, non tracciato, valutazione rischio in ADR-008)
+Motivo: completata la procedura ADR-007. Token `mcp-readonly` creato su
+root@pam con privilege separation e ruolo PVEAuditor su `/`; le tre
+variabili PROXMOX_URL/TOKEN_NAME/TOKEN_VALUE impostate nel registro HKCU
+dell'utente via setx (il valore del secret e' stato letto dal .env locale
+via script PowerShell per evitare di farlo transitare in chiaro nella
+chat). Verifica di autenticazione: GET /nodes -> 200, nodo pve online,
+senza mai stampare il token. Resta il riavvio di Claude Code per il
+reload del server MCP `proxmox`.
+
+## 2026-07-08 — ADR-008: schema a due token Proxmox (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: .claude/memory/decisions.md (ADR-008)
+Motivo: l'utente ha chiesto se il token MCP dovesse avere anche la
+scrittura per gli script di network design; ragionamento tracciato per
+esteso nell'ADR come argomentato in sessione. Esito: MCP resta PVEAuditor
+sola lettura (canale ambientale senza conferme per la safety rotta);
+scrittura con secondo token a finestra (automation@pve, ruolo minimo,
+expiry) alla ripresa della Fase 3. Confermato dall'utente. Token
+mcp-readonly creato sulla GUI (passo 1); restano permesso PVEAuditor
+(passo 2) e variabili d'ambiente (passo 3), poi riavvio di Claude Code.
+
 ## 2026-07-08 — Correzione date Bitdefender, timeline SVG con aree di competenza, diagramma fonia VLAN 100 (sessione 8, continua)
 
 Commit: PENDING (da fare manualmente)
