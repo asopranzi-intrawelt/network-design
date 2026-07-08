@@ -75,6 +75,13 @@ Dati cloud: Microsoft SharePoint (1000 GB), Outlook online.
 Piattaforme: GroupShare (WINGROUPSHARE 10.77.116.3), T-Rex (Odoo, raggiungibili online).
 Amazon: per backup e servizi cloud aggiuntivi.
 
+Postazioni di lavoro: da febbraio 2025 ogni postazione fisica ha un job
+giornaliero Veeam Agent (community, Entire computer, retention 7 giorni,
+incrementale) verso il NAS INTRA2, con recovery media `.iso` per il
+ripristino bare-metal su hardware diverso o VM e monitoraggio dello stato
+del servizio via NinjaOne. Dettaglio in
+`infrastructure-timeline/2025-q1-server-vianova.md`.
+
 Il dettaglio delle procedure di backup e' nel documento "Data protection.pdf".
 DR per email e SharePoint e' garantito da Microsoft.
 DR per GroupShare e T-Rex e' garantito dai rispettivi provider.

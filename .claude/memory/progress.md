@@ -4,6 +4,45 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-08 — MEDIA preesistenti completate: Veeam, Odoo restore, Appina, Pi-hole, Proelium (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/infrastructure-timeline/2025-q1-server-vianova.md (§17/01-05/02/2025
+    Veeam Agent: nuova politica backup postazioni verso NAS INTRA2, recovery
+    media .iso, monitoraggio NinjaOne su evento 190)
+  - docs/business-continuity-disaster-recovery.md (paragrafo backup
+    postazioni in §Storage e backup; bonifica IP Seeweb reale -> 10.77.116.3)
+  - docs/infrastructure-timeline/2025-q2-migrazione-tim-vianova.md
+    (§28/05/2025 restore dump Odoo 12 in locale, precauzioni anti-invio
+    posta da ambiente di test)
+  - docs/infrastructure-timeline/2025-q3-q4.md (§03/11/2025 studio API Odoo
+    per CRM con OpenForce; §18/12/2025 studio Pi-hole mai implementato;
+    bonifica del percorso UNC del NAS reale -> 10.61.20.177)
+  - docs/helpdesk-operations.md (tre sezioni Odoo: ambiente di sviluppo
+    locale e restore, audit attivita' utente v12, studio API CRM)
+  - docs/vendor-management.md (Proelium: preventivo P220126 22/01/2026 solo
+    VA, 1.200 EUR/2gg o triennale 3.100 EUR, scaduto non accettato; dettaglio
+    metodologia dalla call 19/01; bonifica IP Seeweb -> 10.77.116.3)
+  - docs/infrastructure-timeline/GAP-TBC.md (#105/SEC-011 esteso a
+    Veeam_DRAFT.pdf e transcript Odoo 28/05)
+  - docs/infrastructure-timeline/ingestion-checklist.md (6 voci MEDIA [x],
+    riepilogo: MEDIA esaurite, resta BASSA; Regolamento rev1.pdf era gia'
+    coperto dal .docx)
+  - .claude/context/roadmap.md (Fase 1bis: fonte IntraLino su VM da contesto
+    utente; tabella riepilogativa allineata: 1bis corrente, Fase 3 sospesa)
+  - .claude/context/current-work.md (step 4 chiuso, domanda aperta IntraLino
+    VM), _notes/.anonymization-map.md (Referente-OpenForce-2, IP 10.61.10.57,
+    residui bonificati, credenziali mai copiate),
+    _notes/.tmp-docx-odoo-restore/ (estrazione transcript)
+Motivo: prosecuzione Fase 1bis su richiesta utente. Nota utente 08/07
+recepita in roadmap: IntraLino come progetto aziendale si documentera' dalla
+documentazione Claude che vive su una VM (contesto che l'utente fornira');
+le sezioni IntraLino attuali valgono come parziali. Fonti lette a costo
+minimo: mirror graphify-out per Odoo v12, eml via parser Python, PDF Veeam
+e preventivo Proelium letti una volta, transcript 7 MB estratto con
+python-docx in _notes. Credenziali nei sorgenti mai riportate (gap #105).
+
 ## 2026-07-07 — Delta MEDIA completato: ABBYY, Checklist/call SCENIA, benchmark IntraLino (sessione 8, continua)
 
 Commit: PENDING (da fare manualmente)
