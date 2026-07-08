@@ -85,6 +85,14 @@ INTERNET
 | Voice | 2 | - | VoIP Yealink LLDP-MED | CoS 5, DSCP EF |
 | DMZ | 201 | [TBC] | Segmento DMZ pianificato | VLAN 802.1Q su Proxmox bridge-vlan-aware |
 
+Aggiornamento target 08/07/2026: tra lo switch 30 porte del Piano Terra e il
+54 porte del Piano 2 e' previsto un secondo collegamento in trunk 802.1Q che
+porta la VLAN dati del Piano Terra e la VLAN fonia (diagramma
+`rete_stato_target_08072026.drawio` in `.claude/context/diagrams/firewall-dmz-2026/`).
+Gli ID VLAN definitivi si fissano a fine lavori di tagging (nota PORT-TAGGING);
+restano aperti NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere il
+NAS-HERO) e TEL-002 (il tratto via vano ascensore non passa le VLAN).
+
 ---
 
 ## VLAN Guest 90 - dispositivi anomali (da VA nov 2025)

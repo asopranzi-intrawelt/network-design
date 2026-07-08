@@ -352,6 +352,7 @@ Diagrammi prodotti durante l'analisi del 29/05-05/06/2026, archiviati in
 | `zyxel_usg_flex500_network_target_05062026.drawio` | 05/06/2026 | Schema di rete del firewall nello stato target post-revisione |
 | `rete_stato_target_05062026.drawio` | 05/06/2026 | Topologia di rete completa nello stato target |
 | `topologia_stella_lan_dmz_proxmox_05062026.svg` | 05/06/2026 | Topologia a stella LAN/DMZ/Proxmox del piano finale |
+| `rete_stato_target_08072026.drawio` | 08/07/2026 | Revisione dello stato target: secondo trunk 802.1Q tra lo switch 30 porte (Piano Terra) e il 54 porte (Piano 2) che porta la VLAN dati del Piano Terra e la VLAN fonia; ID VLAN da fissare a fine lavori di tagging (nota PORT-TAGGING; aperti NET-008 e TEL-002) |
 
 Nota: i diagrammi "target" descrivono lo stato pianificato, non ancora applicato
 (vedi sezione precedente). Il consolidamento in un unico diagramma Mermaid

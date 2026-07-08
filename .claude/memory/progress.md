@@ -4,6 +4,40 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-08 — Diagramma target rev 08/07 (secondo trunk PT-P2) + ingestione BASSA infrastrutturali (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - .claude/context/diagrams/firewall-dmz-2026/rete_stato_target_08072026.drawio
+    (nuovo, su richiesta utente: secondo trunk 802.1Q tra XGS2220-30HP Piano
+    Terra e XGS2220-54HP Piano 2 con VLAN dati del Piano Terra + VLAN fonia;
+    ID VLAN non fissati, nota NET-008/TEL-002 nel diagramma)
+  - docs/firewall-zyxel-usg-flex-500.md (riga nuova nella tabella diagrammi)
+  - docs/network-diagram.md (nota aggiornamento target 08/07 sotto la
+    tabella VLAN)
+  - docs/infrastructure-timeline/2025-q2-migrazione-tim-vianova.md
+    (§04-10/04/2025 VM601/applyconfiguration/postinstall; §11-12/06/2025
+    scanner Canon C5840 con Referente-MyOffice-2)
+  - docs/infrastructure-timeline/2025-q3-q4.md (§14/11/2025 saturazione RAM
+    pve, ordine 64GB, quotazione DL380 G10 ricondizionato; §01/12/2025 VM205
+    spazio esaurito, script vm_disk_alert e Postfix send-only sul nodo)
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md
+    (§Febbraio-Aprile 2026 esercizio Proxmox: vzdump lock 16/02 con
+    inventario VM dai log, freeze VM 15/04, arrivo GPU e transceiver;
+    §03-23/04/2026 NinjaOne backup/Archiver)
+  - docs/infrastructure-timeline/GAP-TBC.md (#106 aggiornato: VM101
+    confermata da qemu-101.log 12/02/2025; popolazione VM piu' ampia dello
+    snapshot v3, riconciliazione a M18)
+  - docs/infrastructure-timeline/ingestion-checklist.md (PROXMOX
+    riclassificata da BASSA e ingerita; Ninjaone backup e scanner [x];
+    QNAP cloud, Sharepoint, sostituzione RAM, 2 txt vuoti SKIP)
+  - _notes/.anonymization-map.md (Referente-MyOffice-2)
+Motivo: richiesta utente 08/07 (nuova revisione del diagramma target con il
+secondo trunk, poi prosecuzione ingestione). La cartella PROXMOX era
+sotto-classificata: conteneva eventi di esercizio mai tracciati. Config
+mailer Postfix e appunti debian-odoo non letti (possibili credenziali).
+Fonti solo-screenshot lasciate nel sorgente e marcate SKIP.
+
 ## 2026-07-08 — MEDIA preesistenti completate: Veeam, Odoo restore, Appina, Pi-hole, Proelium (sessione 8, continua)
 
 Commit: PENDING (da fare manualmente)
