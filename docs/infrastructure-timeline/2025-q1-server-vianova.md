@@ -42,6 +42,35 @@ migrazione NAS INTRA2 vengono controllati con CrystalDiskInfo per verificarne lo
 stato SMART. I dischi risultano utilizzabili e vengono messi da parte per una
 futura espansione del NAS HERO (192.168.20.169).
 
+## 17/01-05/02/2025 - Nuova politica di backup postazioni: Veeam Agent verso NAS INTRA2
+
+Fonte: `IntraLino_Knowledge/Backup postazioni di lavoro con Veeam_DRAFT 05_02_2025.pdf`
+(bozza operativa; contiene credenziali in chiaro che non vengono riportate,
+vedi gap #105). Su proposta di Persona-H del 17/01/2025 la politica di backup
+delle postazioni fisiche abbandona l'immagine di backup di Windows (strumento
+legacy di Windows 7, destinazione NAS-HERO 10.61.20.169) in favore di Veeam
+Agent for Microsoft Windows in versione community gratuita, installato su
+ogni postazione. La destinazione e' una cartella dedicata sul NAS INTRA2
+(10.61.20.177, `Backup_Ufficio\BackupPDL`), accessibile con un'utenza NAS
+creata apposta con permessi sulla sola cartella di backup e negati altrove.
+
+Il job e' di tipo Entire computer, giornaliero alle 13:00 (orario di pausa
+pranzo; una postazione e' a 13:45), con retention di 7 giorni e backup
+incrementali dopo il primo. Per ogni postazione viene generato anche il
+recovery media `.iso`, salvato in una sottocartella dedicata dello stesso
+share, che consente il ripristino bare-metal anche su hardware diverso o su
+VM. La versione gratuita non offre gestione centralizzata: un job per
+macchina, editabile solo localmente. Il monitoraggio e' delegato a NinjaOne:
+sul criterio interno per i PC Windows della sede e' stata aggiunta una
+condizione che legge gli eventi Windows del servizio Veeam Agent (ID evento
+190, testo Failed/Warning) e notifica il pannello di amministrazione.
+
+La prima postazione pilota (23/01/2025) serve anche a liberare il NAS-HERO
+dalla vecchia immagine Windows; il rollout prosegue a inizio febbraio.
+Raccomandazione lasciata aperta dalla bozza: scaglionare gli orari dei job
+per fasce di PC, perche' backup simultanei di tutte le macchine verso il
+10.61.20.177 affaticano il NAS.
+
 ## 20/01/2025 - Sopralluogo TIM e sopralluogo Fibercop
 
 Tecnico TIM in sede per sopralluogo finalizzato ad accomodare la nuova FTTO 1 Gbps

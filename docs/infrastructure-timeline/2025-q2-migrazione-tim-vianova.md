@@ -266,6 +266,31 @@ Guida tecnica studiata nel frattempo:
 mysupport.zyxel.com/hc/en-us/articles/360005745060 (Site-to-Site VPN manuale).
 mysupport.zyxel.com/hc/en-us/articles/360003880919 (port forwarding su ZyWALL USG).
 
+## 28/05/2025 - Odoo 12: procedura di restore del dump di produzione in locale
+
+Fonte: `Sviluppo_T-Rex (Odoo)/Odoo_12/28052025 - Risoluzione problema restore/`
+(registrazione della sessione, transcript e 54 screenshot; testo estratto in
+`_notes/.tmp-docx-odoo-restore/`). Sessione guidata con lo sviluppatore
+OpenForce per consolidare la procedura di ricostruzione dell'ambiente di
+sviluppo locale di Odoo 12: ambiente Docker `intrawelt-docker-env` sulla
+partizione Ubuntu di una postazione di sviluppo (10.61.10.57), restore del
+dump di produzione (27/05/2025) dal database manager sulla porta 8070.
+
+Le precauzioni operative sono la parte piu' rilevante: il database ripristinato
+si nomina sempre con prefisso `test_` per non confonderlo con la produzione;
+prima del restore si stacca la connessione internet e, dal container
+PostgreSQL, si disattivano tutti i cron (`update ir_cron set active='f'`) per
+impedire che l'ambiente di test scarichi o invii posta reale. Il rischio non
+e' teorico: e' gia' accaduto che da un ambiente di test partissero notifiche
+verso clienti, con reset dello stato di fatture gia' inviate. Seguono il reset
+delle password utente e la pulizia degli attachment degli asset con le query
+raccolte nel file `dev_database_manager.csv` dell'ambiente, l'update di tutti
+i moduli e il rientro nel normale ciclo di sviluppo (aggiornamento di singolo
+modulo, verifica delle viste ereditate col plugin di debug, `git pull` sul
+branch di test 12.0-test). La procedura completa e' documentata in
+`helpdesk-operations.md`. Il sorgente contiene la master password del
+database manager e la password di reset degli utenti: non riportate.
+
 ## 03/06/2025 - Scoperta: il servizio VPN Unmanaged Vianova non e' attivo
 
 Alessio Sopranzi chiama il numero 145 (supporto Vianova). Confermato: il servizio

@@ -117,7 +117,7 @@ dai percorsi usa i placeholder.
 
 ### _VA e Pentest assessment
 - [x] `Onova VA Nov 2025` → vulnerability-assessment-nov2025.md (8 criticità)
-- [ ] `Proelium preventivo PT` — MEDIA (metadata già in vendor-management.md)
+- [x] `Proelium preventivo PT` → vendor-management.md §Proelium (dettaglio call 19/01 e preventivo P220126: solo VA, 1.200 €/2gg o triennale 3.100 €, scaduto non accettato) (08/07/2026)
 
 ### Phising and spoofing protection
 - [x] `Notes.docx` → cybersecurity-governance.md §Email Authentication DMARC (DMARC configurato su intrawelt.com, RUA ricevuti da Microsoft/Google/Aruba/Mimecast/Yahoo/GMX/Terna/ESA/Amazon SES, novembre 2025)
@@ -243,7 +243,7 @@ dai percorsi usa i placeholder.
 - [ ] `Cambio sequenze fatturazione anno nuovo/` — BASSA
 - [ ] `TREX tour/` — BASSA
 - [ ] `cheklist-interventi (old).docx` — BASSA
-- [ ] `Interrogare attività utente specifico in Odoo.docx` — MEDIA
+- [x] `Interrogare attività utente specifico in Odoo (v12).docx` → helpdesk-operations.md §Odoo 12 Audit attivita' utente (letto dal mirror graphify-out/converted) (08/07/2026)
 - [x] `102025 - Note migrazione gestionale.txt` → 2025-q3-q4.md §Ottobre 2025 migrazione T-Rex (timeline Jan-Mar 2026, OpenForce fasi)
 - [x] `2026-01-21_Monitoraggio_app_T-Rex.xlsx` → helpdesk-operations.md §Matrice permessi Odoo (sheet PERMESSI 46×13: moduli vs ruoli, analisi pre-migrazione; sheet Dati non estratto per encoding error)
 - [-] `PROCEDURA PER AUTOFATTURE.pdf` — BASSA
@@ -261,7 +261,7 @@ dai percorsi usa i placeholder.
 - [x] timeline IntraLino — estratto via altri doc → 2024-infra.md, 2026-switch-piano-terra.md
 - [x] `IntraLino_profilo_addestramento.docx` → helpdesk-operations.md §IntraLino: chatbot IT RAG, trained on IT docs, admin mode, knowledge base
 - [-] `IntraLino_profilo_addestramento.pdf` — stessa fonte, skip
-- [ ] `Backup postazioni di lavoro con Veeam_DRAFT.pdf` — MEDIA (procedura backup workstation)
+- [x] `Backup postazioni di lavoro con Veeam_DRAFT 05_02_2025.pdf` → 2025-q1-server-vianova.md §Veeam Agent + business-continuity-disaster-recovery.md §Storage e backup + gap #105 esteso (password in chiaro nel PDF) (08/07/2026)
 - [-] `BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.pdf` — PDF version, .docx già processato
 - [ ] `Nas Hero Irraggiungibile.pdf` — BASSA (troubleshooting NAS)
 
@@ -385,7 +385,7 @@ dai percorsi usa i placeholder.
 - [x] `Notes (thinking lab) 12012026.docx` → 2026-switch-piano-terra.md §12/01/2026 (ricerca Thinking Machines/Tinker API, LoRA fine-tuning, case study n8n+Ollama+Tinker SaaS)
 - [x] `Progetto ENI ruolini (nov24)/` → 2024-infra.md §Novembre 2024 app desktop (Python/PyQt6, pipeline Word→Excel per T-Rex, 12-19 nov 2024, Persona-N)
 - [x] `[TBC] PASSWORD MANAGER/` → cybersecurity-governance.md §Studio Password Manager (Vaultwarden Docker LAN, gap SEC-007 non implementato)
-- [ ] `[TBC] SERVER DNS PERSONALIZZATO/` — MEDIA
+- [x] `[TBC] SERVER DNS PERSONALIZZATO/` → 2025-q3-q4.md §18/12/2025 Studio Pi-hole (studio mai implementato) (08/07/2026)
 - [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
 - [ ] `[TBC] STUDIO - CHERSHIRE CAT/` — BASSA
 - [x] `OpenProject/` → helpdesk-operations.md §OpenProject VM205 (openproject.local:9001, 3 utenti, disk resize 13/10/2025)
@@ -415,8 +415,8 @@ dai percorsi usa i placeholder.
 - [x] `Odoo_18/2025-11-24_Scaletta_flussi.docx` → odoo18_flussi.txt (52 §) → helpdesk-operations.md
 - [x] `Integrazione Odoo - portale/` → helpdesk-operations.md §Integrazione portale SCENIA + 2026-switch-piano-terra.md §04/03/2026 (meeting Referente-OpenForce-1: xml-rpc, user asopranzi, deprecation v19/v20)
 - [x] `Integrazione Odoo - centralino cloud vianova/` → helpdesk-operations.md §Studio centralino (2 modalità: SIP Trunk + IP PBX vs API REST Vianova; nessun connettore nativo)
-- [ ] `Appina per query gestionale, webhook (2025)/` — MEDIA
-- [ ] `Odoo_12/28052025 - Risoluzione fix.docx` (7 MB) — MEDIA (storia bug pre-migrazione)
+- [x] `Appina per query gestionale, webhook (2025)/` → 2025-q3-q4.md §03/11/2025 Studio API CRM + helpdesk-operations.md §Odoo Studio API CRM (solo thread email in cartella, app mai sviluppata) (08/07/2026)
+- [x] `Odoo_12/28052025 - Risoluzione problema restore/` (transcript meet 7 MB) → 2025-q2-migrazione-tim-vianova.md §28/05/2025 restore + helpdesk-operations.md §Odoo 12 Ambiente di sviluppo locale; estratto in _notes/.tmp-docx-odoo-restore/ (08/07/2026)
 - [x] `[TBC] STUDIO - INTEGRAZIONE ODOO NINJAONE (RMM).txt` → helpdesk-operations.md §Odoo-NinjaOne RMM TBC (API REST + webhook Python, post-migrazione Odoo)
 - [-] `Odoo_12/Sviluppo Odoo Alessio.docx` (62 MB) — SKIP (impraticabile, prevalentemente screenshot)
 - [-] `VIDEOs/` — SKIP (multimedia)
@@ -460,6 +460,6 @@ fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
 | Priorità | Da fare |
 |----------|---------|
 | ALTA | nessuna voce aperta (Mappatura porte fisiche, Risposte Tecniche AIDAPT e delta SCENIA ingeriti il 07/07) |
-| MEDIA | delta: tutte ingerite il 07/07 (AUDIT_INVENTORY, WindTre rev. luglio, ABBYY.docx, Checklist customer Scenia, call aidapt 6.7, IntraLino/n8n benchmark); preesistenti: Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix 28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT, Regolamento strumenti informatici rev1.pdf |
+| MEDIA | nessuna voce aperta: delta ingerito il 07/07, preesistenti ingerite l'08/07 (Proelium, Interrogare Odoo, Odoo_12 restore, Appina, SERVER DNS, Veeam DRAFT; il Regolamento rev1.pdf era gia' coperto dal .docx ingerito) |
 | BASSA | tutto il resto (PROXMOX, QNAP cloud, NinjaOne, PC formatting, ticketing old, RAEE, OpenAI, Ricerche, manuali Scenia, ecc.) |
 | SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB |

@@ -42,8 +42,12 @@ LAN telefoni Vianova e audit crittografia (552d96c); delta SCENIA con
 Allegati A-L, DPIA compilata e Risposte Tecniche AIDAPT (594ec07); sync
 schede e revisione WindTre con BitLocker endpoint (68216f0); tutte le voci
 MEDIA del delta ingerite in sessione 8 (ABBYY, Checklist/call SCENIA,
-benchmark IntraLino, gap 105-107). Prossimo blocco: MEDIA preesistenti in
-ordine cronologico delle fonti (elenco in current-work.md, step 3).
+benchmark IntraLino, gap 105-107); l'08/07 ingerite anche tutte le MEDIA
+preesistenti (Veeam, Odoo restore, Interrogare Odoo, API CRM, Pi-hole,
+Proelium) con tre residui IP reali bonificati. La coda checklist e' solo
+BASSA. Attese esterne: nota PORT-TAGGING e la documentazione Claude di
+IntraLino che vive su una VM (contesto che l'utente fornira'; vedi roadmap
+Fase 1bis e domanda aperta in current-work.md).
 
 La nota PORT-TAGGING (tagging dei due switch per la migrazione al centralino
 cloud) resta in attesa: il racconto completo arriva a lavori conclusi, quando

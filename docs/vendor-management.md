@@ -138,10 +138,27 @@ Aggiornato: giugno 2026.
 | Fondazione | 2025 |
 | Specializzazione | Application security web, external PT, internal PT |
 | Incontro | 19/01/2026 (call informativa) |
-| Costo stimato VA | ~2.000 € + IVA (3 giorni, perimetro non grande) |
+| Preventivo | P220126 del 22/01/2026: solo VA. Pacchetto 1: 2 giornate, 1.200 € + IVA. Pacchetto 2 triennale: 3 × 2 giornate, 3.100 € + IVA (sconto 500 €). Validita' 60 giorni (scaduta, non accettata) |
 | Servizio | Black-box external: enumerazione asset, servizi esposti, brute force, web compromise |
-| Piattaforma | SaaS proprietaria per report, track vulnerabilità, storico |
+| Piattaforma | SaaS proprietaria (app.proelium.io): risultati in tempo reale, storico report e vulnerabilita' fixate |
 | Stato | Non ancora ingaggiato. Decisione subordinata a piano budget 2026. |
+
+Dalla call informativa del 19/01/2026 (fonte: `notes (19012026) VA esterno.docx`):
+l'approccio standard per un primo ingaggio parte dalla superficie esterna, con
+enumerazione degli asset e dei servizi esposti a partire dal dominio principale.
+Il VA e' dichiaratamente attivita' light (strumenti di scansione noleggiati da
+terze parti piu' revisione esperta dei falsi positivi, senza sfruttamento delle
+vulnerabilita'); il valore del fornitore sta nel penetration test manuale, che
+sulla rete esterna lavora black-box servizio per servizio (brute force sulle
+autenticazioni, compromissione dei web server) e sulle web app segue una
+metodologia verticale graybox, con credenziali per ogni ruolo applicativo. I
+progetti possono essere annuali, con riapertura del ciclo di test ogni 6-12
+mesi e reportistica scaricabile con storico. Il preventivo P220126 copre il
+solo VA: da remoto, previa manleva firmata, con conferma del perimetro e
+preavviso a SOC e provider coinvolti; deliverable un report tecnico
+(sintesi executive piu' dettaglio con evidenze replicabili, impatto,
+probabilita' e rimedio per ogni vulnerabilita'). Fatturazione 40% all'ordine
+e 60% alla consegna del report.
 
 ---
 
@@ -151,7 +168,7 @@ Aggiornato: giugno 2026.
 |-------|--------|
 | Tipologia | Piattaforma CAT (Computer-Aided Translation) |
 | Prodotto | GroupShare (server traducenti, project management) |
-| Server | WINGROUPSHARE – IP 10.1.116.3 (raggiungibile via LAN/VPN) |
+| Server | WINGROUPSHARE – IP 10.77.116.3 (raggiungibile via LAN/VPN) |
 | Accesso remoto | VPN IKEv2 (RemoteAccess_Wiz) o SSL VPN |
 | Note | Integrazione con workflow traduzione Intrawelt. Gestione utenti PM e traduttori. |
 

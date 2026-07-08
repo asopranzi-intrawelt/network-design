@@ -68,18 +68,24 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
    licenze ABBYY + voce 06/11/2024 in `2024-infra.md` + gap #105-106;
    Checklist customer e call AIDAPT 06/07 -> `scenia-project.md`; benchmark
    IntraLino C1-C4 -> `2026-switch-piano-terra.md` §Benchmark DoE IntraLino
-   + gap #107. ORA: MEDIA preesistenti in ordine cronologico delle fonti
-   (Proelium preventivo PT, Interrogare attivita' utente Odoo, Odoo_12 fix
-   28052025, Appina query webhook, [TBC] SERVER DNS, Backup Veeam DRAFT,
-   Regolamento strumenti informatici rev1.pdf).
-4. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
+   + gap #107.
+4. FATTO (08/07): tutte le MEDIA preesistenti ingerite (Veeam -> q1 2025 +
+   BCD; Odoo restore 28/05 -> q2 2025 + helpdesk; Interrogare Odoo e API
+   CRM -> helpdesk; Appina e Pi-hole -> q3-q4 2025; Proelium -> vendor
+   management; gap #105 esteso a Veeam/Odoo; bonificati tre residui IP
+   reali in vendor-management, BCD e q3-q4). La coda checklist e' ora solo
+   BASSA piu' le attese esterne (PORT-TAGGING, fonte IntraLino su VM).
+5. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
    (verificare con grep prima di chiudere il passo); i documenti voluminosi
    si ingeriscono con `docx-ingest` a disclosure progressiva.
-5. Alla chiusura di ogni blocco: spunta in checklist, voce in
+6. Alla chiusura di ogni blocco: spunta in checklist, voce in
    `memory/progress.md`, commit manuale dell'utente.
 
 ## Domande aperte non risolte
 
+- IntraLino: la documentazione Claude del progetto vive su una VM che
+  l'utente fornira' come contesto (nota 08/07/2026, vedi roadmap Fase 1bis);
+  fino ad allora le sezioni IntraLino restano parziali e il gap #107 aperto.
 - PORT-TAGGING: dettagli del tagging dei due switch (input utente atteso).
 - Contraddizione porta/switch telefono di Persona-A (NET-007, M10): la
   mappatura porte 2020-2026 documenta permutazioni sistematiche di etichette

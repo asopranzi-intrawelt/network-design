@@ -147,6 +147,15 @@ centralino cloud, dettagli attesi dall'utente quando l'analisi arriva a quel
 punto). Ordine di lavoro: voci ALTA, poi delta 23/06-07/07, poi MEDIA in
 ordine cronologico delle fonti.
 
+Fonte aggiuntiva pianificata (nota utente dell'08/07/2026): IntraLino come
+progetto aziendale va caricato dalla sua documentazione Claude dedicata, che
+vive su una VM; l'utente fornira' quel contesto in una sessione futura.
+Fino ad allora le sezioni IntraLino gia' scritte (architettura n8n in
+`2026-switch-piano-terra.md`, benchmark DoE, sezione in
+`helpdesk-operations.md`) valgono come parziali, ricostruite dai soli
+frammenti OneDrive, e il gap #107 (natura degli host .58/.60) resta aperto
+in attesa di quella fonte.
+
 ## Fase 3bis - Anonimizzazione repository pubblico (AVVIATA)
 
 Il repository e' pubblico su GitHub (verificato via API il 01/07/2026). Fase A
@@ -199,6 +208,7 @@ Steps:
 | Fase 0 | COMPLETATA | Alta |
 | Fase 1 | COMPLETATA | Alta |
 | Fase 2 | Sostanzialmente completata (residuo: NAS fleet, ISO27001 Annex A) | Alta |
-| Fase 3 | CORRENTE — 19 micro-step tracciati, M1 completato 01/07/2026 (fix regola phishing via GUI), M2 successivo | Critica |
+| Fase 1bis | CORRENTE dal 07/07/2026 — delta e MEDIA ingerite al 08/07; restano BASSA, nota PORT-TAGGING e fonte IntraLino su VM | Alta |
+| Fase 3 | SOSPESA il 07/07/2026 — 21 micro-step tracciati, M1 chiuso, M11 parziale; riprende a valle della Fase 1bis | Critica (alla ripresa) |
 | Fase 4 | Da pianificare | Media |
 | Fase 5 | Da pianificare | Media |
