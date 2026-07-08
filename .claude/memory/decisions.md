@@ -132,3 +132,81 @@ Token Permission su `/` con ruolo PVEAuditor e propagate) e tre variabili
 d'ambiente utente Windows: PROXMOX_URL (https://<ip-nodo>:8006/api2/json),
 PROXMOX_TOKEN_NAME (root@pam!mcp-readonly), PROXMOX_TOKEN_VALUE (il segreto
 mostrato alla creazione). Riavviare Claude Code per il reload MCP.
+
+**Esito 08/07/2026: token creato e verificato.** Le tre variabili sono nel
+registro HKCU dell'utente; test di autenticazione GET /nodes riuscito
+(200, nodo pve online, uptime coerente) senza mai stampare il segreto.
+Resta da riavviare Claude Code perche' il server MCP `proxmox` legga le
+variabili e diventi operativo nella sessione.
+
+## ADR-008 — Schema a due token Proxmox: MCP in sola lettura, scrittura "a finestra" per gli script
+
+Data: 2026-07-08
+Stato: attiva (integra ADR-007; il token di scrittura si crea solo alla
+ripresa della Fase 3)
+
+Contesto: alla domanda dell'utente se avesse senso dare al token MCP anche
+la scrittura, per poter eseguire da questa macchina gli interventi di
+network design via script, la valutazione e' partita da una asimmetria
+concreta tra i due canali di accesso all'API Proxmox.
+
+Ragionamento, come argomentato in sessione. Il token di ADR-007 alimenta il
+server MCP, cioe' un canale sempre acceso e disponibile all'agente in ogni
+sessione, su qualunque cosa si stia lavorando. Su quel canale e' stato
+deciso ALLOW_DANGER=true perche' la safety client-side del pacchetto e'
+rotta: non esiste piu' nessun livello di conferma tra una chiamata tool e
+l'API. Con PVEAuditor questo e' innocuo per costruzione (ogni scrittura
+muore con 403 lato Proxmox). Con un token di scrittura, invece, una
+chiamata sbagliata — un errore dell'agente, un'allucinazione su un VMID, o
+nel caso peggiore una prompt injection veicolata da un documento ingerito —
+diventerebbe un delete_instance o un power_control eseguito senza che
+nessuno chieda niente (il tool delete_instance esiste nella lista esposta).
+Un canale ambientale con scrittura root e zero conferme non e' coerente con
+la postura del resto del progetto, dove perfino i commit git sono manuali.
+
+Il caso d'uso della scrittura e' pero' legittimo e non richiede quel
+canale: quando riprende la Fase 3, gli script che scrivono (creare la VM
+DMZ di M9, attivare il firewall cluster di M15, configurare i bridge
+VLAN-aware di M5 via API /nodes/pve/network) sono azioni deliberate,
+lanciate esplicitamente, che passano dai prompt di permesso della sessione
+e che l'utente rivede. Per quelle la soluzione pulita e' un secondo token
+separato, da creare quando servira': utente dedicato (per esempio
+automation@pve, non root), ruolo scopato al necessario (PVEVMAdmin o un
+ruolo custom, eventualmente limitato al pool interessato) e soprattutto la
+scadenza impostata — Proxmox permette di dare ai token una data di expiry,
+quindi il token di scrittura puo' vivere solo per la finestra degli
+interventi. Quel token lo useranno gli script via variabili d'ambiente
+proprie, senza mai entrare in .mcp.json.
+
+Decisione: due chiavi con due raggi d'azione. L'MCP resta l'occhio in sola
+lettura sempre disponibile per le sessioni di design; la chiave di
+scrittura esiste solo quando c'e' un intervento pianificato, con perimetro
+e scadenza. Capacita' operative invariate, nessun canale di scrittura non
+presidiato acceso ventiquattro ore al giorno. L'utente ha confermato lo
+schema ("quindi ok") l'08/07/2026.
+
+Alternativa considerata e scartata: un unico token di scrittura da subito.
+Sarebbe accettabile solo con utente non-root dedicato, ruolo limitato con
+expiry, e accettando che ogni tool MCP diventi eseguibile senza conferma;
+scartata perche' il beneficio (evitare la creazione di un secondo token al
+momento del bisogno) non ripaga il rischio del canale ambientale.
+
+Conseguenze: alla ripresa della Fase 3 si crea automation@pve con token a
+scadenza e ruolo minimo per i micro-step interessati; gli script operativi
+leggeranno credenziali da variabili d'ambiente dedicate (per esempio
+PROXMOX_AUTOMATION_*), distinte da quelle MCP. Il segreto del token MCP
+vive solo nelle variabili d'ambiente utente della macchina (registro HKCU),
+mai in file del repository, mai nella chat di sessione.
+
+Integrazione 08/07/2026 (richiesta utente): come backup umano del segreto
+e' accettato un file `.env` locale nella radice del progetto, aggiunto a
+`.gitignore` insieme al pattern `.env.*` (prima non era coperto: senza
+questa aggiunta un `git add .` lo avrebbe pubblicato). Valutazione del
+rischio residuo: il file sta su disco cifrato at-rest (BitLocker attivo
+dal 03/07/2026), non e' letto da alcuno script, le regole deny della
+sessione ne bloccano la lettura all'agente; resta esposto a malware o
+utenti locali della macchina e finisce nei backup Veeam del disco. Per un
+token in sola lettura PVEAuditor il danno massimo e' la divulgazione
+dell'inventario infrastrutturale, e il token si revoca/rigenera in un
+minuto: rischio accettato. Per il futuro token di scrittura questo backup
+NON e' accettabile: solo password manager personale o nessuna copia.
