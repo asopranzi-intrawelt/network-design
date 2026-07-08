@@ -52,6 +52,17 @@ avvio di sessione tramite hook SessionStart in `.claude/settings.local.json` (no
 versionato, percorsi di macchina). Dopo aver registrato in checklist le variazioni
 segnalate, rieseguirlo con `-UpdateBaseline`.
 
+## Script timeline SVG
+
+`scripts/Build-TimelineSvg.ps1` genera `docs/infrastructure-timeline/timeline.svg`
+(versionato, anonimizzato) dai file Markdown della timeline e ne copia una
+versione nel sito MkDocs dei progetti personali (`E:\projects`, pagina
+"Progettazione e documentazione della rete aziendale"). Gira a ogni avvio di
+sessione tramite hook SessionStart (settings.local.json, non versionato). I
+titoli legacy con nomi reali vengono anonimizzati a valle tramite
+`_notes/.svg-name-replacements.txt` (privato); un guard-rail avvisa se nei
+titoli compare un IP non-placeholder.
+
 ## Indice dei file satellite tracciati
 
 Memoria e meta-stato, sotto `.claude/memory/`, letti sempre a inizio sessione.
@@ -114,6 +125,11 @@ di sistema completo e' in `.claude/PROJECT-SYSTEM.md`.
 
 ## Nota MCP
 
-ProxmoxMCP-Plus (interrogazione Proxmox in tempo reale) e' valutabile in questo progetto
-per le sessioni di design attivo. Configurazione: creare `.mcp.json` in radice quando
-necessario, mai sotto `.claude/`. Non configurato nella fase attuale.
+Il server MCP `proxmox` e' configurato in `.mcp.json` (radice, mai sotto
+`.claude/`) sul pacchetto PyPI `proxmox-mcp` via uvx. Autentica solo con
+token API: la decisione, il razionale e la procedura di attivazione (token
+PVEAuditor di sola lettura piu' tre variabili d'ambiente utente) sono in
+ADR-007 (`.claude/memory/decisions.md`). Il file tracciato non contiene
+valori reali: URL e token si espandono da variabili d'ambiente della
+macchina. In alternativa e per lo snapshot completo resta canonico
+`scripts/Get-ProxmoxSnapshot.ps1`.

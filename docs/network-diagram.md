@@ -83,15 +83,18 @@ INTERNET
 | [TBC] | 30 | 10.61.30.0/24 | [TBC] | |
 | Guest | 90 | 10.61.90.0/24 | Ospiti, dispositivi IoT | [ANOMALIA: switch mgmt qui] |
 | Voice | 2 | - | VoIP Yealink LLDP-MED | CoS 5, DSCP EF |
+| Fonia (target) | 100 | 10.61.100.0/24 | Telefoni IP centralino cloud | Target 08/07/2026: zona VOICE su FLEX 500 (interfaccia ge5, gw .1), DHCP sul firewall, SIP ALG off. Non ancora applicato |
 | DMZ | 201 | [TBC] | Segmento DMZ pianificato | VLAN 802.1Q su Proxmox bridge-vlan-aware |
 
 Aggiornamento target 08/07/2026: tra lo switch 30 porte del Piano Terra e il
 54 porte del Piano 2 e' previsto un secondo collegamento in trunk 802.1Q che
-porta la VLAN dati del Piano Terra e la VLAN fonia (diagramma
-`rete_stato_target_08072026.drawio` in `.claude/context/diagrams/firewall-dmz-2026/`).
-Gli ID VLAN definitivi si fissano a fine lavori di tagging (nota PORT-TAGGING);
-restano aperti NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere il
-NAS-HERO) e TEL-002 (il tratto via vano ascensore non passa le VLAN).
+porta la VLAN dati del Piano Terra e la VLAN fonia, il cui disegno completo
+(VLAN 100, zona VOICE, policy, PoE, ordine di implementazione in cinque step)
+e' nel diagramma dell'utente `rete_fonia_voip_08072026_2.drawio-claudio.drawio`,
+insieme a `rete_stato_target_08072026.drawio`, entrambi in
+`.claude/context/diagrams/firewall-dmz-2026/`. Restano aperti NET-008 (VLAN 1
+non taggabile sulla dorsale senza perdere il NAS-HERO) e TEL-002 (il tratto
+via vano ascensore non passa le VLAN).
 
 ---
 

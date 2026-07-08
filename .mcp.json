@@ -4,12 +4,11 @@
       "command": "uvx",
       "args": ["proxmox-mcp"],
       "env": {
-        "PROXMOX_HOST": "192.168.20.11",
-        "PROXMOX_PORT": "8006",
-        "PROXMOX_USER": "root@pam",
-        "PROXMOX_PASSWORD": "${PROXMOX_PASSWORD}",
+        "PROXMOX_URL": "${PROXMOX_URL}",
+        "PROXMOX_TOKEN_NAME": "${PROXMOX_TOKEN_NAME}",
+        "PROXMOX_TOKEN_VALUE": "${PROXMOX_TOKEN_VALUE}",
         "PROXMOX_VERIFY_SSL": "false",
-        "PROXMOX_DEFAULT_NODE": "proxmox"
+        "PROXMOX_ALLOW_DANGER": "true"
       }
     }
   }

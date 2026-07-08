@@ -11,9 +11,12 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 | Data | Evento | Dettaglio |
 |------|--------|-----------|
-| Giu 2024 | Installazione Bitdefender GravityZone | Deployment completo su tutti gli endpoint Windows. EDR/XDR attivo. |
 | Ago 2024 | Analisi firewall USG FLEX 500 | Prima analisi approfondita configurazione firewall: policy, VPN, UTM. |
-| Ott 2024 | VA interno Bitdefender | First scan con modulo Risk Management GravityZone. |
+
+Nota di correzione (08/07/2026, confermata dall'utente): l'installazione di
+Bitdefender GravityZone e il primo VA interno erano registrati qui come
+giugno/ottobre 2024 per errore; il deploy e' avvenuto in autunno 2025, dopo
+la sottoscrizione del 15/09/2025 (vedi Q4 2025 e il registro sub-responsabili).
 
 ### 2025 – Q1 e Q2
 
@@ -37,6 +40,8 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 | Data | Evento | Dettaglio |
 |------|--------|-----------|
+| Autunno 2025 (post 15/09) | Installazione Bitdefender GravityZone | Deployment su tutti gli endpoint Windows dopo la sottoscrizione del 15/09/2025. EDR/XDR attivo. Data corretta il 08/07/2026 (era erroneamente "giu 2024"). |
+| [TBC] fine 2025 | VA interno Bitdefender | First scan con modulo Risk Management GravityZone; data da confermare, comunque successiva al deploy (era erroneamente "ott 2024"). |
 | 06/11/2025 | VA non credenzialato Onova | Vulnerability Assessment esterno perimetro interno. 8 anomalie trovate (2 CRITICHE, 3 ALTE, 3 MEDIE). Report completo: docs/vulnerability-assessment-nov2025.md. |
 | Nov 2025 | Piano intervento rete | Documento piano intervento rete post-VA (marcato "COMPLETAMENTE DA AGGIORNARE" a feb 2026). |
 | Dic 2025 | Bitdefender Risk Management | Valutazione attivazione modulo Patch Management + VA interno continuo. |

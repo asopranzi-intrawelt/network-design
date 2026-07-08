@@ -95,3 +95,40 @@ come contesto nella sessione. Non si versionano mai.
 
 Conseguenze: ogni sessione che richiede il contesto Proxmox aggiorna lo snapshot
 eseguendo lo script prima di lavorare.
+
+## ADR-007 — MCP Proxmox: token API PVEAuditor sul pacchetto proxmox-mcp esistente
+
+Data: 2026-07-08
+Stato: attiva (in attesa del token, creazione manuale dell'utente)
+
+Contesto: `.mcp.json` configurava `uvx proxmox-mcp` (PyPI 0.1.0) con
+host/utente/password, ma quel pacchetto autentica solo via token API
+(`PROXMOX_URL`, `PROXMOX_TOKEN_NAME/VALUE`) e ha una safety policy che, per
+un difetto di path del pacchetto installato, blocca ogni tool. Alternative
+valutate: (A) sostituire il server con ProxmoxMCP-Plus da GitHub; (B) tenere
+il pacchetto gia' in cache e sistemare autenticazione e safety.
+
+Decisione: approccio B. Un token API dedicato con ruolo PVEAuditor
+(sola lettura) su `/`, `PROXMOX_ALLOW_DANGER=true` per scavalcare la safety
+client-side difettosa: l'enforcement di sola lettura si sposta dal client al
+server Proxmox, che rifiuta ogni scrittura con 403 a livello di permessi.
+Motivazioni: il token API serve comunque in entrambi gli approcci; B non
+aggiunge dipendenze git esterne ne' migrazioni; il controllo dei permessi
+lato Proxmox e' piu' robusto di una policy client aggirabile. I valori reali
+(URL con IP, nome e segreto del token) vivono solo nelle variabili d'ambiente
+utente della macchina, mai nel file tracciato: `.mcp.json` usa l'espansione
+`${ENV}` (era stato committato con l'IP reale in chiaro: bonificato il file
+vivo, la storia si riscrive in Fase B).
+
+Vincolo esplicito: `PROXMOX_ALLOW_DANGER=true` e' accettabile SOLO finche'
+il token resta PVEAuditor. Se in futuro si assegnano privilegi di scrittura
+al token (per le sessioni di design attivo), riportare ALLOW_DANGER a false
+e gestire la conferma per operazione.
+
+Conseguenze: per attivare l'MCP servono, una tantum: token su Proxmox
+(Datacenter > Permissions > API Tokens, utente root@pam, token id
+`mcp-readonly`, privilege separation attiva; poi Permissions > Add > API
+Token Permission su `/` con ruolo PVEAuditor e propagate) e tre variabili
+d'ambiente utente Windows: PROXMOX_URL (https://<ip-nodo>:8006/api2/json),
+PROXMOX_TOKEN_NAME (root@pam!mcp-readonly), PROXMOX_TOKEN_VALUE (il segreto
+mostrato alla creazione). Riavviare Claude Code per il reload MCP.
