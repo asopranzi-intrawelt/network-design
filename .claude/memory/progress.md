@@ -4,6 +4,114 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-08 — Correzione date Bitdefender, timeline SVG con aree di competenza, diagramma fonia VLAN 100 (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - docs/cybersecurity-governance.md (correzione confermata dall'utente: il
+    deploy Bitdefender era registrato "giu 2024" ma e' avvenuto in autunno
+    2025, dopo la sottoscrizione del 15/09/2025; righe spostate al Q4 2025
+    con nota di correzione; VA interno Bitdefender marcato [TBC] fine 2025)
+  - docs/infrastructure-timeline/2024-infra.md (sezione Bitdefender rimossa)
+    e 2025-q3-q4.md (sezione ricollocata in autunno 2025, con bonifica di
+    tre IP reali che conteneva: due Seeweb -> 10.77.116.3/.4, uno LAN ->
+    10.61.20.13)
+  - scripts/Build-TimelineSvg.ps1 (v2: perimetro dal 2024 — ingresso IT
+    manager, come chiesto; esclusi 2023-baseline e intestazioni senza data;
+    otto aree di competenza con tavolozza categoriale validata dataviz,
+    legenda con conteggi, tag testuale per evento cosi' l'identita' non e'
+    solo colore) + timeline.svg rigenerata (121 interventi dal 2024,
+    verificata al render) e ricopiata su E:\projects
+  - docs/firewall-zyxel-usg-flex-500.md (tabella diagrammi: registrato
+    rete_fonia_voip_08072026_2.drawio-claudio.drawio prodotto dall'utente —
+    VLAN 100 fonia, zona VOICE su ge5, DHCP firewall, SIP ALG off, PoE
+    priority, 5 step hitless; nota refuso modelli GS2220 vs XGS2220;
+    convergenza con M11/M12 rispetto a FW-012)
+  - docs/network-diagram.md (riga VLAN 100 target in tabella; nota 08/07
+    aggiornata col diagramma fonia)
+  - .claude/context/diagrams/firewall-dmz-2026/rete_stato_target_08072026.drawio
+    (nota interna: VLAN fonia = 100, rimando al diagramma dell'utente)
+Motivo: feedback utente pre-commit — timeline piu' dettagliata con
+interventi e skill, date sbagliate (Bitdefender), perimetro dal suo
+ingresso (2024); piu' il nuovo diagramma fonia consegnato dall'utente.
+
+## 2026-07-08 — Timeline SVG auto-rigenerata per repo e sito progetti (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - scripts/Build-TimelineSvg.ps1 (nuovo: parser deterministico delle
+    intestazioni `## data - titolo` dei sei file timeline, ordinamento
+    cronologico, SVG verticale a bande per anno; sostituzione nomi legacy
+    da _notes/.svg-name-replacements.txt privato; guard-rail IP
+    non-placeholder; copia verso E:\projects)
+  - docs/infrastructure-timeline/timeline.svg (nuovo, versionato: 136
+    eventi 2021-2026, verificato al render — zero nomi reali, zero IP)
+  - CLAUDE.md (sezione Script timeline SVG), .claude/context/STACK.md (riga)
+  - .claude/settings.local.json (secondo hook SessionStart: rigenerazione
+    a ogni avvio, "si aggiorna sempre" come chiesto dall'utente)
+  - E:\projects\docs\company\network-infrastructure-documentation{,.en,.es}.md
+    (sezione Timeline con l'immagine assets/network-timeline.svg — fuori
+    repo, sito MkDocs progetti) + assets/network-timeline.svg (copia)
+  - _notes/.svg-name-replacements.txt (nuovo, privato),
+    _notes/.anonymization-map.md (Referente-Vianova-2, Referente-BioStar2-1,
+    Persona-Q, Persona-R; cognome Consulente-ISO27001-1 ora noto)
+Motivo: richiesta utente 08/07 — la timeline aggiornata deve essere un SVG
+sempre aggiornato, anonimizzato, accessibile in E:\projects nel progetto
+"Progettazione e documentazione della rete aziendale". Nota di design: i
+sorgenti legacy contengono ancora nomi reali (Fase B pendente), quindi
+l'anonimizzazione dell'artefatto avviene in generazione con mappa privata;
+l'SVG e' piu' pulito dei sorgenti finche' la Fase B non chiude.
+
+## 2026-07-08 — Snapshot v4 riconciliato + decisione MCP (ADR-007) + bonifica .mcp.json (sessione 8, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati:
+  - .claude/context/design-and-security.md (scheda portata dallo snapshot
+    v3 al v4: nodo 48 core/125.4 GB con upgrade RAM confermato, LAN /19,
+    inventario 8 VM con VM602 "Intralino" e VM810, storage PROGRAMMAZIONE
+    nuovo, nove backup schedule, firewall cluster ancora inattivo)
+  - docs/infrastructure-timeline/2026-switch-piano-terra.md (voce
+    08/07/2026 snapshot v4 con delta rispetto alla v3)
+  - docs/infrastructure-timeline/GAP-TBC.md (#106 RICONCILIATO: VM effimere
+    rimosse, 810 sostituisce 809; #107 aggiornato: .58/.60 confermati NON
+    VM del nodo; #108 nuovo SRV-003: stato cluster riporta IP nodo = iLO5;
+    totale 108)
+  - .claude/context/roadmap.md (Fase 2 step 2 fatto: snapshot v4)
+  - .mcp.json (bonificato: conteneva l'IP reale del nodo in un file
+    TRACCIATO del repo pubblico; ora tutte le variabili si espandono da
+    env utente; riscritto per l'autenticazione a token del pacchetto)
+  - .claude/memory/decisions.md (ADR-007: approccio B, token API
+    PVEAuditor sul pacchetto proxmox-mcp esistente, ALLOW_DANGER=true
+    accettabile solo con token di sola lettura)
+  - CLAUDE.md (Nota MCP riscritta: rimando ad ADR-007)
+  - _notes/.git-filter-replacements.txt (regola IP nodo per la Fase B:
+    .mcp.json in storia con valore reale)
+Motivo: l'utente ha eseguito Get-ProxmoxSnapshot.ps1 (v4, 08/07 10:35) e
+ha chiesto di scegliere e documentare l'approccio MCP. Nota: lo snapshot
+v4 conferma in campo l'ordine RAM del 14/11/2025 ingerito stamattina dalla
+cartella PROXMOX. Il token API e le tre env restano da creare (utente).
+
+## 2026-07-08 — Diagnosi MCP Proxmox non funzionante (sessione 8, continua)
+
+Commit: PENDING (nessun file tracciato modificato oltre a questa voce)
+Tentata la lettura live dell'inventario Proxmox (riconciliazione gap
+#106/#107) via server MCP `proxmox` di `.mcp.json`, con ok esplicito
+dell'utente alla sola lettura. Esito: inutilizzabile per due difetti
+indipendenti del pacchetto risolto da `uvx proxmox-mcp` (0.1.0, non e'
+ProxmoxMCP-Plus): (1) la safety policy carica `config/safety_policy.json`
+da un PROJECT_ROOT sbagliato per un pacchetto installato, il file non
+esiste, la lista safe_tools resta vuota e OGNI tool viene bloccato; il
+bypass `confirmed=true` non passa perche' i tool non dichiarano quel
+parametro nello schema e il client lo scarta. (2) Il pacchetto autentica
+solo via token API (`PROXMOX_URL`, `PROXMOX_TOKEN_NAME/VALUE`) mentre
+`.mcp.json` fornisce `PROXMOX_HOST/USER/PASSWORD`: anche superata la
+safety, il client non si connetterebbe. `PROXMOX_PASSWORD` non e' nemmeno
+presente nell'ambiente della shell. Rimedi possibili: sostituire il
+pacchetto con il ProxmoxMCP-Plus vero, oppure creare un token API su
+Proxmox e riscrivere `.mcp.json` con le env giuste (piu' safety_policy.json
+nel PROJECT_ROOT del pacchetto). Nel frattempo la via canonica resta
+`scripts/Get-ProxmoxSnapshot.ps1` eseguito dall'utente (M18): chiesto.
+
 ## 2026-07-08 — Diagramma target rev 08/07 (secondo trunk PT-P2) + ingestione BASSA infrastrutturali (sessione 8, continua)
 
 Commit: PENDING (da fare manualmente)

@@ -43,11 +43,15 @@ Allegati A-L, DPIA compilata e Risposte Tecniche AIDAPT (594ec07); sync
 schede e revisione WindTre con BitLocker endpoint (68216f0); tutte le voci
 MEDIA del delta ingerite in sessione 8 (ABBYY, Checklist/call SCENIA,
 benchmark IntraLino, gap 105-107); l'08/07 ingerite anche tutte le MEDIA
-preesistenti (Veeam, Odoo restore, Interrogare Odoo, API CRM, Pi-hole,
-Proelium) con tre residui IP reali bonificati. La coda checklist e' solo
-BASSA. Attese esterne: nota PORT-TAGGING e la documentazione Claude di
-IntraLino che vive su una VM (contesto che l'utente fornira'; vedi roadmap
-Fase 1bis e domanda aperta in current-work.md).
+preesistenti e le BASSA infrastrutturali (PROXMOX riclassificata), con
+residui IP reali bonificati. Sempre l'08/07: diagramma target rev 08/07
+(secondo trunk PT-P2), snapshot v4 eseguito dall'utente e riconciliato
+(gap 106-107 chiusi/aggiornati, nuovo 108; design-and-security alla v4),
+decisione MCP in ADR-007 (token PVEAuditor, .mcp.json bonificato — token
+da creare), timeline SVG auto-rigenerata a ogni sessione (repo + sito
+E:\projects). La coda checklist e' solo BASSA minore. Attese esterne:
+nota PORT-TAGGING, documentazione Claude IntraLino su VM, creazione token
+API Proxmox.
 
 La nota PORT-TAGGING (tagging dei due switch per la migrazione al centralino
 cloud) resta in attesa: il racconto completo arriva a lavori conclusi, quando
