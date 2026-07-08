@@ -537,6 +537,63 @@ documentata in `telefono-pbx-voip.md` e `2026-switch-piano-terra.md`.
 
 ---
 
+## Odoo 12 – Ambiente di sviluppo locale e restore del dump (28/05/2025)
+
+Fonte: `Sviluppo_T-Rex (Odoo)/Odoo_12/28052025 - Risoluzione problema restore/`
+(estratto in `_notes/.tmp-docx-odoo-restore/`; master password e password di
+reset nel solo sorgente).
+
+Procedura consolidata per ricostruire l'ambiente di sviluppo Odoo 12 in
+locale (Docker `intrawelt-docker-env`) e ripristinarvi un dump di produzione.
+Dal database manager (`<ip>:8070/web/database/manager`) si cancella
+l'eventuale database precedente e si esegue il restore del `.dump` con la
+master password (nel file di configurazione dell'ambiente), nominando il
+database con prefisso `test_` per distinguerlo dalla produzione. Prima del
+restore si stacca la connessione internet; dal container PostgreSQL
+(`docker exec -it <id> bash`, poi `psql -U odoo -d test_intrawelt`) si
+disattivano tutti i cron con `update ir_cron set active='f'`, cosi'
+l'ambiente di test non scarica ne' invia posta reale (incidente gia'
+accaduto in passato con notifiche ripartite verso clienti). Le query di
+servizio (blocco server di posta, reset password di tutti gli utenti,
+eliminazione attachment `.js/.css/.less/asset` per rigenerare gli asset)
+sono raccolte nel file `dev_database_manager.csv` dentro l'ambiente.
+
+Dopo il restore: `docker compose run --rm --service-ports odoo run -d
+test_intrawelt -u all --stop-after-init` per aggiornare tutti i moduli, poi
+avvio in modalita' sviluppo con `--dev=xml,pdb,qweb --workers=0`. Per lo
+sviluppo iterativo si aggiorna un solo modulo (`-u <modulo>`), si verificano
+le viste ereditate con il plugin di debug del browser e, in caso di fix
+rilasciato, si fa `git pull` sul branch di test 12.0-test nella cartella
+degli addons linkata in `docker-compose.yml`. L'ambiente ripristinato e'
+sacrificabile: si puo' rifare il restore in ogni momento, e serve anche per
+demo interne raggiungendolo da altre macchine della LAN su `<ip>:8070`.
+
+## Odoo 12 – Audit attivita' di un utente (sola lettura)
+
+Fonte: `Helpdesk_T-Rex/Interrogare attività utente specifico in Odoo (v12).docx`.
+
+Per tracciare le azioni di un utente non serve intervenire sul database di
+produzione in modo operativo: ogni record Odoo porta i metadati standard
+`create_uid`, `create_date`, `write_uid`, `write_date`. L'id utente si ricava
+dalla UI in modalita' sviluppatore aprendo il record in `res_users` (l'id e'
+nel parametro `id=` dell'URL); con quell'id si interrogano in sola lettura le
+tabelle applicative, per esempio `account_invoice` per le fatture filtrando
+`create_uid` e `create_date`, e con la stessa logica `sale_order` e
+`purchase_order`. Limite dichiarato: Odoo traccia chi ha creato o modificato,
+non chi ha soltanto visualizzato.
+
+## Odoo – Studio API per estrazione dati CRM (novembre 2025)
+
+Fonte: thread "intrawelt - api per crm" (03/11/2025), cartella `Appina per
+query gestionale , webhook (2025)/`. OpenForce indica le API XML-RPC di Odoo
+come via per estrarre dati CRM e visualizzarli esternamente, con i nomi
+tecnici dei campi ricavabili in modalita' debug o dalla struttura database;
+disponibile l'ambiente demo v18 (`demo18.openforce.it`, database di test che
+scade ogni 30 giorni). Il CRM, poco personalizzato, e' il candidato per i
+primi test sulla v18 prima della migrazione. L'app con webhook ipotizzata
+dal nome della cartella non risulta sviluppata. Vedi anche la voce 03/11/2025
+in `infrastructure-timeline/2025-q3-q4.md`.
+
 ## OpenProject – Gantt tool interno (VM205)
 
 Fonte: `Sviluppo_interno, scripting (IT on FIRE)/OpenProject/`
