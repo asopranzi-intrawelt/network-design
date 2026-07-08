@@ -25,3 +25,10 @@ node_modules/
 # Contengono dettagli completi dell'infrastruttura (IP, nomi VM, configurazioni di rete).
 # Non si versionano: si generano a runtime e si usano come contesto nella sessione.
 output/
+
+# --- Credenziali locali: mai nel repository (vedi ADR-007/008) ---
+# Backup umano dei segreti (token API Proxmox, ecc.). La copia operativa
+# vive nelle variabili d'ambiente utente; questo file non lo legge nessuno
+# script e le regole deny della sessione ne bloccano la lettura all'agente.
+.env
+.env.*
