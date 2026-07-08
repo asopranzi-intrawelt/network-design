@@ -55,13 +55,25 @@ segnalate, rieseguirlo con `-UpdateBaseline`.
 ## Script timeline SVG
 
 `scripts/Build-TimelineSvg.ps1` genera `docs/infrastructure-timeline/timeline.svg`
-(versionato, anonimizzato) dai file Markdown della timeline e ne copia una
-versione nel sito MkDocs dei progetti personali (`E:\projects`, pagina
-"Progettazione e documentazione della rete aziendale"). Gira a ogni avvio di
-sessione tramite hook SessionStart (settings.local.json, non versionato). I
-titoli legacy con nomi reali vengono anonimizzati a valle tramite
+(versionato, anonimizzato) dai file Markdown della timeline. Gira a ogni avvio
+di sessione tramite hook SessionStart (settings.local.json, non versionato).
+I titoli legacy con nomi reali vengono anonimizzati a valle tramite
 `_notes/.svg-name-replacements.txt` (privato); un guard-rail avvisa se nei
-titoli compare un IP non-placeholder.
+titoli compare un IP non-placeholder. Lo script scrive solo dentro questo
+repository: vedi "Confine con E:\projects" piu' sotto.
+
+## Confine con E:\projects
+
+Questo repository non scrive mai in `E:\projects` (il sito MkDocs dei
+progetti personali) ne' in nessun altro repository esterno a
+`D:\network-design`. La direzione di lettura e' invertita: se il sito
+`E:\projects` vuole un asset aggiornato di questo progetto, come la timeline
+SVG per la pagina "Progettazione e documentazione della rete aziendale", e'
+quel progetto a leggerlo da qui per conto proprio (con un proprio script o
+hook nella propria configurazione), non questo repository a spingerlo la'
+per copia. Vale per qualunque script o hook futuro definito qui: nessun
+`Copy-Item`, nessuna scrittura, nessuna creazione di cartelle al di fuori
+dell'albero di `D:\network-design`.
 
 ## Indice dei file satellite tracciati
 

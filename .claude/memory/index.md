@@ -7,8 +7,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 68216f0 (HEAD al 07/07/2026, sync schede + WindTre; delta MEDIA in commit successivo)
-Data snapshot:         2026-07-07
+Commit di riferimento: 347f79c (HEAD al 08/07/2026, token MCP Proxmox verificato, ADR-008)
+Data snapshot:         2026-07-08
 ```
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
@@ -19,12 +19,12 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | 594ec07 | allineata |
-| design-and-security.md | 594ec07 | allineata |
-| deployment.md | 594ec07 | allineata |
-| dev-testing.md | 594ec07 | allineata |
-| current-work.md | 594ec07 | aggiornata da sync-context: voci ALTA chiuse, prossimo blocco delta MEDIA |
-| roadmap.md | 594ec07 | allineata (M11 parziale registrato in 552d96c) |
+| STACK.md | 347f79c | allineata |
+| design-and-security.md | 347f79c | allineata (v4, snapshot Proxmox 08/07) |
+| deployment.md | 347f79c | allineata |
+| dev-testing.md | 347f79c | allineata |
+| current-work.md | 347f79c | allineata (MEDIA preesistenti ingerite, nota IntraLino su VM) |
+| roadmap.md | 347f79c | allineata (Fase 1bis corrente, Fase 3 sospesa) |
 
 ## Punto di ripresa
 

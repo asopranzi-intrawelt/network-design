@@ -1,5 +1,5 @@
 ---
-last-verified: 68216f0
+last-verified: 347f79c
 ---
 
 # Lavoro corrente: Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa
