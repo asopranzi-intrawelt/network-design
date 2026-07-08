@@ -36,15 +36,15 @@ dai percorsi usa i placeholder.
 - [-] `Analisi mail/problema Ahmed 23032026/` — Yahoo domain filtering issue, solo immagini screenshot, nessun doc testuale estraibile
 - [-] `Analisi mail/aggiornamento export mail/` — immagini e .eml (eliminazione Pasquale da Azure, Adobe annullamento) — BASSA, già documentato in timeline
 - [x] `Problema DHCP kickout Elisa/` → helpdesk-operations.md §Incidente DHCP (TP-Link AC600 DHCP conflict, utente rete pubblica; nessuna data documentata)
-- [ ] `PROXMOX/` — BASSA (già gestito in C:\Scripts\proxmox-snapshot)
-- [ ] `QNAP cloud/` — BASSA
-- [ ] `Ninjaone backup/` — BASSA
-- [ ] `Problema spazio esaurito su Sharepoint/` — BASSA
-- [ ] `sistemare risoluzione problema scanner/` — BASSA
-- [ ] `sostituzione RAM server/` — BASSA
+- [x] `PROXMOX/` — RICLASSIFICATA da BASSA (non era solo lo script snapshot: note datate di esercizio). Ingerite le fonti testuali (08/07/2026): 04-10/04/2025 VM601, incidente applyconfiguration e postinstall → 2025-q2; 14/11/2025 saturazione RAM e 01/12/2025 VM205+alert → 2025-q3-q4; 16/02/2026 vzdump lock (VM101 confermata, gap #106 aggiornato) e 15/04/2026 freeze VM → 2026-switch-piano-terra. Config mailer Postfix e appunti debian-odoo (possibili credenziali) NON letti; cartelle screenshot-only restano nel sorgente
+- [-] `QNAP cloud/` — SKIP (solo screenshot, nessuna fonte testuale; 25-28/07/2025)
+- [x] `Ninjaone backup/` → 2026-switch-piano-terra.md §03-23/04/2026 NinjaOne backup/Archiver (08/07/2026; il resto screenshot)
+- [-] `Problema spazio esaurito su Sharepoint (supporto Microsoft)/` — SKIP (cartella vuota)
+- [x] `sistemare risoluzione problema scanner/` → 2025-q2-migrazione-tim-vianova.md §11-12/06/2025 scanner Canon (08/07/2026; risoluzione solo in screenshot)
+- [-] `sostituzione RAM server/` — SKIP (un solo screenshot; l'evento e' coperto dalla nota PROXMOX 14/11/2025)
 - [ ] `cache outlook Giuseppe 16052025.docx` — BASSA
-- [ ] `prendi da chat con Tommaso D.txt` — BASSA
-- [ ] `prendi da chat Tommy e Ale i messaggi Pinnati.txt` — BASSA
+- [-] `prendi da chat con Tommaso D.txt` — SKIP (file vuoto, 0 byte)
+- [-] `prendi da chat Tommy e Ale i messaggi Pinnati.txt` — SKIP (file vuoto, 0 byte)
 - [-] `_TreeSize Free Esporta - Resources.pdf` — skip (report TreeSize, non documentazione)
 
 ---

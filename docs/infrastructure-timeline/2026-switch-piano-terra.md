@@ -189,6 +189,41 @@ Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopr
 Warning: xml-rpc deprecato da v19, rimosso da v20 → migrare a json-rpc in futuro.
 Dettagli tecnici: docs/helpdesk-operations.md §Integrazione portale SCENIA.
 
+## Febbraio-Aprile 2026 - Esercizio Proxmox: lock vzdump, freeze VM ricorrente, arrivi hardware
+
+Fonte: `_DA SISTEMARE (Alessio)/PROXMOX/` (note datate, ingerite l'08/07/2026).
+
+Il 16/02/2026 il backup notturno della VM809 (TESTNEWEGETRAD, disco 258 GB su
+storage SERVIZI, destinazione NAS_HERO, snapshot zstd, keep-last=5) fallisce
+con "can't acquire lock '/var/run/vzdumplock' - got timeout". La diagnosi
+esclude un job concorrente (`ps` pulito) e punta a un lock orfano lasciato da
+un job interrotto; i dump risultano comunque presenti sulla share di backup.
+I log in `/var/log/vzdump/` di quella data fotografano la popolazione VM in
+backup a febbraio 2026: 100, 201-205, 601, 602, 801-803, 809, 900-902, piu'
+un log della VM101 datato febbraio 2025 (conferma che la VM101 e' esistita:
+vedi gap #106). L'inventario e' piu' ampio di quello dello snapshot v3 di
+giugno 2026: la riconciliazione VM per VM e' rimandata al re-run dello
+snapshot (M18).
+
+Il 15/04/2026, in chat con Persona-H, viene discussa una VM che a intervalli
+di uptime si blocca completamente e accetta solo lo stop forzato dal nodo
+(escluse cause lato SPICE); il titolo della nota indica come pista il cambio
+del driver della scheda video. Nella stessa chat Persona-H annuncia
+l'arrivo della scheda video e del transceiver 10 Gbit: con ogni probabilita'
+sono i componenti montati nelle settimane successive (connettori SFP+ della
+dorsale sostituiti l'08/05/2026; GPU RTX 5060 Ti installata l'08/06/2026
+sull'host Ollama di IntraLino, vedi sezione Benchmark DoE).
+
+## 03-23/04/2026 - NinjaOne: attivazione backup e nota Archiver
+
+Fonte: `_DA SISTEMARE (Alessio)/Ninjaone backup/` (quasi solo screenshot).
+Il 03/04/2026 prima attivazione del modulo backup NinjaOne con auto-discover
+di tutte le postazioni; il 23/04/2026 call di onboarding utenze. Nota
+operativa dalla call: con la modalita' Archiver (backup in tempo reale) i
+dati archiviati non si possono eliminare autonomamente come con i backup
+schedulati, serve un ticket al supporto; il numero di account da collegare
+viene ridotto secondo licenze disponibili.
+
 ## Aprile 2026 - Installazione switch Piano Terra: Zyxel XGS2220-30HP
 
 ### Stato pre-installazione

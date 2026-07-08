@@ -15,6 +15,19 @@ lavoro per l'attivazione Vianova, gli apparati dovrebbero essere arrivati, se pe
 te va bene possiamo far venire il tecnico venerdi' mattina". Alessio risponde
 preferendo lunedi' mattina. L'appuntamento viene confermato per lunedi' 07/04/2025.
 
+## 04-10/04/2025 - Proxmox: montaggio VM601 (UNIMC), incidente applyconfiguration, postinstall
+
+Fonte: `_DA SISTEMARE (Alessio)/PROXMOX/` (note datate; le cartelle del 04/04
+e del 10/04 sono quasi solo screenshot). Il 04/04/2025 viene montata per la
+prima volta la VM601 per il progetto UNIMC; durante la configurazione della
+scheda di rete un "apply configuration" resetta vmbr0 sul nodo (il nome del
+file di appunti parla di "panico": la rete del nodo e' tornata operativa, ma
+il dettaglio dell'incidente vive solo negli screenshot del sorgente). Il
+10/04/2025 viene eseguito il post-install del nodo pve con lo script
+community (tteck): rimozione dell'avviso subscription e passaggio ai
+repository no-subscription; stessa data, note sul collegamento alle VM da
+client VNC.
+
 ## 07/04/2025 - Primo tentativo attivazione: ordine di lavoro incompleto
 
 Tecnico Camillo (myOffice) arriva in sede. Problema riscontrato: l'ordine di lavoro
@@ -335,6 +348,17 @@ fornitore Vianova. Dopo il gateway della subnet /29 (WAN dello Zyxel), c'e' un
 hop intermedio Vianova che mette come indirizzo sorgente del pacchetto il proprio
 gateway, non 193.124.241.x. Il firewall SEEWEB vede come sorgente il gateway della
 subnet Vianova invece dell'IP pubblico di Intrawelt.
+
+## 11-12/06/2025 - Problema scan-to-folder Canon iR-ADV C5840 (supporto myOffice)
+
+Fonte: `_DA SISTEMARE (Alessio)/sistemare risoluzione problema scanner/`
+(email dell'11/06/2025, il resto screenshot). La stampante Canon iR-ADV
+C5840, IP statico in classe 10.61.30.x (subnet stampanti dietro il firewall
+USG FLEX 500, senza separazione VLAN reale verso server .20.x e PC .10.x),
+non riesce a consegnare le scansioni nelle cartelle condivise delle
+postazioni (`\\10.61.10.x\<cartella>`). Aperto ticket al supporto myOffice
+(Referente-MyOffice-2), che passa la pratica a un tecnico; la risoluzione
+operativa e' documentata solo dagli screenshot del 12/06 nel sorgente.
 
 ## 24/06/2025 - RISOLUZIONE TUNNEL SEEWEB
 
