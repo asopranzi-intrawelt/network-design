@@ -866,3 +866,21 @@ Secondo (TEL-002, GAP-TBC #103): i telefoni del piano inferiore collegati
 attraverso il vano ascensore non passano le VLAN, causa non compresa.
 [TBC: topologia esatta del tratto che attraversa il vano ascensore, da
 chiarire con il racconto finale.]
+
+## 08/07/2026 - Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino
+
+Eseguito `Get-ProxmoxSnapshot.ps1` sul nodo (primo re-run dopo la v3;
+output non versionato in `output/`). Delta rispetto alla v3: la RAM del
+nodo e' passata a 125.4 GB totali, conferma in campo dell'ordine dei 64 GB
+aggiuntivi del 14/11/2025; e' comparso lo storage lvmthin PROGRAMMAZIONE
+(1.5 TB) con il pool risorse "Programmazione"; la VM602 e' stata rinominata
+da ITdeveloping a "Intralino" (running, 200 GB su PROGRAMMAZIONE); la
+VM810 "TESTNEWEGETRADBOOT" (260 GB, running) sostituisce la VM809 dei log
+di febbraio; la VM803 e le VM effimere dei log vzdump (101, 201, 601,
+801-803, 809, 900-902) non esistono piu'. Nove job di backup schedulati
+scaglionati verso NAS_INTRA piu' un secondo job della VM100 verso NAS_HERO.
+Invariati: firewall cluster inattivo senza regole, bridge non VLAN-aware
+(M5 non applicato), LAN unica /19 su vmbr0. Aperto il gap #108 (lo stato
+cluster riporta come IP del nodo l'indirizzo della iLO5). Riconciliati i
+gap #106 (popolazione VM) e #107 (gli host IntraLino .58/.60 non sono VM
+del nodo). Scheda `design-and-security.md` aggiornata alla v4.

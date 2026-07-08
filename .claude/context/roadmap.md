@@ -49,10 +49,10 @@ Steps:
    incrociati in `docs/firewall-zyxel-usg-flex-500.md`, `docs/network-diagram.md`,
    `docs/telefono-pbx-voip.md`.
 
-2. Ri-eseguire lo script Get-ProxmoxSnapshot.ps1 per aggiornare lo stato VM/bridge
-   (output in output/, non versionato). **Da rifare** prima di iniziare la Fase 3,
-   perche' i micro-step su Proxmox richiedono lo stato corrente reale, non quello
-   della v3 storica.
+2. **Fatto 08/07/2026.** Snapshot v4 eseguito dall'utente
+   (`Get-ProxmoxSnapshot.ps1`): scheda `design-and-security.md` aggiornata,
+   gap #106/#107 riconciliati, nuovo #108 (IP nodo = iLO nello stato
+   cluster). Resta M18 per il re-run post-M5/M16.
 
 3. **Fatto.** Configurazione switch Zyxel via Nebula documentata in
    `docs/network-diagram.md` e `docs/infrastructure-timeline/2026-switch-piano-terra.md`

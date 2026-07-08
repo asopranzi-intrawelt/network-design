@@ -1,15 +1,5 @@
 ﻿# 2024 - Arrivo IT manager, primo interventi, decisione Vianova
 
-## Giugno 2024 - Deploy Bitdefender GravityZone
-
-Bitdefender GravityZone Business Security Premium installato su tutte le postazioni
-Windows del dominio. Gestito dal pannello cloud GravityZone. Contratto con
-Punto Informatica (Persona-H). Agente EDR attivo con policy default.
-Moduli Risk Management e Patch Management non ancora attivi (pianificati).
-
-Macchine ancora senza agente al giugno 2026: WINGROUPSHARE (10.77.116.3),
-WINSRV2019 (10.77.116.4), WIN-V712I9QHQT9 (10.61.20.13, VM Proxmox).
-
 ## Ottobre 2024 - Inizio progetto SCENIA con Partner-Accademico-1
 
 Avvio della collaborazione con il laboratorio di Partner-Accademico-1 (Referente-Accademico-1)
