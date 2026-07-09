@@ -174,6 +174,19 @@ di dati — IP, MAC, nomi propri di dipendenti e clienti accumulati su piu'
 sessioni. E' un lavoro della stessa scala dell'ingestione iniziale, da trattare
 come workstream a parte, non da fare di fretta in coda a un'altra sessione.
 
+**Priorita' alta separata dentro la Fase B (09/07/2026)**: durante un audit
+di dati amministrativi/commerciali (vedi sezione dedicata in
+`.claude/rules/anonymization.md`) e' emerso che `2024-infra.md` conteneva,
+gia' da una sessione precedente, le ultime 4 cifre reali di una carta di
+credito aziendale e un MAC address reale (rinnovo licenza Zyxel del
+20/11/2024) — corretti nel file tracciato lo stesso giorno, ma ancora
+presenti in un commit precedente della storia git. A differenza del resto
+degli IP interni (dati di rete, rischio piu' basso e generico), questo e'
+un dato di pagamento: quando si esegue la riscrittura della storia (dopo
+il completamento della Fase B), questo commit va incluso esplicitamente
+nel file di sostituzioni `_notes/.git-filter-replacements.txt` con
+priorita' maggiore rispetto al resto.
+
 Riscrittura della storia git: pianificata **una sola volta**, dopo che anche la
 Fase B e' completa, invece che due round separati di force-push. I comandi
 `git filter-repo` con il file di sostituzioni sono preparati in
