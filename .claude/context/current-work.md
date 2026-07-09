@@ -147,6 +147,12 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   (credenziali admin AWS storiche, non ruotate, di provenienza incerta)
   resta aperto. Azione operativa suggerita, non eseguita: identificare e
   ruotare/disattivare quella access key.
+- **Certificato SSL VPN ZeroSSL cancellato** (GAP-TBC #111/SEC-013): notifica
+  di cancellazione del certificato `vpn.intrawelt.com` il 10/02/2026, esito
+  non chiaro dalla fonte (migrazione deliberata verso Fastnet/Let's
+  Encrypt, mancato rinnovo accidentale, o cambiamento infrastruttura VPN).
+  Da verificare quale certificato e' oggi effettivamente attivo su
+  vpn.intrawelt.com.
 - **Restituzione router Huawei a TIM**: TIM ha confermato la cessazione del
   noleggio il 12/06/2025 ma non ha mai risposto (solleciti 24/06 e
   25/07/2025) su dove restituire i due router (AR1200, NetEngine AR600).
@@ -166,12 +172,15 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   runbook-anomalie.md, sviluppo-interno.md, vendor-management.md,
   vulnerability-assessment-nov2025.md — conferma la portata gia' stimata,
   nessuna azione presa oltre ai due IP corretti per caso l'08-09/07.
-- **Coda BASSA della libreria Administration**: rimangono da verificare
-  Google cloud services (aborted), Openforce, Eter, TREX, MICROSOFT,
-  ZeroSSL, Fatture Kilocode, Proforma, Rinnovo marchi, Fatture elettricita',
-  _Query provvigioni, Foto sistemazione sala server, Savelli, e i file
-  sciolti in root — priorita' bassa presunta, non verificata (vedi
-  ingestion-checklist.md §IT + Administration - Documenti).
+- RISOLTO (09/07): coda BASSA della libreria Administration chiusa per
+  intero (Google Cloud abortito, Openforce, Eter, TREX, MICROSOFT, ZeroSSL,
+  Rinnovo marchi, Savelli, foto sala server, file sciolti root, contabilita'
+  varia). Trovati: preventivo Openforce migrazione Odoo v18 con nuovo
+  contatto tecnico, pressione fee Odoo +25% dal 2026, razionale difesa a
+  tre livelli (Defender/Bitdefender/Zyxel), nuovo gap #111/SEC-013
+  (certificato SSL VPN ZeroSSL cancellato 10/02/2026, esito non chiaro —
+  aggiunto alla lista qui sopra). L'unica eccezione resta la sottocartella
+  riservata `MyOffice/Transizione centralino cloud 2026/`.
 - **Ambizione originaria della sessione, non esaurita**: l'utente ha
   chiesto una "timeline completa" con *tutti* i dettagli datati contenuti
   nei grandi .docx gia' ingeriti in sessioni precedenti (ARCHITETTURA.docx,

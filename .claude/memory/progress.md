@@ -4,6 +4,28 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Coda BASSA di "IT + Administration - Documenti" chiusa (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/helpdesk-operations.md (§Odoo 18: preventivo Openforce,
+fee Odoo +25%), docs/cybersecurity-governance.md (§Bitdefender: razionale
+difesa a piu' livelli Defender/Bitdefender/Zyxel, risolve TBC Email
+Security), docs/infrastructure-timeline/GAP-TBC.md (#111/SEC-013 ZeroSSL
+cert VPN cancellato), docs/infrastructure-timeline/ingestion-checklist.md
+Motivo: chiuse tutte le voci BASSA residue (Google Cloud abortito,
+Openforce, Eter, TREX, MICROSOFT, ZeroSSL, Rinnovo marchi, Savelli, file
+sciolti root, foto sala server). Trovati: preventivo Openforce per
+l'analisi di migrazione Odoo v12->v18 (30h, 2.400€, nov-dic 2025) con
+cambio di contatto tecnico; pressione temporale dal fornitore Odoo (fee
++25% annuo su versioni legacy da aprile 2026); razionale a tre livelli
+della difesa in profondita' (Defender P1 cloud/email, Bitdefender endpoint,
+Zyxel perimetro rete); certificato SSL VPN ZeroSSL cancellato il
+10/02/2026 con esito non chiaro (nuovo gap #111). Savelli e Rinnovo marchi
+confermati fuori scope (ascensore, proprieta' intellettuale). La libreria
+Administration e' ora chiusa salvo l'eccezione deliberata di
+`MyOffice/Transizione centralino cloud 2026/`, riservata alla nota
+PORT-TAGGING.
+
 ## 2026-07-09 — Risolta discrepanza date Vianova: due migrazioni distinte (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)

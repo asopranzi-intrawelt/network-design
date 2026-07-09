@@ -282,6 +282,14 @@ sono esplicitamente nel documento Word.
 
 ---
 
+## ZeroSSL – certificato VPN cancellato (10/02/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 111 | SEC-013 | ZeroSSL notifica la cancellazione del certificato SSL per `vpn.intrawelt.com` il 10/02/2026 (indirizzato a `it@intrawelt.com`). ZeroSSL e' il provider gia' documentato per questo certificato in `2023-baseline.md` e `2024-infra.md` (rinnovo storico gestito con l'account `it@intrawelt.com`). Non e' chiaro dalla fonte se la cancellazione sia una migrazione deliberata verso un altro provider (es. Fastnet/Let's Encrypt, gia' in uso per intrawelt.com), un mancato rinnovo accidentale, o un cambiamento nell'infrastruttura VPN stessa: da verificare lo stato attuale del certificato SSL VPN e quale provider lo emette oggi | IT + Administration - Documenti/ZeroSSL/Certificate Cancelled_ vpn.intrawelt.com.eml |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -310,5 +318,6 @@ sono esplicitamente nel documento Word.
 | Snapshot v4 (08/07/2026) | 108 |
 | RAEE / smaltimento apparecchiature (08/07/2026) | 109 |
 | AWS access key admin non rotata (09/07/2026) | 110 |
-| **Totale identificati** | **110** |
+| ZeroSSL certificato VPN cancellato (09/07/2026) | 111 |
+| **Totale identificati** | **111** |
 | **Di cui risolti** | **5** (54, 55, 61, 63, 106 — vedi stato "Corretto"/"Fatto"/"Riconciliato") |
