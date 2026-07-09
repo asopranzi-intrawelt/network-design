@@ -221,6 +221,32 @@ Punti chiave emersi dalla riunione Serafino (18/04/2025):
 
 **DPIA SCENIA:** Prodotta nel 2026 per il progetto SCENIA (AI translation platform).
 
+### Procedura di audit mailbox via eDiscovery (M365 Purview)
+
+Nota interna (Helpdesk_MIcrosoft 365) sul caso concreto di verifica di invii
+sospetti di allegati verso destinatari esterni dall'account di Persona-O:
+l'approccio corretto in Microsoft 365 Business non e' l'accesso diretto alla
+mailbox ne' l'export via PowerShell con permessi delegati, ma Microsoft
+Purview eDiscovery. Si crea un case (contenitore logico che traccia ricerche
+ed export, con audit trail e controllo accessi), dentro il quale si
+definisce una Content Search mirata sulla mailbox interessata con criteri
+precisi: intervallo temporale, presenza di allegati, dominio del
+destinatario (l'unico criterio deterministico per isolare traffico verso
+l'esterno del tenant, dato che gli allegati sono un campo indicizzato in
+Exchange Online). L'export produce un pacchetto forense (tipicamente `.pst`
+per Exchange, formati nativi per SharePoint/OneDrive) senza alterare la
+mailbox originale; sia l'accesso ai contenuti sia l'export restano loggati
+nell'audit log di M365, rendendo l'operazione tracciabile e verificabile.
+
+Perimetro legale italiano richiamato nella nota: art. 4 dello Statuto dei
+Lavoratori (controllo a distanza vietato in via generale, ammesso per
+esigenze organizzative/produttive/di sicurezza), GDPR (principi di liceita',
+necessita', proporzionalita', trasparenza: la mailbox nominativa e' dato
+personale), provvedimenti del Garante Privacy. Condizione operativa: serve
+un'informativa preventiva che dichiari la possibilita' di controlli sulla
+posta aziendale, policy che regolano l'uso degli strumenti, e un controllo
+mirato non generalizzato.
+
 ---
 
 ## Registro Sub-Responsabili del Trattamento (GDPR Art. 28)

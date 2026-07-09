@@ -52,7 +52,7 @@ il terzo link e' ora solo il ponte radio come backup; TIM e' dismessa.
 UPS alimentano: server, NAS, apparati hardware centralizzati (centralino).
 Autonomia: ~15 minuti.
 [TBC: modelli UPS, numero di UPS, potenza. Da VA: Emerson Liebert IntelliSlot
-Web Card su 192.168.90.33 (management UPS).]
+Web Card su 10.61.90.33 (management UPS).]
 
 ### PC portatili
 
@@ -64,6 +64,43 @@ Autonomia: ~2 ore per unita'. Batterie verificate settimanalmente.
 Punto Informatica (Daniele Colo'): contratto SLA 2 ore per guasti bloccanti.
 Intervento da remoto e/o on-site. Fornisce anche PC sostitutivi per sede secondaria.
 
+### Vademecum urgenze (runbook operativo, da verificare la data)
+
+Foglio "Vademecum urgenze" trovato in `_planning_ferie_lunghe.xlsx`, senza
+data propria; il file nel suo complesso copre i calendari ferie estate e
+natale 2025, quindi il runbook e' presumibilmente coevo. Distingue guasti
+bloccanti, da affrontare subito, da tutto il resto, rimandabile.
+
+- Router principale Vianova guasto: chiamare Vianova; resta attiva la
+  connessione di backup (ponte radio), e in ultima istanza una vDSL.
+- Anche il router di backup guasto: chiamare Vianova.
+- Firewall guasto: chiamare Punto Informatica per un firewall di scorta.
+- Uno switch guasto: stessa procedura del firewall.
+- Un gruppo di continuita' (UPS) guasto: bypass elettrico manuale, si
+  riprende a lavorare senza continuita'.
+- Una postazione di lavoro guasta (o un suo componente hardware): Punto
+  Informatica tiene pronto un PC sostitutivo, sotto garanzia se applicabile;
+  soluzione piu' rapida nel frattempo e' far lavorare la persona su un altro
+  utente su un altro computer, dato che i job di backup Veeam sulle
+  postazioni sono aggiornati (`\\10.61.20.177\Backup_Ufficio\BackupPDL`).
+- NAS HERO (documenti) guasto: servirebbe la rottura di due dischi
+  contemporaneamente (stato sano al momento della stesura); esistono due job
+  di backup. Per lavorare nel frattempo si mappa NAS INTRA2 (.177) come NAS
+  documenti (`\\10.61.20.177\Backup_Ufficio\BackupNasHero\daily_hero_to_intra2\latest\Documenti`),
+  con prestazioni ridotte.
+- Virtualizzatore Proxmox guasto: esiste un backup completo di tutte le VM
+  su NAS INTRA (`\\10.61.20.168\Backup\dump`). Procedura di emergenza: si
+  rimette in funzione un vecchio PC ("marsk") con il backup del nodo
+  Proxmox (pve), gia' verificato funzionante, per ripristinare prima il
+  nodo e poi le VM necessarie dalla procedura interna di backup di Proxmox.
+- Guasto a monitor, stampante, tastiera e periferiche simili: non
+  bloccante, sostituzione senza urgenza.
+
+Scala di reperibilita' per le urgenze, se non c'e' nessuno in sede: prima
+Alessio Sopranzi o Persona-E (da verificare se Tommaso Vezeni o Tommaso
+Duranti: la fonte non specifica il cognome), poi Persona-H (Daniele Colo'),
+infine Persona-S (Edoardo, cognome non noto dalla fonte), sempre in zona.
+
 ---
 
 ## Piano di Disaster Recovery (PDR)
@@ -74,6 +111,17 @@ Dati locali: NAS fleet (HERO .169, INTRA .168, INTRA2 .177, INTRA3 .172, documen
 Dati cloud: Microsoft SharePoint (1000 GB), Outlook online.
 Piattaforme: GroupShare (WINGROUPSHARE 10.77.116.3), T-Rex (Odoo, raggiungibili online).
 Amazon: per backup e servizi cloud aggiuntivi.
+
+NAS HERO replica inoltre offsite su Azure Blob Storage tramite un job QNAP
+Hybrid Backup Sync (HBS) con l'opzione QuDedup abilitata: il backup viene
+salvato in formato deduplicato (struttura `.qdff` con sottocartelle `dedup/`
+e `filedesc/`, database SQLite `QNAPHybridBackupSync_full_XXX.db` per
+l'indice), caricato per intero nel container blob `nashero` dello storage
+account `backnashero` (resource group `backupqnaphero`, sottoscrizione
+Azure del tenant `intrawelt.com`). Il ripristino di un backup `.qdff` puo'
+avvenire direttamente da HBS su un NAS QNAP configurato con lo stesso job,
+oppure offline tramite il "QuDedup Extract Tool" ufficiale QNAP, senza
+richiedere il NAS originale.
 
 Postazioni di lavoro: da febbraio 2025 ogni postazione fisica ha un job
 giornaliero Veeam Agent (community, Entire computer, retention 7 giorni,

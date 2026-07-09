@@ -245,4 +245,26 @@ L'UPS (Emerson Liebert IntelliSlot, IP 192.168.90.33, porta gestione 6004) è su
 
 ---
 
+## NAS-001: NAS HERO irraggiungibile
+
+**Severity**: BASSA
+**Origine**: nota IntraLino_Knowledge, senza data
+**Stato**: procedura nota, nessuna causa root documentata
+
+### Contesto
+NAS HERO (10.61.20.169) risulta talvolta irraggiungibile dalla rete, con un
+popup di errore di connessione al tentativo di accesso. Nessuna causa root
+e' documentata nella fonte.
+
+### Procedura fix
+1. Individuare il NAS in sala server (spia rossa sotto il pulsante di
+   accensione se in stato di errore).
+2. Spegnimento: tenere premuto il pulsante di accensione.
+3. Attendere il completamento dello spegnimento.
+4. Riavvio: premere nuovamente il pulsante di accensione e attendere il
+   ripristino del sistema e delle connessioni di rete.
+5. Verificare dalla propria postazione che il NAS sia di nuovo accessibile.
+
+---
+
 *Runbook aggiornato: giugno 2026. Owner: Alessio Sopranzi.*

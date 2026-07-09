@@ -73,12 +73,27 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
    BCD; Odoo restore 28/05 -> q2 2025 + helpdesk; Interrogare Odoo e API
    CRM -> helpdesk; Appina e Pi-hole -> q3-q4 2025; Proelium -> vendor
    management; gap #105 esteso a Veeam/Odoo; bonificati tre residui IP
-   reali in vendor-management, BCD e q3-q4). La coda checklist e' ora solo
-   BASSA piu' le attese esterne (PORT-TAGGING, fonte IntraLino su VM).
-5. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
+   reali in vendor-management, BCD e q3-q4).
+5. FATTO (09/07): tutta la coda BASSA della checklist percorsa e chiusa.
+   Emersi cinque fatti sostanziali: Vademecum urgenze (9 casi guasto + scala
+   reperibilita') in business-continuity-disaster-recovery.md; replica NAS
+   HERO su Azure Blob (QNAP HBS/QuDedup) nello stesso file; gap ambientale
+   RAEE mai risolto (GAP-TBC #109/ENV-001); procedura di audit mailbox via
+   M365 Purview eDiscovery in cybersecurity-governance.md; quattro studi AI
+   mai implementati (Cheshire Cat, Google Antigravity, Obsidian vs IT Glue,
+   Claude Subagents) in sviluppo-interno.md. Confermato che i due PDF da
+   1506+415 pagine in IntraLino_Knowledge sono i report Nessus grezzi alla
+   base del VA Onova nov 2025 gia' sintetizzato, nessuna nuova ingestione.
+   Corretti due IP reali non anonimizzati (uno pre-esistente, due miei
+   propri prima della correzione) in business-continuity-disaster-recovery.md;
+   il resto del repository resta con IP reali non anonimizzati, questione
+   nota e rimandata alla Fase B (roadmap.md), non toccata in questa sessione.
+   La coda checklist e' ora solo le attese esterne (PORT-TAGGING, fonte
+   IntraLino su VM).
+6. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
    (verificare con grep prima di chiudere il passo); i documenti voluminosi
    si ingeriscono con `docx-ingest` a disclosure progressiva.
-6. Alla chiusura di ogni blocco: spunta in checklist, voce in
+7. Alla chiusura di ogni blocco: spunta in checklist, voce in
    `memory/progress.md`, commit manuale dell'utente.
 
 ## Domande aperte non risolte

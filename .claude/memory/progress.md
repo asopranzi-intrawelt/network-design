@@ -4,6 +4,40 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Coda BASSA della checklist ingestione chiusa (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/ingestion-checklist.md (tutte le
+voci BASSA verificate e chiuse), docs/business-continuity-disaster-recovery.md
+(§Vademecum urgenze, §Storage e backup NAS HERO/Azure), docs/GAP-TBC.md
+(#109/ENV-001 RAEE), docs/cybersecurity-governance.md (§Procedura di audit
+mailbox via eDiscovery), docs/runbook-anomalie.md (NAS-001), docs/sviluppo-interno.md
+(Cheshire Cat espanso, nuove voci Google Antigravity e Notes con
+relazioni/Obsidian, Tool AI coding assistance espanso), _notes/.anonymization-map.md
+(Persona-S nuova, Persona-M nome proprio scoperto, nuove coppie IP)
+Motivo: su richiesta dell'utente, percorse in ordine tutte le ~25 voci BASSA
+residue della checklist (ALTA/MEDIA erano gia' a zero). La maggioranza si e'
+rivelata fuori scope (contabilita', HR, marketing vendor, tutorial generici
+non specifici a Intrawelt) o gia' coperta altrove, ma sono emersi cinque fatti
+sostanziali: runbook di emergenza a 9 casi con scala di reperibilita' (da
+`_planning_ferie_lunghe.xlsx`), replica NAS HERO su Azure Blob via QNAP
+HBS/QuDedup, gap ambientale RAEE mai risolto, procedura legale di audit
+mailbox via M365 Purview eDiscovery (art.4 Statuto Lavoratori/GDPR), e
+quattro studi di tooling AI mai implementati (Cheshire Cat, Google
+Antigravity, Obsidian vs IT Glue, Claude Subagents). Verificato anche che
+`intraweb2_1osxen.pdf`/`intraweb_wx7v5r.pdf` (1506+415 pagine) sono i report
+Nessus grezzi del 06/11/2025 alla base del VA Onova gia' sintetizzato in
+vulnerability-assessment-nov2025.md: nessuna nuova ingestione necessaria.
+Corretti anche due IP reali non anonimizzati trovati per caso in
+business-continuity-disaster-recovery.md (192.168.90.33 pre-esistente da
+sessione precedente, e due miei stessi nuovi inserimenti prima della
+correzione) — bug di bookkeeping isolato, non la Fase B completa: un grep
+esteso su tutto `docs/` conferma che il resto del repository (helpdesk,
+timeline storica, SCENIA) resta con IP reali non anonimizzati, esattamente
+come previsto dalla Fase B non ancora iniziata (roadmap.md). La coda BASSA
+e' ora chiusa; restano solo le due attese esterne (PORT-TAGGING, fonte
+IntraLino su VM).
+
 ## 2026-07-08 — Rimossa scrittura verso E:\projects, nuova regola di confine (sessione 9)
 
 Commit: PENDING (da fare manualmente)

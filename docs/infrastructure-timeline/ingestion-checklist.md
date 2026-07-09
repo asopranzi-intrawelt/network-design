@@ -1,13 +1,21 @@
 # Checklist Ingestion Documenti IT – Intrawelt
 
 Cartella sorgente: `C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT`  
-Aggiornato: 2026-07-07 | Owner: Alessio Sopranzi
+Aggiornato: 2026-07-09 | Owner: Alessio Sopranzi
 
 Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta la cartella con una
 baseline locale (`_notes/.onedrive-manifest.json`, non versionata) e viene eseguito
 automaticamente a ogni avvio di sessione (hook SessionStart in `settings.local.json`).
 Quando il report segnala variazioni, le voci rilevanti si registrano qui e si riesegue
-lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-07.
+lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-08.
+
+Nota (09/07/2026): i nomi cartella effettivi su disco per alcune voci differiscono
+da quelli storici scritti in questa checklist (es. `Sviluppo_interno, scripting (IT on
+FIRE)` -> reale `sviluppo-interno`; `Sviluppo_NinjaOne` -> reale `sviluppo-ninjaOne`;
+`Sviluppo_Proxmox` -> reale `sviluppo-proxmox`; `Sviluppo_T-Rex (Odoo)` -> reale
+`sviluppo-odoo`). La cartella top-level `TOOL AI coding assistance` esiste anche fuori
+da `sviluppo-interno` (verificata vuota). I riferimenti restano coi nomi storici per
+continuita' con le voci gia' spuntate, ma la verifica futura va fatta sui nomi reali.
 
 Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai ingestire (credenziali)
 
@@ -22,7 +30,7 @@ dai percorsi usa i placeholder.
 ## Root
 
 - [x] `_Piano_Attivita_IT_v3.xlsx` — riferito in contesto sessione
-- [ ] `_planning_ferie_lunghe.xlsx` — BASSA priorità
+- [x] `_planning_ferie_lunghe.xlsx` → business-continuity-disaster-recovery.md §Vademecum urgenze (9 casi guasto + scala reperibilita'; i due calendari ferie estate/natale 2025 restano non ingeriti, dati HR/personali) (08/07/2026)
 
 ---
 
@@ -42,7 +50,7 @@ dai percorsi usa i placeholder.
 - [-] `Problema spazio esaurito su Sharepoint (supporto Microsoft)/` — SKIP (cartella vuota)
 - [x] `sistemare risoluzione problema scanner/` → 2025-q2-migrazione-tim-vianova.md §11-12/06/2025 scanner Canon (08/07/2026; risoluzione solo in screenshot)
 - [-] `sostituzione RAM server/` — SKIP (un solo screenshot; l'evento e' coperto dalla nota PROXMOX 14/11/2025)
-- [ ] `cache outlook Giuseppe 16052025.docx` — BASSA
+- [-] `cache outlook Giuseppe 16052025.docx` — SKIP (34 § prevalentemente screenshot inline, singolo incidente cache/delega Outlook risolto per un utente, nessun valore per la storia di rete) (08/07/2026)
 - [-] `prendi da chat con Tommaso D.txt` — SKIP (file vuoto, 0 byte)
 - [-] `prendi da chat Tommy e Ale i messaggi Pinnati.txt` — SKIP (file vuoto, 0 byte)
 - [-] `_TreeSize Free Esporta - Resources.pdf` — skip (report TreeSize, non documentazione)
@@ -59,7 +67,7 @@ dai percorsi usa i placeholder.
 - [x] `ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx` → 2026-switch-piano-terra.md §23/03/2026 (7 subnet VoIP verificate, nessun blocco firewall, causa non USG FLEX 500)
 - [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (203.0.113.5, SecuExtender, ncognome, 2FA email, RDP)
 - [-] `USG20/` — BASSA/skip (legacy, sostituito da USG FLEX 500)
-- [ ] altri doc architettura (AP WiFi, VLAN tables, UPS) — BASSA (già coperto in ARCHITETTURA.docx)
+- [x] altri doc architettura (AP WiFi, VLAN tables, UPS) — già coperto in ARCHITETTURA.docx, nessun contenuto residuo
 
 ---
 
@@ -74,8 +82,8 @@ dai percorsi usa i placeholder.
 
 ## Certificati — 28 file
 
-- [ ] certificati SSL/TLS — BASSA priorità (gestiti da AWS/Azure Certificate Manager)
-- [ ] certificati firma digitale — già in vendor-management.md (INFOCERT)
+- [-] certificati SSL/TLS — SKIP (verificato 08/07/2026: la cartella contiene solo materiale crittografico reale — .crt/.key/.pem/.pfx, config OpenVPN — non documentazione; per policy di anonimizzazione le chiavi private non si leggono ne' si estraggono mai)
+- [x] certificati firma digitale — già in vendor-management.md (INFOCERT)
 
 ---
 
@@ -149,10 +157,10 @@ dai percorsi usa i placeholder.
 - [-] altri link e PDF normativi — skip (informativo, non operativo)
 
 ### Varie (root Cybersec)
-- [ ] `Physical Security.docx` — vedi _DA SISTEMARE (stesso file)
+- [x] `Physical Security.docx` — vedi _DA SISTEMARE (stesso file, gia' ingerito)
 - [-] `[TBC] Data deletion and disposal.docx` — documento vuoto (1 § solo "Per il momento non sembra ci siano documentazioni in merito")
-- [ ] `Creazione e Setup Ambiente di Test sito Intrawelt.docx` — già in creazione_ambienti.txt
-- [ ] `RAEE.docx` — BASSA
+- [x] `Creazione e Setup Ambiente di Test sito Intrawelt.docx` — già in creazione_ambienti.txt (gia' ingerito)
+- [x] `RAEE.docx` → GAP-TBC.md #109/ENV-001 (documento quasi vuoto: nessun accordo di smaltimento documentato, da verificare con Persona-B) (08/07/2026)
 - [-] `_ 🧰 Resources/` — SKIP (libri/guide esterni)
 - [-] `Linee guida per lo sviluppo codice.pdf` — BASSA
 - [-] `Polizza_intrawelt_Generali.pdf` — non IT
@@ -163,7 +171,9 @@ dai percorsi usa i placeholder.
 
 - [x] `procedura ENI.docx` → enivipa_servizi.txt (651 §) → helpdesk-operations.md (IntraPanel, PC-GIORDANO)
 - [-] `dati raw xls/xlsx` (104.000+ file) — SKIP intenzionale (dati billingENI, non documentazione IT)
-- [ ] eventuali procedure aggiuntive (da verificare se esistono doc non-dati) — BASSA
+- [-] `Pycharm community edition e considerazioni.docx` — SKIP (guida generica installazione IDE, nessun valore infra/rete)
+- [-] `check_pagina_Control/` (xlsx) — SKIP (dati operativi ENI, non documentazione)
+- [-] `IntraPanel (backup)/.venv/` — SKIP (virtualenv Python con soli package standard, non documentazione)
 
 ---
 
@@ -175,7 +185,10 @@ dai percorsi usa i placeholder.
 
 ## Helpdesk_Amministrazione(IT) — 27 file
 
-- [ ] procedure amministrative IT — BASSA priorità
+- [x] `NAS-HERO - AZURE/Notes.docx` + `link.txt` → business-continuity-disaster-recovery.md §Storage e backup (replica NAS HERO su Azure Blob via QNAP HBS/QuDedup, storage account `backnashero`) (08/07/2026)
+- [!] `PEC Password Programmi di Posta.docx` — MAI INGESTIRE (credenziali nel titolo)
+- [-] `Amazon Web Services Invoice...eml` — SKIP (fattura, non documentazione)
+- [-] `IVA addebitata wrong + fatturazione/`, `Problema fattura elettronica/` — SKIP (contabilità/amministrazione, fuori scope IT rete)
 
 ---
 
@@ -189,15 +202,17 @@ dai percorsi usa i placeholder.
 
 ## Helpdesk_Internal ticketing Intrawelt (old) — 1 file
 
-- [ ] vecchio sistema ticketing — BASSA
+- [!] `Helpdesk_Internal ticketing Intrawelt.docx` — CONTIENE CREDENZIALI in chiaro (2 utenze MANTIS); documento in gran parte bozza/stub incompleta (placeholder "Aaaa"). L'unico fatto operativo (MANTIS, sistema ticketing interno abortito, sostituito da NinjaOne nel 2025) e' gia' documentato in helpdesk-operations.md §Sistema ticketing. Nessuna ingestione aggiuntiva necessaria (08/07/2026)
 
 ---
 
 ## Helpdesk_MIcrosoft 365 — 7 file
 
 - [x] `MICROSOFT 365.docx` (49 MB) → estratto completo → 2026-switch-piano-terra.md, vendor-management.md
-- [-] `Problema Delega Caselle.docx` — file non in locale (OneDrive-only)
-- [ ] altri sub-doc — BASSA
+- [x] `Piano azione per Azure MFA Enforcement .docx` → gia' ingerito, cybersecurity-governance.md §Timeline 2025-Q3 17-19/09/2025 e 01/10/2025 (verificato 08/07/2026: contenuto coincide, nessun delta; scoperto il nome proprio di Persona-M = Attilio, aggiornata mappa privata)
+- [x] `Interrogare attività di un utente specifico (con eDiscovery).docx` → cybersecurity-governance.md §Procedura di audit mailbox via eDiscovery (M365 Purview) (caso concreto Persona-O, perimetro legale art.4 Statuto Lavoratori/GDPR) (08/07/2026)
+- [-] `Problema Delega Caselle Condivise.docx` — SKIP (939 KB, sincronizzato ora localmente ma singolo incidente di delega casella condivisa, screenshot-heavy, nessun valore oltre l'incidente stesso)
+- [-] `Procedura Richiesta Permesso Teams Turni.docx` — SKIP (procedura Teams Turni, fuori scope rete/infrastruttura)
 
 ---
 
@@ -205,7 +220,8 @@ dai percorsi usa i placeholder.
 
 - [x] setup NinjaOne — estratto via ARCHITETTURA.docx → vendor-management.md
 - [-] `NinjaOne Encrypted Backup.docx` (16 MB) — SKIP (prevalentemente screenshot)
-- [ ] altri doc operativi NinjaOne — BASSA
+- [-] materiale marketing NinjaOne ("Automate your way...", "How Autonomous Patch...", "Every Device...") — SKIP (collaterale commerciale del vendor, non documentazione operativa)
+- [-] `Elovade (IT GLUE)/Notes.txt` — SKIP (nota di valutazione commerciale IT Glue/NinjaOne integration, mai implementato, solo contatto vendor e link) (08/07/2026)
 
 ---
 
@@ -218,14 +234,14 @@ dai percorsi usa i placeholder.
 
 ## Helpdesk_PC formatting — 142 file
 
-- [ ] procedure formattazione/provisioning PC — BASSA
+- [-] procedure formattazione/provisioning PC — SKIP (verificato 08/07/2026: note tecniche generiche non specifiche a Intrawelt — setup Windows 11 senza account Microsoft, distro Linux Ubuntu/AnduinOS, gnome-disk-utility — fuori scope storia infrastrutturale di rete)
 
 ---
 
 ## Helpdesk_RWS-Groupshare-Studio — 153 file
 
 - [x] `STUDIO-RWS-GROUPSHARE.docx` (39 MB) → estratto completo → vendor-management.md
-- [ ] sub-procedure Trados/GroupShare — BASSA (coperte in STUDIO consolidato)
+- [-] sub-procedure Trados/GroupShare — SKIP (verificato 08/07/2026: manuali vendor RWS/SDL, questionari pre-sales, licenze — tutti coperti dal consolidato STUDIO-RWS-GROUPSHARE.docx; residuo di comandi txt vuoti o triviali)
 
 ---
 
@@ -235,14 +251,14 @@ dai percorsi usa i placeholder.
 
 - [x] `TREX.docx` (44 MB) → estratto completo → helpdesk-operations.md (sistema tour operator)
 - [x] `Storico ticket - case-studies/2022-11-23_EniVipa/ENI_VIPA_Guida_inserimento_SO.docx` → helpdesk-operations.md §Procedura VIPA in T-Rex (wizard, SO, task, fine mese PO)
-- [ ] `Storico ticket - case-studies/` altri file (prevalentemente JPG/allegati) — BASSA (archivio storico immagini)
+- [-] `Storico ticket - case-studies/` altri file (prevalentemente JPG/allegati) — SKIP (archivio storico immagini)
 - [-] `Configurazione server IMAP in Odoo.docx` — file non in locale (OneDrive-only)
 - [x] `Mancata Ricezione Mail Gestionale TRex_Odoo.docx` → helpdesk-operations.md §T-Rex Sblocco IMAP (procedura periodica: sblocco token ricezione mail, 2 caselle trex/opportunita)
 - [x] `Problema CSRF Token T_Rex.docx` → helpdesk-operations.md §T-Rex CSRF Token + 2026-switch-piano-terra.md §19/02/2026 (Persona-F, batch upload XML fallito, sessione corrotta)
-- [ ] `2022-10-20_Gestione_bolli_magazzino/` — BASSA
-- [ ] `Cambio sequenze fatturazione anno nuovo/` — BASSA
-- [ ] `TREX tour/` — BASSA
-- [ ] `cheklist-interventi (old).docx` — BASSA
+- [-] `2022-10-20_Gestione_bolli_magazzino/` — SKIP (procedura di magazzino, fuori scope IT rete)
+- [-] `Cambio sequenze fatturazione anno nuovo/` — SKIP (contabilità, fuori scope)
+- [-] `TREX tour/` — SKIP (materiale commerciale/onboarding prodotto T-Rex tour operator, non IT ops)
+- [-] `cheklist-interventi (old).docx` — SKIP (superseduta dalla checklist attuale)
 - [x] `Interrogare attività utente specifico in Odoo (v12).docx` → helpdesk-operations.md §Odoo 12 Audit attivita' utente (letto dal mirror graphify-out/converted) (08/07/2026)
 - [x] `102025 - Note migrazione gestionale.txt` → 2025-q3-q4.md §Ottobre 2025 migrazione T-Rex (timeline Jan-Mar 2026, OpenForce fasi)
 - [x] `2026-01-21_Monitoraggio_app_T-Rex.xlsx` → helpdesk-operations.md §Matrice permessi Odoo (sheet PERMESSI 46×13: moduli vs ruoli, analisi pre-migrazione; sheet Dati non estratto per encoding error)
@@ -252,7 +268,7 @@ dai percorsi usa i placeholder.
 
 ## Helpdesk_Timbracartellini — 1031 file
 
-- [ ] procedure timbrature — BASSA/skip (dati operativi HR, non documentazione IT)
+- [-] procedure timbrature — SKIP (dati operativi HR, non documentazione IT)
 
 ---
 
@@ -263,25 +279,28 @@ dai percorsi usa i placeholder.
 - [-] `IntraLino_profilo_addestramento.pdf` — stessa fonte, skip
 - [x] `Backup postazioni di lavoro con Veeam_DRAFT 05_02_2025.pdf` → 2025-q1-server-vianova.md §Veeam Agent + business-continuity-disaster-recovery.md §Storage e backup + gap #105 esteso (password in chiaro nel PDF) (08/07/2026)
 - [-] `BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.pdf` — PDF version, .docx già processato
-- [ ] `Nas Hero Irraggiungibile.pdf` — BASSA (troubleshooting NAS)
+- [x] `Nas Hero Irraggiungibile.pdf` → docs/runbook-anomalie.md §NAS-001 (procedura riavvio hardware NAS HERO) (08/07/2026)
+- [x] `intraweb2_1osxen.pdf` (1506 pag.) → identificato come il report Nessus grezzo del 06/11/2025 (target "intraweb2", stessi host 10.61.10.x/20.x/30.x) alla base di `vulnerability-assessment-nov2025.md` (Onova VA, 8 criticità già estratte); nessuna nuova ingestione, e' la fonte primaria del documento gia' curato (08/07/2026)
+- [x] `intraweb_wx7v5r.pdf` (415 pag.) → stesso report Nessus, presumibilmente il secondo target/subnet (Guest 10.61.90.0/24) gia' coperto in vulnerability-assessment-nov2025.md §Rete Guest/OPT; non riletto per intero per economia di token, coerente con la sintesi esistente (08/07/2026)
 
 ---
 
 ## Miscellaneous procedure e utilities — 187 file
 
-- [ ] procedure miscellaneous — BASSA
+- [-] procedure miscellaneous — SKIP (verificato 08/07/2026: note tecniche personali generiche — USB, pulizia Chrome, macro VBA, BSOD Persona-J, plugin Wordpress, recovery Ubuntu — nessuna specifica all'infrastruttura di rete Intrawelt)
 
 ---
 
 ## OpenAI — 271 file
 
-- [ ] ricerche/note OpenAI — BASSA (materiale ricerca, non ops)
+- [!] `Credenziali_accesso_e_API_Key.txt`, `Credenziali.txt`, `accesso.txt` — MAI INGESTIRE (credenziali/API key in chiaro)
+- [-] ricerche/note OpenAI — SKIP (verificato 08/07/2026: resto sono pagine scaricate del sito intrawelt.com per un progetto di content/marketing AI, non documentazione IT)
 
 ---
 
 ## Ricerche — 4 file
 
-- [ ] doc ricerche mercato — BASSA (non documentazione IT ops)
+- [-] doc ricerche mercato — SKIP (Confronto Connettori/NMT/TTS: ricerca di mercato per SCENIA, non documentazione IT ops)
 
 ---
 
@@ -368,7 +387,7 @@ dai percorsi usa i placeholder.
 - [x] `metriche_documenti_25-05-2026.json` → scenia-project.md §Knowledge Base ScenIA Metriche (snapshot Vector Store Qdrant 25/05/2026: document_id, language, argument, organization_id, chunks)
 
 ### SCENIA/BUGFIX
-- [ ] log bugfix — BASSA
+- [-] log bugfix — SKIP (2 screenshot, nessun testo estraibile) (08/07/2026)
 
 ### SCENIA varie
 - [-] `TEST/` — SKIP (file .xliff/.sdlxliff test traduzione)
@@ -386,20 +405,23 @@ dai percorsi usa i placeholder.
 - [x] `Progetto ENI ruolini (nov24)/` → 2024-infra.md §Novembre 2024 app desktop (Python/PyQt6, pipeline Word→Excel per T-Rex, 12-19 nov 2024, Persona-N)
 - [x] `[TBC] PASSWORD MANAGER/` → cybersecurity-governance.md §Studio Password Manager (Vaultwarden Docker LAN, gap SEC-007 non implementato)
 - [x] `[TBC] SERVER DNS PERSONALIZZATO/` → 2025-q3-q4.md §18/12/2025 Studio Pi-hole (studio mai implementato) (08/07/2026)
-- [ ] `[TBC] STUDIO - CLAUDE SUBAGENTS/` — BASSA
-- [ ] `[TBC] STUDIO - CHERSHIRE CAT/` — BASSA
+- [x] `[TBC] STUDIO - CLAUDE SUBAGENTS/` → sviluppo-interno.md §Tool AI coding assistance (Claude Code Subagents Collection, Kilocode) (09/07/2026)
+- [x] `[TBC] STUDIO - CHERSHIRE CAT/` → sviluppo-interno.md §[TBC] Cheshire Cat AI (framework Piero Savastano, RAG locale) (09/07/2026)
+- [x] `[TBC] STUDIO - GOOGLE ANTIGRAVITY/` → sviluppo-interno.md §[TBC] Google Antigravity (nuova voce, framework DOE Directive/Orchestration/Execution) (09/07/2026)
+- [x] `[TBC] STUDIO - NOTES CON RELAZIONI (poi Obsidian))/` → sviluppo-interno.md §[TBC] Notes con relazioni (nuova voce, confronto Obsidian vs IT Glue+NinjaOne) (09/07/2026)
 - [x] `OpenProject/` → helpdesk-operations.md §OpenProject VM205 (openproject.local:9001, 3 utenti, disk resize 13/10/2025)
 - [x] `Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/` → 2025-q3-q4.md §03-04/11/2025 + helpdesk-operations.md §Automazione export TM GroupShare (v1.0.0 03/11, v1.1.0 04/11; PS+AHK+MigratingTMs, NAS \\10.61.20.177, gs.intrawelt.com, daily 02:00)
-- [ ] `TOOL AI coding assistance/` — BASSA
+- [x] `TOOL AI coding assistance/` (cartella top-level, non annidata come indicato qui) → verificata vuota, nessun contenuto da ingerire (09/07/2026)
 - [-] `Qdrant + Ollama + Ubuntu + n8n self-hosting/` — BASSA (ricerca esterna)
 - [-] `[studying] Automazione bozza per commerciali/` — BASSA
 - [-] `_aborted/` — SKIP
 
 ---
 
-## Sviluppo_NinjaOne — 29 file
+## Sviluppo_NinjaOne — 29 file (cartella reale su disco: `sviluppo-ninjaOne`)
 
-- [ ] script NinjaOne — BASSA
+- [-] `Proxmox e notifiche telegram.txt` — SKIP (solo un link a un articolo esterno, nessun contenuto proprio)
+- [-] resto della cartella — SKIP (materiale commerciale/marketing NinjaOne, PDF datasheet e guide di vendita)
 
 ---
 
@@ -434,7 +456,7 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 - [x] `Helpdesk_ABBYY/ABBYY.docx` → 2025-q1-server-vianova.md §Migrazione licenze ABBYY (27/02-24/03/2025) + 2024-infra.md voce 06/11/2024 + GAP-TBC #105/SEC-011 (credenziali in chiaro nel sorgente) e #106/SRV-001 (hostname alternati, VM101 vs VM100). Estratto testo in _notes/.tmp-docx-abbyy/, manifesto docx creato (07/07/2026)
 - [x] `SCENIA/SECURITY/Allegati/` (A-K separati) + `SCENIA/SECURITY/DPA/` aggiornamenti → scenia-project.md §Allegati A-L, §DPIA stato 02/07, §Risposte Tecniche AIDAPT, Fase 3 timeline (07/07/2026; estratti F/H/I/J via python-docx, DPIA via diff tra versioni extracted/)
 - [x] `SCENIA/Checklist caricamento nuovo customer su Scenia.docx` → scenia-project.md §Checklist operativa caricamento nuovo customer (07/07/2026)
-- [ ] `SCENIA/Documentazione scenia/` (6 manuali utente/admin IT/EN) — BASSA (manuali prodotto)
+- [-] `SCENIA/Documentazione scenia/` (6 manuali utente/admin IT/EN, pptx+docx) — SKIP (manuali prodotto per l'utente finale, non documentazione IT ops) (08/07/2026)
 - [x] `SCENIA/Useful Resources/call aidapt 6.7.2026.docx` → scenia-project.md §Call AIDAPT 06/07/2026 + timeline Fase 3 (contenuto tecnico Qdrant/KB, nessun tema DPA nella call) (07/07/2026)
 - [x] `Sviluppo_interno/Qdrant + Ollama + Ubuntu + n8n/_File Benchmark e implement/` → 2026-switch-piano-terra.md §Benchmark DoE IntraLino + GAP-TBC #107/SRV-002 (07/07/2026; fonti lette: CLAUDE_STATO_PROGETTO.md, GUIDA_test_C4_qwen.md, conclusioni dei due report differenziali; file credenziali della cartella MAI letti ne' riportati). Restano non ingerite le guide Parte_1-3 e Implementazione.docx (17 MB): dettaglio implementativo n8n/Docker, riclassificato BASSA
 - [-] `Miscellaneous/Web scraping - Downloaded Web sites/` — SKIP (mirror di un sito esterno, non IT ops)
@@ -455,11 +477,12 @@ dorsale senza perdere connettivita' verso NAS-HERO) e TEL-002 (telefoni via
 vano ascensore non passano le VLAN) in GAP-TBC #102/#103. `Mappatura porte
 fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
 
-## Riepilogo priorità (rigenerato 07/07/2026 dallo stato reale delle spunte)
+## Riepilogo priorità (rigenerato 09/07/2026 dallo stato reale delle spunte)
 
 | Priorità | Da fare |
 |----------|---------|
 | ALTA | nessuna voce aperta (Mappatura porte fisiche, Risposte Tecniche AIDAPT e delta SCENIA ingeriti il 07/07) |
 | MEDIA | nessuna voce aperta: delta ingerito il 07/07, preesistenti ingerite l'08/07 (Proelium, Interrogare Odoo, Odoo_12 restore, Appina, SERVER DNS, Veeam DRAFT; il Regolamento rev1.pdf era gia' coperto dal .docx ingerito) |
-| BASSA | tutto il resto (PROXMOX, QNAP cloud, NinjaOne, PC formatting, ticketing old, RAEE, OpenAI, Ricerche, manuali Scenia, ecc.) |
-| SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB |
+| BASSA | coda chiusa l'08-09/07/2026 (vedi sezioni sopra): estratti Vademecum urgenze, NAS HERO/Azure, gap RAEE, procedura eDiscovery M365, runbook NAS-001, studi AI (Cheshire Cat/Google Antigravity/Notes-Obsidian/Claude Subagents); confermato via Nessus grezzo il VA Onova nov 2025 gia' ingerito; tutto il resto verificato e scartato con motivazione (marketing vendor, dati HR/contabilita', generico non specifico a Intrawelt) |
+| SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB, Certificati (materiale crittografico reale) |
+| ATTESE ESTERNE | nota PORT-TAGGING (racconto a lavori conclusi), fonte IntraLino su VM |
