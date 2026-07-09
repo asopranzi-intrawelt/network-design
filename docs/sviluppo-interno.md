@@ -132,13 +132,59 @@ Stato: pianificato.
 
 ### [TBC] Cheshire Cat AI
 
-Studio framework Cheshire Cat per agente AI conversazionale alternativo.  
-Stato: studio.
+Studio del framework Cheshire Cat AI (Piero Savastano), architettura
+open-source italiana per agenti AI locali con RAG su modelli anche
+open-source e leggeri: standalone e dockerizzato senza dipendenze cloud,
+estendibile con plugin Python, supporto document ingestion, API
+REST/WebSocket, vector DB (es. Qdrant), interfaccia admin per agenti/memoria/
+modelli/utenti. Valutato per task specifici come analisi documenti,
+generazione roadmap, Q&A su dati aziendali, con il vantaggio di non
+condividere dati con terzi. Nessuna data nella fonte. Stato: studio, non
+implementato.
+
+### [TBC] Google Antigravity – framework DOE
+
+Studio dell'architettura DOE (Directive/Orchestration/Execution) di Google
+Antigravity per costruire agenti AI e sistemi auto-migliorativi. I tre
+livelli sono cartelle a cui l'agente ha accesso: il Directive Layer contiene
+le SOP (Standard Operating Procedures) in linguaggio naturale, formato
+Markdown, come fonte di verita' funzionale; l'Orchestration Layer non e' una
+cartella ma un LLM (es. Gemini o Claude) che legge le direttive e genera gli
+artefatti eseguibili, fuori dal runtime critico; l'Execution Layer contiene
+il codice generato (script deterministici), l'unico componente che entra in
+produzione. La separazione isola la stocasticita' dei modelli linguistici
+(probabilistici, a parita' di prompt possono variare l'output) dalla fase di
+esecuzione, che resta deterministica una volta generato e validato il
+codice. Previsto un ciclo di self-learning: un errore in esecuzione genera
+un log, un modulo di analisi (anche mediato da un LLM) ne propone una
+correzione che aggiorna la SOP nel Directive Layer o rigenera il codice
+nell'Execution Layer — non e' training di un modello neurale ma correzione
+simbolica iterativa. Nessuna data nella fonte. Stato: studio, non
+implementato.
+
+### [TBC] Notes con relazioni (poi Obsidian)
+
+Studio dello stack di documentazione tecnica aziendale, con l'obiettivo di
+una base di conoscenza locale o auto-ospitata, collegata bidirezionalmente e
+visualmente, in formato aperto (no lock-in), versionabile con Git.
+Confrontate due strade: Obsidian Desktop a costo zero (Markdown puro,
+ecosistema plugin maturo, grafo dei link, nessun multiutente reale — i lock
+file non gestiscono merge paralleli, nessuna ricerca semantica nativa) contro
+soluzioni a pagamento integrate con NinjaOne RMM (IT Glue, non gratuito, da
+$29-38/utente con minimo 5 utenti). Nessuna data nella fonte oltre a un
+riferimento a una chat Telegram del 15 ottobre (file vuoto, contenuto non
+recuperabile). Stato: studio, esito non registrato in questa fonte.
 
 ### Tool AI coding assistance
 
-Studio di tool AI per coding assistance (Copilot/Claude Code).  
-Cartella: `Sviluppo_interno/TOOL AI coding assistance/`
+Studio di tool AI per coding assistance (Copilot/Claude Code), incluso un
+riferimento alla collezione pubblica "Claude Code Subagents Collection" (100+
+subagenti specializzati, ciascuno configurato su un modello Claude
+specifico in base alla complessita' del task) e a Kilocode come possibile
+integrazione (Claude Code configurabile come provider API). Cartella:
+`sviluppo-interno/[TBC] STUDIO - CLAUDE SUBAGENTS/` e
+`TOOL AI coding assistance/` (cartella top-level, vuota al momento della
+verifica). Stato: studio, non implementato.
 
 ---
 
