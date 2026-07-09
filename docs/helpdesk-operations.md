@@ -457,6 +457,23 @@ Analisi flussi condotta con Openforce (novembre 2025). Moduli da migrare da Odoo
 **Stato:** Analisi flussi completata (scaletta nov 2025). Openforce ha preventivato i costi.
 Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione T-Rex).
 
+**Preventivo analisi (Openforce, SO1429):** 27/11/2025, firmato per accettazione
+03/12/2025 (Alessandro Potalivo). Pacchetto di 30 ore con 2 Account Manager
+per "analisi flussi v12 e soluzioni v18" (OLDMIG), 2.400 € + IVA. Contatto
+tecnico Openforce cambiato nel frattempo: Patrick Trabocchi sostituisce
+Matteo come referente tecnico dal 03/12/2025 (Account Manager: Manuele
+Favale).
+
+**Pressione temporale dal fornitore Odoo:** Odoo ha annunciato il
+28/10/2025 nuovi termini di supporto Enterprise: dal supporto limitato alle
+ultime 3 versioni (max 3 anni) a un supporto estendibile oltre 10 anni, ma
+con una fee aggiuntiva del 25% annuo sulle versioni legacy a partire da
+aprile 2026 per chi resta sulla v16 o precedenti — Intrawelt e' su Odoo 12,
+quindi soggetta a questa fee. Il 12/09/2025 Intrawelt aveva gia' confermato
+a Odoo l'intenzione di migrare alla v18 "prima possibile", frenata dalla
+customizzazione molto alta del proprio ambiente, con un incontro di
+persona previsto a Bruxelles tra Alessandro Potalivo e il referente Odoo.
+
 ---
 
 ## Odoo – Integrazione portale SCENIA (04/03/2026)

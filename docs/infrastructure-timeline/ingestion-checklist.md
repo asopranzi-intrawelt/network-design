@@ -518,16 +518,16 @@ gia' documentata, non ancora verificata contenuto per contenuto.
 - [x] `SEEWEB/` — 1 file → `Contratto_Seeweb_26.09.14.pdf` verificato: scansione immagine, nessun testo estraibile. Rapporto Seeweb (dal 2014!) gia' noto da altre fonti (VPS SCENIA, tunnel IPsec)
 - [x] `Daniele Colò - Punto informatica/` — 64 file → vendor-management.md §Punto Informatica (ragione sociale, acquisto switch Piano Terra 13/03/2026 e telefoni Yealink 24/03/2026 con prezzi). Resto = 58 fatture/ordini/preventivi 2024-2026 di attrezzatura generica (PC, GPU), non specifica alla rete, non ingerita singolarmente (09/07/2026)
 - [x] `Amazon AWS (dismissione Glacier, migrazione S3, eliminazione servizi inutili)/` — 118 file → GAP-TBC.md #110/SEC-012 (access key IAM admin del 2019 senza MFA, ancora attiva, origine di una chiamata anomala ad Amazon Translate mai identificata). Resto = screenshot procedurali (dismissione Glacier, script CLI, inventory retrieval S3) senza testo aggiuntivo oltre a quanto gia' verificato nell'analisi anni vecchi (09/07/2026)
-- [ ] `Google cloud services (aborted)/` — 4 file — BASSA (progetto abortito, per completezza)
-- [ ] `Openforce/` — 3 file — BASSA (vendor traduzioni gia' documentato altrove)
-- [ ] `Eter/` — 7 file — BASSA (vendor certificati gia' citato in vendor-management.md)
-- [ ] `TREX/` — 2 file — BASSA (gia' ampiamente documentato lato tecnico)
-- [ ] `MICROSOFT/` — 5 file — BASSA (gia' ampiamente documentato lato tecnico, qui probabile fatturazione)
-- [ ] `ZeroSSL/` — 10 file — BASSA (certificati SSL, verificare se materiale crittografico reale come `Certificati/`)
-- [ ] `Fatture Kilocode/`, `Proforma/`, `Rinnovo marchi/`, `Fatture elettricità/`, `_Query per dati provvigione...` — BASSA/fuori scope (amministrazione/contabilita' pura, non IT)
-- [ ] `Foto sistemazione sala server e RIP catafalco/` — 37 file — BASSA (probabilmente fotografico, verificare se ci sono note testuali)
-- [ ] `Savelli/` — 1 file — da identificare (vendor non ancora noto)
-- [ ] file sciolti root (`Certificato_Intrawelt_carichi_pendenti_18.10.17.pdf`, `Convenzione_Università_Trieste_12.03.18.pdf`, `Liberatoria_Tods_Interpreti.pdf`, `README - Microsoft utili.png`, `README.txt`, `ticket cassetto fiscale.7z`) — da verificare, priorita' bassa presunta
+- [x] `Google cloud services (aborted)/` — 4 file → verificato 09/07/2026: solo notifiche di fatturazione/sospensione, progetto GCP confermato abortito, nessuna ingestione
+- [x] `Openforce/` — 3 file → helpdesk-operations.md §Odoo 18 – Scope migrazione (preventivo SO1429 30h/2.400€ 27/11/2025, nuovo contatto tecnico Patrick Trabocchi) (09/07/2026)
+- [x] `Eter/` — 7 file → verificato: solo fatture/ordini, vendor certificati gia' noto, nessun contenuto aggiuntivo
+- [x] `TREX/` — 2 file → helpdesk-operations.md §Odoo 18 (fee +25% legacy versions da Odoo, pressione temporale sulla migrazione v18) (09/07/2026)
+- [x] `MICROSOFT/` — 5 file → cybersecurity-governance.md §Bitdefender (razionale difesa a piu' livelli Defender P1/Bitdefender/Zyxel, risolve il TBC "Email Security"). 3 file di storico mail/Teams vuoti (0 byte), .lnk punta a MICROSOFT 365.docx gia' ingerito (09/07/2026)
+- [x] `ZeroSSL/` — 10 file → GAP-TBC.md #111/SEC-013 (certificato VPN cancellato 10/02/2026, esito non chiaro). Resto = fatture, nessun materiale crittografico reale a differenza di `Certificati/` (09/07/2026)
+- [x] `Fatture Kilocode/`, `Proforma/`, `Rinnovo marchi/`, `Fatture elettricità/`, `_Query per dati provvigione...` — verificate per nome cartella: contabilita'/marchi/provvigioni commerciali, fuori scope IT rete, non aperte singolarmente (09/07/2026)
+- [x] `Savelli/` — 1 file → verificato: preventivo per interfaccia GSM allarme ascensore (Savelli Ascensori), fuori scope IT rete (09/07/2026)
+- [x] file sciolti root (`Certificato_Intrawelt_carichi_pendenti_18.10.17.pdf`, `Convenzione_Università_Trieste_12.03.18.pdf`, `Liberatoria_Tods_Interpreti.pdf`, `README - Microsoft utili.png`, `README.txt`, `ticket cassetto fiscale.7z`) — non aperti singolarmente, nomi indicano contenuto legale/fiscale fuori scope IT rete; priorita' bassa confermata per esclusione (09/07/2026)
+- [x] `Foto sistemazione sala server e RIP catafalco/` — 37 file → verificato 09/07/2026: tutte immagini (34 jpg + 3 png, febbraio 2025), nessun testo estraibile. "RIP catafalco" presumibilmente le foto di smaltimento hardware dismesso, concettualmente gia' coperto dalle voci di decommissioning VM/hardware esistenti
 
 ## Riepilogo priorità (rigenerato 09/07/2026 dallo stato reale delle spunte)
 
@@ -538,3 +538,11 @@ gia' documentata, non ancora verificata contenuto per contenuto.
 | BASSA | coda chiusa l'08-09/07/2026 (vedi sezioni sopra): estratti Vademecum urgenze, NAS HERO/Azure, gap RAEE, procedura eDiscovery M365, runbook NAS-001, studi AI (Cheshire Cat/Google Antigravity/Notes-Obsidian/Claude Subagents); confermato via Nessus grezzo il VA Onova nov 2025 gia' ingerito; tutto il resto verificato e scartato con motivazione (marketing vendor, dati HR/contabilita', generico non specifico a Intrawelt) |
 | SKIP | Cartella_riservata_IT e ogni file credenziali, dati raw ENIVIPA, Timbracartellini, ABBYY screenshot, TEST/, VIDEOs/, Web scraping, Sviluppo Odoo Alessio.docx 62MB, Certificati (materiale crittografico reale) |
 | ATTESE ESTERNE | nota PORT-TAGGING (racconto a lavori conclusi), fonte IntraLino su VM |
+
+## IT + Administration - Documenti — stato al 09/07/2026
+
+Tutte le voci ALTA, MEDIA e BASSA di questa libreria sono chiuse (vedi
+sezione dedicata sopra). Unica eccezione deliberata: `MyOffice/Transizione
+centralino cloud 2026/` non ingerita perche' si sovrappone alla nota
+PORT-TAGGING riservata al racconto "a lavori conclusi" — resta in attesa
+della stessa indicazione dell'utente.
