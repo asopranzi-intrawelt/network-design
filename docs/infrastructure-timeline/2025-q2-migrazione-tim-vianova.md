@@ -304,6 +304,15 @@ branch di test 12.0-test). La procedura completa e' documentata in
 `helpdesk-operations.md`. Il sorgente contiene la master password del
 database manager e la password di reset degli utenti: non riportate.
 
+## 10/04/2025 - Richiesta formale di attivazione VPN Unmanaged
+
+Modulo Vianova "Sede - Profilo e Servizi" (rev.27, 10/04/2025) compilato per
+richiedere l'attivazione della VPN Unmanaged "senza costi aggiuntivi poiche'
+si tratta di una punto punto verso una sola sede esterna". La richiesta
+precede di quasi due mesi la scoperta che il servizio non era stato attivato
+(vedi 03/06/2025 sotto): il modulo da solo non e' bastato a far scattare
+l'attivazione effettiva.
+
 ## 03/06/2025 - Scoperta: il servizio VPN Unmanaged Vianova non e' attivo
 
 Alessio Sopranzi chiama il numero 145 (supporto Vianova). Confermato: il servizio
@@ -398,3 +407,21 @@ Durata totale del processo di risoluzione: dall'08/05 al 24/06/2025, 47 giorni.
 Il 26/06/2025 Marco Perri si disconnette dal NAS e prova a reinserirsi usando
 193.124.241.x:8008 invece della porta 10443. La porta 8008 e' la porta HTTP del
 pannello admin QNAP, non la porta SSL per Zywall Secure Extender.
+
+## 15/05-25/07/2025 - Disdetta TIM: 6 servizi cancellati via PEC, rientro router Huawei
+
+Il 15/05/2025 Persona-B disdice via PEC 6 fatture/servizi TIM residui
+(fatturati 10/04/2025, periodo 01-31/03/2025): il canone TBond MultiLink
+(240 €) e cinque linee telefoniche, tra cui la linea 073416998075 ("Nuvola
+Sinfonia"). Il 22/05/2025 TIM Business conferma la ricezione della richiesta
+di cancellazione via un canale email diverso da quello usato per la disdetta
+originale, generando confusione interna (il 28/05/2025 Alessandro Potalivo
+verifica che non si tratti di una disdetta doppia — nome reale gia' diffuso
+nel resto di questo file per convenzione pre-esistente, vedi Fase B).
+
+Il 12/06/2025 TIM conferma la cessazione del noleggio dei router Huawei
+(AR1200 series e NetEngine AR600 series); Intrawelt chiede l'indirizzo di
+restituzione lo stesso giorno, ma TIM non risponde. Solleciti inviati il
+24/06/2025 e il 25/07/2025 restano senza risposta operativa nella fonte
+consultata: il processo di restituzione hardware risulta ancora aperto a
+quella data.

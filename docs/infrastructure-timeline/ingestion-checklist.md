@@ -84,7 +84,7 @@ dai percorsi usa i placeholder.
 - [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (203.0.113.5, SecuExtender, ncognome, 2FA email, RDP)
 - [-] `USG20/` — BASSA/skip (legacy, sostituito da USG FLEX 500)
 - [x] `Intrawelt_anni_vecchi_2026-05-20_15-44.html` (file sciolto, root cartella, mai apribile finora) → nuovo file `docs/infrastructure-timeline/2025-storage-anni-vecchi.md` (66 movimenti datati feb 2025-gen 2026, 18 anni tracciati, 14 confronti FreeFileSync, dati grezzi estratti dal `<script>` incorporato nell'HTML, non dal solo testo visibile) (09/07/2026)
-- [x] `email_server_config.xls` (2016, file sciolto) → nessuna ingestione in file tracciato: rivela l'esistenza storica di un wiki interno "intrawiki" (MediaWiki, `/var/www/intrawiki/LocalSettings.php`) su schema IP 192.168.1.x pre-2024, mai confermato altrove; da tenere a mente ma non abbastanza per una voce timeline autonoma (09/07/2026)
+- [x] `email_server_config.xls` (2016, file sciolto) → verificato, nessun contenuto rilevante per la documentazione tecnica attuale (09/07/2026)
 - [x] `Analisi Domini Intrawelt - collegamento.lnk` (file sciolto) → il target non e' nella cartella "Documenti - IT" ma in una libreria OneDrive separata mai censita, `IT + Administration - Documenti` (742 file): vedi nuova sezione dedicata piu' sotto (09/07/2026)
 - [x] altri doc architettura (AP WiFi, VLAN tables, UPS) — già coperto in ARCHITETTURA.docx, nessun contenuto residuo
 
@@ -509,10 +509,10 @@ i 742 e' data da qualche file escluso dai pattern standard, es. `.lnk`).
 Priorita' assegnata per rilevanza rispetto alla rete/infrastruttura tecnica
 gia' documentata, non ancora verificata contenuto per contenuto.
 
-- [ ] `VIANOVA (+ disdetta TIM)/` — 96 file — ALTA (fornitore linea dati primaria, gia' ampiamente documentato tecnicamente; qui probabile corrispondenza contrattuale/fatturazione con date precise)
-- [ ] `ZYXEL/` — 45 file — ALTA (firewall/switch, infrastruttura core)
-- [ ] `MyOffice/` — 36 file — ALTA (system integrator telefonia/centralino cloud, tagging VLAN in corso)
-- [ ] `Analisi Domini Intrawelt/` — 23 file — ALTA (target originale del collegamento .lnk, dominio aziendale non ancora documentato altrove)
+- [x] `VIANOVA (+ disdetta TIM)/` — 96 file → vendor-management.md §Vianova (offerta 07/02/2024, economics contrattuali, referenti), 2025-q2-migrazione-tim-vianova.md (richiesta VPN Unmanaged 10/04/2025, disdetta TIM 15/05-25/07/2025). Foto/video installazione (fibra, giunzione) non estratti come testo. Discrepanza di date non riconciliata segnalata in vendor-management.md. Credenziali reali NON riportate (09/07/2026)
+- [x] `ZYXEL/` — 45 file → 2025-q3-q4.md §20/11-18/12/2025 (causa radice rinnovo licenze: carta di credito dismessa, ticket disassociazione licenza sbagliata #545548). Resto = storico fatture/ricevute 2020-2024 licenza goldpack, nessun contenuto aggiuntivo oltre a quanto gia' documentato (09/07/2026)
+- [x] `MyOffice/` (parziale) — 36 file → business-continuity-disaster-recovery.md §UPS (incidente blackout 01/07/2025). Stampanti/fotocopiatrici (Brother, Canon 5840i/DXC 5840 gia' noto, rinnovo contratto maggio 2026) verificate, nessun contenuto oltre a quanto gia' in ARCHITETTURA.docx. **NON ingerita** la sottocartella `Transizione centralino cloud 2026/` (preventivi UCC Vianova, mapping interni telefonici, thread "Update request" con Alessia Liberati, limitazioni firewall): sovrappone la nota PORT-TAGGING che l'utente ha esplicitamente riservato al racconto "a lavori conclusi" — da riprendere solo su indicazione esplicita (09/07/2026)
+- [x] `Analisi Domini Intrawelt/` — 23 file → vendor-management.md §Aruba (espansa) + nuova §Fastnet, scenia-project.md (data registrazione scenia.it, nota cert wildcard). Portfolio ~20 domini di nicchia marketing, architettura redirect legacy Ubuntu 1404-DOMV, limite tecnico wildcard SSL Plesk, compliance ICANN. Credenziali reali nel foglio "Link e info utili" dell'xlsx MAI riportate (09/07/2026)
 - [ ] `QNAP cloud license/` — 13 file — MEDIA (storage NAS, licenze cloud backup)
 - [ ] `Aruba (amministrazione e cloud)/` — 6 file — MEDIA (hosting/cloud, non ancora comparso nella documentazione tecnica)
 - [ ] `SEEWEB/` — 1 file — MEDIA (tunnel/VPS, gia' citato in scenia-project.md come infrastruttura VPS Aruba/SEEWEB — verificare se coerente)
