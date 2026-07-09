@@ -274,6 +274,14 @@ sono esplicitamente nel documento Word.
 
 ---
 
+## AWS – Access key admin inattiva/non rotata (indagine costo anomalo, febbraio 2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 110 | SEC-012 | Costo anomalo di 0,66 USD su Amazon Translate tracciato a un'unica utenza IAM "adminuser" (AdministratorAccess, creata maggio 2019, **senza MFA**) con una access key attiva dal 2019. Nessun ruolo o job interno AWS risulta aver generato la chiamata (verificato via CloudTrail Event History e job Translate attivi/batch, entrambi vuoti): l'ipotesi piu' probabile e' una vecchia access key salvata su un PC/VM/server esterno (`~/.aws/credentials` o script/plugin obsoleto) ancora in grado di autenticarsi con privilegi admin. La remediation applicata e' stata una Deny Policy mirata solo su `translate:*`, non la rotazione della access key: la chiave resta attiva con privilegi amministrativi completi e la fonte reale della chiamata non e' stata identificata | IT + Administration - Documenti/Amazon AWS/0202026 (policy per bloccare Amazon translate)/ |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -301,5 +309,6 @@ sono esplicitamente nel documento Word.
 | IntraLino benchmark — ingestione cartella n8n (07/07/2026) | 107 |
 | Snapshot v4 (08/07/2026) | 108 |
 | RAEE / smaltimento apparecchiature (08/07/2026) | 109 |
-| **Totale identificati** | **109** |
+| AWS access key admin non rotata (09/07/2026) | 110 |
+| **Totale identificati** | **110** |
 | **Di cui risolti** | **5** (54, 55, 61, 63, 106 — vedi stato "Corretto"/"Fatto"/"Riconciliato") |

@@ -54,11 +54,14 @@ Aggiornato: giugno 2026.
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Partner hardware, NinjaOne RMM, supporto infrastructure |
+| Ragione sociale | Punto Informatica snc di Colò D. & Isidori M., Via Giammarco 28 Fermo (FM) / sede operativa Via Andrea Costa 7 Porto San Giorgio (FM) |
 | Contatto principale | Daniele Colò |
 | SLA hardware | 2 ore (accordo verbale) |
 | RMM | NinjaOne – gestione centralizzata endpoint remoti |
 | Ambito | Fornitura hardware (NAS, server, switch, AP), manutenzione |
-| Modalità fatturazione | [TBC] |
+| Modalità fatturazione | Preventivo → ordine → fattura per singolo acquisto (nessun contratto quadro noto); pagamento con ricevuta bancaria |
+| Acquisto switch Piano Terra | Preventivo n. 85/2026 del 13/03/2026: Zyxel XGS2220-30HP-EU0101F, 746,50 € + IVA (vedi `2026-switch-piano-terra.md` per il dettaglio tecnico dello switch) |
+| Acquisto telefoni VoIP | Preventivo n. 92/2026 del 24/03/2026 (combina i preventivi 85 e 86): 2× Yealink SIP-T31G a 62 €/cad. (scontati 22,5%) e 3× Yealink SIP-T34W a 95 €/cad. (scontati 23,386%), totale imponibile 1.155,50 € |
 
 ---
 

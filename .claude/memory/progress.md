@@ -4,6 +4,27 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Ingestione voci MEDIA di "IT + Administration - Documenti" (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/vendor-management.md (Punto Informatica espanso con
+acquisto switch/telefoni), docs/infrastructure-timeline/GAP-TBC.md
+(#110/SEC-012 AWS access key admin non rotata), docs/infrastructure-timeline/ingestion-checklist.md
+Motivo: completate le 5 voci MEDIA della libreria Administration (QNAP
+cloud license, Aruba amministrazione/cloud, Seeweb, Punto Informatica, AWS
+dismissione Glacier). Trovato un gap di sicurezza reale non risolto: una
+access key IAM AWS con AdministratorAccess creata nel 2019 senza MFA,
+ancora attiva, che ha generato una chiamata anomala ad Amazon Translate la
+cui origine non e' mai stata identificata (mitigata solo con una Deny
+Policy specifica, non con la rotazione della chiave). Confermato l'acquisto
+dello switch Piano Terra (13/03/2026) e dei telefoni Yealink (24/03/2026)
+da Punto Informatica, con prezzi. Verificato e scartato: QNAP cloud license
+(solo foto e fatture Azure), Aruba VPS (studio mai confermato completato,
+credenziali reali mai riportate), Seeweb (contratto scansionato illeggibile).
+La coda ALTA e MEDIA della libreria Administration e' ora chiusa; restano
+le voci BASSA e la sottocartella riservata (MyOffice/Transizione centralino
+cloud 2026/).
+
 ## 2026-07-09 — Ingestione voci ALTA di "IT + Administration - Documenti" (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)

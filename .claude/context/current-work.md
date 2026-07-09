@@ -119,6 +119,10 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   l'utente fornira' come contesto (nota 08/07/2026, vedi roadmap Fase 1bis);
   fino ad allora le sezioni IntraLino restano parziali e il gap #107 aperto.
 - PORT-TAGGING: dettagli del tagging dei due switch (input utente atteso).
+  Nota 09/07: la sottocartella `MyOffice/Transizione centralino cloud 2026/`
+  (742 file della libreria Administration) si sovrappone a questo tema e
+  NON e' stata ingerita per lo stesso motivo — resta in attesa della stessa
+  indicazione.
 - Contraddizione porta/switch telefono di Persona-A (NET-007, M10): la
   mappatura porte 2020-2026 documenta permutazioni sistematiche di etichette
   mai ricorrette, ipotesi errore di etichettatura rafforzata.
@@ -127,3 +131,55 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 - GroupShare: download installer SR2 bloccato, email a support@rws.com da
   inviare (fuori scope progetto rete, tracciato in timeline).
 - Allineamento a `E:\template-claude-developing` rimandato.
+
+### Nuovo (09/07/2026): pendenze emerse dall'ingestione della libreria Administration
+
+- **Discrepanza di date Vianova non riconciliata**: `vendor-management.md`
+  riporta consegna hardware 31/12/2025 e primo appuntamento tecnico
+  02/02/2026; `2025-q2-migrazione-tim-vianova.md` documenta lo stesso tipo
+  di evento con date nel 2025 (consegna 29/03-01/04/2025, primo
+  appuntamento 07/04/2025). Non ho deciso quale sia corretta né se sono due
+  fasi distinte: segnalato inline in entrambi i file, da chiudere con
+  l'utente.
+- **Gap di sicurezza reale non risolto** (GAP-TBC #110/SEC-012): una access
+  key IAM AWS con `AdministratorAccess`, creata nel 2019, **senza MFA**, e'
+  ancora attiva e ha generato una chiamata anomala ad Amazon Translate la
+  cui origine (quale PC/VM/script la usa) non e' mai stata identificata.
+  La mitigazione applicata e' stata solo una Deny Policy sull'azione
+  `translate:*`, non la rotazione della chiave: il rischio di fondo
+  (credenziali admin AWS storiche, non ruotate, di provenienza incerta)
+  resta aperto. Azione operativa suggerita, non eseguita: identificare e
+  ruotare/disattivare quella access key.
+- **Restituzione router Huawei a TIM**: TIM ha confermato la cessazione del
+  noleggio il 12/06/2025 ma non ha mai risposto (solleciti 24/06 e
+  25/07/2025) su dove restituire i due router (AR1200, NetEngine AR600).
+  Stato non aggiornato nella fonte consultata.
+- **Certificato wildcard `intrawelt.com`**: riemesso senza wildcard
+  l'11/05/2026 per un limite tecnico Plesk/DNS (vedi vendor-management.md
+  §Fastnet). Da verificare se `scenia.intrawelt.com` (che secondo
+  scenia-project.md dipendeva dal wildcard) e' ancora coperto.
+- **Progetto di rebranding** citato in un thread email sul rinnovo di
+  `intrawelt.de` (dic. 2025) come motivo per cui il rinnovo era stato
+  inizialmente disattivato: nessun altro dettaglio nella fonte, non
+  ricollegato a nessun documento esistente.
+- **Fase B anonimizzazione** (roadmap.md, non ancora iniziata): un grep
+  esteso confermato il 09/07 mostra IP reali 192.168.x.x non anonimizzati
+  in helpdesk-operations.md, 2023-baseline.md, 2024-infra.md,
+  2025-q1-server-vianova.md, 2025-q3-q4.md, it-backlog.md,
+  runbook-anomalie.md, sviluppo-interno.md, vendor-management.md,
+  vulnerability-assessment-nov2025.md — conferma la portata gia' stimata,
+  nessuna azione presa oltre ai due IP corretti per caso l'08-09/07.
+- **Coda BASSA della libreria Administration**: rimangono da verificare
+  Google cloud services (aborted), Openforce, Eter, TREX, MICROSOFT,
+  ZeroSSL, Fatture Kilocode, Proforma, Rinnovo marchi, Fatture elettricita',
+  _Query provvigioni, Foto sistemazione sala server, Savelli, e i file
+  sciolti in root — priorita' bassa presunta, non verificata (vedi
+  ingestion-checklist.md §IT + Administration - Documenti).
+- **Ambizione originaria della sessione, non esaurita**: l'utente ha
+  chiesto una "timeline completa" con *tutti* i dettagli datati contenuti
+  nei grandi .docx gia' ingeriti in sessioni precedenti (ARCHITETTURA.docx,
+  MICROSOFT 365.docx, TREX.docx, STUDIO-RWS-GROUPSHARE.docx, ecc.), non
+  solo le sintesi gia' scritte. Oggi si sono ingeriti solo i file sciolti
+  mai apriti e la nuova libreria Administration: un secondo passaggio di
+  ri-estrazione esaustiva dai grandi .docx originali resta da fare e non e'
+  ancora stato scoping-ato in micro-step.
