@@ -113,11 +113,11 @@ File audio: `ARCHITETTURA SERVER-CLOUD-LINEE/Telefono-PBX/SEGRETERIA INTRAWELT/`
 
 Fonte: chat Persona-P (informativa costi PBX).
 
-| Tipo | Costo licenza | Note |
+| Tipo | Costo licenza (fascia) | Note |
 |------|--------------|------|
-| SIP phone | <importo> | Richiede client VoIP terzo (molti gratuiti) |
-| Softphone Panasonic | <importo> | Replica software del telefono fisico, identico per tasti e LED |
-| IP phone | <importo> + hardware | Come postazione MARSK; richiede VPN fissa + telefono fisico (~<importo>) |
+| SIP phone | Fascia bassa | Richiede client VoIP terzo (molti gratuiti) |
+| Softphone Panasonic | Fascia alta rispetto al SIP phone | Replica software del telefono fisico, identico per tasti e LED |
+| IP phone | Fascia bassa + hardware | Come postazione MARSK; richiede VPN fissa + telefono fisico |
 
 ---
 
