@@ -4,6 +4,21 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Risolta discrepanza date Vianova: due migrazioni distinte (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/vendor-management.md (§Vianova riscritta con due
+evoluzioni separate), .claude/context/current-work.md (nota discrepanza
+chiusa)
+Motivo: l'utente ha chiarito che non era un errore di date ma due
+migrazioni Vianova distinte confuse in un'unica tabella: la migrazione
+della linea dati (fibra FTTO, sostituzione TIM, marzo-luglio 2025,
+conclusa) e la migrazione del centralino cloud (PBX, dicembre 2025-2026,
+ancora in corso, oggetto della nota PORT-TAGGING). Riscritta la sezione con
+due tabelle "Evoluzione rapporto" separate; corretta anche l'etichetta
+errata "primo appuntamento tecnico per attivazione dati" del 02/02/2026,
+che in realta' riguarda il centralino.
+
 ## 2026-07-09 — Ingestione voci MEDIA di "IT + Administration - Documenti" (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)
