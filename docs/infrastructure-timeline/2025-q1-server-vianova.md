@@ -105,10 +105,10 @@ conferma dell'utilizzo di 48 CPU (2x24 core) sul nuovo server HP ProLiant DL380 
 
 Il server HP ProLiant DL380 Gen10 viene acceso per la prima volta nell'ufficio di
 Daniele Colo' (Punto Informatica). Il server ha Proxmox VE 8.3.4 preinstallato
-incluso nell'acquisto (documento di riferimento: Preventivo-9_2025-INTRAWELT-di-
-Alessandro-Potalivo--c-Sas.pdf). Il preventivo include anche la creazione e
-installazione di 2 VM Linux e 1 VM Windows Server 2022, piu' la licenza Windows
-Server 2022 Standard ESD.
+incluso nell'acquisto (documento di riferimento: preventivo Punto
+Informatica, riferimento non riportato per policy amministrativa). Il
+preventivo include anche la creazione e installazione di 2 VM Linux e 1 VM
+Windows Server 2022, piu' la licenza Windows Server 2022 Standard ESD.
 
 Al primo accensione la scheda iLO5 prende indirizzo IP di default 192.168.1.71
 (indirizzo di fabbrica, poi cambiato). Credenziali iLO5 di fabbrica scritte

@@ -17,6 +17,26 @@ un dispositivo reale, e ogni nome proprio completo di una persona fisica
 (dipendenti, referenti di fornitori, collaboratori esterni), vanno sostituiti
 con un placeholder prima di scrivere in un file tracciato.
 
+## Dati amministrativi e commerciali: mai in un file tracciato
+
+Il repository e' pubblico: nessuna informazione aziendale trapela, e questo
+vale a maggior ragione per i dati di natura amministrativa e commerciale,
+non solo per IP/MAC/nomi propri. Non si scrivono mai in un file tracciato,
+nemmeno come dettaglio a corredo di un fatto tecnico: importi contrattuali
+e canoni (mensili, annuali, a consumo), prezzi di acquisto di hardware o
+licenze, percentuali di sconto negoziate, numeri di fattura/ordine/preventivo,
+numeri di linea telefonica o di interno reali, IBAN e altri dati bancari,
+partita IVA e codice fiscale di controparti (fornitori, clienti), termini
+contrattuali specifici quando rivelano condizioni economiche (durata con
+penale, importo del contributo di installazione). Il fatto operativo resta
+raccontabile, il numero no: si scrive "e' stato acquistato un nuovo switch
+tramite un preventivo Punto Informatica" e non il prezzo o il numero del
+preventivo; si scrive "rinnovo del canone Vianova" e non l'importo mensile;
+si scrive "una linea telefonica dismessa" e non il numero. Le eccezioni
+dell'anonimizzazione IP/MAC/nomi (nome della societa' e dei fornitori,
+caselle funzionali) restano valide: e' il *nome* del fornitore che si puo'
+scrivere, mai la cifra o il riferimento del documento amministrativo.
+
 ## Cosa resta reale
 
 Il nome della societa' (Intrawelt) e dei fornitori/vendor (Vianova, myOffice,

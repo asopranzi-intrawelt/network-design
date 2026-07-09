@@ -282,7 +282,7 @@ Da `Domande_interne_Intrawelt_2026-06-11.md` — risposte già inserite da Intra
 |-------|--------|
 | Ragione sociale | Intrawelt di Persona-A & C. s.a.s. |
 | Sede legale | Via Elpidiense 14, 63821 Porto Sant'Elpidio (FM) |
-| P.IVA | 01287540445 |
+| P.IVA | Non riportata per policy amministrativa |
 | Legale rappresentante | Persona-A |
 | Referente privacy | Persona-A — privacy@intrawelt.com |
 | DPO | Persona-A (designato internamente; soglia art. 37 da verificare con legale) |
@@ -562,7 +562,7 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` — decisione architetturale 11/
 ### Email transazionale
 
 - Provider: Mailtrap (form contatto sito, webhook portale)
-- Register.it: 5.000 invii/giorno a €15.68/mese come alternativa valutata
+- Register.it: piano a 5.000 invii/giorno valutato come alternativa (costo non riportato)
 
 ### Audit
 

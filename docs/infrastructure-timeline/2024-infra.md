@@ -36,13 +36,12 @@ delle 5 licenze di rete si libera. Fonte: `Helpdesk_ABBYY/ABBYY.docx`
 
 ## 20/11/2024 - Rinnovo licenza annuale Zyxel marketplace
 
-Rinnovo abbonamento annuale Zyxel marketplace con carta di credito terminante con
-4284. Dettagli dell'ordine:
-Order Reference: ZNET241120-9007-66116
-License Key: [redacted]
+Rinnovo abbonamento annuale Zyxel marketplace con carta di credito
+aziendale (dettagli pagamento non riportati per policy amministrativa).
 Device S/N: S232L12101347
-Device MAC: FC:22:F4:E9:A4:4C
-Mail di conferma ricevuta il 20/11/2024 alle ore 09:41.
+Device MAC: AA:BB:CC:00:00:20
+Mail di conferma ricevuta il 20/11/2024 alle ore 09:41 (numero d'ordine e
+license key non riportati per policy amministrativa).
 Account migrato da psconciafurno@intrawelt.com a it@intrawelt.com / [redacted]
 
 ## 21-22/11/2024 - Black-out elettrico: crisi NAS INTRA2

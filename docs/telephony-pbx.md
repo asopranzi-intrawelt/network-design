@@ -111,13 +111,13 @@ File audio: `ARCHITETTURA SERVER-CLOUD-LINEE/Telefono-PBX/SEGRETERIA INTRAWELT/`
 
 ## Opzioni softphone (telefono su PC)
 
-Fonte: chat Pasquale Sconciafurno (informativa costi PBX).
+Fonte: chat Persona-P (informativa costi PBX).
 
-| Tipo | Costo licenza | Note |
+| Tipo | Costo licenza (fascia) | Note |
 |------|--------------|------|
-| SIP phone | €45 | Richiede client VoIP terzo (molti gratuiti) |
-| Softphone Panasonic | €190 | Replica software del telefono fisico, identico per tasti e LED |
-| IP phone | €45 + hardware | Come postazione MARSK; richiede VPN fissa + telefono fisico (~€200) |
+| SIP phone | Fascia bassa | Richiede client VoIP terzo (molti gratuiti) |
+| Softphone Panasonic | Fascia alta rispetto al SIP phone | Replica software del telefono fisico, identico per tasti e LED |
+| IP phone | Fascia bassa + hardware | Come postazione MARSK; richiede VPN fissa + telefono fisico |
 
 ---
 

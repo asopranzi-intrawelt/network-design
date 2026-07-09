@@ -4,6 +4,38 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Audit e bonifica dati amministrativi/commerciali (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: `.claude/rules/anonymization.md` (nuova sezione "Dati
+amministrativi e commerciali: mai in un file tracciato"), `_notes/.anonymization-map.md`
+(Referente-OpenForce-2/3, Persona-U, Referente-Proelium-1/2, MAC
+AA:BB:CC:00:00:20), docs/vendor-management.md, docs/infrastructure-timeline/2025-q2-migrazione-tim-vianova.md,
+docs/infrastructure-timeline/2025-q1-server-vianova.md,
+docs/infrastructure-timeline/2025-q3-q4.md, docs/infrastructure-timeline/2024-infra.md,
+docs/infrastructure-timeline/GAP-TBC.md, docs/infrastructure-timeline/ingestion-checklist.md,
+docs/helpdesk-operations.md, docs/cybersecurity-governance.md,
+docs/scenia-project.md, docs/telephony-pbx.md
+Motivo: l'utente ha ricordato che il repository e' pubblico e che nessuna
+informazione aziendale deve trapelare, "neanche di tipo amministrativo" —
+la regola di anonimizzazione fino ad ora coprivo solo IP/MAC/nomi propri,
+non importi contrattuali, prezzi, numeri di fattura/ordine/preventivo,
+numeri di linea telefonica. Aggiornata la regola con una sezione dedicata,
+poi bonificato tutto quanto scritto nella sessione (e trovato per caso
+mentre si controllava, anche di sessioni precedenti): importi contrattuali
+Vianova/Punto Informatica/Openforce/Proelium/Aruba Cloud, un numero di
+linea telefonica reale, numeri di preventivo/ordine (P220126, SO1429,
+ZNET241120-9007-66116, Preventivo-9_2025), il costo dell'anomalia AWS, un
+ticket Zyxel, e la Partita IVA reale di Intrawelt in un DPA. Trovato anche
+un caso serio non legato a oggi: le ultime 4 cifre reali di una carta di
+credito aziendale scritte in chiaro in `2024-infra.md` (rinnovo Zyxel
+20/11/2024), insieme a un MAC address reale non ancora anonimizzato —
+entrambi corretti. Corretti anche due nomi propri di referenti Proelium che
+una sessione precedente aveva deliberatamente lasciato "per la Fase B":
+la decisione e' stata superata dalla richiesta esplicita di oggi di non
+aspettare. Non toccati gli IP reali pre-esistenti sparsi nel resto del
+repository (Fase B, workstream separato, portata gia' nota).
+
 ## 2026-07-09 — Coda BASSA di "IT + Administration - Documenti" chiusa (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)
@@ -15,7 +47,7 @@ cert VPN cancellato), docs/infrastructure-timeline/ingestion-checklist.md
 Motivo: chiuse tutte le voci BASSA residue (Google Cloud abortito,
 Openforce, Eter, TREX, MICROSOFT, ZeroSSL, Rinnovo marchi, Savelli, file
 sciolti root, foto sala server). Trovati: preventivo Openforce per
-l'analisi di migrazione Odoo v12->v18 (30h, 2.400€, nov-dic 2025) con
+l'analisi di migrazione Odoo v12->v18 (nov-dic 2025, importo non riportato) con
 cambio di contatto tecnico; pressione temporale dal fornitore Odoo (fee
 +25% annuo su versioni legacy da aprile 2026); razionale a tre livelli
 della difesa in profondita' (Defender P1 cloud/email, Bitdefender endpoint,
@@ -377,9 +409,10 @@ File toccati:
     bonifica del percorso UNC del NAS reale -> 10.61.20.177)
   - docs/helpdesk-operations.md (tre sezioni Odoo: ambiente di sviluppo
     locale e restore, audit attivita' utente v12, studio API CRM)
-  - docs/vendor-management.md (Proelium: preventivo P220126 22/01/2026 solo
-    VA, 1.200 EUR/2gg o triennale 3.100 EUR, scaduto non accettato; dettaglio
-    metodologia dalla call 19/01; bonifica IP Seeweb -> 10.77.116.3)
+  - docs/vendor-management.md (Proelium: preventivo 22/01/2026 solo
+    VA, pacchetto singolo o triennale (importi non riportati), scaduto non
+    accettato; dettaglio metodologia dalla call 19/01; bonifica IP Seeweb ->
+    10.77.116.3)
   - docs/infrastructure-timeline/GAP-TBC.md (#105/SEC-011 esteso a
     Veeam_DRAFT.pdf e transcript Odoo 28/05)
   - docs/infrastructure-timeline/ingestion-checklist.md (6 voci MEDIA [x],

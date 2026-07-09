@@ -134,6 +134,20 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 
 ### Nuovo (09/07/2026): pendenze emerse dall'ingestione della libreria Administration
 
+- RISOLTO (09/07): l'utente ha ricordato che il repository pubblico non deve
+  esporre nessuna informazione aziendale, "neanche di tipo amministrativo".
+  Aggiunta una sezione dedicata a `.claude/rules/anonymization.md` (importi
+  contrattuali, prezzi, numeri di fattura/ordine/preventivo, numeri di
+  linea telefonica, IBAN, P.IVA di terzi non vanno mai in un file
+  tracciato). Bonificato tutto quanto scritto nella libreria Administration
+  oggi, e per bonus anche alcuni casi pre-esistenti trovati durante il
+  controllo: due nomi propri Proelium che una sessione precedente aveva
+  lasciato "per la Fase B" (ora corretti, la decisione e' stata superata),
+  un numero di preventivo Zyxel/Vianova, e un caso serio non collegato
+  all'ingestione di oggi — le ultime 4 cifre reali di una carta di credito
+  aziendale e un MAC address reale, scritti in chiaro in `2024-infra.md`
+  fin da una sessione precedente. Gli IP reali pre-esistenti nel resto del
+  repository restano il workstream separato della Fase B, non toccati.
 - RISOLTO (09/07): la presunta discrepanza di date Vianova non era un
   errore ma due migrazioni distinte confuse in un'unica tabella — linea
   dati (2025, TIM→Vianova) e centralino cloud (dic.2025-2026, in corso).

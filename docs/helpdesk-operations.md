@@ -457,12 +457,12 @@ Analisi flussi condotta con Openforce (novembre 2025). Moduli da migrare da Odoo
 **Stato:** Analisi flussi completata (scaletta nov 2025). Openforce ha preventivato i costi.
 Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione T-Rex).
 
-**Preventivo analisi (Openforce, SO1429):** 27/11/2025, firmato per accettazione
-03/12/2025 (Alessandro Potalivo). Pacchetto di 30 ore con 2 Account Manager
-per "analisi flussi v12 e soluzioni v18" (OLDMIG), 2.400 € + IVA. Contatto
-tecnico Openforce cambiato nel frattempo: Patrick Trabocchi sostituisce
-Matteo come referente tecnico dal 03/12/2025 (Account Manager: Manuele
-Favale).
+**Preventivo analisi (Openforce):** 27/11/2025, firmato per accettazione
+03/12/2025 (Alessandro Potalivo). Pacchetto a ore con 2 Account Manager per
+"analisi flussi v12 e soluzioni v18" (OLDMIG); importo non riportato per
+policy amministrativa. Contatto tecnico Openforce cambiato nel frattempo:
+Referente-OpenForce-3 sostituisce Persona-U come referente tecnico dal
+03/12/2025 (Account Manager: Referente-OpenForce-2).
 
 **Pressione temporale dal fornitore Odoo:** Odoo ha annunciato il
 28/10/2025 nuovi termini di supporto Enterprise: dal supporto limitato alle
