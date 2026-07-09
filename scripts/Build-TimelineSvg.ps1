@@ -35,6 +35,7 @@ $files = @(
     @{ Name = "2025-q1-server-vianova.md";        Year = 2025 },
     @{ Name = "2025-q2-migrazione-tim-vianova.md";Year = 2025 },
     @{ Name = "2025-q3-q4.md";                    Year = 2025 },
+    @{ Name = "2025-storage-anni-vecchi.md";      Year = 2025 },
     @{ Name = "2026-switch-piano-terra.md";       Year = 2026 }
 )
 

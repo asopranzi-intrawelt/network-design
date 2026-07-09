@@ -1,13 +1,18 @@
 # Checklist Ingestion Documenti IT – Intrawelt
 
-Cartella sorgente: `C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT`  
+Cartelle sorgente (due librerie OneDrive distinte, entrambe monitorate dal
+09/07/2026):
+- `C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT` (tecnica, perimetro principale)
+- `C:\Users\Utente\OneDrive - Intrawelt S.a.s\IT + Administration - Documenti` (amministrativa/fornitori, 742 file — scoperta il 09/07/2026 tramite un collegamento `.lnk` dentro ARCHITETTURA SERVER-CLOUD-LINEE, sezione dedicata piu' sotto)
+
 Aggiornato: 2026-07-09 | Owner: Alessio Sopranzi
 
-Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta la cartella con una
-baseline locale (`_notes/.onedrive-manifest.json`, non versionata) e viene eseguito
+Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta entrambe le cartelle
+con le rispettive baseline locali (`_notes/.onedrive-manifest.json` e
+`_notes/.onedrive-manifest-admin.json`, non versionate) e viene eseguito
 automaticamente a ogni avvio di sessione (hook SessionStart in `settings.local.json`).
 Quando il report segnala variazioni, le voci rilevanti si registrano qui e si riesegue
-lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-08.
+lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-09 (entrambe le librerie).
 
 Nota (09/07/2026): i nomi cartella effettivi su disco per alcune voci differiscono
 da quelli storici scritti in questa checklist (es. `Sviluppo_interno, scripting (IT on
@@ -16,6 +21,17 @@ FIRE)` -> reale `sviluppo-interno`; `Sviluppo_NinjaOne` -> reale `sviluppo-ninja
 `sviluppo-odoo`). La cartella top-level `TOOL AI coding assistance` esiste anche fuori
 da `sviluppo-interno` (verificata vuota). I riferimenti restano coi nomi storici per
 continuita' con le voci gia' spuntate, ma la verifica futura va fatta sui nomi reali.
+
+Nota (09/07/2026, seconda): le cartelle `sviluppo-interno`, `sviluppo-ninjaOne`,
+`sviluppo-odoo` e `sviluppo-proxmox` sono state rimosse da OneDrive lo stesso
+giorno perche' l'utente le ha convertite in progetti standalone sotto `D:\`
+(es. `D:\sviluppo-ninjaOne`, `D:\intralino`, `D:\openproject`, `D:\eni-ruolini-python-local`,
+ecc. — riorganizzazione dello spazio di lavoro personale, non perdita dati:
+verificato con l'utente). Le voci di ingestione gia' spuntate sopra restano valide
+come documentazione storica di cosa era stato studiato quando quei contenuti
+vivevano ancora su OneDrive; non richiedono correzione. La baseline del delta e'
+stata aggiornata di conseguenza e non segnalera' piu' queste cartelle come
+"eliminate" nelle sessioni successive.
 
 Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai ingestire (credenziali)
 
@@ -67,6 +83,9 @@ dai percorsi usa i placeholder.
 - [x] `ZYXEL FIREWALL e VPN/Ricerca Blocco Traffico in uscita per centralino.docx` → 2026-switch-piano-terra.md §23/03/2026 (7 subnet VoIP verificate, nessun blocco firewall, causa non USG FLEX 500)
 - [x] `ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx` → helpdesk-operations.md §VPN (203.0.113.5, SecuExtender, ncognome, 2FA email, RDP)
 - [-] `USG20/` — BASSA/skip (legacy, sostituito da USG FLEX 500)
+- [x] `Intrawelt_anni_vecchi_2026-05-20_15-44.html` (file sciolto, root cartella, mai apribile finora) → nuovo file `docs/infrastructure-timeline/2025-storage-anni-vecchi.md` (66 movimenti datati feb 2025-gen 2026, 18 anni tracciati, 14 confronti FreeFileSync, dati grezzi estratti dal `<script>` incorporato nell'HTML, non dal solo testo visibile) (09/07/2026)
+- [x] `email_server_config.xls` (2016, file sciolto) → nessuna ingestione in file tracciato: rivela l'esistenza storica di un wiki interno "intrawiki" (MediaWiki, `/var/www/intrawiki/LocalSettings.php`) su schema IP 192.168.1.x pre-2024, mai confermato altrove; da tenere a mente ma non abbastanza per una voce timeline autonoma (09/07/2026)
+- [x] `Analisi Domini Intrawelt - collegamento.lnk` (file sciolto) → il target non e' nella cartella "Documenti - IT" ma in una libreria OneDrive separata mai censita, `IT + Administration - Documenti` (742 file): vedi nuova sezione dedicata piu' sotto (09/07/2026)
 - [x] altri doc architettura (AP WiFi, VLAN tables, UPS) — già coperto in ARCHITETTURA.docx, nessun contenuto residuo
 
 ---
@@ -476,6 +495,39 @@ tracciati i fatti gia' noti: voce 07/07/2026 in
 dorsale senza perdere connettivita' verso NAS-HERO) e TEL-002 (telefoni via
 vano ascensore non passano le VLAN) in GAP-TBC #102/#103. `Mappatura porte
 fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
+
+---
+
+## IT + Administration - Documenti — 742 file (nuova libreria, censita il 09/07/2026)
+
+Libreria OneDrive separata, scoperta tramite il collegamento `Analisi Domini
+Intrawelt - collegamento.lnk` dentro `ARCHITETTURA SERVER-CLOUD-LINEE/`.
+Complemento amministrativo/fornitori di tutta la parte tecnica gia' ingerita:
+contratti, fatture, corrispondenza vendor. Baseline creata il 09/07/2026
+(`_notes/.onedrive-manifest-admin.json`, 738 file censiti — la differenza con
+i 742 e' data da qualche file escluso dai pattern standard, es. `.lnk`).
+Priorita' assegnata per rilevanza rispetto alla rete/infrastruttura tecnica
+gia' documentata, non ancora verificata contenuto per contenuto.
+
+- [ ] `VIANOVA (+ disdetta TIM)/` — 96 file — ALTA (fornitore linea dati primaria, gia' ampiamente documentato tecnicamente; qui probabile corrispondenza contrattuale/fatturazione con date precise)
+- [ ] `ZYXEL/` — 45 file — ALTA (firewall/switch, infrastruttura core)
+- [ ] `MyOffice/` — 36 file — ALTA (system integrator telefonia/centralino cloud, tagging VLAN in corso)
+- [ ] `Analisi Domini Intrawelt/` — 23 file — ALTA (target originale del collegamento .lnk, dominio aziendale non ancora documentato altrove)
+- [ ] `QNAP cloud license/` — 13 file — MEDIA (storage NAS, licenze cloud backup)
+- [ ] `Aruba (amministrazione e cloud)/` — 6 file — MEDIA (hosting/cloud, non ancora comparso nella documentazione tecnica)
+- [ ] `SEEWEB/` — 1 file — MEDIA (tunnel/VPS, gia' citato in scenia-project.md come infrastruttura VPS Aruba/SEEWEB — verificare se coerente)
+- [ ] `Daniele Colò - Punto informatica/` — 64 file — MEDIA (fornitore assistenza hardware, SLA gia' documentato in business-continuity-disaster-recovery.md; qui probabile dettaglio contrattuale)
+- [ ] `Amazon AWS (dismissione Glacier, migrazione S3, eliminazione servizi inutili)/` — 118 file — MEDIA (gia' emerso nell'analisi degli anni vecchi che AWS Glacier era una fonte; qui la parte contrattuale/dismissione)
+- [ ] `Google cloud services (aborted)/` — 4 file — BASSA (progetto abortito, per completezza)
+- [ ] `Openforce/` — 3 file — BASSA (vendor traduzioni gia' documentato altrove)
+- [ ] `Eter/` — 7 file — BASSA (vendor certificati gia' citato in vendor-management.md)
+- [ ] `TREX/` — 2 file — BASSA (gia' ampiamente documentato lato tecnico)
+- [ ] `MICROSOFT/` — 5 file — BASSA (gia' ampiamente documentato lato tecnico, qui probabile fatturazione)
+- [ ] `ZeroSSL/` — 10 file — BASSA (certificati SSL, verificare se materiale crittografico reale come `Certificati/`)
+- [ ] `Fatture Kilocode/`, `Proforma/`, `Rinnovo marchi/`, `Fatture elettricità/`, `_Query per dati provvigione...` — BASSA/fuori scope (amministrazione/contabilita' pura, non IT)
+- [ ] `Foto sistemazione sala server e RIP catafalco/` — 37 file — BASSA (probabilmente fotografico, verificare se ci sono note testuali)
+- [ ] `Savelli/` — 1 file — da identificare (vendor non ancora noto)
+- [ ] file sciolti root (`Certificato_Intrawelt_carichi_pendenti_18.10.17.pdf`, `Convenzione_Università_Trieste_12.03.18.pdf`, `Liberatoria_Tods_Interpreti.pdf`, `README - Microsoft utili.png`, `README.txt`, `ticket cassetto fiscale.7z`) — da verificare, priorita' bassa presunta
 
 ## Riepilogo priorità (rigenerato 09/07/2026 dallo stato reale delle spunte)
 
