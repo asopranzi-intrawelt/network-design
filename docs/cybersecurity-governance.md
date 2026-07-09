@@ -50,7 +50,7 @@ la sottoscrizione del 15/09/2025 (vedi Q4 2025 e il registro sub-responsabili).
 
 | Data | Evento | Dettaglio |
 |------|--------|-----------|
-| 19/01/2026 | Call informativa Proelium | Incontro con Luca Battistini e Luca Ruggeri (Proelium, nata 2025). Presentazione servizi PT esterno (black-box), graybox web app, piattaforma SaaS report. Costo indicativo VA: ~2.000€ + IVA per 3 gg. PT esterno quotazione da fare. |
+| 19/01/2026 | Call informativa Proelium | Incontro con Referente-Proelium-1 e Referente-Proelium-2 (Proelium, nata 2025). Presentazione servizi PT esterno (black-box), graybox web app, piattaforma SaaS report. Costo indicativo VA per un pacchetto di alcune giornate; PT esterno quotazione da fare (importi non riportati per policy amministrativa). |
 | Q1 2026 | Executive summary PT | Documento di valutazione strategia sicurezza: Bitdefender + PT esterni come approccio ibrido. |
 | Feb 2026 | Physical security stub | Documento sicurezza fisica (da espandere). |
 | Mar 2026 | Piano attività sicurezza 2026 | [TBC] |

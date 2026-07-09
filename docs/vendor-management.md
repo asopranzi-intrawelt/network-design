@@ -21,12 +21,12 @@ completo a lavori conclusi (vedi `current-work.md`).
 | Inizio servizio telefonia (tradizionale) | Aprile 2024 |
 | Migrazione linea dati (TIM → Vianova) | Marzo-Luglio 2025, completata (dettaglio in `2025-q2-migrazione-tim-vianova.md`) |
 | Migrazione centralino cloud (PBX → Vianova UCC) | In corso da dicembre 2025, non ancora conclusa |
-| Costo indicativo | 984 €/mese (linea dati + telefonia) |
+| Costo | Dato amministrativo, non riportato (vedi `.claude/rules/anonymization.md`) |
 | IP pubblici | Pool 193.124.241.x/28 (14 IP utilizzabili) |
 | Hardware fornito (linea dati) | Router Vianova R-1000 x2 (HSRP), UPS-700 |
 | SLA | [TBC] |
 | Contatto tecnico | Referente-Vianova-3 (Samuele Sbacco, Key Account Manager), Referente-Vianova-4 (Federico Benetton, Sales Manager) |
-| Offerta commerciale (linea dati) | Proposta scritta datata 07/02/2024 (n. 202456LNQ896), tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Contratto: 984 €/mese totali (rete fissa 960 €/mese FTTO 1Gbps a progetto + 24 €/mese opzione traffico flat), contributo di installazione 0 €. Durata 36 mesi con tacito rinnovo di 12 in 12 mesi, disdetta con 30 giorni di preavviso; penale di recesso anticipato prima dei 36 mesi |
+| Offerta commerciale (linea dati) | Proposta scritta datata 07/02/2024, tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Canone a due voci (rete fissa FTTO 1Gbps a progetto + opzione traffico flat), contributo di installazione escluso da questa scheda per policy. Durata pluriennale con tacito rinnovo, disdetta a preavviso; penale di recesso anticipato |
 
 **Evoluzione rapporto — linea dati (2024-2025, conclusa):**
 
@@ -76,9 +76,9 @@ completo a lavori conclusi (vedi `current-work.md`).
 | SLA hardware | 2 ore (accordo verbale) |
 | RMM | NinjaOne – gestione centralizzata endpoint remoti |
 | Ambito | Fornitura hardware (NAS, server, switch, AP), manutenzione |
-| Modalità fatturazione | Preventivo → ordine → fattura per singolo acquisto (nessun contratto quadro noto); pagamento con ricevuta bancaria |
-| Acquisto switch Piano Terra | Preventivo n. 85/2026 del 13/03/2026: Zyxel XGS2220-30HP-EU0101F, 746,50 € + IVA (vedi `2026-switch-piano-terra.md` per il dettaglio tecnico dello switch) |
-| Acquisto telefoni VoIP | Preventivo n. 92/2026 del 24/03/2026 (combina i preventivi 85 e 86): 2× Yealink SIP-T31G a 62 €/cad. (scontati 22,5%) e 3× Yealink SIP-T34W a 95 €/cad. (scontati 23,386%), totale imponibile 1.155,50 € |
+| Modalità fatturazione | Preventivo → ordine → fattura per singolo acquisto (nessun contratto quadro noto) |
+| Acquisto switch Piano Terra | Zyxel XGS2220-30HP-EU0101F acquistato con preventivo del 13/03/2026 (vedi `2026-switch-piano-terra.md` per il dettaglio tecnico dello switch); importi non riportati per policy |
+| Acquisto telefoni VoIP | 2× Yealink SIP-T31G e 3× Yealink SIP-T34W acquistati con preventivo del 24/03/2026; importi non riportati per policy |
 
 ---
 
@@ -155,11 +155,11 @@ completo a lavori conclusi (vedi `current-work.md`).
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Penetration Test esterno (in valutazione) |
-| Contatti | Luca Battistini, Luca Ruggeri |
+| Contatti | Referente-Proelium-1, Referente-Proelium-2 |
 | Fondazione | 2025 |
 | Specializzazione | Application security web, external PT, internal PT |
 | Incontro | 19/01/2026 (call informativa) |
-| Preventivo | P220126 del 22/01/2026: solo VA. Pacchetto 1: 2 giornate, 1.200 € + IVA. Pacchetto 2 triennale: 3 × 2 giornate, 3.100 € + IVA (sconto 500 €). Validita' 60 giorni (scaduta, non accettata) |
+| Preventivo | Preventivo del 22/01/2026, solo VA: pacchetto singolo (2 giornate) o pacchetto triennale (3× 2 giornate, scontato). Importi non riportati per policy. Validita' 60 giorni (scaduta, non accettata) |
 | Servizio | Black-box external: enumerazione asset, servizi esposti, brute force, web compromise |
 | Piattaforma | SaaS proprietaria (app.proelium.io): risultati in tempo reale, storico report e vulnerabilita' fixate |
 | Stato | Non ancora ingaggiato. Decisione subordinata a piano budget 2026. |
@@ -174,7 +174,7 @@ sulla rete esterna lavora black-box servizio per servizio (brute force sulle
 autenticazioni, compromissione dei web server) e sulle web app segue una
 metodologia verticale graybox, con credenziali per ogni ruolo applicativo. I
 progetti possono essere annuali, con riapertura del ciclo di test ogni 6-12
-mesi e reportistica scaricabile con storico. Il preventivo P220126 copre il
+mesi e reportistica scaricabile con storico. Il preventivo copre il
 solo VA: da remoto, previa manleva firmata, con conferma del perimetro e
 preavviso a SOC e provider coinvolti; deliverable un report tecnico
 (sintesi executive piu' dettaglio con evidenze replicabili, impatto,
@@ -211,7 +211,7 @@ e 60% alla consegna del report.
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Registrar/hosting domini, DNS |
-| Domini gestiti (registrar) | ~20 domini di marketing per nicchia di traduzione (traduzionetecnica.net/.com, traduzionemedica, traduzionifinanziarie, traduzionifarmaceutiche, traduzionilegale, traduzionimanuali, traduzionibilanci, traduzionicertificate/-a, traduzioniurgenti, ecc.), via Tucows Domains Inc. o Aruba S.p.A. come registrar, fatturati mensilmente (es. fattura 09/03/2025, ~15€/dominio + IVA); rinnovi annuali marzo 2026 |
+| Domini gestiti (registrar) | ~20 domini di marketing per nicchia di traduzione (traduzionetecnica.net/.com, traduzionemedica, traduzionifinanziarie, traduzionifarmaceutiche, traduzionilegale, traduzionimanuali, traduzionibilanci, traduzionicertificate/-a, traduzioniurgenti, ecc.), via Tucows Domains Inc. o Aruba S.p.A. come registrar; rinnovi annuali marzo 2026 |
 | intrawelt.de | Registrato presso DENIC tramite Aruba, DNS gestito da Aruba; contenuto sito redirect gestito da Fastnet verso `intrawelt.com/de/` (non confondere con l'hosting, che resta su Aruba); rinnovo anticipato a dicembre per gennaio |
 | intrawebsite.it | Dominio dismesso, non piu' rinnovato: scaduto il 30/10/2025. Ospitava un vecchio sito WordPress, redirect verso `intrawelt.com`. Il certificato SSL DV associato si autorinnova su Aruba (WordPress hosting gestito) fino al 06/07/2026: da revocare esplicitamente dopo la scadenza del dominio, altrimenti resta attivo su un dominio ormai spirato |
 | Architettura redirect legacy | I ~20 domini di nicchia puntavano storicamente a una VM `Ubuntu 1404-DOMV` (landing page dedicata per dominio). Migrazione pianificata: le pagine vengono spostate come sottopagine di `intrawelt.com` (es. `intrawelt.com/domv/<dominio>`), il redirect viene impostato su Aruba, e la VM Ubuntu 1404-DOMV viene infine spenta. Il redirect finale per la maggior parte dei domini passa fisicamente dal firewall ZYXEL USG FLEX 500 |

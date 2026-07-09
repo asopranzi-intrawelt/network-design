@@ -184,7 +184,7 @@ stata svolta in collaborazione con Sonia Martellini via chat Microsoft Teams il
 15/05/2025 (file TIM.xlsx come riferimento).
 
 Nota: la fonia TIM era gia' stata disdettata in precedenza in una tranche separata
-(marzo 2024: disdetta della linea 0734 228131). Al momento delle 6 PEC del 15/05/2025
+(marzo 2024: disdetta di una linea telefonica). Al momento delle 6 PEC del 15/05/2025
 la fonia passa gia' su Vianova e rientra nel centralino Panasonic KX-NCP1000.
 
 Materiale da restituire a TIM (in affitto): Router Huawei NetEngine AR651W, Router
@@ -204,11 +204,9 @@ Vianova a monte del firewall Zyxel, prima che il traffico raggiunga il firewall.
 ## 22/05/2025 - TIM: conferme cessazione linee via PEC
 
 Due PEC da TIM arrivano il 22/05/2025 entrambe alle ore 08:35:15:
-File DMSB.999TO.20250522.01.TXT.EMAIL.20250522202037.001.35326577.067TO.pdf:
-  numero prot. C36869874, oggetto "cessazione linea 073413517900", data
-  comunicazione Intrawelt 15/05/2025.
-File DMSB.999TO.20250522.01.TXT.EMAIL.20250522200038.001.35326551.067TO.pdf:
-  seconda linea confermata.
+Due comunicazioni PEC confermano la cessazione di due linee telefoniche
+distinte, con data di comunicazione Intrawelt 15/05/2025 (numeri di
+protocollo e di linea non riportati per policy amministrativa).
 
 Materiale da restituire indicato nelle PEC: Router Huawei NetEngine AR651W,
 Router Huawei AR1220E, Firewall Taurus Bond.
@@ -410,10 +408,11 @@ pannello admin QNAP, non la porta SSL per Zywall Secure Extender.
 
 ## 15/05-25/07/2025 - Disdetta TIM: 6 servizi cancellati via PEC, rientro router Huawei
 
-Il 15/05/2025 Persona-B disdice via PEC 6 fatture/servizi TIM residui
-(fatturati 10/04/2025, periodo 01-31/03/2025): il canone TBond MultiLink
-(240 €) e cinque linee telefoniche, tra cui la linea 073416998075 ("Nuvola
-Sinfonia"). Il 22/05/2025 TIM Business conferma la ricezione della richiesta
+Il 15/05/2025 Persona-B disdice via PEC 6 servizi TIM residui (fatturati
+10/04/2025, periodo 01-31/03/2025): il canone TBond MultiLink e cinque
+linee telefoniche, tra cui una associata al servizio "Nuvola Sinfonia"
+(importi e numeri di linea non riportati per policy amministrativa). Il
+22/05/2025 TIM Business conferma la ricezione della richiesta
 di cancellazione via un canale email diverso da quello usato per la disdetta
 originale, generando confusione interna (il 28/05/2025 Alessandro Potalivo
 verifica che non si tratti di una disdetta doppia — nome reale gia' diffuso
