@@ -149,10 +149,25 @@ Blocco schermo automatico dopo **5 minuti** di inattività.
 | Sandbox Analyzer | Attivo (cloud) | |
 | Risk Management (VA interno) | Pianificato | Modulo da attivare |
 | Patch Management | Pianificato | Modulo da attivare |
-| Email Security | [TBC] | Exchange Online – da verificare integrazione |
+| Email Security | Coperta da Microsoft Defender per Office 365 (P1), non da Bitdefender | Vedi nota sotto |
 
 **Protezione LAN documentata in:**  
 `_notes/.tmp-docx-CYBERSEC/bitdefender_protezione_lan.txt` (203 paragrafi)
+
+**Razionale difesa a piu' livelli (nota interna non datata):** i tre
+strumenti di sicurezza attivi coprono superfici distinte, senza sovrapposizione.
+Microsoft Defender per Office 365 P1 protegge il livello cloud/collaboration
+(Exchange Online, SharePoint, OneDrive, Teams) con Safe Links, Safe
+Attachments e anti-phishing, analizzando allegati e link *prima* che
+l'utente li apra — l'unico dei tre a intervenire nel flusso di posta
+Microsoft 365, quindi il principale presidio contro phishing e Business
+Email Compromise, attacchi che tipicamente bypassano firewall e antivirus
+perche' arrivano come email legittime. Bitdefender GravityZone protegge il
+livello endpoint (PC, server, VM): antivirus, EDR, controllo applicazioni,
+blocco locale di exploit e ransomware. Zyxel USG FLEX 500 con Gold Security
+Pack protegge il livello perimetrale di rete (IPS, antivirus gateway,
+sandboxing, reputazione URL), fermando le minacce prima che entrino nella
+rete. Nessuno dei tre sostituisce gli altri due.
 
 ---
 
