@@ -134,13 +134,10 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 
 ### Nuovo (09/07/2026): pendenze emerse dall'ingestione della libreria Administration
 
-- **Discrepanza di date Vianova non riconciliata**: `vendor-management.md`
-  riporta consegna hardware 31/12/2025 e primo appuntamento tecnico
-  02/02/2026; `2025-q2-migrazione-tim-vianova.md` documenta lo stesso tipo
-  di evento con date nel 2025 (consegna 29/03-01/04/2025, primo
-  appuntamento 07/04/2025). Non ho deciso quale sia corretta né se sono due
-  fasi distinte: segnalato inline in entrambi i file, da chiudere con
-  l'utente.
+- RISOLTO (09/07): la presunta discrepanza di date Vianova non era un
+  errore ma due migrazioni distinte confuse in un'unica tabella — linea
+  dati (2025, TIM→Vianova) e centralino cloud (dic.2025-2026, in corso).
+  `vendor-management.md` §Vianova riscritto con le due evoluzioni separate.
 - **Gap di sicurezza reale non risolto** (GAP-TBC #110/SEC-012): una access
   key IAM AWS con `AdministratorAccess`, creata nel 2019, **senza MFA**, e'
   ancora attiva e ha generato una chiamata anomala ad Amazon Translate la

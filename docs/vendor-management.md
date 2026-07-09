@@ -7,31 +7,48 @@ Aggiornato: giugno 2026.
 
 ## Vianova S.p.A. – ISP e telefonia
 
+Due migrazioni distinte verso lo stesso fornitore, in due fasi separate:
+la linea dati (fibra FTTO, sostituzione di TIM) nel 2025, e il centralino
+cloud (PBX, sostituzione del sistema telefonico tradizionale) tra fine 2025
+e il 2026. La prima e' conclusa e ampiamente documentata; la seconda e'
+**in corso** ed e' l'oggetto della nota PORT-TAGGING riservata al racconto
+completo a lavori conclusi (vedi `current-work.md`).
+
 | Campo | Valore |
 |-------|--------|
 | Tipologia | ISP primario, PBX cloud, linee dati |
 | Contratto | FTTO 1 Gbps + Ponte Radio backup + Telefonia cloud |
-| Inizio servizio dati | Gennaio 2026 (migrazione da TIM completata) |
-| Inizio servizio telefonia | Aprile 2024 |
+| Inizio servizio telefonia (tradizionale) | Aprile 2024 |
+| Migrazione linea dati (TIM → Vianova) | Marzo-Luglio 2025, completata (dettaglio in `2025-q2-migrazione-tim-vianova.md`) |
+| Migrazione centralino cloud (PBX → Vianova UCC) | In corso da dicembre 2025, non ancora conclusa |
 | Costo indicativo | 984 €/mese (linea dati + telefonia) |
 | IP pubblici | Pool 193.124.241.x/28 (14 IP utilizzabili) |
-| Hardware fornito | Router Vianova R-1000 x2 (HSRP), UPS-700 |
+| Hardware fornito (linea dati) | Router Vianova R-1000 x2 (HSRP), UPS-700 |
 | SLA | [TBC] |
 | Contatto tecnico | Referente-Vianova-3 (Samuele Sbacco, Key Account Manager), Referente-Vianova-4 (Federico Benetton, Sales Manager) |
-| Offerta commerciale | Proposta scritta datata 07/02/2024 (n. 202456LNQ896), tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Contratto: 984 €/mese totali (rete fissa 960 €/mese FTTO 1Gbps a progetto + 24 €/mese opzione traffico flat), contributo di installazione 0 €. Durata 36 mesi con tacito rinnovo di 12 in 12 mesi, disdetta con 30 giorni di preavviso; penale di recesso anticipato prima dei 36 mesi |
-| Nota storica | Decisione migrazione da TIM: 10/12/2024 (Alessandro Sopranzi). TIM contratto cessato: luglio 2025. **Discrepanza da verificare (09/07/2026)**: questa tabella riporta "Hardware: 31/12/2025" e "Primo appuntamento tecnico: 02/02/2026", ma `2025-q2-migrazione-tim-vianova.md` documenta la stessa fase con date nel 2025 (consegna router 29/03/2025-01/04/2025, primo appuntamento tecnico 07/04/2025). Le due fonti non sono state riconciliate in questa sessione: potrebbe essere un errore di un anno in una delle due, o due fasi distinte non ancora distinte chiaramente |
+| Offerta commerciale (linea dati) | Proposta scritta datata 07/02/2024 (n. 202456LNQ896), tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Contratto: 984 €/mese totali (rete fissa 960 €/mese FTTO 1Gbps a progetto + 24 €/mese opzione traffico flat), contributo di installazione 0 €. Durata 36 mesi con tacito rinnovo di 12 in 12 mesi, disdetta con 30 giorni di preavviso; penale di recesso anticipato prima dei 36 mesi |
 
-**Evoluzione rapporto:**
+**Evoluzione rapporto — linea dati (2024-2025, conclusa):**
 
 | Data | Evento |
 |------|--------|
-| Apr 2024 | Prima fattura Vianova (solo telefonia) |
+| Apr 2024 | Prima fattura Vianova (solo telefonia tradizionale) |
 | 10/12/2024 | Decisione di migrare anche la linea dati da TIM a Vianova |
 | 20/01/2025 | Sopralluogo TIM per FTTO (infrastruttura Vianova usa rete fisica TIM) |
-| 31/12/2025 | Consegna hardware Vianova (router, UPS) |
-| 02/02/2026 | Primo appuntamento tecnico Vianova per attivazione dati |
+| 29/03-01/04/2025 | Consegna hardware Vianova (router R-1000, UPS) — vedi `2025-q2-migrazione-tim-vianova.md` |
+| 07/04/2025 | Primo appuntamento tecnico Vianova per attivazione dati |
 | Mag 2025 | TIM ADSL dismessa fisicamente |
-| Lug 2025 | Contratto TIM cessato completamente |
+| Lug 2025 | Contratto TIM cessato completamente (disdetta 15/05/2025, router Huawei non ancora restituiti) |
+
+**Evoluzione rapporto — centralino cloud (dic. 2025-2026, in corso):**
+
+| Data | Evento |
+|------|--------|
+| 31/12/2025 | Consegna hardware per il centralino cloud (switch/telefoni, dettaglio in `2026-switch-piano-terra.md` e vendor-management.md §Punto Informatica) |
+| 02/02/2026 | Primo appuntamento tecnico Vianova per l'attivazione del centralino cloud |
+| 13/03/2026 | Acquisto switch Piano Terra Zyxel XGS2220-30HP (Punto Informatica) |
+| 24/03/2026 | Acquisto telefoni IP Yealink (Punto Informatica) |
+| — | Tagging VLAN fonia in corso, racconto completo riservato a lavori conclusi |
 
 ---
 
