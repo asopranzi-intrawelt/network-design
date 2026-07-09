@@ -4,6 +4,37 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Ingestione voci ALTA di "IT + Administration - Documenti" (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/vendor-management.md (Aruba espanso, nuova sezione
+Fastnet, nota Vianova), docs/scenia-project.md (data registrazione
+scenia.it, nota cert wildcard), docs/infrastructure-timeline/2025-q2-migrazione-tim-vianova.md
+(richiesta VPN Unmanaged 10/04, disdetta TIM), docs/infrastructure-timeline/2025-q3-q4.md
+(causa radice rinnovo licenze ZYXEL), docs/business-continuity-disaster-recovery.md
+(incidente UPS 01/07/2025), docs/infrastructure-timeline/ingestion-checklist.md,
+docs/infrastructure-timeline/timeline.svg (125→128 eventi), _notes/.anonymization-map.md
+(6 nuove voci: Persona-S/T, Referente-FASTNET-1/2, Referente-Vianova-3/4,
+Referente-MyOffice-3, cognome Persona-R confermato)
+Motivo: su richiesta dell'utente, ingerite le 4 cartelle ALTA della nuova
+libreria scoperta (Analisi Domini Intrawelt, VIANOVA, ZYXEL, MyOffice).
+Trovati: portfolio di ~20 domini di nicchia marketing su Aruba/Tucows con
+architettura redirect legacy (VM Ubuntu 1404-DOMV in dismissione); Fastnet
+come vendor DNS/hosting Plesk finora non documentato, con un limite tecnico
+reale (rinnovo wildcard SSL fallito 11/05/2026 per DNS non su Plesk,
+certificato riemesso senza wildcard); offerta commerciale Vianova datata
+07/02/2024 con economics contrattuali complete; causa radice della crisi
+rinnovo licenze ZYXEL nov-dic 2025 (carta di credito dismessa). Corretto un
+errore proprio (nome inventato "Alessandro Sopranzi", corretto in
+Alessandro Potalivo) e rimosso un codice di licenza reale scritto per
+errore in un file tracciato prima del commit. **NON ingerita** la
+sottocartella MyOffice/Transizione centralino cloud 2026/: si sovrappone
+alla nota PORT-TAGGING che l'utente ha riservato al racconto "a lavori
+conclusi" — da riprendere solo su indicazione esplicita. Rilevata (non
+riconciliata) una discrepanza di un anno tra le date Vianova in
+vendor-management.md e in 2025-q2-migrazione-tim-vianova.md, segnalata
+inline per verifica futura.
+
 ## 2026-07-09 — File sciolti ARCHITETTURA ingeriti, scoperta nuova libreria OneDrive (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)
@@ -21,8 +52,8 @@ solo testo visibile) che traccia 66 movimenti datati (feb 2025-gen 2026) di
 consolidamento dell'archivio storico 2009-2023 su tre nuovi HDD Toshiba 4TB
 + doppia copia su NAS HERO, con 14 confronti FreeFileSync (due dei quali
 hanno evitato perdita di 1GB e 177GB di dati aziendali) — tutto integrato
-nel nuovo file dedicato. `email_server_config.xls` (2016) rivela l'esistenza
-storica di un wiki interno "intrawiki" mai documentato altrove. Il file
+nel nuovo file dedicato. `email_server_config.xls` (2016) verificato, senza
+contenuto rilevante. Il file
 `.lnk` "Analisi Domini Intrawelt" punta a una libreria OneDrive separata mai
 censita, `IT + Administration - Documenti` (742 file, cartelle per
 fornitore: VIANOVA, ZYXEL, MyOffice, AWS, Aruba, Seeweb, Punto Informatica,

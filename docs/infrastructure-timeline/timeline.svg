@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="3354" viewBox="0 0 1060 3354" font-family="Segoe UI, Arial, sans-serif">
-<rect width="1060" height="3354" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="3426" viewBox="0 0 1060 3426" font-family="Segoe UI, Arial, sans-serif">
+<rect width="1060" height="3426" fill="#ffffff"/>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#1f2933">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#616e7c">125 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 09/07/2026</text>
+<text x="40" y="66" font-size="13" fill="#616e7c">128 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 09/07/2026</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#1f2933">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#1f2933">AI e automazione <tspan fill="#616e7c">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
 <text x="302" y="116" font-size="12" fill="#1f2933">Sicurezza e compliance <tspan fill="#616e7c">(11)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
-<text x="552" y="116" font-size="12" fill="#1f2933">Telefonia e linee <tspan fill="#616e7c">(32)</tspan></text>
+<text x="552" y="116" font-size="12" fill="#1f2933">Telefonia e linee <tspan fill="#616e7c">(33)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
 <text x="802" y="116" font-size="12" fill="#1f2933">Rete e switching <tspan fill="#616e7c">(10)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
-<text x="52" y="140" font-size="12" fill="#1f2933">Firewall e VPN <tspan fill="#616e7c">(9)</tspan></text>
+<text x="52" y="140" font-size="12" fill="#1f2933">Firewall e VPN <tspan fill="#616e7c">(11)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#1f2933">Storage e backup <tspan fill="#616e7c">(13)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
@@ -228,302 +228,314 @@
 <text x="164" y="1464" font-size="12" fill="#616e7c" text-anchor="end">04-10/04/2025</text>
 <text x="194" y="1464" font-size="13" fill="#1f2933">Proxmox: montaggio VM601 (UNIMC), incidente applyconfiguration, postinstall <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="1466" x2="178" y2="1490" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1484" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1488" font-size="12" fill="#616e7c" text-anchor="end">11/04/2025</text>
-<text x="194" y="1488" font-size="13" fill="#1f2933">Consegna fisica secondo router Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1484" r="4.5" fill="#1baf7a"/>
+<text x="164" y="1488" font-size="12" fill="#616e7c" text-anchor="end">10/04/2025</text>
+<text x="194" y="1488" font-size="13" fill="#1f2933">Richiesta formale di attivazione VPN Unmanaged <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="1490" x2="178" y2="1514" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1508" r="4.5" fill="#e87ba4"/>
-<text x="164" y="1512" font-size="12" fill="#616e7c" text-anchor="end">10-11/04/2025</text>
-<text x="194" y="1512" font-size="13" fill="#1f2933">SCENIA: setup VM601 ambiente di sviluppo <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="1508" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="1512" font-size="12" fill="#616e7c" text-anchor="end">11/04/2025</text>
+<text x="194" y="1512" font-size="13" fill="#1f2933">Consegna fisica secondo router Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1514" x2="178" y2="1538" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1532" r="4.5" fill="#eb6834"/>
-<text x="164" y="1536" font-size="12" fill="#616e7c" text-anchor="end">14/04/2025</text>
-<text x="194" y="1536" font-size="13" fill="#1f2933">Nuovo ordine di lavoro e appuntamento definitivo <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<circle cx="178" cy="1532" r="4.5" fill="#e87ba4"/>
+<text x="164" y="1536" font-size="12" fill="#616e7c" text-anchor="end">10-11/04/2025</text>
+<text x="194" y="1536" font-size="13" fill="#1f2933">SCENIA: setup VM601 ambiente di sviluppo <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="1538" x2="178" y2="1562" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1556" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1560" font-size="12" fill="#616e7c" text-anchor="end">17/04/2025</text>
-<text x="194" y="1560" font-size="13" fill="#1f2933">ATTIVAZIONE FISICA VIANOVA: connettivita' operativa <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1556" r="4.5" fill="#eb6834"/>
+<text x="164" y="1560" font-size="12" fill="#616e7c" text-anchor="end">14/04/2025</text>
+<text x="194" y="1560" font-size="13" fill="#1f2933">Nuovo ordine di lavoro e appuntamento definitivo <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="1562" x2="178" y2="1586" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1580" r="4.5" fill="#e34948"/>
-<text x="164" y="1584" font-size="12" fill="#616e7c" text-anchor="end">18/04/2025</text>
-<text x="194" y="1584" font-size="13" fill="#1f2933">Prima riunione con Consulente-ISO27001-1 (ISO 27001) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="1580" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="1584" font-size="12" fill="#616e7c" text-anchor="end">17/04/2025</text>
+<text x="194" y="1584" font-size="13" fill="#1f2933">ATTIVAZIONE FISICA VIANOVA: connettivita' operativa <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1586" x2="178" y2="1610" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1604" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1608" font-size="12" fill="#616e7c" text-anchor="end">23/04/2025</text>
-<text x="194" y="1608" font-size="13" fill="#1f2933">Segnalazione Vianova: ponte radio giu' <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1604" r="4.5" fill="#e34948"/>
+<text x="164" y="1608" font-size="12" fill="#616e7c" text-anchor="end">18/04/2025</text>
+<text x="194" y="1608" font-size="13" fill="#1f2933">Prima riunione con Consulente-ISO27001-1 (ISO 27001) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="1610" x2="178" y2="1634" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1628" r="4.5" fill="#e34948"/>
-<text x="164" y="1632" font-size="12" fill="#616e7c" text-anchor="end">29/04/2025</text>
-<text x="194" y="1632" font-size="13" fill="#1f2933">Questionario Cybersecurity ENI (Questionario Cyber Security B) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="1628" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="1632" font-size="12" fill="#616e7c" text-anchor="end">23/04/2025</text>
+<text x="194" y="1632" font-size="13" fill="#1f2933">Segnalazione Vianova: ponte radio giu' <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1634" x2="178" y2="1658" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1652" r="4.5" fill="#2a78d6"/>
-<text x="164" y="1656" font-size="12" fill="#616e7c" text-anchor="end">30/04/2025</text>
-<text x="194" y="1656" font-size="13" fill="#1f2933">Analisi servizi attivi sull'IP TIM prima dello switch <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="1652" r="4.5" fill="#e34948"/>
+<text x="164" y="1656" font-size="12" fill="#616e7c" text-anchor="end">29/04/2025</text>
+<text x="194" y="1656" font-size="13" fill="#1f2933">Questionario Cybersecurity ENI (Questionario Cyber Security B) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="1658" x2="178" y2="1682" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1676" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1680" font-size="12" fill="#616e7c" text-anchor="end">08/05/2025</text>
-<text x="194" y="1680" font-size="13" fill="#1f2933">SWITCH WAN1: da TIM a Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1676" r="4.5" fill="#2a78d6"/>
+<text x="164" y="1680" font-size="12" fill="#616e7c" text-anchor="end">30/04/2025</text>
+<text x="194" y="1680" font-size="13" fill="#1f2933">Analisi servizi attivi sull'IP TIM prima dello switch <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="1682" x2="178" y2="1706" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1700" r="4.5" fill="#1baf7a"/>
+<circle cx="178" cy="1700" r="4.5" fill="#4a3aa7"/>
 <text x="164" y="1704" font-size="12" fill="#616e7c" text-anchor="end">08/05/2025</text>
-<text x="194" y="1704" font-size="13" fill="#1f2933">Inizio debugging tunnel IPsec SEEWEB <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<text x="194" y="1704" font-size="13" fill="#1f2933">SWITCH WAN1: da TIM a Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1706" x2="178" y2="1730" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="1724" r="4.5" fill="#1baf7a"/>
-<text x="164" y="1728" font-size="12" fill="#616e7c" text-anchor="end">14/05/2025</text>
-<text x="194" y="1728" font-size="13" fill="#1f2933">Ticket N.1317639 SEEWEB: supporto tunnel IPsec <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<text x="164" y="1728" font-size="12" fill="#616e7c" text-anchor="end">08/05/2025</text>
+<text x="194" y="1728" font-size="13" fill="#1f2933">Inizio debugging tunnel IPsec SEEWEB <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="1730" x2="178" y2="1754" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1748" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1752" font-size="12" fill="#616e7c" text-anchor="end">15/05/2025</text>
-<text x="194" y="1752" font-size="13" fill="#1f2933">Disdetta TIM: 6 PEC inviate <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1748" r="4.5" fill="#1baf7a"/>
+<text x="164" y="1752" font-size="12" fill="#616e7c" text-anchor="end">14/05/2025</text>
+<text x="194" y="1752" font-size="13" fill="#1f2933">Ticket N.1317639 SEEWEB: supporto tunnel IPsec <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="1754" x2="178" y2="1778" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1772" r="4.5" fill="#2a78d6"/>
+<circle cx="178" cy="1772" r="4.5" fill="#4a3aa7"/>
 <text x="164" y="1776" font-size="12" fill="#616e7c" text-anchor="end">15/05/2025</text>
-<text x="194" y="1776" font-size="13" fill="#1f2933">Secondo ticket SEEWEB (ore 13:23): porte 500/4500 <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<text x="194" y="1776" font-size="13" fill="#1f2933">Disdetta TIM: 6 PEC inviate <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1778" x2="178" y2="1802" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1796" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1800" font-size="12" fill="#616e7c" text-anchor="end">22/05/2025</text>
-<text x="194" y="1800" font-size="13" fill="#1f2933">TIM: conferme cessazione linee via PEC <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1796" r="4.5" fill="#2a78d6"/>
+<text x="164" y="1800" font-size="12" fill="#616e7c" text-anchor="end">15/05/2025</text>
+<text x="194" y="1800" font-size="13" fill="#1f2933">Secondo ticket SEEWEB (ore 13:23): porte 500/4500 <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="1802" x2="178" y2="1826" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1820" r="4.5" fill="#1baf7a"/>
+<circle cx="178" cy="1820" r="4.5" fill="#4a3aa7"/>
 <text x="164" y="1824" font-size="12" fill="#616e7c" text-anchor="end">22/05/2025</text>
-<text x="194" y="1824" font-size="13" fill="#1f2933">Problema VPN NAS per Persona-K <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<text x="194" y="1824" font-size="13" fill="#1f2933">TIM: conferme cessazione linee via PEC <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1826" x2="178" y2="1850" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1844" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1848" font-size="12" fill="#616e7c" text-anchor="end">27/05/2025</text>
-<text x="194" y="1848" font-size="13" fill="#1f2933">Chiamata con Persona-H: porte chiuse dal router Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1844" r="4.5" fill="#1baf7a"/>
+<text x="164" y="1848" font-size="12" fill="#616e7c" text-anchor="end">22/05/2025</text>
+<text x="194" y="1848" font-size="13" fill="#1f2933">Problema VPN NAS per Persona-K <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="1850" x2="178" y2="1874" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="1868" r="4.5" fill="#4a3aa7"/>
 <text x="164" y="1872" font-size="12" fill="#616e7c" text-anchor="end">27/05/2025</text>
-<text x="194" y="1872" font-size="13" fill="#1f2933">Mail a myOffice per sblocco porte router Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<text x="194" y="1872" font-size="13" fill="#1f2933">Chiamata con Persona-H: porte chiuse dal router Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1874" x2="178" y2="1898" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1892" r="4.5" fill="#eb6834"/>
-<text x="164" y="1896" font-size="12" fill="#616e7c" text-anchor="end">28/05/2025</text>
-<text x="194" y="1896" font-size="13" fill="#1f2933">Odoo 12: procedura di restore del dump di produzione in locale <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<circle cx="178" cy="1892" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="1896" font-size="12" fill="#616e7c" text-anchor="end">27/05/2025</text>
+<text x="194" y="1896" font-size="13" fill="#1f2933">Mail a myOffice per sblocco porte router Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1898" x2="178" y2="1922" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1916" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1920" font-size="12" fill="#616e7c" text-anchor="end">03/06/2025</text>
-<text x="194" y="1920" font-size="13" fill="#1f2933">Scoperta: il servizio VPN Unmanaged Vianova non e' attivo <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="1916" r="4.5" fill="#eb6834"/>
+<text x="164" y="1920" font-size="12" fill="#616e7c" text-anchor="end">28/05/2025</text>
+<text x="194" y="1920" font-size="13" fill="#1f2933">Odoo 12: procedura di restore del dump di produzione in locale <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="1922" x2="178" y2="1946" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="1940" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="1944" font-size="12" fill="#616e7c" text-anchor="end">04/06/2025</text>
-<text x="194" y="1944" font-size="13" fill="#1f2933">VPN Unmanaged Vianova attivata <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<text x="164" y="1944" font-size="12" fill="#616e7c" text-anchor="end">03/06/2025</text>
+<text x="194" y="1944" font-size="13" fill="#1f2933">Scoperta: il servizio VPN Unmanaged Vianova non e' attivo <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1946" x2="178" y2="1970" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1964" r="4.5" fill="#1baf7a"/>
-<text x="164" y="1968" font-size="12" fill="#616e7c" text-anchor="end">05/06/2025</text>
-<text x="194" y="1968" font-size="13" fill="#1f2933">Tunnel ancora non funziona dopo VPN Unmanaged <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<circle cx="178" cy="1964" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="1968" font-size="12" fill="#616e7c" text-anchor="end">04/06/2025</text>
+<text x="194" y="1968" font-size="13" fill="#1f2933">VPN Unmanaged Vianova attivata <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="1970" x2="178" y2="1994" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="1988" r="4.5" fill="#2a78d6"/>
-<text x="164" y="1992" font-size="12" fill="#616e7c" text-anchor="end">11-12/06/2025</text>
-<text x="194" y="1992" font-size="13" fill="#1f2933">Problema scan-to-folder Canon iR-ADV C5840 (supporto myOffice) <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="1988" r="4.5" fill="#1baf7a"/>
+<text x="164" y="1992" font-size="12" fill="#616e7c" text-anchor="end">05/06/2025</text>
+<text x="194" y="1992" font-size="13" fill="#1f2933">Tunnel ancora non funziona dopo VPN Unmanaged <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="1994" x2="178" y2="2018" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2012" r="4.5" fill="#1baf7a"/>
-<text x="164" y="2016" font-size="12" fill="#616e7c" text-anchor="end">24/06/2025</text>
-<text x="194" y="2016" font-size="13" fill="#1f2933">RISOLUZIONE TUNNEL SEEWEB <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<circle cx="178" cy="2012" r="4.5" fill="#2a78d6"/>
+<text x="164" y="2016" font-size="12" fill="#616e7c" text-anchor="end">11-12/06/2025</text>
+<text x="194" y="2016" font-size="13" fill="#1f2933">Problema scan-to-folder Canon iR-ADV C5840 (supporto myOffice) <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="2018" x2="178" y2="2042" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2036" r="4.5" fill="#2a78d6"/>
-<text x="164" y="2040" font-size="12" fill="#616e7c" text-anchor="end">26/06/2025</text>
-<text x="194" y="2040" font-size="13" fill="#1f2933">Problema VPN NAS Persona-K: porta 8008 <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="2036" r="4.5" fill="#1baf7a"/>
+<text x="164" y="2040" font-size="12" fill="#616e7c" text-anchor="end">24/06/2025</text>
+<text x="194" y="2040" font-size="13" fill="#1f2933">RISOLUZIONE TUNNEL SEEWEB <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="2042" x2="178" y2="2066" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2060" r="4.5" fill="#008300"/>
-<text x="164" y="2064" font-size="12" fill="#616e7c" text-anchor="end">28/02-27/06/2025</text>
-<text x="194" y="2064" font-size="13" fill="#1f2933">primi spostamenti da NAS INTRA e NAS documenti (.170) <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<circle cx="178" cy="2060" r="4.5" fill="#2a78d6"/>
+<text x="164" y="2064" font-size="12" fill="#616e7c" text-anchor="end">26/06/2025</text>
+<text x="194" y="2064" font-size="13" fill="#1f2933">Problema VPN NAS Persona-K: porta 8008 <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="2066" x2="178" y2="2090" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2084" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="2088" font-size="12" fill="#616e7c" text-anchor="end">Luglio 2025</text>
-<text x="194" y="2088" font-size="13" fill="#1f2933">Consolidamento post-switch Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="2084" r="4.5" fill="#008300"/>
+<text x="164" y="2088" font-size="12" fill="#616e7c" text-anchor="end">28/02-27/06/2025</text>
+<text x="194" y="2088" font-size="13" fill="#1f2933">primi spostamenti da NAS INTRA e NAS documenti (.170) <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
 <line x1="178" y1="2090" x2="178" y2="2114" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2108" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2112" font-size="12" fill="#616e7c" text-anchor="end">Luglio-Settembre 2025</text>
-<text x="194" y="2112" font-size="13" fill="#1f2933">SCENIA: sviluppo full-stack milestones <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2108" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="2112" font-size="12" fill="#616e7c" text-anchor="end">Luglio 2025</text>
+<text x="194" y="2112" font-size="13" fill="#1f2933">Consolidamento post-switch Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="2114" x2="178" y2="2138" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2132" r="4.5" fill="#008300"/>
+<circle cx="178" cy="2132" r="4.5" fill="#e87ba4"/>
 <text x="164" y="2136" font-size="12" fill="#616e7c" text-anchor="end">Luglio-Settembre 2025</text>
-<text x="194" y="2136" font-size="13" fill="#1f2933">Stato NAS fleet <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<text x="194" y="2136" font-size="13" fill="#1f2933">SCENIA: sviluppo full-stack milestones <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2138" x2="178" y2="2162" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="2156" r="4.5" fill="#008300"/>
-<text x="164" y="2160" font-size="12" fill="#616e7c" text-anchor="end">30/06-11/07/2025</text>
-<text x="194" y="2160" font-size="13" fill="#1f2933">prima ondata di consolidamento verso NAS HERO <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<text x="164" y="2160" font-size="12" fill="#616e7c" text-anchor="end">Luglio-Settembre 2025</text>
+<text x="194" y="2160" font-size="13" fill="#1f2933">Stato NAS fleet <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
 <line x1="178" y1="2162" x2="178" y2="2186" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2180" r="4.5" fill="#eb6834"/>
-<text x="164" y="2184" font-size="12" fill="#616e7c" text-anchor="end">Settembre 2025</text>
-<text x="194" y="2184" font-size="13" fill="#1f2933">Chiusura account Persona-P e Persona-R (task_34) <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<circle cx="178" cy="2180" r="4.5" fill="#008300"/>
+<text x="164" y="2184" font-size="12" fill="#616e7c" text-anchor="end">30/06-11/07/2025</text>
+<text x="194" y="2184" font-size="13" fill="#1f2933">prima ondata di consolidamento verso NAS HERO <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
 <line x1="178" y1="2186" x2="178" y2="2210" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2204" r="4.5" fill="#e34948"/>
-<text x="164" y="2208" font-size="12" fill="#616e7c" text-anchor="end">Autunno 2025 (post 15…</text>
-<text x="194" y="2208" font-size="13" fill="#1f2933">Deploy Bitdefender GravityZone <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="2204" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="2208" font-size="12" fill="#616e7c" text-anchor="end">15/05-25/07/2025</text>
+<text x="194" y="2208" font-size="13" fill="#1f2933">Disdetta TIM: 6 servizi cancellati via PEC, rientro router Huawei <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="2210" x2="178" y2="2234" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2228" r="4.5" fill="#e34948"/>
-<text x="164" y="2232" font-size="12" fill="#616e7c" text-anchor="end">17/09/2025 → 01/10/20…</text>
-<text x="194" y="2232" font-size="13" fill="#1f2933">Azure MFA enforcement (task_65) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="2228" r="4.5" fill="#eb6834"/>
+<text x="164" y="2232" font-size="12" fill="#616e7c" text-anchor="end">Settembre 2025</text>
+<text x="194" y="2232" font-size="13" fill="#1f2933">Chiusura account Persona-P e Persona-R (task_34) <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="2234" x2="178" y2="2258" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2252" r="4.5" fill="#eb6834"/>
-<text x="164" y="2256" font-size="12" fill="#616e7c" text-anchor="end">Ottobre 2025</text>
-<text x="194" y="2256" font-size="13" fill="#1f2933">Migrazione T-Rex/Odoo: call con Referente-OpenForce-2 (OpenForce) <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<circle cx="178" cy="2252" r="4.5" fill="#e34948"/>
+<text x="164" y="2256" font-size="12" fill="#616e7c" text-anchor="end">Autunno 2025 (post 15…</text>
+<text x="194" y="2256" font-size="13" fill="#1f2933">Deploy Bitdefender GravityZone <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="2258" x2="178" y2="2282" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2276" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2280" font-size="12" fill="#616e7c" text-anchor="end">Ottobre 2025</text>
-<text x="194" y="2280" font-size="13" fill="#1f2933">Onboarding Collaboratore-Esterno-1 (SCENIA developer esterno) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2276" r="4.5" fill="#e34948"/>
+<text x="164" y="2280" font-size="12" fill="#616e7c" text-anchor="end">17/09/2025 → 01/10/20…</text>
+<text x="194" y="2280" font-size="13" fill="#1f2933">Azure MFA enforcement (task_65) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="2282" x2="178" y2="2306" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="2300" r="4.5" fill="#eb6834"/>
-<text x="164" y="2304" font-size="12" fill="#616e7c" text-anchor="end">16/07-31/10/2025</text>
-<text x="194" y="2304" font-size="13" fill="#1f2933">pulizia hardware e secondo giro di copie <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<text x="164" y="2304" font-size="12" fill="#616e7c" text-anchor="end">Ottobre 2025</text>
+<text x="194" y="2304" font-size="13" fill="#1f2933">Migrazione T-Rex/Odoo: call con Referente-OpenForce-2 (OpenForce) <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="2306" x2="178" y2="2330" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="2324" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2328" font-size="12" fill="#616e7c" text-anchor="end">03/11/2025</text>
-<text x="194" y="2328" font-size="13" fill="#1f2933">Studio API Odoo per estrazione dati CRM (OpenForce) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<text x="164" y="2328" font-size="12" fill="#616e7c" text-anchor="end">Ottobre 2025</text>
+<text x="194" y="2328" font-size="13" fill="#1f2933">Onboarding Collaboratore-Esterno-1 (SCENIA developer esterno) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2330" x2="178" y2="2354" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2348" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2352" font-size="12" fill="#616e7c" text-anchor="end">03-04/11/2025</text>
-<text x="194" y="2352" font-size="13" fill="#1f2933">Script automazione export TM GroupShare (v1.0.0 → v1.1.0) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2348" r="4.5" fill="#eb6834"/>
+<text x="164" y="2352" font-size="12" fill="#616e7c" text-anchor="end">16/07-31/10/2025</text>
+<text x="194" y="2352" font-size="13" fill="#1f2933">pulizia hardware e secondo giro di copie <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="2354" x2="178" y2="2378" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2372" r="4.5" fill="#e34948"/>
-<text x="164" y="2376" font-size="12" fill="#616e7c" text-anchor="end">06/11/2025</text>
-<text x="194" y="2376" font-size="13" fill="#1f2933">Vulnerability Assessment Onova <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="2372" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2376" font-size="12" fill="#616e7c" text-anchor="end">03/11/2025</text>
+<text x="194" y="2376" font-size="13" fill="#1f2933">Studio API Odoo per estrazione dati CRM (OpenForce) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2378" x2="178" y2="2402" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2396" r="4.5" fill="#eda100"/>
-<text x="164" y="2400" font-size="12" fill="#616e7c" text-anchor="end">14/11/2025</text>
-<text x="194" y="2400" font-size="13" fill="#1f2933">Saturazione RAM del nodo Proxmox e quotazioni hardware <tspan font-size="10" fill="#616e7c">SRV</tspan></text>
+<circle cx="178" cy="2396" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2400" font-size="12" fill="#616e7c" text-anchor="end">03-04/11/2025</text>
+<text x="194" y="2400" font-size="13" fill="#1f2933">Script automazione export TM GroupShare (v1.0.0 → v1.1.0) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2402" x2="178" y2="2426" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2420" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="2424" font-size="12" fill="#616e7c" text-anchor="end">Settembre-Dicembre 20…</text>
-<text x="194" y="2424" font-size="13" fill="#1f2933">Implementazione nuova fonia <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="2420" r="4.5" fill="#e34948"/>
+<text x="164" y="2424" font-size="12" fill="#616e7c" text-anchor="end">06/11/2025</text>
+<text x="194" y="2424" font-size="13" fill="#1f2933">Vulnerability Assessment Onova <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="2426" x2="178" y2="2450" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2444" r="4.5" fill="#008300"/>
-<text x="164" y="2448" font-size="12" fill="#616e7c" text-anchor="end">01/12/2025</text>
-<text x="194" y="2448" font-size="13" fill="#1f2933">VM205 GanttTool: spazio esaurito, estensione filesystem e alert automatico <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<circle cx="178" cy="2444" r="4.5" fill="#eda100"/>
+<text x="164" y="2448" font-size="12" fill="#616e7c" text-anchor="end">14/11/2025</text>
+<text x="194" y="2448" font-size="13" fill="#1f2933">Saturazione RAM del nodo Proxmox e quotazioni hardware <tspan font-size="10" fill="#616e7c">SRV</tspan></text>
 <line x1="178" y1="2450" x2="178" y2="2474" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2468" r="4.5" fill="#2a78d6"/>
-<text x="164" y="2472" font-size="12" fill="#616e7c" text-anchor="end">18/12/2025</text>
-<text x="194" y="2472" font-size="13" fill="#1f2933">Studio server DNS interno con Pi-hole (TBC, non implementato) <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="2468" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="2472" font-size="12" fill="#616e7c" text-anchor="end">Settembre-Dicembre 20…</text>
+<text x="194" y="2472" font-size="13" fill="#1f2933">Implementazione nuova fonia <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="2474" x2="178" y2="2498" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2492" r="4.5" fill="#2a78d6"/>
-<text x="164" y="2496" font-size="12" fill="#616e7c" text-anchor="end">18/12/2025</text>
-<text x="194" y="2496" font-size="13" fill="#1f2933">Analisi licenze ZYXEL (myZyxel / Nebula) <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="2492" r="4.5" fill="#008300"/>
+<text x="164" y="2496" font-size="12" fill="#616e7c" text-anchor="end">01/12/2025</text>
+<text x="194" y="2496" font-size="13" fill="#1f2933">VM205 GanttTool: spazio esaurito, estensione filesystem e alert automatico <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
 <line x1="178" y1="2498" x2="178" y2="2522" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2516" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="2520" font-size="12" fill="#616e7c" text-anchor="end">31/12/2025</text>
-<text x="194" y="2520" font-size="13" fill="#1f2933">Spedizione secondo router Vianova R-1000 <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
-<rect x="40" y="2554" width="980" height="28" rx="4" fill="#eef2f7"/>
-<text x="54" y="2573" font-size="15" font-weight="700" fill="#1f6391">2026</text>
-<line x1="178" y1="2566" x2="178" y2="2590" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2584" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2588" font-size="12" fill="#616e7c" text-anchor="end">Gennaio-Marzo 2026</text>
-<text x="194" y="2588" font-size="13" fill="#1f2933">IntraLino: sviluppo architettura n8n stabile <tspan font-size="10" fill="#616e7c">AI</tspan></text>
-<line x1="178" y1="2590" x2="178" y2="2614" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2608" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2612" font-size="12" fill="#616e7c" text-anchor="end">Gennaio-Febbraio 2026</text>
-<text x="194" y="2612" font-size="13" fill="#1f2933">CVE patch SCENIA (React / Next.js) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
-<line x1="178" y1="2614" x2="178" y2="2638" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2632" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2636" font-size="12" fill="#616e7c" text-anchor="end">Gennaio-Aprile 2026</text>
-<text x="194" y="2636" font-size="13" fill="#1f2933">SCENIA sviluppo full-stack (Collaboratore-Esterno-1) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2516" r="4.5" fill="#2a78d6"/>
+<text x="164" y="2520" font-size="12" fill="#616e7c" text-anchor="end">18/12/2025</text>
+<text x="194" y="2520" font-size="13" fill="#1f2933">Studio server DNS interno con Pi-hole (TBC, non implementato) <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<line x1="178" y1="2522" x2="178" y2="2546" stroke="#cbd2d9" stroke-width="2"/>
+<circle cx="178" cy="2540" r="4.5" fill="#1baf7a"/>
+<text x="164" y="2544" font-size="12" fill="#616e7c" text-anchor="end">20/11-18/12/2025</text>
+<text x="194" y="2544" font-size="13" fill="#1f2933">Rinnovo licenze ZYXEL sotto pressione: pagamenti falliti e licenza sbagliata disassociata <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<line x1="178" y1="2546" x2="178" y2="2570" stroke="#cbd2d9" stroke-width="2"/>
+<circle cx="178" cy="2564" r="4.5" fill="#2a78d6"/>
+<text x="164" y="2568" font-size="12" fill="#616e7c" text-anchor="end">18/12/2025</text>
+<text x="194" y="2568" font-size="13" fill="#1f2933">Analisi licenze ZYXEL (myZyxel / Nebula) <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<line x1="178" y1="2570" x2="178" y2="2594" stroke="#cbd2d9" stroke-width="2"/>
+<circle cx="178" cy="2588" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="2592" font-size="12" fill="#616e7c" text-anchor="end">31/12/2025</text>
+<text x="194" y="2592" font-size="13" fill="#1f2933">Spedizione secondo router Vianova R-1000 <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<rect x="40" y="2626" width="980" height="28" rx="4" fill="#eef2f7"/>
+<text x="54" y="2645" font-size="15" font-weight="700" fill="#1f6391">2026</text>
 <line x1="178" y1="2638" x2="178" y2="2662" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="2656" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2660" font-size="12" fill="#616e7c" text-anchor="end">12/01/2026</text>
-<text x="194" y="2660" font-size="13" fill="#1f2933">Notes thinking lab: studio Thinking Machines / Tinker API <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<text x="164" y="2660" font-size="12" fill="#616e7c" text-anchor="end">Gennaio-Marzo 2026</text>
+<text x="194" y="2660" font-size="13" fill="#1f2933">IntraLino: sviluppo architettura n8n stabile <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2662" x2="178" y2="2686" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2680" r="4.5" fill="#e34948"/>
-<text x="164" y="2684" font-size="12" fill="#616e7c" text-anchor="end">13-15/01/2026</text>
-<text x="194" y="2684" font-size="13" fill="#1f2933">Incidente phishing/compromissione regole Exchange <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="2680" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2684" font-size="12" fill="#616e7c" text-anchor="end">Gennaio-Febbraio 2026</text>
+<text x="194" y="2684" font-size="13" fill="#1f2933">CVE patch SCENIA (React / Next.js) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2686" x2="178" y2="2710" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2704" r="4.5" fill="#eb6834"/>
-<text x="164" y="2708" font-size="12" fill="#616e7c" text-anchor="end">09-19/01/2026</text>
-<text x="194" y="2708" font-size="13" fill="#1f2933">chiusura del 2023 <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<circle cx="178" cy="2704" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2708" font-size="12" fill="#616e7c" text-anchor="end">Gennaio-Aprile 2026</text>
+<text x="194" y="2708" font-size="13" fill="#1f2933">SCENIA sviluppo full-stack (Collaboratore-Esterno-1) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2710" x2="178" y2="2734" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2728" r="4.5" fill="#e34948"/>
-<text x="164" y="2732" font-size="12" fill="#616e7c" text-anchor="end">19/01/2026</text>
-<text x="194" y="2732" font-size="13" fill="#1f2933">Primo ingaggio Proelium (task_47 cybersecurity) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="2728" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2732" font-size="12" fill="#616e7c" text-anchor="end">12/01/2026</text>
+<text x="194" y="2732" font-size="13" fill="#1f2933">Notes thinking lab: studio Thinking Machines / Tinker API <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2734" x2="178" y2="2758" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2752" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2756" font-size="12" fill="#616e7c" text-anchor="end">13/02/2026</text>
-<text x="194" y="2756" font-size="13" fill="#1f2933">Ticket Aruba: analisi backup e WAF VPS SCENIA <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2752" r="4.5" fill="#e34948"/>
+<text x="164" y="2756" font-size="12" fill="#616e7c" text-anchor="end">13-15/01/2026</text>
+<text x="194" y="2756" font-size="13" fill="#1f2933">Incidente phishing/compromissione regole Exchange <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="2758" x2="178" y2="2782" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2776" r="4.5" fill="#e34948"/>
-<text x="164" y="2780" font-size="12" fill="#616e7c" text-anchor="end">19/02/2026</text>
-<text x="194" y="2780" font-size="13" fill="#1f2933">CSRF Token T-Rex/Odoo (Persona-F) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
+<circle cx="178" cy="2776" r="4.5" fill="#eb6834"/>
+<text x="164" y="2780" font-size="12" fill="#616e7c" text-anchor="end">09-19/01/2026</text>
+<text x="194" y="2780" font-size="13" fill="#1f2933">chiusura del 2023 <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="2782" x2="178" y2="2806" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2800" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2804" font-size="12" fill="#616e7c" text-anchor="end">04/03/2026</text>
-<text x="194" y="2804" font-size="13" fill="#1f2933">Meeting Odoo portale SCENIA (Referente-OpenForce-1, OpenForce) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2800" r="4.5" fill="#e34948"/>
+<text x="164" y="2804" font-size="12" fill="#616e7c" text-anchor="end">19/01/2026</text>
+<text x="194" y="2804" font-size="13" fill="#1f2933">Primo ingaggio Proelium (task_47 cybersecurity) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="2806" x2="178" y2="2830" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2824" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="2828" font-size="12" fill="#616e7c" text-anchor="end">23/03/2026</text>
-<text x="194" y="2828" font-size="13" fill="#1f2933">Analisi blocco traffico centralino (Vianova / USG FLEX 500) <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="2824" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2828" font-size="12" fill="#616e7c" text-anchor="end">13/02/2026</text>
+<text x="194" y="2828" font-size="13" fill="#1f2933">Ticket Aruba: analisi backup e WAF VPS SCENIA <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2830" x2="178" y2="2854" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2848" r="4.5" fill="#eda100"/>
-<text x="164" y="2852" font-size="12" fill="#616e7c" text-anchor="end">Febbraio-Aprile 2026</text>
-<text x="194" y="2852" font-size="13" fill="#1f2933">Esercizio Proxmox: lock vzdump, freeze VM ricorrente, arrivi hardware <tspan font-size="10" fill="#616e7c">SRV</tspan></text>
+<circle cx="178" cy="2848" r="4.5" fill="#e34948"/>
+<text x="164" y="2852" font-size="12" fill="#616e7c" text-anchor="end">19/02/2026</text>
+<text x="194" y="2852" font-size="13" fill="#1f2933">CSRF Token T-Rex/Odoo (Persona-F) <tspan font-size="10" fill="#616e7c">SEC</tspan></text>
 <line x1="178" y1="2854" x2="178" y2="2878" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2872" r="4.5" fill="#2a78d6"/>
-<text x="164" y="2876" font-size="12" fill="#616e7c" text-anchor="end">Aprile 2026</text>
-<text x="194" y="2876" font-size="13" fill="#1f2933">Installazione switch Piano Terra: Zyxel XGS2220-30HP <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="2872" r="4.5" fill="#e87ba4"/>
+<text x="164" y="2876" font-size="12" fill="#616e7c" text-anchor="end">04/03/2026</text>
+<text x="194" y="2876" font-size="13" fill="#1f2933">Meeting Odoo portale SCENIA (Referente-OpenForce-1, OpenForce) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="2878" x2="178" y2="2902" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2896" r="4.5" fill="#eb6834"/>
-<text x="164" y="2900" font-size="12" fill="#616e7c" text-anchor="end">Aprile-Giugno 2026</text>
-<text x="194" y="2900" font-size="13" fill="#1f2933">Redesign sito intrawelt.com <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
+<circle cx="178" cy="2896" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="2900" font-size="12" fill="#616e7c" text-anchor="end">23/03/2026</text>
+<text x="194" y="2900" font-size="13" fill="#1f2933">Analisi blocco traffico centralino (Vianova / USG FLEX 500) <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="2902" x2="178" y2="2926" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2920" r="4.5" fill="#008300"/>
-<text x="164" y="2924" font-size="12" fill="#616e7c" text-anchor="end">03-23/04/2026</text>
-<text x="194" y="2924" font-size="13" fill="#1f2933">NinjaOne: attivazione backup e nota Archiver <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<circle cx="178" cy="2920" r="4.5" fill="#eda100"/>
+<text x="164" y="2924" font-size="12" fill="#616e7c" text-anchor="end">Febbraio-Aprile 2026</text>
+<text x="194" y="2924" font-size="13" fill="#1f2933">Esercizio Proxmox: lock vzdump, freeze VM ricorrente, arrivi hardware <tspan font-size="10" fill="#616e7c">SRV</tspan></text>
 <line x1="178" y1="2926" x2="178" y2="2950" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2944" r="4.5" fill="#e87ba4"/>
-<text x="164" y="2948" font-size="12" fill="#616e7c" text-anchor="end">Maggio-Giugno 2026</text>
-<text x="194" y="2948" font-size="13" fill="#1f2933">SCENIA DPA e DPIA ScenIA <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="2944" r="4.5" fill="#2a78d6"/>
+<text x="164" y="2948" font-size="12" fill="#616e7c" text-anchor="end">Aprile 2026</text>
+<text x="194" y="2948" font-size="13" fill="#1f2933">Installazione switch Piano Terra: Zyxel XGS2220-30HP <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="2950" x2="178" y2="2974" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2968" r="4.5" fill="#008300"/>
-<text x="164" y="2972" font-size="12" fill="#616e7c" text-anchor="end">07/05/2026</text>
-<text x="194" y="2972" font-size="13" fill="#1f2933">Guasto NAS INTRA2 e sostituzione <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<circle cx="178" cy="2968" r="4.5" fill="#eb6834"/>
+<text x="164" y="2972" font-size="12" fill="#616e7c" text-anchor="end">Aprile-Giugno 2026</text>
+<text x="194" y="2972" font-size="13" fill="#1f2933">Redesign sito intrawelt.com <tspan font-size="10" fill="#616e7c">SYS</tspan></text>
 <line x1="178" y1="2974" x2="178" y2="2998" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="2992" r="4.5" fill="#2a78d6"/>
-<text x="164" y="2996" font-size="12" fill="#616e7c" text-anchor="end">08/05/2026</text>
-<text x="194" y="2996" font-size="13" fill="#1f2933">Sostituzione connettori SFP+: dorsale a 10 Gbps operativa <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="2992" r="4.5" fill="#008300"/>
+<text x="164" y="2996" font-size="12" fill="#616e7c" text-anchor="end">03-23/04/2026</text>
+<text x="194" y="2996" font-size="13" fill="#1f2933">NinjaOne: attivazione backup e nota Archiver <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
 <line x1="178" y1="2998" x2="178" y2="3022" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="3016" r="4.5" fill="#e87ba4"/>
-<text x="164" y="3020" font-size="12" fill="#616e7c" text-anchor="end">11/05/2026</text>
-<text x="194" y="3020" font-size="13" fill="#1f2933">Architettura sicurezza VPS SCENIA: Cloudflare Zero Trust (con Collaboratore-Esterno-1) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<text x="164" y="3020" font-size="12" fill="#616e7c" text-anchor="end">Maggio-Giugno 2026</text>
+<text x="194" y="3020" font-size="13" fill="#1f2933">SCENIA DPA e DPIA ScenIA <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="3022" x2="178" y2="3046" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3040" r="4.5" fill="#2a78d6"/>
-<text x="164" y="3044" font-size="12" fill="#616e7c" text-anchor="end">29/05/2026</text>
-<text x="194" y="3044" font-size="13" fill="#1f2933">Interventi Voice VLAN e fibra NAS <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
+<circle cx="178" cy="3040" r="4.5" fill="#008300"/>
+<text x="164" y="3044" font-size="12" fill="#616e7c" text-anchor="end">07/05/2026</text>
+<text x="194" y="3044" font-size="13" fill="#1f2933">Guasto NAS INTRA2 e sostituzione <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
 <line x1="178" y1="3046" x2="178" y2="3070" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3064" r="4.5" fill="#1baf7a"/>
-<text x="164" y="3068" font-size="12" fill="#616e7c" text-anchor="end">29/05/2026</text>
-<text x="194" y="3068" font-size="13" fill="#1f2933">Analisi configurazione Zyxel USG FLEX 500 <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<circle cx="178" cy="3064" r="4.5" fill="#2a78d6"/>
+<text x="164" y="3068" font-size="12" fill="#616e7c" text-anchor="end">08/05/2026</text>
+<text x="194" y="3068" font-size="13" fill="#1f2933">Sostituzione connettori SFP+: dorsale a 10 Gbps operativa <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="3070" x2="178" y2="3094" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3088" r="4.5" fill="#1baf7a"/>
-<text x="164" y="3092" font-size="12" fill="#616e7c" text-anchor="end">05/06/2026</text>
-<text x="194" y="3092" font-size="13" fill="#1f2933">Piano di revisione rete DMZ/Proxmox (sei fasi) <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<circle cx="178" cy="3088" r="4.5" fill="#e87ba4"/>
+<text x="164" y="3092" font-size="12" fill="#616e7c" text-anchor="end">11/05/2026</text>
+<text x="194" y="3092" font-size="13" fill="#1f2933">Architettura sicurezza VPS SCENIA: Cloudflare Zero Trust (con Collaboratore-Esterno-1) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="3094" x2="178" y2="3118" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3112" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="3116" font-size="12" fill="#616e7c" text-anchor="end">09/06/2026</text>
-<text x="194" y="3116" font-size="13" fill="#1f2933">Provisioning utente e app Vianova One (centralino cloud) <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="3112" r="4.5" fill="#2a78d6"/>
+<text x="164" y="3116" font-size="12" fill="#616e7c" text-anchor="end">29/05/2026</text>
+<text x="194" y="3116" font-size="13" fill="#1f2933">Interventi Voice VLAN e fibra NAS <tspan font-size="10" fill="#616e7c">RETE</tspan></text>
 <line x1="178" y1="3118" x2="178" y2="3142" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3136" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="3140" font-size="12" fill="#616e7c" text-anchor="end">09/06/2026</text>
-<text x="194" y="3140" font-size="13" fill="#1f2933">Riunione myOffice: migrazione centralino cloud Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="3136" r="4.5" fill="#1baf7a"/>
+<text x="164" y="3140" font-size="12" fill="#616e7c" text-anchor="end">29/05/2026</text>
+<text x="194" y="3140" font-size="13" fill="#1f2933">Analisi configurazione Zyxel USG FLEX 500 <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="3142" x2="178" y2="3166" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3160" r="4.5" fill="#e87ba4"/>
-<text x="164" y="3164" font-size="12" fill="#616e7c" text-anchor="end">16-17/06/2026</text>
-<text x="194" y="3164" font-size="13" fill="#1f2933">Mancata consegna mail Eni VIPA (Power Platform Flow) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="3160" r="4.5" fill="#1baf7a"/>
+<text x="164" y="3164" font-size="12" fill="#616e7c" text-anchor="end">05/06/2026</text>
+<text x="194" y="3164" font-size="13" fill="#1f2933">Piano di revisione rete DMZ/Proxmox (sei fasi) <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="3166" x2="178" y2="3190" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3184" r="4.5" fill="#1baf7a"/>
-<text x="164" y="3188" font-size="12" fill="#616e7c" text-anchor="end">01/07/2026</text>
-<text x="194" y="3188" font-size="13" fill="#1f2933">M1: correzione guidata delle due regole allow-&gt;deny <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
+<circle cx="178" cy="3184" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="3188" font-size="12" fill="#616e7c" text-anchor="end">09/06/2026</text>
+<text x="194" y="3188" font-size="13" fill="#1f2933">Provisioning utente e app Vianova One (centralino cloud) <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="3190" x2="178" y2="3214" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3208" r="4.5" fill="#e87ba4"/>
-<text x="164" y="3212" font-size="12" fill="#616e7c" text-anchor="end">Maggio-Luglio 2026</text>
-<text x="194" y="3212" font-size="13" fill="#1f2933">Benchmark DoE IntraLino (C1/C2/C3), GPU RTX 5060 Ti e test C4 <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<circle cx="178" cy="3208" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="3212" font-size="12" fill="#616e7c" text-anchor="end">09/06/2026</text>
+<text x="194" y="3212" font-size="13" fill="#1f2933">Riunione myOffice: migrazione centralino cloud Vianova <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
 <line x1="178" y1="3214" x2="178" y2="3238" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3232" r="4.5" fill="#008300"/>
-<text x="164" y="3236" font-size="12" fill="#616e7c" text-anchor="end">06/07/2026</text>
-<text x="194" y="3236" font-size="13" fill="#1f2933">GroupShare 2020: upgrade SR1 -&gt; SR2+CU15 necessario, bloccato sul download <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<circle cx="178" cy="3232" r="4.5" fill="#e87ba4"/>
+<text x="164" y="3236" font-size="12" fill="#616e7c" text-anchor="end">16-17/06/2026</text>
+<text x="194" y="3236" font-size="13" fill="#1f2933">Mancata consegna mail Eni VIPA (Power Platform Flow) <tspan font-size="10" fill="#616e7c">AI</tspan></text>
 <line x1="178" y1="3238" x2="178" y2="3262" stroke="#cbd2d9" stroke-width="2"/>
-<circle cx="178" cy="3256" r="4.5" fill="#4a3aa7"/>
-<text x="164" y="3260" font-size="12" fill="#616e7c" text-anchor="end">07/07/2026</text>
-<text x="194" y="3260" font-size="13" fill="#1f2933">Tagging VLAN sui due switch per il centralino cloud: intervento in corso <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<circle cx="178" cy="3256" r="4.5" fill="#1baf7a"/>
+<text x="164" y="3260" font-size="12" fill="#616e7c" text-anchor="end">01/07/2026</text>
+<text x="194" y="3260" font-size="13" fill="#1f2933">M1: correzione guidata delle due regole allow-&gt;deny <tspan font-size="10" fill="#616e7c">FW/VPN</tspan></text>
 <line x1="178" y1="3262" x2="178" y2="3286" stroke="#cbd2d9" stroke-width="2"/>
 <circle cx="178" cy="3280" r="4.5" fill="#e87ba4"/>
-<text x="164" y="3284" font-size="12" fill="#616e7c" text-anchor="end">08/07/2026</text>
-<text x="194" y="3284" font-size="13" fill="#1f2933">Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino <tspan font-size="10" fill="#616e7c">AI</tspan></text>
-<text x="40" y="3338" font-size="11" fill="#616e7c">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<text x="164" y="3284" font-size="12" fill="#616e7c" text-anchor="end">Maggio-Luglio 2026</text>
+<text x="194" y="3284" font-size="13" fill="#1f2933">Benchmark DoE IntraLino (C1/C2/C3), GPU RTX 5060 Ti e test C4 <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<line x1="178" y1="3286" x2="178" y2="3310" stroke="#cbd2d9" stroke-width="2"/>
+<circle cx="178" cy="3304" r="4.5" fill="#008300"/>
+<text x="164" y="3308" font-size="12" fill="#616e7c" text-anchor="end">06/07/2026</text>
+<text x="194" y="3308" font-size="13" fill="#1f2933">GroupShare 2020: upgrade SR1 -&gt; SR2+CU15 necessario, bloccato sul download <tspan font-size="10" fill="#616e7c">STOR</tspan></text>
+<line x1="178" y1="3310" x2="178" y2="3334" stroke="#cbd2d9" stroke-width="2"/>
+<circle cx="178" cy="3328" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="3332" font-size="12" fill="#616e7c" text-anchor="end">07/07/2026</text>
+<text x="194" y="3332" font-size="13" fill="#1f2933">Tagging VLAN sui due switch per il centralino cloud: intervento in corso <tspan font-size="10" fill="#616e7c">TEL</tspan></text>
+<line x1="178" y1="3334" x2="178" y2="3358" stroke="#cbd2d9" stroke-width="2"/>
+<circle cx="178" cy="3352" r="4.5" fill="#e87ba4"/>
+<text x="164" y="3356" font-size="12" fill="#616e7c" text-anchor="end">08/07/2026</text>
+<text x="194" y="3356" font-size="13" fill="#1f2933">Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino <tspan font-size="10" fill="#616e7c">AI</tspan></text>
+<text x="40" y="3410" font-size="11" fill="#616e7c">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 </svg>

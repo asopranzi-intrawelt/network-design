@@ -519,8 +519,11 @@ Ticket Aruba **18346774A** (13/02/2026): analisi opzioni backup.
 
 ## Architettura domini scenia.it (stato aprile 2026)
 
-Dominio acquistato su Register.it. Nameserver delegati a Cloudflare (kaiser.ns.cloudflare.com,
-tara.ns.cloudflare.com).
+Dominio registrato su Register.it il 03/02/2026 (registrante: Alessandro Potalivo
+per Intrawelt Di Alessandro Potalivo & C. Sas, ragione sociale registrata come
+tale nel WHOIS; stato iniziale `inactive, dnsHold` fino al completamento della
+procedura), scadenza 03/02/2027 con rinnovo automatico attivo. Nameserver
+delegati a Cloudflare (kaiser.ns.cloudflare.com, tara.ns.cloudflare.com).
 
 | Sottodominio | IP / Destinazione | Ruolo |
 |-------------|-------------------|-------|
@@ -529,6 +532,12 @@ tara.ns.cloudflare.com).
 | contact.scenia.it | 80.211.141.50 | Landing form contatti (design Attilio) |
 | staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare Zero Trust) |
 | scenia.intrawelt.com | wildcard cert intrawelt.com | Landing interna sito Intrawelt (TBC) |
+
+Nota (09/07/2026): il certificato *wildcard* di `intrawelt.com` presso Fastnet
+e' stato riemesso **senza wildcard** l'11/05/2026 per un limite tecnico Plesk
+(vedi `vendor-management.md` §Fastnet). Se `scenia.intrawelt.com` dipende
+ancora dal wildcard di `intrawelt.com`, va verificato che il certificato
+attuale copra effettivamente questo sottodominio.
 
 ---
 

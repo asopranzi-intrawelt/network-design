@@ -17,8 +17,9 @@ Aggiornato: giugno 2026.
 | IP pubblici | Pool 193.124.241.x/28 (14 IP utilizzabili) |
 | Hardware fornito | Router Vianova R-1000 x2 (HSRP), UPS-700 |
 | SLA | [TBC] |
-| Contatto tecnico | [TBC] |
-| Nota storica | Decisione migrazione da TIM: 10/12/2024 (Alessandro). Hardware: 31/12/2025. Primo appuntamento tecnico: 02/02/2026. TIM contratto cessato: luglio 2025. |
+| Contatto tecnico | Referente-Vianova-3 (Samuele Sbacco, Key Account Manager), Referente-Vianova-4 (Federico Benetton, Sales Manager) |
+| Offerta commerciale | Proposta scritta datata 07/02/2024 (n. 202456LNQ896), tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Contratto: 984 €/mese totali (rete fissa 960 €/mese FTTO 1Gbps a progetto + 24 €/mese opzione traffico flat), contributo di installazione 0 €. Durata 36 mesi con tacito rinnovo di 12 in 12 mesi, disdetta con 30 giorni di preavviso; penale di recesso anticipato prima dei 36 mesi |
+| Nota storica | Decisione migrazione da TIM: 10/12/2024 (Alessandro Sopranzi). TIM contratto cessato: luglio 2025. **Discrepanza da verificare (09/07/2026)**: questa tabella riporta "Hardware: 31/12/2025" e "Primo appuntamento tecnico: 02/02/2026", ma `2025-q2-migrazione-tim-vianova.md` documenta la stessa fase con date nel 2025 (consegna router 29/03/2025-01/04/2025, primo appuntamento tecnico 07/04/2025). Le due fonti non sono state riconciliate in questa sessione: potrebbe essere un errore di un anno in una delle due, o due fasi distinte non ancora distinte chiaramente |
 
 **Evoluzione rapporto:**
 
@@ -189,9 +190,27 @@ e 60% alla consegna del report.
 
 | Campo | Valore |
 |-------|--------|
-| Tipologia | Registrar DNS, hosting domini |
-| Domini gestiti | intrawelt.com, intrawelt.it [TBC altri] |
-| DNS | [TBC] – Aruba o Microsoft DNS? |
+| Tipologia | Registrar/hosting domini, DNS |
+| Domini gestiti (registrar) | ~20 domini di marketing per nicchia di traduzione (traduzionetecnica.net/.com, traduzionemedica, traduzionifinanziarie, traduzionifarmaceutiche, traduzionilegale, traduzionimanuali, traduzionibilanci, traduzionicertificate/-a, traduzioniurgenti, ecc.), via Tucows Domains Inc. o Aruba S.p.A. come registrar, fatturati mensilmente (es. fattura 09/03/2025, ~15€/dominio + IVA); rinnovi annuali marzo 2026 |
+| intrawelt.de | Registrato presso DENIC tramite Aruba, DNS gestito da Aruba; contenuto sito redirect gestito da Fastnet verso `intrawelt.com/de/` (non confondere con l'hosting, che resta su Aruba); rinnovo anticipato a dicembre per gennaio |
+| intrawebsite.it | Dominio dismesso, non piu' rinnovato: scaduto il 30/10/2025. Ospitava un vecchio sito WordPress, redirect verso `intrawelt.com`. Il certificato SSL DV associato si autorinnova su Aruba (WordPress hosting gestito) fino al 06/07/2026: da revocare esplicitamente dopo la scadenza del dominio, altrimenti resta attivo su un dominio ormai spirato |
+| Architettura redirect legacy | I ~20 domini di nicchia puntavano storicamente a una VM `Ubuntu 1404-DOMV` (landing page dedicata per dominio). Migrazione pianificata: le pagine vengono spostate come sottopagine di `intrawelt.com` (es. `intrawelt.com/domv/<dominio>`), il redirect viene impostato su Aruba, e la VM Ubuntu 1404-DOMV viene infine spenta. Il redirect finale per la maggior parte dei domini passa fisicamente dal firewall ZYXEL USG FLEX 500 |
+| DNS panel | `managehosting.aruba.it`; record supportati A, CNAME, TXT, MX, AAAA, DMARC, DKIM, SPF, SRV, CAA |
+| Name server storici | dns.technorail.com, dns2.technorail.com, dns3.arubadns.net, dns4.arubadns.cz (Aruba) |
+
+---
+
+## Fastnet SpA – Hosting Plesk, DNS primario, compliance ICANN
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Hosting web (Plesk), gestione DNS del dominio primario, registrar per alcuni domini (es. .de tramite DENIC), liaison compliance ICANN |
+| Sede | Via O. Zuccarini 1, Ancona |
+| Referenti | Referente-FASTNET-1 (IT Specialist, gestione ordinaria e compliance ICANN), Referente-FASTNET-2 (supporto tecnico certificati SSL) |
+| Hosting intrawelt.com | Due ambienti Plesk distinti: "produzione" e "test", entrambi con DNS gestito da Fastnet ma hosting fisico che si appoggia anche ad Aruba secondo l'analisi interna. Sottodominio `scenia.intrawelt.com` sulla stessa infrastruttura Plesk |
+| Certificati SSL | Let's Encrypt via Plesk con rinnovo automatico. **Limite tecnico**: il rinnovo automatico del certificato *wildcard* richiede che il DNS del dominio sia gestito direttamente dal pannello Plesk per la verifica via record DNS; quando il DNS e' gestito altrove (come per intrawelt.com, DNS di fatto distribuito), Plesk non completa la verifica wildcard. L'11/05/2026 Fastnet ha dovuto riemettere il certificato di intrawelt.com **senza wildcard** (con rinnovo automatico attivo sul solo dominio principale e sottodomini configurati) dopo ripetuti fallimenti di rinnovo del wildcard |
+| Compliance ICANN | Fastnet fa da tramite per la validazione annuale obbligatoria dei contatti di registrazione domini (richiesta ICANN, eseguita tramite EuroDNS/domainvalidation.com): ricorre annualmente (thread di giugno 2025 e maggio 2026), con frizioni operative ricorrenti (link di validazione scaduti, verifica telefonica con codici a 6 cifre su un numero fisso configurato per riceverne solo 4) |
+| intrawelt.it | Alias del dominio principale, redirect HTTP 301 gestito da dentro Fastnet |
 
 ---
 

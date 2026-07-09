@@ -100,10 +100,17 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
    sezione della checklist con priorita' assegnate, NON ancora ingerita.
    Prossimo blocco: le 4 voci ALTA di quella libreria (VIANOVA, ZYXEL,
    MyOffice, Analisi Domini Intrawelt).
-7. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
+7. FATTO (09/07, stessa sessione): le 4 voci ALTA ingerite. Novita' vendor
+   Fastnet (DNS/hosting Plesk), offerta Vianova 07/02/2024, causa radice
+   crisi licenze ZYXEL, incidente UPS 01/07/2025. Deliberatamente NON
+   ingerita `MyOffice/Transizione centralino cloud 2026/` (si sovrappone
+   alla nota PORT-TAGGING riservata a fine lavori). Prossimo blocco: voci
+   MEDIA della stessa libreria (QNAP cloud license, Aruba, Seeweb, Punto
+   Informatica, AWS) su indicazione dell'utente.
+8. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
    (verificare con grep prima di chiudere il passo); i documenti voluminosi
    si ingeriscono con `docx-ingest` a disclosure progressiva.
-8. Alla chiusura di ogni blocco: spunta in checklist, voce in
+9. Alla chiusura di ogni blocco: spunta in checklist, voce in
    `memory/progress.md`, commit manuale dell'utente.
 
 ## Domande aperte non risolte

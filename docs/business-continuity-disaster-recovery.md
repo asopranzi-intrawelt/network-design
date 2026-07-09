@@ -54,6 +54,11 @@ Autonomia: ~15 minuti.
 [TBC: modelli UPS, numero di UPS, potenza. Da VA: Emerson Liebert IntelliSlot
 Web Card su 10.61.90.33 (management UPS).]
 
+Caso reale: il 01/07/2025 un blackout ha reso necessaria la sostituzione di
+un UPS, gestita tramite il fornitore MyOffice (documentazione fornita solo
+per immagini scansionate, nessun testo estraibile su modello o causa
+specifica).
+
 ### PC portatili
 
 Disponibili per continuita' operativa. Preconfigurati con software e accessi.
