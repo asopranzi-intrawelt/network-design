@@ -266,6 +266,14 @@ sono esplicitamente nel documento Word.
 
 ---
 
+## RAEE / smaltimento apparecchiature — gap ambientale (ingestione RAEE.docx, 08/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 109 | ENV-001 | Nessun accordo documentato con il fornitore di smaltimento RAEE; nota interna segnala di verificare con Persona-B che tipo di accordo esiste. Rischio dichiarato solo prospettico (parco PC/monitor attuale tutto nuovo), ma la norma sullo smaltimento andra' applicata alla prossima dismissione | Cybersec & IT Governance/RAEE.docx |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -292,5 +300,6 @@ sono esplicitamente nel documento Word.
 | Licenze ABBYY — ingestione ABBYY.docx (07/07/2026) | 105-106 |
 | IntraLino benchmark — ingestione cartella n8n (07/07/2026) | 107 |
 | Snapshot v4 (08/07/2026) | 108 |
-| **Totale identificati** | **108** |
+| RAEE / smaltimento apparecchiature (08/07/2026) | 109 |
+| **Totale identificati** | **109** |
 | **Di cui risolti** | **5** (54, 55, 61, 63, 106 — vedi stato "Corretto"/"Fatto"/"Riconciliato") |
