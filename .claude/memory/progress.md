@@ -4,6 +4,37 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — File sciolti ARCHITETTURA ingeriti, scoperta nuova libreria OneDrive (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/2025-storage-anni-vecchi.md (nuovo),
+docs/infrastructure-timeline/ingestion-checklist.md (voci file sciolti
+ARCHITETTURA, nuova sezione IT + Administration - Documenti, note su
+riorganizzazione D:\), scripts/Check-OneDriveDelta.ps1 (multi-target, due
+librerie), _notes/.onedrive-manifest-admin.json (nuova baseline, non
+versionata)
+Motivo: l'utente ha segnalato che tre file sciolti mai apriti nella cartella
+ARCHITETTURA SERVER-CLOUD-LINEE (root) erano stati saltati durante tutte le
+sessioni di ingestione precedenti. Verificati: `Intrawelt_anni_vecchi_2026-05-20_15-44.html`
+e' un mini-tool interattivo con dati incorporati nel `<script>` (non nel
+solo testo visibile) che traccia 66 movimenti datati (feb 2025-gen 2026) di
+consolidamento dell'archivio storico 2009-2023 su tre nuovi HDD Toshiba 4TB
++ doppia copia su NAS HERO, con 14 confronti FreeFileSync (due dei quali
+hanno evitato perdita di 1GB e 177GB di dati aziendali) — tutto integrato
+nel nuovo file dedicato. `email_server_config.xls` (2016) rivela l'esistenza
+storica di un wiki interno "intrawiki" mai documentato altrove. Il file
+`.lnk` "Analisi Domini Intrawelt" punta a una libreria OneDrive separata mai
+censita, `IT + Administration - Documenti` (742 file, cartelle per
+fornitore: VIANOVA, ZYXEL, MyOffice, AWS, Aruba, Seeweb, Punto Informatica,
+ecc.). Su richiesta dell'utente: aggiunta al perimetro di
+`Check-OneDriveDelta.ps1` (ora multi-target, due librerie con baseline
+separate) e censita in una nuova sezione della checklist con priorita'
+assegnate per rilevanza, non ancora ingerita contenuto per contenuto.
+Rilevato durante l'aggiornamento baseline un apparente crollo di 21.347 file
+nella libreria "Documenti - IT" (incluse le quattro cartelle sviluppo-*
+appena lette in sessione): falso allarme, l'utente le ha convertite in
+progetti standalone sotto `D:\` lo stesso giorno, non perdita dati.
+
 ## 2026-07-09 — Coda BASSA della checklist ingestione chiusa (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)

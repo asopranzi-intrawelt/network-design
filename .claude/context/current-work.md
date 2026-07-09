@@ -90,10 +90,20 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
    nota e rimandata alla Fase B (roadmap.md), non toccata in questa sessione.
    La coda checklist e' ora solo le attese esterne (PORT-TAGGING, fonte
    IntraLino su VM).
-6. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
+6. FATTO (09/07, questa sessione): tre file sciolti mai apriti nella root di
+   ARCHITETTURA SERVER-CLOUD-LINEE ingeriti. L'html "anni vecchi" ha dato
+   un nuovo file dedicato `2025-storage-anni-vecchi.md` (66 movimenti
+   datati). Il collegamento `.lnk` ha rivelato una libreria OneDrive
+   separata mai censita, `IT + Administration - Documenti` (742 file,
+   fornitori/amministrazione): aggiunta al perimetro di
+   `Check-OneDriveDelta.ps1` (ora multi-target) e censita in una nuova
+   sezione della checklist con priorita' assegnate, NON ancora ingerita.
+   Prossimo blocco: le 4 voci ALTA di quella libreria (VIANOVA, ZYXEL,
+   MyOffice, Analisi Domini Intrawelt).
+7. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
    (verificare con grep prima di chiudere il passo); i documenti voluminosi
    si ingeriscono con `docx-ingest` a disclosure progressiva.
-7. Alla chiusura di ogni blocco: spunta in checklist, voce in
+8. Alla chiusura di ogni blocco: spunta in checklist, voce in
    `memory/progress.md`, commit manuale dell'utente.
 
 ## Domande aperte non risolte
