@@ -531,13 +531,21 @@ delegati a Cloudflare (kaiser.ns.cloudflare.com, tara.ns.cloudflare.com).
 | portal.scenia.it | 80.211.141.50 | Portale produzione → Trados Accelerate (Flowhandler) |
 | contact.scenia.it | 80.211.141.50 | Landing form contatti (design Attilio) |
 | staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare Zero Trust) |
-| scenia.intrawelt.com | wildcard cert intrawelt.com | Landing interna sito Intrawelt (TBC) |
+| scenia.intrawelt.com | certificato dedicato dall'11/05/2026 (vedi nota) | Landing interna sito Intrawelt (TBC) |
 
-Nota (09/07/2026): il certificato *wildcard* di `intrawelt.com` presso Fastnet
-e' stato riemesso **senza wildcard** l'11/05/2026 per un limite tecnico Plesk
-(vedi `vendor-management.md` §Fastnet). Se `scenia.intrawelt.com` dipende
-ancora dal wildcard di `intrawelt.com`, va verificato che il certificato
-attuale copra effettivamente questo sottodominio.
+Nota (verificata live il 09/07/2026): il certificato *wildcard* di
+`intrawelt.com` presso Fastnet e' stato riemesso **senza wildcard**
+l'11/05/2026 per un limite tecnico Plesk (vedi `vendor-management.md`
+§Fastnet). Interrogando direttamente `scenia.intrawelt.com:443` risulta un
+certificato Let's Encrypt **dedicato**, emesso lo stesso giorno
+(11/05/2026, valido 90 giorni), con Subject Alternative Name limitato al
+solo `scenia.intrawelt.com`: il sottodominio non dipende (piu') dal
+wildcard di `intrawelt.com` ed e' correttamente coperto. Verificato anche
+`intrawelt.com` stesso: certificato Let's Encrypt valido con SAN
+`intrawelt.com`, `intrawelt.it`, `www.intrawelt.com`, `www.intrawelt.it`
+(nessun wildcard, coerente con la nota Fastnet), scadenza circa un mese
+dopo la data di questa verifica — rinnovo automatico Plesk atteso prima
+della scadenza.
 
 ---
 

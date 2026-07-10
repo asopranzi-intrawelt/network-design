@@ -4,6 +4,28 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-09 — Verifica live dei certificati SSL in sospeso (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/scenia-project.md (risolta dipendenza wildcard
+scenia.intrawelt.com), docs/infrastructure-timeline/GAP-TBC.md (#111
+aggiornato con tentativo di verifica), .claude/context/design-and-security.md
+(nuova nota VM206 "intrasite"), .claude/context/current-work.md
+Motivo: su richiesta dell'utente, verificati direttamente via TLS (openssl
+s_client) i due certificati rimasti in sospeso. `scenia.intrawelt.com` ha
+un certificato Let's Encrypt dedicato dall'11/05/2026, non dipende piu' dal
+wildcard di intrawelt.com: domanda chiusa. `intrawelt.com` stesso ha un
+certificato valido coerente con la nota Fastnet (nessun wildcard). Scoperta
+non richiesta ma rilevante: una voce nel file hosts di questa macchina
+reindirizza intrawelt.com/www a VM206 "intrasite" (10.61.20.23) con
+certificato auto-firmato, per uso interno — non un problema sul sito
+pubblico reale, ma una scoperta architetturale genuina (vedi
+design-and-security.md). `vpn.intrawelt.com` invece non ha risposto al
+tentativo di connessione TCP/443 dalla rete interna (timeout): la domanda
+resta aperta per mancanza di raggiungibilita', non per assenza di verifica.
+Aggiunte due nuove coppie IP pubblico placeholder/reale alla mappa privata
+(hosting Fastnet, IP pubblico vpn.intrawelt.com).
+
 ## 2026-07-09 — Audit e bonifica dati amministrativi/commerciali (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)

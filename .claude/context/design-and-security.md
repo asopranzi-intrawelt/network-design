@@ -55,6 +55,18 @@ Rimosse rispetto al v3: VM803. Rimosse rispetto ai log vzdump di febbraio
 2026: VM101, 201, 601, 801-803, 809, 900-902 (gap #106 riconciliato). Pool
 risorse: "Servizi" (100, 202-206, 810) e "Programmazione" (602).
 
+**VM206 "intrasite" (verificato live il 09/07/2026)**: serve una copia
+interna del sito WordPress pubblico `intrawelt.com`. Le postazioni con
+voci hosts locali che puntano `intrawelt.com`/`www.intrawelt.com` a
+10.61.20.23 raggiungono questa VM invece del sito pubblico ospitato da
+Fastnet — verosimilmente per test/sviluppo locale senza toccare il sito in
+produzione, o per evitare hairpin NAT dalla LAN verso il proprio IP
+pubblico (causale non confermata da una fonte, solo inferita). La VM
+presenta un certificato TLS **auto-firmato** (non pensato per la fiducia
+pubblica, coerente con un uso puramente interno): non e' un problema sul
+sito pubblico reale, che ha un certificato Let's Encrypt valido (vedi
+`scenia-project.md` §Architettura domini).
+
 ## Storage e backup (snapshot v4)
 
 | Storage | Tipo | Totale | Usato |
