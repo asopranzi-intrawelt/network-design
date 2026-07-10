@@ -11,9 +11,9 @@ Aggiornato: giugno 2026.
 | Nome | Mail | Ruolo |
 |------|------|-------|
 | Alessio Sopranzi | asopranzi@intrawelt.com | IT Manager |
-| Tommaso Vezeni | tvezeni@intrawelt.com | Supporto IT / T-Rex |
-| Alessia Nasini | anasini@intrawelt.com | Coordinamento operativo |
-| Attilio Trovato | atrovato@intrawelt.com | Azure admin, SCENIA VM |
+| Persona-E | persona-e@intrawelt.com | Supporto IT / T-Rex |
+| Persona-J | persona-j@intrawelt.com | Coordinamento operativo |
+| Persona-M | persona-m@intrawelt.com | Azure admin, SCENIA VM |
 
 ---
 
@@ -37,7 +37,7 @@ Aggiornato: giugno 2026.
 | task_1 | Formazione T-Rex: stilare syllabus preciso | - | 1 | Bloccata |
 | task_3 | Migrazione gestionale: supporto OpenForce | 120 | 1 | 0% |
 | task_4 | Sviluppo specifiche feature moduli T-Rex | - | 1 | 0% |
-| task_5 | Acknowledgment video formazione (3 video, Tommaso) | 8 | 1 | 0% |
+| task_5 | Acknowledgment video formazione (3 video, Persona-E) | 8 | 1 | 0% |
 | task_6 | Documento Alessio (dipende da task_5) | ? | 1 | 0% |
 | task_7 | Formazione esterna sviluppo (4h rimanenti) | - | 1 | 0% |
 | task_8 | Integrazione dati T-Rex dentro NinjaOne | - | - | 0% |
@@ -97,7 +97,7 @@ Aggiornato: giugno 2026.
 |----|----------|-----|----------|-------|
 | task_17 | Roadmap cybersec + aggiornamento documentazione | 20 | 1 | 0% |
 | task_18 | Documento stato dell'arte sicurezza | 20 | 1 | 0% |
-| task_19 | Normativa e certificazioni (con Serafino Bartolomei) | 270 | 1 | 0% |
+| task_19 | Normativa e certificazioni (con Consulente-ISO27001-1) | 270 | 1 | 0% |
 | task_20 | Distribuire privacy policy NinjaOne a tutti gli utenti | - | - | 0% |
 | task_21 | Studio varie questioni sicurezza avanzata (SIEM, DLP, PAM, SDLC…) | 10 | - | 0% |
 | task_22 | Ethical hacking su VM Proxmox (dipende da task_40) | - | - | 0% |
@@ -110,7 +110,7 @@ Aggiornato: giugno 2026.
 | task_31 | Bitdefender GravityZone: sostituzione ESET, distribuzione centralizzata | 10 | 1 | **75%** |
 | task_32 | Bitdefender su Windows Server (WINGROUPSHARE, WINSRV2019, WIN-V712I9QHQT9) | 5 | 1 | 0% |
 | task_33 | Password policy: modifica tutte le password aziendali, policy scadenza | 15 | - | **25%** |
-| task_34 | Cleanup mail Pasquale e Giordano (account MS chiusi set 2025) | 20 | 2 | **50%** |
+| task_34 | Cleanup mail Persona-P e Persona-R (account MS chiusi set 2025) | 20 | 2 | **50%** |
 | task_56 | Studio ciclo vita dati posta (Exchange, quarantena, traccia) | - | - | 0% |
 | task_57 | Studio Microsoft Purview + Defender integration | - | - | 0% |
 
@@ -121,9 +121,9 @@ password hashed, PIM/PAM, crittografia backup, SDLC DevOps, RPO/RTO, incident ma
 eDiscovery, cloud forensics, physical security.
 
 **task_31 – Bitdefender pendente su 3 macchine:**
-- WINGROUPSHARE (10.1.116.3) – sotto Seeweb
-- WINSRV2019 (10.1.116.4) – sotto Seeweb
-- WIN-V712I9QHQT9 (192.168.20.13) – Proxmox
+- WINGROUPSHARE (10.77.116.3) – sotto Seeweb
+- WINSRV2019 (10.77.116.4) – sotto Seeweb
+- WIN-V712I9QHQT9 (10.61.20.13) – Proxmox
 
 ---
 
@@ -140,7 +140,7 @@ eDiscovery, cloud forensics, physical security.
 | task_65 | Azure MFA enforcement | 1 | - | **100%** | 01/10/2025 |
 | task_66 | Power Automate: monitoraggio e creazione flussi | - | - | 0% | - |
 | task_67 | Problematiche varie posta da sistemare | - | - | 0% | - |
-| task_68 | Phishing analisi (caso Alessia Nasini maggio 2025) | 2 | - | 0% | - |
+| task_68 | Phishing analisi (caso Persona-J maggio 2025) | 2 | - | 0% | - |
 
 ---
 
@@ -205,8 +205,8 @@ eDiscovery, cloud forensics, physical security.
 | task_101 | Password manager aziendale (Vaultwarden self-hosted) | 40 | 10 | 0% |
 | task_102 | IntraLino chatbot RAG | ? | 10 | 0% |
 | task_103 | Soluzioni ad hoc per clienti (es. Legami, mail 01/09/2025) | - | 10 | 0% |
-| task_104 | Valutazione progetti pending Giordano (su SSD D:\ PC-ALESSIO) | - | - | 0% |
-| task_105 | Distribuzione app servizi ruolini (192.168.20.22:3000, problemi CORS) | - | - | 0% |
+| task_104 | Valutazione progetti pending Persona-R (su SSD D:\ PC-ALESSIO) | - | - | 0% |
+| task_105 | Distribuzione app servizi ruolini (10.61.20.22:3000, problemi CORS) | - | - | 0% |
 | task_106 | DocuWikiTickets | - | - | 0% |
 
 ---
@@ -231,7 +231,7 @@ eDiscovery, cloud forensics, physical security.
 | task_46 | Switch Piano Terra (ridondanza fibra) | 10h | task_44 |
 | task_3 | Migrazione T-Rex gestionale | 120h | task_1 |
 | task_1 | Formazione T-Rex (syllabus preciso) | - | - |
-| task_19 | Certificazione ISO 27001 con Serafino | 270h | - |
+| task_19 | Certificazione ISO 27001 con Consulente-ISO27001-1 | 270h | - |
 
 **Nota task_47 (network security):**
 Il testo originale richiede una revisione completa dell'infrastruttura di rete:

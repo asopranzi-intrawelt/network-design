@@ -1,8 +1,74 @@
 # Work-log
 
+## 2026-07-10 — Sweep di anonimizzazione completo su tutto l'albero docs/ (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: cybersecurity-governance.md, scenia-project.md,
+helpdesk-operations.md, it-backlog.md, vendor-management.md,
+business-continuity-disaster-recovery.md, telephony-pbx.md,
+infrastructure-timeline/{2024-infra,2025-q1-server-vianova,
+2025-q2-migrazione-tim-vianova,2025-q3-q4,ingestion-checklist}.md,
+`_notes/.anonymization-map.md` (17 nuovi placeholder: Persona-V..AJ,
+Referente-Vianova-5/6, Referente-Fibercop-1, Referente-RWS-1).
+Motivo: su conferma esplicita dell'utente ("continua ora il sweep
+completo"), esteso oltre ai file gia' bonificati il controllo a tutto
+l'albero `docs/` e `.claude/context/`. Trovato e corretto: un registro
+firme dipendenti con 21 nomi reali in chiaro (mai messi in placeholder
+prima d'ora), una decina di referenti esterni (Vianova, myOffice,
+Fastnet, Novadys, ABBYY, Proelium, BioStar2, Fibercop, RWS) citati per
+nome reale nelle timeline 2024-2025 nonostante avessero gia' un
+placeholder assegnato altrove, due hostname PC-* legati a nomi reali, e
+quattro numeri di telefono reali (rimossi, non solo anonimizzati, per la
+regola sui dati amministrativi). Deciso con l'utente di trattare
+"Intrawelt di Alessandro Potalivo & C. Sas" come ragione sociale legale
+(dato di registro) e lasciarlo reale solo dove compare letteralmente
+come denominazione d'impresa, anonimizzando pero' ogni menzione
+narrativa personale del legale rappresentante altrove. Grep esteso
+finale su tutto l'albero: nessun residuo noto. Fase B resta aperta solo
+per la riscrittura della storia git (fuori scope di una sessione
+normale); il contenuto in HEAD e' ora pulito.
+
 > Append-only, in ordine cronologico inverso (la voce piu recente in alto). Ogni passo
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
+
+## 2026-07-10 — Mappatura porte Persona-D, sec-009 continua, bonifica IP/nomi reali estesa (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/mappatura-porte-fisiche.md (spostamento postazione Persona-D
+0-3-3 -> 0-R-4 per aggiornamento IP), docs/infrastructure-timeline/2025-q1-server-vianova.md
+(dettaglio migrazione BioStar2 su HP Gen10/Windows Server 2022), docs/vendor-management.md
+(predecessore GroupShare 2017 SP1 su Seeweb, Persona-H al posto del nome reale),
+docs/infrastructure-timeline/2023-baseline.md (bonifica quasi totale: era rimasto
+il file originale non anonimizzato con IP reali 192.168.x.x, 5.98.88.x,
+31.197.194.x, 10.1.116.x, nomi reali Pasquale Sconciafurno/Giordano
+Mandolesi/Daniele Colo', MAC e seriale device reali, numeri di telefono
+reali), docs/infrastructure-timeline/2025-q3-q4.md (bonifica IP reali
+residui NAS fleet + seriali/MAC device + nomi Francesca Caricchia/Marco
+Perri/Serafino Bartolomei gia' in placeholder dove serviva),
+docs/infrastructure-timeline/{2024-infra,2025-q1-server-vianova,2025-q2-migrazione-tim-vianova}.md,
+docs/{helpdesk-operations,it-backlog,runbook-anomalie,sviluppo-interno,
+vulnerability-assessment-nov2025,firewall-zyxel-usg-flex-500,
+business-continuity-disaster-recovery}.md (bonifica IP reali via script
+Python deterministico + fix manuali di nomi propri residui), `_notes/.anonymization-map.md`
+(nuove voci: placeholder per le tre IP pubbliche TIM WAN1 legacy).
+Motivo: applicato l'aggiornamento port-mapping richiesto dall'utente per
+Persona-D, poi ripresa la re-estrazione di sec-009. Durante la lettura di
+sec-009 (arrivata a copertura quasi completa, restano poche decine di
+paragrafi finali su USG20/USG60 dismessi, privi di contenuto testuale
+utile nella fonte) e' emerso un grep-audit che ha rivelato una bonifica
+di anonimizzazione molto piu' estesa del previsto: 2023-baseline.md non
+era mai stato passato dalla pipeline di anonimizzazione (probabilmente
+scritto prima che la regola esistesse) e altri 10 file avevano residui
+IP reali reintrodotti o mai bonificati. Bonifica IP completata su tutti
+i file individuati dal grep esteso del 09/07 piu' alcuni nuovi (seriali
+device, un MAC, numeri di telefono). Bonifica nomi propri completata solo
+sui file toccati in questa sessione; resta un sweep piu' ampio non
+ancora fatto su cybersecurity-governance.md, scenia-project.md e le
+timeline 2024/2025-q1/q2 (soprattutto Alessia Nasini e Alessandro
+Potalivo), segnalato all'utente con una domanda aperta sul trattamento
+di Alessandro Potalivo dato che il suo nome coincide con la ragione
+sociale legale dell'azienda.
 
 ## 2026-07-10 — sec-009 ARCHITETTURA: migrazione W2012_bioserver, diagnosi VLAN BioStar2 (sessione 9, continua)
 

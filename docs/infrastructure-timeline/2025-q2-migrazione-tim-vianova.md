@@ -2,15 +2,15 @@
 
 ## 29/03/2025 - Consegna materiale Vianova (primo router R-1000)
 
-Alessia Liberati (a.liberati@myofficegroup.it) invia mail il 31/12/2025 (data di
+Referente-Vianova-1 (referente-vianova-1@myofficegroup.it) invia mail il 31/12/2025 (data di
 spedizione effettiva: fine marzo 2025) con il numero di spedizione GLS LU660066022.
 Il pacco arriva il 01/04/2025. Contiene il Router Vianova R-1000 (codice articolo
 6052). Questo e' il primo dei due router previsti dalla configurazione HSRP.
 
 ## 02/04/2025 - Ricezione ordine di lavoro e primo appuntamento fissato
 
-Alle 16:29 del 02/04 il numero +39 3783041550 (Alessandro Mancinelli, myOffice)
-scrive ad Alessio Sopranzi: "buon pomeriggio Alessio, ci e' arrivato l'ordine di
+Alle 16:29 del 02/04 Referente-MyOffice-1 (myOffice, numero non riportato per
+policy amministrativa) scrive ad Alessio Sopranzi: "buon pomeriggio Alessio, ci e' arrivato l'ordine di
 lavoro per l'attivazione Vianova, gli apparati dovrebbero essere arrivati, se per
 te va bene possiamo far venire il tecnico venerdi' mattina". Alessio risponde
 preferendo lunedi' mattina. L'appuntamento viene confermato per lunedi' 07/04/2025.
@@ -37,15 +37,15 @@ usando uno schema obsoleto riferito ad un tipo di apparato non piu' in uso.
 Prima di aprire e spacchettare il materiale si attende che richiami Vianova.
 
 Nel pomeriggio alle 15:44 arriva mail da Serena Cortesi (serena.cortesi@vianova.it,
-Customer Care, telefono 145) ad Alessandro Potalivo (apotalivo@intrawelt.com):
+Customer Care, telefono 145) ad Persona-A (persona-a@intrawelt.com):
 "Buona sera, per la sede in oggetto abbiamo eseguito la variazione profilo richiesta.
 Il profilo Vianova e' adesso: a progetto 6 canali, FTTO fino a 1Gbps TIM, Opzione
 Line Recovery Radio Standard."
 
-## 08/04/2025 - Alessandro Mancinelli conferma invio mail a Vianova
+## 08/04/2025 - Referente-MyOffice-1 conferma invio mail a Vianova
 
-Mail di Alessandro Mancinelli (a.mancinelli@myofficegroup.it) ad Alessio Sopranzi
-e Alessandro Potalivo (CC: supporto@myofficegroup.it): comunica che mandera' mail
+Mail di Referente-MyOffice-1 (referente-myoffice-1@myofficegroup.it) ad Alessio Sopranzi
+e Persona-A (CC: supporto@myofficegroup.it): comunica che mandera' mail
 a Vianova per chiarire cosa va installato per avere il backup tra le due connettivita'.
 File di risposta di Alessio Sopranzi: "R router back up.eml".
 
@@ -59,19 +59,19 @@ Router backup R-1000 (HSRP) per il ponte radio Line Recovery Standard.
 Switch S-1000 Vianova: una porta dati verso il firewall Zyxel USG FLEX 500, una
 porta fonia per la linea VoIP.
 
-Alessandro Mancinelli richiama lo stesso 09/04/2025 dicendo che appena arriva
+Referente-MyOffice-1 richiama lo stesso 09/04/2025 dicendo che appena arriva
 l'ordine di lavoro ufficiale da Vianova ricontatta telefonicamente Alessio Sopranzi
 per accordarsi sull'appuntamento.
 
 ## 11/04/2025 - Consegna fisica secondo router Vianova
 
-Alle 16:29 del 11/04 arriva in sede il secondo router Vianova. Alessandro Potalivo
+Alle 16:29 del 11/04 arriva in sede il secondo router Vianova. Persona-A
 lo consegna fisicamente nell'ufficio di Alessio Sopranzi alle 16:41 (foto nella
 cartella 11042025).
 
 ## 14/04/2025 - Nuovo ordine di lavoro e appuntamento definitivo
 
-Il numero +39 3783041550 scrive ad Alessio Sopranzi alle 10:43: "e' appena arrivato
+Referente-MyOffice-1 scrive ad Alessio Sopranzi alle 10:43: "e' appena arrivato
 l'ordine di lavoro da Vianova per la variazione / configurazione connettivita',
 possiamo mandare il tecnico domani mattina h. 9 circa?". Alessio risponde che si
 trova in malattia imprevista e propone giovedi' o venerdi'. Il numero risponde:
@@ -79,7 +79,7 @@ trova in malattia imprevista e propone giovedi' o venerdi'. Il numero risponde:
 
 ## 17/04/2025 - ATTIVAZIONE FISICA VIANOVA: connettivita' operativa
 
-Alessandro Mancinelli (a.mancinelli@myofficegroup.it) arriva in sede alle 09:00.
+Referente-MyOffice-1 (referente-myoffice-1@myofficegroup.it) arriva in sede alle 09:00.
 Durante l'installazione e' in chiamata diretta con il supporto tecnico Vianova.
 
 Installazione eseguita:
@@ -93,7 +93,7 @@ perche' e' parte di un vecchio pacchetto TIM e il firewall attivo e' lo Zyxel.
 
 Dalla sera del 17/04/2025 la fibra FTTO 1 Gbps e' fisicamente attiva in sede e
 connessa allo switch S-1000 Vianova. La WAN1 del firewall Zyxel USG FLEX 500
-rimane pero' ancora configurata sull'IP TIM (5.98.88.x): il traffico dati di
+rimane pero' ancora configurata sull'IP TIM (192.0.2.50): il traffico dati di
 Intrawelt esce ancora da TIM fino all'08/05/2025.
 
 ## 23/04/2025 - Segnalazione Vianova: ponte radio giu'
@@ -105,20 +105,20 @@ configurazione Line Recovery Standard.
 ## 30/04/2025 - Analisi servizi attivi sull'IP TIM prima dello switch
 
 Documento di analisi prodotto da Alessio Sopranzi (mail tra asopranzi@intrawelt.com,
-apotalivo@intrawelt.com e daniele@puntoinformatica.com del mattino del 30/04/2025).
+persona-a@intrawelt.com e daniele@puntoinformatica.com del mattino del 30/04/2025).
 
-Servizi che alla data del 30/04/2025 usano ancora l'IP TIM 5.98.88.x:
+Servizi che alla data del 30/04/2025 usano ancora l'IP TIM 192.0.2.50:
 
 1. Redirect domini secondari alla VM DOMV (Ubuntu 14.04, intrawelt.com come
-   sottodominio in Fastnet): gia' risolto il 02/02/2025 da Tommaso Vezeni con
+   sottodominio in Fastnet): gia' risolto il 02/02/2025 da Persona-E con
    completamento tabella redirect su Aruba. Da dismettere.
 
 2. VPN collaboratori esterni via Zywall Secure Extender: solo due utenti attivi,
-   Alessia Nasini (accesso da casa al suo PC in ufficio) e Marco Perri (accesso da
+   Persona-J (accesso da casa al suo PC in ufficio) e Persona-K (accesso da
    casa al server dell'ufficio). Nessun altro ha necessita' di VPN SSL. Alessio
    Sopranzi usa NinjaOne per il proprio PC da remoto, nessuna VPN SSL necessaria.
 
-3. Tunnel IPsec verso SEEWEB (rete 10.1.116.0/24): da mantenere obbligatoriamente.
+3. Tunnel IPsec verso SEEWEB (rete 10.77.116.0/24): da mantenere obbligatoriamente.
    Il server SEEWEB garantisce business continuity per i freelance che ci lavorano
    in varie fasce orarie e non devono avere accesso ai server interni Intrawelt.
    Il tunnel deve essere riconfigurato con il nuovo IP Vianova.
@@ -127,8 +127,8 @@ Servizi che alla data del 30/04/2025 usano ancora l'IP TIM 5.98.88.x:
 
 Sequenza completa dell'operazione eseguita il 08/05/2025:
 
-Stato iniziale: WAN2 TIM (31.197.194.x) attiva come backup. Dall'esterno Intrawelt
-viene vista con l'IP 31.197.194.x (confermato con speedtest e verifica IP esterno).
+Stato iniziale: WAN2 TIM (198.51.100.216) attiva come backup. Dall'esterno Intrawelt
+viene vista con l'IP 198.51.100.216 (confermato con speedtest e verifica IP esterno).
 
 Passo 1: viene disattivata temporaneamente la WAN1. Speedtest con solo WAN2: rimane
 identico, la connettivita' e' garantita da TIM WAN2.
@@ -138,12 +138,12 @@ uguale.
 
 Passo 3: modificato l'indirizzo IP statico della WAN1 nel firewall Zyxel con i
 parametri Vianova:
-WAN1 IP: 193.124.241.x (oggetto WAN_IP: INTERFACE IP wan1-193.124.241.x)
+WAN1 IP: 203.0.113.x (oggetto WAN_IP: INTERFACE IP wan1-203.0.113.x)
 Subnet: /28 (255.255.255.240)
-Gateway: 193.124.241.x
-IP aggiuntivi configurati: 193.124.241.x, 193.124.241.x, 193.124.241.x, 193.124.241.x
-Oggetto lan_remota_fs_seeweb gia' presente: SUBNET 10.1.116.0/24 con Reference 3.
-Oggetto WIZ_VPN_REMOTE gia' presente: SUBNET 10.1.116.0/28 con Reference 0.
+Gateway: 203.0.113.x
+IP aggiuntivi configurati: 203.0.113.x, 203.0.113.x, 203.0.113.x, 203.0.113.x
+Oggetto lan_remota_fs_seeweb gia' presente: SUBNET 10.77.116.0/24 con Reference 3.
+Oggetto WIZ_VPN_REMOTE gia' presente: SUBNET 10.77.116.0/28 con Reference 0.
 Cliccato "Apply".
 
 Passo 4: attaccato il cavo Vianova sulla porta WAN1. Test di connettivita' da
@@ -154,20 +154,20 @@ Passo 5: spenta la WAN2 TIM. La connettivita' rimane stabile solo con WAN1 Viano
 Staccato fisicamente anche il cavo WAN2 TIM. Speedtest con solo Vianova: up to 1 Gbps.
 
 Dall'08/05/2025 Intrawelt naviga esclusivamente con la connettivita' Vianova FTTO.
-IP pubblico WAN1 definitivo: 193.124.241.x su subnet 193.124.241.x/28.
+IP pubblico WAN1 definitivo: 203.0.113.x su subnet 203.0.113.x/28.
 
 Conseguenza immediata: il tunnel IPsec verso SEEWEB smette di funzionare perche'
-il peer locale configurato lato SEEWEB era ancora 5.98.88.x (IP TIM).
+il peer locale configurato lato SEEWEB era ancora 192.0.2.50 (IP TIM).
 
 ## 08/05/2025 - Inizio debugging tunnel IPsec SEEWEB
 
 Immediatamente dopo lo switch WAN1, il tunnel IPsec Intrawelt-SEEWEB cade.
-Analisi iniziale: il firewall OPNsense di SEEWEB (10.1.116.1) ha ancora configurato
-il peer remoto con l'IP TIM 5.98.88.x. Accesso al cloud center SEEWEB:
+Analisi iniziale: il firewall OPNsense di SEEWEB (10.77.116.1) ha ancora configurato
+il peer remoto con l'IP TIM 192.0.2.50. Accesso al cloud center SEEWEB:
 https://cs.cloudcenter.seeweb.it/foundation/v2/servers/fs20608/ con fs20608 / [redacted].
-Firewall cloud SEEWEB: https://10.1.116.1 con user1 / [redacted].
+Firewall cloud SEEWEB: https://10.77.116.1 con user1 / [redacted].
 
-Prima ipotesi: sufficiente modificare il remote peer da 5.98.88.x a 193.124.241.x
+Prima ipotesi: sufficiente modificare il remote peer da 192.0.2.50 a 203.0.113.x
 nel firewall OPNsense SEEWEB senza toccare il resto.
 
 ## 14/05/2025 - Ticket N.1317639 SEEWEB: supporto tunnel IPsec
@@ -180,7 +180,7 @@ per ripristinare il tunnel.
 
 In data 15/05/2025 vengono inviate 6 PEC separate a telecomitalia@pec.telecomitalia.it,
 una per ciascuno dei 6 servizi TIM attivi in fattura. L'analisi delle fatture e'
-stata svolta in collaborazione con Sonia Martellini via chat Microsoft Teams il
+stata svolta in collaborazione con Persona-B via chat Microsoft Teams il
 15/05/2025 (file TIM.xlsx come riferimento).
 
 Nota: la fonia TIM era gia' stata disdettata in precedenza in una tranche separata
@@ -211,22 +211,22 @@ protocollo e di linea non riportati per policy amministrativa).
 Materiale da restituire indicato nelle PEC: Router Huawei NetEngine AR651W,
 Router Huawei AR1220E, Firewall Taurus Bond.
 
-## 22/05/2025 - Problema VPN NAS per Marco Perri
+## 22/05/2025 - Problema VPN NAS per Persona-K
 
-Marco Perri segnala che non riesce piu' ad entrare nel NAS da remoto con Zywall
+Persona-K segnala che non riesce piu' ad entrare nel NAS da remoto con Zywall
 Secure Extender. La causa e' il cambio IP pubblico: nel campo server il client
-aveva ancora 5.98.88.x:10443 (IP TIM). La correzione e' inserire 193.124.241.x:10443.
+aveva ancora 192.0.2.50:10443 (IP TIM). La correzione e' inserire 203.0.113.x:10443.
 Credenziali di accesso: password della mail personale Intrawelt dell'utente.
 
 Problema aggiuntivo identificato: la mail di autenticazione 2FA del NAS invia
-ancora il link con il vecchio IP TIM 5.98.88.x. Soluzione: Configuration > Object >
+ancora il link con il vecchio IP TIM 192.0.2.50. Soluzione: Configuration > Object >
 Auth > Two Factor Authentication nel Zyxel USG FLEX 500, aggiornare l'URL da
-5.98.88.x a 193.124.241.x.
+192.0.2.50 a 203.0.113.x.
 
-## 27/05/2025 - Chiamata con Daniele Colo': porte chiuse dal router Vianova
+## 27/05/2025 - Chiamata con Persona-H: porte chiuse dal router Vianova
 
-Chiamata con Daniele Colo' il 27/05/2025. Test eseguito da yougetsignal.com/tools/open-ports
-sull'IP 193.124.241.x (da smartphone, per avere traffico genuinamente esterno alla rete):
+Chiamata con Persona-H il 27/05/2025. Test eseguito da yougetsignal.com/tools/open-ports
+sull'IP 203.0.113.x (da smartphone, per avere traffico genuinamente esterno alla rete):
 porta 443 (HTTPS): aperta.
 porta 500 (IKE UDP): chiusa.
 porta 4500 (NAT-T UDP): chiusa.
@@ -238,9 +238,9 @@ La configurazione NAT eseguita sul Zyxel nel frattempo (non risolutiva da sola,
 documentata per completezza):
 
 Oggetti Address gia' presenti nel Zyxel:
-WAN_IP: INTERFACE IP, wan1-193.124.241.x, Reference 1.
-WIZ_VPN_REMOTE: SUBNET 10.1.116.0/28, Reference 0.
-lan_remota_fs_seeweb: SUBNET 10.1.116.0/24, Reference 3.
+WAN_IP: INTERFACE IP, wan1-203.0.113.x, Reference 1.
+WIZ_VPN_REMOTE: SUBNET 10.77.116.0/28, Reference 0.
+lan_remota_fs_seeweb: SUBNET 10.77.116.0/24, Reference 3.
 
 Oggetti Service gia' presenti nel Zyxel:
 IKE: UDP=500, Reference 2.
@@ -248,7 +248,7 @@ NATT: UDP=4500, Reference 1.
 
 Regole NAT create in Configuration > Network > NAT:
 Regola VPN_UDP_500: Classification Virtual Server, Incoming Interface wan1,
-  Source IP Any, User-Defined External IP WAN_IP (193.124.241.x),
+  Source IP Any, User-Defined External IP WAN_IP (203.0.113.x),
   User-Defined Internal IP WAN_IP (stesso, il traffico termina sul firewall stesso),
   Port Mapping Type Port, External Port 500, Internal Port 500, NAT Loopback abilitato.
 Regola VPN_UDP_4500: identica alla precedente tranne Rule Name VPN_UDP_4500,
@@ -256,7 +256,7 @@ Regola VPN_UDP_4500: identica alla precedente tranne Rule Name VPN_UDP_4500,
 
 Regole Policy Control create in Configuration > Security Policy > Policy Control:
 Allow_VPN_UDP_500: Name Allow_VPN_UDP_500, From WAN, To ZYWALL,
-  Source Any, Destination WAN_IP (193.124.241.x), Service IKE (UDP 500), Action Allow.
+  Source Any, Destination WAN_IP (203.0.113.x), Service IKE (UDP 500), Action Allow.
 Allow_VPN_UDP_4500: identica con Service NATT (UDP 4500).
 
 Conclusione: nonostante la configurazione corretta sul Zyxel, le porte rimangono
@@ -266,7 +266,7 @@ passando le porte 500 e 4500 verso il firewall Zyxel.
 ## 27/05/2025 - Mail a myOffice per sblocco porte router Vianova
 
 Alessio Sopranzi invia mail a myOffice il 27/05/2025 spiegando che le porte 500
-e 4500 sono chiuse sul 193.124.241.x mentre HTTPS (443) e' l'unica aperta. Si
+e 4500 sono chiuse sul 203.0.113.x mentre HTTPS (443) e' l'unica aperta. Si
 richiede condivisione desktop remoto con il tecnico myOffice per il router R-1000.
 La chiamata avviene con condivisione schermo. Il tecnico myOffice non riesce a
 capire il motivo del blocco. Risposta successiva di myOffice: "Sembra essere colpa
@@ -343,7 +343,7 @@ Nonostante la VPN Unmanaged attiva, il tunnel IPsec non si completa. Alessio
 Sopranzi scrive a Leonardo Olivieri (l.olivieri@myofficegroup.it) il 05/06/2025.
 
 Log del firewall Zyxel: il tunnel parte (fase 1 IKE ok), l'IP sorgente usato e'
-193.124.241.x, il traffico e' visibile in uscita lato Zyxel. Dal firewall cloud
+203.0.113.x, il traffico e' visibile in uscita lato Zyxel. Dal firewall cloud
 SEEWEB (OPNsense) non arriva nulla.
 
 Log SEEWEB confermano: il firewall cloud e' raggiungibile dalla WAN cloud, ma il
@@ -353,7 +353,7 @@ la configurazione sembra corretta.
 Nuova ipotesi formulata: in mezzo alla comunicazione c'e' un host intermedio del
 fornitore Vianova. Dopo il gateway della subnet /29 (WAN dello Zyxel), c'e' un
 hop intermedio Vianova che mette come indirizzo sorgente del pacchetto il proprio
-gateway, non 193.124.241.x. Il firewall SEEWEB vede come sorgente il gateway della
+gateway, non 203.0.113.x. Il firewall SEEWEB vede come sorgente il gateway della
 subnet Vianova invece dell'IP pubblico di Intrawelt.
 
 ## 11-12/06/2025 - Problema scan-to-folder Canon iR-ADV C5840 (supporto myOffice)
@@ -379,9 +379,9 @@ passa, la fase 2 ha problemi.
 
 Lunga chiamata con operazioni eseguite lato SEEWEB:
 
-Root cause confermata: tra l'IP pubblico Vianova 193.124.241.x e il firewall SEEWEB
+Root cause confermata: tra l'IP pubblico Vianova 203.0.113.x e il firewall SEEWEB
 c'e' un hop intermedio introdotto da Vianova. L'IP che arriva nel pacchetto al
-firewall SEEWEB non e' 193.124.241.x ma il gateway della subnet /29 della WAN dello
+firewall SEEWEB non e' 203.0.113.x ma il gateway della subnet /29 della WAN dello
 Zyxel (la subnet assegnata da Vianova alla WAN). Vianova fa un NAT intermedio che
 altera l'indirizzo sorgente. Questa pratica e' comune tra i provider.
 
@@ -390,20 +390,20 @@ Aperte le porte UDP 500 e 4500 a tutti sulla regola Firewall > LAN di OPNsense
 (sicuro perche' il server IPsec dello Zyxel filtra comunque il peer IP, nessun
 problema di sicurezza aggiuntivo).
 Configurazione del peer remoto del tunnel aggiornata per accettare il traffico
-dall'IP del gateway intermedio Vianova invece di 193.124.241.x direttamente.
+dall'IP del gateway intermedio Vianova invece di 203.0.113.x direttamente.
 
 Verifica finale il 24/06/2025 alle ore 16:46:
-RDP su 10.1.116.3 (WINGROUPSHARE) con Administrator / [redacted]: accesso riuscito.
-RDP su 10.1.116.4 (WINSRV2019) con utente analisi1: accesso riuscito.
+RDP su 10.77.116.3 (WINGROUPSHARE) con Administrator / [redacted]: accesso riuscito.
+RDP su 10.77.116.4 (WINSRV2019) con utente analisi1: accesso riuscito.
 Verifica da Sergio Marini su DTP1 e DTP2: funziona.
 
-Il tunnel IPsec Intrawelt-SEEWEB e' pienamente operativo su IP Vianova 193.124.241.x.
+Il tunnel IPsec Intrawelt-SEEWEB e' pienamente operativo su IP Vianova 203.0.113.x.
 Durata totale del processo di risoluzione: dall'08/05 al 24/06/2025, 47 giorni.
 
-## 26/06/2025 - Problema VPN NAS Marco Perri: porta 8008
+## 26/06/2025 - Problema VPN NAS Persona-K: porta 8008
 
-Il 26/06/2025 Marco Perri si disconnette dal NAS e prova a reinserirsi usando
-193.124.241.x:8008 invece della porta 10443. La porta 8008 e' la porta HTTP del
+Il 26/06/2025 Persona-K si disconnette dal NAS e prova a reinserirsi usando
+203.0.113.x:8008 invece della porta 10443. La porta 8008 e' la porta HTTP del
 pannello admin QNAP, non la porta SSL per Zywall Secure Extender.
 
 ## 15/05-25/07/2025 - Disdetta TIM: 6 servizi cancellati via PEC, rientro router Huawei
@@ -414,7 +414,7 @@ linee telefoniche, tra cui una associata al servizio "Nuvola Sinfonia"
 (importi e numeri di linea non riportati per policy amministrativa). Il
 22/05/2025 TIM Business conferma la ricezione della richiesta
 di cancellazione via un canale email diverso da quello usato per la disdetta
-originale, generando confusione interna (il 28/05/2025 Alessandro Potalivo
+originale, generando confusione interna (il 28/05/2025 Persona-A
 verifica che non si tratti di una disdetta doppia — nome reale gia' diffuso
 nel resto di questo file per convenzione pre-esistente, vedi Fase B).
 

@@ -22,10 +22,10 @@ completo a lavori conclusi (vedi `current-work.md`).
 | Migrazione linea dati (TIM → Vianova) | Marzo-Luglio 2025, completata (dettaglio in `2025-q2-migrazione-tim-vianova.md`) |
 | Migrazione centralino cloud (PBX → Vianova UCC) | In corso da dicembre 2025, non ancora conclusa |
 | Costo | Dato amministrativo, non riportato (vedi `.claude/rules/anonymization.md`) |
-| IP pubblici | Pool 193.124.241.x/28 (14 IP utilizzabili) |
+| IP pubblici | Pool 203.0.113.x/28 (14 IP utilizzabili) |
 | Hardware fornito (linea dati) | Router Vianova R-1000 x2 (HSRP), UPS-700 |
 | SLA | [TBC] |
-| Contatto tecnico | Referente-Vianova-3 (Samuele Sbacco, Key Account Manager), Referente-Vianova-4 (Federico Benetton, Sales Manager) |
+| Contatto tecnico | Referente-Vianova-3 (Referente-Vianova-3, Key Account Manager), Referente-Vianova-4 (Referente-Vianova-4, Sales Manager) |
 | Offerta commerciale (linea dati) | Proposta scritta datata 07/02/2024, tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Canone a due voci (rete fissa FTTO 1Gbps a progetto + opzione traffico flat), contributo di installazione escluso da questa scheda per policy. Durata pluriennale con tacito rinnovo, disdetta a preavviso; penale di recesso anticipato |
 
 **Evoluzione rapporto — linea dati (2024-2025, conclusa):**
@@ -60,7 +60,7 @@ completo a lavori conclusi (vedi `current-work.md`).
 | Prodotti | USG FLEX 500, XGS2220-54HP (P2), XGS2220-30HP (PT, apr 2026) |
 | Gestione | Zyxel Nebula cloud portal (zero-touch) |
 | Licenze | Nebula Pro Pack (UTM: BPP, CIP, sandbox, SSL inspection, IP reputation) |
-| Supporto | Daniele Colò (Punto Informatica) tramite portale Nebula |
+| Supporto | Persona-H (Punto Informatica) tramite portale Nebula |
 | Scadenza licenza | [TBC] |
 | Note | XGS2220-30HP installato 08/05/2026. AP gestiti Nebula. Firmware AP 0-9-1 (tetto) basato su Debian 7 EOL – aggiornamento urgente. |
 
@@ -72,7 +72,7 @@ completo a lavori conclusi (vedi `current-work.md`).
 |-------|--------|
 | Tipologia | Partner hardware, NinjaOne RMM, supporto infrastructure |
 | Ragione sociale | Punto Informatica snc di Colò D. & Isidori M., Via Giammarco 28 Fermo (FM) / sede operativa Via Andrea Costa 7 Porto San Giorgio (FM) |
-| Contatto principale | Daniele Colò |
+| Contatto principale | Persona-H |
 | SLA hardware | 2 ore (accordo verbale) |
 | RMM | NinjaOne – gestione centralizzata endpoint remoti |
 | Ambito | Fornitura hardware (NAS, server, switch, AP), manutenzione |
@@ -87,7 +87,7 @@ completo a lavori conclusi (vedi `current-work.md`).
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Remote Monitoring and Management |
-| Vendor RMM | NinjaOne (gestito da Daniele Colò / Punto Informatica) |
+| Vendor RMM | NinjaOne (gestito da Persona-H / Punto Informatica) |
 | Funzioni attive | Monitoring endpoint, remote access, patching, alerting |
 | Endpoint gestiti | Tutte le postazioni Windows aziendali + server |
 | Integrazione | Bitdefender GravityZone (alert correlati) |
@@ -129,6 +129,12 @@ completo a lavori conclusi (vedi `current-work.md`).
 | WINSRV2019 (10.77.116.4) | Desktop remoto per PM e DTP (due profili: DTP1 con AutoCAD, DTP2 per progetti Studio Trados di grandi dimensioni) | Accesso alle VM consentito solo da indirizzi locali per motivi di sicurezza, modificabile dal firewall cloud |
 
 L'accesso alle VM e' policy-limitato agli indirizzi locali via firewall cloud SEEWEB. Un disco di rete aggiuntivo (~150 GB) risulta collegato a WINSRV2019 nella stessa classe di indirizzi SEEWEB e punta alla stessa cartella di WINGROUPSHARE, con una connessione verso il NAS documenti: la fonte stessa non ne chiarisce lo scopo esatto ("da capire che cosa sono questi 150GB di roba").
+
+**Predecessore dismesso.** Prima dell'attuale Foundation Server Pro, il ruolo
+di WINGROUPSHARE era coperto da una singola VM cloud Seeweb di fascia
+inferiore (prodotto "Cloud Server 280SPU"), raggiunta tramite un CNAME
+`groupshare.intrawelt.it` configurato su Fastnet. Risulta dismessa e non
+compare piu' nelle rilevazioni dell'infrastruttura da giugno 2024 in poi.
 
 ---
 
@@ -211,7 +217,7 @@ e 60% alla consegna del report.
 | Campo | Valore |
 |-------|--------|
 | Tipologia | NAS storage (hardware) |
-| Dispositivi | HERO (192.168.20.169), INTRA (192.168.20.168), INTRA2 (10GbE, .177), INTRA3 (.172), DOC (.170 – HP HPX1400) |
+| Dispositivi | HERO (10.61.20.169), INTRA (10.61.20.168), INTRA2 (10GbE, .177), INTRA3 (.172), DOC (.170 – HP HPX1400) |
 | Storage policy | HERO = backup secondario; INTRA/INTRA2 = produzione; DOC = documenti |
 | Backup | [TBC] – schema backup definito in business-continuity-disaster-recovery.md |
 
@@ -256,7 +262,7 @@ e 60% alla consegna del report.
 
 ---
 
-## Serafino – Consulenza ISO 27001
+## Consulente-ISO27001-1 – Consulenza ISO 27001
 
 | Campo | Valore |
 |-------|--------|
@@ -284,7 +290,7 @@ e 60% alla consegna del report.
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Reseller/intermediario Vianova |
-| Referente | Alessia Liberati (a.liberati@myofficegroup.it) |
+| Referente | Referente-Vianova-1 (referente-vianova-1@myofficegroup.it) |
 | Servizi | Preventivo, contratto e gestione commerciale Vianova FTTO; centralino cloud |
 | Note | MyOffice gestisce la relazione con Vianova. Riunione in sede 17/12/2024 (preventivo). Riunione centralino cloud 09/06/2026. |
 
@@ -296,7 +302,7 @@ e 60% alla consegna del report.
 |-------|--------|
 | Tipologia | CA (Certification Authority) firma digitale |
 | Piano | GoSign Pro (certificati firma digitale su dominio INFOCERT) |
-| Intestatario | Alessandro Potalivo (a nome azienda) |
+| Intestatario | Persona-A (a nome azienda) |
 | Rinnovo | 22/11/2024 (verifica rinnovo eseguita); rinnovo periodico |
 | Portale | mysign.infocert.it (credenziali in Cartella_riservata_IT) |
 
@@ -307,8 +313,8 @@ e 60% alla consegna del report.
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Agenzia web design |
-| Contatto | Anna Caruso (marketing@cappellidesign.com) |
+| Contatto | Referente-CappelliDesign-1 (marketing@cappellidesign.com) |
 | Progetto | Redesign sito intrawelt.com (aprile 2026) |
 | Stato | In corso: primo rilascio esclusi Ricerca, Solution finder, slider, modulo consulenza; secondo rilascio TBD |
 | CMS | WordPress (https://intrawelt.com/wp-login.php) – accesso Cappelli Design: utente marketing_cappelli (ruolo Amministratore) |
-| Gestore WordPress | Tommaso Vezeni (tvezeni@intrawelt.com) |
+| Gestore WordPress | Persona-E (persona-e@intrawelt.com) |
