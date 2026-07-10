@@ -282,6 +282,20 @@ un altro PM, solo con le proprie.
 | Tempo speso | ~1 mese netto nei 2 anni (task_83) |
 | Tipo attività | Varie problematiche hardware/software, gestione badge |
 
+**Migrazione W2012_bioserver su Proxmox (febbraio 2025)**: il server
+Windows Server 2012 che ospita BioStar 2 e Timewalker e' stato tra le
+macchine legacy migrate dall'host ESXi HP G5 al nuovo Proxmox. Il 19/02/2025
+la migrazione ha incontrato un problema noto per questa generazione di
+Windows Server: **Windows Server 2012 (come Windows 7/8) tollera male un
+cambio di hardware anche solo virtuale** (cambio di virtualizzatore da
+VMware ESXi a Proxmox), causando un boot loop non risolvibile con i normali
+strumenti di ripristino (chkdsk, bootrec, cambio ordine di avvio
+BIOS/UEFI). Il problema non si presenta piu' da Windows Server 2019 in poi.
+La macchina resta quindi sul vecchio virtualizzatore fino a un secondo
+tentativo di migrazione (backup Veeam + ripristino con iniezione driver, o
+migrazione dei soli servizi su una nuova VM Windows Server piu' recente,
+gia' pianificata su VM100).
+
 ---
 
 ## Onboarding / Outboarding

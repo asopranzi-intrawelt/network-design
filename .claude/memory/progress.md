@@ -4,6 +4,24 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-10 — sec-009 ARCHITETTURA: migrazione W2012_bioserver, diagnosi VLAN BioStar2 (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/helpdesk-operations.md (limite Windows Server 2012 su
+cambio hardware/virtualizzatore), docs/infrastructure-timeline/2025-q1-server-vianova.md
+(saga guasto lettore BioStar2 7-25/02/2025 con diagnosi VLAN), docs/infrastructure-timeline/GAP-TBC.md
+(gap #40 risolto)
+Motivo: proseguita la lettura di sec-009 (ora a circa 750/1543 paragrafi).
+Estratta la diagnosi di rete del guasto BioStar2 (sintomo di segmentazione
+VLAN: ping al lettore attraverso lo switch risponde sempre dal gateway
+della VLAN sbagliata, non dal dispositivo, indipendentemente dalla porta
+fisica) e il vincolo tecnico di Windows Server 2012 sul cambio di
+virtualizzatore (non tollerato, causa boot loop, si risolve solo da
+Windows Server 2019 in poi). Contenuto rimanente di sec-009 sempre piu'
+simile a log di troubleshooting dettagliato (migrazione Timewalker/SQL/IIS
+sul nuovo server, con molte credenziali reali mai riportate): valutare con
+l'utente se continuare a questo livello di dettaglio o accelerare/fermarsi.
+
 ## 2026-07-10 — sec-009 ARCHITETTURA in corso: NAS INTRA2 crisi giu-lug 2025, inventario HP G5 (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)

@@ -242,10 +242,31 @@ contrattualmente nei tempi massimi entro aprile 2025.
 Daniela Landucci (RWS) chiede quante licenze trial (con codice vero) servono.
 Alessia Nasini risponde: 3 licenze.
 
-## 13/02/2025 - Chiamata con Roberto Teodori per BioStar2
+## 07-25/02/2025 - Guasto lettore BioStar2 e diagnosi di rete
 
-Chiamata alle 10:00 con Roberto Teodori: e' necessario aggiornare il firmware
-del dispositivo BioStar prima della migrazione del sistema di controllo accessi.
+Il 07/02/2025 il lettore di ingresso BioStar2 si disconnette e smette di
+sincronizzare le timbrature con Timewalker (il lettore di uscita continua a
+funzionare, essendo in comunicazione seriale RS485 con quello di ingresso
+in configurazione Master/Slave). Esclusa una causa fisica (cavi e switch
+testati e funzionanti), la diagnosi di rete rivela un sintomo notevole:
+pingando l'IP statico del lettore direttamente (bypassando lo switch) la
+risposta arriva da un IP di default diverso e sbagliato; pingandolo invece
+attraverso lo switch Zyxel GS1900-24 del Piano Terra, la risposta arriva
+sempre dal gateway della VLAN Guest (non dal lettore), indipendentemente
+dalla porta fisica usata. Interpretazione: il PC diagnostico si trovava su
+una VLAN diversa da quella del lettore, senza routing inter-VLAN, quindi
+ogni pacchetto veniva inoltrato al gateway della propria VLAN che
+rispondeva "host di destinazione non raggiungibile" per l'IP di
+destinazione fuori subnet — un sintomo di segmentazione VLAN, non di
+guasto fisico. Un reset delle impostazioni di rete (non di fabbrica) del
+lettore lo ha reso temporaneamente raggiungibile e funzionante (13/02/2025,
+confermato da Roberto Teodori). Il problema si e' ripresentato il
+14/02/2025 in una forma non risolvibile via software: il 25/02/2025 il
+lettore fisico e' stato sostituito con un nuovo hardware Suprema BioEntry
+W2, seguito da aggiornamento firmware e migrazione di Biostar2/Timewalker
+sul nuovo server (completata entro fine febbraio 2025, con conseguente
+cambio di indirizzo IP del servizio e rimozione dall'inventario del
+vecchio host HP Gen 5).
 
 ## 17/02/2025 - 3 licenze Trados Studio 2024 trial disponibili
 
