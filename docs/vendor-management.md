@@ -114,10 +114,21 @@ completo a lavori conclusi (vedi `current-work.md`).
 |-------|--------|
 | Tipologia | Infrastructure as a Service (cloud VE) |
 | Servizi | VM cloud, hosting siti web aziendali |
+| Prodotto | Foundation Server Pro (server dedicato, CPU Intel Xeon Silver/Gold 2a-4a gen., storage SAN condiviso, banda 10 Gbps) |
 | Connessione | VPN site-to-site IPsec IKEv1 (PSE-SEEWEB, peer 37.9.228.x) |
+| Rete privata cloud | net006287, VLAN ID 437 |
 | Endpoint cloud | domv.intrawelt.com e altri |
 | Costo | [TBC] |
 | Note | VPN tunnel always-on. Aggressive mode IKEv1 – valutare upgrade a IKEv2 per sicurezza. |
+
+**VM ospitate su Seeweb (dettaglio host ESXi):**
+
+| VM | Ruolo | Rationale storica |
+|----|-------|--------------------|
+| WINGROUPSHARE (10.77.116.3) | Backup TM/glossari e cartella "utili" (Cobian Backup); riavvio periodico dei servizi Trados GroupShare via RDP | Messa in cloud (non su server Intrawelt) probabilmente per questione di banda verso l'esterno, risalente al periodo COVID |
+| WINSRV2019 (10.77.116.4) | Desktop remoto per PM e DTP (due profili: DTP1 con AutoCAD, DTP2 per progetti Studio Trados di grandi dimensioni) | Accesso alle VM consentito solo da indirizzi locali per motivi di sicurezza, modificabile dal firewall cloud |
+
+L'accesso alle VM e' policy-limitato agli indirizzi locali via firewall cloud SEEWEB. Un disco di rete aggiuntivo (~150 GB) risulta collegato a WINSRV2019 nella stessa classe di indirizzi SEEWEB e punta alla stessa cartella di WINGROUPSHARE, con una connessione verso il NAS documenti: la fonte stessa non ne chiarisce lo scopo esatto ("da capire che cosa sono questi 150GB di roba").
 
 ---
 

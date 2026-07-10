@@ -37,17 +37,32 @@ Tutta la sezione va integrata con screenshot del diagramma di rete 2026
 
 ---
 
-## sec-005 "” Piano 1 (Ufficio IT)
+## sec-005 "” Piano 1 (Ufficio IT) — VERIFICATA IL 10/07/2026
 
-| # | Marcatore | Cosa manca | Fonte probabile |
-|---|---|---|---|
-[TBC: verificare sezione 005 per marcatori specifici "” non estratta in dettaglio]
+Nessun marcatore [TBC] esplicito nella sezione (103 paragrafi, 0 immagini).
+Contenuto: NAS INTRA3 (QNAP TS-210), specifiche hardware/software complete,
+storico eventi (dismesso di fatto dal 2022, accesso e formattazione
+21/02/2025 gia' documentato, riconnessione e analisi dischi 27/06/2025 non
+ancora documentato — aggiunto in `2025-q1-server-vianova.md`). Sezione ora
+completamente coperta.
 
 ---
 
-## sec-006 "” Piano 2 Rack SX
+## sec-006 "” Piano 2 Rack SX — VERIFICATA IL 10/07/2026
 
-[TBC: verificare sezione 006 per marcatori specifici "” 974 paragrafi, non estratta completamente]
+974 paragrafi, 17 [TBC] espliciti nella sezione. La maggior parte del
+contenuto (walkthrough menu Zyxel USG FLEX 500, VPN, certificati SSL,
+switch, centralino Panasonic) era gia' coperta da `firewall-zyxel-usg-flex-500.md`,
+`2023-baseline.md`, `2024-infra.md` e `telephony-pbx.md`. Novita' emerse:
+data precisa disattivazione VPN_auth_LAN2 (15/05/2025, gap #14 risolto),
+valutazione Supremo come alternativa controllata ad AnyDesk/TeamViewer
+(contesto aggiunto a SEC-003), consegna hardware Vianova telefonia
+(UPS-700 + Patton SmartNode, DDT 29/03/2024, in `2023-baseline.md`).
+Emersa anche una discrepanza sul modello del centralino Panasonic
+(KX-NCP1000 qui vs KX-TDA100 in `telephony-pbx.md`, quest'ultima ora
+segnalata come probabile errore) e sulla data di inizio servizio
+telefonico Vianova (aprile 2024 confermato da due fonti indipendenti vs
+aprile 2025 in telephony-pbx.md).
 
 ---
 
@@ -62,9 +77,15 @@ Tutta la sezione va integrata con screenshot del diagramma di rete 2026
 
 ---
 
-## sec-008 "” Cloud SEEWEB
+## sec-008 "” Cloud SEEWEB — VERIFICATA IL 10/07/2026
 
-[TBC: verificare sezione 008 per marcatori specifici "” non estratta completamente]
+162 paragrafi, 0 immagini, 2 [TBC] espliciti nella sezione (entrambi su
+WINSRV2019, gia' presenti nella scheda SEC-001 esistente: nessun contenuto
+aggiuntivo scoperto oltre al disco di rete non identificato, vedi
+#112/SRV-004 piu' sotto). Il resto della sezione (accesso firewall cloud,
+Foundation Server Pro, WINGROUPSHARE/WINSRV2019, procedura GroupShare,
+ticket SEEWEB 1317639) e' ora integrato in vendor-management.md §Seeweb e
+helpdesk-operations.md §GroupShare.
 
 ---
 
@@ -80,7 +101,7 @@ Tutta la sezione va integrata con screenshot del diagramma di rete 2026
 |---|---|---|---|
 | 12 | TBC | Configurazione VLAN sul firewall Zyxel (errori rilevati) | Screenshot Configuration > Network > Interface > VLAN |
 | 13 | TBC | Regole inutilizzate da eliminare | Screenshot Security Policy > Policy Control |
-| 14 | TBC | Documentazione regola VPN_auth_LAN2 (disattivata maggio 2025) | Screenshot prima/dopo |
+| 14 | TBC | **Risolto 10/07/2026**: VPN_auth_LAN2 disattivata il 15/05/2025 (WAN2 non piu' usata con sola connettivita' Vianova); puntava a 10.61.100.2 su wan2. Dettaglio in `firewall-zyxel-usg-flex-500.md` §NAT e virtual server | ARCHITETTURA.docx sec-006 |
 | 15 | TBC | Taurus Bond: dettagli restituzione fisica | Mail TIM + foto materiale restituito |
 
 ---
@@ -204,7 +225,7 @@ sono esplicitamente nel documento Word.
 | Migrare hosting da Ubuntu-1404-DOMV | MEDIA | Fastnet, completato 02/02/2025 |
 | Implementazione nuova fonia per Intrawelt | ALTA | Centralino cloud Vianova - ora parzialmente coperto da telefono-pbx-voip.md |
 | Risparmio costi netti (analisi fatture) | MEDIA | TIM.xlsx, confronto prima/dopo |
-| HP G5 (VMware ESXi fisico) | MEDIA | Da dismettere, import VM in Proxmox |
+| HP G5 (VMware ESXi fisico) | MEDIA | **Inventario dettagliato aggiunto 10/07/2026** in `2023-baseline.md` (8 VM, analisi dicembre 2024 di Alessio Sopranzi). Da dismettere, import VM in Proxmox ancora da eseguire |
 | Mappatura porte fisiche (file separato) | ALTA | Non ancora ingestato |
 
 ---
@@ -228,7 +249,7 @@ sono esplicitamente nel documento Word.
 |---|----|-------------|-------|
 | 74 | SEC-001 | Bitdefender non installato su WINGROUPSHARE (10.77.116.3), WINSRV2019 (10.77.116.4), WIN-V712I9QHQT9 (10.61.20.13) | task_31/32 – Piano Attività |
 | 75 | SEC-002 | Password policy: solo 25% completata – NAS randomizzate, mancano altri sistemi | task_33 – Piano Attività |
-| 76 | SEC-003 | AnyDesk e TeamViewer presenti su macchine aziendali (accesso remoto non presidiato) | task_14 – Piano Attività |
+| 76 | SEC-003 | AnyDesk e TeamViewer presenti su macchine aziendali (accesso remoto non presidiato). **Contesto aggiuntivo (ingestione sec-006 ARCHITETTURA, 10/07/2026)**: valutata come alternativa controllata la piattaforma Supremo (licenza floating, nessuna VPN necessaria, macchina sempre sospesa quando non in uso). Rationale: con 1-2 utenti esterni al massimo, non serve un accesso VPN dedicato, basta una macchina interna raggiungibile con la stessa filosofia. Testata da Persona-J come utente fidata prima di un eventuale rollout piu' ampio; nessuna conferma di adozione definitiva nella fonte | task_14 – Piano Attività |
 | 77 | SEC-004 | VM Egetrad (Ubuntu obsoleto, 10.61.20.5) ancora attiva; regole firewall EGETRAD_WEB da disabilitare | task_27 – Piano Attività + docs/it-backlog.md |
 | 78 | SEC-005 | MFA non attivo su account non-admin M365 (enforcement solo Azure admin) | task_65 + MFA action plan |
 | 79 | SEC-006 | Privacy policy NinjaOne non distribuita a tutti gli utenti | task_20 |
@@ -290,6 +311,14 @@ sono esplicitamente nel documento Word.
 
 ---
 
+## Seeweb – disco di rete non identificato su WINSRV2019 (ingestione sec-008 ARCHITETTURA, 10/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 112 | SRV-004 | WINSRV2019 (Seeweb) ha un disco di rete aggiuntivo di circa 150 GB, nella stessa classe di indirizzi SEEWEB, che punta alla stessa cartella di WINGROUPSHARE e ha una connessione verso il NAS documenti (.170). La fonte stessa non ne chiarisce lo scopo ("da capire che cosa sono questi 150GB di roba"): da verificare se e' ancora in uso, cosa contiene, e se e' ridondante rispetto ai backup gia' documentati | ARCHITETTURA.docx sec-008 (Cloud) |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -319,5 +348,6 @@ sono esplicitamente nel documento Word.
 | RAEE / smaltimento apparecchiature (08/07/2026) | 109 |
 | AWS access key admin non rotata (09/07/2026) | 110 |
 | ZeroSSL certificato VPN cancellato (09/07/2026) | 111 |
-| **Totale identificati** | **111** |
-| **Di cui risolti** | **6** (54, 55, 61, 63, 106, 111 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto") |
+| Seeweb disco 150GB non identificato (10/07/2026) | 112 |
+| **Totale identificati** | **112** |
+| **Di cui risolti** | **7** (14, 54, 55, 61, 63, 106, 111 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto") |
