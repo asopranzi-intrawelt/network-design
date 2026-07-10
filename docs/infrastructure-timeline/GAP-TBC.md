@@ -282,11 +282,11 @@ sono esplicitamente nel documento Word.
 
 ---
 
-## ZeroSSL – certificato VPN cancellato (10/02/2026)
+## ZeroSSL – certificato VPN cancellato (10/02/2026) — RISOLTO
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
-| 111 | SEC-013 | ZeroSSL notifica la cancellazione del certificato SSL per `vpn.intrawelt.com` il 10/02/2026 (indirizzato a `it@intrawelt.com`). ZeroSSL e' il provider gia' documentato per questo certificato in `2023-baseline.md` e `2024-infra.md` (rinnovo storico gestito con l'account `it@intrawelt.com`). Non e' chiaro dalla fonte se la cancellazione sia una migrazione deliberata verso un altro provider (es. Fastnet/Let's Encrypt, gia' in uso per intrawelt.com), un mancato rinnovo accidentale, o un cambiamento nell'infrastruttura VPN stessa. **Tentativo di verifica live il 09/07/2026**: la risoluzione DNS pubblica di `vpn.intrawelt.com` e' confermata (IP pubblico placeholder 203.0.113.60), ma la connessione TCP/443 non risponde (timeout) dalla rete interna Intrawelt — non e' stato possibile leggere il certificato attualmente servito da questa posizione di rete. Resta da verificare da una rete esterna o direttamente dalla configurazione del firewall Zyxel | IT + Administration - Documenti/ZeroSSL/Certificate Cancelled_ vpn.intrawelt.com.eml |
+| 111 | SEC-013 | ZeroSSL notifica la cancellazione del certificato SSL per `vpn.intrawelt.com` il 10/02/2026 (indirizzato a `it@intrawelt.com`). ZeroSSL e' il provider gia' documentato per questo certificato in `2023-baseline.md` e `2024-infra.md`, dall'epoca in cui l'accesso VPN passava per un hostname/servizio dedicato separato. **Verifica live il 09/07/2026**: la connessione TCP/443 non risponde (timeout) dalla rete interna Intrawelt. **Spiegazione confermata dall'utente il 10/07/2026**: `vpn.intrawelt.com` e' un riferimento a una configurazione VPN precedente, ormai superata — l'accesso VPN attuale passa attraverso il firewall Zyxel USG FLEX 500 (ZyWALL SecuExtender / SSL VPN gia' documentato in `firewall-zyxel-usg-flex-500.md`), non piu' tramite quell'hostname dedicato. La cancellazione del certificato ZeroSSL e' quindi coerente con la dismissione del vecchio servizio, non un'anomalia | IT + Administration - Documenti/ZeroSSL/Certificate Cancelled_ vpn.intrawelt.com.eml |
 
 ---
 
@@ -320,4 +320,4 @@ sono esplicitamente nel documento Word.
 | AWS access key admin non rotata (09/07/2026) | 110 |
 | ZeroSSL certificato VPN cancellato (09/07/2026) | 111 |
 | **Totale identificati** | **111** |
-| **Di cui risolti** | **5** (54, 55, 61, 63, 106 — vedi stato "Corretto"/"Fatto"/"Riconciliato") |
+| **Di cui risolti** | **6** (54, 55, 61, 63, 106, 111 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto") |

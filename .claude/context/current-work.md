@@ -161,12 +161,13 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   (credenziali admin AWS storiche, non ruotate, di provenienza incerta)
   resta aperto. Azione operativa suggerita, non eseguita: identificare e
   ruotare/disattivare quella access key.
-- PARZIALMENTE VERIFICATO (09/07): **Certificato SSL VPN ZeroSSL cancellato**
-  (GAP-TBC #111/SEC-013). Tentata verifica live: la connessione TCP/443 verso
-  `vpn.intrawelt.com` non risponde (timeout) dalla rete interna Intrawelt,
-  quindi non e' stato possibile leggere il certificato attualmente servito.
-  Resta da verificare da una rete esterna o dalla configurazione del
-  firewall Zyxel direttamente.
+- RISOLTO (10/07): **Certificato SSL VPN ZeroSSL cancellato** (GAP-TBC
+  #111/SEC-013). La connessione TCP/443 verso `vpn.intrawelt.com` non
+  rispondeva (timeout) perche' e' un hostname di una configurazione VPN
+  precedente ormai superata: l'utente ha confermato che l'accesso VPN
+  attuale passa dal firewall Zyxel USG FLEX 500 (SSL VPN / ZyWALL
+  SecuExtender), non piu' da quell'hostname dedicato. La cancellazione del
+  certificato ZeroSSL e' coerente con la dismissione del vecchio servizio.
 - **Restituzione router Huawei a TIM**: TIM ha confermato la cessazione del
   noleggio il 12/06/2025 ma non ha mai risposto (solleciti 24/06 e
   25/07/2025) su dove restituire i due router (AR1200, NetEngine AR600).
