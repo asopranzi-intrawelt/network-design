@@ -267,4 +267,65 @@ e' documentata nella fonte.
 
 ---
 
-*Runbook aggiornato: giugno 2026. Owner: Alessio Sopranzi.*
+## VM-001: Disco pieno (100%) su VM sito WordPress aziendale (10.61.20.23)
+
+**Severity**: ALTA
+**Origine**: sessione operativa 10/07/2026
+**Stato**: risolto (mitigazione + rimedio strutturale eseguiti)
+
+### Contesto
+La VM che serve il sito WordPress aziendale (10.61.20.23, containerizzato,
+con MySQL e servizi accessori) e' risultata con il filesystem radice
+(`/dev/sda2`, 32G) al 100% di utilizzo e 0 byte disponibili, con conseguente
+fallimento di operazioni base (scrittura su `~/.ssh/authorized_keys`,
+`npm cache clean`). Causa principale: cache di snapd
+(`/var/lib/snapd/cache`) cresciuta fino a 4,7G senza mai essere ripulita.
+Contributori minori: cache npm utente (~3G, non ripulita per mancanza di
+spazio), un file gia' cancellato ma ancora aperto da un processo Claude Code
+(238MB non liberabili finche' il processo non chiude il file).
+
+### Verifica pre-fix
+```
+df -h /
+sudo du -xh --max-depth=2 / 2>/dev/null | sort -rh | head -25
+sudo du -sh /var/lib/snapd/cache
+```
+
+### Procedura fix
+1. Svuotare la cache di snapd. Attenzione: la directory non e' leggibile
+   dall'utente non privilegiato, quindi il carattere jolly va espanso
+   *dentro* la shell di root — `sudo rm -rf /var/lib/snapd/cache/*` fallisce
+   silenziosamente perche' il glob si espande nella shell utente prima che
+   `sudo` entri in gioco, e la shell utente non puo' leggere la directory:
+   ```
+   sudo find /var/lib/snapd/cache -mindepth 1 -delete
+   ```
+2. Verificare lo spazio recuperato:
+   ```
+   sudo du -sh /var/lib/snapd/cache
+   df -h /
+   ```
+
+### Verifica post-fix
+Spazio libero passato da 0 a ~237M. Sufficiente per operazioni minime, non
+un margine di sicurezza duraturo su una VM di produzione con MySQL attivo.
+
+### Rimedio strutturale (eseguito il 10/07/2026)
+237M restava insufficiente per una VM di produzione: un backup o un log
+spike l'avrebbero riportata rapidamente a 0. Si e' scoperto che il disco
+virtuale era gia' provisionato a 64G in Proxmox, ma la partizione/filesystem
+guest ne usava solo 32G (32G non allocati in coda al disco, nessuna modifica
+lato Proxmox necessaria). Shutdown/Start della VM, poi dentro la VM:
+```
+sudo growpart /dev/sda 2
+sudo resize2fs /dev/sda2
+```
+Risultato: `/dev/sda2` passato da 32G a 63G, spazio libero da ~237M a 32G
+(48% di utilizzo). Rimane comunque valido, come miglioria futura non
+urgente, rimuovere le revisioni snap disabilitate rimaste (`snap list --all`,
+poi `sudo snap remove <nome> --revision=<rev>` per ogni riga con nota
+"disabilitato") per liberare ulteriore margine.
+
+---
+
+*Runbook aggiornato: luglio 2026. Owner: Alessio Sopranzi.*

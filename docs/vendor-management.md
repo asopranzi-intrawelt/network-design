@@ -130,6 +130,12 @@ completo a lavori conclusi (vedi `current-work.md`).
 
 L'accesso alle VM e' policy-limitato agli indirizzi locali via firewall cloud SEEWEB. Un disco di rete aggiuntivo (~150 GB) risulta collegato a WINSRV2019 nella stessa classe di indirizzi SEEWEB e punta alla stessa cartella di WINGROUPSHARE, con una connessione verso il NAS documenti: la fonte stessa non ne chiarisce lo scopo esatto ("da capire che cosa sono questi 150GB di roba").
 
+**Predecessore dismesso.** Prima dell'attuale Foundation Server Pro, il ruolo
+di WINGROUPSHARE era coperto da una singola VM cloud Seeweb di fascia
+inferiore (prodotto "Cloud Server 280SPU"), raggiunta tramite un CNAME
+`groupshare.intrawelt.it` configurato su Fastnet. Risulta dismessa e non
+compare piu' nelle rilevazioni dell'infrastruttura da giugno 2024 in poi.
+
 ---
 
 ## Microsoft – M365 e Azure

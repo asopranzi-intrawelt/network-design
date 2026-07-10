@@ -396,12 +396,11 @@ File disponibile su: `\\10.61.20.170\utili\Privacy\Regolamento utilizzo sistemi 
 
 **Stato attuale (verificato giugno 2026): 0 firme su 21 dipendenti elencati.**
 
-Tutti i campi FIRMA e DATA sono vuoti per:
-Apollonio Luigi, Bartolucci Elena, Carlacchiani Marcello, Cenerini Marika, Coppola Luigi,
-Guidali Fabio, Kaemmer Oliver, Mandolesi Persona-R, Marini Marsk, Marini Sergio,
-Persona-B Sonia, Martinelli Mery, Monterubbianesi Elisa, Nasini Alessia, Natale Joanne,
-Nazziconi Alessia, Ripa Roberta, Scattolini Sara, Sconciafurno Pasquale, Stasi Daniel,
-Stratmann Ulrike.
+Tutti i campi FIRMA e DATA sono vuoti per i 21 dipendenti elencati nel
+documento (nomi sostituiti con placeholder secondo `.claude/rules/anonymization.md`):
+Persona-V, Persona-W, Persona-G, Persona-X, Persona-Y, Persona-Z, Persona-AA,
+Persona-R, Persona-D, Persona-AB, Persona-B, Persona-AC, Persona-I, Persona-J,
+Persona-AD, Persona-AE, Persona-AF, Persona-T, Persona-P, Persona-AG, Persona-AH.
 
 Gap: ISO-001 confermato ad alta priorità. Necessaria campagna di raccolta firme formale.
 Vedi GAP-TBC.md riga ISO-001 per dettaglio.

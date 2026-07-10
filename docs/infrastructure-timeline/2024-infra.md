@@ -38,7 +38,7 @@ delle 5 licenze di rete si libera. Fonte: `Helpdesk_ABBYY/ABBYY.docx`
 
 Rinnovo abbonamento annuale Zyxel marketplace con carta di credito
 aziendale (dettagli pagamento non riportati per policy amministrativa).
-Device S/N: S232L12101347
+Device S/N: [redacted]
 Device MAC: AA:BB:CC:00:00:20
 Mail di conferma ricevuta il 20/11/2024 alle ore 09:41 (numero d'ordine e
 license key non riportati per policy amministrativa).

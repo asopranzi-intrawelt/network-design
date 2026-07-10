@@ -9,8 +9,8 @@ Il pacco arriva il 01/04/2025. Contiene il Router Vianova R-1000 (codice articol
 
 ## 02/04/2025 - Ricezione ordine di lavoro e primo appuntamento fissato
 
-Alle 16:29 del 02/04 il numero +39 3783041550 (Referente-MyOffice-1, myOffice)
-scrive ad Alessio Sopranzi: "buon pomeriggio Alessio, ci e' arrivato l'ordine di
+Alle 16:29 del 02/04 Referente-MyOffice-1 (myOffice, numero non riportato per
+policy amministrativa) scrive ad Alessio Sopranzi: "buon pomeriggio Alessio, ci e' arrivato l'ordine di
 lavoro per l'attivazione Vianova, gli apparati dovrebbero essere arrivati, se per
 te va bene possiamo far venire il tecnico venerdi' mattina". Alessio risponde
 preferendo lunedi' mattina. L'appuntamento viene confermato per lunedi' 07/04/2025.
@@ -71,7 +71,7 @@ cartella 11042025).
 
 ## 14/04/2025 - Nuovo ordine di lavoro e appuntamento definitivo
 
-Il numero +39 3783041550 scrive ad Alessio Sopranzi alle 10:43: "e' appena arrivato
+Referente-MyOffice-1 scrive ad Alessio Sopranzi alle 10:43: "e' appena arrivato
 l'ordine di lavoro da Vianova per la variazione / configurazione connettivita',
 possiamo mandare il tecnico domani mattina h. 9 circa?". Alessio risponde che si
 trova in malattia imprevista e propone giovedi' o venerdi'. Il numero risponde:
@@ -127,8 +127,8 @@ Servizi che alla data del 30/04/2025 usano ancora l'IP TIM 192.0.2.50:
 
 Sequenza completa dell'operazione eseguita il 08/05/2025:
 
-Stato iniziale: WAN2 TIM (198.51.100.x) attiva come backup. Dall'esterno Intrawelt
-viene vista con l'IP 198.51.100.x (confermato con speedtest e verifica IP esterno).
+Stato iniziale: WAN2 TIM (198.51.100.216) attiva come backup. Dall'esterno Intrawelt
+viene vista con l'IP 198.51.100.216 (confermato con speedtest e verifica IP esterno).
 
 Passo 1: viene disattivata temporaneamente la WAN1. Speedtest con solo WAN2: rimane
 identico, la connettivita' e' garantita da TIM WAN2.

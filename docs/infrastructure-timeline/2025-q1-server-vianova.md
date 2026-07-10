@@ -266,7 +266,12 @@ lettore fisico e' stato sostituito con un nuovo hardware Suprema BioEntry
 W2, seguito da aggiornamento firmware e migrazione di Biostar2/Timewalker
 sul nuovo server (completata entro fine febbraio 2025, con conseguente
 cambio di indirizzo IP del servizio e rimozione dall'inventario del
-vecchio host HP Gen 5).
+vecchio host HP Gen 5). Il nuovo server e' un HP Gen 10 con Windows
+Server 2022 (IIS per Timewalker, MariaDB per i tre database di Biostar2 -
+ac, tna, ve). L'indirizzo IP assegnato al servizio in prima battuta era
+provvisorio e riconosciuto come non coerente con lo schema di numerazione
+interno, con l'intenzione dichiarata di correggerlo in un secondo momento
+[TBC: verificare se il riallineamento e' poi avvenuto].
 
 ## 17/02/2025 - 3 licenze Trados Studio 2024 trial disponibili
 
@@ -374,10 +379,10 @@ limita ad attivazioni e kit di installazione.
 
 Un'azienda incaricata da Fibercop posa fisicamente la fibra ottica fino all'armadio
 rack di Intrawelt. Alessio Sopranzi viene avvisato casualmente: Referente-Vianova-2
-(+39 08544244596, numero interno 145) chiama mentre i tecnici avevano gia' suonato
-il campanello aziendale alle 16:13.
+chiama (numero non riportato per policy amministrativa) mentre i tecnici avevano
+gia' suonato il campanello aziendale alle 16:13.
 
-Alessio Sopranzi invia mail di protesta ad Referente-Vianova-1 (referente-vianova-1@myofficegroup.it,
+Alessio Sopranzi invia mail di protesta a Referente-Vianova-1 (referente-vianova-1@myofficegroup.it,
 CC: wi@myofficegroup.it) il 20/03/2025, chiedendo preavviso per le visite.
 
 Comunicazione ricevuta dai tecnici presenti: entro una settimana o qualche giorno

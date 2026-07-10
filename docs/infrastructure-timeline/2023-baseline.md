@@ -3,11 +3,11 @@
 ## Contesto di ingresso
 
 Alessio Sopranzi prende in carico l'IT di Intrawelt S.a.s. nell'ottobre 2024,
-subentrandoa Persona-P. Il materiale di riferimento per ricostruire
+subentrando a Persona-P. Il materiale di riferimento per ricostruire
 la situazione precedente e' il file "Architettura Server Intrawelt-punto-informatica.ppt"
 e i file "PC-server-stampanti-attivi.xlsx" e "Studio Intrawelt bozza.xlsx" allegati
-alla mail inviata da Persona-R (persona-r@intrawelt.com) a Persona-H
-(referente-puntoinformatica-1@puntoinformatica.com) con in CC Persona-E in data 03/07/2024.
+alla mail inviata da Persona-R a Persona-H (Punto Informatica)
+con in CC Persona-E in data 03/07/2024.
 Lo stesso file di Studio Intrawelt bozza.xlsx viene poi integrato e salvato come
 Studio Intrawelt bozza_ALE.xlsx nell'archivio punti-informatica_ADDED.rar.
 
@@ -48,8 +48,8 @@ Tre linee dati separate. Velocita' massima per linea: 100 Mbit/s. Le tre linee
 aggregano potenzialmente 300 Mbit/s ma non sono in bonding, ogni linea e' gestita
 separatamente.
 
-IP pubblici TIM WAN1: 192.0.2.50 / 192.0.2.50 / 192.0.2.50
-IP pubblico TIM WAN2: 198.51.100.x
+IP pubblici TIM WAN1: 192.0.2.50 / 192.0.2.51 / 192.0.2.52
+IP pubblico TIM WAN2: 198.51.100.216/29
 
 In fattura TIM erano presenti servizi inutili mai notati:
 Affitto router extra (bimestrale, staccato da almeno ottobre 2024 quando arriva
@@ -66,7 +66,7 @@ Il centralino fisico e' un Panasonic KX-NCP1000.
 
 Al momento dell'ingresso di Alessio Sopranzi Vianova e' gia' attiva per la voce e
 come servizio radio di backup. La prima fattura Vianova per Intrawelt S.a.s. risale
-ad aprile 2024, osservata da Persona-R tramite mail a persona-r@intrawelt.com.
+ad aprile 2024, osservata da Persona-R.
 
 Il servizio Vianova attivo nel 2024 comprende:
 Ponte radio (uso come backup e voce). L'offerta successiva prevede 100 Mbps download
@@ -76,8 +76,7 @@ e 20 Mbps upload sul ponte radio come Line Recovery Standard.
 
 ## Firewall
 
-ZYXEL USG FLEX 500. IP LAN: 10.61.20.1. Configurato originariamente da Pasquale
-Sconciafurno.
+ZYXEL USG FLEX 500. IP LAN: 10.61.20.1. Configurato originariamente da Persona-P.
 
 Accesso da LAN: https://10.61.20.1
 Accesso da WAN: https://192.0.2.50
@@ -85,11 +84,12 @@ Credenziali: admin / [redacted]
 
 Account Zyxel marketplace: persona-p@intrawelt.com (poi migrato a it@intrawelt.com)
 License Key al momento del rinnovo 20/11/2024: [redacted]
-Device S/N: S232L12101347, MAC: AA:BB:CC:00:00:20
+Device S/N: [redacted], MAC: AA:BB:CC:00:00:20
 
 Problemi noti alla configurazione Zyxel trovati da Alessio Sopranzi:
 Regola NAT obsoleta DOMV_WEB per Ubuntu-1404-DOMV (vecchi IP pubblici TIM).
-Regola di routing statico obsoleta: 10.10.10.10 verso 10.61.20.114 (cancellata).
+Regola di routing statico obsoleta verso un indirizzo esterno alla subnet
+server, puntata a 10.61.20.114/licserver (cancellata).
 VPN_auth_LAN2 attiva su WAN2 ma non necessaria.
 Certificato SSL VPN in scadenza il 24/10/2024 (primo intervento di Alessio Sopranzi).
 
@@ -99,7 +99,7 @@ Certificato SSL VPN in scadenza il 24/10/2024 (primo intervento di Alessio Sopra
 
 Tunnel IPsec tra ZYXEL USG FLEX 500 e firewall cloud SEEWEB.
 IP pubblico locale (lato Intrawelt): 192.0.2.50 (TIM WAN1).
-IP pubblico SEEWEB: 192.0.2.x.
+IP pubblico SEEWEB: 192.0.2.121.
 Rete privata SEEWEB: 10.77.116.0/24.
 
 Firewall cloud SEEWEB: OPNsense su 10.77.116.1.
@@ -147,6 +147,15 @@ manualmente l'IP all'interfaccia corretta.
 HP G9 (VMware ESXi fisico in sede). Spento definitivamente il 19/12/2024 da
 Persona-H (Punto Informatica). Al momento del sopralluogo del 19/12/2024
 Persona-H e' entrato nell'interfaccia NAS INTRA2 da 10.61.20.177:8080.
+
+Un quarto host, HP ProLiant DL370 G6 (gia' spento al momento della
+documentazione), risulta essere stato l'host originario delle VM Linux
+storiche (eGetrad, SVN, TestWeb, DOMV) e di alcune VM Windows minori (server
+di posta interno pre-Exchange Online, DB antivirus, un license server SDL
+2007/2009/2011): la stessa fonte nota che il servizio Mantis, in precedenza
+raggiunto tramite l'IP del G6, risponde ora allo stesso indirizzo sul G5,
+a conferma che queste VM sono state consolidate sull'host G5 prima
+dell'analisi di fine dicembre 2024 riportata sopra.
 
 SEEWEB FoundationServer PRO (cloud IaaS). Tipo: Foundation Server Pro con
 processori Intel Xeon. Storage SAN ad alte prestazioni e scalabile. Banda: 10 Gbps.
@@ -224,9 +233,9 @@ NAS (pattern generico): admin / [redacted]
 
 ## 23/03/2023 - Mail Persona-P su telefonia
 
-Persona-P conferma a Persona-H che il numero storico <telefono>
+Persona-P conferma a Persona-H che il numero fisso storico principale
 resta attivo sul centralino Panasonic KX-NCP1000 collegato alle 2 linee ISDN TIM.
-Numerazioni passanti su un numero tipo 07342010XX (non ancora definitivo al momento).
+Numerazione passante interna non ancora definitiva al momento.
 Potenziale: 6 linee VoIP vs 4 ISDN attuali.
 
 ## 01/02/2024 - Offerta TIM centralino virtuale VoIP (non accettata)
@@ -260,7 +269,7 @@ Evento precedente all'ingresso di Alessio Sopranzi (ottobre 2024).
 ## Aprile 2024 - Prima fattura Vianova
 
 Prima fattura Vianova per Intrawelt S.a.s. per servizio voce e ponte radio.
-Osservata da Persona-R via mail persona-r@intrawelt.com.
+Osservata da Persona-R.
 
 Hardware associato all'attivazione della telefonia Vianova, con Documento
 di Trasporto del 29/03/2024: un gruppo di continuita' Vianova UPS-700

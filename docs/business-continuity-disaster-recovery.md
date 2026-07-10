@@ -102,9 +102,10 @@ bloccanti, da affrontare subito, da tutto il resto, rimandabile.
   bloccante, sostituzione senza urgenza.
 
 Scala di reperibilita' per le urgenze, se non c'e' nessuno in sede: prima
-Alessio Sopranzi o Persona-E (da verificare se Persona-E o Tommaso
-Duranti: la fonte non specifica il cognome), poi Persona-H (Persona-H),
-infine Persona-S, sempre in zona.
+Alessio Sopranzi o un secondo dipendente (la fonte usa solo il nome di
+battesimo, non specifica il cognome: potrebbe essere Persona-E o
+Persona-O), poi Persona-H, infine Persona-S (Edoardo, cognome non noto
+dalla fonte), sempre in zona.
 
 ---
 
