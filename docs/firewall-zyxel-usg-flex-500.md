@@ -171,7 +171,10 @@ a luglio 2025 da 5.98.88.x a 203.0.113.x).
 
 **Deactivate (storiche):**
 DOMV_WEB, NAS_FTP_WEB, NAS_HERO_SUPPORT, EGETRAD_WEB, DEMO_SERVER_WEB, OpenVpn,
-VPN_auth_LAN2.
+VPN_auth_LAN2 (disattivata il 15/05/2025, perche' con la sola connettivita'
+Vianova la WAN2 non e' piu' utilizzata; puntava all'host interno
+10.61.100.2 su wan2, presumibilmente un server VPN di autenticazione
+remota legacy).
 
 **Disallineamento**: le secure-policy 8, 9, 10 (DOMV_WEB, DEMO_SERVER_WEB,
 EGETRAD_WEB) sono attive ma i corrispondenti virtual server sono deactivate.

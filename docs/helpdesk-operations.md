@@ -242,6 +242,27 @@ Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
 - Stima: 20h – PRIORITY 2
 - Operazione "molto impegnativa" secondo nota nel piano attività
 
+**Procedura riavvio servizi GroupShare:** collegarsi con Remote Desktop a
+WINGROUPSHARE, aprire "Trados GroupShare Console", andare sulla lista
+completa dei servizi Windows e usare "Restart Services" sulla colonna di
+destra; verificare che tutti risultino "Running". Se il riavvio dei
+servizi non risolve, riavviare l'intero server prima di escalare oltre.
+
+**Errore "apertura progetto di un altro utente" su GroupShare:** un utente
+che tenta di aprire un progetto pubblicato da un altro PM riceve un
+errore. Tutti i PM hanno diritti di Power User sulla root e possono aprire
+qualsiasi progetto pubblicato dagli altri: la soluzione e' andare su
+Projects → Home → Open Project (icona server, non l'icona "+" che apre i
+progetti locali), selezionare il progetto dalla lista di quelli pubblicati
+sul server e salvarne una copia locale in una cartella dedicata (struttura
+consigliata: una cartella per progetto con nome standardizzato, per
+ritrovarli facilmente). Il Power User puo' poi operare liberamente sui
+file non gia' in checkout da altri; se necessario puo' forzare un Cancel
+Check-out (da Studio) o un Force Check-in (da browser). Riceve notifiche
+solo per le fasi a cui e' assegnato, ma puo' auto-assegnarsene altre se
+necessario. **Importante**: non bisogna mai accedere con le credenziali di
+un altro PM, solo con le proprie.
+
 ### Trados Studio
 
 **Problemi tipici:**

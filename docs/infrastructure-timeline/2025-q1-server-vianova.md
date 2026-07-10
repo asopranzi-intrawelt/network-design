@@ -267,6 +267,23 @@ Contenuto trovato: solo backup del 2020, 2021 e 2022 di Glossari, Multiterm e TM
 in Via Pescolla, anni di dismissione 2022). NAS formattato. Il dispositivo rimane
 fisicamente presente ma vuoto e disponibile.
 
+## 27/06/2025 - Riconnessione NAS INTRA3 e analisi dischi
+
+Dopo un aggiornamento firmware, Alessio Sopranzi riconnette il NAS INTRA3
+come unita' di rete e lancia una scansione dello storage. Emergono due
+fatti tecnici distinti dallo stato "vuoto e disponibile" registrato al
+21/02/2025: i due dischi meccanici del NAS (Toshiba DT01ACA200 e Seagate
+ST2000DM001-1CH1CC27, entrambi 2 TB) sono configurati in RAID 1
+(mirroring, capacita' utile dimezzata a favore della ridondanza), e il
+disco Seagate risulta in una scansione di bad blocks ferma all'1%,
+compatibile con un problema del disco o un comportamento sospetto pur
+senza errori SMART espliciti ("Good"). Il modello Seagate ST2000DM001 e'
+notoriamente soggetto a un tasso di guasti elevato (in particolare le
+revisioni CC26/CC27): la fonte raccomanda esplicitamente la sostituzione
+di quel disco, mentre il Toshiba puo' restare in uso monitorando lo stato
+SMART. Nessun intervento di sostituzione risulta ancora registrato in
+altre fonti.
+
 ## 27/02-24/03/2025 - Migrazione licenze ABBYY FineReader 15 sul nuovo server
 
 Fonte: `Helpdesk_ABBYY/ABBYY.docx` (documento consolidato del 03/07/2026, 166

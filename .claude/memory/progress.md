@@ -4,6 +4,54 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-10 — sec-009 ARCHITETTURA in corso: NAS INTRA2 crisi giu-lug 2025, inventario HP G5 (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/2025-q3-q4.md (crisi spazio NAS
+INTRA2 giugno-luglio 2025), docs/infrastructure-timeline/2023-baseline.md
+(inventario dettagliato 8 VM legacy su HP G5), docs/infrastructure-timeline/GAP-TBC.md
+Motivo: proseguita la re-estrazione di sec-009 (Non attivi/dismessi, 1543
+paragrafi, la piu' grande di ARCHITETTURA.docx), coperti finora circa 350
+paragrafi su 1543. Estremamente densa di credenziali reali (mai riportate).
+Gran parte del contenuto letto finora (SEEWEB, WINGROUPSHARE/WINSRV2019,
+NAS INTRA2 disk migration dic24-gen25) era gia' documentata. Novita':
+seconda crisi di spazio su NAS INTRA2 giu-lug 2025 (soglia 80% l'80%
+raggiunta due volte, job Veeam falliti, causa root identificata nel disco
+esterno Toshiba anni-vecchi collegato durante un backup) — motiva
+operativamente l'urgenza del consolidamento gia' documentato in
+`2025-storage-anni-vecchi.md`; inventario dettagliato delle 8 VM legacy sul
+vecchio host ESXi HP G5 (eGetrad, SVN, TestWeb, DOMV, licenze Trados,
+timbracartellini) con l'analisi di dismissione di dicembre 2024, gap
+"HP G5" chiuso. Restano ~1200 paragrafi di sec-009 da coprire: dato il volume
+e la densita', checkpoint con l'utente prima di continuare.
+
+## 2026-07-10 — Re-estrazione ARCHITETTURA.docx: sec-005/006/008 completate (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/2025-q1-server-vianova.md (NAS
+INTRA3 riconnessione 27/06/2025), docs/infrastructure-timeline/2023-baseline.md
+(hardware Vianova telefonia DDT 29/03/2024), docs/vendor-management.md
+(Seeweb Foundation Server Pro + VM ospitate), docs/helpdesk-operations.md
+(procedure GroupShare restart/wrong-user), docs/firewall-zyxel-usg-flex-500.md
+(data disattivazione VPN_auth_LAN2), docs/telephony-pbx.md (discrepanza
+modello centralino e data servizio Vianova), docs/infrastructure-timeline/GAP-TBC.md
+(#14 risolto, #112 nuovo, sec-005/006/008 marcate verificate)
+Motivo: su richiesta dell'utente, riavviata l'ambizione originaria della
+sessione — re-estrazione esaustiva dai grandi .docx gia' ingeriti solo per
+sintesi. Iniziato da ARCHITETTURA.docx, le 4 sezioni gia' segnalate come
+non completamente estratte in GAP-TBC.md: sec-005 (Piano 1 Ufficio IT),
+sec-006 (Piano 2 Rack SX, 974 paragrafi) e sec-008 (Cloud SEEWEB)
+completate; sec-009 (Non attivi/dismessi, 1543 paragrafi) ancora da fare.
+La maggior parte del contenuto era gia' coperta da file esistenti; le
+novita' principali: riconnessione NAS INTRA3 27/06/2025 con analisi dischi
+(RAID 1, bad blocks su un disco Seagate), architettura Seeweb (Foundation
+Server Pro, VLAN 437, rationale VM WINGROUPSHARE/WINSRV2019), procedure
+GroupShare non ancora documentate, data esatta di disattivazione
+VPN_auth_LAN2. Emerse anche due discrepanze non risolte da segnalare
+all'utente: modello del centralino Panasonic (KX-NCP1000 vs KX-TDA100,
+due fonti indipendenti a favore di NCP1000) e data di inizio servizio
+telefonico Vianova (aprile 2024 vs aprile 2025 in telephony-pbx.md).
+
 ## 2026-07-10 — GAP-TBC #111 chiuso: vpn.intrawelt.com era un hostname superato
 
 Commit: PENDING (da fare manualmente)

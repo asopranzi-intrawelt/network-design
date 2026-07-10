@@ -13,6 +13,18 @@ Aggiornato: giugno 2026.
 
 Documentazione hardware: `ARCHITETTURA SERVER-CLOUD-LINEE/Telefono-PBX/KXTDA100.pdf`
 
+**Discrepanza rafforzata (10/07/2026)**: sia `2023-baseline.md` (voci
+23/03/2023 e 01/02/2024) sia la sezione "Piano 2 Rack SX" di
+ARCHITETTURA.docx descrivono indipendentemente il centralino storico come
+Panasonic **KX-NCP1000**, non KX-TDA100 come scritto in questa scheda.
+Anche la data di inizio servizio telefonico Vianova risulta **aprile 2024**
+in `2023-baseline.md` e `2024-infra.md`, non aprile 2025 come scritto qui.
+Con due fonti indipendenti concordi su KX-NCP1000, l'ipotesi piu' probabile
+e' che questa scheda riporti il modello sbagliato (forse per il documento
+sorgente `KXTDA100.pdf` mal identificato), ma resta da confermare con
+l'utente prima di correggere: non si esclude un cambio di centralino
+avvenuto tra il 2024 e l'estrazione di questa scheda, non ancora tracciato.
+
 ---
 
 ## Gruppi interni principali

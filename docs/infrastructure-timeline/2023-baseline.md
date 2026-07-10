@@ -116,6 +116,34 @@ HP G5 (VMware ESXi fisico in sede). 4 VM attive: 2 Linux + 2 Windows. Le restant
 VM presenti sono: una spenta, tre "azzurre" (VMware standard) non necessarie.
 IP presumibile: 192.168.20.8 (quello noto come IP del vecchio vSphere, da spegnere).
 
+**Inventario dettagliato (analisi completa di Alessio Sopranzi, fine dicembre
+2024)**, con evidenziate le VM configurate per l'avvio automatico al riavvio
+del server:
+
+- *Ubu 12.04 LTS – SMT*: sviluppo storico UNIVPM per un progetto di statistical
+  machine translation, non piu' necessario, candidato alla cancellazione
+  (trovato spento da Daniele Colo' il 19/12/2024).
+- *Ubuntu 10.04 LTS eGetrad*: produzione eGetrad (mysql, tomcat). Usata solo
+  internamente per consultare dati storici (fino a meta' 2021).
+- *Ubuntu 10.10 Svn*: eGetrad TEST, server di stampa eGetrad PROD, sorgenti
+  eGetrad su repository SVN, backup VM (MKSBackup) verso NAS INTRA.
+- *Ubuntu 10.10 TestWeb*: PHP/Apache/MySQL con Mantis (ticket interni) e
+  webapp varie obsolete.
+- *Ubuntu-1404-DOMV*: Apache/PHP per domini web di proprieta' Intrawelt
+  (es. traduzionemedica.com e altri simili) con landing page affiancate al
+  sito principale; candidata alla dismissione se i domini non sono piu'
+  rinnovati (vedi `vendor-management.md` §Aruba per il portfolio domini).
+- *W2012_bioserver*: server usato dal sistema timbracartellini e applicazioni
+  collegate.
+- *W2012_licserver*: server delle licenze di rete Trados.
+- *Win 2008 Srv*: server Windows 2008 con una sola app di allineamento
+  residua, ex server licenze.
+
+Le VM Linux (eGetrad, SVN, TestWeb) presentavano problemi di rete dopo
+l'esportazione su Proxmox (scheda di rete non configurata, causa probabile:
+cambio di MAC address con il cambio di virtualizzatore), risolti riassegnando
+manualmente l'IP all'interfaccia corretta.
+
 HP G9 (VMware ESXi fisico in sede). Spento definitivamente il 19/12/2024 da
 Daniele Colo' (Punto Informatica). Al momento del sopralluogo del 19/12/2024
 Daniele Colo' e' entrato nell'interfaccia NAS INTRA2 da 192.168.20.177:8080.
@@ -233,3 +261,9 @@ Evento precedente all'ingresso di Alessio Sopranzi (ottobre 2024).
 
 Prima fattura Vianova per Intrawelt S.a.s. per servizio voce e ponte radio.
 Osservata da Giordano Mandolesi via mail gmandolesi@intrawelt.com.
+
+Hardware associato all'attivazione della telefonia Vianova, con Documento
+di Trasporto del 29/03/2024: un gruppo di continuita' Vianova UPS-700
+(700VA, 4 prese Bipasso/Schuko + 2 USB) e un Patton SmartNode Trinity
+SN5551 (eSBC 4 BRI/4 FXS/4 FXO, fino a 8 chiamate VoIP simultanee non
+aggiornabili, integra reti ISDN/analogiche legacy in ambiente IP).
