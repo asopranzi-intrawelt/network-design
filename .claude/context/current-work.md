@@ -161,20 +161,26 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   (credenziali admin AWS storiche, non ruotate, di provenienza incerta)
   resta aperto. Azione operativa suggerita, non eseguita: identificare e
   ruotare/disattivare quella access key.
-- **Certificato SSL VPN ZeroSSL cancellato** (GAP-TBC #111/SEC-013): notifica
-  di cancellazione del certificato `vpn.intrawelt.com` il 10/02/2026, esito
-  non chiaro dalla fonte (migrazione deliberata verso Fastnet/Let's
-  Encrypt, mancato rinnovo accidentale, o cambiamento infrastruttura VPN).
-  Da verificare quale certificato e' oggi effettivamente attivo su
-  vpn.intrawelt.com.
+- PARZIALMENTE VERIFICATO (09/07): **Certificato SSL VPN ZeroSSL cancellato**
+  (GAP-TBC #111/SEC-013). Tentata verifica live: la connessione TCP/443 verso
+  `vpn.intrawelt.com` non risponde (timeout) dalla rete interna Intrawelt,
+  quindi non e' stato possibile leggere il certificato attualmente servito.
+  Resta da verificare da una rete esterna o dalla configurazione del
+  firewall Zyxel direttamente.
 - **Restituzione router Huawei a TIM**: TIM ha confermato la cessazione del
   noleggio il 12/06/2025 ma non ha mai risposto (solleciti 24/06 e
   25/07/2025) su dove restituire i due router (AR1200, NetEngine AR600).
   Stato non aggiornato nella fonte consultata.
-- **Certificato wildcard `intrawelt.com`**: riemesso senza wildcard
-  l'11/05/2026 per un limite tecnico Plesk/DNS (vedi vendor-management.md
-  §Fastnet). Da verificare se `scenia.intrawelt.com` (che secondo
-  scenia-project.md dipendeva dal wildcard) e' ancora coperto.
+- RISOLTO (09/07): **Certificato wildcard `intrawelt.com`**. Verificato live
+  via TLS: `intrawelt.com` ha un certificato Let's Encrypt valido senza
+  wildcard (SAN: intrawelt.com/.it, www.intrawelt.com/.it), coerente con la
+  nota Fastnet dell'11/05/2026. `scenia.intrawelt.com` ha un certificato
+  Let's Encrypt **dedicato** emesso lo stesso giorno: non dipende (piu') dal
+  wildcard ed e' correttamente coperto. Scoperta collaterale: una voce hosts
+  locale su questa macchina reindirizza `intrawelt.com`/`www.intrawelt.com`
+  a VM206 "intrasite" (10.61.20.23) per uso interno/di test, con certificato
+  auto-firmato — non e' un problema sul sito pubblico reale. Aggiunto a
+  `design-and-security.md` §VM206 e `scenia-project.md` §Architettura domini.
 - **Progetto di rebranding** citato in un thread email sul rinnovo di
   `intrawelt.de` (dic. 2025) come motivo per cui il rinnovo era stato
   inizialmente disattivato: nessun altro dettaglio nella fonte, non
