@@ -160,7 +160,7 @@ sono esplicitamente nel documento Word.
 | 37 | 2023-baseline.md | Inventario Punto Informatica | File allegati della mail del 03/07/2024 |
 | 38 | 2024-infra.md | Blackout 21/11 NAS INTRA2 | Screenshot log errori NAS INTRA2 |
 | 39 | 2025-q1.md | Proxmox in rack: data precisa | Chat WhatsApp Persona-H fine gennaio |
-| 40 | 2025-q1.md | BioStar2 migrazione | Dettagli chiamata 13/02/2025 + firmware aggiornato |
+| 40 | 2025-q1.md | BioStar2 migrazione | **Risolto 10/07/2026**: dettaglio completo aggiunto in `2025-q1-server-vianova.md` (diagnosi VLAN, sostituzione hardware 25/02/2025, migrazione server) |
 | 41 | 2025-q1.md | Cablaggio rack DX foto | Screenshot/foto layout definitivo |
 | 42 | 2025-q2.md | Attivazione fisica 17/04 | Screenshot configurazione switch S-1000 + note Referente-MyOffice-1 |
 | 43 | 2025-q2.md | Log Zyxel durante switch WAN1 08/05 | Screenshot log firewall |
