@@ -8,7 +8,7 @@ GDPR Art. 28; il partner accademico e' il Titolare del trattamento nella fase in
 
 Stack iniziale: LLM via API OpenAI, sviluppo prototipo RAG.
 Responsabile tecnico Intrawelt: Alessio Sopranzi.
-Responsabile accademico: Prof. Emanuele Frontoni + Alessia Nasini (PM lato Intrawelt).
+Responsabile accademico: Prof. Emanuele Frontoni + Persona-J (PM lato Intrawelt).
 
 ## Fine 2024 - Inizio sviluppo IntraLino RAG
 
@@ -23,7 +23,7 @@ Certificato SSL per vpn.intrawelt.com in scadenza. Procedura di rinnovo eseguita
 tramite ZeroSSL con account it@intrawelt.com / [redacted]. Il certificato rinnovato
 viene importato nel firewall ZYXEL USG FLEX 500 via Configuration > Object > Certificate.
 Durante il cambio certificato l'utente Alessandro Nebbia viene disconnesso e poi
-riconnesso manualmente. Il certificato viene archiviato in \\192.168.20.170\vpn\Certificati SSL.
+riconnesso manualmente. Il certificato viene archiviato in \\10.61.20.170\vpn\Certificati SSL.
 
 ## 06/11/2024 - Falso allarme licenza ABBYY scaduta
 
@@ -38,16 +38,16 @@ delle 5 licenze di rete si libera. Fonte: `Helpdesk_ABBYY/ABBYY.docx`
 
 Rinnovo abbonamento annuale Zyxel marketplace con carta di credito
 aziendale (dettagli pagamento non riportati per policy amministrativa).
-Device S/N: S232L12101347
+Device S/N: [redacted]
 Device MAC: AA:BB:CC:00:00:20
 Mail di conferma ricevuta il 20/11/2024 alle ore 09:41 (numero d'ordine e
 license key non riportati per policy amministrativa).
-Account migrato da psconciafurno@intrawelt.com a it@intrawelt.com / [redacted]
+Account migrato da persona-p@intrawelt.com a it@intrawelt.com / [redacted]
 
 ## 21-22/11/2024 - Black-out elettrico: crisi NAS INTRA2
 
 Mancanza di corrente tra il 21 e il 22 novembre. Il NAS INTRA2 (QNAP TS-451U,
-192.168.20.177) al ritorno dell'alimentazione comincia a registrare errori nel log.
+10.61.20.177) al ritorno dell'alimentazione comincia a registrare errori nel log.
 Il backup incrementale si blocca all'1% per mancanza di spazio: il RAID 5 con
 4 dischi da 2.73 TB e' quasi saturo. Soluzione temporanea applicata: riavvio del
 NAS e pulizia parziale dei backup piu' vecchi nella cartella "Backup anni vecchi".
@@ -66,7 +66,7 @@ produce un `.xlsx` con i campi rinominati per T-Rex.
 | Data | Milestone |
 |------|-----------|
 | 12/11/2024 | Verifica output regex con T-Rex test: primo approccio parsing Word |
-| 14/11/2024 | Francesca Caricchia inizia `ENI_word_to_excel.py` (parsing + mapping campi) |
+| 14/11/2024 | Persona-N inizia `ENI_word_to_excel.py` (parsing + mapping campi) |
 | 15/11/2024 | Studio formato `.xlsx` e formattazione date (problema Date vs Testo in openpyxl) |
 | 18/11/2024 | Installazione PyQt6 + Visual C++ Build Tools; prima GUI PyQt6 funzionante |
 | 18/11/2024 | Fix: eliminare file `.xlsx` vuoto esistente prima di "Run Script" |
@@ -94,12 +94,12 @@ Taurus Bond firewall in comodato d'uso TIM: trovato fisicamente staccato in sede
 mai connesso, da restituire a TIM.
 Costo complessivo stimato dei servizi inutili: superiore a 1.000 euro bimestrale.
 
-Informazioni discusse con Sonia Martellini via chat Microsoft Teams il 15/05/2025
+Informazioni discusse con Persona-B via chat Microsoft Teams il 15/05/2025
 (in riferimento all'analisi svolta in questo periodo).
 
 ## 05/12/2024 - Analisi fatture linee attive
 
-Sonia Martellini invia alle 11:37 le fatture per le linee telefoniche e internet di
+Persona-B invia alle 11:37 le fatture per le linee telefoniche e internet di
 novembre 2024. Situazione:
 Vianova: 1 fattura mensile, importo variabile ma di poco.
 TIM: 6 fatture separate, ognuna corrispondente a un singolo servizio o linea.
@@ -108,18 +108,18 @@ Le 6 fatture TIM coprono: le tre linee dati (massimo 100 Mbit/s ciascuna), i ser
 extra (affitto router, Nuvola Sinfonia, IP aggiuntivi) e il Taurus Bond in comodato.
 
 La prima fattura Vianova per Intrawelt S.a.s. risale ad aprile 2024. Osservata dalla
-mail di gmandolesi@intrawelt.com.
+mail di persona-r@intrawelt.com.
 
 ## 10/12/2024 - Decisione: porting linea dati a Vianova
 
-Alessandro Potalivo decide di passare anche la connettivita' dati a Vianova.
+Persona-A decide di passare anche la connettivita' dati a Vianova.
 La situazione attuale con TIM prevede tre linee dati separate per un totale
 teorico di 300 Mbit/s, ma senza aggregazione effettiva. L'obiettivo e' ottenere
 una FTTO simmetrica da 1 Gbps con Vianova, eliminando tutti i contratti TIM dati.
 
-## 17/12/2024 - Riunione in sede con Alessia Liberati (myOffice): preventivo Vianova
+## 17/12/2024 - Riunione in sede con Referente-Vianova-1 (myOffice): preventivo Vianova
 
-Riunione in sede con Alessia Liberati (a.liberati@myofficegroup.it) di myOffice.
+Riunione in sede con Referente-Vianova-1 (referente-vianova-1@myofficegroup.it) di myOffice.
 Dettaglio preventivo presentato (documento "Riepilogo offerta economica" allegato):
 
 Canone mensile: 984,00 euro IVA esclusa. Costi di attivazione: azzerati.
@@ -134,7 +134,7 @@ o uscenti). Le chiamate interne non occupano linee. Analisi chiamate perse per
 occupato: solo il 12/07 c'era stata una dozzina di chiamate senza risposta, caso
 isolato. 6 canali sono piu' che sufficienti.
 FTTO fino a 1 Gbps simmetrica nominale (tecnologia TIM su fibra dedicata FTTO).
-Nota tecnica di Alessia Liberati: la sede di Intrawelt non e' coperta da rete GPON,
+Nota tecnica di Referente-Vianova-1: la sede di Intrawelt non e' coperta da rete GPON,
 solo da collegamenti dedicati FTTO. I tempi di attivazione su circuiti dedicati sono
 entro 120 giorni. L'opzione 2 Gbps costerebbe 1.600 euro/mese (non scelto perche'
 firewall e schede di rete dei PC sono a 1 Gbps e non trarrebbero beneficio).
@@ -147,7 +147,7 @@ UPS dedicato agli apparati Vianova.
 Opzione Line Recovery Radio Standard: ponte radio con 100 Mbps download e 20 Mbps
 upload. La variante "a progetto" (simmetrica dedicata, piu' performante) avrebbe
 costi piu' elevati. La Standard e' sufficiente come paracadute.
-Pool di 16 indirizzi IP pubblici: 193.124.241.x/28 (14 utilizzabili: .1 gateway,
+Pool di 16 indirizzi IP pubblici: 203.0.113.x/28 (14 utilizzabili: .1 gateway,
 .15 broadcast).
 
 Servizi inclusi senza costi aggiuntivi e non scorporabili dal canone: posta elettronica,
@@ -162,12 +162,12 @@ due settimane durante il quale TIM non viene ancora disdettata per evitare inter
 Router R-1000, R-1000 backup e UPS si restituiscono a myOffice (che li ridara' a
 Vianova) in caso di eventuale disdetta futura. Non hanno canone aggiuntivo.
 
-Alessia Liberati risponde il 17/12/2024 alle 17:03 confermando che l'offerta e'
+Referente-Vianova-1 risponde il 17/12/2024 alle 17:03 confermando che l'offerta e'
 gia' quella concordata e riallega il documento.
 
 ## 18/12/2024 - Firma contratto Vianova dati
 
-Alessandro Potalivo accetta il preventivo. La firma digitale e' di Sara. Il documento
+Persona-A accetta il preventivo. La firma digitale e' di Sara. Il documento
 firmato viene rimandato a myOffice.
 Data di contrattualizzazione: 24/12/2024. Da questa data decorrono i 120 giorni
 massimi per l'attivazione (scadenza massima: 24/04/2025).
@@ -186,14 +186,14 @@ intestazione e firma il giorno stesso.
 
 ## 19/12/2024 - Spegnimento HP G9
 
-HP G9 (VMware ESXi fisico) spento definitivamente da Daniele Colo'. Nello stesso
-pomeriggio Daniele Colo' accede a NAS INTRA2 via 192.168.20.177:8080 per il
+HP G9 (VMware ESXi fisico) spento definitivamente da Persona-H. Nello stesso
+pomeriggio Persona-H accede a NAS INTRA2 via 10.61.20.177:8080 per il
 controllo stato prima del suo intervento.
 
 ## 20/12/2024 - Ordine 4 dischi 8 TB per NAS INTRA2
 
 Deciso l'acquisto di 4 dischi HDD da 8 TB per la migrazione a caldo del RAID 5
-del NAS INTRA2 (QNAP TS-451U, 192.168.20.177). La migrazione avviene un disco alla
+del NAS INTRA2 (QNAP TS-451U, 10.61.20.177). La migrazione avviene un disco alla
 volta: sostituzione del disco, attesa del rebuild automatico, poi disco successivo.
 Al termine dei 4 rebuild: espansione del volume tramite la funzione "Espandi Volume"
 del QNAP. Capacita' post-migrazione attesa: circa 21 TB raw RAID 5 (circa 14-15 TB

@@ -55,6 +55,11 @@ posto quale delle due e' corretta.]
 0-3-1 .. 0-3-14, tutte postazioni in Excel (nessuna stampante censita).
 Nel rilievo 2020 marcato "OK" (etichette gia' corrette).
 
+Aggiornamento 10/07/2026: la postazione di Persona-D, in seguito a un
+cambio di indirizzo IP, e' stata spostata dalla presa 0-3-3 alla presa
+0-R-4 (patch diretta verso il rack, vedi Infrastruttura Piano Terra). La
+0-3-3 risulta libera.
+
 ### Ufficio 4 (0-4), 14 porte
 0-4-1 .. 0-4-14, tutte postazioni. Ufficio condiviso da quattro postazioni
 nominative (i nomi propri restano nel file sorgente, non qui). Nel rilievo
@@ -73,6 +78,7 @@ nominative (i nomi propri restano nel file sorgente, non qui). Nel rilievo
 | 0-9-1 | Access Point | AP tetto per centrale irrigazione (raggiunto via ponte 0-8-1 -> 0-9-1) |
 | 0-10-1 | Lettore impronte | BioStar (IP 10.61.20.199). Cavo rete al lettore esterno; RS485 tra connettore interno ed esterno; la rete lo vede come dispositivo unico. Problemi dal 07/02/2025. |
 | 0-R-18 | Router/Switch | Cisco (rimosso). Collegava direttamente il firewall Zyxel al Piano 2. Con la dorsale SFP+ il Piano Terra e' collegato allo switch Piano 2 (XGS2220-54HP) via fibra. |
+| 0-R-4 | Postazione | Persona-D, dal 10/07/2026 (ex 0-3-3, vedi Ufficio 3). Patch diretta al rack a seguito di un aggiornamento dell'indirizzo IP della postazione. |
 
 **Nota post-installazione XGS2220-30HP (aprile 2026):**
 Il Cisco switch e l'adattatore PoE esterno sono stati rimossi. Il nuovo switch

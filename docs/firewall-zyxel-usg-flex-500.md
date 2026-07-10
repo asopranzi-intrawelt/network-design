@@ -156,7 +156,7 @@ Filtro geografico: solo Italia e USA (regole 5 e 6 della security policy).
 
 Google Authenticator (TOTP). Canale alternativo: email o SMS. Validita' codice: 5 minuti.
 Attivo su: SSL VPN, accesso admin via SSH e Web UI, accesso NAS (URL aggiornato
-a luglio 2025 da 5.98.88.x a 203.0.113.x).
+a luglio 2025 da 192.0.2.50 a 203.0.113.x).
 
 ---
 

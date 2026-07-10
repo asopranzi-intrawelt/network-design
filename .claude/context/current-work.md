@@ -186,13 +186,41 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   `intrawelt.de` (dic. 2025) come motivo per cui il rinnovo era stato
   inizialmente disattivato: nessun altro dettaglio nella fonte, non
   ricollegato a nessun documento esistente.
-- **Fase B anonimizzazione** (roadmap.md, non ancora iniziata): un grep
-  esteso confermato il 09/07 mostra IP reali 192.168.x.x non anonimizzati
-  in helpdesk-operations.md, 2023-baseline.md, 2024-infra.md,
-  2025-q1-server-vianova.md, 2025-q3-q4.md, it-backlog.md,
+- **Fase B anonimizzazione** (roadmap.md): il 10/07 fatta una bonifica
+  meccanica (script Python, sostituzione di prefisso) degli IP reali
+  192.168.x.x, 10.1.116.x, 5.98.88.x, 31.197.194.x, 193.124.241.x,
+  195.96.193.x, 193.30.116.x, 212.35.202.x su tutti i file dove il grep
+  esteso del 09/07 li aveva confermati (helpdesk-operations.md,
+  2023-baseline.md, 2024-infra.md, 2025-q1-server-vianova.md,
+  2025-q2-migrazione-tim-vianova.md, 2025-q3-q4.md, it-backlog.md,
   runbook-anomalie.md, sviluppo-interno.md, vendor-management.md,
-  vulnerability-assessment-nov2025.md — conferma la portata gia' stimata,
-  nessuna azione presa oltre ai due IP corretti per caso l'08-09/07.
+  vulnerability-assessment-nov2025.md, firewall-zyxel-usg-flex-500.md) piu'
+  due seriali dispositivo reali e un MAC reale residuo. Corretti anche a
+  mano diversi nomi propri reali non ancora in placeholder in
+  2023-baseline.md, 2024-infra.md, 2025-q1/q2/q3-q4.md,
+  business-continuity-disaster-recovery.md, helpdesk-operations.md,
+  it-backlog.md, vendor-management.md (Persona-P/R/H/E/O/F/J/M/K/N).
+  Confermato dall'utente il 10/07 di proseguire il sweep completo: fatto
+  anche per Persona-A e Persona-J su cybersecurity-governance.md,
+  scenia-project.md, helpdesk-operations.md, le timeline 2024/2025-q1/q2/q3-q4,
+  vendor-management.md, business-continuity-disaster-recovery.md, mantenendo
+  reale solo la ragione sociale legale "Intrawelt di Alessandro Potalivo &
+  C. Sas" dove compare letteralmente (e' un dato di registro, non narrativo).
+  **RISOLTO (10/07)**: sweep esteso a tutto l'albero `docs/` e
+  `.claude/context/`, non solo ai file gia' segnalati dal 09/07. Trovati e
+  bonificati un registro firme dipendenti con 21 nomi reali in chiaro
+  (cybersecurity-governance.md, 13 nuovi placeholder Persona-V..AJ
+  aggiunti alla mappa), i referenti di Vianova/myOffice/Fastnet/Novadys/
+  ABBYY/Proelium/BioStar2/Fibercop/RWS mai messi in placeholder nelle
+  timeline 2024/2025 (nuovi Referente-Vianova-5/6, Referente-Fibercop-1,
+  Referente-RWS-1), hostname PC-GIORDANO/PC-Tommaso, e 4 numeri di
+  telefono reali residui (rimossi per policy amministrativa, non solo
+  anonimizzati). Verificato con grep esteso finale: nessun IP 192.168.x.x,
+  nessun MAC reale, nessun nome della mappa privata rimasto in chiaro nei
+  file tracciati, salvo le eccezioni deliberate (ragione sociale legale,
+  nomi di file sorgente citati per tracciabilita'). Fase B non e' chiusa
+  (resta la riscrittura della storia git, pianificata a parte), ma il
+  contenuto attualmente in HEAD e' pulito.
 - RISOLTO (09/07): coda BASSA della libreria Administration chiusa per
   intero (Google Cloud abortito, Openforce, Eter, TREX, MICROSOFT, ZeroSSL,
   Rinnovo marchi, Savelli, foto sala server, file sciolti root, contabilita'

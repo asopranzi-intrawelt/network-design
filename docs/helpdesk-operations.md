@@ -8,7 +8,7 @@ Aggiornato: giugno 2026.
 ## Onboarding / Offboarding dipendenti e collaboratori
 
 Fonte: `Helpdesk_Onboarding/ONBOARDING_OUTBOARDING.docx` (444 KB)
-Trigger: mail Alessia Nasini a Fabio Guidali del 09/01/2025 → avvio formalizzazione procedura.
+Trigger: mail Persona-J a Persona-Z del 09/01/2025 → avvio formalizzazione procedura.
 
 **Nota:** le credenziali degli account creati sono registrate in `Cartella_riservata_IT/Email_Usr-Pwd_Office365.xlsx` (MAI ingestire, file riservato locale).
 
@@ -18,7 +18,7 @@ Trigger: mail Alessia Nasini a Fabio Guidali del 09/01/2025 → avvio formalizza
 |-----------------|-----------|-----------------|
 | Microsoft 365 (M365) | Admin portal Microsoft 365 | Immediata al termine collaborazione |
 | Email `ncognome@intrawelt.com` | Contestuale account M365 | Disattivazione + risposta automatica |
-| T-Rex (Odoo) | Fabio Guidali (referente T-Rex) | Fabio Guidali |
+| T-Rex (Odoo) | Persona-Z (referente T-Rex) | Persona-Z |
 | SharePoint INTERSCAMBIO | Cartella `INTERSCAMBIO/Nome_Cognome` + Add Shortcut to OneDrive | Rimozione accesso |
 | Trados Studio | Licenza associata alla macchina fisica | Revoca licenza |
 | GroupShare | Se applicabile | Rimozione |
@@ -29,17 +29,17 @@ Trigger: mail Alessia Nasini a Fabio Guidali del 09/01/2025 → avvio formalizza
 1. **M365 admin** → aggiungi utente → `ncognome@intrawelt.com` → licenza Microsoft 365 Business Standard (o Power Automate Free per periodi prova brevi)
 2. **SharePoint** → `Projects → Documents → INTERSCAMBIO` → crea cartella `Nome_Cognome` → accedi con account nuovo → Add Shortcut to OneDrive
 3. **Trados Studio**: installa Trados Studio (versione corrente) + licenza su macchina
-4. **T-Rex**: delegare creazione profilo a Fabio Guidali
+4. **T-Rex**: delegare creazione profilo a Persona-Z
 5. **NinjaOne**: rinomina PC da `PC-LALATI` o nome precedente a `PC-NOMEUTENTE`
 6. **Password**: registrare credenziali create in `Cartella_riservata_IT/Email_Usr-Pwd_Office365.xlsx`
 
 ### Procedura offboarding
 
 1. Disattivare account M365 **immediatamente** al termine collaborazione
-2. T-Rex: Fabio Guidali gestisce la disabilitazione
+2. T-Rex: Persona-Z gestisce la disabilitazione
 3. Modificare password account M365 prima di disattivare (tracciare in xlsx)
-4. `.pst` retention: definire policy (TBC, azione da meeting Serafino 18/04/2025)
-5. Metadati email: max 21 gg dopo disattivazione (indicazione Serafino/Garante)
+4. `.pst` retention: definire policy (TBC, azione da meeting Consulente-ISO27001-1 18/04/2025)
+5. Metadati email: max 21 gg dopo disattivazione (indicazione Consulente-ISO27001-1/Garante)
 
 **Sistema ticketing**: fino a fine 2024 usato MANTIS; da 2025 NinjaOne.
 
@@ -50,14 +50,14 @@ Trigger: mail Alessia Nasini a Fabio Guidali del 09/01/2025 → avvio formalizza
 Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx`
 
 **Client:** ZyWall SecuExtender (Zyxel VPN SSL client)
-**Server VPN:** `193.124.241.5` (IP pubblico Vianova, subnet .x/28)
+**Server VPN:** `203.0.113.5` (IP pubblico Vianova, subnet .x/28)
 **Protocollo:** SSL/TLS (SecuExtender)
 
 ### Procedura connessione
 
 1. Aprire ZyWall SecuExtender
-2. Campo **Server**: `193.124.241.5`
-3. **Username**: formato `ncognome` (es. `tvezeni`)
+2. Campo **Server**: `203.0.113.5`
+3. **Username**: formato `ncognome` (es. `persona-e`)
 4. **Password**: fornita dall'IT in fase di onboarding
 5. Cliccare Connetti → arriva email 2FA all'indirizzo aziendale
 6. Cliccare **Authorize** nell'email → VPN attiva
@@ -81,7 +81,7 @@ Ambiente di test: disponibile (URL separato).
 Chat interna: "T-Rex | All PM" su Microsoft Teams.
 
 **Egetrad**: vecchio gestionale precedente (usato fino al 2021). Ora solo archivio statico.
-VM Ubuntu su Proxmox (192.168.20.5), porta 8080 pubblica e privata.
+VM Ubuntu su Proxmox (10.61.20.5), porta 8080 pubblica e privata.
 Regola firewall `EGETRAD_WEB` da disabilitare quando dismessa definitivamente (task_27).
 
 ### Apertura ticket con OpenForce
@@ -119,7 +119,7 @@ Sintomo: mail non ricevute nel gestionale nonostante arrivino nelle caselle Outl
 **Procedura sblocco (ripetibile manualmente):**
 
 1. Aprire browser in modalità **Incognito**.
-2. Accedere a T-Rex con account admin: `tvezeni@intrawelt.com` (o altro admin).
+2. Accedere a T-Rex con account admin: `persona-e@intrawelt.com` (o altro admin).
 3. Navigare a: `https://intrawelt.openforce.it/web?debug=1#menu_id=107&action=121`
    → ri-autenticarsi con le stesse credenziali.
 4. Andare su **Ricezione → Edit Settings**.
@@ -127,7 +127,7 @@ Sintomo: mail non ricevute nel gestionale nonostante arrivino nelle caselle Outl
    `[redacted]`) → cliccare **Preleva Ora**.
 6. Aprire nuova finestra incognito con:
    `https://intrawelt.openforce.it/web?debug=1#id=2&action=121&model=fetchmail.server&view_type=form&menu_id=`
-7. Ri-autenticarsi (tvezeni@intrawelt.com) → **Edit Settings** casella opportunità
+7. Ri-autenticarsi (persona-e@intrawelt.com) → **Edit Settings** casella opportunità
    (`opportunita@intrawelt.com` / `[redacted]`) → **Preleva Ora**.
 
 Entrambe le caselle di posta in arrivo risultano sbloccate. Causa profonda: bug noto
@@ -136,7 +136,7 @@ Odoo/OpenForce; non è stata identificata una soluzione strutturale permanente.
 ### T-Rex – CSRF Token invalido e batch upload fallito (procedura pulizia sessione)
 
 Fonte: `Helpdesk_T-Rex/Problema CSRF Token T_Rex.docx`  
-Incidente: **19/02/2026** — Chiara Ippoliti segnala a Tommaso Vezeni.
+Incidente: **19/02/2026** — Persona-F segnala a Persona-E.
 
 **Sintomi:**
 - Batch upload file XML analisi bloccato (caricamento infinito)
@@ -189,7 +189,7 @@ il caso è passato a Microsoft Azure team dopo chiamata del 14/11/2024.
 
 | Gruppo | Contenuto |
 |--------|-----------|
-| IT | Documenti IT, appunti procedurali, eredità documentazione Pasquale |
+| IT | Documenti IT, appunti procedurali, eredità documentazione Persona-P |
 | Projects | Memorie di traduzione TM + MultiTerm (link OneDrive locale) |
 | Resources | Strumenti condivisi (TOOLS folder sincronizzato su OneDrive locale) |
 
@@ -204,11 +204,11 @@ Percorso locale sincronizzato: `C:\Users\Alessio Sopranzi\OneDrive - Intrawelt S
 | Backup .pst su NAS | Pianificato | Dipende da task_61 (backup posta) |
 | Aggiornamento deleghe | Da fare | File 2025-09-01_Aggiornamento_caselle_posta.xlsx su SharePoint |
 | Licenze e account | Da fare | Pulizia licenze non necessarie (task_62) |
-| Phishing analisi | Da fare | Tracciamento mail sospette (caso Alessia Nasini maggio 2025) |
+| Phishing analisi | Da fare | Tracciamento mail sospette (caso Persona-J maggio 2025) |
 
 ### Account utenti dimessi
 
-**Pasquale e Giordano** (task_34): Mail chiuse da Microsoft in settembre 2025.
+**Persona-P e Persona-R** (task_34): Mail chiuse da Microsoft in settembre 2025.
 Cleanup dettagliato pendente (molti servizi/account terzi associati alle loro mail).
 File di analisi: `mail_pasquale_giordano_analisi 23042025.xlsx`.
 Esempio da gestire: Heroku richiede pass attraverso le loro mail.
@@ -228,8 +228,8 @@ Flussi SCENIA/Trados che dipendevano dal suo account: da ripristinare (task_97).
 
 ### GroupShare
 
-Server: WINGROUPSHARE (IP LAN: 10.1.116.3, sotto Seeweb firewall cloud)  
-VM parallela: WINSRV2019 (IP LAN: 10.1.116.4, sotto Seeweb firewall cloud)  
+Server: WINGROUPSHARE (IP LAN: 10.77.116.3, sotto Seeweb firewall cloud)  
+VM parallela: WINSRV2019 (IP LAN: 10.77.116.4, sotto Seeweb firewall cloud)  
 URL interno: `http://gs.intrawelt.com/`  
 Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
 
@@ -266,7 +266,7 @@ un altro PM, solo con le proprie.
 ### Trados Studio
 
 **Problemi tipici:**
-- Disconnessione licenze: solitamente non è un problema server (vedi caso Tommaso Duranti 07/04/2025)
+- Disconnessione licenze: solitamente non è un problema server (vedi caso Persona-O 07/04/2025)
 - Repair licenza: procedura documentata in Helpdesk_RWS-Groupshare-Studio/STUDIO-RWS-GROUPSHARE.docx
 - Time licenza: 8h stima per troubleshooting (task_71)
 
@@ -277,7 +277,7 @@ un altro PM, solo con le proprie.
 | Campo | Dettaglio |
 |-------|-----------|
 | Sistema | BioStar (lettore impronte digitali) |
-| Dispositivo | 192.168.20.199 (switch Piano Terra, port 0-10-1) |
+| Dispositivo | 10.61.20.199 (switch Piano Terra, port 0-10-1) |
 | VLAN | LAN utenti (VLAN 20) |
 | Tempo speso | ~1 mese netto nei 2 anni (task_83) |
 | Tipo attività | Varie problematiche hardware/software, gestione badge |
@@ -304,7 +304,7 @@ gia' pianificata su VM100).
 
 ### Onboarding nuovo dipendente
 
-1. Creare account M365: `ncognome@intrawelt.com` (es. tvezeni@intrawelt.com)
+1. Creare account M365: `ncognome@intrawelt.com` (es. persona-e@intrawelt.com)
 2. Password casuale, licenza "Microsoft Power Automate Free" (o equivalente base)
 3. SharePoint: Projects → Documents → INTERSCAMBIO → crea cartella Nome_Cognome
 4. Collegare cartella SharePoint su OneDrive del dipendente (Add Shortcut)
@@ -314,7 +314,7 @@ gia' pianificata su VM100).
 8. Registrare in registro onboarding (Mantis/ticket interno)
 
 **Caso esempio (Greta Cavalieri, 14/11/2024):**
-- Ticket Mantis #1428, aperto 13/11/2024 da Alessia Nasini
+- Ticket Mantis #1428, aperto 13/11/2024 da Persona-J
 - Postazione preparata (PC), account M365 creato, Trados Studio installato
 
 ### Outboarding
@@ -384,7 +384,7 @@ Documento informativo interno per i dipendenti sull'uso di NinjaOne RMM.
 ## Infrastruttura Seeweb e GroupShare – problemi noti
 
 **Ticket Amazon AWS** (task_51): ha impegnato 3 mesi consecutivi a 4h/settimana default.  
-**Ticket Seeweb** (task_9): dopo migrazione TIM → Vianova, GroupShare (10.1.116.3) non raggiungibile.
+**Ticket Seeweb** (task_9): dopo migrazione TIM → Vianova, GroupShare (10.77.116.3) non raggiungibile.
 Risoluzione: Seeweb ha replicato la configurazione LAN che Alessio aveva già configurato manualmente.
 Documentata in note SYSADMIN del piano attività.
 
@@ -419,19 +419,19 @@ ENI Servizi è un ufficio ENI che commissiona traduzioni a Intrawelt. A fine mes
 file `.xls` con il riepilogo degli ordini del periodo → Intrawelt genera il report corretto
 tramite IntraPanel e lo resubmits con eventuali correzioni → poi fattura.
 
-### IntraPanel – App React/Flask (PC-GIORDANO)
+### IntraPanel – App React/Flask (PC-Persona-R)
 
-**RISCHIO CRITICO**: L'app è installata su `PC-GIORDANO` (account Giordano, ex-dipendente).
-Giordano è uscito dall'azienda; l'app non ha mai sido migrata. Stato: presumibilmente ancora
+**RISCHIO CRITICO**: L'app è installata su `PC-Persona-R` (account Persona-R, ex-dipendente).
+Persona-R è uscito dall'azienda; l'app non ha mai sido migrata. Stato: presumibilmente ancora
 accessibile ma non presidiata. Backlog: task_27 (manutenzione app). Da migrare urgentemente.
 
 | Componente | Dettaglio |
 |------------|-----------|
 | Frontend | React, `npm start`, porta localhost:3000 |
 | Backend | Flask (`flask_service.py`), progetto `odoo_service` su PyCharm |
-| IDE necessario | VsCode (frontend) + PyCharm (backend), su PC-GIORDANO |
+| IDE necessario | VsCode (frontend) + PyCharm (backend), su PC-Persona-R |
 | Output | Report `.xlsx` con foglio "Control" aggiunto al file ENI originale |
-| Storico report | Desktop PC-Tommaso → cartella "Report Eni" |
+| Storico report | Desktop PC-Persona-E → cartella "Report Eni" |
 
 **Procedura mensile:**
 1. ENI invia file `.xls` ogni primo del mese → convertire in `.xlsx`
@@ -493,7 +493,7 @@ Analisi flussi condotta con Openforce (novembre 2025). Moduli da migrare da Odoo
 Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione T-Rex).
 
 **Preventivo analisi (Openforce):** 27/11/2025, firmato per accettazione
-03/12/2025 (Alessandro Potalivo). Pacchetto a ore con 2 Account Manager per
+03/12/2025 (Persona-A). Pacchetto a ore con 2 Account Manager per
 "analisi flussi v12 e soluzioni v18" (OLDMIG); importo non riportato per
 policy amministrativa. Contatto tecnico Openforce cambiato nel frattempo:
 Referente-OpenForce-3 sostituisce Persona-U come referente tecnico dal
@@ -507,14 +507,14 @@ aprile 2026 per chi resta sulla v16 o precedenti — Intrawelt e' su Odoo 12,
 quindi soggetta a questa fee. Il 12/09/2025 Intrawelt aveva gia' confermato
 a Odoo l'intenzione di migrare alla v18 "prima possibile", frenata dalla
 customizzazione molto alta del proprio ambiente, con un incontro di
-persona previsto a Bruxelles tra Alessandro Potalivo e il referente Odoo.
+persona previsto a Bruxelles tra Persona-A e il referente Odoo.
 
 ---
 
 ## Odoo – Integrazione portale SCENIA (04/03/2026)
 
 Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - portale/Notes - Meeting integrazione Odoo - portale 04032026.txt`
-Referente OpenForce: Susanna Ortini.
+Referente OpenForce: Referente-OpenForce-1.
 
 **Esigenza**: il portale SaaS SCENIA (clienti autenticati) deve creare SO in T-Rex/Odoo
 quando un cliente avvia una richiesta di traduzione con servizi aggiuntivi (freelancer).
@@ -654,7 +654,7 @@ Fonte: `Sviluppo_interno, scripting (IT on FIRE)/OpenProject/`
 **URL interno**: `http://openproject.local:9001`  
 **Utilizzo**: project management interno, Gantt chart attività IT.
 
-Utenti configurati: asopranzi@intrawelt.com (alesop95), atrovato@intrawelt.com, tvezeni@intrawelt.com.
+Utenti configurati: asopranzi@intrawelt.com (alesop95), persona-m@intrawelt.com, persona-e@intrawelt.com.
 
 **Note operative:**
 - Invitare membro da: `http://openproject.local:9001/projects/<nome>/members`
@@ -756,7 +756,7 @@ Sistema PowerShell + AutoHotKey per l'esportazione giornaliera automatica delle 
 | Parametro | Valore |
 |-----------|--------|
 | GroupShare server | `http://gs.intrawelt.com/` |
-| Backup NAS (UNC) | `\\192.168.20.177\Backup_TM_Groupshare` |
+| Backup NAS (UNC) | `\\10.61.20.177\Backup_TM_Groupshare` |
 | Backup NAS (mapped) | `M:\Backup_TM_Groupshare` |
 | Job XML | `C:\ProgramData\Kaleidoscope\MigratingTMs\tasks\export_TM.xml` |
 | XPath attributo output | `/Task/@outputPath` |

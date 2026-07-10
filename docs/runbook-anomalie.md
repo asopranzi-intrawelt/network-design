@@ -18,7 +18,7 @@ La regola di sicurezza perimetrale `Blocco_Gruppo_IP_Phishing_Elisa` esiste sull
 
 ```powershell
 # 1. Verifica tramite CLI SSH al firewall (o export config XML)
-#    Accedere alla Web GUI: https://192.168.20.1:443 (o IP mgmt FW)
+#    Accedere alla Web GUI: https://10.61.20.1:443 (o IP mgmt FW)
 #    Security Policy > Firewall Rules > cerca "Phishing_Elisa"
 #    Verificare il campo Action (deve essere DROP o REJECT, non ALLOW)
 
@@ -64,23 +64,23 @@ Se la modifica blocca traffico legittimo (falso positivo), ripristinare `Action 
 
 ---
 
-## FW-002: Switch management su VLAN Guest (192.168.90.37)
+## FW-002: Switch management su VLAN Guest (10.61.90.37)
 
 **Severity**: CRITICA  
 **Origine**: VA Onova nov 2025  
 **Stato**: APERTO
 
 ### Contesto
-L'interfaccia di management dello switch (Zyxel XGS2220-54HP o XGS2220-30HP) è raggiungibile sull'IP 192.168.90.37, che appartiene alla VLAN 90 (Guest/IoT). Chiunque sulla VLAN Guest può raggiungere e tentare di amministrare lo switch.
+L'interfaccia di management dello switch (Zyxel XGS2220-54HP o XGS2220-30HP) è raggiungibile sull'IP 10.61.90.37, che appartiene alla VLAN 90 (Guest/IoT). Chiunque sulla VLAN Guest può raggiungere e tentare di amministrare lo switch.
 
 ### Verifica pre-fix
 
 ```powershell
 # Da rete LAN (VLAN 20):
-Test-NetConnection -ComputerName 192.168.90.37 -Port 443
+Test-NetConnection -ComputerName 10.61.90.37 -Port 443
 # Se risponde: switch management esposto su VLAN guest
 
-# Verifica accesso web: aprire browser su https://192.168.90.37
+# Verifica accesso web: aprire browser su https://10.61.90.37
 # Non deve essere raggiungibile dalla VLAN utenti (e tanto meno dalla VLAN guest)
 ```
 
@@ -90,26 +90,26 @@ Test-NetConnection -ComputerName 192.168.90.37 -Port 443
 2. Selezionare il dispositivo switch
 3. Navigare a `Configure > Switch > Management`
 4. Cambiare `Management VLAN` da VLAN 90 a VLAN 10 (Management/Server)
-5. Impostare `Management IP`: scegliere un IP in 192.168.10.0/24 (es. 192.168.10.10)
+5. Impostare `Management IP`: scegliere un IP in 10.61.10.0/24 (es. 10.61.10.10)
 6. Applicare la configurazione via Nebula (zero-touch)
 
 **In alternativa (accesso locale prima della modifica):**
-- CLI locale: `ip management vlan 10 ip 192.168.10.10 mask 255.255.255.0`
+- CLI locale: `ip management vlan 10 ip 10.61.10.10 mask 255.255.255.0`
 - Aggiornare DNS/documentazione con il nuovo IP di management
 
 **Regola firewall da aggiungere:**
-- Source: VLAN 10 (192.168.10.0/24), Destination: 192.168.10.10, Port: 443/22 → ALLOW
-- Source: qualsiasi altra VLAN, Destination: 192.168.10.10 → DENY
+- Source: VLAN 10 (10.61.10.0/24), Destination: 10.61.10.10, Port: 443/22 → ALLOW
+- Source: qualsiasi altra VLAN, Destination: 10.61.10.10 → DENY
 
 ### Verifica post-fix
 
 ```powershell
 # Da VLAN Guest (o test simulato):
-Test-NetConnection -ComputerName 192.168.10.10 -Port 443
+Test-NetConnection -ComputerName 10.61.10.10 -Port 443
 # Atteso: timeout/reset (firewall blocca)
 
-# Da VLAN management (192.168.10.x):
-Test-NetConnection -ComputerName 192.168.10.10 -Port 443
+# Da VLAN management (10.61.10.x):
+Test-NetConnection -ComputerName 10.61.10.10 -Port 443
 # Atteso: risposta (OK)
 ```
 
@@ -127,7 +127,7 @@ Non esiste un segmento DMZ fisico o logico. I server pubblici (se esistenti) o i
 ### Architettura target
 
 ```
-Internet → Firewall (NAT/policy) → VLAN 201 (DMZ: 192.168.201.0/24)
+Internet → Firewall (NAT/policy) → VLAN 201 (DMZ: 10.61.201.0/24)
                                               ↓ solo policy esplicite
                                       VLAN 20 (LAN interna)
 ```
@@ -141,8 +141,8 @@ Internet → Firewall (NAT/policy) → VLAN 201 (DMZ: 192.168.201.0/24)
    - Type: VLAN
    - VLAN ID: 201
    - Parent: `lan1` (bridge P4/P5/P6)
-   - IP/Mask: 192.168.201.1/24
-   - DHCP: Server (pool 192.168.201.10-100)
+   - IP/Mask: 10.61.201.1/24
+   - DHCP: Server (pool 10.61.201.10-100)
    - Zone: DMZ (creare zona se non esiste)
 
 2. Regole firewall da aggiungere:
@@ -167,15 +167,15 @@ Via Nebula:
    bridge-vids 2-4094
    ```
 2. Alla VM in DMZ: assegnare interface con `vlan tag = 201`
-3. La VM riceverà IP da DHCP VLAN 201 (192.168.201.x)
+3. La VM riceverà IP da DHCP VLAN 201 (10.61.201.x)
 
 ### Verifica
 
 ```powershell
 # Da VM in DMZ: verificare routing e isolamento
-# Ping verso LAN (192.168.20.1) deve essere bloccato dal firewall
+# Ping verso LAN (10.61.20.1) deve essere bloccato dal firewall
 # Ping verso internet deve funzionare (se regola lo permette)
-Test-NetConnection -ComputerName 192.168.20.1 -Port 80
+Test-NetConnection -ComputerName 10.61.20.1 -Port 80
 # Atteso: timeout (firewall DMZ→LAN deny)
 ```
 
@@ -234,12 +234,12 @@ L'AP sul tetto (identificatore 0-9-1) è gestito con firmware basato su Debian 7
 **Stato**: APERTO
 
 ### Contesto
-L'UPS (Emerson Liebert IntelliSlot, IP 192.168.90.33, porta gestione 6004) è sulla VLAN Guest. Un attaccante sulla rete WiFi guest potrebbe raggiungere la console di gestione UPS e causare shutdown non autorizzato dell'infrastruttura.
+L'UPS (Emerson Liebert IntelliSlot, IP 10.61.90.33, porta gestione 6004) è sulla VLAN Guest. Un attaccante sulla rete WiFi guest potrebbe raggiungere la console di gestione UPS e causare shutdown non autorizzato dell'infrastruttura.
 
 ### Procedura fix
 
 1. Spostare l'interfaccia di rete del modulo IntelliSlot su VLAN 10 (Management)
-2. Assegnare IP in 192.168.10.0/24 (es. 192.168.10.20)
+2. Assegnare IP in 10.61.10.0/24 (es. 10.61.10.20)
 3. Aggiornare regole firewall: solo VLAN 10 può raggiungere l'UPS
 4. Testare notifiche SNMP/mail dell'UPS dopo la modifica
 
@@ -267,4 +267,65 @@ e' documentata nella fonte.
 
 ---
 
-*Runbook aggiornato: giugno 2026. Owner: Alessio Sopranzi.*
+## VM-001: Disco pieno (100%) su VM sito WordPress aziendale (10.61.20.23)
+
+**Severity**: ALTA
+**Origine**: sessione operativa 10/07/2026
+**Stato**: risolto (mitigazione + rimedio strutturale eseguiti)
+
+### Contesto
+La VM che serve il sito WordPress aziendale (10.61.20.23, containerizzato,
+con MySQL e servizi accessori) e' risultata con il filesystem radice
+(`/dev/sda2`, 32G) al 100% di utilizzo e 0 byte disponibili, con conseguente
+fallimento di operazioni base (scrittura su `~/.ssh/authorized_keys`,
+`npm cache clean`). Causa principale: cache di snapd
+(`/var/lib/snapd/cache`) cresciuta fino a 4,7G senza mai essere ripulita.
+Contributori minori: cache npm utente (~3G, non ripulita per mancanza di
+spazio), un file gia' cancellato ma ancora aperto da un processo Claude Code
+(238MB non liberabili finche' il processo non chiude il file).
+
+### Verifica pre-fix
+```
+df -h /
+sudo du -xh --max-depth=2 / 2>/dev/null | sort -rh | head -25
+sudo du -sh /var/lib/snapd/cache
+```
+
+### Procedura fix
+1. Svuotare la cache di snapd. Attenzione: la directory non e' leggibile
+   dall'utente non privilegiato, quindi il carattere jolly va espanso
+   *dentro* la shell di root — `sudo rm -rf /var/lib/snapd/cache/*` fallisce
+   silenziosamente perche' il glob si espande nella shell utente prima che
+   `sudo` entri in gioco, e la shell utente non puo' leggere la directory:
+   ```
+   sudo find /var/lib/snapd/cache -mindepth 1 -delete
+   ```
+2. Verificare lo spazio recuperato:
+   ```
+   sudo du -sh /var/lib/snapd/cache
+   df -h /
+   ```
+
+### Verifica post-fix
+Spazio libero passato da 0 a ~237M. Sufficiente per operazioni minime, non
+un margine di sicurezza duraturo su una VM di produzione con MySQL attivo.
+
+### Rimedio strutturale (eseguito il 10/07/2026)
+237M restava insufficiente per una VM di produzione: un backup o un log
+spike l'avrebbero riportata rapidamente a 0. Si e' scoperto che il disco
+virtuale era gia' provisionato a 64G in Proxmox, ma la partizione/filesystem
+guest ne usava solo 32G (32G non allocati in coda al disco, nessuna modifica
+lato Proxmox necessaria). Shutdown/Start della VM, poi dentro la VM:
+```
+sudo growpart /dev/sda 2
+sudo resize2fs /dev/sda2
+```
+Risultato: `/dev/sda2` passato da 32G a 63G, spazio libero da ~237M a 32G
+(48% di utilizzo). Rimane comunque valido, come miglioria futura non
+urgente, rimuovere le revisioni snap disabilitate rimaste (`snap list --all`,
+poi `sudo snap remove <nome> --revision=<rev>` per ogni riga con nota
+"disabilitato") per liberare ulteriore margine.
+
+---
+
+*Runbook aggiornato: luglio 2026. Owner: Alessio Sopranzi.*

@@ -13,8 +13,8 @@ Standard: ISO/IEC 27001:2022.
 | Ruolo | Nome |
 |-------|------|
 | Responsabile tecnico (RSGSI) | Alessio Sopranzi |
-| Responsabile di produzione | Alessia Nasini |
-| Direzione aziendale | Alessandro Potalivo, Sonia Martellini |
+| Responsabile di produzione | Persona-J |
+| Direzione aziendale | Persona-A, Persona-B |
 
 Responsabile Continuita' Operativa (RCO): contatta tutte le figure del Comitato,
 redige la relazione per i clienti coinvolti nell'evento.
@@ -66,7 +66,7 @@ Autonomia: ~2 ore per unita'. Batterie verificate settimanalmente.
 
 ### Assistenza hardware
 
-Punto Informatica (Daniele Colo'): contratto SLA 2 ore per guasti bloccanti.
+Punto Informatica (Persona-H): contratto SLA 2 ore per guasti bloccanti.
 Intervento da remoto e/o on-site. Fornisce anche PC sostitutivi per sede secondaria.
 
 ### Vademecum urgenze (runbook operativo, da verificare la data)
@@ -102,9 +102,10 @@ bloccanti, da affrontare subito, da tutto il resto, rimandabile.
   bloccante, sostituzione senza urgenza.
 
 Scala di reperibilita' per le urgenze, se non c'e' nessuno in sede: prima
-Alessio Sopranzi o Persona-E (da verificare se Tommaso Vezeni o Tommaso
-Duranti: la fonte non specifica il cognome), poi Persona-H (Daniele Colo'),
-infine Persona-S (Edoardo, cognome non noto dalla fonte), sempre in zona.
+Alessio Sopranzi o un secondo dipendente (la fonte usa solo il nome di
+battesimo, non specifica il cognome: potrebbe essere Persona-E o
+Persona-O), poi Persona-H, infine Persona-S (Edoardo, cognome non noto
+dalla fonte), sempre in zona.
 
 ---
 

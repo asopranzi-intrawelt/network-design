@@ -23,7 +23,7 @@ la sottoscrizione del 15/09/2025 (vedi Q4 2025 e il registro sub-responsabili).
 | Data | Evento | Dettaglio |
 |------|--------|-----------|
 | Feb 2025 | Cambio gruppo di continuità | Sostituzione UPS principale. |
-| 18/04/2025 | Riunione Serafino ISO 27001 | Prima consulenza strutturata ISO 27001. Identificazione: disciplinare lavoratori, politica password, badge sala server, formazione phishing come prerequisiti immediati. Serafino consiglia CISSP come percorso certificativo. |
+| 18/04/2025 | Riunione Consulente-ISO27001-1 ISO 27001 | Prima consulenza strutturata ISO 27001. Identificazione: disciplinare lavoratori, politica password, badge sala server, formazione phishing come prerequisiti immediati. Consulente-ISO27001-1 consiglia CISSP come percorso certificativo. |
 | Mag 2025 | Phishing notes e documentazione | Documentazione protezione phishing/spoofing (SPF, DKIM, DMARC). Miniguida per utenti (gruppo Teams). |
 | Mag 2025 | Data protection procedure | Stesura procedura protezione dati (GDPR alignment). |
 
@@ -104,7 +104,7 @@ Il SGSI (Sistema di Gestione della Sicurezza delle Informazioni) di Intrawelt co
 
 | Data | Evento |
 |------|--------|
-| 18/04/2025 | Prima riunione con Serafino Bartolomei (consulente), gap analysis |
+| 18/04/2025 | Prima riunione con Consulente-ISO27001-1 (consulente), gap analysis |
 | 16/10/2025 | PSGSI rev. 1 firmata (avvio formale SGSI) |
 | 2026 (in corso) | Audit interno pianificato |
 | 2026-2027 | Obiettivo audit esterno ente accreditato |
@@ -217,7 +217,7 @@ Gap:
 |----------------|-------|------|
 | CompTIA Security+ SY0-701 | In corso | Studio in autonomia |
 | ISO/IEC 27001 Foundation | In corso | Parallelo alla preparazione aziendale |
-| CISSP | Pianificato (lungo termine) | Consiglio di Serafino come riconoscimento formale |
+| CISSP | Pianificato (lungo termine) | Consiglio di Consulente-ISO27001-1 come riconoscimento formale |
 
 ---
 
@@ -225,7 +225,7 @@ Gap:
 
 **Procedura data protection:** `_notes/.tmp-docx-CYBERSEC/data_protection.txt` (74 paragrafi)
 
-Punti chiave emersi dalla riunione Serafino (18/04/2025):
+Punti chiave emersi dalla riunione Consulente-ISO27001-1 (18/04/2025):
 - Metadati email: max 21 giorni (vincolo garante)
 - Disciplinare lavoratori: in preparazione (gestione sistemi informativi, chiavette USB, accesso Internet)
 - File .pst ex-dipendenti: politica conservazione 10 anni per dati patrimoniali
@@ -302,7 +302,7 @@ Registro: `Registro_Data_Breach.xlsx`; Modello notifica: `Modello notifica Data 
    (a) misure correttive immediate; (b) necessità notifica Garante (art. 33); 
    (c) necessità comunicazione interessati (art. 34).
 3. **Notifica all'Autorità Garante**: entro 72h se probabile rischio per diritti/libertà
-   delle persone fisiche (art. 33 GDPR). Titolare: Alessandro Potalivo.
+   delle persone fisiche (art. 33 GDPR). Titolare: Persona-A.
 4. **Comunicazione agli interessati**: se rischio elevato (art. 34); comunicazione diretta
    (no newsletter), chiara e trasparente.
 
@@ -396,12 +396,11 @@ File disponibile su: `\\10.61.20.170\utili\Privacy\Regolamento utilizzo sistemi 
 
 **Stato attuale (verificato giugno 2026): 0 firme su 21 dipendenti elencati.**
 
-Tutti i campi FIRMA e DATA sono vuoti per:
-Apollonio Luigi, Bartolucci Elena, Carlacchiani Marcello, Cenerini Marika, Coppola Luigi,
-Guidali Fabio, Kaemmer Oliver, Mandolesi Giordano, Marini Marsk, Marini Sergio,
-Martellini Sonia, Martinelli Mery, Monterubbianesi Elisa, Nasini Alessia, Natale Joanne,
-Nazziconi Alessia, Ripa Roberta, Scattolini Sara, Sconciafurno Pasquale, Stasi Daniel,
-Stratmann Ulrike.
+Tutti i campi FIRMA e DATA sono vuoti per i 21 dipendenti elencati nel
+documento (nomi sostituiti con placeholder secondo `.claude/rules/anonymization.md`):
+Persona-V, Persona-W, Persona-G, Persona-X, Persona-Y, Persona-Z, Persona-AA,
+Persona-R, Persona-D, Persona-AB, Persona-B, Persona-AC, Persona-I, Persona-J,
+Persona-AD, Persona-AE, Persona-AF, Persona-T, Persona-P, Persona-AG, Persona-AH.
 
 Gap: ISO-001 confermato ad alta priorità. Necessaria campagna di raccolta firme formale.
 Vedi GAP-TBC.md riga ISO-001 per dettaglio.
@@ -420,7 +419,7 @@ Documento: `GDPR-Privacy/xOpenforce/AccordoDiRiservatezza.docx` + PDF firmati da
 
 Scopo: "personalizzazione, configurazione, installazione e manutenzione di un software gestionale"
 (= T-Rex / Odoo). Accordo bilaterale. La relazione commerciale precede l'arrivo di Alessio
-Sopranzi (giu 2024); firmato da Alessandro Potalivo per Intrawelt.
+Sopranzi (giu 2024); firmato da Persona-A per Intrawelt.
 
 Allegati siglati da entrambe le parti presenti in:
 - `AccordoDiRiservatezza_signedIntrawelt_IW.pdf.p7m` (firma digitale)
@@ -507,7 +506,7 @@ Redatta da: 4ward s.r.l. (consulenza GDPR). Canale dedicato: **privacy@intrawelt
 ### Flusso operativo
 
 1. Interessato invia richiesta a **privacy@intrawelt.it** (o altri canali → reindirizzare)
-2. Amministrazione notifica il Titolare del Trattamento (Alessandro Potalivo)
+2. Amministrazione notifica il Titolare del Trattamento (Persona-A)
 3. Verifica identità interessato: dubbi → richiedere ulteriori informazioni
 4. Valutazione tipologia richiesta; supporto IT (Alessio Sopranzi) per cancellazione tecnica
 5. Risposta entro **1 mese** (prorogabile di 2 mesi per complessità, con comunicazione)
@@ -622,10 +621,10 @@ Documento BCP/DRP aziendale. Aggiornamento 2026.
 
 | Ruolo | Nome | Telefono |
 |-------|------|----------|
-| Responsabile Continuità Operativa (RCO) | Alessia Nasini | [redacted] |
+| Responsabile Continuità Operativa (RCO) | Persona-J | [redacted] |
 | Responsabile Servizi Tecnici | Alessio Sopranzi | [redacted] |
-| Rappresentante Legale | Alessandro Potalivo | [redacted] |
-| Direzione | Sonia Martellini | — |
+| Rappresentante Legale | Persona-A | [redacted] |
+| Direzione | Persona-B | — |
 
 ### Sedi operative
 

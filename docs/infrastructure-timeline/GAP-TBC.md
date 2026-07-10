@@ -89,9 +89,19 @@ helpdesk-operations.md §GroupShare.
 
 ---
 
-## sec-009 "” Non attivi / dismessi
+## sec-009 — Non attivi / dismessi
 
-[TBC: verificare sezione 009 per marcatori specifici]
+VERIFICATA IL 10/07/2026. Re-estrazione completa (1543 paragrafi): guasto
+lettore BioStar2 e migrazione su HP Gen10/Windows Server 2022, host
+legacy HP G6 (predecessore di G5, VM eGetrad/SVN/TestWeb/DOMV/posta/
+antivirus consolidate su G5 prima di fine 2024), predecessore Seeweb del
+GroupShare attuale (Cloud Server 280SPU poi 2000SPU per GroupShare 2017),
+NAS FTP e NAS documenti HPX1400 (dismissione e valutazione riuso
+OpenMediaVault, non decisa nella fonte), rimozione fisica dello switch
+GS1900-24 (08/05/2026, tenuto come backup). USG20/USG60 in coda alla
+sezione privi di contenuto testuale utile (solo screenshot). La maggior
+parte del contenuto era gia' coperta da file esistenti; novita' aggiunte
+a 2025-q1-server-vianova.md, 2023-baseline.md, vendor-management.md.
 
 ---
 

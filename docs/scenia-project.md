@@ -43,7 +43,7 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 | Ott 2024 | Proposta UNIMC: infrastruttura cloud LangChain + LLaMA 3.2 per traduzione e arricchimento contenuti. 3 progetti paralleli (fine-tuning, multi-LLM, SEO stats). |
 | 23/10/2024 | Briefing mattinale (TBC: ascolto registrazione) |
 | 25/11/2024 | Mail Frontoni: definizione 2 ambiti – Traduzione (core) + Gestione Contenuti (SEO). Richiesta di commercializzazione oltre la ricerca. |
-| 26/11/2024 | Alessia Nasini condivide punti di discussione + aggiunta GDPR/proprietà dati |
+| 26/11/2024 | Persona-J condivide punti di discussione + aggiunta GDPR/proprietà dati |
 | 10/12/2024 | Meeting "Progetto di ricerca Intrawelt/UniMc": valutazione startup (rinviata a metà 2025). Frontoni co-founder di Jeff (Civitanova) per interfacce. |
 | 18/12/2024 | Meeting "Presentazione Flusso": Francesca presenta flusso di lavoro per workflow traduzione |
 | Dic 2024 – Mar 2025 | Progetto 1 UNIMC: Infrastruttura cloud modulare multi-LLM (Frontoni + Sernani + Santini, 25+45 gg/uu) |
@@ -169,7 +169,7 @@ documentazione del portale da consegnare al cliente.
 | AIDAPT S.r.l. | Sub-responsabile, infrastruttura AWS/Azure | help@caity.it |
 | Alessio Sopranzi | IT Manager, responsabile compliance GDPR/sicurezza lato IT | asopranzi@intrawelt.com |
 | Francesca | Processo workflow traduzione | |
-| Alessia Nasini | Coordinamento, GDPR, dati clienti | anasini@intrawelt.com |
+| Persona-J | Coordinamento, GDPR, dati clienti | persona-j@intrawelt.com |
 | Collaboratore-Esterno-1 | Sviluppatore esterno fullstack | |
 | Prof. Frontoni / VRAI Lab (UNIMC) | Partner accademico originario (fase 0) | |
 | GAIA S.r.l. | Consulenza AI compliance (spin-off UNIMC, Benedetta Giovanola) | |
@@ -519,7 +519,7 @@ Ticket Aruba **18346774A** (13/02/2026): analisi opzioni backup.
 
 ## Architettura domini scenia.it (stato aprile 2026)
 
-Dominio registrato su Register.it il 03/02/2026 (registrante: Alessandro Potalivo
+Dominio registrato su Register.it il 03/02/2026 (registrante: Persona-A
 per Intrawelt Di Alessandro Potalivo & C. Sas, ragione sociale registrata come
 tale nel WHOIS; stato iniziale `inactive, dnsHold` fino al completamento della
 procedura), scadenza 03/02/2027 con rinnovo automatico attivo. Nameserver

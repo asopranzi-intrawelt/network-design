@@ -46,9 +46,9 @@ Per deviare tutte le chiamate di un interno verso un numero esterno (es. cellula
 *710[numero_destinazione]#
 ```
 
-Esempio: deviare verso il cellulare 3338027116:
+Esempio: deviare verso un cellulare (numero di esempio, non reale):
 ```
-*7103338027116#
+*710333XXXXXXX#
 ```
 
 Per rimuovere la deviazione:

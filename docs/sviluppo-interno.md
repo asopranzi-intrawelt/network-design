@@ -92,7 +92,7 @@ n8n: Docker Desktop 2.12.3
 |-------|-----------|
 | Scopo | Snapshot automatico VM Proxmox, verifica stato VM |
 | Script | `scripts/Get-ProxmoxSnapshot.ps1` (PowerShell) |
-| API | Proxmox VE REST API (192.168.20.11:8006) |
+| API | Proxmox VE REST API (10.61.20.11:8006) |
 | Output | `output/proxmox-snapshots.json` (gitignored) |
 
 ### Security Anomaly Checker

@@ -25,7 +25,7 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 ## Statement of Applicability – ISO/IEC 27001:2022 Annex A
 
 Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applicabili, implementati o esclusi.
-Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025, da aggiornare con Serafino).
+Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025, da aggiornare con Consulente-ISO27001-1).
 
 ### Legenda
 
@@ -42,7 +42,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.5.1 | Politiche per la sicurezza delle informazioni | SI | Parziale | Nessuna policy formale pubblicata. Disciplinare lavoratori in preparazione (Serafino 18/04/2025). |
+| A.5.1 | Politiche per la sicurezza delle informazioni | SI | Parziale | Nessuna policy formale pubblicata. Disciplinare lavoratori in preparazione (Consulente-ISO27001-1 18/04/2025). |
 | A.5.2 | Ruoli e responsabilità per la sicurezza delle informazioni | SI | Parziale | Alessio = IT manager. Ruoli non formalizzati. |
 
 ---
@@ -75,7 +75,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 |----|-----------|-------------|-------|------|
 | A.8.1 | Inventario degli asset | SI | Parziale | Inventario NAS, server, switch in architettura doc. Non strutturato come registro asset formale. |
 | A.8.2 | Classificazione delle informazioni | SI | NO – Non attivo | Classificazione dati non formalizzata. |
-| A.8.3 | Gestione dei supporti | SI | Parziale | Chiavette USB da disabilitare (Serafino). Politica da definire. |
+| A.8.3 | Gestione dei supporti | SI | Parziale | Chiavette USB da disabilitare (Consulente-ISO27001-1). Politica da definire. |
 | A.8.10 | Cancellazione delle informazioni | SI | Parziale | Offboarding: cancellazione account. Cancellazione dati da dispositivi non documentata. |
 
 ---
@@ -88,7 +88,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 | A.9.2 | Gestione dell'identità degli utenti | SI | SI – Parziale | Active Directory / Entra ID. Onboarding documentato. |
 | A.9.3 | Autenticazione degli utenti | SI | SI – Parziale | MFA Azure admin attivo. MFA per tutti gli utenti non attivo. |
 | A.9.4 | Diritti di accesso privilegiato | SI | Parziale | 4 account Azure admin identificati. Account locali admin non censiti. |
-| A.9.5 | Autenticazione sicura | SI | SI – Parziale | Password policy M365 attiva. Robustezza criteri da rivedere (Serafino). |
+| A.9.5 | Autenticazione sicura | SI | SI – Parziale | Password policy M365 attiva. Robustezza criteri da rivedere (Consulente-ISO27001-1). |
 | A.9.6 | Gestione delle password | SI | Parziale | Password manager non adottato aziendalmente. |
 | A.9.7 | Controllo degli accessi ai sistemi e alle applicazioni | SI | Parziale | Firewall policy, VLAN segmentation. Accessi applicativi non documentati. |
 
@@ -106,7 +106,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.11.1 | Perimetro di sicurezza fisica | SI | Parziale | CED con accesso fisico. Badge lettore impronte (BioStar, .20.199). Accesso sala server con badge da implementare (Serafino). |
+| A.11.1 | Perimetro di sicurezza fisica | SI | Parziale | CED con accesso fisico. Badge lettore impronte (BioStar, .20.199). Accesso sala server con badge da implementare (Consulente-ISO27001-1). |
 | A.11.2 | Protezione dell'ambiente fisico | SI | Parziale | UPS Emerson Liebert attivo. Fotovoltaico (2025). Cambiato gruppo continuità feb 2025. |
 
 ---
@@ -183,7 +183,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 | Fase | Periodo | Attività | Stato |
 |------|---------|----------|-------|
-| 0 – Awareness | Apr 2025 | Incontro Serafino, valutazione consulenza | Completato |
+| 0 – Awareness | Apr 2025 | Incontro Consulente-ISO27001-1, valutazione consulenza | Completato |
 | 1 – Gap Analysis | Fine 2025 | Analisi gap rispetto ai controlli Annex A | In corso |
 | 1b – Formazione | 2025-2026 | CompTIA Security+ SY0-701 + ISO 27001 Foundation (Alessio) | In corso |
 | 2 – ISMS Design | Q1-Q2 2026 | Progettazione ISMS, politiche, procedure | In corso |
@@ -191,7 +191,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 | 4 – Audit interno | Mag 2026 | Audit interno pre-certificazione | Pianificato |
 | 5 – Audit esterno | Giu-Lug 2026 | Certificazione da ente accreditato | Pianificato |
 
-**Prerequisiti identificati da Serafino (18/04/2025):**
+**Prerequisiti identificati da Consulente-ISO27001-1 (18/04/2025):**
 - Disciplinare lavoratori (gestione sistemi informativi)
 - Politica password robusta
 - Badge accesso sala server
