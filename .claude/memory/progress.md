@@ -4,6 +4,17 @@
 > significativo di codice e ogni intervento manuale rilevante lascia una voce con data, file
 > toccati, motivo e commit di riferimento.
 
+## 2026-07-10 — GAP-TBC #111 chiuso: vpn.intrawelt.com era un hostname superato
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/GAP-TBC.md (#111 marcato
+RISOLTO, conteggio risolti 5->6), .claude/context/current-work.md
+Motivo: l'utente ha spiegato che `vpn.intrawelt.com` (irraggiungibile nel
+test TCP/443 del 09/07) e' un riferimento a una configurazione VPN
+precedente, ormai superata dall'accesso VPN attuale tramite il firewall
+Zyxel USG FLEX 500. La cancellazione del certificato ZeroSSL e' quindi
+coerente con la dismissione, non un'anomalia da investigare oltre.
+
 ## 2026-07-09 — Verifica live dei certificati SSL in sospeso (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)
