@@ -326,6 +326,7 @@ sono esplicitamente nel documento Word.
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
 | 112 | SRV-004 | WINSRV2019 (Seeweb) ha un disco di rete aggiuntivo di circa 150 GB, nella stessa classe di indirizzi SEEWEB, che punta alla stessa cartella di WINGROUPSHARE e ha una connessione verso il NAS documenti (.170). La fonte stessa non ne chiarisce lo scopo ("da capire che cosa sono questi 150GB di roba"): da verificare se e' ancora in uso, cosa contiene, e se e' ridondante rispetto ai backup gia' documentati | ARCHITETTURA.docx sec-008 (Cloud) |
+| 113 | SEC-014 | Licenza M365 Business Standard: non include Microsoft Intune (MDM). I dispositivi Windows aziendali non risultano gestiti/registrati centralmente ne' sottoposti a policy di conformita' via Intune; la difesa endpoint resta affidata solo a Bitdefender GravityZone (vedi vendor-management.md). Verificare se l'assenza di MDM va colmata nel percorso ISO 27001 (A.8.3, gestione dispositivi) | MICROSOFT 365.docx §Defender e Intune |
 
 ---
 
@@ -359,5 +360,5 @@ sono esplicitamente nel documento Word.
 | AWS access key admin non rotata (09/07/2026) | 110 |
 | ZeroSSL certificato VPN cancellato (09/07/2026) | 111 |
 | Seeweb disco 150GB non identificato (10/07/2026) | 112 |
-| **Totale identificati** | **112** |
+| **Totale identificati** | **113** |
 | **Di cui risolti** | **7** (14, 54, 55, 61, 63, 106, 111 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto") |
