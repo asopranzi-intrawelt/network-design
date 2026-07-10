@@ -230,11 +230,20 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
   (certificato SSL VPN ZeroSSL cancellato 10/02/2026, esito non chiaro —
   aggiunto alla lista qui sopra). L'unica eccezione resta la sottocartella
   riservata `MyOffice/Transizione centralino cloud 2026/`.
-- **Ambizione originaria della sessione, non esaurita**: l'utente ha
-  chiesto una "timeline completa" con *tutti* i dettagli datati contenuti
-  nei grandi .docx gia' ingeriti in sessioni precedenti (ARCHITETTURA.docx,
-  MICROSOFT 365.docx, TREX.docx, STUDIO-RWS-GROUPSHARE.docx, ecc.), non
-  solo le sintesi gia' scritte. Oggi si sono ingeriti solo i file sciolti
-  mai apriti e la nuova libreria Administration: un secondo passaggio di
-  ri-estrazione esaustiva dai grandi .docx originali resta da fare e non e'
-  ancora stato scoping-ato in micro-step.
+- **Ambizione originaria della sessione — ARCHITETTURA.docx completato,
+  gli altri tre ridimensionati**: ARCHITETTURA.docx (sec-005/006/008/009)
+  e' stato interamente ri-estratto (10/07). Iniziata poi la stessa
+  ri-estrazione su MICROSOFT 365.docx (1419 paragrafi): dopo un primo
+  passaggio, confermato con l'utente di passare a una modalita' veloce
+  (solo novita' rilevanti) perche' il file e' un quaderno di procedure
+  IT generiche (SharePoint/Exchange/deleghe caselle/gestione turni-ferie
+  HR) con moltissime credenziali in chiaro e forte overlap con
+  helpdesk-operations.md gia' esistente. Unico risultato di valore:
+  GAP-TBC #113 (licenza M365 Business Standard priva di Intune/MDM).
+  Verificato lo skeleton di TREX.docx e STUDIO-RWS-GROUPSHARE.docx: stesso
+  pattern (troubleshooting applicativo Odoo/Trados con credenziali dense,
+  poco valore "network design", gia' in gran parte coperto). Conclusione:
+  la ri-estrazione esaustiva riga-per-riga vale solo per ARCHITETTURA.docx
+  (storia hardware/infrastruttura); per gli altri tre la sintesi gia'
+  scritta resta la fonte di riferimento salvo richiesta esplicita di
+  scavare un punto preciso.
