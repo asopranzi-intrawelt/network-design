@@ -1,5 +1,80 @@
 # Work-log
 
+## 2026-07-13 — VM207 "websiteAnalyst" censita via MCP Proxmox; SSH bidirezionale predisposto (sessione parallela)
+
+Commit: PENDING (da fare manualmente)
+File toccati: `.claude/context/design-and-security.md` (tabella VM: riga VM207, bridge
+vmbr3), `.claude/context/dev-testing.md` (conteggio VM QEMU aggiornato a 9, rimossa
+menzione generica "+ una"), `.claude/context/diagrams/network-topology.mmd` (nodo V207,
+collegamenti B3/SLVM; corretto anche un riferimento orfano preesistente a "V802" mai
+definito nel diagramma), `_notes/.anonymization-map.md` (voce 192.168.20.24 →
+10.61.20.24, MAC net0 non anonimizzato perche' non riportato in alcun file tracciato).
+Motivo: l'utente ha segnalato la nuova VM207, interrogata dal vivo via il server MCP
+`proxmox` (`list_vms`/`get_instance_config` sul nodo `pve`) invece di fidarsi solo del
+nome dato dall'utente: 6 vCPU, 16 GB RAM, dischi 32G+96G su storage SERVIZI, bridge vmbr3.
+Predisposta anche la connettivita', fuori dal perimetro documentale di questo repository
+ma degna di nota per chi riprende il progetto: alias SSH `vm207` da questa macchina verso
+la VM (chiave dedicata senza passphrase) e, sulla VM stessa, alias `github-corp` verso
+GitHub per il repository applicativo separato `asopranzi-intrawelt/website-analyst`
+(bootstrap del sistema di contesto portabile fatto in quel repository, non in
+`network-design`). Segnalato ma non risolto un file `passworg_gmail_intra` trovato in
+chiaro sul desktop della VM, fuori dal perimetro di questo progetto.
+
+## 2026-07-13 — M2 parziale (iLO recuperato via hponcfg), pianificato intervento Wi-Fi/Guest (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: .claude/context/roadmap.md (M2 parziale, M13 ampliato),
+docs/infrastructure-timeline/GAP-TBC.md (nota su NET-005), .claude/context/current-work.md
+(nuova voce "Domande aperte" per l'intervento Wi-Fi/Guest pianificato).
+Motivo: l'utente ha recuperato l'accesso iLO5 (password root perduta,
+reset via hponcfg dal sistema operativo senza riavviare il server) e
+configurato una connessione SSH all'iLO da questa macchina — tracciato
+come M2 parziale (restano console seriale e conferma 802.1Q). VM207
+"websiteAnalyst" aggiunta a design-and-security.md da un'altra sessione
+dell'utente in parallelo (nessuna azione richiesta, solo presa visione).
+L'utente ha poi descritto un nuovo intervento pianificato (non ancora
+eseguito): verificare che la Wi-Fi "intrawelt" sia isolata dalla LAN
+(NET-005, oggi non lo e') e predisporre una vera rete Guest per i
+visitatori, dato che la VLAN 90 "Guest" esistente sul firewall e' in
+realta' una raccolta di dispositivi IoT/management finiti li' per errore,
+non una rete ospiti funzionante. Ampliato M13 della roadmap con questa
+doppia natura del task e aggiunta nota di chiarimento a GAP-TBC #72.
+
+## 2026-07-13 — Timeline SVG: redesign grafico e accordion di dettaglio (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: scripts/Build-TimelineSvg.ps1 (riscritto), docs/infrastructure-timeline/timeline.svg
+(rigenerato), CLAUDE.md (§Script timeline SVG aggiornata).
+Motivo: su richiesta dell'utente, prima presentata una proposta di resa
+grafica come artifact HTML (palette blueprint/petrolio, accoppiata
+monospazio/serif, filtri categoria) per discuterne insieme; confermata la
+direzione ("assolutamente"), l'utente ha poi chiesto di implementarla in
+locale nello script di produzione, mantenendo l'output sempre e solo
+`.svg` (mai artifact), aggiungendo che ogni riga deve essere un accordion
+che espone il paragrafo di dettaglio ricostruito dai .docx ingeriti.
+Riscritto lo script: estrazione del corpo Markdown tra un'intestazione
+"## " e la successiva (paragrafi separati da righe vuote, sottointestazioni
+"### " promosse a paragrafo in grassetto, righe di tabella/code-fence/hr
+scartate, troncamento meccanico oltre 2200 caratteri), nuova palette
+neutra (fondo/inchiostro/accento petrolio) e accoppiata tipografica
+monospazio (date, tag, eyebrow) + serif (titoli e corpo dettaglio) al
+posto del Segoe UI generico precedente, script SVG nativo incorporato
+(CDATA) che gestisce apertura/chiusura pannello via foreignObject,
+misurando l'altezza reale del testo con getBoundingClientRect scalato per
+getScreenCTM (robusto a ridimensionamenti della pagina ospite) e
+ritraslando tutte le righe sottostanti. Verificato: script rieseguito
+senza errori (130 eventi, stesso output di partenza a comprimibile
+chiuso), XML validato come ben formato con xml.dom.minidom, ispezionati a
+mano due pannelli (uno semplice, uno con tabella markdown nel sorgente) per
+confermare l'estrazione corretta. **Caveat noto e documentato in
+CLAUDE.md**: l'accordion funziona quando l'SVG e' navigato direttamente o
+incluso via `<object>`/`<iframe>`/inline; se la pagina statica esterna
+dell'utente lo include con un tag `<img>`, gli script SVG sono disabilitati
+dal browser per quel contesto e le righe non si espandono (limite del
+browser, non risolvibile lato repository). L'utente deve verificare a
+occhio aprendo il file .svg direttamente, perche' l'agente non ha modo di
+testare visivamente il click.
+
 ## 2026-07-11 — Fase 2 chiusa: inventario NAS fleet e gap analysis ISO27001 (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)
