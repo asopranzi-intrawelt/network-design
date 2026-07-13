@@ -218,8 +218,25 @@ e 60% alla consegna del report.
 |-------|--------|
 | Tipologia | NAS storage (hardware) |
 | Dispositivi | HERO (10.61.20.169), INTRA (10.61.20.168), INTRA2 (10GbE, .177), INTRA3 (.172), DOC (.170 – HP HPX1400) |
-| Storage policy | HERO = backup secondario; INTRA/INTRA2 = produzione; DOC = documenti |
-| Backup | [TBC] – schema backup definito in business-continuity-disaster-recovery.md |
+| Storage policy | HERO = archivio principale progetti PM; INTRA/INTRA2 = backup; INTRA3 = dismesso; DOC = documenti/utili |
+| Backup | Vedi tabella sotto per dispositivo; schema completo in business-continuity-disaster-recovery.md |
+
+**Inventario sistematico (consolidato 10/07/2026 dalla timeline; nessuna fonte
+riporta le versioni firmware, resta [TBC] per tutti i dispositivi):**
+
+| NAS | Modello | RAID / capacita' | Ruolo e stato | Backup |
+|-----|---------|-------------------|---------------|--------|
+| HERO (10.61.20.169) | QNAP QuTS hero | RAID attivo, capacita' non censita | Produzione: archivio principale progetti PM, drive `H:` mappato sui client. Storage primario di lavoro. Replica offsite su Azure Blob Storage (container `nashero`, storage account `backnashero`, resource group `backupqnaphero`) via QNAP Hybrid Backup Sync con QuDedup (formato deduplicato `.qdff`) | Riceve backup da INTRA2 (cartella utili, dump VM); a sua volta replicato su Azure Blob |
+| INTRA (10.61.20.168) | QNAP TS-410U | Non censita | Target primario backup Cobian e MKSBackup VM. Archivio secondario | Riceve: dump completo di tutte le VM Proxmox (`\\10.61.20.168\Backup\dump`), usato anche come procedura di emergenza per il ripristino del nodo Proxmox |
+| INTRA2 (10.61.20.177) | QNAP TS-451U | RAID 5, 4 dischi da 8 TB (~21 TB raw, ~14-15 TB netti dopo l'espansione del 10/01/2025; prima erano 4 dischi da 2.73 TB, ~10.92 TB raw/~8.19 TB netti) | Produzione: backup di HERO e della cartella utili, oltre ai job Veeam Agent giornalieri di tutte le postazioni fisiche (`Backup_Ufficio\BackupPDL`, retention 7 giorni). Fine 2024: spazio quasi esaurito con fail su backup incrementale; risolto con l'espansione dischi di gennaio 2025. Nuova crisi di spazio giu-lug 2025 (causa: disco esterno Toshiba "anni vecchi" collegato durante un backup) | E' il target di backup per HERO, le postazioni fisiche (Veeam) e i dump VM; a sua volta non risulta replicato altrove |
+| INTRA3 (10.61.20.172 / .173, due schede di rete) | QNAP TS-210 | RAID 1 (mirroring) su 2 dischi meccanici da 2 TB: Toshiba DT01ACA200 e Seagate ST2000DM001-1CH1CC27. Il disco Seagate ha una scansione di bad blocks ferma all'1% (modello soggetto a tasso di guasti elevato nelle revisioni CC26/CC27): sostituzione raccomandata, non risulta ancora eseguita | Dismesso di fatto dal 2022 (proveniva dalla sede precedente di Via Pescolla). Formattato il 21/02/2025 (conteneva solo backup obsoleti di Glossari/Multiterm/TM 2020-2022). Riconnesso il 27/06/2025 per l'analisi dischi: fisicamente presente ma vuoto e non utilizzato in produzione | Nessuno (dismesso) |
+| DOC (10.61.20.170) | HP StorageWorks X1400 G2 (HPX1400), Windows Server 2008, Intel Xeon E5503, alimentatore 500W | Non censita (controller RAID HP, modello esatto non identificato dalla fonte) | Archivio storico cartella `utili` e certificati SSL. Smantellamento in corso da giugno 2025 per fine supporto Windows Server 2008 (rischio sicurezza: nessuna patch da anni): dati spostati su INTRA2, poi su una cartella `utili-new` su INTRA2. Destinazione finale non decisa nella fonte: scartate le opzioni "buttare via" e "Proxmox Backup Server" (compatibilita' hardware incerta), resta aperta la conversione a NAS Linux con OpenMediaVault | Nessuno (in dismissione) |
+
+Cross-riferimenti narrativi per il dettaglio cronologico: `2023-baseline.md`
+(stato di partenza), `2025-q1-server-vianova.md` (migrazione dischi INTRA2,
+riconnessione INTRA3), `2025-q3-q4.md` (crisi di spazio giu-lug 2025),
+`business-continuity-disaster-recovery.md` (procedure di emergenza),
+`runbook-anomalie.md` NAS-001 (HERO irraggiungibile).
 
 ---
 

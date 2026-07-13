@@ -1,5 +1,22 @@
 # Work-log
 
+## 2026-07-11 — Fase 2 chiusa: inventario NAS fleet e gap analysis ISO27001 (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/vendor-management.md (§QNAP – NAS riscritta con inventario
+sistematico RAID/capacita'/backup per i 5 dispositivi), .claude/context/design-and-security.md
+(gap analysis Annex A ampliata da 5 a 10 controlli), .claude/context/roadmap.md
+(Fase 1bis e Fase 2 marcate complete, Fase 3 marcata "riprendibile").
+Motivo: su richiesta esplicita dell'utente di procedere con la roadmap
+dando priorita' ai residui documentali di Fase 2 rispetto alla ripresa
+fisica della Fase 3. Consolidati dati NAS gia' sparsi in piu' file della
+timeline (2023-baseline, 2025-q1/q3-q4) in un'unica tabella di riferimento;
+ampliata la gap analysis Annex A incrociando snapshot Proxmox v4, piano
+firewall e GAP-TBC.md (nuovi controlli: A.8.21 VPN IKEv1, A.8.1 endpoint/
+Intune, A.8.13 backup, A.7.1 badge sala server, A.8.24 crittografia). Fase 2
+ora COMPLETATA. Fase 3 (21 micro-step firewall/Proxmox) resta in attesa
+dell'utente per gli step fisici da M2 in poi.
+
 ## 2026-07-10 — Sweep di anonimizzazione completo su tutto l'albero docs/ (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)

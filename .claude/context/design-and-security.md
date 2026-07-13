@@ -89,13 +89,23 @@ con un secondo job della VM100 verso NAS_HERO alle 00:30.
 
 ## Gap di sicurezza identificati (ISO27001 Annex A)
 
-| Controllo | Stato | Gap |
+Gap analysis completata il 10/07/2026 incrociando lo snapshot Proxmox v4, il
+piano firewall a micro-step (Fase 3 di `roadmap.md`) e `GAP-TBC.md`. I
+controlli sotto sono quelli con evidenza concreta raccolta sulla rete
+Intrawelt; non e' una Statement of Applicability formale (vedi Fase 5).
+
+| Controllo | Stato | Gap / evidenza |
 |---|---|---|
-| A.8.20 Network security | Parziale | Nessun firewall attivo tra segmenti |
-| A.8.22 Segregation in networks | Parziale | Segmentazione fisica ma no policy enforcement |
-| A.8.16 Monitoring activities | Non verificato | Logging traffico non documentato |
-| A.5.37 Documented operating procedures | In corso | Questo progetto |
-| A.8.8 Management of technical vulnerabilities | Non verificato | Patch management non documentato |
+| A.8.20 Network security | Parziale | Nessun firewall attivo tra segmenti Proxmox (0 regole cluster); il firewall perimetrale Zyxel USG FLEX 500 e' configurato ma con anomalie aperte (FW-001/FW-010) |
+| A.8.22 Segregation in networks | Parziale | Segmentazione fisica (bridge separati) ma nessun VLAN tagging ne' policy enforcement lato Proxmox (M4/M5 del piano); a livello LAN, switch di management erroneamente sulla VLAN Guest (NET-001, M12) |
+| A.8.16 Monitoring activities | Non verificato | Logging traffico di rete non documentato; nessuna policy di raccolta/retention log firewall o switch |
+| A.5.37 Documented operating procedures | In corso | Questo progetto (network-design), piu' PSGSI rev.1 firmata il 16/10/2025 (avvio formale SGSI) |
+| A.8.8 Management of technical vulnerabilities | Non verificato | Patch management di switch Nebula, firewall e firmware NAS non documentato (Fase 4 step 1); un VA esterno non credenzialato (06/11/2025, Onova) ha rilevato 8 anomalie, dettaglio in `vulnerability-assessment-nov2025.md` |
+| A.8.21 Security of network services | Parziale | Tunnel IPsec verso Seeweb ancora su IKEv1 aggressive mode con parametri deboli (AES-128/SHA-1/DH2 citati nel piano di aggiornamento, M14); upgrade a IKEv2 non ancora pianificato in una finestra di manutenzione |
+| A.8.1 User endpoint devices | Conforme (endpoint) / Parziale (gestione centralizzata) | BitLocker XTS-AES 128 bit attivo su tutti gli endpoint Windows dal 03/07/2026, chiavi in escrow su NinjaOne; manca pero' Microsoft Intune (MDM) perche' la licenza M365 e' Business Standard, non Premium — nessuna policy di conformita' dispositivo centralizzata oltre l'AV Bitdefender (GAP-TBC #113, SEC-014) |
+| A.8.13 Information backup | Documentato | Inventario NAS fleet consolidato in `vendor-management.md` §QNAP – NAS (RAID, capacita', backup per dispositivo); NAS HERO replicato offsite su Azure Blob Storage. Resta [TBC] la verifica periodica dei restore (non documentata) |
+| A.7.1 Physical security perimeter | Parziale | CED con badge lettore impronte (BioStar) gia' attivo; badge dedicato per l'accesso alla sala server ancora da implementare (azione emersa dalla gap analysis ISO 27001 del 18/04/2025, vedi `cybersecurity-governance.md`) |
+| A.8.24 Use of cryptography | Non verificato | Nessuna policy crittografica documentata a livello aziendale; a livello di rete, il wildcard SSL su Plesk/Fastnet ha un limite tecnico noto (vedi `scenia-project.md` §Architettura domini) e la VM interna "intrasite" (VM206) usa un certificato auto-firmato, coerente con l'uso puramente interno |
 
 ## Prossimi passi di hardening (da pianificare)
 
