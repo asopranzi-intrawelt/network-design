@@ -29,6 +29,7 @@ graph TB
             V204["VM204 ConvertitoreRuoliniENI\nvmbr3: .22"]
             V205["VM205 GanttTool\nvmbr3: .61\nDocker x4 networks"]
             V206["VM206 intrasite\nvmbr2: .23\nDocker x2"]
+            V207["VM207 websiteAnalyst\nvmbr3: .24\n6 vCPU, 16GB RAM"]
         end
 
         subgraph PP["Pool: Programmazione"]
@@ -38,7 +39,7 @@ graph TB
         B0 --> V100 & V202 & V803 & V810
         B1 --> V100
         B2 --> V206
-        B3 --> V203 & V204 & V205 & V602
+        B3 --> V203 & V204 & V205 & V207 & V602
     end
 
     subgraph STOR["Storage"]
@@ -52,5 +53,5 @@ graph TB
     SW --> BCM
     PVE -. "backup CIFS (9 job notturni)" .-> NI
     PVE -. "backup VM100" .-> NH
-    V100 & V202 & V203 & V204 & V205 & V206 & V802 & V810 -.-> SLVM
+    V100 & V202 & V203 & V204 & V205 & V206 & V207 & V810 -.-> SLVM
     V602 -.-> PLVM

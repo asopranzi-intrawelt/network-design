@@ -31,7 +31,7 @@ che coincide con l'indirizzo documentato della iLO5, mentre vmbr0 e'
 | vmbr0 | eno1 | 10.61.20.11/19 (LAN unica /19) | Rete principale servizi |
 | vmbr1 | eno2 | — | Seconda NIC VM100 WinServer2022 |
 | vmbr2 | eno3 | — | Intrasite (VM206) |
-| vmbr3 | eno4 | — | Servizi separati (VM203/204/205/602) |
+| vmbr3 | eno4 | — | Servizi separati (VM203/204/205/207/602) |
 
 Nessun bridge e' VLAN-aware (la configurazione target di M5 non e' ancora
 applicata). Lo snapshot v4 conferma che la LAN e' una /19, non una /24: le
@@ -48,12 +48,13 @@ un unico dominio L2/L3.
 | VM204 | ConvertitoreRuoliniENI | running | vmbr3 | .22 | |
 | VM205 | GanttTool | running | vmbr3 | — | Guest agent non in esecuzione |
 | VM206 | intrasite | running | vmbr2 | .23 | Docker interno |
+| VM207 | websiteAnalyst | running | vmbr3 | .24 | Nuova (verificata via MCP Proxmox il 13/07/2026): 6 vCPU, 16 GB RAM, dischi 32G+96G su storage SERVIZI; ospita il progetto website-analysis |
 | VM602 | Intralino | running | vmbr3 | — | Rinominata (era ITdeveloping); pool Programmazione, disco 200G su storage PROGRAMMAZIONE; no agent |
 | VM810 | TESTNEWEGETRADBOOT | running | vmbr0 | — | 260G; sostituisce la VM809 dei log di febbraio; no agent |
 
 Rimosse rispetto al v3: VM803. Rimosse rispetto ai log vzdump di febbraio
 2026: VM101, 201, 601, 801-803, 809, 900-902 (gap #106 riconciliato). Pool
-risorse: "Servizi" (100, 202-206, 810) e "Programmazione" (602).
+risorse: "Servizi" (100, 202-207, 810) e "Programmazione" (602).
 
 **VM206 "intrasite" (verificato live il 09/07/2026)**: serve una copia
 interna del sito WordPress pubblico `intrawelt.com`. Le postazioni con

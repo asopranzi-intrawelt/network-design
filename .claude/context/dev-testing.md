@@ -10,7 +10,7 @@ Dopo aver eseguito `Get-ProxmoxSnapshot.ps1`, verificare nel report Markdown:
 
 1. **Nodi**: deve apparire almeno `pve` con uptime e versione PVE
 2. **Bridge**: devono comparire vmbr0-vmbr3 con le porte fisiche eno1-eno4
-3. **VM QEMU**: devono comparire tutte le 10 VM (100, 202, 203, 204, 205, 206, 602, 803, 810 + una)
+3. **VM QEMU**: devono comparire tutte le 9 VM attive (100, 202, 203, 204, 205, 206, 207, 602, 810); VM803 risulta rimossa rispetto ai log vzdump di febbraio 2026 (vedi design-and-security.md)
 4. **IP guest agent**: VM100 deve avere .12 su vmbr0 e .13 su vmbr1
 5. **Pool**: devono comparire `Servizi` e `Programmazione`
 6. **Backup**: devono comparire i 9 job verso NAS_INTRA (VM100 anche verso NAS_HERO)
