@@ -34,7 +34,7 @@ Documenti Word secondari da ingestare (rimandati a Fase 2):
 - ZYXEL FIREWALL e VPN
 - [TBC] Diagramma di rete
 
-## Fase 2 - Documentazione stato corrente (SOSTANZIALMENTE COMPLETATA)
+## Fase 2 - Documentazione stato corrente (COMPLETATA il 10/07/2026)
 
 Obiettivo: documentare in modo completo la rete attuale integrando snapshot Proxmox
 con configurazioni switch, firewall, AP e NAS. Produrre un diagramma di rete completo.
@@ -64,25 +64,33 @@ Steps:
    interfacce, VPN, NAT, security policy, dieci anomalie FW-001/FW-010). Il piano
    di correzione a sei fasi (05/06/2026) resta da applicare: vedi Fase 3.
 
-5. NAS fleet: stato RAID, capacita', job backup, versioni firmware. **Parziale**,
-   copre solo gli eventi puntuali della timeline (guasto/sostituzione INTRA2,
-   migrazione a fibra 10GbE). Inventario sistematico rimandato.
+5. NAS fleet: stato RAID, capacita', job backup, versioni firmware. **Fatto
+   10/07/2026**: inventario sistematico consolidato in `vendor-management.md`
+   §QNAP – NAS (RAID, capacita', ruolo, backup per ciascuno dei 5 dispositivi).
+   Resta [TBC] solo la versione firmware, non riportata in nessuna fonte.
 
 6. **Fatto.** `docs/network-diagram.md` con diagramma ASCII della topologia corrente.
    Consolidamento in Mermaid versionato (`context/diagrams/network-topology.mmd`)
    rimandato alla fine della Fase 3, per aggiornarlo una sola volta con lo stato
    finale invece che a ogni micro-intervento (vedi nota "Diagramma vivo" sotto).
 
-7. Completare gap analysis ISO27001 Annex A (aggiornare design-and-security.md).
-   Non ancora ripreso in questa sessione.
+7. **Fatto 10/07/2026.** Gap analysis ISO27001 Annex A ampliata in
+   `design-and-security.md` da 5 a 10 controlli, incrociando lo snapshot
+   Proxmox v4, il piano firewall a micro-step e `GAP-TBC.md` (nuove righe:
+   A.8.21 VPN IKEv1, A.8.1 endpoint/Intune, A.8.13 backup NAS, A.7.1 badge
+   sala server, A.8.24 crittografia). Non e' una Statement of Applicability
+   formale (resta in Fase 5).
 
-## Fase 3 - Ottimizzazione Proxmox e firewall: roadmap a micro-step (SOSPESA il 07/07/2026)
+## Fase 3 - Ottimizzazione Proxmox e firewall: roadmap a micro-step (RIPRENDIBILE dal 10/07/2026)
 
-Sospensione: su decisione dell'utente del 07/07/2026 i micro-step operativi
-(M2 in avanti) sono in pausa finche' non e' completata la ripresa
-dell'ingestione OneDrive (Fase 1bis sotto): prima si consolida la timeline
-cronologica completa dei due anni di ristrutturazione della rete, poi si
-torna agli interventi. M1 resta l'unico micro-step chiuso.
+Sospensione originaria: su decisione dell'utente del 07/07/2026 i micro-step
+operativi (M2 in avanti) erano in pausa finche' non fosse completata la
+ripresa dell'ingestione OneDrive (Fase 1bis sopra). La condizione di
+sblocco si e' verificata il 10/07/2026: la fase e' quindi riprendibile, ma
+la maggior parte dei micro-step da M2 in poi richiede accesso fisico
+all'hardware di rete reale (console seriale, cablaggio, iLO) che l'agente
+non puo' eseguire da remoto — vanno guidati passo passo con l'utente in
+sede. M1 resta l'unico micro-step chiuso.
 
 Obiettivo: applicare le correzioni e le ottimizzazioni identificate dall'analisi
 firewall/DMZ/Proxmox, un micro-step alla volta, con commit e aggiornamento di
@@ -133,7 +141,7 @@ unico commit cumulativo di fine fase.
 | M20 | Diagnosticare l'intermittenza "offline" degli switch su Nebula (rete dati funzionante, solo il canale di gestione cade): raccogliere orari degli eventi offline da Nebula e correlarli con i log del firewall (failover wan2, eventi SSL inspection sul traffico verso il cloud Zyxel) | MEDIA | NEB-001 | Nessuna (diagnosi indipendente da M1-M9) | Da fare |
 | M21 | Ricontrollare M20 dopo l'esecuzione di M7 (rimozione WAN_TRUNK): se l'intermittenza sparisce, FW-008 era la causa; se persiste, approfondire l'ipotesi SSL inspection | MEDIA | NEB-001 | M7, M20 | Da fare |
 
-## Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa (CORRENTE dal 07/07/2026)
+## Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa (SOSTANZIALMENTE COMPLETATA il 10/07/2026)
 
 Obiettivo: completare l'ingestione della cartella OneDrive "Documenti - IT"
 secondo `docs/infrastructure-timeline/ingestion-checklist.md` (riepilogo
@@ -155,6 +163,15 @@ Fino ad allora le sezioni IntraLino gia' scritte (architettura n8n in
 `helpdesk-operations.md`) valgono come parziali, ricostruite dai soli
 frammenti OneDrive, e il gap #107 (natura degli host .58/.60) resta aperto
 in attesa di quella fonte.
+
+**Stato al 10/07/2026**: coda ALTA, delta 23/06-07/07 e coda MEDIA/BASSA
+chiuse. ARCHITETTURA.docx ri-estratto integralmente (sec-005/006/008/009).
+MICROSOFT 365.docx, TREX.docx e STUDIO-RWS-GROUPSHARE.docx verificati:
+non giustificano la stessa ri-estrazione esaustiva (vedi `current-work.md`).
+Restano aperti solo i due elementi deliberatamente riservati: la nota
+PORT-TAGGING (racconto a lavori conclusi) e la fonte IntraLino su VM
+(sessione futura, dipende dall'utente). Nessun'altra azione autonoma
+possibile su questa fase.
 
 ## Fase 3bis - Anonimizzazione repository pubblico (AVVIATA)
 
@@ -220,8 +237,8 @@ Steps:
 |---|---|---|
 | Fase 0 | COMPLETATA | Alta |
 | Fase 1 | COMPLETATA | Alta |
-| Fase 2 | Sostanzialmente completata (residuo: NAS fleet, ISO27001 Annex A) | Alta |
-| Fase 1bis | CORRENTE dal 07/07/2026 — delta e MEDIA ingerite al 08/07; restano BASSA, nota PORT-TAGGING e fonte IntraLino su VM | Alta |
-| Fase 3 | SOSPESA il 07/07/2026 — 21 micro-step tracciati, M1 chiuso, M11 parziale; riprende a valle della Fase 1bis | Critica (alla ripresa) |
+| Fase 2 | COMPLETATA il 10/07/2026 (NAS fleet e gap analysis ISO27001 Annex A chiusi) | Alta |
+| Fase 1bis | Sostanzialmente completata il 10/07/2026 — residuano solo nota PORT-TAGGING e fonte IntraLino su VM (entrambe in attesa dell'utente) | Alta |
+| Fase 3 | Riprendibile dal 10/07/2026 — 21 micro-step tracciati, M1 chiuso, M11 parziale; M2 in poi richiedono intervento fisico dell'utente | Critica (alla ripresa) |
 | Fase 4 | Da pianificare | Media |
 | Fase 5 | Da pianificare | Media |
