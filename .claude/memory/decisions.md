@@ -422,7 +422,7 @@ di Fase B, per non toccare premature altre voci non ancora audit-ate. Una
 prima scansione mirata alla sola stringa dell'email `.com` si e' rivelata
 incompleta: una scansione successiva su tutta la storia (`git log --all -p`
 filtrato sul nome, non solo pickaxe `-S`) ha trovato una seconda mail reale
-mai individuata prima (`referente-fibercop-1@fibercop.it`, dominio diverso) e
+mai individuata prima (dominio `.it`, diverso dal `.com` gia' noto) e
 diverse occorrenze del nome completo in chiaro risalenti al gennaio 2025,
 mai toccate dalla sweep di anonimizzazione precedente. Ha incluso anche una
 svista introdotta in questa stessa ADR: il testo sopra citava inizialmente
@@ -436,7 +436,7 @@ residue del nome o delle mail reali. Force-push eseguito
 (`74347f6..900ac26` su `main`), working tree locale risincronizzato via
 `git reset --hard origin/main` dopo aver messo in sicurezza ogni modifica
 pendente. Resoconto completo passo-passo in
-`_notes/incidente-fibercop-referente-fibercop-1-2026-07-17.md` (narrativo, non
+`_notes/incidente-fibercop-2026-07-17.md` (narrativo, non
 versionato). Non verificato: presenza di fork del repository o pull
 request che referenzino i vecchi hash (nessun fork noto all'utente al
 momento della chiusura, ma non controllato via API GitHub in sessione).
