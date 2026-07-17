@@ -1,5 +1,589 @@
 # Work-log
 
+## 2026-07-15 — Triage delta OneDrive, script di scrittura Nebula per M13a, verifica canale API firewall (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/ingestion-checklist.md (delta
+09/07->15/07 triato, baseline aggiornata per entrambe le librerie OneDrive),
+_notes/DIARIO.md (ripresa della pratica narrativa: prima voce sulla caccia
+agli AP/Nebula), scripts/Set-NebulaWifiVlan.ps1 (nuovo, scrittura), .claude/memory/decisions.md
+(ADR-010), .claude/context/roadmap.md (M13a aggiornato a "parziale").
+Motivo: l'utente ha chiesto di procedere a micro-step tracciati sulla
+configurazione switch via script, e di valutare se collegarsi anche al
+firewall via API. Delta OneDrive: eseguito `Check-OneDriveDelta.ps1
+-UpdateBaseline`, tutte le 44 voci (42 nuovi + 3 modificati + 1 eliminato
+su "Documenti - IT", 2+5 su "IT + Administration") ricadono in categorie
+gia' decise (corpus dataset bilingue del tirocinio Unimc, manuali prodotto
+SCENIA, fatture, la sottocartella centralino cloud riservata alla nota
+PORT-TAGGING) — nessuna nuova ingestione, solo baseline avanzata.
+Script di scrittura: `Set-NebulaWifiVlan.ps1` assegna la VLAN Wi-Fi (default
+proposto 40, NON confermato) alle tre porte AP note (XGS2220-30HP porta 1,
+XGS2220-54HP porte 41/45) e la propaga sulle porte trunk scoperte
+dinamicamente; dry-run di default, `-Apply` richiede conferma testuale
+("CONFERMA") prima di scrivere. Sintassi validata via
+`[System.Management.Automation.Language.Parser]::ParseFile`; non ancora
+eseguito in dry-run reale contro l'API (richiede la chiave, in mano
+all'utente). Scoperta rilevante durante la stesura (due fetch della
+documentazione ufficiale Nebula OpenAPI): non esiste nessun endpoint per
+creare una VLAN, solo per assegnarla a una porta — la VLAN va creata una
+tantum dalla GUI Nebula prima di lanciare lo script con `-Apply`. Verificato
+inoltre che l'API Nebula e' scopata per amministratore, non per ruolo:
+niente equivalente del token PVEAuditor di Proxmox, quindi la mitigazione
+del rischio di scrittura resta a livello di script (dry-run + conferma),
+non di permessi del token — documentato in ADR-010, che formalizza anche
+lo scostamento dal pattern ADR-008.
+Firewall: confermato (via fetch diretto di zyxelnetworks.github.io/NebulaOpenAPI
+e verifica dell'inventario dispositivi in nebula-config.md, che mostra solo
+i due switch) che lo USG FLEX 500 non e' adottato in Nebula e gira in
+modalita' standalone ZLD classica: nessuna API REST disponibile per questo
+dispositivo nel suo stato attuale. L'unico canale scriptabile e' quello
+amministrativo gia' attivo, SSH con 2FA (`firewall-zyxel-usg-flex-500.md`
+riga 373), che richiede comunque un umano per il secondo fattore ad ogni
+sessione: la via praticabile e' uno script "generatore" del blocco di
+comandi CLI ZLD da incollare in una sessione gia' autenticata, non ancora
+scritto (dipende dalla conferma dell'ID VLAN, che determina il contenuto
+esatto delle regole ACL/interfaccia). Diario narrativo: scritta la prima
+voce di `_notes/DIARIO.md` nel formato esistente, a copertura dell'intera
+saga Nebula/AP-001/Fase A-B, su richiesta esplicita dell'utente di
+riprendere quella pratica da ora in avanti.
+Aperto: conferma utente sull'ID VLAN (proposto 40), creazione manuale
+della VLAN su Nebula GUI, dry-run reale dello script, poi il generatore di
+comandi CLI per il firewall.
+
+**Addendum stessa sessione**: l'utente ha confermato VLAN 40. Mentre
+verificavo i dati reali dello switch per un avviso dell'utente su due
+porte fonia (6 e 8 del 54HP, DHCP Vianova tagged), scoperto un bug reale
+nello script appena scritto: l'endpoint `port-settings` di Nebula
+restituisce un inviluppo OData `{"value": [...], "Count": N}`, non un
+array nudo come `l2-mac-table`/`ports-status` — senza unwrap esplicito
+ogni filtro `Where-Object` su portNum/trunk avrebbe fallito silenziosamente
+e il piano sarebbe risultato vuoto. Corretto con una funzione
+`Get-NebulaArrayValue` dedicata, risintassato con il parser .NET. Verificato
+sui dati reali che le porte fonia (3/5/6/8/44 sul 54HP, portVid=2) hanno
+tutte `trunk=false`: la logica di propagazione VLAN dello script (che tocca
+solo porte con `trunk=true`, di fatto 49-54) non le tocca, coerente con
+l'avviso dell'utente ma gia' sicura per costruzione. Scritta la sezione
+"Fase A rete Wi-Fi (M13a)" in `firewall-zyxel-usg-flex-500.md`: interfaccia
+vlan40 (10.61.40.0/24) e security policy di deny verso LAN1 in sintassi
+verificata sul dispositivo reale (idem della VLAN 201 DMZ e del changelog
+M1), zona da assegnare via GUI (non ipotizzata in CLI per non rischiare un
+nome zona sbagliato silenzioso), checklist di applicazione in sei passi con
+screenshot di verifica.
+
+**Addendum, guida live in Nebula GUI**: seguendo l'utente passo passo dentro
+Nebula per creare la VLAN 40, verificato a schermo (screenshot pannello
+"Update port", Switch ports > Port1 dello switch XGS2220-30HP) che il campo
+PVID e' testo libero, non un menu vincolato a VLAN preesistenti — corretta
+l'ipotesi scritta in mattinata (ADR-010, roadmap, firewall doc) secondo cui
+la VLAN andrebbe pre-creata a mano prima di usare l'API/lo script. Scoperta
+piu' rilevante della correzione stessa: applicare in un solo colpo trunk e
+porte AP e' rischioso perche' il firewall non ha ancora l'interfaccia/DHCP
+per la VLAN 40 — spostare il PVID di un AP live la scollegherebbe. Aggiunto
+un parametro `-Only Trunk\|Access\|All` allo script per staged rollout
+(trunk sicuro subito, porte AP solo a firewall pronto, una alla volta).
+L'utente NON ha ancora premuto Update sulla porta 1 (istruito a chiudere
+senza salvare): nessuna modifica reale applicata finora.
+
+**Addendum, dry-run reale**: l'utente ha eseguito `Set-NebulaWifiVlan.ps1
+-Only Trunk` con la chiave API reale — 6 porte (49-54 del 54HP) segnalate
+come "Changed", ma un controllo sui dati grezzi (rieseguito
+`Get-NebulaSnapshot.ps1` per un refresh, poi ispezionato con uno script
+scratchpad) ha rivelato che quelle porte hanno gia' `allowedVLAN: ["all"]`
+oggi, e cosi' pure la porta 29 del 30HP (l'uplink verso il 54HP, marcata
+`trunk: false` ma ugualmente permissiva). Lo script confrontava la stringa
+letterale "all" con "40" e la trattava erroneamente come "da cambiare".
+Corretto: `$alreadyAllowed` ora riconosce "all" come gia' comprensivo di
+qualunque VLAN. Conseguenza pratica per M13a: il passo di propagazione
+trunk non serve, la VLAN 40 attraversa gia' la dorsale; resta solo
+l'intervento sulle tre porte AP. Annotato anche il limite di postura L2
+di fondo (allowedVLAN universalmente permissivo su ogni porta controllata)
+come nota residua non bloccante in `runbook-anomalie.md` §NET-005 e nel
+checklist di `firewall-zyxel-usg-flex-500.md`, non richiesto per chiudere
+M13a. Nessuna scrittura reale ancora inviata a nessuno switch.
+
+**Addendum, revisione del piano firewall prima di guidare l'utente**:
+l'utente ha chiesto come fa la VLAN 40 ad attraversare la dorsale senza
+modifiche esplicite (risposto: `allowedVLAN: "all"` non filtra per numero
+di VLAN, vedi addendum sopra) e di rivedere `firewall-zyxel-usg-flex-500.md`
+§Fase A prima di procedere. Rilettura ha trovato un'imprecisione: la nota
+originaria diceva "porta fisica nessuna... stesso principio della VLAN 201
+DMZ", ma la DMZ usa una porta fisica dedicata (P7), mentre qui tutte le 8
+porte del firewall sono gia' assegnate. Verificato sui dati reali che la
+porta 33 del 54HP (dove termina la P4 del firewall, collegamento lan1) ha
+anch'essa `allowedVLAN: "all"`: vlan40 va quindi legata come interfaccia
+taggata sullo stesso port-group lan1 (P4/P5/P6), non a una porta libera
+inesistente. Corretta la sezione "Interfaccia VLAN 40" di conseguenza.
+Nessuna modifica reale ancora eseguita ne' su switch ne' su firewall.
+
+**Addendum, guida live sul firewall**: creata (via GUI, dry-check con
+l'utente prima di ogni click) l'interfaccia `vlan40` sul firewall USG FLEX
+500 — Interface Type internal, Base Port lan1 (corretto da un tentativo
+iniziale su "sfp"), Interface Name `vlan40` (il campo non accetta il solo
+numero, richiede il formato `vlanX`), IP 10.61.40.1/255.255.255.0. Non
+ancora confermato con "Apply" sulla pagina lista. Durante la spiegazione
+del perche' lan1/lan1:1/lan1:2 usano `/19`, l'utente ha corretto una mia
+imprecisione ("storia pregressa") e fatto un'osservazione tecnica esatta:
+i tre alias (.10 PC, .20 server, .30 stampanti) cadono tutti nello stesso
+blocco `/19` (10.61.0.0-31.255), quindi sono la stessa rete flat, non tre
+reti isolate — coerente con nessun tag VLAN su `lan1`. Registrata come
+nuovo gap **NET-009** (`GAP-TBC.md` #114) e nuovo micro-step **M22**
+(roadmap.md, "Da pianificare", dipendenza M13a) per una futura
+segmentazione reale PC/server/stampanti, distinta e successiva a M13a.
+
+**Addendum, side-note tracciata su richiesta esplicita**: durante la stessa
+sessione l'utente ha risolto un problema separato (due unita' di rete
+`net use` su NAS-INTRA2 confermate OK ma invisibili in Explorer — UAC
+token splitting, PowerShell elevata vs Explorer non elevato) e ha chiesto
+di tracciarlo comunque come "parentesi" sulle informazioni di rete. Aggiunta
+nuova voce **NAS-002** in `runbook-anomalie.md`, causa e fix documentati,
+nessun placeholder nuovo necessario (Persona-A/B e 10.61.20.177 gia' in
+mappa). Non impatta M13a.
+
+**Addendum, avanzamento Fase A sul firewall**: creata zona `WIFI_STAFF`
+(Object > Zone > Add) sul firewall USG FLEX 500, al momento vuota (0
+membri) — screenshot confermano che l'interfaccia `vlan40` e' invece
+ancora membro della zona di default `LAN1` (`LAN1 | lan1,vlan40`).
+Prossimo passo: riaprire l'Edit di `vlan40` e cambiare Zone da LAN1 a
+WIFI_STAFF. Risolto anche un dubbio sui pulsanti Activate/Inactivate della
+lista Interface: la lettura iniziale era sbagliata, il checkbox "Enable
+Interface" nel dialogo di modifica e' la fonte di verita' reale per lo
+stato acceso/spento, non quei due pulsanti (il cui significato esatto
+resta non verificato con certezza).
+
+**Addendum, zona confermata**: screenshot successivi confermano che
+`vlan40` e' stato spostato correttamente in `WIFI_STAFF` (unico membro) e
+che `LAN1` e' tornata a contenere solo `lan1`. Interfaccia + zona lato
+firewall completate. Prossimo passo: security policy (due regole servono,
+non solo il deny verso LAN1 gia' pianificato — anche un allow esplicito
+WIFI_STAFF->WAN, altrimenti la nuova zona non avrebbe accesso a Internet:
+nessuna regola esistente la copre essendo nata oggi).
+
+**Addendum, pulizia regole disattivate (16/07/2026)**: durante la stessa
+sessione, in parallelo a M13a, l'utente ha esaminato la lista security
+policy reale (34 regole) e rimosso 9 regole complessive: le tre gia'
+documentate come "Disallineamento" (`DOMV_WEB`, `DEMO_SERVER_WEB`,
+`EGETRAD_WEB`, virtual server deactivate, FW-003/SEC-004), altre quattro
+nella stessa condizione (`EGETRAD_WEB_TEST`, `NAS_HERO_SUPPORT`,
+`NAS_HERO_SUPPORT2`, `NAS_FTP_WEB` — coerenti con l'elenco NAT
+"Deactivate" gia' in `firewall-zyxel-usg-flex-500.md`), e due regole di
+egress nominative per due postazioni specifiche (`LAN1_Outgoing_FEDERICA`,
+`LAN1_Outgoing_ulrike`), verificate dall'utente come non piu' necessarie.
+Applicate con Apply sul dispositivo reale. Aggiornati: `firewall-zyxel-usg-flex-500.md`
+(Disallineamento marcato risolto, conteggio regole 34->25), `GAP-TBC.md`
+(FW-003 risolto, SEC-004 parziale — resta aperta solo la VM Egetrad
+stessa), `_notes/.anonymization-map.md` (nuovo Persona-AK per "Federica",
+nome noto solo dalla regola rimossa). Non impatta le due regole di Fase A
+ancora da creare (`WIFI_STAFF_to_LAN1_deny`, `WIFI_STAFF_Outgoing`).
+
+**Addendum, obiettivo ISO27001 e direttiva permanente (16/07/2026)**:
+l'utente ha dichiarato l'obiettivo di certificazione ISO27001 entro marzo
+2027 (registrato in `roadmap.md` Fase 5) e ha fissato una direttiva
+permanente sui cinque livelli di tracciamento (didattico, deep-dive
+tecnico, comunicazione stakeholder, cronologia, ISO27001), scritta in
+`current-work.md` in apertura del file perche' resti visibile a inizio
+sessione. Segnalata anche una nuova implicazione concreta di NET-009: le
+stampanti multifunzione con scan-to-folder possono scrivere direttamente
+nelle cartelle condivise di un PC Windows 11 invece che su un NAS
+presidiato — aggiunta a `GAP-TBC.md` (NET-009) e a `design-and-security.md`
+§A.8.22 come fronte di sanificazione dei flussi dato distinto dalla sola
+segmentazione VLAN.
+
+**Addendum, M13a lato firewall completato (16/07/2026)**: creata anche la
+seconda security policy `WIFI_STAFF_Outgoing`; scoperto (screenshot) che
+l'ordine tra le due regole nuove era invertito rispetto al piano — l'allow
+generico avrebbe intercettato anche il traffico verso LAN1 prima del deny,
+stesso principio dell'anomalia FW-001 gia' risolta nel progetto (motore
+first-match). Corretto con "Move" (posizione 1) prima di Apply. Confermato
+via screenshot: Apply riuscito, pulsanti disabilitati, ordine finale corretto
+(deny priorita' 1, allow priorita' 2). Aggiornati `firewall-zyxel-usg-flex-500.md`
+(checklist passi 1-2 marcati fatti, conteggio regole 25->27, struttura
+generale con le due nuove righe) e `roadmap.md` (M13a: lato firewall
+completato, resta solo lo script sulle porte AP).
+
+**Addendum, DHCP mancante scoperto e corretto (16/07/2026)**: prima di
+lanciare lo script sulle porte AP, controllato che l'interfaccia `vlan40`
+avesse un pool DHCP reale — non l'aveva (`DHCP: None`), sarebbe stato un
+blackout silenzioso per i primi client Wi-Fi spostati. Configurato via GUI
+(Show Advanced Settings, sezione non ovvia): DHCP Server, pool
+10.61.40.10-209 (200 indirizzi), DNS 8.8.8.8/1.1.1.1, Default Router auto,
+lease 2 giorni (coerente con LAN1_POOL). Aggiornato
+`firewall-zyxel-usg-flex-500.md` con i valori reali applicati. M13a lato
+firewall ora davvero completo (interfaccia + zona + DHCP + 2 security
+policy in ordine corretto).
+
+**Addendum, dry-run reale e parametro -ApName**: eseguito
+`Set-NebulaWifiVlan.ps1 -Only Access` con la chiave API reale — piano
+confermato corretto per le tre porte (PianoTerra 30HP/1, PianoPrimo
+54HP/41, PianoSecondo 54HP/45, tutte CurrentVid=1 -> TargetVid=40).
+Aggiunto un nuovo parametro `-ApName` (ValidateSet sui tre nomi noti) per
+applicare un AP alla volta invece di tutti e tre insieme in un solo
+`-Apply`, coerente con la checklist "una alla volta con verifica" — prima
+non esisteva questa granularita'. Sintassi validata. Non ancora eseguito
+nessun `-Apply` reale sulle porte AP.
+
+**Addendum, primo tentativo -Apply fallito e corretto (16/07/2026)**:
+`Set-NebulaWifiVlan.ps1 -Only Access -ApName PianoTerra -Apply` ha provato
+a scrivere la porta 1 del 30HP ma l'API ha risposto `422
+INVALID_ALLOWED_VLAN` — rifiuto pulito, nessuna scrittura parziale,
+confermato dal log `output/nebula-apply-log-fase-a.json`. Causa: il target
+`allowedVLAN: []` (lista vuota, tentativo di access strict) non e' un
+valore che l'API accetta. Corretto lo script per usare `[VlanId]` (la sola
+VLAN nativa) come nuovo target — meno stretto dell'obiettivo originale ma
+comunque piu' stretto di "all". Documentato in ADR-010 come conferma che
+il design dry-run+conferma+one-AP-at-a-time ha contenuto l'errore a una
+singola porta invece di propagarlo a tutte e tre. Prossimo passo: ripetere
+il dry-run e poi l'apply su PianoTerra con il valore corretto.
+
+**Addendum, PianoTerra applicato con successo**: `-Only Access -ApName
+PianoTerra -Apply` con `allowedVLAN: [40]` completato senza errori API
+("Tutte le scritture completate senza errori API"). Aggiunta subito dopo
+una verifica automatica post-scrittura allo script (rilettura immediata
+della porta via GET, confronto portVid/allowedVLAN col target atteso,
+campo `Verified` nel log e nell'output console) — non ci si fida piu' di
+un solo "200 OK" dato l'errore 422 appena visto sullo stesso endpoint.
+Resta da: verificare la connettivita' fisica reale dell'AP PianoTerra
+(IP nella 10.61.40.x, raggiungibilita'), poi ripetere per PianoPrimo e
+PianoSecondo uno alla volta con lo script aggiornato.
+
+**Addendum, verifica PianoTerra (16/07/2026)**: primo tentativo di
+verifica dal telefono dell'utente, fisicamente al piano terra, ha mostrato
+un IP ancora in classe .10 — diagnosticato dai dettagli Wi-Fi Android (BSSID
+connesso, lista AP vicini con RSSI) che il telefono aveva agganciato il
+BSSID di un altro AP (famiglia MAC di PianoPrimo/PianoSecondo, non
+PianoTerra), non un problema della modifica. Verifica definitiva fatta
+lato switch: rieseguito `Get-NebulaSnapshot.ps1`, ispezionata la porta 1
+del 30HP — `l2-mac-table` mostra il MAC di PianoTerra
+(AA:BB:CC:00:00:27) taggato VLAN 40, `port-settings` conferma
+`portVid: 40, allowedVLAN: ["40"]`, PoE ancora attivo. PianoTerra
+verificato e chiuso. Prossimo: PianoPrimo (`-ApName PianoPrimo -Apply`).
+
+**Addendum, PianoPrimo applicato (16/07/2026)**: `-ApName PianoPrimo -Apply`
+completato, la nuova verifica automatica post-scrittura integrata nello
+script ha confermato inline "portVid ora 40, allowedVLAN 40" senza bisogno
+di un controllo manuale separato via snapshot — l'enhancement fatto dopo
+l'errore 422 di PianoTerra funziona come previsto. Resta solo
+PianoSecondo.
+
+## 2026-07-16 — Incidente Wi-Fi: le tre porte AP ritaggate interrompono l'SSID, rollback e chiusura provvisoria di M13a
+
+Commit: PENDING (da fare manualmente)
+File toccati: `runbook-anomalie.md` (nuova sezione "Incidente 16/07/2026"
+sotto NET-005, stato riportato ad APERTO), `GAP-TBC.md` (NET-005
+aggiornato, non piu' RISOLTO), `roadmap.md` (M13a da "Fatto" a "Tentato e
+ripristinato"), `design-and-security.md` (nota A.8.22 sull'incidente e la
+lezione di change management), `firewall-zyxel-usg-flex-500.md` (checklist
+passo 3 aggiornato).
+
+Motivo: dopo aver applicato PianoPrimo e PianoSecondo (oltre a PianoTerra
+gia' verificato), l'utente ha segnalato che il Wi-Fi non funzionava piu' —
+il telefono non si connetteva. Diagnosticato in tempo reale: la rete
+"intrawelt" era del tutto sparita dalla scansione (non solo irraggiungibile),
+confermato con due dispositivi diversi (smartphone + portatile con scheda
+di rete diversa), escludendo cache o problema del singolo device. Un
+tentativo di aggiunta manuale della rete (SSID+password corretti, hidden
+network) non ha comunque prodotto connessione. La diagnostica lato switch
+(rieseguito `Get-NebulaSnapshot.ps1`) mostrava tutto tecnicamente corretto
+dal lato switch: link fisici up, PoE attivo, `portVid`/`allowedVLAN`
+esattamente come previsto, perfino una voce nella tabella MAC L2 che
+confermava che per una finestra breve un client si era davvero connesso
+in VLAN 40. Nessuna anomalia visibile lato switch: la spiegazione piu'
+plausibile e' che i tre AP stessi abbiano smesso di trasmettere il
+segnale, non lo switch.
+
+Deciso di dare priorita' al ripristino del servizio piuttosto che
+continuare a diagnosticare con la rete giu': rollback immediato con lo
+stesso script (`-Only Access -VlanId 1 -Apply`, tutte e tre le porte
+insieme per velocita'), verificato dallo script e confermato empiricamente
+(screenshot del telefono riconnesso, IP tornato nella vecchia classe .10).
+Tempo totale dell'interruzione: circa 15 minuti tra la prima segnalazione
+e la conferma del ripristino.
+
+Causa non determinata con certezza (i tre AP restano inaccessibili, nessun
+modo di leggere log o stato interno): l'assunzione teorica alla base di
+Fase A — "il tagging VLAN e' trasparente per l'AP, che non deve sapere
+nulla della VLAN sottostante" — non ha retto per questo hardware Ubiquiti
+del 2011-2013, per una ragione ipotizzabile (IP di management statico
+legato alla vecchia subnet, necessita' di riavvio per rinegoziare,
+comportamento di firmware non documentato) ma non verificabile. La
+configurazione lato firewall (interfaccia vlan40, zona WIFI_STAFF, DHCP,
+le due security policy, la pulizia delle 9 regole disattivate) NON e'
+stata toccata dal rollback: resta applicata e valida per un nuovo
+tentativo o per la Fase B. M13a torna "tentato, non chiuso" nella
+roadmap; rafforza ulteriormente (con una prova pratica, non solo teorica)
+la decisione gia' presa di puntare su Fase B (sostituzione hardware)
+invece che tentare di far convivere questi AP con altre modifiche di
+rete. Prossimi passi possibili, non ancora decisi: ripetere con presenza
+fisica a un AP alla volta e finestra di osservazione piu' lunga, oppure
+esplorare `Layer 2 Isolation` (visto nel menu Network del firewall, mai
+aperto) come meccanismo di isolamento che non richieda di toccare il PVID
+della porta AP.
+
+**Addendum, decisione di retry mirato**: l'utente ha chiesto di procedere
+a risolvere per davvero. Osservato che il pattern dell'incidente (SSID
+funzionante subito dopo il cambio VLAN, sparito solo dopo qualche minuto)
+punta piu' verso uno stato residuo lato AP (es. lease DHCP vecchio non
+scaduto) che verso un rifiuto immediato del cambio. Proposto un test
+mirato: un solo AP (PianoTerra) + power-cycle PoE remoto subito dopo il
+cambio VLAN, osservazione prolungata prima di giudicare. Utente ha
+confermato questa opzione (non presenza fisica, non Layer 2 Isolation
+per ora). Aggiunto parametro `-PowerCycle` allo script (spegne/riaccende
+`pseEnabled` della porta con 10s di pausa, poi rilegge lo stato),
+sintassi validata, non ancora eseguito.
+
+**Addendum, secondo problema e nuovo script di isolamento test**: il
+retry su PianoTerra ha risposto 200 OK ma la rilettura immediata mostrava
+ancora la VLAN vecchia — non un errore, un ritardo di propagazione
+cloud->switch (coerente con NEB-001). Corretto lo script con retry a
+backoff (3/5/8/12s) prima di dichiarare fallimento; il power-cycle non e'
+scattato (gated su verifica riuscita), nessun impatto su PianoTerra da
+questo tentativo. L'utente ha anche notato che anche stando al piano
+terra il telefono aggancia l'AP di sopra, rendendo ambiguo un test col
+solo smartphone: creato un nuovo script dedicato,
+`scripts/Set-ApTestIsolation.ps1` (stessa disciplina dry-run+conferma),
+che spegne/riaccende il PoE degli AP noti via Nebula per lasciare acceso
+un solo AP durante il test (`-Keep <nome>`) e riaccendere tutti a fine
+test (`-Restore`). Utente ha confermato di procedere spegnendo
+temporaneamente PianoPrimo e PianoSecondo per isolare il test su
+PianoTerra.
+
+**Addendum, scoperta di inaffidabilita' Nebula-switch (16/07/2026, stesso
+giorno)**: il retry su PianoTerra ha avuto successo (verificato dopo il
+fix del backoff), il power-cycle e' partito regolarmente. Pochi minuti
+dopo pero', senza alcuna azione esterna, la porta e' tornata da sola a
+`portVid: 1`. Nello stesso controllo, la tabella MAC ha rivelato che
+PianoPrimo e PianoSecondo — con `pseEnabled: false` confermato dalla
+rilettura API — erano in realta' ancora perfettamente funzionanti (il
+telefono, dopo un "forget"+reconnect da zero, si e' ricollegato proprio a
+PianoPrimo). Conclusione: non e' (solo) un problema degli AP, e' la
+sincronizzazione Nebula<->switch stessa a non essere affidabile — le
+scritture possono non restare stabili nel tempo, e uno spegnimento PoE
+confermato dall'API puo' non tradursi in un effetto fisico reale.
+Correlato a NEB-001 (gia' noto: intermittenza del canale di gestione),
+esteso in `GAP-TBC.md` con questa evidenza aggiuntiva. Ripristinato il
+PoE di entrambi gli AP per sicurezza. Aggiornati `runbook-anomalie.md`
+§NET-005 (nuova sottosezione "Secondo tentativo"), `roadmap.md` (M13a).
+Decisione su come procedere lasciata in sospeso con l'utente: presenza
+fisica, approfondire NEB-001, o priorita' a M13b. **Scelto: approfondire
+NEB-001 prima di riprovare.** Creato `scripts/Get-NebulaConnectivityHistory.ps1`
+(sola lettura, stesso perimetro di sicurezza di Get-NebulaSnapshot.ps1),
+che interroga due endpoint Nebula OpenAPI non ancora usati nel progetto
+(verificati via fetch della documentazione ufficiale, non ancora testati
+con una chiamata reale): `connectivity` (storico online/offline per
+periodo) e `event-logs` (log eventi tra due timestamp) per entrambi gli
+switch — per correlare le anomalie di oggi (scrittura auto-revertita,
+PoE non effettivo) con eventuali disconnessioni dal canale cloud.
+Sintassi validata, non ancora eseguito.
+
+**Addendum, esecuzione ed esito**: eseguito con successo. Nessuno dei due
+switch risulta mai offline nelle ultime 24h (esclude disconnessione cloud
+durante i test). Il 30HP (PianoTerra) mostra nel log eventi esattamente le
+nostre azioni (PoE off/on del power-cycle, poi due brevi flap plausibilmente
+il boot dell'AP) senza alcuna anomalia. Il 54HP (PianoPrimo/PianoSecondo)
+non mostra NESSUN evento per le porte 41/45 nonostante le scritture di
+oggi, ma mostra migliaia di link-flap non documentati sulla porta 46
+(su/giu' ogni 14-16s, con ricalcolo STP a ogni flap; verificato
+`OFFLINE` al momento del controllo) — nuovo gap **NET-010**
+(`GAP-TBC.md` #115). Interpretazione: il problema e' plausibilmente
+localizzato al 54HP (porta 46 che degrada l'affidabilita' delle altre
+operazioni sullo stesso switch), non una sincronizzazione cloud generica
+inaffidabile su tutta l'infrastruttura Nebula. Non spiega la reversione
+VLAN vista su PianoTerra (il log eventi non sembra tracciare i cambi di
+PVID come categoria) — resta ipotesi aperta, piu' plausibile come lettura
+cache-stale che come reversione reale. Aggiornati `runbook-anomalie.md`
+§NET-005 (nuova sottosezione "Approfondimento NEB-001") e `roadmap.md`
+(M13a). Prossimo passo consigliato: diagnosticare la porta 46 prima di
+altre scritture sul 54HP; PianoTerra (30HP, pulito) resta un candidato
+ragionevole per un nuovo tentativo mirato.
+
+**Addendum, identificazione porta 46**: l'utente ha identificato il
+dispositivo — il PC che ospita Ollama (10.61.20.58, GPU dedicata),
+confermato raggiungibile via HTTP porta 11500 ("Ollama is running")
+nonostante il flap. E' lo stesso host ambiguo gia' segnalato in
+SRV-002/GAP-TBC #107 (finora non chiaro se fisico o VM): questo conferma
+la sua natura di host fisico e la sua porta di attacco reale. Aggiornati
+GAP-TBC.md (#115 NET-010 e #107 SRV-002, cross-referenziati) e
+runbook-anomalie.md §NET-005. Causa del flap ancora da diagnosticare
+sull'host stesso (risparmio energetico scheda di rete/EEE, driver, cavo).
+
+## 2026-07-15 — AP-001 chiuso su accesso, decisione architetturale in due fasi per la Wi-Fi (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/runbook-anomalie.md (AP-001 riscritta con la
+correzione vendor, la conferma "nessuna dashboard mai esistita", e il
+piano in due fasi), docs/infrastructure-timeline/GAP-TBC.md (NET-005/AP-001
+aggiornati), .claude/context/roadmap.md (M13 diviso in M13a/M13b),
+.claude/context/current-work.md (nota aggiornata + promemoria sul taglio
+di racconto richiesto per la stesura finale).
+Motivo: l'utente ha tentato l'accesso SSH ai tre AP legacy (superata la
+negoziazione crittografica con host key/MAC obsoleti, ma credenziali
+`ubnt`/`ubnt` non valide), niente trovato nel vault credenziali interno,
+nessun controller UniFi rintracciato. Un agente di ricerca lanciato per
+cercare riferimenti storici a un controller UniFi e' fallito per limite
+di sessione (nessun risultato). L'utente ha poi trovato da solo il
+referto Nessus originale della VA Onova (`Intrawelt_remediation_checklist_2026-05-15_15-00.html`)
+e riportato dati precisi: corregge la classificazione vendor di
+EsternoIrrigazione (e' Ubiquiti come gli altri tre, "gemello hardware",
+non un vendor diverso come ipotizzato prima), conferma le tre
+corrispondenze IP del 06/11/2025, segnala che PianoPrimo non compare in
+quello scan (assente o installato dopo, [TBC]), e conferma che l'unica
+porta TCP mai trovata aperta su questi host e' la 22 (SSH) — quindi la
+domanda "si puo' entrare dalla dashboard web" ha risposta definitiva: no,
+non e' mai esistita, non e' un problema di percorso/porta sbagliata.
+Reset di fabbrica valutato e rimandato (disruptivo per gli utenti Wi-Fi
+in produzione ora). Su questa base, ragionato con l'utente sulla
+strategia: la sua proposta (segmentazione a livello switch/firewall senza
+toccare gli AP, piu' un AP Zyxel nuovo dedicato al guest) e' stata
+raffinata in una decisione esplicita di NON affiancare un quarto AP ai
+tre EOL ma pianificarne la sostituzione completa (Fase B), mantenendo
+pero' la segmentazione (Fase A) come intervento immediato e indipendente
+dall'hardware AP. Motivazione: se comunque serve comprare hardware Zyxel
+per il guest, non ha senso lasciare in produzione hardware EOL dal 2018
+non gestibile ne' aggiornabile (rilevante anche per il gap ISO 27001
+A.8.8 gia' aperto). Annotato il requisito esplicito dell'utente per la
+stesura finale: racconto sia tecnico approfondito sia didattico, con
+valore CV, oltre alla timeline.
+
+## 2026-07-14 — AP-001 risolto: tre access point Ubiquiti localizzati per porta switch (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/runbook-anomalie.md (AP-001: tabella con le tre
+localizzazioni), docs/infrastructure-timeline/GAP-TBC.md (NET-005 aggiornato),
+`_notes/.anonymization-map.md` (5 nuovi MAC: switch XGS2220-30HP, due
+USG20-VPN, due AP Ubiquiti + un terzo).
+Motivo: primo run reale di `Get-NebulaSnapshot.ps1` con chiave API valida
+(generata dall'utente dopo aver trovato il percorso corretto in Nebula).
+Script eseguito senza errori bloccanti (un solo endpoint best-effort,
+sw-clients v2, ha risposto 404 come previsto per schema non confermato).
+Dalla tabella MAC L2 di entrambi gli switch, cercato il prefisso MAC
+Ubiquiti (74:83:c2) gia' noto dalla VA di novembre 2025: trovati esattamente
+tre dispositivi, coerente col numero atteso. Localizzazione confermata
+incrociando due segnali indipendenti (non solo la velocita' di link):
+l'elenco porte "trunk" di ciascuno switch dal campo port-settings, e la
+presenza/assenza della stessa voce sul dorsale dell'altro switch. Risultato:
+2 AP fisicamente su XGS2220-54HP (Piano 2, porte 41 e 45), 1 su
+XGS2220-30HP (Piano Terra, porta 1). Non ancora tradotto in etichetta
+patch panel (0-7-1/0-9-1/1-8-1/2-5-1/2-7-1): Nebula non riporta nomi/
+descrizioni per porta, serve una verifica fisica del cablaggio per
+l'ultimo miglio. Coerente con l'aspettativa architetturale (2 ubicazioni
+note lato Piano 2, 3 lato Piano Terra/tetto/Piano 1: delle tre lato
+Piano Terra solo una risulta oggi viva). Corretto anche, nello stesso
+lavoro di scoperta della chiave API, l'inventario USG20-VPN (vedi voce
+precedente) e il percorso di navigazione Nebula in ADR-009.
+
+## 2026-07-14 — Trovato il percorso reale della chiave API Nebula; corretto inventario USG20-VPN (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: scripts/Get-NebulaSnapshot.ps1 (commento -ApiKey corretto),
+docs/runbook-anomalie.md (percorso corretto), .claude/memory/decisions.md
+(ADR-009 esteso col percorso reale), docs/infrastructure-timeline/2025-q3-q4.md
+(corretta la nota sui due USG20-VPN dismessi), `_notes/.anonymization-map.md`
+(3 nuovi MAC: switch XGS2220-30HP, due USG20-VPN).
+Motivo: dopo un'ora di navigazione a tentativi nell'interfaccia Nebula
+(myZyxel account, avatar dropdown, ingranaggio, Administrators,
+Organization-wide manage per intero, Cloud authentication, ricerca
+interna — tutti vicoli ciechi), trovato il percorso reale: icona "..."
+nella barra in alto (mai provata prima) > "My devices & services" >
+scheda "NCC OpenAPI Key" > Generate. Non coincide con quanto scritto
+nella documentazione ufficiale/community Zyxel ("User's Device and
+Service" o "My Devices and Services" come voce di menu diretta): quella
+dicitura descrive il nome della PAGINA, non del punto di accesso nel
+menu, che invece sta dietro l'icona ellipsis. Corretto il commento dello
+script e il runbook di conseguenza. La stessa pagina "My devices &
+services" mostra anche l'inventario completo dispositivi dell'account:
+scoperto che i due USG20-VPN, documentati come "non più in lista
+myZyxel" (quindi presunti rimossi), risultano invece ancora presenti
+nell'inventario Nebula — corretta la nota in 2025-q3-q4.md chiarendo che
+le due liste (Marketplace licenze vs Nebula device inventory) hanno
+perimetri diversi. Aggiunto anche il MAC reale dello switch XGS2220-30HP,
+non censito finora.
+
+## 2026-07-14 — Nuovo script Get-NebulaSnapshot.ps1 per l'API REST Zyxel Nebula (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: scripts/Get-NebulaSnapshot.ps1 (nuovo), .claude/context/STACK.md
+(voce script + sezione dedicata), .claude/memory/decisions.md (ADR-009),
+docs/runbook-anomalie.md (AP-001: riferimento allo script come strumento
+disponibile).
+Motivo: l'utente ha chiesto di scriptare/automatizzare anche
+l'interrogazione di Nebula, oltre a Proxmox, per risolvere in modo
+sistematico l'identificazione degli AP (AP-001/NET-005). Prima di
+scrivere il codice, verificati via WebSearch/WebFetch gli endpoint REST
+reali e il loro schema di risposta sulla documentazione ufficiale
+(zyxelnetworks.github.io/NebulaOpenAPI), per non inventare path o campi:
+confermati organizations, sites, sites/devices (con devId, mac, sn, model,
+type: AP/SW/GW/FIREWALL/WWAN/SCR/GWH/ACCY), ports-status, port-settings,
+l2-mac-table (macAddress+vlan+portNum per porta — esattamente il dato
+che serve per localizzare gli AP per porta indipendentemente dalla marca).
+Script scritto sullo stesso pattern di Get-ProxmoxSnapshot.ps1 (nessuna
+dipendenza esterna, output JSON+Markdown in output/, mai committato),
+chiave API risolta da parametro/variabile d'ambiente NEBULA_API_KEY/prompt
+SecureString, mai su disco. Sintassi validata con il parser PowerShell
+nativo (nessun test contro un'organizzazione Nebula reale, non disponibile
+in sessione). Documentata la decisione come ADR-009. Nota importante
+gestita separatamente: l'utente ha chiesto anche di aggiornare
+E:\windows-status e E:\my-cv — bloccato dalla regola "Confine con
+E:\projects" gia' scritta in CLAUDE.md in questa sessione (nessuna
+scrittura fuori da D:\network-design); confermato con l'utente di tenere
+tutto tracciato solo qui, rimandando quei due repository a sessioni
+dedicate separate che leggeranno da qui per conto proprio.
+
+## 2026-07-14 — Scansione live VLAN Guest: popolazione cambiata dalla VA nov 2025 (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/runbook-anomalie.md (AP-001 aggiornata con la nota di
+scansione e procedura fix rivista).
+Motivo: l'utente ha condiviso uno screenshot di Advanced IP Scanner su
+tutta la classe Guest (10.61.90.1-254): nessuno dei dispositivi
+noti dalla VA di novembre 2025 risponde piu' agli stessi indirizzi (ne'
+i tre presunti AP, ne' switch mgmt/UPS/MyHome/Bticino). La classe oggi
+mostra dispositivi diversi (HPE, Xiaomi, MSI, Pegatron, ASUS). Non
+verificato se sia una risoluzione reale o solo dispositivi spenti/IP
+cambiati: segnalato esplicitamente come da chiarire, senza dare per
+risolto nulla. Prossimo passo suggerito: controllare via Nebula i
+dettagli delle porte switch a cui gli AP sono fisicamente collegati
+(mappatura nota) invece di cercarli per IP, dato che lo switch mostra
+MAC/stato link per porta indipendentemente dalla marca del dispositivo
+collegato.
+
+## 2026-07-14 — Smentita "AP gestiti Nebula": nessun AP nell'organizzazione Zyxel (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/vendor-management.md (rimossa l'affermazione errata
+"AP gestiti Nebula" dalla scheda Zyxel), docs/runbook-anomalie.md
+(AP-001 riscritta con la conferma e una procedura fix aggiornata).
+Motivo: l'utente ha verificato il portale Nebula gia' usato per i due
+switch e confermato che nessun access point vi compare come dispositivo
+gestito — smentisce l'unica fonte che affermava "AP gestiti Nebula" e
+rafforza l'ipotesi, gia' indicata dalla VA di novembre 2025 (MAC vendor
+Ubiquiti, firmware Debian 7 EOL dal 2018), che si tratti di hardware non
+Zyxel e non centralmente gestito. Riscritta la procedura fix di AP-001:
+accesso diretto ai tre IP noti (web e SSH) per identificare modello reale
+e stato di adozione, ricerca di un eventuale controller UniFi mai
+documentato, pianificazione sostituzione se il modello risulta fuori
+produzione e senza controller. Segnalato che questo blocca anche NET-005/
+M13 (rete ospiti): senza gestione centrale nota degli AP non si puo'
+creare in modo affidabile un secondo SSID taggato su VLAN.
+
+## 2026-07-14 — NET-005 confermato live: PC esterno su Wi-Fi ottiene IP di management (sessione 9, continua)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/runbook-anomalie.md (nuova sezione NET-005 con evidenza
+live e procedura fix), docs/infrastructure-timeline/GAP-TBC.md (nota di
+conferma su NET-005), `_notes/.anonymization-map.md` (nuovo IP
+10.61.10.247 e MAC AA:BB:CC:00:00:21).
+Motivo: l'utente ha condiviso l'output di `ipconfig` di un PC esterno non
+censito in NinjaOne, connesso alla Wi-Fi "intrawelt": ha ottenuto in DHCP
+un indirizzo (10.61.10.247) nella stessa subnet /19
+della VLAN 10 di management, con lo stesso gateway — conferma diretta e
+datata del gap NET-005 gia' tracciato solo su base documentale. Aggiunta
+una sezione runbook completa (stesso formato di FW-002/UPS-001/AP-001)
+con la sequenza di fix consigliata: identificare il modello reale degli AP
+controllando se compaiono nell'organizzazione Nebula gia' usata per gli
+switch (prima di tutto), eseguire M12 per liberare la VLAN 90
+dall'infrastruttura che oggi la occupa per errore, decidere la VLAN di
+destinazione della Wi-Fi aziendale, configurare un secondo SSID ospiti
+taggato sulla VLAN 90 ripulita con isolamento client-to-client.
+
 ## 2026-07-13 — VM207 "websiteAnalyst" censita via MCP Proxmox; SSH bidirezionale predisposto (sessione parallela)
 
 Commit: PENDING (da fare manualmente)

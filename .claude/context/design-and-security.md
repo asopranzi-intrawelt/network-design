@@ -98,7 +98,16 @@ Intrawelt; non e' una Statement of Applicability formale (vedi Fase 5).
 | Controllo | Stato | Gap / evidenza |
 |---|---|---|
 | A.8.20 Network security | Parziale | Nessun firewall attivo tra segmenti Proxmox (0 regole cluster); il firewall perimetrale Zyxel USG FLEX 500 e' configurato ma con anomalie aperte (FW-001/FW-010) |
-| A.8.22 Segregation in networks | Parziale | Segmentazione fisica (bridge separati) ma nessun VLAN tagging ne' policy enforcement lato Proxmox (M4/M5 del piano); a livello LAN, switch di management erroneamente sulla VLAN Guest (NET-001, M12) |
+| A.8.22 Segregation in networks | Parziale | Segmentazione fisica (bridge separati) ma nessun VLAN tagging ne' policy enforcement lato Proxmox (M4/M5 del piano); a livello LAN, switch di management erroneamente sulla VLAN Guest (NET-001, M12); **la LAN principale e' un'unica rete flat `/19`** (PC .10, server .20, stampanti .30 sono alias IP, non VLAN separate — NET-009, M22, identificato il 15/07/2026). Implicazione concreta segnalata dall'utente il 16/07/2026: le stampanti multifunzione con scan-to-folder possono raggiungere direttamente le cartelle condivise di un PC Windows 11 invece di essere confinate a una destinazione unica e presidiata (es. un NAS), un fronte di sanificazione dei flussi dato distinto dalla sola segmentazione di rete (si veda anche A.8.3 Information access restriction) — da riprendere quando si pianifica M22. **Tentativo 16/07/2026**: la VLAN
+Wi-Fi staff e' stata applicata e poi ripristinata in giornata — i tre AP
+EOL hanno smesso di trasmettere l'SSID al cambio di VLAN nativa sulla
+porta switch, per una causa non verificabile (AP inaccessibili). Nessun
+impatto sulla produzione oltre l'interruzione stessa (rilevata e risolta
+in circa 15 minuti). Lezione di change management (rilevante anche per
+A.5.37/procedure operative): il rollout porta-per-porta con verifica
+immediata (gia' in uso) ha contenuto l'incidente a una finestra breve,
+ma un test con presenza fisica avrebbe permesso di distinguere subito un
+guasto reale da un AP che si stava solo re-inizializzando |
 | A.8.16 Monitoring activities | Non verificato | Logging traffico di rete non documentato; nessuna policy di raccolta/retention log firewall o switch |
 | A.5.37 Documented operating procedures | In corso | Questo progetto (network-design), piu' PSGSI rev.1 firmata il 16/10/2025 (avvio formale SGSI) |
 | A.8.8 Management of technical vulnerabilities | Non verificato | Patch management di switch Nebula, firewall e firmware NAS non documentato (Fase 4 step 1); un VA esterno non credenzialato (06/11/2025, Onova) ha rilevato 8 anomalie, dettaglio in `vulnerability-assessment-nov2025.md` |

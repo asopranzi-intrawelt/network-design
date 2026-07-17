@@ -546,3 +546,40 @@ sezione dedicata sopra). Unica eccezione deliberata: `MyOffice/Transizione
 centralino cloud 2026/` non ingerita perche' si sovrappone alla nota
 PORT-TAGGING riservata al racconto "a lavori conclusi" — resta in attesa
 della stessa indicazione dell'utente.
+
+## Delta 09/07 -> 15/07/2026 (triage del 15/07/2026)
+
+Entrambe le librerie: nessuna voce richiede nuova ingestione, tutto ricade
+in categorie gia' decise. La corsa completa dello script (non solo il
+riepilogo troncato dell'hook di sessione) ha rilevato 42 nuovi file in
+`Documenti - IT`, non 11: la differenza sono 39 documenti sotto
+`SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`
+(coppie bilingue EN-IT/IT-DE/IT-EN, ambito Pharma-med — foglietti
+illustrativi, sinossi di studio, moduli di consenso informato) che sono il
+corpus grezzo del tirocinio universitario Unimc sul benchmark di
+traduzione, non documentazione IT: stessa categoria SKIP gia' decisa per
+"Ricerca Unimc" (righe 401-403, letteratura/materiale di ricerca esterno).
+- [-] `SCENIA/Documentazione scenia/admin_OK.pptx`, `user_OK.pptx`,
+  `Guida_portale_SCENIA_claude.pptx` (nuovi) — stessa categoria SKIP di riga 478
+- [x] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Benchmark Study per
+  Intrawelt.docx` — non e' un file nuovo ma lo spostamento del file gia'
+  ingerito (riga 402) dentro una nuova sottocartella insieme al corpus dataset
+  e ai paper accademici di supporto (gia' SKIP, riga 403); nessun contenuto
+  aggiuntivo
+- [-] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`
+  (39 file, coppie bilingue Pharma-med) — SKIP, corpus di ricerca esterno
+  (vedi nota sopra)
+- [-] `Cybersec/_QUESTIONARI FORNITORI/WindTre/` (Annex Part II, WIP .docx)
+  e `Documentazione scenia admin.pptx` modificati — revisioni di lavoro su
+  categorie gia' coperte, nessun contenuto nuovo per la storia di rete
+- [-] `Persona-H - Punto informatica/2026/Fatture/*.pdf` (nuovo) — stessa
+  categoria delle 58 fatture gia' verificate e non ingerite singolarmente (riga 519)
+- [-] `MyOffice/Transizione centralino cloud 2026/modulo richiesta
+  variazione Vianova_Intrawelt_sig.pdf` (nuovo) — cade nella stessa
+  sottocartella riservata alla nota PORT-TAGGING (riga 514/545-547), resta
+  in attesa della stessa indicazione dell'utente
+- [-] `Eter/ORDINE ASSISTENZA ANNUALE.eml`, email licenza Zyxel XGS2220-54HP
+  (modificati) — stessa categoria gia' verificata (righe 513/523), rinnovi
+  senza contenuto nuovo
+
+Baseline aggiornata al 15/07/2026 per entrambe le librerie con `-UpdateBaseline`.
