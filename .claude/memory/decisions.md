@@ -191,6 +191,58 @@ expiry, e accettando che ogni tool MCP diventi eseguibile senza conferma;
 scartata perche' il beneficio (evitare la creazione di un secondo token al
 momento del bisogno) non ripaga il rischio del canale ambientale.
 
+## ADR-009 — Script Get-NebulaSnapshot.ps1: API REST Zyxel Nebula, chiave in sola lettura
+
+Data: 2026-07-14
+Stato: attiva
+
+Contesto: per identificare fisicamente gli access point WiFi (AP-001,
+NET-005) serve sapere quale MAC address e' collegato a quale porta di
+quale switch. Gli AP non compaiono come dispositivi gestiti
+nell'organizzazione Nebula (verificato dall'utente il 14/07/2026), ma gli
+switch si', ed espongono comunque la tabella MAC L2 per porta
+indipendentemente dalla marca del dispositivo collegato — non serve che
+l'AP stesso sia Zyxel.
+
+Decisione: script dedicato `scripts/Get-NebulaSnapshot.ps1`, stesso
+pattern di `Get-ProxmoxSnapshot.ps1` (nessuna dipendenza da un MCP
+esistente: a differenza di Proxmox, non risulta un server MCP pronto per
+Nebula). Autenticazione con una singola chiave API Nebula (header
+`X-ZyxelNebula-API-Key`), risolta nell'ordine parametro -&gt; variabile
+d'ambiente NEBULA_API_KEY -&gt; prompt SecureString a runtime, mai scritta
+su disco.
+
+**Percorso di navigazione reale per generare la chiave (14/07/2026,
+verificato sul campo dopo un'ora di ricerca — non e' dove la
+documentazione ufficiale suggerisce)**: in Nebula Control Center, icona
+"..." (tre puntini) nella barra in alto, NON l'icona a ingranaggio (quella
+e' solo dark mode/lingua) ne' l'avatar utente (quello e' solo "Manage
+account"/sign out, porta al portale myZyxel generale) ne' "Organization-wide
+manage" (quello contiene Organization settings, Cloud authentication,
+ecc., niente API). Dal menu dei tre puntini: **"My devices & services"**
+-&gt; scheda **"NCC OpenAPI Key"** -&gt; pulsante "Generate". Richiede la
+licenza Nebula Professional Pack sui dispositivi dell'organizzazione (gia'
+presente su entrambi gli switch Intrawelt, confermato dalla pagina
+License & inventory). La stessa vista "My devices & services" mostra
+anche l'inventario completo dei dispositivi mai posseduti dall'account,
+inclusi due USG20-VPN dismessi non risultanti in altre liste (vedi
+correzione in `2025-q3-q4.md`).
+Endpoint usati verificati contro la documentazione ufficiale
+(zyxelnetworks.github.io/NebulaOpenAPI) il 14/07/2026: organizations,
+sites, sites/devices, ports-status, port-settings, l2-mac-table (GET); un
+solo endpoint POST (v2/sw-clients) tentato a scopo aggiuntivo con schema
+del body non documentato con certezza, quindi in try/catch con warning
+invece che hard-fail se fallisce.
+
+Conseguenze: stesso perimetro di sicurezza dei token Proxmox (ADR-007) —
+singola chiave, nessuna scrittura di segreti su disco, output in
+`output/nebula-snapshot.json` e `output/nebula-config.md` (ignorati da
+git, stessa convenzione di ADR-006). La chiave usata e' quella
+amministrativa esistente dell'utente su Nebula (nessuna decisione di
+scopare un ruolo/utente dedicato come per Proxmox, perche' l'uso previsto
+e' solo lettura via i soli endpoint GET/POST elencati, non gestione
+dispositivi).
+
 Conseguenze: alla ripresa della Fase 3 si crea automation@pve con token a
 scadenza e ruolo minimo per i micro-step interessati; gli script operativi
 leggeranno credenziali da variabili d'ambiente dedicate (per esempio
@@ -210,3 +262,156 @@ token in sola lettura PVEAuditor il danno massimo e' la divulgazione
 dell'inventario infrastrutturale, e il token si revoca/rigenera in un
 minuto: rischio accettato. Per il futuro token di scrittura questo backup
 NON e' accettabile: solo password manager personale o nessuna copia.
+
+## ADR-010 — Script Set-NebulaWifiVlan.ps1: scrittura Nebula senza token scopato, limite scoperto sulla creazione VLAN, canale firewall diverso da Nebula
+
+Data: 2026-07-15
+Stato: attiva
+
+Contesto: per M13a (Fase A rete Wi-Fi, isolamento delle tre porte AP gia'
+localizzate su una VLAN dedicata) serve uno script che scriva davvero sui
+due switch Nebula, non solo li legga. Il precedente di riferimento e'
+ADR-008 (Proxmox): due token separati, uno di sola lettura sempre acceso,
+uno di scrittura scoped e a scadenza creato solo alla finestra di
+intervento. Verificato che questo schema non si trasferisce a Nebula cosi'
+com'e', per un motivo strutturale dell'API Nebula stessa, non per scelta di
+postura: la chiave API Nebula (verificato il 15/07/2026 contro
+zyxelnetworks.github.io/NebulaOpenAPI e la Community Zyxel) e' scopata per
+amministratore, non per ruolo — condivide gli stessi permessi dell'account
+Nebula che l'ha generata, senza un equivalente del ruolo PVEAuditor di sola
+lettura. Non esiste quindi un secondo token "di scrittura scoped" da creare
+a tempo: c'e' una sola chiave, con gli stessi permessi ovunque venga usata.
+
+Decisione: la mitigazione si sposta dal livello del token al livello dello
+script. `Set-NebulaWifiVlan.ps1` gira sempre in dry-run (stampa il piano,
+nessuna richiesta inviata) a meno che non venga passato esplicitamente
+`-Apply`, e anche con `-Apply` chiede una conferma testuale a runtime
+("CONFERMA", maiuscolo) prima di inviare le POST reali — stesso principio
+di deliberazione esplicita di ADR-008, applicato dove l'API non offre un
+equivalente struttura di permessi da scopare.
+
+Limite scoperto durante la stesura (15/07/2026, da due fetch indipendenti
+della documentazione ufficiale): l'API Nebula non espone nessun endpoint
+per *creare* una VLAN a livello di sito o di switch, solo
+`POST /{siteId}/sw/{devId}/port-settings` per assegnare una VLAN a una
+porta (`portVid`, `allowedVLAN`). **Corretto lo stesso giorno dopo verifica
+diretta a schermo** (non solo da documentazione): il campo PVID nel
+pannello "Update port" della GUI Nebula e' testo libero, non un menu
+vincolato a VLAN preesistenti. Non serve quindi nessun passo di creazione
+preliminare, ne' da API ne' da GUI: scrivere l'ID su una prima porta e'
+sufficiente, la VLAN esiste da quel momento. L'assenza di un endpoint di
+"creazione VLAN" nell'API rispecchia semplicemente il fatto che in Nebula
+le VLAN sui switch non sono oggetti site-wide con vita propria, sono un
+effetto collaterale dell'uso su una porta - non un passo mancante da
+compensare a mano.
+
+**Scoperta operativa piu' rilevante, dallo stesso giro di verifica**:
+applicare in un solo colpo sia le porte trunk sia le tre porte AP e'
+rischioso, perche' il firewall non ha ancora un'interfaccia/DHCP per la
+nuova VLAN nel momento in cui gira lo script - spostare il PVID di un AP
+live su quella VLAN lo scollegherebbe finche' il firewall non e' pronto.
+`Set-NebulaWifiVlan.ps1` ha percio' un parametro `-Only` (`Trunk` |
+`Access` | `All`) per applicare prima solo i trunk (innocuo), poi il piano
+firewall a mano, e infine le porte AP una alla volta con verifica.
+
+Nota collegata sul firewall (stessa sessione, stessa domanda dell'utente
+"ci connettiamo anche al firewall via API"): il firewall USG FLEX 500 non
+compare tra i dispositivi Nebula dell'organizzazione (`nebula-config.md`
+mostra solo i due switch, nessun dispositivo di tipo GW/FIREWALL) — gira in
+modalita' standalone/classica ZLD, non adottato in Nebula. L'endpoint
+Nebula per l'interfaccia gateway (`GET /{siteId}/gw/{devId}/interface-settings`)
+esiste solo per firewall Nebula-adottati e comunque risulta di sola
+lettura nella documentazione consultata: non e' applicabile qui in nessun
+verso. L'unico canale scriptabile verso questo firewall resta quello gia'
+in uso per l'accesso amministrativo, SSH con 2FA (`firewall-zyxel-usg-flex-500.md`
+riga 373): un canale che richiede comunque un umano per il secondo fattore
+a ogni sessione, quindi non automatizzabile end-to-end come Nebula. La via
+praticabile e' uno script "generatore" che produce il blocco di comandi
+CLI ZLD da incollare in una sessione SSH gia' autenticata, non uno script
+che si autentica e scrive da solo — coerente con la postura del progetto
+dove anche i commit restano un'azione umana deliberata.
+
+Conseguenze: nessun nuovo segreto da gestire (si riusa la stessa chiave
+Nebula gia' generata per ADR-009); il rischio di scrittura accidentale e'
+mitigato da dry-run di default + conferma testuale, non da un perimetro di
+permessi ridotto sul token, perche' l'API non lo consente. Il log di ogni
+applicazione reale si scrive in `output/nebula-apply-log-fase-a.json`
+(ignorato da git, stessa convenzione degli altri output infrastrutturali).
+
+**Scoperta con un tentativo reale (16/07/2026)**: il primo `-Apply` su
+`-Only Access` (porta 1, PianoTerra) e' stato rifiutato dall'API con
+`422 INVALID_ALLOWED_VLAN` — `allowedVLAN: []` (lista vuota, il tentativo
+di access strict "zero VLAN taggate") non e' un valore accettato. Nessuna
+scrittura parziale: il rifiuto e' stato pulito, la porta e' rimasta nello
+stato precedente. Corretto lo script per inviare `allowedVLAN: [VlanId]`
+(la sola VLAN nativa della porta) invece della lista vuota: non ottiene
+l'isolamento "zero VLAN taggate" originariamente cercato, ma resta
+comunque piu' stretto del valore preesistente "all" su tutte le altre
+VLAN. Conferma indiretta che il dry-run-by-default di ADR-010 ha fatto
+esattamente il suo lavoro: un errore di questo tipo, scoperto al primo
+`-Apply` reale invece che ipotizzato a tavolino, e' stato innocuo perche'
+isolato a una singola porta con conferma testuale esplicita, non propagato
+a tutte e tre le porte AP in un colpo solo.
+
+**Incidente del 16/07/2026 e nuovo parametro -PowerCycle**: applicate le
+tre porte AP, l'SSID Wi-Fi e' sparito del tutto entro pochi minuti (vedi
+`runbook-anomalie.md` §NET-005 "Incidente 16/07/2026" per il resoconto
+completo) — rollback immediato a VLAN 1, servizio ripristinato in circa
+un quarto d'ora. Causa non determinata con certezza (AP inaccessibili),
+ma il pattern osservato (funziona subito dopo il cambio, cade dopo
+qualche minuto) suggerisce uno stato residuo lato AP che scade invece di
+re-inizializzarsi sulla VLAN nuova. Aggiunto un parametro `-PowerCycle`
+allo script: dopo aver scritto la nuova VLAN su una porta AP, spegne e
+riaccende il PoE di quella porta (`pseEnabled` false poi true, pausa di 10
+secondi), forzando un riavvio a freddo dell'AP gia' sulla VLAN corretta —
+un test mirato dell'ipotesi, eseguibile da remoto senza presenza fisica.
+Da usare un AP alla volta, con osservazione prolungata (minuti, non
+secondi) prima di giudicare l'esito, coerente con la lezione
+dell'incidente.
+
+**Secondo tentativo, nuovo problema (16/07/2026, stesso giorno)**: il
+retry su PianoTerra ha risposto `200 OK` alla scrittura ma la rilettura
+immediata mostrava ancora `portVid: 1` — nessun errore, semplicemente non
+ancora applicato. Coerente con NEB-001 (intermittenza nota tra il canale
+cloud Nebula e gli switch fisici): un `200 OK` conferma che il cloud ha
+accettato la richiesta, non che l'abbia gia' spinta sul dispositivo.
+Corretto lo script con un retry a backoff crescente (3, 5, 8, 12 secondi)
+sulla verifica invece di un solo controllo immediato. Il power-cycle non
+e' scattato (gated su verifica riuscita), quindi nessun impatto reale su
+PianoTerra da questo tentativo.
+
+## ADR-011 — Riscrittura storia git fuori piano: deroga puntuale per richiesta CIRST esterna
+
+Data: 2026-07-17
+Stato: attiva
+
+Contesto: il CIRST (team di incident response) di Fibercop ha contattato
+direttamente l'utente segnalando che l'indirizzo email reale del proprio
+tecnico (Referente-Fibercop-1) era leggibile in un commit del repository
+pubblico, con richiesta di rimozione di tutti i riferimenti. Verifica
+effettuata nella sessione: la mail era presente nel file tracciato
+`docs/infrastructure-timeline/2025-q1-server-vianova.md` (il nome era gia'
+correttamente sostituito con il placeholder `Referente-Fibercop-1`, la mail
+in parentesi era stata dimenticata) e propagata in `timeline.svg`
+(generato dal sorgente). Presente nella storia dal commit `dda1945` fino
+all'HEAD corrente (`af4cad4`).
+
+Il piano esistente (vedi `roadmap.md`, sezione Fase B) prevede un solo
+round di riscrittura storia, a Fase B completata, per evitare due force-push
+separati. Questa e' una richiesta di terze parti esterna e con scadenza
+implicita (compliance/GDPR lato fornitore), a differenza del resto degli
+elementi in coda in Fase B che sono audit interni senza pressione esterna.
+
+Decisione: derogare al piano "un solo round" ed eseguire subito, fuori
+sequenza, un round di `git filter-repo` mirato alla sola voce Fibercop
+(`_notes/.git-filter-replacements.txt`, voce contrassegnata priorita' alta),
+invece di attendere la chiusura di Fase B. Il resto delle voci accumulate
+nel file di sostituzioni resta per il round successivo a Fase B completata.
+
+Conseguenze: due round di force-push invece di uno (costo accettato per
+rispondere alla richiesta esterna), con re-clone locale obbligatorio dopo
+ciascuno. Il file tracciato e l'SVG sono gia' stati corretti nella sessione
+corrente indipendentemente dalla riscrittura storia. Il caso apre inoltre
+un precedente: una richiesta esterna con scadenza puo' giustificare una
+deroga puntuale al piano "un solo round", da valutare caso per caso se si
+ripresenta.

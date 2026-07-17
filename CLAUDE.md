@@ -57,9 +57,17 @@ segnalate, rieseguirlo con `-UpdateBaseline`.
 `scripts/Build-TimelineSvg.ps1` genera `docs/infrastructure-timeline/timeline.svg`
 (versionato, anonimizzato) dai file Markdown della timeline. Gira a ogni avvio
 di sessione tramite hook SessionStart (settings.local.json, non versionato).
-I titoli legacy con nomi reali vengono anonimizzati a valle tramite
-`_notes/.svg-name-replacements.txt` (privato); un guard-rail avvisa se nei
-titoli compare un IP non-placeholder. Lo script scrive solo dentro questo
+Ogni riga e' un accordion: il paragrafo che segue l'intestazione datata nel
+Markdown sorgente (il dettaglio ricostruito dai .docx ingeriti) diventa un
+pannello espandibile via script SVG nativo incorporato nel file (nessuna
+dipendenza esterna, resta un solo file .svg). L'interattivita' funziona
+quando l'SVG e' navigato direttamente o incluso via `<object>`/`<iframe>`/
+inline nel DOM della pagina ospite; se la pagina esterna lo include con un
+tag `<img>`, il browser disabilita gli script per quel contesto e le righe
+restano leggibili ma non si espandono. I titoli legacy con nomi reali
+vengono anonimizzati a valle tramite `_notes/.svg-name-replacements.txt`
+(privato); un guard-rail avvisa se nei titoli o nei pannelli di dettaglio
+compare un IP non-placeholder. Lo script scrive solo dentro questo
 repository: vedi "Confine con E:\projects" piu' sotto.
 
 ## Confine con E:\projects

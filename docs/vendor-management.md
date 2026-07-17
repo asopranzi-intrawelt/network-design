@@ -56,13 +56,13 @@ completo a lavori conclusi (vedi `current-work.md`).
 
 | Campo | Valore |
 |-------|--------|
-| Tipologia | Firewall UTM + Switch managed L2/L3 + AP WiFi |
+| Tipologia | Firewall UTM + Switch managed L2/L3 |
 | Prodotti | USG FLEX 500, XGS2220-54HP (P2), XGS2220-30HP (PT, apr 2026) |
 | Gestione | Zyxel Nebula cloud portal (zero-touch) |
 | Licenze | Nebula Pro Pack (UTM: BPP, CIP, sandbox, SSL inspection, IP reputation) |
 | Supporto | Persona-H (Punto Informatica) tramite portale Nebula |
 | Scadenza licenza | [TBC] |
-| Note | XGS2220-30HP installato 08/05/2026. AP gestiti Nebula. Firmware AP 0-9-1 (tetto) basato su Debian 7 EOL – aggiornamento urgente. |
+| Note | XGS2220-30HP installato 08/05/2026. **Gli access point WiFi NON sono Zyxel/Nebula** (verificato il 14/07/2026: nessun AP compare nell'organizzazione Nebula usata per i due switch) — smentisce quanto affermato in precedenza in questa scheda. Vedi `runbook-anomalie.md` §AP-001 per il dettaglio: firmware Debian 7 EOL rilevato dalla VA su almeno tre dei cinque AP noti, MAC vendor Ubiquiti, gestione reale non ancora identificata. |
 
 ---
 

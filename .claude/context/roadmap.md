@@ -120,7 +120,7 @@ unico commit cumulativo di fine fase.
 | # | Intervento | Priorita' | Gap/fonte | Dipendenza | Stato |
 |---|-----------|-----------|-----------|------------|-------|
 | M1 | Correggere `Blocco_Gruppo_IP_Phishing_Elisa` (allow -> deny) e `malicious_IP_12052025` (allow -> deny) via GUI firewall, fuori finestra di manutenzione | CRITICA | FW-001, FW-002 (Fase 0 del piano) | Nessuna | **Fatto 01/07/2026** |
-| M2 | Verificare fisicamente console seriale (115200 baud) e accesso iLO; confermare supporto 802.1Q su XGS2220-54HP | ALTA | Fase 1 del piano | M1 | Da fare |
+| M2 | Verificare fisicamente console seriale (115200 baud) e accesso iLO; confermare supporto 802.1Q su XGS2220-54HP | ALTA | Fase 1 del piano | M1 | Parziale 13/07/2026: accesso iLO5 recuperato (password root perduta, reset via hponcfg dal sistema operativo, nessun riavvio del server) e connessione SSH all'iLO configurata da questa macchina. Restano da verificare console seriale e supporto 802.1Q |
 | M3 | Backup datato di firewall e switch prima di ogni modifica strutturale | ALTA | Fase 1 del piano | M2 | Da fare |
 | M4 | Configurare VLAN 201 sullo switch Piano 2 (P7 access, porta Proxmox trunk) | ALTA | Fase 2 del piano, FW-009 | M3 | Da fare |
 | M5 | Configurare bridge-vlan-aware su Proxmox (`ifreload -a` da iLO), VM di test con tag 201 | ALTA | Fase 3 del piano | M4 | Da fare |
@@ -131,7 +131,8 @@ unico commit cumulativo di fine fase.
 | M10 | Verificare quale switch ospita realmente la porta del telefono di Persona-A (contraddizione Piano 2 vs Piano Terra) prima di chiudere la mappatura IP/MAC telefoni | MEDIA | NET-007, GAP-TBC #67 | Nessuna (indipendente dal piano firewall) | Da fare |
 | M11 | Verificare la funzione della porta 8 riconfigurata "Vianova DHCP server fonia" (PVID 2) e valutare se sostituisce la rimozione del DHCP server classe .90 | MEDIA | FW-012 | M10 | Parziale 07/07/2026: funzione confermata (DHCP+gateway Vianova untagged, isolati dal firewall); resta la valutazione sul DHCP .90 |
 | M12 | Rimuovere il DHCP server residuo classe .90 e spostare lo switch di management (10.61.90.37) sulla VLAN corretta | ALTA | NET-001, NET-004, NET-005 | M11 | Da fare |
-| M13 | Segmentare la VLAN Wi-Fi "intrawelt" dalla classe .90, isolamento reale da LAN/management | MEDIA | NET-005 | M12 | Da fare |
+| M13a | Fase A rete Wi-Fi: isolare la Wi-Fi staff esistente creando una VLAN dedicata sulle tre porte switch gia' localizzate (XGS2220-30HP porta 1, XGS2220-54HP porte 41/45), con ACL firewall verso VLAN 10 management — nessun accesso agli AP richiesto, i tre Ubiquiti EOL restano cosi' come sono | MEDIA | NET-005 | M12 | **Tentato e ripristinato il 16/07/2026** — vedi `runbook-anomalie.md` §NET-005 "Incidente 16/07/2026" per il resoconto completo. Firewall lato configurazione resta pronto e applicato (interfaccia `vlan40`+DHCP, zona `WIFI_STAFF`, security policy, pulizia 9 regole disattivate — nessuno di questo e' stato rollbackato, resta valido per un nuovo tentativo). Lato switch: le tre porte AP spostate su VLAN 40 hanno smesso di trasmettere SSID (confermato con due dispositivi diversi, nessuna rete visibile in scansione), causa non determinata (i tre AP restano inaccessibili, nessuna diagnostica lato dispositivo possibile); ripristinate a VLAN 1 e servizio confermato tornato. Ipotesi principale: l'assunzione "lo switch tagga in modo trasparente, l'AP non deve sapere nulla di VLAN" non regge per questo hardware EOL specifico. **Secondo tentativo mirato (stesso giorno)**: scoperta rilevante — la sincronizzazione Nebula-switch e' inaffidabile su un solo switch (il 54HP, dove vivono PianoPrimo/PianoSecondo), non su entrambi. Approfondito NEB-001 con `Get-NebulaConnectivityHistory.ps1` (nuovi endpoint connectivity/event-logs): nessuna disconnessione cloud rilevata, ma il 54HP mostra migliaia di link-flap non documentati sulla porta 46 (nuovo gap NET-010) mentre il 30HP (PianoTerra) risulta pulito e coerente in ogni sua operazione. Prossimo passo: diagnosticare la porta 46 prima di fidarsi di nuove scritture sul 54HP; PianoTerra resta un candidato ragionevole per un nuovo tentativo con osservazione prolungata |
+| M13b | Fase B rete Wi-Fi: pianificare la sostituzione dei tre AP Ubiquiti EOL (non gestibili, credenziali perse, dashboard web mai esistita) con AP Zyxel Nebula multi-SSID, che assorbono anche la copertura guest (DPPSK + VLAN dedicata) invece di affiancare un AP guest isolato ai tre legacy | MEDIA | AP-001 | M13a | Da pianificare (preventivo hardware, decisione presa il 15/07/2026 di non affiancare ma sostituire) |
 | M14 | Aggiornare le VPN IPsec da IKEv1/AES-128/SHA-1/DH2 a parametri correnti; chiarire se PSE-SEEWEB e WIZ_VPN sono transizione o residuo | MEDIA | FW-006, FW-007 | M8 | Da fare |
 | M15 | Attivare firewall Proxmox con policy di default DROP | MEDIA | Fase 3 originale (roadmap storica) | M9 | Da fare |
 | M16 | Dismissione HP G5 (VMware ESXi) e migrazione VM residue su Proxmox | MEDIA | GAP-TBC #10, #195 (sec-007) | Indipendente | Da fare |
@@ -140,6 +141,7 @@ unico commit cumulativo di fine fase.
 | M19 | Consolidare il diagramma Mermaid finale (`network-topology.mmd`) con lo stato post-ottimizzazione e riconciliare tutte le schede tecniche coinvolte | BASSA (fine fase) | Chiusura Fase 3 | M1-M18 | Da fare |
 | M20 | Diagnosticare l'intermittenza "offline" degli switch su Nebula (rete dati funzionante, solo il canale di gestione cade): raccogliere orari degli eventi offline da Nebula e correlarli con i log del firewall (failover wan2, eventi SSL inspection sul traffico verso il cloud Zyxel) | MEDIA | NEB-001 | Nessuna (diagnosi indipendente da M1-M9) | Da fare |
 | M21 | Ricontrollare M20 dopo l'esecuzione di M7 (rimozione WAN_TRUNK): se l'intermittenza sparisce, FW-008 era la causa; se persiste, approfondire l'ipotesi SSL inspection | MEDIA | NEB-001 | M7, M20 | Da fare |
+| M22 | Valutare e pianificare la segmentazione reale della LAN principale: oggi `lan1`/`lan1:1`/`lan1:2` (PC .10, server .20, stampanti .30) sono alias IP nella stessa `/19` flat, nessuna VLAN separata tra le tre classi. VLAN dedicate + zone/ACL firewall separate, stesso pattern di M13a | MEDIA | NET-009 | M13a (pattern collaudato prima sulla Wi-Fi) | Da pianificare (identificato 15/07/2026 durante la guida GUI di Fase A) |
 
 ## Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa (SOSTANZIALMENTE COMPLETATA il 10/07/2026)
 
@@ -212,6 +214,11 @@ Fase B) e vanno eseguiti dall'utente, mai dall'agente: e' un'operazione che
 riscrive quasi tutta la storia del repository (il valore piu' vecchio risale
 al secondo commit del progetto) e richiede force-push coordinato.
 
+**Deroga puntuale (17/07/2026, ADR-011)**: la voce Fibercop/Referente-Fibercop-1 e'
+uscita dal round unico per richiesta esterna del CIRST Fibercop e va
+eseguita come round di riscrittura storia a se', prima del resto della
+Fase B. Non re-includerla nel round finale, e' gia' rimossa a parte.
+
 ## Fase 4 - Piano interventi futuri residui (DA PIANIFICARE)
 
 Steps non coperti dalla Fase 3, da pianificare dopo la chiusura dei micro-step
@@ -224,6 +231,15 @@ sopra:
    riallineamento in `ingestion-checklist.md`)
 
 ## Fase 5 - Documentazione ISO27001 operativa (DA PIANIFICARE)
+
+**Obiettivo dichiarato dall'utente il 16/07/2026: ottenere la certificazione
+ISO27001 entro marzo 2027.** Da questa data in avanti, ogni micro-step di
+rete (non solo quelli esplicitamente etichettati Fase 5) va letto anche
+con l'angolo ISO27001 quando rilevante — un gap di segmentazione, un
+controllo di accesso, un flusso dati non presidiato sono materiale
+Annex A a prescindere da quando la Fase 5 formale comincia. Vedi
+`current-work.md` per la direttiva permanente sui cinque livelli di
+tracciamento richiesti a ogni passo.
 
 Steps:
 1. Statement of Applicability per i controlli Annex A di rete

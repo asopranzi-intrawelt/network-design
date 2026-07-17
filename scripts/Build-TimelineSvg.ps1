@@ -4,8 +4,17 @@
 # pubblico). Perimetro: dal 2024 (ingresso IT manager), solo intestazioni
 # datate. Ogni evento e' classificato in un'area di competenza (skill) con
 # colore categoriale validato + tag testuale (identita' mai affidata al solo
-# colore). Output: solo docs/infrastructure-timeline/timeline.svg
-# (versionato in questo repository).
+# colore). Ogni riga e' una card espandibile (accordion): il paragrafo che
+# segue l'intestazione nel file Markdown sorgente (il dettaglio ricostruito
+# dai .docx ingeriti) diventa il contenuto del pannello, mostrato/nascosto da
+# uno script SVG nativo che ricalcola l'altezza delle righe sottostanti.
+# Output: solo docs/infrastructure-timeline/timeline.svg (versionato).
+#
+# Nota sull'interattivita': l'accordion funziona quando l'SVG e' il documento
+# navigato direttamente, o incluso via <object>/<iframe>/inline nel DOM della
+# pagina ospite. Se la pagina esterna lo include con un tag <img>, il browser
+# disabilita gli script per motivi di sicurezza: il file resta leggibile e
+# corretto, ma le righe non si espandono in quel contesto specifico.
 #
 # Questo script NON scrive in nessun altro repository. Il sito MkDocs dei
 # progetti personali (E:\projects) e' un consumatore esterno: se vuole
@@ -15,7 +24,8 @@
 #
 # Deterministico: nessuna chiamata LLM. I titoli legacy con nomi reali sono
 # anonimizzati a valle tramite _notes/.svg-name-replacements.txt (privato);
-# un guard-rail avvisa se compare un IP privato non-placeholder.
+# un guard-rail avvisa se compare un IP privato non-placeholder (esteso anche
+# al testo dei pannelli di dettaglio).
 #
 # Uso:
 #   .\scripts\Build-TimelineSvg.ps1
@@ -84,65 +94,132 @@ function Esc([string]$s) {
     $s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;'
 }
 
-# --- Raccolta eventi -------------------------------------------------------
+# --- Estrazione paragrafi di dettaglio (per l'accordion) --------------------
+# Ripulisce il corpo Markdown tra un'intestazione "## " e la successiva:
+# scarta righe di tabella, code fence e separatori orizzontali; le
+# sottointestazioni "### " diventano paragrafi in grassetto; il resto viene
+# raggruppato in paragrafi separati da righe vuote (il word-wrap vero e
+# proprio lo fa il browser via foreignObject, qui si produce solo testo
+# pulito).
+function Get-DetailParagraphs([string[]]$bodyLines) {
+    $paras = New-Object System.Collections.Generic.List[object]
+    $cur = New-Object System.Collections.Generic.List[string]
+    $flush = {
+        if ($cur.Count -gt 0) {
+            $paras.Add([pscustomobject]@{ Text = ($cur -join ' ').Trim(); Sub = $false })
+            $cur.Clear()
+        }
+    }
+    foreach ($raw in $bodyLines) {
+        $line = $raw.TrimEnd()
+        if ($line.Trim() -eq '') { & $flush; continue }
+        if ($line -match '^\s*```') { & $flush; continue }
+        if ($line -match '^\s*-{3,}\s*$') { & $flush; continue }
+        if ($line -match '^\s*\|') { continue }   # riga di tabella markdown, salta senza chiudere paragrafo
+        if ($line -match '^\#\#\#+\s*(.+)$') {
+            & $flush
+            $paras.Add([pscustomobject]@{ Text = $Matches[1].Trim(); Sub = $true })
+            continue
+        }
+        $clean = $line -replace '\*\*','' -replace '`',''
+        $cur.Add($clean.Trim())
+    }
+    & $flush
+
+    # Budget di caratteri per pannello: tronca l'ultimo paragrafo se serve,
+    # niente riassunto: e' un troncamento meccanico, non una sintesi.
+    $maxChars = 2200
+    $total = 0
+    $out = New-Object System.Collections.Generic.List[object]
+    foreach ($p in $paras) {
+        $remaining = $maxChars - $total
+        if ($remaining -le 0) { break }
+        if ($p.Text.Length -gt $remaining) {
+            $cut = $p.Text.Substring(0, [Math]::Max(0, $remaining - 1)).TrimEnd()
+            $out.Add([pscustomobject]@{ Text = "$cut" + [char]0x2026 + " (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)"; Sub = $p.Sub })
+            break
+        }
+        $out.Add($p)
+        $total += $p.Text.Length
+    }
+    return $out
+}
+
+# --- Raccolta eventi ----------------------------------------------------------
 $events = @()
 $seq = 0
 foreach ($f in $files) {
     $path = Join-Path $tlDir $f.Name
     if (-not (Test-Path $path)) { Write-Warning "Manca $($f.Name), salto"; continue }
-    foreach ($line in (Get-Content $path -Encoding UTF8)) {
-        if ($line -match '^\#\#\s+(.+)$') {
-            $h = $Matches[1].Trim()
-            if ($h -match '^(Stato|Riepilogo|Legenda)\b') { continue }
-            $d = Parse-EventDate $h $f.Year
-            if ($null -eq $d) { continue }
-            if ($d.Y -lt $FromYear) { continue }
-            $datePart = $h; $titlePart = $h
-            $sep = $null
-            foreach ($cand in @(' - ', [char]0x2013 + ' ', ' ' + [char]0x2013 + ' ')) {
-                $idx = $h.IndexOf($cand)
-                if ($idx -gt 0 -and $idx -le 40) { $sep = $cand; break }
-            }
-            if ($sep) {
-                $idx = $h.IndexOf($sep)
-                $cand1 = $h.Substring(0, $idx).Trim()
-                $isDate = ($cand1 -match '\d') -or ($mesi.Keys | Where-Object { $cand1.ToLower().Contains($_) })
-                if ($isDate) {
-                    $datePart  = $cand1
-                    $titlePart = $h.Substring($idx + $sep.Length).Trim()
-                } else { $datePart = "" }
-            } elseif ($h -notmatch '\d') { $datePart = "" }
-            $seq++
-            $events += [pscustomobject]@{
-                Year = $d.Y; Month = $d.M; Day = $d.D; Seq = $seq
-                DateLabel = $datePart; Title = $titlePart
-            }
+    $lines = Get-Content $path -Encoding UTF8
+
+    $headingIdx = New-Object System.Collections.Generic.List[int]
+    for ($k = 0; $k -lt $lines.Count; $k++) {
+        if ($lines[$k] -match '^\#\#\s+(.+)$') { [void]$headingIdx.Add($k) }
+    }
+
+    for ($hi = 0; $hi -lt $headingIdx.Count; $hi++) {
+        $k = $headingIdx[$hi]
+        if ($lines[$k] -notmatch '^\#\#\s+(.+)$') { continue }
+        $h = $Matches[1].Trim()
+        if ($h -match '^(Stato|Riepilogo|Legenda)\b') { continue }
+        $d = Parse-EventDate $h $f.Year
+        if ($null -eq $d) { continue }
+        if ($d.Y -lt $FromYear) { continue }
+
+        $datePart = $h; $titlePart = $h
+        $sep = $null
+        foreach ($cand in @(' - ', [char]0x2013 + ' ', ' ' + [char]0x2013 + ' ')) {
+            $idx = $h.IndexOf($cand)
+            if ($idx -gt 0 -and $idx -le 40) { $sep = $cand; break }
+        }
+        if ($sep) {
+            $idx = $h.IndexOf($sep)
+            $cand1 = $h.Substring(0, $idx).Trim()
+            $isDate = ($cand1 -match '\d') -or ($mesi.Keys | Where-Object { $cand1.ToLower().Contains($_) })
+            if ($isDate) {
+                $datePart  = $cand1
+                $titlePart = $h.Substring($idx + $sep.Length).Trim()
+            } else { $datePart = "" }
+        } elseif ($h -notmatch '\d') { $datePart = "" }
+
+        $endIdx = if ($hi + 1 -lt $headingIdx.Count) { $headingIdx[$hi + 1] } else { $lines.Count }
+        $bodyLines = if (($k + 1) -le ($endIdx - 1)) { $lines[($k + 1)..($endIdx - 1)] } else { @() }
+        $detail = Get-DetailParagraphs $bodyLines
+
+        $seq++
+        $events += [pscustomobject]@{
+            Year = $d.Y; Month = $d.M; Day = $d.D; Seq = $seq
+            DateLabel = $datePart; Title = $titlePart; Detail = $detail
         }
     }
 }
 
 $events = $events | Sort-Object Year, Month, Day, Seq
 
-# --- Anonimizzazione dei titoli legacy ---------------------------------------
+# --- Anonimizzazione dei titoli legacy (estesa ai pannelli di dettaglio) -----
 $replFile = Join-Path $RepoRoot "_notes\.svg-name-replacements.txt"
 if (Test-Path $replFile) {
     $rules = Get-Content $replFile -Encoding UTF8 | Where-Object { $_ -match '==>' -and $_ -notmatch '^\s*#' }
     foreach ($e in $events) {
         foreach ($r in $rules) {
             $parts = $r -split '==>', 2
-            $e.Title = $e.Title.Replace($parts[0].Trim(), $parts[1].Trim())
-            $e.DateLabel = $e.DateLabel.Replace($parts[0].Trim(), $parts[1].Trim())
+            $from = $parts[0].Trim(); $to = $parts[1].Trim()
+            $e.Title = $e.Title.Replace($from, $to)
+            $e.DateLabel = $e.DateLabel.Replace($from, $to)
+            foreach ($p in $e.Detail) { $p.Text = $p.Text.Replace($from, $to) }
         }
     }
 } else {
     Write-Warning "File $replFile assente: i titoli legacy possono contenere nomi reali."
 }
 
-# --- Guard-rail anonimizzazione ----------------------------------------------
-$all = ($events | ForEach-Object { "$($_.DateLabel) $($_.Title)" }) -join "`n"
+# --- Guard-rail anonimizzazione (titoli + pannelli di dettaglio) -------------
+$detailAll = ($events | ForEach-Object { $_.Detail | ForEach-Object { $_.Text } }) -join "`n"
+$all = (($events | ForEach-Object { "$($_.DateLabel) $($_.Title)" }) -join "`n") + "`n" + $detailAll
 $leak = [regex]::Matches($all, '\b(192\.168\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}|10\.(?!61\.|77\.)\d{1,3}\.\d{1,3}\.\d{1,3})\b')
 if ($leak.Count -gt 0) {
-    Write-Warning "POSSIBILE IP REALE nei titoli: $($leak | ForEach-Object Value | Select-Object -Unique)"
+    Write-Warning "POSSIBILE IP REALE nei titoli o nei dettagli: $($leak | ForEach-Object Value | Select-Object -Unique)"
 }
 
 # --- Classificazione e conteggi ----------------------------------------------
@@ -151,56 +228,185 @@ $counts = @{}
 foreach ($c in $categorie) { $counts[$c.Tag] = @($events | Where-Object { $_.Cat.Tag -eq $c.Tag }).Count }
 
 # --- Layout SVG ---------------------------------------------------------------
+# Ogni blocco (fascia anno o riga evento) occupa un'altezza fissa da chiuso;
+# lo script incorporato nell'SVG ricalcola le traslazioni quando un pannello
+# si apre, misurando l'altezza reale del testo via foreignObject.
 $W = 1060; $rowH = 24; $yearH = 44; $top = 176; $bottom = 46
 $maxTitle = 96
 $years = $events | Select-Object -ExpandProperty Year -Unique
 $H = $top + $bottom + ($events.Count * $rowH) + ($years.Count * $yearH)
 
-$ink = "#1f2933"; $muted = "#616e7c"; $band = "#eef2f7"; $line = "#cbd2d9"; $accent = "#1f6391"
+$ink = "#151d20"; $muted = "#5c6d72"; $band = "#e6ede9"; $line = "#c3d0cd"; $accent = "#0e5c62"
+$fontMono  = "ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"
+$fontSerif = "Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif"
 
 $sb = New-Object System.Text.StringBuilder
-[void]$sb.AppendLine("<svg xmlns=""http://www.w3.org/2000/svg"" width=""$W"" height=""$H"" viewBox=""0 0 $W $H"" font-family=""Segoe UI, Arial, sans-serif"">")
-[void]$sb.AppendLine("<rect width=""$W"" height=""$H"" fill=""#ffffff""/>")
-[void]$sb.AppendLine("<text x=""40"" y=""42"" font-size=""22"" font-weight=""700"" fill=""$ink"">Timeline interventi infrastruttura IT</text>")
+[void]$sb.AppendLine("<svg id=""root-svg"" xmlns=""http://www.w3.org/2000/svg"" width=""$W"" height=""$H"" viewBox=""0 0 $W $H"" font-family=""$fontSerif"">")
+[void]$sb.AppendLine("<rect width=""$W"" height=""$H"" fill=""#f4f7f5""/>")
+[void]$sb.AppendLine(@"
+<style><![CDATA[
+  .ev-summary { cursor: pointer; }
+  .ev-summary rect.hit { fill: transparent; }
+  .ev-block:hover .ev-summary rect.hit { fill: $band; }
+  .ev-chevron { font-family: $fontMono; transition: transform 0.15s ease; transform-box: fill-box; transform-origin: center; fill: $muted; }
+  .ev-block.open .ev-chevron { transform: rotate(90deg); }
+  .ev-block:not(.has-detail) .ev-chevron { visibility: hidden; }
+  .d-wrap { font-family: $fontSerif; }
+  .d { font-size: 12.5px; line-height: 1.5; color: #2c3a3d; background: #ffffff; border-left: 3px solid $accent; border-radius: 0 4px 4px 0; padding: 8px 12px 10px; box-shadow: 0 1px 2px rgba(15,30,28,0.08); }
+  .d-meta { font-family: $fontMono; font-size: 10px; letter-spacing: 0.03em; text-transform: uppercase; color: #7c8b8e; margin: 0 0 6px; }
+  .d p { margin: 0 0 7px; }
+  .d p.sub { font-weight: 700; color: $ink; margin-top: 10px; }
+  .d p:last-child { margin-bottom: 0; }
+]]></style>
+"@)
+[void]$sb.AppendLine("<text x=""40"" y=""42"" font-size=""22"" font-weight=""700"" fill=""$ink"" font-family=""$fontSerif"">Timeline interventi infrastruttura IT</text>")
 $gen = Get-Date -Format "dd/MM/yyyy"
-[void]$sb.AppendLine("<text x=""40"" y=""66"" font-size=""13"" fill=""$muted"">$($events.Count) interventi documentati dal $FromYear (ingresso IT manager) - contenuto anonimizzato - generato il $gen</text>")
+[void]$sb.AppendLine("<text x=""40"" y=""66"" font-size=""13"" fill=""$muted"" font-family=""$fontMono"">$($events.Count) interventi documentati dal $FromYear (ingresso IT manager) - contenuto anonimizzato - generato il $gen - clicca una riga per il dettaglio</text>")
 
 # Legenda aree di competenza (2 righe x 4)
-[void]$sb.AppendLine("<text x=""40"" y=""96"" font-size=""12"" font-weight=""700"" fill=""$ink"">AREE DI COMPETENZA</text>")
+[void]$sb.AppendLine("<text x=""40"" y=""96"" font-size=""12"" font-weight=""700"" fill=""$ink"" font-family=""$fontMono"">AREE DI COMPETENZA</text>")
 $lx = 40; $ly = 116; $i = 0
 foreach ($c in $categorie) {
     $cx = $lx + (($i % 4) * 250); $cy = $ly + ([math]::Floor($i / 4) * 24)
     [void]$sb.AppendLine("<circle cx=""$cx"" cy=""$($cy-4)"" r=""5"" fill=""$($c.Colore)""/>")
-    [void]$sb.AppendLine("<text x=""$($cx+12)"" y=""$cy"" font-size=""12"" fill=""$ink"">$($c.Nome) <tspan fill=""$muted"">($($counts[$c.Tag]))</tspan></text>")
+    [void]$sb.AppendLine("<text x=""$($cx+12)"" y=""$cy"" font-size=""12"" fill=""$ink"" font-family=""$fontMono"">$($c.Nome) <tspan fill=""$muted"">($($counts[$c.Tag]))</tspan></text>")
     $i++
 }
 
+# --- Blocchi (fasce anno + righe evento) -------------------------------------
+# $y accumula la posizione assoluta iniziale (stato tutto chiuso); ogni
+# blocco viene disegnato in coordinate LOCALI (origine 0 = inizio del
+# blocco) dentro un <g transform="translate(0, Y)">, cosi' lo script puo'
+# ritraslare i blocchi successivi senza ridisegnare nulla.
 $y = $top
 $spineX = 178
 $curYear = $null
+$blockDescriptors = New-Object System.Collections.Generic.List[string]   # per l'array JS BLOCKS
+$evSeqId = 0
+
 foreach ($e in $events) {
     if ($e.Year -ne $curYear) {
         $curYear = $e.Year
-        $y += 10
-        [void]$sb.AppendLine("<rect x=""40"" y=""$y"" width=""$($W-80)"" height=""28"" rx=""4"" fill=""$band""/>")
-        [void]$sb.AppendLine("<text x=""54"" y=""$($y+19)"" font-size=""15"" font-weight=""700"" fill=""$accent"">$curYear</text>")
-        $y += $yearH - 10
+        $yId = "yr-$curYear"
+        [void]$sb.AppendLine("<g id=""$yId"" transform=""translate(0,$y)"">")
+        [void]$sb.AppendLine("<rect x=""40"" y=""10"" width=""$($W-80)"" height=""28"" rx=""4"" fill=""$band""/>")
+        [void]$sb.AppendLine("<text x=""54"" y=""29"" font-size=""15"" font-weight=""700"" fill=""$accent"" font-family=""$fontMono"">$curYear</text>")
+        [void]$sb.AppendLine("</g>")
+        [void]$blockDescriptors.Add("{id:'$yId',type:'year',h:$yearH}")
+        $y += $yearH
     }
+
+    $evSeqId++
+    $evId = "ev-$evSeqId"
     $t = Esc $e.Title
     if ($t.Length -gt $maxTitle) { $t = $t.Substring(0, $maxTitle - 1) + [char]0x2026 }
     $dl = Esc $e.DateLabel
     if ($dl.Length -gt 22) { $dl = $dl.Substring(0, 21) + [char]0x2026 }
-    $cy = $y - 4
-    [void]$sb.AppendLine("<line x1=""$spineX"" y1=""$($cy-$rowH+6)"" x2=""$spineX"" y2=""$($cy+6)"" stroke=""$line"" stroke-width=""2""/>")
-    [void]$sb.AppendLine("<circle cx=""$spineX"" cy=""$cy"" r=""4.5"" fill=""$($e.Cat.Colore)""/>")
-    [void]$sb.AppendLine("<text x=""$($spineX-14)"" y=""$($cy+4)"" font-size=""12"" fill=""$muted"" text-anchor=""end"">$dl</text>")
-    [void]$sb.AppendLine("<text x=""$($spineX+16)"" y=""$($cy+4)"" font-size=""13"" fill=""$ink"">$t <tspan font-size=""10"" fill=""$muted"">$($e.Cat.Tag)</tspan></text>")
+    $hasDetail = @($e.Detail).Count -gt 0
+    $detClass = if ($hasDetail) { "has-detail" } else { "" }
+    $onclick = if ($hasDetail) { "onclick=""toggleEv('$evId')""" } else { "" }
+
+    [void]$sb.AppendLine("<g id=""$evId"" class=""ev-block $detClass"" transform=""translate(0,$y)"">")
+    [void]$sb.AppendLine("<g class=""ev-summary"" $onclick>")
+    [void]$sb.AppendLine("<rect class=""hit"" x=""40"" y=""-22"" width=""$($W-80)"" height=""$rowH""/>")
+    [void]$sb.AppendLine("<line x1=""$spineX"" y1=""-22"" x2=""$spineX"" y2=""6"" stroke=""$line"" stroke-width=""2""/>")
+    [void]$sb.AppendLine("<circle cx=""$spineX"" cy=""-4"" r=""4.5"" fill=""$($e.Cat.Colore)""/>")
+    [void]$sb.AppendLine("<text x=""$($spineX-14)"" y=""0"" font-size=""12"" fill=""$muted"" text-anchor=""end"" font-family=""$fontMono"">$dl</text>")
+    [void]$sb.AppendLine("<text class=""ev-chevron"" x=""$($spineX+11)"" y=""0"" font-size=""9"" text-anchor=""middle"">&#9656;</text>")
+    [void]$sb.AppendLine("<text x=""$($spineX+26)"" y=""0"" font-size=""13"" fill=""$ink"" font-family=""$fontSerif"">$t <tspan font-size=""10"" fill=""$muted"" font-family=""$fontMono"">$($e.Cat.Tag)</tspan></text>")
+    [void]$sb.AppendLine("</g>")
+
+    if ($hasDetail) {
+        $fullDate = Esc $e.DateLabel
+        $fullTitle = Esc $e.Title
+        $paraHtml = New-Object System.Text.StringBuilder
+        foreach ($p in $e.Detail) {
+            $cls = if ($p.Sub) { " class=""sub""" } else { "" }
+            [void]$paraHtml.Append("<p$cls>" + (Esc $p.Text) + "</p>")
+        }
+        $detailWidth = $W - $spineX - 26 - 40
+        [void]$sb.AppendLine("<foreignObject id=""$evId-fo"" class=""d-wrap"" x=""$($spineX+26)"" y=""8"" width=""$detailWidth"" height=""1"" style=""display:none;overflow:visible;"">")
+        [void]$sb.AppendLine("<div xmlns=""http://www.w3.org/1999/xhtml"" class=""d"">")
+        [void]$sb.AppendLine("<p class=""d-meta"">$fullDate &#8212; $fullTitle</p>")
+        [void]$sb.AppendLine($paraHtml.ToString())
+        [void]$sb.AppendLine("</div>")
+        [void]$sb.AppendLine("</foreignObject>")
+    }
+    [void]$sb.AppendLine("</g>")
+    [void]$blockDescriptors.Add("{id:'$evId',type:'event',h:$rowH}")
     $y += $rowH
 }
-[void]$sb.AppendLine("<text x=""40"" y=""$($H-16)"" font-size=""11"" fill=""$muted"">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>")
+
+[void]$sb.AppendLine("<text id=""footer-src"" x=""40"" y=""$($H-16)"" font-size=""11"" fill=""$muted"" font-family=""$fontMono"">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>")
+
+# --- Script di interattivita' (accordion) -------------------------------------
+$blocksJs = ($blockDescriptors -join ",`n  ")
+[void]$sb.AppendLine(@"
+<script><![CDATA[
+(function () {
+  var BLOCKS = [
+  $blocksJs
+  ];
+  var TOP = $top;
+  var BOTTOM = $bottom;
+  var state = {};
+
+  function svgRoot() { return document.getElementById('root-svg'); }
+
+  function measure(id) {
+    var fo = document.getElementById(id + '-fo');
+    var inner = fo.querySelector('.d');
+    fo.style.display = 'block';
+    var scale = 1;
+    try { scale = svgRoot().getScreenCTM().a || 1; } catch (e) {}
+    var h = inner.getBoundingClientRect().height / scale;
+    return h;
+  }
+
+  function relayout() {
+    var y = TOP;
+    for (var i = 0; i < BLOCKS.length; i++) {
+      var b = BLOCKS[i];
+      var g = document.getElementById(b.id);
+      if (!g) continue;
+      g.setAttribute('transform', 'translate(0,' + y + ')');
+      y += b.h;
+      if (b.type === 'event') {
+        var st = state[b.id];
+        var fo = document.getElementById(b.id + '-fo');
+        if (st && st.open) {
+          if (st.h == null) { st.h = measure(b.id) + 14; }
+          if (fo) { fo.setAttribute('height', Math.max(1, st.h)); }
+          y += st.h;
+        } else if (fo) {
+          fo.style.display = 'none';
+        }
+      }
+    }
+    var total = Math.round(y + BOTTOM);
+    var root = svgRoot();
+    root.setAttribute('height', total);
+    var vb = (root.getAttribute('viewBox') || '0 0 $W $H').split(' ');
+    root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
+    var footer = document.getElementById('footer-src');
+    if (footer) { footer.setAttribute('y', total - 16); }
+  }
+
+  window.toggleEv = function (id) {
+    if (!state[id]) { state[id] = { open: false, h: null }; }
+    state[id].open = !state[id].open;
+    var g = document.getElementById(id);
+    if (g) { g.classList.toggle('open', state[id].open); }
+    relayout();
+  };
+
+  relayout();
+})();
+]]></script>
+"@)
 [void]$sb.AppendLine("</svg>")
 
 $enc = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText($outSvg, $sb.ToString(), $enc)
-Write-Output "SVG: $outSvg ($($events.Count) eventi dal $FromYear, $H px)"
+Write-Output "SVG: $outSvg ($($events.Count) eventi dal $FromYear, $H px, accordion attivo)"
 Write-Output ("Aree: " + (($categorie | ForEach-Object { "$($_.Tag)=$($counts[$_.Tag])" }) -join " "))
