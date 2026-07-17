@@ -168,7 +168,7 @@ asopranzi@intrawelt.com richiedono il codice SMS a 6 cifre come secondo fattore.
 
 ## 04/02/2025 - Aggiornamento Fibercop: nessuna data precisa
 
-Referente-Fibercop-1 (referente-fibercop-1@fibercop.com) aggiorna: "Buongiorno sig.
+Referente-Fibercop-1 aggiorna: "Buongiorno sig.
 Alessio, in questa fase ancora non e' possibile darle un indicazione puntuale, ma
 di sicuro faremo di tutto per consegnare il rilegamento richiesto nel piu' breve
 tempo possibile." Stessa comunicazione inviata due volte nella stessa data.
