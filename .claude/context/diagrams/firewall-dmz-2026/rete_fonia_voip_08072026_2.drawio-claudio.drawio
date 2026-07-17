@@ -86,6 +86,10 @@
         <mxCell id="steps" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacing=8;fontSize=10" value="&lt;b&gt;ORDINE IMPLEMENTAZIONE (1-2 hitless)&lt;/b&gt;&lt;br&gt;1. VLAN 100 + tagging trunk su GS2220-50HP (P2)&lt;br&gt;2. VLAN 100 + tagging trunk su GS2220-28HP (PT)&lt;br&gt;3. FLEX 500: interfaccia VLAN 100, DHCP, zona VOICE, policy, SIP ALG off&lt;br&gt;4. Porte telefoni: access VLAN 100 + PoE priority&lt;br&gt;5. Collegamento telefoni e verifica provisioning cloud" vertex="1">
           <mxGeometry height="110" width="420" x="560" y="720" as="geometry" />
         </mxCell>
+
+        <mxCell id="note1707" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fadbd8;strokeColor=#c0392b;align=left;spacing=8;fontSize=10;fontStyle=1" value="&lt;b&gt;NON APPLICATO — divergenza confermata 17/07/2026&lt;/b&gt;&lt;br&gt;Questo diagramma resta un target alternativo mai realizzato: la fonia Vianova effettivamente implementata usa la VLAN 2 (non 100), con DHCP+gateway forniti da Vianova sulla porta 8 del 54HP (PVID 2, isolata dal firewall, FW-012) e non un'interfaccia/DHCP sul FLEX 500. Topologia dorsale (trunk diretto PT↔P2 + QNAP come ramo separato) confermata in rete_stato_attuale_17072026.drawio; il piano VLAN 100 qui sopra resta storico." vertex="1">
+          <mxGeometry height="130" width="420" x="30" y="440" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

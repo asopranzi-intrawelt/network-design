@@ -103,6 +103,10 @@
             <mxPoint x="917" y="530" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+
+        <mxCell id="note1707" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eafaf1;strokeColor=#1e8449;align=left;spacing=8;fontSize=10" value="&lt;b&gt;Superato il 17/07/2026&lt;/b&gt;&lt;br&gt;Snapshot storico pre-intervento.&lt;br&gt;Stato corrente confermato in&lt;br&gt;rete_stato_attuale_17072026.drawio&#58;&lt;br&gt;la dorsale PT↔P2 e' oggi un trunk&lt;br&gt;diretto, il QNAP resta un ramo&lt;br&gt;separato per NAS/postazioni." vertex="1">
+          <mxGeometry height="110" width="220" x="900" y="70" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

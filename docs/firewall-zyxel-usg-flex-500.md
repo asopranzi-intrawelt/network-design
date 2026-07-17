@@ -103,6 +103,15 @@ verso lo switch per la nuova architettura DMZ.
 **guest** (ge7/P8 nella config corrente - nota: l'etichetta "OPT" in zona):
 10.61.90.1/24. DNS Google (8.8.8.8, 8.8.4.4). Zona ospiti.
 
+**vlan40** (interfaccia taggata 802.1Q su base port `lan1`, nessuna porta
+fisica dedicata): 10.61.40.1/24, zona **WIFI_STAFF** dedicata (creata e
+assegnata il 16/07/2026, spostata dalla zona di default LAN1 subito dopo
+la creazione). Applicata realmente sul dispositivo lo stesso giorno
+tramite GUI, verificata su screenshot (Object > Zone: WIFI_STAFF con
+`vlan40` come unico membro, LAN1 tornata a contenere solo `lan1`). Vedi
+§Fase A rete Wi-Fi (M13a) piu' sotto per il piano completo e la security
+policy associata, ancora da applicare al momento di questa nota.
+
 ---
 
 ## Rotte statiche
@@ -176,11 +185,19 @@ Vianova la WAN2 non e' piu' utilizzata; puntava all'host interno
 10.61.100.2 su wan2, presumibilmente un server VPN di autenticazione
 remota legacy).
 
-**Disallineamento**: le secure-policy 8, 9, 10 (DOMV_WEB, DEMO_SERVER_WEB,
-EGETRAD_WEB) sono attive ma i corrispondenti virtual server sono deactivate.
-Le regole di firewall non producono traffico senza il NAT in ingresso.
-Per riattivare la pubblicazione basta togliere `deactivate` dal virtual server;
-se la pubblicazione non e' desiderata, disattivare anche le secure-policy.
+**Disallineamento (RISOLTO il 16/07/2026)**: le secure-policy 8, 9, 10
+(DOMV_WEB, DEMO_SERVER_WEB, EGETRAD_WEB) erano attive ma i corrispondenti
+virtual server sono deactivate da tempo — nessun traffico reale prodotto
+senza il NAT in ingresso, ma un rischio latente se il NAT fosse mai stato
+riattivato per errore. Durante la sessione di pulizia per M13a, l'utente ha
+verificato e rimosso non solo queste tre ma anche altre quattro regole
+nella stessa condizione (`EGETRAD_WEB_TEST`, `NAS_HERO_SUPPORT`,
+`NAS_HERO_SUPPORT2`, `NAS_FTP_WEB` — le ultime due coerenti con
+`NAS_FTP_WEB`/`NAS_HERO_SUPPORT` gia' elencate sopra tra i virtual server
+deactivate), piu' due regole di egress nominative per due postazioni
+specifiche (non legate al disallineamento NAT, verificate separatamente
+dall'utente come non piu' necessarie). Rimosse 9 secure-policy in totale,
+applicate sul dispositivo lo stesso giorno.
 
 **Pianificato (revisione 05/06/2026):**
 - `DMZ_WEB_HTTPS`: wan1:2 (203.0.113.3) -> SRV-DMZ-WEB (10.61.201.10) porta 443.
@@ -190,8 +207,16 @@ se la pubblicazione non e' desiderata, disattivare anche le secure-policy.
 
 ## Security policy
 
-34 regole attive + default-deny (action deny log alert).
-Organizzate per coppia di zone (sorgente, destinazione).
+Stato al 19/05/2026 (backup di riferimento): 34 regole attive +
+default-deny (action deny log alert). **Aggiornato il 16/07/2026**: 9
+regole rimosse durante la pulizia per M13a (vedi §NAT e virtual server,
+Disallineamento risolto), poi 2 regole nuove aggiunte per la VLAN 40
+(`WIFI_STAFF_to_LAN1_deny` priorita' 1, `WIFI_STAFF_Outgoing` priorita' 2 —
+l'ordine e' stato invertito una volta per errore in fase di creazione e
+corretto con "Move" prima di Apply, stesso principio dell'anomalia FW-001:
+il motore valuta dall'alto in basso e si ferma alla prima corrispondenza)
+— **27 regole attive** dopo l'applicazione. Organizzate per coppia di zone
+(sorgente, destinazione).
 
 **Regola 1 - Anomalia critica**: `Blocco_Gruppo_IP_Phishing_Elisa`
 - Sorgente: WAN. Action: **allow** (dovrebbe essere deny).
@@ -217,6 +242,8 @@ Struttura generale:
 - Guest -> LAN: deny
 - DMZ -> LAN: deny log alert (nuova regola, revisione 05/06/2026)
 - DMZ -> WAN: allow (aggiornamenti e certificati)
+- WIFI_STAFF -> LAN1: deny log (nuova regola, M13a, 16/07/2026 — isolamento Wi-Fi staff da NET-005)
+- WIFI_STAFF -> WAN/altre zone: allow (nuova regola, M13a, 16/07/2026 — uscita generale, stesso pattern di LAN1_Outgoing)
 
 ---
 
@@ -290,6 +317,156 @@ interface dmz
 
 **Prima VM DMZ**: nginx reverse proxy a 10.61.201.10, esposto su wan1:2 (203.0.113.3).
 
+---
+
+## Fase A rete Wi-Fi (M13a): piano firewall per VLAN 40
+
+VLAN confermata dall'utente il 15/07/2026: **40**. Lato switch, l'assegnazione
+delle tre porte AP e' automatizzata da `scripts/Set-NebulaWifiVlan.ps1`
+(dry-run di default, ADR-010); la propagazione sulla dorsale non serve, e'
+gia' verificato sui dati reali che ogni porta di entrambi gli switch ha
+`allowedVLAN: "all"` — nessun filtro per numero di VLAN, qualunque VLAN
+taggata attraversa gia' ogni collegamento inter-switch, dorsale compresa.
+Lato firewall non esiste un canale API (vedi nota piu' sotto): il piano
+seguente va applicato a mano, con lo stesso metodo gia' verificato per M1 —
+GUI passo passo con screenshot di conferma
+(`.claude/rules/manual-screenshots.md`), non incolla di comandi CLI grezzi
+in una sessione SSH.
+
+### Interfaccia VLAN 40
+
+Indirizzamento coerente con la convenzione del progetto (ottetto = ID VLAN,
+vedi `.claude/rules/anonymization.md`): **10.61.40.0/24**, gateway
+**10.61.40.1**. Sintassi di riferimento nello stesso idioma verificato di
+questo dispositivo (estratto dalla configurazione target 05/06/2026, sezione
+DMZ sopra):
+
+```
+interface vlan40
+  ip address 10.61.40.1 255.255.255.0
+  type internal
+  mtu 1500
+  ip dhcp-pool WIFI40_POOL start 10.61.40.10 count 200 lease 1
+```
+
+**DHCP applicato realmente il 16/07/2026** (GUI, Edit VLAN > Show Advanced
+Settings > DHCP Setting — sezione non ovvia, nascosta dietro un link non
+espanso di default, stessa cautela delle altre GUI di questo progetto):
+DHCP Server, IP Pool Start Address `10.61.40.10`, Pool Size `200`, First
+DNS `8.8.8.8`, Second DNS `1.1.1.1` (stesso principio del DNS pubblico gia'
+usato per la rete Guest, ma Cloudflare al posto del secondo DNS Google),
+Default Router auto su `vlan40 IP`, Lease Time **2 giorni** (coerente con
+`LAN1_POOL`). Nessun DNS interno configurato: se i client Wi-Fi staff
+dovessero risolvere nomi interni (NAS, server) andra' rivisto.
+
+Percorso GUI equivalente (Network > Interface > VLAN > Add): VLAN ID 40, IP
+sopra. **Porta fisica sottostante (corretto 15/07/2026, la versione
+precedente di questa nota era imprecisa)**: tutte le 8 porte fisiche del
+firewall sono gia' assegnate (nessuna porta libera come per la DMZ, che ha
+una P7 dedicata), quindi vlan40 va legata allo stesso port-group **lan1**
+(P4/P5/P6) gia' in uso per la LAN principale, come interfaccia taggata sullo
+stesso cavo fisico. Verificato che questo funziona senza toccare lo switch:
+la porta 33 del 54HP (dove termina la P4 del firewall, `network-diagram.md`)
+ha anch'essa `allowedVLAN: "all"` — il tag 802.1Q per la VLAN 40 attraversa
+gia' quel collegamento, lan1 (nativa/untagged) e vlan40 (taggata) condividono
+lo stesso cavo senza interferire, esattamente come qualunque coppia
+nativo+taggato su un trunk 802.1Q. **Zona**: da assegnare dal menu a tendina
+della GUI al momento della creazione, non ipotizzata qui in CLI — il dump
+consultato non mostra la riga `zone` per le interfacce esistenti in forma
+scriptabile certa, e sbagliare la zona a mano libera invaliderebbe la regola
+di security policy successiva senza errore visibile. Suggerimento: una zona
+dedicata (es. `WIFI_STAFF`), non la stessa della VLAN 90 Guest/IoT legacy ne'
+la zona LAN1.
+
+### Security policy (ACL di isolamento)
+
+Sintassi verificata sullo stesso dispositivo (stessa forma delle regole
+applicate per M1, `firewall-zyxel-usg-flex-500-live.conf`):
+
+```
+secure-policy N
+ name Wifi40_to_LAN1_deny
+ from WIFI_STAFF
+ to LAN1
+ sourceip any
+ destinationip any
+ action deny
+ log alert
+```
+
+`WIFI_STAFF` e `LAN1` vanno confermati con i nomi zona reali scelti/esistenti
+sulla GUI (LAN1 e' presumibilmente il nome della zona che ospita l'interfaccia
+lan1/10.61.10.0/19, coerente con "VLAN 10 management" citata in NET-005 e
+GAP-TBC, ma non riletto da un dump di zone completo in questa sessione: da
+confermare sulla pagina Object > Zone prima di creare la regola). `N` e' il
+primo numero di regola libero in Policy Control al momento dell'intervento,
+da inserire PRIMA di qualunque regola generica "LAN -> WAN: allow" che
+altrimenti la precederebbe nell'ordine di valutazione (stesso principio
+dell'anomalia FW-001: il motore si ferma alla prima corrispondenza).
+
+### Checklist di applicazione
+
+Ordine corretto per non scollegare un AP live prima che il resto sia pronto
+(verificato il 15/07/2026: niente pre-creazione VLAN necessaria, il PVID in
+Nebula e' un campo libero — vedi ADR-010). **Aggiornamento stesso giorno**:
+verificato sui dati reali che ogni porta di entrambi gli switch, dorsale
+inclusa, ha gia' `allowedVLAN: ["all"]` — la VLAN 40 attraversa gia' il
+collegamento tra i due switch senza bisogno di modifiche esplicite sui
+trunk (`Set-NebulaWifiVlan.ps1 -Only Trunk` risulta a zero modifiche, passo
+verificato ma non piu' necessario). Il passo 1 originale (propagazione
+trunk) e' quindi saltato:
+
+1. **Fatto 16/07/2026.** Interfaccia `vlan40` creata sul firewall via GUI
+   (Base Port lan1, IP 10.61.40.1/24), zona dedicata `WIFI_STAFF` creata e
+   assegnata (spostata dalla zona di default LAN1). DHCP configurato nella
+   stessa sessione (era rimasto su "None" al primo giro, corretto prima di
+   proseguire): pool 10.61.40.10-209, DNS 8.8.8.8/1.1.1.1, lease 2 giorni.
+2. **Fatto 16/07/2026.** Security policy create: `WIFI_STAFF_to_LAN1_deny`
+   (priorita' 1) e `WIFI_STAFF_Outgoing` (priorita' 2, allow verso
+   WAN/altre zone) — ordine corretto con "Move" dopo un primo tentativo
+   invertito, verificato prima di Apply. In parallelo, pulizia di 9
+   secure-policy disattivate non piu' necessarie (vedi §NAT e virtual
+   server, Disallineamento risolto).
+3. **Tentato e ripristinato 16/07/2026.** `Set-NebulaWifiVlan.ps1 -Only
+   Access -ApName <nome> -Apply` eseguito una porta alla volta, ciascuna
+   verificata correttamente lato switch (portVid/allowedVLAN, tabella MAC
+   L2) — ma entro pochi minuti l'SSID ha smesso di essere trasmesso dai
+   tre AP, confermato con due dispositivi diversi. Rollback immediato
+   (`-VlanId 1 -Apply`) e servizio Wi-Fi confermato tornato. Dettaglio
+   completo, ipotesi di causa e conseguenze per la roadmap in
+   `runbook-anomalie.md` §NET-005 "Incidente 16/07/2026". La configurazione
+   di questo file (passi 1-2) resta applicata e valida per un nuovo
+   tentativo.
+4. Da rifare con procedura piu' prudente (presenza fisica a un AP alla
+   volta, finestra di osservazione piu' lunga, eventuale power-cycle
+   manuale) oppure con un meccanismo che non tocchi il PVID della porta AP
+   (es. `Layer 2 Isolation` del firewall, non ancora esplorato) prima di
+   poter completare i passi seguenti.
+5. Verificare che un client sulla Wi-Fi raggiunga Internet ma non un host
+   noto della LAN1 (es. non risponda a un ping verso 10.61.10.1).
+6. Aggiornare `network-diagram.md`, `GAP-TBC.md` (NET-005) e la timeline;
+   registrare il commit come singolo micro-step (M13a) secondo
+   `.claude/rules/git-commands-format.md`.
+
+Nota di sicurezza residua (non risolta da questo intervento, vedi
+`runbook-anomalie.md` §NET-005 "Correzioni emerse eseguendo Fase A"):
+`allowedVLAN: "all"` universale su ogni porta e' un limite di postura L2
+preesistente su tutta la rete, non solo sul perimetro Wi-Fi — irrigidirlo
+ovunque e' un hardening a parte, non bloccante per M13a.
+
+### Perche' non un'API per il firewall
+
+Verificato il 15/07/2026 (due fetch della documentazione ufficiale Nebula
+OpenAPI + controllo dell'inventario dispositivi in `output/nebula-config.md`):
+questo firewall non e' adottato in Nebula (solo i due switch compaiono come
+dispositivi dell'organizzazione) e gira in modalita' standalone ZLD classica,
+senza alcuna API REST nello stato attuale. L'unico canale scriptabile
+esistente e' l'SSH amministrativo gia' attivo (riga precedente, 2FA Google
+Authenticator, validita' 5 minuti): richiede un umano per il secondo fattore
+a ogni sessione, quindi non e' automatizzabile end-to-end come lo script
+Nebula. Da qui la scelta di un piano scritto passo-passo invece di uno script
+che si autentica e scrive da solo (ADR-010).
+
 ### Sequenza di applicazione: le sei fasi (LE SEI FASI.txt, 05/06/2026)
 
 Il piano operativo (`Piano_Operativo_Migrazione.docx`) organizza l'applicazione
@@ -356,13 +533,17 @@ Diagrammi prodotti durante l'analisi del 29/05-05/06/2026, archiviati in
 | `rete_stato_target_05062026.drawio` | 05/06/2026 | Topologia di rete completa nello stato target |
 | `topologia_stella_lan_dmz_proxmox_05062026.svg` | 05/06/2026 | Topologia a stella LAN/DMZ/Proxmox del piano finale |
 | `rete_stato_target_08072026.drawio` | 08/07/2026 | Revisione dello stato target: secondo trunk 802.1Q tra lo switch 30 porte (Piano Terra) e il 54 porte (Piano 2) che porta la VLAN dati del Piano Terra e la VLAN fonia (ID fissato a 100 dal diagramma fonia sotto; aperti NET-008 e TEL-002) |
-| `rete_fonia_voip_08072026_2.drawio-claudio.drawio` | 08/07/2026 | Target fonia VoIP (prodotto dall'utente): VLAN 100 fonia (10.61.100.0/24), interfaccia VLAN 100 su ge5 del FLEX 500 con zona VOICE, DHCP sul firewall e SIP ALG disattivato; trunk VLAN 1 untagged + VLAN 100 tagged su entrambi gli switch e sulla fibra di dorsale; porte telefoni access PVID 100 con PoE priority High (3 al Piano 2, 2 al Piano Terra); PBX cloud, telefoni in uscita via WAN; ordine di implementazione in cinque step (1-2 hitless). Nota: i modelli sono etichettati GS2220-50HP/28HP, altrove documentati come XGS2220-54HP/30HP — refuso probabile. Rispetto allo stato attuale (FW-012: DHCP fonia Vianova isolato dal firewall) questo target sposta DHCP e policy della fonia sul firewall: converge con M11/M12 |
+| `rete_fonia_voip_08072026_2.drawio-claudio.drawio` | 08/07/2026 | Target fonia VoIP (prodotto dall'utente): VLAN 100 fonia (10.61.100.0/24), interfaccia VLAN 100 su ge5 del FLEX 500 con zona VOICE, DHCP sul firewall e SIP ALG disattivato; trunk VLAN 1 untagged + VLAN 100 tagged su entrambi gli switch e sulla fibra di dorsale; porte telefoni access PVID 100 con PoE priority High (3 al Piano 2, 2 al Piano Terra); PBX cloud, telefoni in uscita via WAN; ordine di implementazione in cinque step (1-2 hitless). Nota: i modelli sono etichettati GS2220-50HP/28HP, altrove documentati come XGS2220-54HP/30HP — refuso probabile. Rispetto allo stato attuale (FW-012: DHCP fonia Vianova isolato dal firewall) questo target sposta DHCP e policy della fonia sul firewall: converge con M11/M12. **Annotato 17/07/2026 come non applicato**: la fonia realmente implementata resta su VLAN 2 con DHCP Vianova sulla porta 8 del 54HP, non su VLAN 100/firewall |
+| `rete_stato_attuale_17072026.drawio` | 17/07/2026 | Topologia corrente confermata dall'utente (corroborata da screenshot del pannello porte Nebula del 54HP): la dorsale Piano Terra <-> Piano 2 e' un trunk 802.1Q diretto tra i due switch XGS2220 (porta 52 del 54HP, VLAN dati PT untagged + VLAN 2 fonia tagged); il QNAP QSW-1208-8c non e' un hop intermedio, resta un ramo separato sulla porta 51 verso NAS fleet e le postazioni a 10 Gbps (invariato). Riporta anche gli aperti: porta 6 del 54HP con PVID 2 come la porta 8 ma ruolo non confermato, e i due telefoni IP del Piano Terra non visibili (TEL-002). Supera, per la sola parte di dorsale/QNAP, sia `rete_stato_attuale_29052026.drawio` sia `rete_stato_target_08072026.drawio` |
 
-Nota: i diagrammi "target" descrivono lo stato pianificato, non ancora applicato
-(vedi sezione precedente). Il consolidamento in un unico diagramma Mermaid
-versionato in `.claude/context/diagrams/network-topology.mmd` e' rimandato al
-termine della fase di ottimizzazione, per non ricostruirlo a ogni singolo
-micro-intervento (vedi `.claude/context/roadmap.md`).
+Nota: i diagrammi "target" descrivono lo stato pianificato: alcuni sono stati
+nel frattempo confermati come applicati (la dorsale diretta PT<->P2 e il QNAP
+come ramo separato, vedi `rete_stato_attuale_17072026.drawio`), altri restano
+non applicati (il disegno VLAN 100/DHCP-su-firewall della fonia). Il
+consolidamento in un unico diagramma Mermaid versionato in
+`.claude/context/diagrams/network-topology.mmd` e' rimandato al termine della
+fase di ottimizzazione, per non ricostruirlo a ogni singolo micro-intervento
+(vedi `.claude/context/roadmap.md`).
 
 ---
 

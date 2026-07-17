@@ -867,6 +867,43 @@ attraverso il vano ascensore non passano le VLAN, causa non compresa.
 [TBC: topologia esatta del tratto che attraversa il vano ascensore, da
 chiarire con il racconto finale.]
 
+## 17/07/2026 - Chiarita la topologia dorsale/QNAP, aggiornati i diagrammi
+
+Fonte: comunicazione verbale dell'utente in sessione, corroborata da uno
+screenshot del pannello porte Nebula dello switch XGS2220-54HP.
+
+Chiarita la topologia fisica tra i due switch Piano Terra/Piano 2 e il QNAP
+QSW-1208-8c, che restava ambigua nelle fonti precedenti (la sostituzione dei
+connettori SFP+ dell'08/05/2026 descriveva il vecchio connettore dorsale come
+posizionato "sopra al QNAP", lasciando aperta l'ipotesi che il QNAP fosse un
+hop intermedio sul collegamento switch-switch). Confermato: dallo switch
+XGS2220-54HP (Piano 2) partono due fibre SFP+ 10 Gbps separate, la porta 52
+verso lo switch XGS2220-30HP (Piano Terra, dorsale diretta, trunk 802.1Q con
+VLAN dati Piano Terra untagged e VLAN 2 fonia tagged) e la porta 51 verso il
+QNAP QSW-1208-8c, che resta un ramo a parte per NAS fleet e le postazioni a
+10 Gbps, invariato rispetto a prima. Il secondo collegamento diretto PT<->P2,
+pianificato l'08/07/2026 (vedi sopra), risulta oggi attivo.
+
+Confermato anche, sulla porta 8 del 54HP (Vianova DHCP fonia, PVID 2,
+FW-012), che una seconda porta dello stesso switch, la porta 6, condivide lo
+stesso PVID 2: il ruolo di questa porta non e' confermato, il pannello
+d'insieme di Nebula mostra solo velocita'/PoE/uplink per porta, non il PVID
+assegnato. Resta aperto anche il sintomo di TEL-002: i due telefoni IP del
+Piano Terra, collegati a porte dello switch XGS2220-30HP stesso (non solo al
+tratto del vano ascensore come descritto il 07/07), non risultano visibili
+neppure dopo la conferma del trunk diretto; non e' chiaro se il sintomo
+precede o segue l'attivazione di quel collegamento.
+
+Aggiornati di conseguenza: `GAP-TBC.md` (NET-008 #102, TEL-002 #103 e nuova
+voce #116), `docs/network-diagram.md` (topologia ASCII e VLAN), e i
+diagrammi in `.claude/context/diagrams/firewall-dmz-2026/` — nuovo
+`rete_stato_attuale_17072026.drawio` con la topologia corrente, note di
+aggiornamento aggiunte a `rete_stato_attuale_29052026.drawio`,
+`rete_stato_target_08072026.drawio` e `rete_fonia_voip_08072026_2.drawio-claudio.drawio`
+per marcare cosa e' confermato e cosa resta un target non applicato
+(in particolare la fonia su VLAN 100/DHCP-firewall di quest'ultimo, mai
+realizzata: l'implementazione reale usa VLAN 2 e DHCP Vianova sulla porta 8).
+
 ## 08/07/2026 - Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino
 
 Eseguito `Get-ProxmoxSnapshot.ps1` sul nodo (primo re-run dopo la v3;
@@ -884,3 +921,32 @@ Invariati: firewall cluster inattivo senza regole, bridge non VLAN-aware
 cluster riporta come IP del nodo l'indirizzo della iLO5). Riconciliati i
 gap #106 (popolazione VM) e #107 (gli host IntraLino .58/.60 non sono VM
 del nodo). Scheda `design-and-security.md` aggiornata alla v4.
+
+## 16/07/2026 - Fase A Wi-Fi (M13a): applicata, incidente di 15 minuti, ripristinata
+
+Applicata la segmentazione Wi-Fi staff pianificata il 15/07 (VLAN 40,
+decisione Fase A/Fase B di NET-005/AP-001): interfaccia dedicata sul
+firewall USG FLEX 500 (con pool DHCP), zona e regole di sicurezza
+create e verificate, poi le tre porte switch dei tre access point noti
+(PianoTerra, PianoPrimo, PianoSecondo) spostate una alla volta sulla
+nuova VLAN tramite script dedicato, ciascuna verificata subito dopo via
+rilettura diretta dello switch.
+
+Entro pochi minuti dall'ultima porta applicata, la rete Wi-Fi ha smesso
+di essere visibile del tutto (non solo irraggiungibile) su due
+dispositivi diversi, mentre i dati letti dallo switch (collegamento
+fisico attivo, alimentazione PoE, impostazioni di porta corrette)
+non mostravano alcuna anomalia — segno che il problema viveva
+nell'access point stesso, non nello switch. Dato che i tre access point
+restano inaccessibili (credenziali perse, nessuna dashboard, vedi
+AP-001), non è stato possibile determinare la causa esatta. Ripristinate
+le tre porte alla configurazione precedente con lo stesso strumento
+usato per applicarle: servizio Wi-Fi confermato tornato entro un quarto
+d'ora dalla prima segnalazione.
+
+La configurazione lato firewall (interfaccia, zona, DHCP, regole di
+sicurezza) resta applicata e valida per un nuovo tentativo. L'episodio
+rafforza, con una prova pratica, la decisione già presa di pianificare
+la sostituzione dei tre access point invece di continuare a farli
+convivere con altri interventi di rete. Dettaglio tecnico completo in
+`docs/runbook-anomalie.md` §NET-005.

@@ -80,6 +80,10 @@
         <mxCell id="note0807" value="&lt;b&gt;Rev 08/07/2026&lt;/b&gt;&lt;br&gt;Secondo collegamento PT↔P2:&lt;br&gt;trunk 802.1Q con VLAN dati del&lt;br&gt;Piano Terra e VLAN fonia = VLAN 100&lt;br&gt;(dettaglio nel diagramma&lt;br&gt;rete_fonia_voip_08072026_2). Aperti:&lt;br&gt;NET-008 (VLAN 1 non taggabile sulla&lt;br&gt;dorsale senza perdere il NAS-HERO),&lt;br&gt;TEL-002 (tratto vano ascensore)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef9e7;strokeColor=#b7950b;align=left;spacing=8;fontSize=10" vertex="1" parent="1">
           <mxGeometry x="40" y="240" width="240" height="150" as="geometry" />
         </mxCell>
+
+        <mxCell id="note1707" value="&lt;b&gt;Aggiornamento 17/07/2026&lt;/b&gt;&lt;br&gt;Il secondo collegamento PT↔P2&lt;br&gt;qui pianificato e' confermato&lt;br&gt;dall'utente come gia' attivo:&lt;br&gt;vedi rete_stato_attuale_17072026.&lt;br&gt;drawio per la topologia corrente&lt;br&gt;(dorsale diretta + QNAP come&lt;br&gt;ramo separato). L'ID VLAN fonia&lt;br&gt;resta 2 (Vianova, porta 8 del&lt;br&gt;54HP), non 100: il target VLAN&lt;br&gt;100/DHCP-su-firewall qui sotto&lt;br&gt;NON e' quello implementato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eafaf1;strokeColor=#1e8449;align=left;spacing=8;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="850" y="60" width="240" height="180" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
