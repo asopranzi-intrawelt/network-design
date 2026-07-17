@@ -37,40 +37,56 @@ INTERNET
                │ 1 Gbps copper (collo di bottiglia vs backbone 10G)
                │ P4 → porta 33 switch Piano 2
                ▼
-   ┌────────────────────────────────────────────────────────────────────────┐
-   │  Switch Piano 2 – Zyxel XGS2220-54HP  (Nebula managed)                │
-   │  10.61.20.x/24 management                                            │
-   │  VLAN trunk: tutte le VLAN ammesse                                     │
-   │  Porta 33 = uplink firewall (1G copper)                                │
-   │  Porta 52 = SFP+ 10G uplink → Switch Piano Terra                       │
-   └────────────────────────────────────────────────────────────────────────┘
-          │                    │                    │
-          │ 10G SFP+           │ Gigabit            │ Gigabit
-          ▼                    ▼                    ▼
-   ┌─────────────┐   ┌─────────────────────┐   ┌──────────────────────────┐
-   │ Switch       │   │  NAS Fleet           │   │  Server / Proxmox        │
-   │ Piano Terra  │   │  10.61.20.x/24     │   │  10.61.20.11           │
-   │ XGS2220-30HP │   │                      │   │                          │
-   │ (apr 2026)   │   │  HERO   .169 QNAP    │   │  HP G5 (Proxmox host)    │
-   │              │   │  INTRA  .168 QNAP    │   │  HP G9 (spento 19/12/24) │
-   │ PoE+ 400W    │   │  INTRA2 .177 10GbE   │   │  WINGROUPSHARE .3        │
-   │              │   │  INTRA3 .172         │   │  (10.77.116.3 GroupShare)  │
-   │ 0-7-1 AP PT  │   │  DOC    .170 HPX1400 │   │                          │
-   │ 0-9-1 AP tetto│  │                      │   │  VM Seeweb IaaS (cloud)   │
-   │ 0-10-1 BioStar│  │  10G link INTRA2 ─── │   │  domv.intrawelt.com       │
-   │    .20.199   │   │    ─ XGS2220-54HP     │   │                          │
-   │              │   └─────────────────────┘   └──────────────────────────┘
-   │ Piano 0 utenti│
-   └─────────────┘
+   ┌──────────────────────────────────────────────────────────────┐
+   │  Switch Piano 2 – Zyxel XGS2220-54HP  (Nebula managed)        │
+   │  10.61.20.x/24 management, VLAN trunk: tutte le VLAN ammesse  │
+   │  Porta 33 = uplink firewall (1G copper)                       │
+   │  Porta 52 = SFP+ 10G, dorsale diretta -> Switch Piano Terra   │
+   │  Porta 51 = SFP+ 10G, verso QNAP QSW-1208-8c (ramo separato)  │
+   │  Porta 8  = Vianova DHCP+gateway fonia, PVID 2 (FW-012)       │
+   │  Porta 6  = PVID 2 come porta 8, ruolo da chiarire (aperto)   │
+   └──────────────────────────────────────────────────────────────┘
+          │                                    │
+          │ Porta 52: dorsale diretta,          │ Porta 51: ramo separato,
+          │ trunk VLAN dati PT untagged         │ non piu' inline sulla dorsale
+          │ + VLAN 2 fonia tagged               │
+          │ (confermato 17/07/2026)             │
+          ▼                                    ▼
+   ┌─────────────────────────┐        ┌───────────────────────────┐
+   │ Switch Piano Terra       │        │  QNAP QSW-1208-8c          │
+   │ XGS2220-30HP (apr 2026)  │        │  (unmanaged, 10 GbE)        │
+   │ PoE+ 400W                │        └──────────┬──────────┬─────┘
+   │ 0-7-1 AP PT              │                   │          │
+   │ 0-9-1 AP tetto           │                   ▼          ▼
+   │ 0-10-1 BioStar .20.199   │         ┌───────────────┐ ┌──────────────────┐
+   │ Piano 0 utenti           │         │  NAS Fleet     │ │ Server / Proxmox │
+   │ 2× telefoni IP: non      │         │  10.61.20.x    │ │ 10.61.20.11      │
+   │ visibili (TEL-002)       │         │  HERO   .169   │ │ HP G5 (Proxmox)  │
+   └─────────────────────────┘         │  INTRA  .168   │ │ HP G9 (spento)   │
+                                        │  INTRA2 .177   │ │ WINGROUPSHARE .3 │
+                                        │  (10GbE)       │ │ (GroupShare)     │
+                                        │  INTRA3 .172   │ │ VM Seeweb IaaS   │
+                                        │  DOC    .170   │ │ domv.intrawelt.com│
+                                        └───────────────┘ └──────────────────┘
 
    Piano 1 (AP 1-8-1, postazioni Persona-A/Persona-B/Alessio)
    Piano 2 (AP 2-5-1 CED, AP 2-7-1 tetto esterno)
 
    Yealink IP phones (Voice VLAN 2, LLDP-MED, CoS 5 / DSCP 46):
-     T34W Piano Terra: Persona-A 1-1, Persona-B 1-2, Persona-C 0-x
-     T31G Piano 2:     Persona-D 2-x, Sala-1 2-x
+     T34W Piano Terra: Persona-A 1-1, Persona-B 1-2, Persona-C 0-x (operativi)
+     T31G Piano 2:     Persona-D 2-x, Sala-1 2-x (operativi)
+     2× IP Piano Terra: non visibili, causa non isolata (TEL-002)
      PBX cloud Vianova [TBC: transizione in corso]
 ```
+
+Nota fisica confermata dall'utente il 17/07/2026, corroborata da uno screenshot del
+pannello porte Nebula del 54HP (porta 33 con icona uplink, porte 3/5/44 con icona PoE,
+porte 51 e 52 a 10 Gbps): il QNAP QSW-1208-8c non e' un hop intermedio sulla dorsale.
+Dalla porta 51 dello switch Piano 2 parte un ramo a 10 Gbps dedicato verso il QNAP, che
+aggrega NAS fleet e le postazioni ad alta velocita' senza toccare il traffico dati/fonia
+diretto verso il Piano Terra sulla porta 52. Il pannello d'insieme di Nebula non mostra
+il PVID di ciascuna porta, quindi il ruolo della porta 6 (che condivide il PVID 2 con la
+porta 8 Vianova) resta da chiarire con una vista di dettaglio della porta stessa.
 
 ---
 
@@ -86,15 +102,27 @@ INTERNET
 | Fonia (target) | 100 | 10.61.100.0/24 | Telefoni IP centralino cloud | Target 08/07/2026: zona VOICE su FLEX 500 (interfaccia ge5, gw .1), DHCP sul firewall, SIP ALG off. Non ancora applicato |
 | DMZ | 201 | [TBC] | Segmento DMZ pianificato | VLAN 802.1Q su Proxmox bridge-vlan-aware |
 
-Aggiornamento target 08/07/2026: tra lo switch 30 porte del Piano Terra e il
-54 porte del Piano 2 e' previsto un secondo collegamento in trunk 802.1Q che
-porta la VLAN dati del Piano Terra e la VLAN fonia, il cui disegno completo
-(VLAN 100, zona VOICE, policy, PoE, ordine di implementazione in cinque step)
-e' nel diagramma dell'utente `rete_fonia_voip_08072026_2.drawio-persona.drawio`,
-insieme a `rete_stato_target_08072026.drawio`, entrambi in
-`.claude/context/diagrams/firewall-dmz-2026/`. Restano aperti NET-008 (VLAN 1
-non taggabile sulla dorsale senza perdere il NAS-HERO) e TEL-002 (il tratto
-via vano ascensore non passa le VLAN).
+Aggiornamento confermato il 17/07/2026: il secondo collegamento in trunk
+802.1Q tra lo switch 30 porte del Piano Terra e il 54 porte del Piano 2,
+pianificato l'08/07/2026, e' oggi attivo (confermato dall'utente, corroborato
+da screenshot del pannello porte Nebula). Porta la VLAN dati del Piano Terra
+untagged e la VLAN 2 fonia tagged; l'ID VLAN fonia realmente in uso resta 2
+(DHCP+gateway Vianova sulla porta 8 del 54HP, isolati dal firewall, FW-012),
+non 100: il disegno alternativo a VLAN 100 con DHCP sul FLEX 500, nel
+diagramma dell'utente `rete_fonia_voip_08072026_2.drawio-persona.drawio`, non
+e' quello implementato e resta storico. La topologia corrente e' in
+`rete_stato_attuale_17072026.drawio` (`.claude/context/diagrams/firewall-dmz-2026/`),
+che supera sia quel diagramma sia `rete_stato_target_08072026.drawio` per la
+parte di dorsale/QNAP. Il QNAP QSW-1208-8c non e' un hop intermedio sulla
+dorsale: resta un ramo a parte, sulla porta 51 del 54HP, verso NAS fleet e le
+postazioni a 10 Gbps, invariato rispetto a prima.
+
+Restano aperti NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere il
+NAS-HERO; l'ipotesi del native VLAN mismatch causato dal QNAP inline decade
+ora che la dorsale e' un trunk diretto, ma la causa resta da isolare), TEL-002
+(i due telefoni IP del Piano Terra non risultano visibili nonostante il trunk
+diretto, causa non isolata) e un nuovo punto aperto sulla porta 6 del 54HP
+(PVID 2 come la porta 8, ruolo non confermato).
 
 ---
 
@@ -178,6 +206,7 @@ Cambiato gruppo di continuita: febbraio 2025.
 | Patch panel | Mappatura patch panel -> porte switch Piano 2 non completata |
 | Porta Persona-A (nuovo, 01/07/2026) | Screenshot del 09/06/2026 mostrano il telefono SIP-T34W di Persona-A etichettato sulla porta 3 di uno switch a 54 porte (MAC AA:BB:CC:00:00:01, compatibile solo con XGS2220-54HP Piano 2, confermato anche da app Nebula il 01/07/2026), ma sia questa scheda sia `interventi 29052026.docx` lo collocano su Piano Terra, switch XGS2220-30HP, porte 21/23. Probabile errore di etichettatura sulla porta 3 (che dovrebbe ospitare un T31G, non un T34W), da verificare con Alessio prima di consolidare la mappatura IP/MAC telefoni (GAP-TBC #67, #99) |
 | Switch Nebula offline intermittente (nuovo, 01/07/2026) | Entrambi gli switch (XGS2220-54HP e XGS2220-30HP) risultano occasionalmente offline sul pannello Nebula con rete dati funzionante: sintomo del solo canale di gestione cloud, non dello switching locale. Ipotesi principale legata a FW-008 (WAN_TRUNK con wan2 morto ancora primario); vedi GAP-TBC #101 e roadmap M20/M21 |
+| Porta 6 del 54HP (nuovo, 17/07/2026) | Ha PVID 2 come la porta 8 (Vianova DHCP fonia, FW-012), ma il ruolo non e' confermato: il pannello d'insieme di Nebula non mostra il PVID per porta, serve la vista di dettaglio della singola porta. Vedi GAP-TBC #102/#103 |
 
 Diagrammi sorgente (drawio/svg) dell'analisi firewall/DMZ del 29/05-05/06/2026
 sono archiviati in `.claude/context/diagrams/firewall-dmz-2026/` e registrati
