@@ -437,6 +437,18 @@ residue del nome o delle mail reali. Force-push eseguito
 `git reset --hard origin/main` dopo aver messo in sicurezza ogni modifica
 pendente. Resoconto completo passo-passo in
 `_notes/incidente-fibercop-2026-07-17.md` (narrativo, non
-versionato). Non verificato: presenza di fork del repository o pull
-request che referenzino i vecchi hash (nessun fork noto all'utente al
-momento della chiusura, ma non controllato via API GitHub in sessione).
+versionato). Fork del repository verificato assente su GitHub il 17/07/2026
+(pagina "Forks" del repo, screenshot alla mano).
+
+**Secondo incidente, stesso giorno**: il paragrafo "Esito" originale conteneva
+esso stesso un dato reale scritto per errore nell'atto di documentare la
+bonifica (corretto in un commit successivo, senza bisogno di citarlo di
+nuovo qui). Ha richiesto un terzo e poi un quarto round della stessa
+procedura sullo stesso file di sostituzioni (esteso con una regola
+case-insensitive di chiusura, per una variante di maiuscole sfuggita alle
+regole letterali). Force-push finale: `2ad5485..ab0c2a3` su `main`.
+Verifica di chiusura ripetuta su due clone indipendenti e freschi (non i
+mirror di lavoro usati per la riscrittura): zero occorrenze in 58 commit.
+Dettaglio completo in `_notes/incidente-fibercop-2026-07-17.md`, inclusa
+la lezione sul meta-livello (documentare un leak non e' un'eccezione alla
+regola di anonimizzazione).
