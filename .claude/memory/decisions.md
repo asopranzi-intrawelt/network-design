@@ -415,3 +415,28 @@ corrente indipendentemente dalla riscrittura storia. Il caso apre inoltre
 un precedente: una richiesta esterna con scadenza puo' giustificare una
 deroga puntuale al piano "un solo round", da valutare caso per caso se si
 ripresenta.
+
+**Esito 17/07/2026**: eseguito con un file di sostituzioni dedicato
+(`_notes/.git-filter-replacements-fibercop-only.txt`), non quello cumulativo
+di Fase B, per non toccare premature altre voci non ancora audit-ate. Una
+prima scansione mirata alla sola stringa dell'email `.com` si e' rivelata
+incompleta: una scansione successiva su tutta la storia (`git log --all -p`
+filtrato sul nome, non solo pickaxe `-S`) ha trovato una seconda mail reale
+mai individuata prima (`referente-fibercop-1@fibercop.it`, dominio diverso) e
+diverse occorrenze del nome completo in chiaro risalenti al gennaio 2025,
+mai toccate dalla sweep di anonimizzazione precedente. Ha incluso anche una
+svista introdotta in questa stessa ADR: il testo sopra citava inizialmente
+il nome reale invece del placeholder, corretto dallo stesso round di
+riscrittura. File di sostituzioni finale: due varianti email verso indirizzi
+placeholder sullo stesso dominio reale del fornitore (coerente con la
+mappatura gia' in uso altrove nel corpus) e due regole sul nome, ordinate
+dalla piu' specifica (nome e cognome) alla piu' generica (solo cognome).
+Verifica esaustiva post-riscrittura su tutta la storia: zero occorrenze
+residue del nome o delle mail reali. Force-push eseguito
+(`74347f6..900ac26` su `main`), working tree locale risincronizzato via
+`git reset --hard origin/main` dopo aver messo in sicurezza ogni modifica
+pendente. Resoconto completo passo-passo in
+`_notes/incidente-fibercop-referente-fibercop-1-2026-07-17.md` (narrativo, non
+versionato). Non verificato: presenza di fork del repository o pull
+request che referenzino i vecchi hash (nessun fork noto all'utente al
+momento della chiusura, ma non controllato via API GitHub in sessione).
