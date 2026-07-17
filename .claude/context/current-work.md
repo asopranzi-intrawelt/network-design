@@ -2,6 +2,30 @@
 last-verified: 347f79c
 ---
 
+## Direttiva permanente: cinque livelli di tracciamento (dal 16/07/2026)
+
+L'utente ha fissato un obiettivo dichiarato: **certificazione ISO27001
+entro marzo 2027** (vedi `roadmap.md` Fase 5). Da questa data, ogni
+interazione di questa sessione — non solo i micro-step espliciti — va
+tracciata su cinque livelli quando rilevante, non solo uno:
+
+1. **Didattico** — narrazione estesa in `_notes/DIARIO.md`, stile dei
+   grandi .docx originali ingeriti: spiega il concetto, non solo il fatto.
+2. **Deep-dive tecnico** — la scheda tecnica pertinente in `docs/` o
+   `.claude/context/` (sintassi verificata, dati reali, non inferenze).
+3. **Comunicazione stakeholder** — il taglio riassuntivo/valore-per-CV
+   richiesto per il resoconto finale di ogni intervento concluso.
+4. **Linea cronologica** — `docs/infrastructure-timeline/*.md` e
+   `.claude/memory/progress.md`, ordine temporale esplicito.
+5. **ISO27001** — quando un fatto tocca un controllo Annex A (gap di
+   segmentazione, accesso, flusso dati, patching, backup...), va
+   registrato anche in `design-and-security.md` §Gap di sicurezza, a
+   prescindere da quando la Fase 5 formale comincia.
+
+Non ogni fatto attiva tutti e cinque i livelli (una correzione di sintassi
+in uno script non è materiale ISO27001), ma il controllo va fatto ad ogni
+passo, non solo a fine intervento.
+
 # Lavoro corrente: Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa
 
 ## Stato
@@ -113,6 +137,21 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 9. Alla chiusura di ogni blocco: spunta in checklist, voce in
    `memory/progress.md`, commit manuale dell'utente.
 
+## Nota (17/07/2026): topologia dorsale/QNAP chiarita, diagrammi aggiornati
+
+Fuori dal filone Wi-Fi/AP (Fase A/B sotto): chiarita con l'utente, corroborata
+da uno screenshot del pannello porte Nebula del 54HP, la topologia fisica tra
+i due switch Zyxel e il QNAP QSW-1208-8c. Il QNAP non e' un hop intermedio
+sulla dorsale: dal 54HP partono due fibre 10G separate, porta 52 verso il
+30HP (dorsale diretta, trunk VLAN dati + VLAN 2 fonia, oggi attiva) e porta
+51 verso il QNAP (ramo a parte per NAS fleet e postazioni, invariato).
+Dettaglio completo, gap aggiornati (NET-008 #102, TEL-002 #103/#116) e
+diagrammi in `docs/infrastructure-timeline/2026-switch-piano-terra.md`
+(voce 17/07/2026), `GAP-TBC.md` e `.claude/context/diagrams/firewall-dmz-2026/`
+(nuovo `rete_stato_attuale_17072026.drawio`). Restano aperti: ruolo della
+porta 6 del 54HP (PVID 2 come la porta 8, non confermato) e i due telefoni IP
+del Piano Terra non visibili anche dopo il trunk diretto.
+
 ## Domande aperte non risolte
 
 - IntraLino: la documentazione Claude del progetto vive su una VM che
@@ -131,6 +170,44 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 - GroupShare: download installer SR2 bloccato, email a support@rws.com da
   inviare (fuori scope progetto rete, tracciato in timeline).
 - Allineamento a `E:\template-claude-developing` rimandato.
+- Intervento pianificato in due fasi (13-15/07/2026, in corso di scripting
+  dal 15/07): Fase A (M13a) isola la Wi-Fi staff esistente via VLAN
+  dedicata sulle tre porte switch gia' localizzate (XGS2220-30HP porta 1,
+  XGS2220-54HP porte 41/45) + ACL firewall verso VLAN 10, senza toccare i
+  tre AP Ubiquiti EOL. Fase B (M13b) pianifica la sostituzione di quei tre
+  AP con AP Zyxel Nebula multi-SSID (staff + guest DPPSK), invece di
+  affiancare un quarto AP guest isolato ai tre legacy — decisione presa il
+  15/07/2026 dopo aver verificato che i tre AP non sono raggiungibili
+  (credenziali perse, nessuna dashboard web mai esistita, reset di
+  fabbrica rimandato perche' disruptivo). Dettaglio completo in
+  `runbook-anomalie.md` §AP-001.
+  **VLAN ID confermata dall'utente il 15/07/2026: 40.**
+  **Lato switch**: script di scrittura `scripts/Set-NebulaWifiVlan.ps1`
+  pronto (dry-run di default, `-Apply` con conferma testuale, ADR-010; un
+  bug di parsing dell'inviluppo OData di `port-settings` scoperto e
+  corretto in giornata). Verificato a schermo che il PVID nella GUI Nebula
+  e' testo libero: nessuna VLAN da pre-creare, corretta l'ipotesi opposta
+  scritta in mattinata. Aggiunto parametro `-Only Trunk\|Access\|All` per
+  applicare prima i trunk (sicuro) e solo dopo le tre porte AP, evitando di
+  scollegare un AP live prima che il firewall abbia il DHCP pronto. Resta
+  da fare: dry-run reale (richiede la chiave API, in mano all'utente).
+  **Lato firewall**: verificato che lo USG FLEX 500 non e' adottato in
+  Nebula (gira in modalita' standalone ZLD) e non espone nessuna API REST
+  nello stato attuale; l'unico canale scriptabile e' SSH con 2FA gia'
+  attivo, che richiede un umano per il secondo fattore ad ogni sessione.
+  Scritto invece un piano passo-passo in `firewall-zyxel-usg-flex-500.md`
+  §Fase A (interfaccia vlan40 10.61.40.0/24 + security policy di deny
+  verso LAN1, sintassi CLI verificata sul dispositivo reale dove
+  disponibile, zona da assegnare via GUI dove non verificabile), da
+  applicare con lo stesso metodo GUI-passo-passo gia' collaudato per M1.
+  L'utente eseguira' l'intervento fisico/di rete; quando fatto, aggiornare
+  timeline, network-diagram.md, firewall-zyxel-usg-flex-500.md e
+  design-and-security.md di conseguenza. **Nota per la stesura finale**:
+  l'utente ha chiesto che l'intero episodio (caccia agli AP, Nebula API,
+  reasoning architetturale) sia raccontato sia con taglio tecnico
+  approfondito sia didattico, con valore esplicito per CV, oltre che
+  nella timeline — da tenere presente quando si scrive il resoconto a
+  intervento concluso. Prima voce scritta il 15/07/2026 in `_notes/DIARIO.md`.
 
 ### Nuovo (09/07/2026): pendenze emerse dall'ingestione della libreria Administration
 
