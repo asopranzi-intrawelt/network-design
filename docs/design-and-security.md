@@ -85,7 +85,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
 | A.9.1 | Politica di controllo degli accessi | SI | Parziale | Accessi distinti per utente. Policy formale non prodotta. |
-| A.9.2 | Gestione dell'identità degli utenti | SI | SI – Parziale | Active Directory / Entra ID. Onboarding documentato. |
+| A.9.2 | Gestione dell'identità degli utenti | SI | SI – Parziale | Active Directory / Entra ID. Onboarding documentato. Nota igiene identita' di dispositivo (20/07/2026): un workplace join orfano del 2017 con keyset corrotto ha bloccato le app M365 di una postazione dopo un reset password (incidente 657rx, `runbook-anomalie.md` §END-001); manca un processo di purga periodica dei record di dispositivo orfani lato Entra ID. |
 | A.9.3 | Autenticazione degli utenti | SI | SI – Parziale | MFA Azure admin attivo. MFA per tutti gli utenti non attivo. |
 | A.9.4 | Diritti di accesso privilegiato | SI | Parziale | 4 account Azure admin identificati. Account locali admin non censiti. |
 | A.9.5 | Autenticazione sicura | SI | SI – Parziale | Password policy M365 attiva. Robustezza criteri da rivedere (Consulente-ISO27001-1). |
