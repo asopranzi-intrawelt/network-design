@@ -53,6 +53,18 @@ Manager. Registrato come gap **SEC-015** (`GAP-TBC.md` #117, ADR-013,
 `2026-switch-piano-terra.md` voce 17-20/07/2026). Resta aperto: completare
 il binding HTTPS via win-acme (fix gia' identificato).
 
+**Terzo filone di questa sessione: fix endpoint END-001 (20/07/2026).**
+Intervento di helpdesk da handoff Desktop (`fix-errore-657rx-m365-workplace-join.md`):
+su una postazione Windows con account locale, dopo il reset password M365
+le app Microsoft fallivano il login con errore 657rx / 0x80090016
+NTE_BAD_KEYSET. Causa: workplace join orfano del 2017 con keyset software
+corrotto (TPM non in causa); il broker AAD tentava la chiave di dispositivo
+inaccessibile. Risolto rimuovendo la registrazione orfana e ricreandone una
+pulita al re-login. Documentato in `runbook-anomalie.md` §END-001, timeline
+`2026-switch-piano-terra.md` (voce 20/07/2026), nota igiene identita' di
+dispositivo in `design-and-security.md` §A.9.2. Residuo: purga del record di
+dispositivo orfano lato Entra ID. Nessun ADR (intervento operativo).
+
 Punto di ripresa precedente (07/07/2026, Fase 1bis ingestione OneDrive IT):
 dettaglio operativo in `.claude/context/current-work.md`; stato ingestione
 e priorita' in `docs/infrastructure-timeline/ingestion-checklist.md`

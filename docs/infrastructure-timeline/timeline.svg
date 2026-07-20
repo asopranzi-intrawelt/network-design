@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3522" viewBox="0 0 1060 3522" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3522" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3594" viewBox="0 0 1060 3594" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3594" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,16 +15,16 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">132 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 17/07/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">135 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 20/07/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
-<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(11)</tspan></text>
+<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(33)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
-<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(12)</tspan></text>
+<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(11)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
@@ -2157,7 +2157,55 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3506" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-133" class="ev-block has-detail" transform="translate(0,3476)">
+<g class="ev-summary" onclick="toggleEv('ev-133')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">17-20/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">GroupShare (Seeweb): certificato HTTPS scomparso, ripristinata solo la connettivita' HTTP <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-133-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">17-20/07/2026 &#8212; GroupShare (Seeweb): certificato HTTPS scomparso, ripristinata solo la connettivita' HTTP</p>
+<p>Fonte: handoff-SSL.md, comunicato dall'utente. Continua il filone GroupShare aperto il 06/07/2026 (vedi voce sotto): stesso ambiente Seeweb (VM WINGROUPSHARE, rete remota 10.77.116.0/24, IP pubblico 192.0.2.121), ma un incidente distinto — non piu' l'incompatibilita' applicativa con Studio 2026, bensi' la sparizione del binding/certificato HTTPS.</p><p>Il 17/07/2026 il portale https://gs.intrawelt.com e' diventato irraggiungibile sulla 443 (ERR_CONNECTION_TIMED_OUT), confermato sia da un client sulla LAN Intrawelt sia da rete esterna, mentre la porta 80 rispondeva regolarmente — non un problema di trust del certificato, la connessione TCP non arrivava proprio a destinazione. Diagnosi condotta da Alessio Sopranzi con Persona-E (referente RWS/GroupShare) e Persona-H (Punto Informatica) sulla VM stessa: nessun listener sulla 443, nessun binding SSL registrato, nessun certificato pubblico per il dominio nello store (solo il certificato interno identity.sdl.com, non toccato), sito IIS "SDL Server" con solo binding HTTP. Causa radice: certificato e binding HTTPS rimossi o mai ricreati, probabilmente alla scadenza del certificato precedente.</p><p>Scelto win-acme (Let's Encrypt) per il ripristino automatico (certificato + binding 443 + rinnovo periodico), con un problema iniziale risolto (il binding HTTP esistente senza host header impediva a win-acme di identificare il sito) ma il percorso non e' stato portato a termine: per sbloccare subito i Project Manager, bloccati con i client Trados Studio, si e' ripristinata la sola connettivita' HTTP normale, non la cifratura HTTPS. Il traffico verso il portale GroupShare, incluse le credenziali applicative, viaggia oggi in chiaro. Registrato come gap SEC-015 (GAP-TBC.md #117) e in design-and-security.md §A.13.2; dettaglio tecnico completo con diagnosi e comandi in docs/runbook-anomalie.md §SEC-015. Il completamento del binding HTTPS via win-acme resta il fix identificato ma non applicato.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-134" class="ev-block has-detail" transform="translate(0,3500)">
+<g class="ev-summary" onclick="toggleEv('ev-134')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">20/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Fase B Wi-Fi: scelto il preventivo Punto Informatica per 3 AP Zyxel <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-134-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">20/07/2026 &#8212; Fase B Wi-Fi: scelto il preventivo Punto Informatica per 3 AP Zyxel</p>
+<p>Ricevuto e scelto un preventivo di Punto Informatica (17/07/2026) per tre access point Zyxel NWA130BE-EU0101, Wi-Fi 7 (802.11be) tri-radio, gestibili in NebulaFlex standalone o cloud-managed dalla stessa organizzazione Nebula gia' in uso per i due switch. La quantita' di tre unita' copre le tre ubicazioni AP staff/guest gia' mappate (PianoTerra, PianoPrimo, PianoSecondo), coerente con il piano multi-SSID (staff + guest sullo stesso AP) gia' deciso il 15/07/2026. L'AP EsternoIrrigazione (centrale irrigazione tetto) resta fuori scope, decisione separata non ancora presa. Importo, sconto e riferimento del documento non riportati per policy di anonimizzazione (.claude/rules/anonymization.md). Acquisto e consegna non ancora confermati. Dettaglio completo in docs/runbook-anomalie.md §AP-001; roadmap aggiornata (M13b).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-135" class="ev-block has-detail" transform="translate(0,3524)">
+<g class="ev-summary" onclick="toggleEv('ev-135')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">20/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Fix errore 657rx: app M365 bloccate dopo reset password (workplace join orfano) <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-135-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">20/07/2026 &#8212; Fix errore 657rx: app M365 bloccate dopo reset password (workplace join orfano)</p>
+<p>Intervento di helpdesk su una postazione Windows con account locale: dopo il reset della password Microsoft 365 dell'utente, tutte le app Microsoft (OneDrive, Teams, Office) hanno smesso di autenticare con l'errore 657rx / 0x80090016 NTE_BAD_KEYSET (sub status 6008), seguito da un popup fuorviante sul TPM (Keyset non esistente, 0x8009000D). Il login falliva a prescindere dalla password appena impostata.</p><p>La diagnosi con dsregcmd /status ha isolato la causa: non la password e nemmeno il TPM (TpmProtected : NO, chiave nel Software KSP), ma una registrazione "Accesso aziendale o scolastico" (workplace join) vecchia e orfana, con certificato di dispositivo datato 2017 e keyset software corrotto. Le app passano dal broker AAD, che tentava di autenticarsi con quella chiave di dispositivo inaccessibile invece che con la password, fallendo sempre. Un account Windows locale temporaneo confermava il login M365 funzionante, circoscrivendo il guasto al profilo utente e non alla macchina.</p><p>Rimossa la registrazione orfana (dsregcmd /leave, poi eliminazione manuale del certificato MS-Organization-Access dallo store certificati utente e della chiave HKCU\...\WorkplaceJoin), riavviata la postazione e verificato WorkplaceJoined : NO, il nuovo login M365 ha ricreato una registrazione pulita (WamDefaultSet : YES, certificato con data recente) e le app hanno ripreso ad autenticare. Resta come igiene consigliata la rimozione dell'eventuale record di dispositivo orfano lato Entra ID (portale Dispositivi), a chiudere il ciclo di vita della vecchia identita'. Procedura riproducibile completa, con codici errore e passaggi accessori, in docs/runbook-anomalie.md §END-001; nota di igiene delle identita' di dispositivo in design-and-security.md §A.9.2.</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3578" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2295,7 +2343,10 @@
   {id:'ev-129',type:'event',h:24},
   {id:'ev-130',type:'event',h:24},
   {id:'ev-131',type:'event',h:24},
-  {id:'ev-132',type:'event',h:24}
+  {id:'ev-132',type:'event',h:24},
+  {id:'ev-133',type:'event',h:24},
+  {id:'ev-134',type:'event',h:24},
+  {id:'ev-135',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2336,7 +2387,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3522').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3594').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
