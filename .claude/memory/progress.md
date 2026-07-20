@@ -1,5 +1,46 @@
 # Work-log
 
+## 2026-07-20 — GroupShare SEC-015: incidente HTTPS scomparso, ripristinato solo HTTP (sessione corrente)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/infrastructure-timeline/GAP-TBC.md (nuova voce #117
+SEC-015, conteggio aggiornato), docs/design-and-security.md (§A.13.2),
+docs/runbook-anomalie.md (nuova sezione §SEC-015), docs/infrastructure-timeline/2026-switch-piano-terra.md
+(voce 17-20/07/2026), .claude/memory/decisions.md (ADR-013), _notes/.anonymization-map.md
+(client LAN 192.168.10.74, riuso placeholder Seeweb/Persona-E/Persona-H).
+Motivo: l'utente ha fornito due handoff dal Desktop (`groupshare-upgrade-handoff.md`,
+gia' noto e coerente con la voce tracciata del 06/07; `handoff-SSL.md`,
+nuovo) e ha chiarito che l'esito reale dell'incidente HTTPS del 17/07 e'
+stato il ripristino della sola connettivita' HTTP (non cifrata) per
+sbloccare i PM, non il completamento del fix win-acme. Identita' degli
+operatori chiarita su richiesta: Alessio Sopranzi (reale) con Tommaso
+Vezeni (Persona-E) e Daniele Colo' (Persona-H, Punto Informatica). Nessuna
+credenziale del documento sorgente (accessi firewall/ESXi/VM/SQL) riportata
+nei file tracciati. Gap registrato come SEC-015, ancora aperto: il binding
+HTTPS via win-acme resta il fix identificato ma non applicato.
+
+## 2026-07-20 — Fase B Wi-Fi: scelto il preventivo Punto Informatica (3x Zyxel NWA130BE-EU0101)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/runbook-anomalie.md (§AP-001, nuova sezione "Preventivo
+Fase B scelto"), docs/vendor-management.md (§Punto Informatica), docs/infrastructure-timeline/2026-switch-piano-terra.md
+(nuova voce 20/07/2026), .claude/context/roadmap.md (M13b aggiornato),
+.claude/context/current-work.md (paragrafo Fase B aggiunto), .claude/memory/decisions.md
+(ADR-012).
+Motivo: l'utente ha letto un preventivo locale (`Preventivo-205_2026-INTRAWELT...pdf`,
+non versionato, fuori dal repository) di Punto Informatica per tre access
+point Zyxel NWA130BE-EU0101 (Wi-Fi 7 tri-radio, NebulaFlex) e ha scelto di
+adottarlo per la Fase B (sostituzione dei tre AP Ubiquiti EOL decisa il
+15/07/2026). Quantita' di tre unita' coerente con le tre ubicazioni
+staff/guest gia' mappate (PianoTerra, PianoPrimo, PianoSecondo); l'AP
+EsternoIrrigazione resta fuori scope. Importo, sconto e numero del
+preventivo non riportati in nessun file tracciato per policy di
+anonimizzazione (`.claude/rules/anonymization.md` §dati amministrativi e
+commerciali) — solo il fatto tecnico e' stato documentato. Acquisto e
+consegna non confermati in questa sessione. Il retry di Fase A (VLAN 40
+lato switch) e la diagnosi NET-010 (porta 46 del 54HP) restano aperti,
+indipendenti da questa decisione.
+
 ## 2026-07-15 — Triage delta OneDrive, script di scrittura Nebula per M13a, verifica canale API firewall (sessione 9, continua)
 
 Commit: PENDING (da fare manualmente)
