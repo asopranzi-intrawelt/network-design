@@ -333,6 +333,14 @@ sono esplicitamente nel documento Word.
 
 ---
 
+## GroupShare Seeweb – certificato HTTPS scomparso, traffico rimasto in chiaro (17-20/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 117 | SEC-015 | `https://gs.intrawelt.com` (portale GroupShare, VM WINGROUPSHARE su Seeweb) irraggiungibile su 443 (`ERR_CONNECTION_TIMED_OUT`), confermato da rete interna e da rete esterna; la porta 80 rispondeva regolarmente. Diagnosi sul server: nessun listener sulla 443, nessun binding SSL registrato (`netsh http show sslcert` vuoto), nessun certificato per `gs.intrawelt.com` nello store (solo il certificato interno `identity.sdl.com`, non toccato), sito IIS "SDL Server" con solo binding `http *:80:`. Causa radice: il certificato pubblico e il binding HTTPS erano stati rimossi/mai ricreati, probabilmente alla scadenza del certificato precedente. Tentativo di ripristino con win-acme (Let's Encrypt): bloccato inizialmente perche' il binding esistente non aveva host header; fix identificato (aggiungere binding `http/80/gs.intrawelt.com` per abilitare la validazione HTTP-01) ma **la connettivita' cifrata non e' stata ripristinata**: per sbloccare subito i Project Manager (client Trados Studio bloccati) si e' ripristinata la sola connettivita' HTTP normale. Il traffico verso il portale GroupShare, incluse le credenziali applicative, viaggia oggi in chiaro | `handoff-SSL.md` (comunicato dall'utente, 17-20/07/2026); vedi anche voce GroupShare del 06/07/2026 sopra |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -363,5 +371,9 @@ sono esplicitamente nel documento Word.
 | AWS access key admin non rotata (09/07/2026) | 110 |
 | ZeroSSL certificato VPN cancellato (09/07/2026) | 111 |
 | Seeweb disco 150GB non identificato (10/07/2026) | 112 |
-| **Totale identificati** | **113** |
+| LAN flat /19, scan-to-folder (16/07/2026) | 114 |
+| Link flap porta 46 54HP (16/07/2026) | 115 |
+| TEL-002 aggiornamento (17/07/2026) | 116 |
+| GroupShare Seeweb, HTTPS non ripristinato (17-20/07/2026) | 117 |
+| **Totale identificati** | **117** |
 | **Di cui risolti** | **7** (14, 54, 55, 61, 63, 106, 111 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto") |

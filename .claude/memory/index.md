@@ -7,8 +7,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 347f79c (HEAD al 08/07/2026, token MCP Proxmox verificato, ADR-008)
-Data snapshot:         2026-07-08
+Commit di riferimento: 7463b73 (HEAD al 17/07/2026, chiusura ADR-011 Fibercop)
+Data snapshot:         2026-07-20
 ```
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
@@ -19,21 +19,44 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | 347f79c | allineata |
-| design-and-security.md | 347f79c | allineata (v4, snapshot Proxmox 08/07) |
-| deployment.md | 347f79c | allineata |
-| dev-testing.md | 347f79c | allineata |
-| current-work.md | 347f79c | allineata (MEDIA preesistenti ingerite, nota IntraLino su VM) |
-| roadmap.md | 347f79c | allineata (Fase 1bis corrente, Fase 3 sospesa) |
+| STACK.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
+| design-and-security.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
+| deployment.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
+| dev-testing.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
+| current-work.md | 7463b73 (contenuto) | allineata (Fase B Wi-Fi: modello/quantita' AP scelti 20/07) |
+| roadmap.md | 7463b73 (contenuto) | allineata (M13b aggiornato con preventivo scelto) |
 
 ## Punto di ripresa
 
-Aggiornato il 07/07/2026 (sessione 7, in corso). **Pivot deciso dall'utente:
-la Fase 3 operativa (M2/M20) e' sospesa; la fase corrente e' la 1bis, ripresa
-dell'ingestione OneDrive IT** per costruire la timeline cronologica completa
-dei due anni di ristrutturazione della rete. Dettaglio operativo in
-`.claude/context/current-work.md`; stato ingestione e priorita' in
-`docs/infrastructure-timeline/ingestion-checklist.md` (riallineata 07/07).
+Aggiornato il 20/07/2026 (sessione corrente). Filone attivo: **Wi-Fi/AP
+(Fase A/B)**. Stato a questa data: Fase A (isolamento VLAN 40 lato switch)
+tentata e ripristinata due volte il 16/07/2026 per inaffidabilita' del
+canale Nebula OpenAPI (dettaglio `docs/runbook-anomalie.md` §AP-001/NET-005,
+gap NEB-001/NET-010 aperti — porta 46 del 54HP in link-flap, host Ollama).
+La configurazione lato firewall resta pronta per un nuovo tentativo, non
+ancora rifatto in questa sessione. **Fase B**: il 20/07/2026 l'utente ha
+scelto un preventivo Punto Informatica per tre access point Zyxel
+NWA130BE-EU0101 (Wi-Fi 7) a sostituzione dei tre AP Ubiquiti EOL
+(PianoTerra, PianoPrimo, PianoSecondo); l'AP EsternoIrrigazione resta fuori
+scope. Decisione registrata in ADR-012; importo e riferimento del
+preventivo esclusi dai file tracciati per policy di anonimizzazione.
+Acquisto/consegna non confermati.
+
+**Secondo filone di questa sessione: GroupShare (Seeweb).** Continuazione
+del thread aperto il 06/07/2026 (upgrade SR1->SR2/CU15, ancora bloccato sul
+download installer, non toccato in questa sessione). Nuovo: incidente
+HTTPS del 17/07/2026 su `gs.intrawelt.com` (certificato/binding scomparsi),
+diagnosticato e parzialmente rimediato — **ripristinata solo la
+connettivita' HTTP, non la cifratura**, per sbloccare subito i Project
+Manager. Registrato come gap **SEC-015** (`GAP-TBC.md` #117, ADR-013,
+`design-and-security.md` §A.13.2, `runbook-anomalie.md` §SEC-015, timeline
+`2026-switch-piano-terra.md` voce 17-20/07/2026). Resta aperto: completare
+il binding HTTPS via win-acme (fix gia' identificato).
+
+Punto di ripresa precedente (07/07/2026, Fase 1bis ingestione OneDrive IT):
+dettaglio operativo in `.claude/context/current-work.md`; stato ingestione
+e priorita' in `docs/infrastructure-timeline/ingestion-checklist.md`
+(riallineata 07/07, coda residua solo BASSA/attese esterne al 09/07).
 
 Fatto nelle sessioni del 07/07: gestione delta OneDrive con hook di avvio e
 ingestione GroupShare (6e1d4b6); mappatura porte fisiche completa da rilievo

@@ -209,6 +209,35 @@ del Piano Terra non visibili anche dopo il trunk diretto.
   nella timeline — da tenere presente quando si scrive il resoconto a
   intervento concluso. Prima voce scritta il 15/07/2026 in `_notes/DIARIO.md`.
 
+  **Fase B (20/07/2026): modello e quantita' scelti.** L'utente ha scelto
+  un preventivo Punto Informatica (17/07/2026) per tre access point Zyxel
+  NWA130BE-EU0101 (Wi-Fi 7, tri-radio, NebulaFlex standalone/cloud-managed):
+  una unita' per ciascuna delle tre ubicazioni AP staff/guest gia' mappate
+  (PianoTerra, PianoPrimo, PianoSecondo), multi-SSID sullo stesso
+  dispositivo invece di un quarto AP guest dedicato. L'AP EsternoIrrigazione
+  (centrale irrigazione tetto) resta fuori scope, decisione separata non
+  ancora presa. Importo/sconto/riferimento preventivo non tracciati per
+  policy di anonimizzazione. Acquisto e consegna non confermati.
+  Documentato in ADR-012, `runbook-anomalie.md` §AP-001,
+  `vendor-management.md`, `2026-switch-piano-terra.md` (voce 20/07/2026) e
+  roadmap M13b. Resta aperta l'ambiguita' di ubicazione fisica di
+  PianoSecondo (CED 2-5-1 vs esterno tetto 2-7-1), irrisolvibile senza
+  sopralluogo. Il retry di Fase A (VLAN 40 su switch) e la diagnosi di
+  NET-010 (porta 46 del 54HP) restano entrambi da fare, indipendenti da
+  questa decisione di hardware.
+
+### Nuovo (20/07/2026): GroupShare SEC-015, HTTPS non ripristinato
+
+Filone separato dal Wi-Fi/AP, stesso ambiente Seeweb del thread GroupShare
+aperto il 06/07/2026 (upgrade SR1->SR2/CU15, ancora bloccato sul download,
+non toccato oggi). Incidente distinto del 17/07/2026: certificato e binding
+HTTPS di `gs.intrawelt.com` scomparsi, portale irraggiungibile su 443. Per
+sbloccare subito i Project Manager si e' ripristinata solo la connettivita'
+HTTP, non la cifratura — gap aperto **SEC-015** (`GAP-TBC.md` #117,
+ADR-013, `design-and-security.md` §A.13.2, `runbook-anomalie.md` §SEC-015).
+Fix corretto gia' identificato (binding HTTPS con host header + win-acme)
+ma non applicato: da completare come azione separata.
+
 ### Nuovo (09/07/2026): pendenze emerse dall'ingestione della libreria Administration
 
 - RISOLTO (09/07): l'utente ha ricordato che il repository pubblico non deve

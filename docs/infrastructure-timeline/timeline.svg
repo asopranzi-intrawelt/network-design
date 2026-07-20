@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3498" viewBox="0 0 1060 3498" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3498" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3522" viewBox="0 0 1060 3522" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3522" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">131 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 17/07/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">132 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 17/07/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -24,7 +24,7 @@
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(33)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
-<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(11)</tspan></text>
+<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(12)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(11)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
@@ -2141,7 +2141,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3482" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-132" class="ev-block has-detail" transform="translate(0,3452)">
+<g class="ev-summary" onclick="toggleEv('ev-132')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">17/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Chiarita la topologia dorsale/QNAP, aggiornati i diagrammi <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-132-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">17/07/2026 &#8212; Chiarita la topologia dorsale/QNAP, aggiornati i diagrammi</p>
+<p>Fonte: comunicazione verbale dell'utente in sessione, corroborata da uno screenshot del pannello porte Nebula dello switch XGS2220-54HP.</p><p>Chiarita la topologia fisica tra i due switch Piano Terra/Piano 2 e il QNAP QSW-1208-8c, che restava ambigua nelle fonti precedenti (la sostituzione dei connettori SFP+ dell'08/05/2026 descriveva il vecchio connettore dorsale come posizionato "sopra al QNAP", lasciando aperta l'ipotesi che il QNAP fosse un hop intermedio sul collegamento switch-switch). Confermato: dallo switch XGS2220-54HP (Piano 2) partono due fibre SFP+ 10 Gbps separate, la porta 52 verso lo switch XGS2220-30HP (Piano Terra, dorsale diretta, trunk 802.1Q con VLAN dati Piano Terra untagged e VLAN 2 fonia tagged) e la porta 51 verso il QNAP QSW-1208-8c, che resta un ramo a parte per NAS fleet e le postazioni a 10 Gbps, invariato rispetto a prima. Il secondo collegamento diretto PT&lt;-&gt;P2, pianificato l'08/07/2026 (vedi sopra), risulta oggi attivo.</p><p>Confermato anche, sulla porta 8 del 54HP (Vianova DHCP fonia, PVID 2, FW-012), che una seconda porta dello stesso switch, la porta 6, condivide lo stesso PVID 2: il ruolo di questa porta non e' confermato, il pannello d'insieme di Nebula mostra solo velocita'/PoE/uplink per porta, non il PVID assegnato. Resta aperto anche il sintomo di TEL-002: i due telefoni IP del Piano Terra, collegati a porte dello switch XGS2220-30HP stesso (non solo al tratto del vano ascensore come descritto il 07/07), non risultano visibili neppure dopo la conferma del trunk diretto; non e' chiaro se il sintomo precede o segue l'attivazione di quel collegamento.</p><p>Aggiornati di conseguenza: GAP-TBC.md (NET-008 #102, TEL-002 #103 e nuova voce #116), docs/network-diagram.md (topologia ASCII e VLAN), e i diagrammi in .claude/context/diagrams/firewall-dmz-2026/ — nuovo rete_stato_attuale_17072026.drawio con la topologia corrente, note di aggiornamento aggiunte a rete_stato_attuale_29052026.drawio, rete_stato_target_08072026.drawio e rete_fonia_voip_08072026_2.drawio-claudio.drawio per marcare cosa e' confermato e cosa resta un target non applicato (in particolare la fonia su VLAN 100/DHCP-firewall di quest'ultimo, mai realizzata: l'implementazione real… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3506" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2278,7 +2294,8 @@
   {id:'ev-128',type:'event',h:24},
   {id:'ev-129',type:'event',h:24},
   {id:'ev-130',type:'event',h:24},
-  {id:'ev-131',type:'event',h:24}
+  {id:'ev-131',type:'event',h:24},
+  {id:'ev-132',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2319,7 +2336,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3498').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3522').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
