@@ -998,3 +998,34 @@ Importo, sconto e riferimento del documento non riportati per policy di
 anonimizzazione (`.claude/rules/anonymization.md`). Acquisto e consegna non
 ancora confermati. Dettaglio completo in `docs/runbook-anomalie.md`
 §AP-001; roadmap aggiornata (M13b).
+
+## 20/07/2026 - Fix errore 657rx: app M365 bloccate dopo reset password (workplace join orfano)
+
+Intervento di helpdesk su una postazione Windows con account locale: dopo
+il reset della password Microsoft 365 dell'utente, tutte le app Microsoft
+(OneDrive, Teams, Office) hanno smesso di autenticare con l'errore 657rx /
+`0x80090016 NTE_BAD_KEYSET` (sub status 6008), seguito da un popup fuorviante
+sul TPM (`Keyset non esistente`, `0x8009000D`). Il login falliva a
+prescindere dalla password appena impostata.
+
+La diagnosi con `dsregcmd /status` ha isolato la causa: non la password e
+nemmeno il TPM (`TpmProtected : NO`, chiave nel Software KSP), ma una
+registrazione "Accesso aziendale o scolastico" (workplace join) vecchia e
+orfana, con certificato di dispositivo datato 2017 e keyset software
+corrotto. Le app passano dal broker AAD, che tentava di autenticarsi con
+quella chiave di dispositivo inaccessibile invece che con la password,
+fallendo sempre. Un account Windows locale temporaneo confermava il login
+M365 funzionante, circoscrivendo il guasto al profilo utente e non alla
+macchina.
+
+Rimossa la registrazione orfana (`dsregcmd /leave`, poi eliminazione manuale
+del certificato MS-Organization-Access dallo store certificati utente e
+della chiave `HKCU\...\WorkplaceJoin`), riavviata la postazione e verificato
+`WorkplaceJoined : NO`, il nuovo login M365 ha ricreato una registrazione
+pulita (`WamDefaultSet : YES`, certificato con data recente) e le app hanno
+ripreso ad autenticare. Resta come igiene consigliata la rimozione
+dell'eventuale record di dispositivo orfano lato Entra ID (portale
+Dispositivi), a chiudere il ciclo di vita della vecchia identita'. Procedura
+riproducibile completa, con codici errore e passaggi accessori, in
+`docs/runbook-anomalie.md` §END-001; nota di igiene delle identita' di
+dispositivo in `design-and-security.md` §A.9.2.

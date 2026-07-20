@@ -1,5 +1,28 @@
 # Work-log
 
+## 2026-07-20 — Fix endpoint END-001: errore 657rx M365 / workplace join orfano (sessione corrente)
+
+Commit: PENDING (da fare manualmente)
+File toccati: docs/runbook-anomalie.md (nuova sezione §END-001, prima del
+footer), docs/infrastructure-timeline/2026-switch-piano-terra.md (nuova voce
+20/07/2026), docs/design-and-security.md (§A.9.2, nota igiene identita' di
+dispositivo), _notes/DIARIO.md (voce narrativa), .claude/memory/index.md
+(punto di ripresa). SVG timeline rigenerata.
+Motivo: l'utente ha fornito un handoff dal Desktop
+(`fix-errore-657rx-m365-workplace-join.md`) su un intervento di helpdesk del
+20/07/2026: dopo il reset password M365 di un utente, le app Microsoft di una
+postazione Windows (account locale) fallivano il login con errore 657rx /
+0x80090016 NTE_BAD_KEYSET. Causa: workplace join orfano del 2017 con keyset
+software corrotto (TPM non in causa, `TpmProtected : NO`); il broker AAD
+tentava la chiave di dispositivo inaccessibile invece della password.
+Risolto rimuovendo la registrazione orfana (`dsregcmd /leave`, certificato
+MS-Organization-Access, chiave HKCU WorkplaceJoin) e ricreandone una pulita
+al re-login. Anonimizzazione: il documento sorgente e' una procedura
+Microsoft generica, senza IP/nomi propri/importi reali; nessun identificatore
+reale introdotto (utente colpito e hostname non riportati). Nessun ADR
+(intervento operativo, non decisione architetturale). Residuo: purga del
+record di dispositivo orfano lato Entra ID, segnalata come igiene A.9.2.
+
 ## 2026-07-20 — GroupShare SEC-015: incidente HTTPS scomparso, ripristinato solo HTTP (sessione corrente)
 
 Commit: PENDING (da fare manualmente)

@@ -911,6 +911,126 @@ netsh http show sslcert            # atteso: binding SSL con hash certificato
 Test-NetConnection gs.intrawelt.com -Port 443   # atteso: TcpTestSucceeded True
 ```
 
+## END-001: Errore 657rx / 0x80090016 — app M365 non autenticano dopo reset password (workplace join orfano)
+
+**Severity**: MEDIA (blocco operativo di una postazione, nessun dato esposto)
+**Origine**: Segnalazione utente, intervento di helpdesk (20/07/2026)
+**Stato**: RISOLTO (registrazione dispositivo ricreata pulita)
+
+### Contesto
+
+Su una postazione Windows con account locale (non joinata a Entra ID),
+dopo il reset della password Microsoft 365 dell'utente tutte le app
+Microsoft (OneDrive, Teams, Office) hanno smesso di autenticare. Il login
+falliva a prescindere dalla password appena impostata: segno che il
+problema non era la credenziale ma il canale con cui il dispositivo
+tentava di presentarla.
+
+### Sintomo
+
+Login M365 rifiutato con tag **657rx**, `The credential is invalid.
+Unexpected sub status (6008)`, codice **2148073494** (=
+**0x80090016 NTE_BAD_KEYSET**). In seguito comparsa anche di un popup
+"Problema di TPM del dispositivo", `Keyset non esistente`
+(**0x8009000D**). Il messaggio sul TPM e' fuorviante: il TPM non
+c'entrava.
+
+### Diagnosi
+
+```cmd
+dsregcmd /status
+```
+
+Indicatori chiave nel caso risolto:
+
+| Campo | Valore | Significato |
+|---|---|---|
+| `AzureAdJoined` | NO | PC non joinato a Entra ID (account Windows locale) |
+| `WorkplaceJoined` | YES | Registrazione utente "Accesso aziendale o scolastico" presente |
+| `WamDefaultSet` | NO | Il broker WAM non riesce a usare la chiave del dispositivo (corrotta) |
+| `DeviceCertificateValidity` | data vecchia (2017) | Registrazione orfana/antica |
+| `TpmProtected` | NO | Chiave nel Software KSP, non nel TPM |
+
+Test discriminante per isolare il perimetro del guasto: creare un account
+Windows locale temporaneo e provare da li' il login M365. Se funziona il
+problema e' per-profilo/per-utente (questo caso); se restituisce lo stesso
+errore e' per-macchina (TPM), e in quel caso si procede al clear del TPM,
+ma solo dopo aver sospeso BitLocker.
+
+**Causa radice**: la postazione aveva un workplace join (registrazione
+"Accesso aziendale o scolastico") vecchio e orfano, con keyset software
+corrotto. Le app passano dal broker AAD, che tenta di autenticarsi con la
+chiave del dispositivo invece che con la password; se quella chiave e'
+inaccessibile il login fallisce sempre, qualunque sia la password. Ne' il
+TPM (`TpmProtected : NO`, chiave nel Software KSP) ne' la password nuova
+erano in causa: era la registrazione del dispositivo a essere rotta.
+
+### Procedura fix
+
+Tutto con l'utente interessato loggato; prompt non amministrativo salvo
+dove indicato. Chiudere prima tutte le app Microsoft (Teams, Office,
+OneDrive dall'area di notifica).
+
+```cmd
+rem 1. Tentare la rimozione standard della registrazione
+dsregcmd /leave
+
+rem 2. Se WorkplaceJoined resta YES, eliminare il certificato di
+rem    registrazione: Win+R -> certmgr.msc (certificati UTENTE corrente,
+rem    non certlm.msc) -> Personale > Certificati -> certificato emesso da
+rem    MS-Organization-Access (Rilasciato a = WorkplaceDeviceId) -> Elimina
+
+rem 3. Eliminare la chiave di registro della registrazione utente
+reg delete "HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WorkplaceJoin" /f
+```
+
+Riavviare e verificare:
+
+```cmd
+dsregcmd /status
+rem atteso: WorkplaceJoined : NO, WorkAccountCount : 0
+```
+
+Rifare quindi il login in Teams/OneDrive con la password corrente: alla
+schermata "Rimani connesso a tutte le app" consentire la registrazione,
+cosi' da creare una registrazione nuova e pulita.
+
+### Verifica post-fix
+
+```cmd
+dsregcmd /status
+rem atteso: WamDefaultSet : YES, certificato di dispositivo con data recente
+```
+
+### Passaggi accessori (se il problema persiste dopo la procedura base)
+
+```cmd
+rem Cache identita' e broker (prompt utente)
+rd /s /q "%LOCALAPPDATA%\Packages\Microsoft.AAD.BrokerPlugin_cw5n1h2txyewy\AC\TokenBroker\Cache"
+rd /s /q "%LOCALAPPDATA%\Microsoft\IdentityCache"
+rd /s /q "%LOCALAPPDATA%\Microsoft\OneAuth"
+
+rem Windows Hello corrotto (prompt admin)
+certutil -deletehellocontainer
+rem se risponde NTE_NOT_FOUND -> il problema NON e' Hello, ma la registrazione dispositivo
+```
+
+In aggiunta, in Gestione credenziali eliminare le voci
+`MicrosoftOffice16_Data`, `AAD Token Broker` e OneDrive. Lato Entra ID, dal
+portale di amministrazione (Dispositivi), eliminare eventuali record orfani
+della postazione, cercando per nome PC o per WorkplaceDeviceId: e' l'igiene
+che chiude il ciclo di vita della vecchia identita' di dispositivo rimasta
+appesa (vedi nota ISO27001 in `design-and-security.md` §A.9.2).
+
+### Riferimento codici errore
+
+| Codice | Nome | Significato |
+|---|---|---|
+| 0x80090016 / 2148073494 | NTE_BAD_KEYSET | Contenitore chiavi corrotto o inaccessibile |
+| 0x80090011 | NTE_NOT_FOUND | Oggetto/contenitore inesistente |
+| 0x8009000D | — | Keyset non esistente (fallback dopo la rimozione, sparisce con la nuova registrazione) |
+| Tag 657rx, sub status 6008 | — | Credential invalid via broker AAD |
+
 ---
 
 *Runbook aggiornato: luglio 2026. Owner: Alessio Sopranzi.*
