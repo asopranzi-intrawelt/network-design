@@ -452,3 +452,62 @@ mirror di lavoro usati per la riscrittura): zero occorrenze in 58 commit.
 Dettaglio completo in `_notes/incidente-fibercop-2026-07-17.md`, inclusa
 la lezione sul meta-livello (documentare un leak non e' un'eccezione alla
 regola di anonimizzazione).
+
+## ADR-012 — Fase B Wi-Fi: modello e quantita' AP scelti (Zyxel NWA130BE-EU0101 x3)
+
+Data: 2026-07-20
+Stato: attiva
+
+Contesto: la Fase B (sostituzione dei tre AP Ubiquiti EOL, decisione
+architetturale del 15/07/2026, vedi `runbook-anomalie.md` §AP-001) restava
+senza un modello di hardware concreto. L'utente ha ricevuto un preventivo
+da Punto Informatica (partner hardware gia' noto) per tre access point
+Zyxel NWA130BE-EU0101, Wi-Fi 7 (802.11be) tri-radio, gestibili in
+NebulaFlex (standalone o cloud-managed dalla stessa organizzazione Nebula
+gia' in uso per i due switch Zyxel).
+
+Decisione: adottare questo preventivo per la Fase B. La quantita' di tre
+unita' resta coerente con il piano gia' scritto (un AP per ciascuna delle
+tre ubicazioni staff/guest gia' mappate — PianoTerra, PianoPrimo,
+PianoSecondo — multi-SSID staff+guest sullo stesso dispositivo fisico,
+invece di un quarto AP guest dedicato). L'AP EsternoIrrigazione (centrale
+irrigazione sul tetto, non copertura Wi-Fi per il personale) resta
+esplicitamente fuori scope da questo preventivo: la sua eventuale
+sostituzione, se necessaria, e' una decisione separata non ancora presa.
+
+Conseguenze: importo, sconto e riferimento del documento del preventivo
+non entrano in nessun file tracciato, per policy di anonimizzazione
+(`.claude/rules/anonymization.md`, sezione dati amministrativi e
+commerciali) — solo il fatto tecnico (vendor, modello, specifiche,
+quantita', ambito) e' documentato in `runbook-anomalie.md` §AP-001,
+`vendor-management.md` §Punto Informatica, `2026-switch-piano-terra.md` e
+`roadmap.md` (M13b). Acquisto effettivo e consegna non confermati in
+questa sessione. Resta aperta l'ambiguita' di ubicazione fisica di
+PianoSecondo (CED vs esterno tetto), non risolvibile senza sopralluogo, e
+indipendente da questa decisione di modello/quantita'.
+
+## ADR-013 — GroupShare: priorita' alla disponibilita' (HTTP) sulla cifratura (HTTPS), fix completo rimandato
+
+Data: 2026-07-20
+Stato: attiva
+
+Contesto: il 17/07/2026 il portale Trados GroupShare (`gs.intrawelt.com`,
+VM su Seeweb) ha perso il binding/certificato HTTPS (dettaglio tecnico
+completo in `runbook-anomalie.md` §SEC-015): la porta 443 non rispondeva,
+mentre la 80 (HTTP) restava funzionante. I Project Manager, i cui client
+Trados Studio puntano al portale, sarebbero rimasti bloccati fino al
+completamento del fix HTTPS (win-acme, gia' identificato ma con un primo
+tentativo fallito per un binding senza host header).
+
+Decisione: invece di completare il percorso win-acme prima di riattivare
+il servizio, si e' scelto di ripristinare subito la sola connettivita' HTTP
+per sbloccare i PM, rimandando il ripristino della cifratura.
+
+Conseguenze: il traffico verso il portale GroupShare, incluse le
+credenziali applicative, viaggia oggi in chiaro — gap di sicurezza aperto
+(SEC-015, `GAP-TBC.md` #117; `design-and-security.md` §A.13.2, controllo
+Annex A.13.2 Trasferimento delle informazioni). Il fix corretto (binding
+HTTPS con host header + win-acme) resta identificato e non applicato: da
+completare come azione separata, non implicita in questa decisione. La
+decisione e' un compromesso esplicito disponibilita'-contro-cifratura,
+non una chiusura del problema.

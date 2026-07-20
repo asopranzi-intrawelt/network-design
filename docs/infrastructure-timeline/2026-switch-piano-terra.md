@@ -904,6 +904,39 @@ per marcare cosa e' confermato e cosa resta un target non applicato
 (in particolare la fonia su VLAN 100/DHCP-firewall di quest'ultimo, mai
 realizzata: l'implementazione reale usa VLAN 2 e DHCP Vianova sulla porta 8).
 
+## 17-20/07/2026 - GroupShare (Seeweb): certificato HTTPS scomparso, ripristinata solo la connettivita' HTTP
+
+Fonte: `handoff-SSL.md`, comunicato dall'utente. Continua il filone
+GroupShare aperto il 06/07/2026 (vedi voce sotto): stesso ambiente Seeweb
+(VM WINGROUPSHARE, rete remota 10.77.116.0/24, IP pubblico 192.0.2.121),
+ma un incidente distinto — non piu' l'incompatibilita' applicativa con
+Studio 2026, bensi' la sparizione del binding/certificato HTTPS.
+
+Il 17/07/2026 il portale `https://gs.intrawelt.com` e' diventato
+irraggiungibile sulla 443 (`ERR_CONNECTION_TIMED_OUT`), confermato sia da
+un client sulla LAN Intrawelt sia da rete esterna, mentre la porta 80
+rispondeva regolarmente — non un problema di trust del certificato, la
+connessione TCP non arrivava proprio a destinazione. Diagnosi condotta da
+Alessio Sopranzi con Persona-E (referente RWS/GroupShare) e Persona-H
+(Punto Informatica) sulla VM stessa: nessun listener sulla 443, nessun
+binding SSL registrato, nessun certificato pubblico per il dominio nello
+store (solo il certificato interno `identity.sdl.com`, non toccato), sito
+IIS "SDL Server" con solo binding HTTP. Causa radice: certificato e binding
+HTTPS rimossi o mai ricreati, probabilmente alla scadenza del certificato
+precedente.
+
+Scelto win-acme (Let's Encrypt) per il ripristino automatico (certificato +
+binding 443 + rinnovo periodico), con un problema iniziale risolto (il
+binding HTTP esistente senza host header impediva a win-acme di identificare
+il sito) ma **il percorso non e' stato portato a termine**: per sbloccare
+subito i Project Manager, bloccati con i client Trados Studio, si e'
+ripristinata la sola connettivita' HTTP normale, non la cifratura HTTPS. Il
+traffico verso il portale GroupShare, incluse le credenziali applicative,
+viaggia oggi in chiaro. Registrato come gap **SEC-015** (`GAP-TBC.md` #117)
+e in `design-and-security.md` §A.13.2; dettaglio tecnico completo con
+diagnosi e comandi in `docs/runbook-anomalie.md` §SEC-015. Il completamento
+del binding HTTPS via win-acme resta il fix identificato ma non applicato.
+
 ## 08/07/2026 - Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino
 
 Eseguito `Get-ProxmoxSnapshot.ps1` sul nodo (primo re-run dopo la v3;
@@ -950,3 +983,18 @@ rafforza, con una prova pratica, la decisione già presa di pianificare
 la sostituzione dei tre access point invece di continuare a farli
 convivere con altri interventi di rete. Dettaglio tecnico completo in
 `docs/runbook-anomalie.md` §NET-005.
+
+## 20/07/2026 - Fase B Wi-Fi: scelto il preventivo Punto Informatica per 3 AP Zyxel
+
+Ricevuto e scelto un preventivo di Punto Informatica (17/07/2026) per tre
+access point Zyxel NWA130BE-EU0101, Wi-Fi 7 (802.11be) tri-radio, gestibili
+in NebulaFlex standalone o cloud-managed dalla stessa organizzazione
+Nebula gia' in uso per i due switch. La quantita' di tre unita' copre le
+tre ubicazioni AP staff/guest gia' mappate (PianoTerra, PianoPrimo,
+PianoSecondo), coerente con il piano multi-SSID (staff + guest sullo
+stesso AP) gia' deciso il 15/07/2026. L'AP EsternoIrrigazione (centrale
+irrigazione tetto) resta fuori scope, decisione separata non ancora presa.
+Importo, sconto e riferimento del documento non riportati per policy di
+anonimizzazione (`.claude/rules/anonymization.md`). Acquisto e consegna non
+ancora confermati. Dettaglio completo in `docs/runbook-anomalie.md`
+§AP-001; roadmap aggiornata (M13b).

@@ -76,6 +76,7 @@ completo a lavori conclusi (vedi `current-work.md`).
 | SLA hardware | 2 ore (accordo verbale) |
 | RMM | NinjaOne – gestione centralizzata endpoint remoti |
 | Ambito | Fornitura hardware (NAS, server, switch, AP), manutenzione |
+| Preventivo Wi-Fi Fase B | Preventivo del 17/07/2026 per 3x access point Zyxel NWA130BE-EU0101 (Wi-Fi 7), scelto dall'utente il 20/07/2026 — dettaglio tecnico in `runbook-anomalie.md` §AP-001; importo e riferimento del documento fuori dai file tracciati per policy di anonimizzazione |
 | Modalità fatturazione | Preventivo → ordine → fattura per singolo acquisto (nessun contratto quadro noto) |
 | Acquisto switch Piano Terra | Zyxel XGS2220-30HP-EU0101F acquistato con preventivo del 13/03/2026 (vedi `2026-switch-piano-terra.md` per il dettaglio tecnico dello switch); importi non riportati per policy |
 | Acquisto telefoni VoIP | 2× Yealink SIP-T31G e 3× Yealink SIP-T34W acquistati con preventivo del 24/03/2026; importi non riportati per policy |

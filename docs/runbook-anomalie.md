@@ -396,6 +396,37 @@ bloccante per Fase A, ma da registrare come possibile voce futura in
    investire tempo per farci convivere un secondo SSID che il firmware
    EOL potrebbe non supportare comunque bene.
 
+### Preventivo Fase B scelto (20/07/2026)
+
+Ricevuto un preventivo da Punto Informatica (partner hardware gia' noto,
+vedi `vendor-management.md` §Punto Informatica) per tre access point Zyxel
+NWA130BE-EU0101, standard Wi-Fi 7 (802.11be) tri-radio (2,4 GHz, 5 GHz, 6
+GHz), velocita' massima dichiarata fino a 11 Gbps, due porte Ethernet da
+2,5 Gbps, CPU quad-core Qualcomm, supporto NebulaFlex (standalone o
+cloud-managed, quindi gestibile dalla stessa organizzazione Nebula gia' in
+uso per i due switch), WPA3. L'utente ha scelto questo preventivo per la
+Fase B: importo, sconto e riferimento del documento restano fuori dai file
+tracciati per policy di anonimizzazione (`.claude/rules/anonymization.md`).
+
+La quantita' di tre unita' copre esattamente le tre ubicazioni AP per
+personale/ospiti gia' mappate (PianoTerra su XGS2220-30HP porta 1,
+PianoPrimo su XGS2220-54HP porta 41, PianoSecondo su XGS2220-54HP porta
+45), una per una, coerente con il piano gia' scritto sopra (multi-SSID
+staff + guest sullo stesso AP fisico, invece di un quarto dispositivo
+guest dedicato). **EsternoIrrigazione** (XGS2220-30HP porta 4, AP dedicato
+alla centrale di irrigazione sul tetto secondo il rilievo fisico, non
+copertura Wi-Fi per il personale) resta fuori da questo preventivo e fuori
+scope per questa fase: la sua eventuale sostituzione, se necessaria, e' una
+decisione separata non ancora presa.
+
+Resta aperta l'ambiguita' gia' segnalata su PianoSecondo (porta 45 del
+54HP): il rilievo fisico conosce cinque ubicazioni AP, ma solo quattro
+dispositivi Ubiquiti risultano oggi effettivamente in rete, e PianoSecondo
+potrebbe corrispondere sia alla posizione CED (2-5-1) sia all'esterno tetto
+(2-7-1) — non risolvibile senza un sopralluogo. Stato acquisto (ordine
+effettivo, consegna) non tracciato in questa sessione: qui si registra solo
+la scelta del modello e della quantita'.
+
 ### Verifica
 
 ```powershell
@@ -789,6 +820,96 @@ Risultato: `/dev/sda2` passato da 32G a 63G, spazio libero da ~237M a 32G
 urgente, rimuovere le revisioni snap disabilitate rimaste (`snap list --all`,
 poi `sudo snap remove <nome> --revision=<rev>` per ogni riga con nota
 "disabilitato") per liberare ulteriore margine.
+
+---
+
+## SEC-015: GroupShare (Seeweb) servito in chiaro su HTTP dopo scomparsa del certificato HTTPS
+
+**Severity**: ALTA
+**Origine**: Segnalazione utente, handoff operativo `handoff-SSL.md` (17-20/07/2026)
+**Stato**: APERTO (workaround HTTP applicato, cifratura non ripristinata)
+
+### Contesto
+
+Il portale Trados GroupShare (`http(s)://gs.intrawelt.com`) gira sulla VM
+WINGROUPSHARE (Windows Server + IIS, sito "SDL Server"), ospitata nel cloud
+Seeweb sulla rete remota raggiunta via VPN IPsec 10.77.116.0/24 (firewall
+.1, host ESXi .2, VM .3; IP pubblico della VM mappato su 192.0.2.121 —
+stessi placeholder gia' in uso in `2026-switch-piano-terra.md` per la voce
+GroupShare del 06/07/2026). Non e' un servizio on-premise: il traffico LAN
+verso GroupShare esce dalla WAN Intrawelt verso Seeweb, fuori dal perimetro
+del firewall Zyxel USG FLEX 500.
+
+### Sintomo
+
+`https://gs.intrawelt.com` irraggiungibile (`ERR_CONNECTION_TIMED_OUT`),
+confermato sia da un client sulla LAN Intrawelt sia da una rete esterna:
+porta 443 non risponde, porta 80 (HTTP) risponde regolarmente. Nessun
+avviso di certificato non fidato: la connessione TCP sulla 443 non arriva
+proprio a destinazione, non e' un problema di trust.
+
+### Diagnosi (via RDP sulla VM, IP interno 10.77.116.3)
+
+```powershell
+netstat -ano | findstr :443        # nessun listener sulla 443
+netsh http show sslcert            # vuoto: nessun binding SSL registrato
+Get-ChildItem Cert:\LocalMachine\My
+                                    # presente solo "CN=identity.sdl.com"
+                                    # (certificato interno SDL Identity Server,
+                                    # non toccare) — nessun certificato per
+                                    # gs.intrawelt.com
+Get-WebBinding                     # solo binding http *:80: sui due siti IIS,
+                                    # nessun binding https/443
+```
+
+**Causa radice**: il certificato pubblico di `gs.intrawelt.com` non esiste
+piu' nello store e il binding HTTPS/443 e' assente dalla configurazione
+IIS — non un binding rotto, rimosso o mai ricreato, probabilmente alla
+scadenza del certificato precedente. Il sito serviva quindi solo HTTP sulla
+porta 80.
+
+Diagnosi e intervento condotti da Alessio Sopranzi con Persona-E (referente
+RWS/GroupShare gia' noto dall'upgrade SR1->SR2 del 06/07/2026) e Persona-H
+(Punto Informatica).
+
+### Fix tentato
+
+Scelto win-acme (Let's Encrypt) per l'emissione automatica del certificato,
+la creazione del binding 443 e il rinnovo automatico (~60 giorni), cosi' da
+non ripresentare il problema. Primo lancio fallito (`wacs.exe` →
+"No websites with host bindings have been configured in IIS"): il binding
+esistente del sito "SDL Server" era `*:80:` senza host header, quindi
+win-acme non sapeva per quale hostname emettere il certificato. Fix
+identificato: aggiungere un binding con host header dedicato
+
+```powershell
+Import-Module WebAdministration
+New-WebBinding -Name "SDL Server" -Protocol http -Port 80 -HostHeader "gs.intrawelt.com"
+```
+
+per abilitare la validazione HTTP-01 di win-acme sulla porta 80 gia'
+pubblica e funzionante.
+
+### Stato attuale: HTTP ripristinato, HTTPS no
+
+**La connettivita' cifrata non e' stata ripristinata.** Per sbloccare
+subito i Project Manager (client Trados Studio non riuscivano piu' a
+raggiungere il portale), si e' ripristinata la sola connettivita' HTTP
+normale invece di completare il percorso win-acme fino in fondo. Il
+traffico verso il portale GroupShare — incluse le credenziali applicative
+degli utenti — viaggia oggi in chiaro. Registrato come gap **SEC-015**
+(`GAP-TBC.md` #117) e in `design-and-security.md` §A.13.2 (Trasferimento
+delle informazioni): resta aperto, il completamento del binding HTTPS
+tramite win-acme e' il fix corretto gia' identificato ma non applicato.
+
+### Verifica (da rieseguire quando si completa il fix HTTPS)
+
+```powershell
+netstat -ano | findstr :443        # atteso: 0.0.0.0:443 LISTENING
+Get-WebBinding                     # atteso: https *:443:gs.intrawelt.com
+netsh http show sslcert            # atteso: binding SSL con hash certificato
+Test-NetConnection gs.intrawelt.com -Port 443   # atteso: TcpTestSucceeded True
+```
 
 ---
 
