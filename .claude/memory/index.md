@@ -38,13 +38,15 @@ completo con evidenze e valori reali in `_notes/DIARIO.md` voce 22/07): L2 verso
 il gateway integro (arp risolve .90.1 = interfaccia guest del FLEX 500), la
 security policy PERMETTE guest->WAN (regola 12 `GUEST_Outgoing`, From OPT, log
 off: nessun drop nel log durante il ping), ma il traffico non viene SNATtato — la
-Policy Route del firewall e' vuota e la subnet guest non e' coperta dal SNAT
-implicito ZLD che serve solo le LAN di fabbrica. **Fix individuato, NON ancora
+Policy Route del firewall e' vuota e la subnet guest non e' coperta dal
+mascheramento automatico del firewall perche' l'interfaccia `vlan90` guest e' di
+tipo `general`, mentre le interfacce `internal` (come la `vlan40` staff)
+ottengono da sole il mascheramento verso la WAN. Causa verificata il 22/07 su
+Network > Interface (Interface Type: vlan40=internal, vlan90=general). **Fix individuato, NON ancora
 applicato**: aggiungere una Policy Route con SNAT = outgoing-interface per la
 subnet guest verso WAN_TRUNK. Aperti inoltre: (a) la vlan40 staff risulta
 configurata sul dispositivo con un indirizzamento da correggere (dettaglio
-operativo riservato in `_notes/DIARIO.md`), e come interfaccia aggiunta
-richiedera' anch'essa una Policy Route SNAT; (b) stringere la regola 12
+operativo riservato in `_notes/DIARIO.md`); (b) stringere la regola 12
 `GUEST_Outgoing` da To:any a sola WAN (segmentazione). Commit dei file tracciati
 manuale dell'utente.
 
@@ -53,8 +55,9 @@ l'oggetto `GUEST_SUBNET` e la policy route `GUEST_SNAT` (Source GUEST_SUBNET,
 SNAT outgoing-interface); il client guest naviga (ping 8.8.8.8 ok) e l'S25 su
 SSID `Intrawelt (GUEST)` ha Internet. Tracciato in `firewall-zyxel-usg-flex-500.md`
 §Policy Route (SNAT). Restano aperte le voci #2 (restringere `GUEST_Outgoing` a
-sola WAN + valutare toggle Guest Network su Nebula) e #3 (renumber vlan40 al valore
-reale + policy route `STAFF_SNAT` gemella). Timeline e work-log da completare.
+sola WAN + valutare toggle Guest Network su Nebula) e #3 (rinumero vlan40 al valore
+reale; la staff naviga gia', NON serve uno STAFF_SNAT). Documentazione tracciata
+completata (firewall scheda, timeline, work-log, ISO A.13.1).
 
 Aggiornato il 20/07/2026 (voce precedente). Filone attivo: **Wi-Fi/AP
 (Fase A/B)**. Stato a questa data: Fase A (isolamento VLAN 40 lato switch)

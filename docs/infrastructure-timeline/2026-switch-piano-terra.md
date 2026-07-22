@@ -1061,11 +1061,30 @@ dall'infrastruttura che vi era finita per errore (management degli switch, UPS,
 server domotica, vecchi AP): oggi ospita solo il gateway del firewall e client di
 tipo laptop/telefono, cioe' e' finalmente una vera rete ospiti.
 
-Restano aperti due affinamenti di segmentazione, non urgenti: restringere la
-regola `GUEST_Outgoing` dalla destinazione `any` alla sola WAN (la guest oggi
-potrebbe raggiungere anche le zone interne), eventualmente in combinazione con
-l'isolamento lato access point (Nebula, toggle Guest Network sull'SSID ospiti); e,
-sul fronte staff, la `vlan40` e' anch'essa interfaccia aggiunta e priva di SNAT,
-quindi richiedera' una policy route `STAFF_SNAT` gemella quando verra' riportata
-all'indirizzamento corretto. Dettaglio tecnico in
+Restano aperti due affinamenti, non urgenti. Il primo e' di segmentazione:
+restringere la regola `GUEST_Outgoing` dalla destinazione `any` alla sola WAN (la
+guest oggi potrebbe raggiungere anche le zone interne), meglio sul firewall che
+sull'access point, perche' su Nebula il toggle Guest Network fa isolamento L2 ma
+su una rete VLAN va aggiunto a mano il MAC del gateway alla lista, pena la perdita
+del gateway stesso. Il secondo riguarda la staff: la `vlan40` naviga gia', quindi
+non le manca il SNAT (il firewall la mascher a automaticamente); resta solo da
+riportarla all'indirizzamento reale. Dettaglio tecnico in
+`firewall-zyxel-usg-flex-500.md` §Policy Route (SNAT).
+
+Aggiornamento allo stesso 22/07/2026, due chiusure. Prima: la `vlan40` staff e'
+stata riportata all'indirizzamento corretto della classe interna (nel modello
+documentale resta `10.61.40.x`; i valori reali stanno in `_notes/` per policy di
+anonimizzazione), con il DHCP riallineato alla nuova subnet, e la Wi-Fi staff ha
+continuato a navigare senza interventi. Seconda, ed e' la piu' importante: e'
+stato chiarito il perche' la staff navigasse senza SNAT esplicito e la guest no.
+La differenza e' il campo `Interface Type` dell'interfaccia sul firewall: la
+`vlan40` staff e' di tipo `internal`, la `vlan90` guest e' di tipo `general`
+(entrambe VLAN sulla stessa porta base `lan1`). Il firewall Zyxel applica il
+mascheramento automatico verso la WAN solo al traffico che esce da un'interfaccia
+`internal`; la guest, essendo `general`, non lo riceve, ed e' per questo che ha
+richiesto la policy route `GUEST_SNAT`. Che la staff abbia continuato a navigare
+anche dopo il cambio di subnet dimostra che il mascheramento automatico dipende
+dal tipo di interfaccia, non dall'indirizzo. Per una rete ospiti tenere la guest
+come `general` con SNAT esplicito e' anche la scelta piu' sicura, perche' il
+firewall non la tratta come rete interna fidata. Dettaglio in
 `firewall-zyxel-usg-flex-500.md` §Policy Route (SNAT).
