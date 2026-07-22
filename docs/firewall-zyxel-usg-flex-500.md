@@ -100,8 +100,12 @@ Raggiungibile solo via rotta statica attraverso router downstream 10.61.100.1
 (prevista rimozione: server DMZ devono usare IP statici). Porta da cablare
 verso lo switch per la nuova architettura DMZ.
 
-**guest** (ge7/P8 nella config corrente - nota: l'etichetta "OPT" in zona):
-10.61.90.1/24. DNS Google (8.8.8.8, 8.8.4.4). Zona ospiti.
+**guest** (`vlan90`, interfaccia 802.1Q su base port `lan1`, VID 90, zona OPT,
+Interface Type `general` — nessun mascheramento automatico, vedi §Policy Route):
+10.61.90.1/24. DNS Google (8.8.8.8, 8.8.4.4). Zona ospiti. Nota: verificato il
+22/07/2026 su `Network > Interface` che la guest e' una VLAN su `lan1` (come la
+`vlan40` staff), non piu' la porta fisica ge7/P8 come indicato in una versione
+precedente di questa scheda.
 
 **vlan40** (interfaccia taggata 802.1Q su base port `lan1`, nessuna porta
 fisica dedicata): 10.61.40.1/24, zona **WIFI_STAFF** dedicata (creata e
@@ -239,13 +243,41 @@ Verificata sul campo: dopo l'applicazione il client guest raggiunge Internet
 Intervento non distruttivo, reversibile disattivando la regola o portando lo SNAT
 a `none`.
 
-Da fare, stesso schema. La Wi-Fi staff su `vlan40` e' anch'essa un'interfaccia
-aggiunta e resta priva di SNAT (la Policy Route vuota lo conferma): quando
-`vlan40` verra' riportata all'indirizzamento corretto andra' creata una policy
-route `STAFF_SNAT` analoga a `GUEST_SNAT`. Inoltre la regola 12 `GUEST_Outgoing`
-ha `To: any` troppo largo e va ristretta alla sola WAN per la segmentazione,
-eventualmente in combinazione con l'isolamento lato access point (Nebula, toggle
-Guest Network sull'SSID ospiti).
+Nota (correzione 22/07/2026). La Wi-Fi staff su `vlan40` naviga gia' (verificato
+dall'utente), pur con la Policy Route vuota: il firewall le applica quindi il
+mascheramento verso la WAN in automatico, a differenza della guest. La verifica del
+22/07 su `Network > Interface` ha dato la risposta definitiva: la differenza sta
+nel campo `Interface Type` dell'interfaccia. La `vlan40` staff e' di tipo
+`internal`, la `vlan90` guest e' di tipo `general` (entrambe VLAN sulla stessa
+porta base `lan1`, quindi non c'entrano ne' la porta base ne' la subnet). Sullo
+ZLD il mascheramento automatico verso la WAN si applica al traffico che esce da
+un'interfaccia `internal` verso un'interfaccia `external`: e' l'etichetta
+`internal` a farlo scattare. La `vlan40` (internal) lo ottiene di default e naviga
+senza regole; la `vlan90` (general) non lo ottiene, ed e' esattamente per questo
+che ha richiesto la policy route `GUEST_SNAT` esplicita. Il rinumero della staff
+all'indirizzamento corretto della classe interna (22/07; nel modello documentale
+la staff resta `10.61.40.x`, i valori reali stanno in `_notes/` per policy di
+anonimizzazione) lo conferma indirettamente: cambiata la subnet, la staff
+continua a navigare, quindi il mascheramento non dipende dall'indirizzo ma dal
+tipo di interfaccia.
+
+Nota di sicurezza: per una rete ospiti tenere la `vlan90` su `general` con SNAT
+esplicito e' preferibile a marcarla `internal`, perche' cosi' il firewall non la
+tratta come rete interna fidata. Il fix scelto (policy route dedicata) e' quindi
+anche il piu' corretto, non un ripiego. Le due alternative equivalenti per dare
+Internet alla guest erano: la `GUEST_SNAT` esplicita (scelta) oppure cambiare
+`Interface Type` della `vlan90` in `internal`. L'intervento SNAT sulla guest resta comunque
+corretto e necessario, e la `vlan40` NON richiede uno `STAFF_SNAT` perche' gia'
+naviga.
+
+Restano due affinamenti. La regola 12 `GUEST_Outgoing` ha `To: any` troppo largo
+e va ristretta alla sola WAN per la segmentazione (la guest oggi potrebbe
+raggiungere anche le zone interne): meglio farlo sul firewall che sull'access
+point, perche' il toggle Guest Network di Nebula fa isolamento L2 ma su una rete
+VLAN richiede di aggiungere a mano il MAC del gateway alla lista di isolamento,
+pena la perdita del gateway stesso. Sul fronte staff resta invece il solo
+rinumero della `vlan40` all'indirizzamento reale (voce operativa privata),
+verificando poi che la navigazione regga.
 
 ---
 
