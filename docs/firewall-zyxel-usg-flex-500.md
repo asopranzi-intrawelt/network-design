@@ -205,6 +205,50 @@ applicate sul dispositivo lo stesso giorno.
 
 ---
 
+## Policy Route (SNAT)
+
+Fino al 22/07/2026 la tabella Policy Route era vuota. Sullo ZLD il SNAT verso la
+WAN e' automatico solo per le interfacce LAN nate con la configurazione di
+fabbrica (il SNAT implicito, che maschera l'IP privato con quello della WAN in
+uscita cosi' che la risposta sappia tornare); le interfacce aggiunte a mano non
+ne sono coperte e richiedono una policy route di SNAT esplicita. Per questo la
+rete guest (VLAN 90, 10.61.90.0/24), pur avendo DHCP funzionante sull'interfaccia
+guest (.90.1) e la security policy `GUEST_Outgoing` che ne permette l'uscita,
+prendeva l'indirizzo ma non navigava: i pacchetti uscivano con IP sorgente
+privato e la risposta non poteva tornare.
+
+La diagnosi del 22/07/2026 ha isolato la causa a strati: livello 2 verso il
+gateway guest integro (l'ARP del client risolve il MAC dell'interfaccia guest del
+firewall), traffico guest verso WAN permesso dalla regola 12 senza alcun drop nel
+log, tabella NAT con soli virtual server e tabella Policy Route vuota. Restava il
+solo SNAT mancante.
+
+Regola creata il 22/07/2026, risolutiva:
+
+```
+GUEST_SNAT
+  Incoming:     any (Excluding ZyWALL)
+  Source:       GUEST_SUBNET (10.61.90.0/24)
+  Destination:  any
+  Next-Hop:     Auto
+  SNAT:         outgoing-interface
+```
+
+Verificata sul campo: dopo l'applicazione il client guest raggiunge Internet
+(ping verso 8.8.8.8 con risposta) e i dispositivi sull'SSID ospiti navigano.
+Intervento non distruttivo, reversibile disattivando la regola o portando lo SNAT
+a `none`.
+
+Da fare, stesso schema. La Wi-Fi staff su `vlan40` e' anch'essa un'interfaccia
+aggiunta e resta priva di SNAT (la Policy Route vuota lo conferma): quando
+`vlan40` verra' riportata all'indirizzamento corretto andra' creata una policy
+route `STAFF_SNAT` analoga a `GUEST_SNAT`. Inoltre la regola 12 `GUEST_Outgoing`
+ha `To: any` troppo largo e va ristretta alla sola WAN per la segmentazione,
+eventualmente in combinazione con l'isolamento lato access point (Nebula, toggle
+Guest Network sull'SSID ospiti).
+
+---
+
 ## Security policy
 
 Stato al 19/05/2026 (backup di riferimento): 34 regole attive +

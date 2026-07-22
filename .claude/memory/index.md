@@ -8,7 +8,7 @@
 ```
 Branch attivo:         main
 Commit di riferimento: 7463b73 (HEAD al 17/07/2026, chiusura ADR-011 Fibercop)
-Data snapshot:         2026-07-20
+Data snapshot:         2026-07-22
 ```
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
@@ -28,7 +28,35 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
-Aggiornato il 20/07/2026 (sessione corrente). Filone attivo: **Wi-Fi/AP
+Aggiornato il 22/07/2026 (sessione corrente). Filone attivo: **Wi-Fi guest
+VLAN 90**. Obiettivo: far navigare la rete ospiti sulla VLAN 90 (10.61.90.0/24),
+servita da un AP Zyxel nuovo in multi-SSID (staff VLAN 40 + guest VLAN 90).
+Sintomo: i client prendono l'IP dal DHCP del firewall (.90.1) ma non navigano,
+sia via Wi-Fi (S25) sia via cavo (portatile su porta 19 del 30HP messa in access
+PVID 90) — difetto comune a tutta la VLAN 90. **Diagnosi conclusa** (dettaglio
+completo con evidenze e valori reali in `_notes/DIARIO.md` voce 22/07): L2 verso
+il gateway integro (arp risolve .90.1 = interfaccia guest del FLEX 500), la
+security policy PERMETTE guest->WAN (regola 12 `GUEST_Outgoing`, From OPT, log
+off: nessun drop nel log durante il ping), ma il traffico non viene SNATtato — la
+Policy Route del firewall e' vuota e la subnet guest non e' coperta dal SNAT
+implicito ZLD che serve solo le LAN di fabbrica. **Fix individuato, NON ancora
+applicato**: aggiungere una Policy Route con SNAT = outgoing-interface per la
+subnet guest verso WAN_TRUNK. Aperti inoltre: (a) la vlan40 staff risulta
+configurata sul dispositivo con un indirizzamento da correggere (dettaglio
+operativo riservato in `_notes/DIARIO.md`), e come interfaccia aggiunta
+richiedera' anch'essa una Policy Route SNAT; (b) stringere la regola 12
+`GUEST_Outgoing` da To:any a sola WAN (segmentazione). Commit dei file tracciati
+manuale dell'utente.
+
+**Aggiornamento 22/07 (a fine sessione):** fix SNAT APPLICATO e verificato — creato
+l'oggetto `GUEST_SUBNET` e la policy route `GUEST_SNAT` (Source GUEST_SUBNET,
+SNAT outgoing-interface); il client guest naviga (ping 8.8.8.8 ok) e l'S25 su
+SSID `Intrawelt (GUEST)` ha Internet. Tracciato in `firewall-zyxel-usg-flex-500.md`
+§Policy Route (SNAT). Restano aperte le voci #2 (restringere `GUEST_Outgoing` a
+sola WAN + valutare toggle Guest Network su Nebula) e #3 (renumber vlan40 al valore
+reale + policy route `STAFF_SNAT` gemella). Timeline e work-log da completare.
+
+Aggiornato il 20/07/2026 (voce precedente). Filone attivo: **Wi-Fi/AP
 (Fase A/B)**. Stato a questa data: Fase A (isolamento VLAN 40 lato switch)
 tentata e ripristinata due volte il 16/07/2026 per inaffidabilita' del
 canale Nebula OpenAPI (dettaglio `docs/runbook-anomalie.md` §AP-001/NET-005,
