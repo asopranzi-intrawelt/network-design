@@ -1,5 +1,35 @@
 # Work-log
 
+## 2026-07-22 — Wi-Fi ospiti VLAN 90: ripristino navigazione, SNAT mancante (sessione corrente)
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): docs/firewall-zyxel-usg-flex-500.md (nuova sezione
+§Policy Route (SNAT)), docs/infrastructure-timeline/2026-switch-piano-terra.md
+(nuova voce 22/07/2026), .claude/memory/index.md (punto di ripresa aggiornato).
+File privati (non versionati): _notes/DIARIO.md (diagnosi, esito, spiegazione
+didattica SNAT implicito, valore per CV), _notes/.anonymization-map.md (voci
+22/07: MAC interfaccia guest del FLEX, MAC ethernet del portatile Persona-H,
+nota vlan40 placeholder-in-config-reale).
+Motivo: la Wi-Fi ospiti su VLAN 90 (SSID Intrawelt GUEST, multi-SSID sul nuovo AP
+Zyxel) faceva prendere ai client l'IP dal DHCP del firewall (.90.1) ma non
+navigare, sia via Wi-Fi sia via cavo (portatile su porta switch messa in access
+VLAN 90). Diagnosi a strati: L2 verso il gateway ok (ARP risolve il MAC
+dell'interfaccia guest del firewall), security policy GUEST_Outgoing permette
+l'uscita senza drop nel log, NAT con soli virtual server, Policy Route vuota ->
+unica causa il SNAT mancante. Sullo ZLD il mascheramento verso WAN e' automatico
+solo per le interfacce LAN di fabbrica; la guest, aggiunta dopo, ne restava fuori.
+Fix: creato oggetto GUEST_SUBNET e policy route GUEST_SNAT (SNAT
+outgoing-interface sulla sola subnet guest), verificato con ping 8.8.8.8 (risposta)
+e S25 sull'SSID guest con Internet. VLAN 90 ormai ripulita dall'infrastruttura
+legacy che vi era finita per errore. Anonimizzazione: nei file tracciati solo
+10.61.90.x/10.61.40.x e nomi di oggetto tecnici del firewall; tutti i valori reali
+(192.168.x, MAC, nome del consulente esterno = Persona-H, oggetti pc-* del
+firewall con nomi propri) restano solo sotto _notes/. Nessun ADR (intervento
+operativo). Restano aperti: restringere GUEST_Outgoing a sola WAN + valutare il
+toggle Guest Network su Nebula (#2); renumber vlan40 al valore reale + policy
+route STAFF_SNAT gemella (#3); nota ISO27001 in design-and-security.md e aggancio
+GAP-TBC (relazione con NET-001) da completare (#4).
+
 ## 2026-07-20 — Fix endpoint END-001: errore 657rx M365 / workplace join orfano (sessione corrente)
 
 Commit: PENDING (da fare manualmente)
