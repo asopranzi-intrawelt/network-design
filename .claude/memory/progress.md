@@ -23,12 +23,22 @@ outgoing-interface sulla sola subnet guest), verificato con ping 8.8.8.8 (rispos
 e S25 sull'SSID guest con Internet. VLAN 90 ormai ripulita dall'infrastruttura
 legacy che vi era finita per errore. Anonimizzazione: nei file tracciati solo
 10.61.90.x/10.61.40.x e nomi di oggetto tecnici del firewall; tutti i valori reali
-(192.168.x, MAC, nome del consulente esterno = Persona-H, oggetti pc-* del
+(gli IP reali, i MAC, il nome del consulente esterno = Persona-H, gli oggetti pc-* del
 firewall con nomi propri) restano solo sotto _notes/. Nessun ADR (intervento
 operativo). Restano aperti: restringere GUEST_Outgoing a sola WAN + valutare il
 toggle Guest Network su Nebula (#2); renumber vlan40 al valore reale + policy
 route STAFF_SNAT gemella (#3); nota ISO27001 in design-and-security.md e aggancio
-GAP-TBC (relazione con NET-001) da completare (#4).
+GAP-TBC (relazione con NET-001) da completare (#4). **Correzione (stessa
+sessione): la staff .40 naviga gia', quindi #3 e' solo il rinumero della vlan40
+all'indirizzamento reale, NON l'aggiunta di uno STAFF_SNAT; corretti di
+conseguenza firewall scheda, timeline e index. La ragione per cui il firewall
+mascher a la vlan40 e non mascherava la guest resta da confermare su Network >
+Interface (verifica 22/07 su Network > Interface: ipotesi porta base SCARTATA, sia vlan40
+sia vlan90 sono VLAN su lan1; guest e' vlan90, non la porta ge7/P8 come diceva una
+versione datata della scheda; ragione della differenza DETERMINATA il 22/07: e' il campo Interface Type,
+vlan40=internal (mascheramento automatico verso WAN) contro vlan90=general
+(nessuno, da qui la necessita' della policy route GUEST_SNAT esplicita). Rinumero
+vlan40 completato e staff verificata navigante.**
 
 ## 2026-07-20 — Fix endpoint END-001: errore 657rx M365 / workplace join orfano (sessione corrente)
 
