@@ -129,7 +129,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.13.1 | Gestione della sicurezza delle reti | SI | Parziale | Firewall UTM, VLAN segmentation. Switch mgmt su VLAN guest (ANOMALIA FW-002). |
+| A.13.1 | Gestione della sicurezza delle reti | SI | Parziale | Firewall UTM, VLAN segmentation. Switch mgmt su VLAN guest (ANOMALIA FW-002). **Aggiornamento 22/07/2026**: la rete ospiti VLAN 90 e' ora una vera rete Wi-Fi guest, ripulita dall'infrastruttura legacy che vi era finita per errore, e naviga su Internet tramite SNAT esplicito (policy route `GUEST_SNAT`, vedi `firewall-zyxel-usg-flex-500.md` §Policy Route). Resta da isolarla dalle zone interne: la regola `GUEST_Outgoing` ha destinazione ancora `any` (NET-001 resta aperto), restringimento a sola WAN pianificato, eventualmente con isolamento anche lato access point. |
 | A.13.2 | Trasferimento delle informazioni | SI | Parziale | VPN per accesso remoto. File transfer tramite SharePoint/Teams. Policy non formale. **Gap aperto (SEC-015, GAP-TBC #117)**: portale GroupShare (`gs.intrawelt.com`, Seeweb) servito in chiaro su HTTP dopo la scomparsa del certificato/binding HTTPS del 17/07/2026 — ripristinata solo la connettivita' HTTP per sbloccare i PM, non la cifratura. |
 
 ---

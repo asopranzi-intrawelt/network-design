@@ -1029,3 +1029,43 @@ Dispositivi), a chiudere il ciclo di vita della vecchia identita'. Procedura
 riproducibile completa, con codici errore e passaggi accessori, in
 `docs/runbook-anomalie.md` §END-001; nota di igiene delle identita' di
 dispositivo in `design-and-security.md` §A.9.2.
+
+## 22/07/2026 - Wi-Fi ospiti su VLAN 90: navigazione ripristinata (SNAT mancante)
+
+La rete Wi-Fi ospiti (SSID `Intrawelt (GUEST)`, VLAN 90, servita in multi-SSID
+dal nuovo access point Zyxel insieme all'SSID staff su VLAN 40) presentava un
+guasto netto: i client si agganciavano e prendevano regolarmente un indirizzo
+sulla `10.61.90.0/24` dal DHCP dell'interfaccia guest del firewall (`.90.1`), ma
+non navigavano. Confermato sia via Wi-Fi sia via cavo, collegando un portatile a
+una porta dello switch Piano Terra messa temporaneamente in access sulla VLAN 90:
+segno che il difetto era comune all'intera VLAN 90, non dell'access point ne' del
+tagging dell'SSID.
+
+La diagnosi ha proceduto per esclusione, a strati. Il livello 2 verso il gateway
+era integro: l'ARP del client risolveva il MAC dell'interfaccia guest del
+firewall, quindi il pacchetto arrivava all'apparato. La security policy
+permetteva l'uscita: la regola `GUEST_Outgoing` (dalla zona guest verso qualsiasi
+destinazione) era attiva, e nel log del firewall, filtrato sull'IP del client
+verso `8.8.8.8` durante un ping continuo, non compariva alcun drop. La tabella
+NAT conteneva solo virtual server e la tabella Policy Route era vuota. Ne
+restava una sola spiegazione: il SNAT mancante.
+
+Sullo ZLD il mascheramento verso la WAN e' automatico solo per le interfacce LAN
+di fabbrica; la guest, interfaccia aggiunta in seguito, ne restava fuori, quindi i
+pacchetti uscivano con IP sorgente privato e la risposta non poteva tornare.
+Creato l'oggetto indirizzo `GUEST_SUBNET` e una policy route `GUEST_SNAT` con
+SNAT `outgoing-interface` sulla sola subnet guest. Applicata, il portatile ha
+ottenuto risposta dal ping verso `8.8.8.8` e i dispositivi sull'SSID ospiti hanno
+ripreso a navigare. Da rilevare, la VLAN 90 risulta ormai ripulita
+dall'infrastruttura che vi era finita per errore (management degli switch, UPS,
+server domotica, vecchi AP): oggi ospita solo il gateway del firewall e client di
+tipo laptop/telefono, cioe' e' finalmente una vera rete ospiti.
+
+Restano aperti due affinamenti di segmentazione, non urgenti: restringere la
+regola `GUEST_Outgoing` dalla destinazione `any` alla sola WAN (la guest oggi
+potrebbe raggiungere anche le zone interne), eventualmente in combinazione con
+l'isolamento lato access point (Nebula, toggle Guest Network sull'SSID ospiti); e,
+sul fronte staff, la `vlan40` e' anch'essa interfaccia aggiunta e priva di SNAT,
+quindi richiedera' una policy route `STAFF_SNAT` gemella quando verra' riportata
+all'indirizzamento corretto. Dettaglio tecnico in
+`firewall-zyxel-usg-flex-500.md` §Policy Route (SNAT).
