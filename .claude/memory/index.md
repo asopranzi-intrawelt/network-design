@@ -28,6 +28,15 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
+**Ripresa 23/07/2026 (fine sessione Wi-Fi/telefoni): leggere per prima cosa
+`_notes/RESUME_PROMPT.md`** — riassunto della sessione e recap completo delle
+pendenze. Stato in breve: guest SNAT risolto e verificato; regola guest ristretta
+a sola WAN; staff Wi-Fi con accesso completo alla LAN (per scelta, i due SSID sono
+protetti da password); telefoni IP Piano Terra portati sulla VLAN 2 fonia (parte
+di rete risolta) ma in attesa di provisioning per MAC lato Vianova/myOffice (email
+pronta in `_notes/mail-myoffice-fonia-telefoni.md`). Modifiche ai file tracciati
+gia' committate (c7119a6, 9555161).
+
 Aggiornato il 22/07/2026 (sessione corrente). Filone attivo: **Wi-Fi guest
 VLAN 90**. Obiettivo: far navigare la rete ospiti sulla VLAN 90 (10.61.90.0/24),
 servita da un AP Zyxel nuovo in multi-SSID (staff VLAN 40 + guest VLAN 90).
