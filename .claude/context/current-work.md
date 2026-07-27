@@ -399,3 +399,30 @@ firewall, l'ordine di migrazione porta per porta con la lezione di change manage
 del 16 e del 23/07 (una porta alla volta, PVID singolo sui trunk, rollback pronto,
 mai sul core switch a fine giornata), e il rapporto con la DMZ di M4-M9, che oggi e'
 l'unica strada prevista per esporre il pilota della VM208 fuori dalla LAN.
+
+**Design aperto nella stessa sessione del 27/07/2026**: `docs/segmentazione-lan-m22.md`,
+con i tre livelli richiesti (concettuale, deep-dive tecnico, operativo) e il diagramma
+target versionato in `.claude/context/diagrams/segmentazione-target-m22.mmd`. Il
+documento e' innestato sugli artefatti esistenti invece di ripartire da zero: idioma di
+configurazione verificato della VLAN 40 e della DMZ, convenzione ottetto uguale ID VLAN,
+`Set-NebulaWifiVlan.ps1` come strumento di scrittura sugli switch, snapshot Nebula come
+base del censimento, diagrammi `rete_stato_target_08072026` e
+`rete_stato_attuale_17072026` come punto di partenza grafico. Decisioni dell'IT Manager
+registrate: cinque segmenti con IoT/OT separato, primo intervento sulle stampanti con
+soli switch e firewall, strategia di indirizzamento rimandata al censimento.
+
+Tre esiti collaterali del design, tutti corretti in giornata. Primo: era stale la nota
+della scheda firewall secondo cui ogni porta di entrambi gli switch avrebbe
+`allowedVLAN: all` — dal 23/07 il trunk del Piano Terra porta una lista esplicita, quindi
+ogni VLAN nuova va aggiunta a mano alla porta 29 del 30HP, pena un segmento invisibile al
+Piano Terra con lo stesso sintomo dei telefoni. Secondo: due righe della tabella VLAN di
+`network-diagram.md` invertivano il ruolo delle classi `.10` e `.20` rispetto alla
+configurazione reale del firewall (`lan1` = PC, `lan1:1` = server), e una terza dava per
+`[TBC]` la classe stampanti che era gia' documentata. Terzo: e' emerso un sesto segmento
+candidato, la gestione degli apparati, oggi promiscua nella classe delle postazioni con
+la iLO su una classe `.1` che nessun documento descrive come segmento (SRV-003, #108).
+
+**Prossimo passo operativo: M22a, il censimento.** Richiede la chiave API Nebula per un
+nuovo snapshot e l'accesso alla GUI del firewall per ambiti DHCP, riserve e oggetti
+indirizzo: entrambi dell'utente, quindi il passo si apre con una richiesta esplicita e
+non con un'azione dell'agente.

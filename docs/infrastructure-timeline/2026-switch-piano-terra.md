@@ -1239,3 +1239,42 @@ Delimitato anche il perimetro documentale, perche' la domanda si riproporra' a o
 nuovo progetto interno: questo repository documenta le VM come asset di rete, cioe'
 che cosa espongono, su quale segmento e con quale postura di sicurezza, mentre lo
 stato di avanzamento del software resta nei rispettivi progetti (vedi ADR-015).
+
+### Stessa giornata: aperto il design della segmentazione interna (M22)
+
+Nella seconda parte della sessione si e' passati dal riallineamento al progetto, aprendo
+il documento di design del micro-step M22 (`docs/segmentazione-lan-m22.md`) con il
+diagramma target versionato in `.claude/context/diagrams/segmentazione-target-m22.mmd`.
+Il documento e' scritto su tre livelli, come richiesto per questo progetto: concettuale,
+per spiegare perche' una convenzione di ottetto non e' un confine di sicurezza e cosa un
+tag 802.1Q compra davvero; tecnico, con il disegno target a cinque segmenti, la matrice
+dei flussi consentiti e la sintassi di configurazione nell'idioma gia' verificato su
+questo firewall; operativo, con la sequenza passo per passo, la verifica e il criterio di
+rollback.
+
+Il principio adottato e' che il design non riparte da zero ma si innesta su quello che
+questo progetto ha gia' costruito: il precedente completo della VLAN 40 (interfaccia
+taggata sullo stesso port-group `lan1`, DHCP applicato dalla sezione nascosta della GUI,
+zona dedicata assegnata a mano), la lezione della VLAN 90 sul campo `Interface Type` e il
+mascheramento automatico, la convenzione di indirizzamento in cui l'ottetto coincide con
+l'ID VLAN, gli script Nebula in lettura e scrittura, e i due diagrammi drawio di stato
+attuale e target come base grafica.
+
+Tre correzioni sono emerse proprio dal confronto con il materiale esistente, e sono la
+prova che rileggere prima di scrivere serve. La scheda firewall affermava, sulla base
+dello snapshot del 15/07, che ogni porta di entrambi gli switch avesse `allowedVLAN: all`
+e che quindi qualunque VLAN nuova attraversasse gia' i collegamenti: non e' piu' vero dal
+23/07, perche' il trunk lato Piano Terra porta ora una lista esplicita, e per M22 ne segue
+un passo obbligatorio in piu'. La tabella VLAN del diagramma di rete invertiva il ruolo
+delle classi `.10` e `.20` rispetto alla configurazione reale del firewall, dove `lan1` e'
+la rete delle postazioni con il proprio pool DHCP e `lan1:1` quella dei server e dei NAS.
+Ed e' emerso un sesto segmento candidato che nella lista iniziale non c'era: la gestione
+degli apparati, che oggi vive nella stessa classe delle postazioni per lo switch del
+Piano Terra e su una classe `.1` mai descritta come segmento per la iLO del server, cioe'
+esattamente l'adiacenza che una segmentazione dovrebbe eliminare per prima.
+
+Il primo passo operativo, non ancora eseguito, e' il censimento (M22a): uno snapshot
+Nebula posteriore al 23/07 con la tabella MAC di entrambi gli switch, la lettura degli
+ambiti DHCP e delle riserve dalla GUI del firewall, e l'inventario degli host con
+indirizzo statico o scritto a mano, che e' la condizione posta per scegliere tra
+rinumerare le classi e affiancare segmenti nuovi svuotando il legacy.

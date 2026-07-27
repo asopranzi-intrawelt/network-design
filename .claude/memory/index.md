@@ -7,7 +7,7 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 0bbc9f3 (HEAD al 23/07/2026, pointer a RESUME_PROMPT)
+Commit di riferimento: 92a3472 (27/07/2026, formalizzazione arretrati + ricognizione VM)
 Data snapshot:         2026-07-27
 ```
 
@@ -39,12 +39,21 @@ provider su 80/443 verso tutta la `/19`. Quattro gap nuovi (#118 NET-011, #119
 SEC-016, #120 SRV-005, #121 SEC-017) e il perimetro documentale delle VM applicative
 fissato in ADR-015.
 
-Filone attivo dalla sessione successiva: **design dell'infrastruttura di rete**,
-ripartendo dai micro-step di Fase 3 con **M22 (segmentazione reale della `/19`)
-promosso a progetto strutturale**, perche' tutte le evidenze di luglio convergono
-li'. Dipendenze e ordine in `roadmap.md`; inquadramento e cose da progettare prima di
-toccare la rete in `current-work.md` §Stato al 27/07/2026. Pendenze operative non
-chiuse: provisioning dei due telefoni lato Vianova/myOffice (attesa esterna, email
+**Design M22 aperto nella stessa sessione** (secondo commit del 27/07): documento
+`docs/segmentazione-lan-m22.md` su tre livelli — concettuale, deep-dive tecnico con
+matrice dei flussi e sintassi verificata sul dispositivo, operativo con criterio di
+rollback — piu' il diagramma target `.claude/context/diagrams/segmentazione-target-m22.mmd`
+e i cinque sotto-step M22a-M22e in `roadmap.md`. Il design e' innestato sugli artefatti
+esistenti (VLAN 40, DMZ 201, script Nebula, diagrammi drawio, mappatura porte) e da quel
+confronto sono uscite tre correzioni: la nota "allowedVLAN: all su ogni porta" e' superata
+dal 23/07, la tabella VLAN di `network-diagram.md` invertiva le classi `.10` e `.20`, ed e'
+emerso un sesto segmento candidato (gestione degli apparati, oggi promiscua nella classe
+delle postazioni, iLO su classe `.1`).
+
+**Prossimo passo operativo: M22a, il censimento.** Serve materiale dell'utente: uno
+snapshot Nebula nuovo (chiave API) e la lettura dalla GUI del firewall di ambiti DHCP,
+riserve per MAC e oggetti indirizzo. Da quel censimento dipende la scelta tra rinumerare
+le classi e affiancare segmenti nuovi. Pendenze operative non chiuse: provisioning dei due telefoni lato Vianova/myOffice (attesa esterna, email
 pronta), binding HTTPS GroupShare (SEC-015), access key AWS non ruotata (SEC-012),
 riscrittura storia git della Fase B.
 

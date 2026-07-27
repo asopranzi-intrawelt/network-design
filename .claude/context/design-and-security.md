@@ -158,7 +158,17 @@ identity provider su TCP/80 e TCP/443 verso l'intero dominio di broadcast della
 effetto perche' il firewall di cluster resta inattivo. Questo aggiunge un
 requisito concreto a M22: la segmentazione delle tre classi deve prevedere anche
 un segmento per i servizi applicativi interni, non solo la tripartizione
-PC/server/stampanti |
+PC/server/stampanti. **Design aperto il 27/07/2026** in
+`docs/segmentazione-lan-m22.md`: cinque segmenti, matrice dei flussi con default
+deny e log, piano operativo che parte dalle stampanti perche' e' il carico con
+accoppiamento minimo; diagramma target in
+`.claude/context/diagrams/segmentazione-target-m22.mmd`. Il design ha fatto
+emergere un fronte ulteriore dello stesso controllo, non ancora deciso: la
+gestione degli apparati non ha un segmento proprio — l'interfaccia di gestione
+dello switch del Piano Terra vive nella classe delle postazioni (verificato
+23/07/2026) e la iLO5 del server su una classe `.1` che nessun documento descrive
+come segmento (SRV-003, #108), quindi una postazione compromessa vede oggi il
+piano di gestione della rete. Rilevante anche per A.9.4, accesso privilegiato |
 | A.8.16 Monitoring activities | Non verificato | Logging traffico di rete non documentato; nessuna policy di raccolta/retention log firewall o switch |
 | A.5.37 Documented operating procedures | In corso | Questo progetto (network-design), piu' PSGSI rev.1 firmata il 16/10/2025 (avvio formale SGSI) |
 | A.8.8 Management of technical vulnerabilities | Non verificato | Patch management di switch Nebula, firewall e firmware NAS non documentato (Fase 4 step 1); un VA esterno non credenzialato (06/11/2025, Onova) ha rilevato 8 anomalie, dettaglio in `vulnerability-assessment-nov2025.md` |

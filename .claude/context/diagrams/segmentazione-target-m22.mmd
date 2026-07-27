@@ -1,0 +1,70 @@
+---
+description: Segmentazione target della LAN interna (micro-step M22) - Intrawelt
+source: docs/segmentazione-lan-m22.md (design 27/07/2026)
+stato: PROGETTO, non applicato. I segmenti 10/20/30/50/60 non esistono ancora.
+esistenti: VLAN 1 (nativa), VLAN 2 (fonia), VLAN 40 (Wi-Fi staff), VLAN 90 (guest)
+pianificati altrove: VLAN 100 (fonia target, 08/07), VLAN 201 (DMZ, M4-M9)
+convenzione: ottetto = ID VLAN (VLAN 30 -> 10.61.30.0/24)
+---
+
+graph TB
+    WAN([Internet - Router Vianova])
+
+    subgraph FW["Zyxel USG FLEX 500 - unico punto di transito inter-segmento"]
+        direction LR
+        Z10["zona PC\nvlan10 10.61.10.1"]
+        Z20["zona SERVER\nvlan20 10.61.20.1"]
+        Z30["zona PRINT30\nvlan30 10.61.30.1"]
+        Z50["zona APPSRV\nvlan50 10.61.50.1"]
+        Z60["zona IOT\nvlan60 10.61.60.1"]
+        Z40["zona WIFI_STAFF\nvlan40 - esistente"]
+        Z90["zona OPT guest\nvlan90 - esistente, SNAT"]
+        Z201["zona DMZ\nvlan201 - M4-M9, non attiva"]
+    end
+
+    WAN --- FW
+
+    subgraph SW["Switch Zyxel Nebula - tagging 802.1Q"]
+        S54["XGS2220-54HP Piano 2\ntrunk p51 verso 30HP: Allowed=All\nramo QNAP su p52"]
+        S30["XGS2220-30HP Piano Terra\ntrunk p29 verso 54HP\nAllowed=1,2,40,90 -> AGGIUNGERE 30/50/60"]
+        S54 === S30
+    end
+
+    FW === S54
+
+    subgraph SEG10["VLAN 10 - Postazioni"]
+        PC["PC e notebook cablati\ntutto in DHCP"]
+    end
+    subgraph SEG20["VLAN 20 - Server e VM"]
+        SRV["Server fisici, VM infrastruttura\nNAS fleet (statici)"]
+    end
+    subgraph SEG30["VLAN 30 - Stampanti e MFP  [PRIMO INTERVENTO]"]
+        PRN["Stampanti di rete\nMFP con scan-to-folder"]
+        SHARE[("Share di scansione\ndedicata su NAS")]
+    end
+    subgraph SEG50["VLAN 50 - Servizi applicativi interni"]
+        APP["VM208 portaleAsset\ne servizi interni futuri\nrichiede M5 bridge-vlan-aware"]
+    end
+    subgraph SEG60["VLAN 60 - IoT / OT"]
+        IOT["UPS, domotica, citofono\ncentrale irrigazione, sensori"]
+    end
+
+    S30 --- SEG10 & SEG30
+    S54 --- SEG10 & SEG20 & SEG30 & SEG50 & SEG60
+
+    PC -->|"SMB, HTTPS, dominio"| SRV
+    PC -->|"IPP 631, RAW 9100"| PRN
+    PC -->|"HTTPS"| APP
+    PRN -->|"SMB solo verso la share dedicata"| SHARE
+    APP -->|"DB, SMTP, OIDC verso server dichiarati"| SRV
+
+    PRN -. "NEGATO: chiude scan-to-folder verso cartelle utente" .-x PC
+    SRV -. "NEGATO salvo gestione remota dichiarata" .-x PC
+    IOT -. "NEGATO verso ogni segmento interno" .-x SRV
+
+    classDef nuovo fill:#e8f0fe,stroke:#1a73e8,stroke-width:2px
+    classDef primo fill:#fef7e0,stroke:#f9ab00,stroke-width:3px
+    classDef esistente fill:#e6f4ea,stroke:#137333
+    class SEG10,SEG20,SEG50,SEG60 nuovo
+    class SEG30 primo
+    class Z40,Z90 esistente
