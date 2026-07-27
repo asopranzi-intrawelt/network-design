@@ -117,13 +117,29 @@ mancata segmentazione della LAN piatta (NET-009/NET-011, micro-step M22).
 
 | VLAN | ID | Subnet | Scopo | Note |
 |------|-----|--------|-------|------|
-| Management/Server | 10 | 10.61.10.0/24 | Infrastruttura IT | Switch, AP, server |
-| Utenti LAN | 20 | 10.61.20.0/24 | Postazioni, NAS, Proxmox | Default LAN |
-| [TBC] | 30 | 10.61.30.0/24 | [TBC] | |
+| Postazioni (`lan1`) | — | 10.61.10.0/19 | PC fissi e notebook cablati | **Correzione 27/07/2026**: questa riga diceva "Management/Server". La configurazione del firewall e' autorevole e dice l'opposto — `lan1` = `10.61.10.1/19` con il pool `LAN1_POOL` e 22 PC fissi come address-object nel range `.10.18-84`. Nella stessa classe vive per anomalia la gestione degli switch (verificato 23/07/2026): e' uno dei difetti che M22 deve rimuovere, non una scelta di design |
+| Server e NAS (`lan1:1`) | — | 10.61.20.0/19 | Server fisici, VM Proxmox, NAS fleet | **Correzione 27/07/2026**: questa riga diceva "Utenti LAN". E' l'alias dei server: NAS INTRA/.168, INTRA2/.177, HERO/.169, DOMV/.116 e le VM del nodo `pve` |
+| Stampanti (`lan1:2`) | — | 10.61.30.0/19 | Stampanti di rete e multifunzione | Non era un `[TBC]`: e' l'alias stampanti documentato nella scheda firewall. Nessun tag 802.1Q: le tre classi sono alias nella stessa `/19` (NET-009) |
 | Guest | 90 | 10.61.90.0/24 | Ospiti, dispositivi IoT | [ANOMALIA: switch mgmt qui] |
 | Voice | 2 | - | VoIP Yealink LLDP-MED | CoS 5, DSCP EF |
 | Fonia (target) | 100 | 10.61.100.0/24 | Telefoni IP centralino cloud | Target 08/07/2026: zona VOICE su FLEX 500 (interfaccia ge5, gw .1), DHCP sul firewall, SIP ALG off. Non ancora applicato |
 | DMZ | 201 | [TBC] | Segmento DMZ pianificato | VLAN 802.1Q su Proxmox bridge-vlan-aware |
+
+Le tre righe corrette sopra non sono VLAN: sono alias di indirizzo dentro un'unica `/19`,
+ed e' esattamente il difetto che il micro-step M22 affronta. Il disegno target che le
+trasforma in VLAN vere, con l'aggiunta di un segmento per i servizi applicativi interni e
+di uno per IoT/OT, e' progettato in `docs/segmentazione-lan-m22.md` e disegnato in
+`.claude/context/diagrams/segmentazione-target-m22.mmd`. Sintesi degli ID proposti, da
+confermare, secondo la convenzione del progetto ottetto uguale ID VLAN.
+
+| VLAN target | ID proposto | Subnet | Contenuto | Stato |
+|---|---|---|---|---|
+| Postazioni | 10 | 10.61.10.0/24 | PC e notebook cablati | Progetto |
+| Server e VM | 20 | 10.61.20.0/24 | Server, VM di infrastruttura, NAS | Progetto |
+| Stampanti e MFP | 30 | 10.61.30.0/24 | Stampanti e multifunzione | Progetto, **primo intervento** |
+| Servizi applicativi interni | 50 | 10.61.50.0/24 | VM208 e servizi interni futuri | Progetto, dipende da M5 |
+| IoT / OT | 60 | 10.61.60.0/24 | UPS, domotica, citofono, irrigazione | Progetto |
+| Gestione apparati | da decidere | da decidere | Switch, iLO, AP, admin firewall | Proposta aperta (oggi la gestione switch e' nella classe PC, la iLO su `10.61.1.71`) |
 
 Aggiornamento confermato il 17/07/2026: il secondo collegamento in trunk
 802.1Q tra lo switch 30 porte del Piano Terra e il 54 porte del Piano 2,
