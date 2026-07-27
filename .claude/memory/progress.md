@@ -1,5 +1,66 @@
 # Work-log
 
+## 2026-07-27 — Formalizzazione arretrati Wi-Fi/telefoni e ricognizione VM applicative (VM207, VM208)
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/infrastructure-timeline/GAP-TBC.md` (correzione
+#102 sulla topologia della dorsale, aggiornamento #116 con la risoluzione della
+parte switch/VLAN di TEL-002, nuova sezione con i gap #118 NET-011, #119 SEC-016,
+#120 SRV-005, #121 SEC-017, riepilogo conteggio a 121);
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (correzione della voce
+17/07 sulle due fibre, tre voci nuove: 21/07 nascita VM208, 23/07 telefoni piu'
+incidente PVID piu' postura Wi-Fi, 27/07 ricognizione VM);
+`docs/network-diagram.md` (dorsale = porta 51, regola operativa sui trunk,
+gestione switch sulla VLAN dati, paragrafo sulle due VM applicative come endpoint);
+`docs/runbook-anomalie.md` (NET-005 con lo stato di rischio accettato e la
+sezione di aggiornamento 22-23/07, nota di correzione sulla porta nella tabella
+di localizzazione AP, nuova sezione Riferimenti utili);
+`docs/firewall-zyxel-usg-flex-500.md` (struttura security policy con
+WIFI_STAFF -> LAN1 ad allow e GUEST -> WAN ristretta, nota di correzione nella
+tabella dei diagrammi); `docs/design-and-security.md` (§A.9.7 console VNC,
+§A.10.1 catena di fiducia interna, §A.13.1 postura Wi-Fi e pilota sulla LAN,
+§A.14.2 governo del codice sorgente);
+`.claude/context/design-and-security.md` (inventario a dieci VM con VM208,
+correzione anagrafica VM207, nuova sezione sulle due VM applicative,
+riconciliazione live, gap A.8.22/A.8.24 estesi e riga nuova A.8.4/A.8.31);
+`.claude/context/dev-testing.md` (conteggio VM);
+`.claude/context/current-work.md` (correzione dorsale, sezione Stato al
+27/07/2026 con il filone attivo); `.claude/context/roadmap.md` (M9, M12, M13a
+chiuso per decisione, M13b con consegna confermata, M18, M22 promosso a progetto
+strutturale, M23 e M24 nuovi, stato riepilogativo); `.claude/memory/decisions.md`
+(ADR-014 Wi-Fi staff rischio accettato, ADR-015 perimetro documentale delle VM
+applicative); `.claude/memory/index.md` (commit di riferimento, tabella schede,
+punto di ripresa).
+File privati (non versionati): `_notes/.anonymization-map.md` (indirizzi e MAC
+delle due VM, correzione della nota sulla porta della dorsale).
+
+Motivo: doppio obiettivo. Primo, portare nei file tracciati le quattro
+formalizzazioni che dopo la sessione del 22-23/07 erano rimaste solo in
+`_notes/DIARIO.md` e in memoria: la correzione di topologia della dorsale (il
+trunk verso il Piano Terra e' la porta 51 del 54HP, la 52 va al QNAP, verificato
+via vicino LLDP), la nuova postura Wi-Fi (staff con accesso pieno alla LAN per
+decisione, guest ristretta a sola WAN), la gestione degli switch sulla VLAN
+nativa dei dati `.10` invece della VLAN 90 indicata da FW-002, e una sezione di
+riferimenti utili. Registrata anche la risoluzione della parte switch/VLAN di
+TEL-002 (trunk 29 del 30HP senza VLAN 2 nella lista, porte telefono su PVID 1;
+corretti entrambi, telefoni visti sulla VLAN 2 in tabella MAC) con il residuo
+aperto sul solo livello DHCP, e l'incidente del PVID non valido sul trunk con la
+regola operativa che ne deriva.
+
+Secondo, la ricognizione dello stato reale del nodo Proxmox e delle due VM
+applicative, richiesta dall'utente: interrogazione del nodo via MCP e ispezione
+via SSH. Risultati: le VM sono dieci, non nove, perche' il 21/07 e' nata la VM208
+`portaleAsset` (pilota interno del portale ISO27001) attestata su `vmbr0`, cioe'
+sulla LAN piatta, dove pubblica su 80/443 un'applicazione con identity provider
+verso l'intera `/19`; la VM207 risulta creata l'08/02/2025 e non a luglio 2026,
+quindi era nuova alla documentazione e non all'infrastruttura; il suo servizio
+(backend sotto systemd, utente dedicato, porta 8000 sull'indirizzo di LAN, CIFS
+verso il NAS-INTRA2) e' attivo dal 23/07. Quattro gap nuovi e due ADR. Nessuna
+modifica alla configurazione della rete in questa sessione: solo lettura,
+verifica e scrittura di documentazione. Prossimo filone concordato con l'utente:
+il design dell'infrastruttura di rete ripartendo dalla roadmap, con M22
+(segmentazione reale della `/19`) come progetto strutturale.
+
 ## 2026-07-22 — Wi-Fi ospiti VLAN 90: ripristino navigazione, SNAT mancante (sessione corrente)
 
 Commit: PENDING (da fare manualmente)

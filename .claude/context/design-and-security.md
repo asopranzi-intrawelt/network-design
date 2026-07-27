@@ -28,7 +28,7 @@ che coincide con l'indirizzo documentato della iLO5, mentre vmbr0 e'
 
 | Bridge | Porta | Subnet | Scopo |
 |---|---|---|---|
-| vmbr0 | eno1 | 10.61.20.11/19 (LAN unica /19) | Rete principale servizi |
+| vmbr0 | eno1 | 10.61.20.11/19 (LAN unica /19) | Rete principale servizi (VM100/202/810 e, dal 21/07/2026, VM208) |
 | vmbr1 | eno2 | — | Seconda NIC VM100 WinServer2022 |
 | vmbr2 | eno3 | — | Intrasite (VM206) |
 | vmbr3 | eno4 | — | Servizi separati (VM203/204/205/207/602) |
@@ -38,7 +38,7 @@ applicata). Lo snapshot v4 conferma che la LAN e' una /19, non una /24: le
 "classi" .10/.20/.30/.90 sono convenzioni di piano di indirizzamento dentro
 un unico dominio L2/L3.
 
-## Inventario VM (snapshot v4, 08/07/2026)
+## Inventario VM (snapshot v4 dell'08/07/2026, riconciliato live il 27/07/2026)
 
 | VMID | Nome | Stato | Bridge(s) | IP | Note |
 |---|---|---|---|---|---|
@@ -48,13 +48,56 @@ un unico dominio L2/L3.
 | VM204 | ConvertitoreRuoliniENI | running | vmbr3 | .22 | |
 | VM205 | GanttTool | running | vmbr3 | — | Guest agent non in esecuzione |
 | VM206 | intrasite | running | vmbr2 | .23 | Docker interno |
-| VM207 | websiteAnalyst | running | vmbr3 | .24 | Nuova (verificata via MCP Proxmox il 13/07/2026): 6 vCPU, 16 GB RAM, dischi 32G+96G su storage SERVIZI; ospita il progetto website-analysis |
+| VM207 | websiteAnalyst | running | vmbr3 | .24 | 6 vCPU, 16 GB RAM, dischi 32G+96G su storage SERVIZI; ospita il progetto website-analyst. Nuova alla documentazione, non all'infrastruttura: il `ctime` del file di configurazione la data all'**08/02/2025**, mentre la prima verifica documentale e' del 13/07/2026 |
+| VM208 | portaleAsset | running | vmbr0, `firewall=1` | .25 | **Creata il 21/07/2026** (`ctime` del config), assente dallo snapshot v4: 4 core, 8 GB RAM con balloon a 4 GB, disco 100G su storage SERVIZI (`cache=writethrough`), `onboot=1`, guest agent attivo, VGA qxl con sessione grafica. Ospita il pilota interno LAN del progetto Portale Asset IT. Appartenenza al pool "Servizi" non verificata |
 | VM602 | Intralino | running | vmbr3 | — | Rinominata (era ITdeveloping); pool Programmazione, disco 200G su storage PROGRAMMAZIONE; no agent |
 | VM810 | TESTNEWEGETRADBOOT | running | vmbr0 | — | 260G; sostituisce la VM809 dei log di febbraio; no agent |
 
 Rimosse rispetto al v3: VM803. Rimosse rispetto ai log vzdump di febbraio
 2026: VM101, 201, 601, 801-803, 809, 900-902 (gap #106 riconciliato). Pool
 risorse: "Servizi" (100, 202-207, 810) e "Programmazione" (602).
+
+Riconciliazione live del 27/07/2026 (interrogazione diretta del nodo via MCP
+Proxmox, non un nuovo snapshot completo): le VM sono **dieci**, nove in esecuzione
+piu' la VM203 template ferma. Il nodo `pve` risulta scarico (48 core al 4%, 96.7
+GiB di RAM occupati su 125.4, uptime di 68 giorni) e nulla e' cambiato su storage,
+job di backup e stato del firewall. Il conteggio a nove VM scritto in
+`dev-testing.md` era quindi superato: aggiornato nella stessa sessione. Il
+prossimo `Get-ProxmoxSnapshot.ps1` (M18) sostituira' questa riconciliazione
+parziale con uno snapshot v5 completo.
+
+## VM207 e VM208: progetti applicativi ospitati (verificato live il 27/07/2026)
+
+Le due VM piu' recenti ospitano progetti software con repository, documentazione e
+ciclo di vita propri, esterni a questo repository. Qui interessano come *asset di
+rete*: cosa espongono, su quale segmento, con quale postura. Lo stato di
+avanzamento del loro sviluppo resta nei rispettivi progetti, non qui.
+
+La VM207 esegue un servizio di estrazione contenuti da siti web: backend FastAPI
+sotto systemd con utente di servizio dedicato, in ascolto in HTTP non cifrato sulla
+porta 8000 legata all'indirizzo di LAN della VM (non su loopback), piu' un secondo
+servizio HTTP sulla porta 80. Monta in CIFS una condivisione del NAS (10.61.20.177)
+con un account di servizio dedicato, che e' la scelta corretta, e tiene i dati su un
+disco separato montato su `/srv`. La VM e' sul bridge `vmbr3`, quello dei servizi
+separati. Due elementi di postura aperti: il parametro `-vnc 0.0.0.0:77` nella
+configurazione QEMU e un file di credenziali in chiaro nella home dell'utente
+(gap SRV-005).
+
+La VM208 esegue il pilota interno del portale di supporto ISO27001: uno stack
+container con database PostgreSQL, cache Redis, identity provider Keycloak, API e
+reverse proxy Caddy che pubblica la SPA in HTTPS su 80 e 443. Verificato che
+l'endpoint di prontezza dell'API risponde `ready`. Convivono sulla stessa VM due
+progetti compose distinti, il pilota che pubblica su tutte le interfacce e un
+insieme di soli servizi dati per lo sviluppo, questo invece legato a `127.0.0.1`.
+La differenza sostanziale rispetto alla VM207 e' il segmento: la VM208 e' su
+`vmbr0`, cioe' direttamente sulla LAN piatta `/19` condivisa con postazioni e
+stampanti, e vi pubblica un'applicazione con identity provider senza alcun filtro
+interposto (gap NET-011). Il nome del portale si risolve per file `hosts` su ogni
+client e la fiducia nel certificato dipende da una CA interna importata a mano
+macchina per macchina (gap SEC-016). L'esposizione pubblica del portale e'
+esplicitamente rimandata dal progetto stesso a una fase successiva, dietro la DMZ
+pianificata in M7/M9 di questo progetto: il gancio architetturale esiste, la DMZ no
+(non ancora attivata).
 
 **VM206 "intrasite" (verificato live il 09/07/2026)**: serve una copia
 interna del sito WordPress pubblico `intrawelt.com`. Le postazioni con
@@ -107,7 +150,15 @@ in circa 15 minuti). Lezione di change management (rilevante anche per
 A.5.37/procedure operative): il rollout porta-per-porta con verifica
 immediata (gia' in uso) ha contenuto l'incidente a una finestra breve,
 ma un test con presenza fisica avrebbe permesso di distinguere subito un
-guasto reale da un AP che si stava solo re-inizializzando |
+guasto reale da un AP che si stava solo re-inizializzando. **Aggiornamento
+27/07/2026**: la LAN piatta non e' piu' solo un rischio potenziale. La VM208,
+attestata su `vmbr0`, pubblica il pilota del portale ISO27001 con il suo
+identity provider su TCP/80 e TCP/443 verso l'intero dominio di broadcast della
+`/19` (NET-011, GAP-TBC #118), e il flag `firewall=1` sulla sua NIC non produce
+effetto perche' il firewall di cluster resta inattivo. Questo aggiunge un
+requisito concreto a M22: la segmentazione delle tre classi deve prevedere anche
+un segmento per i servizi applicativi interni, non solo la tripartizione
+PC/server/stampanti |
 | A.8.16 Monitoring activities | Non verificato | Logging traffico di rete non documentato; nessuna policy di raccolta/retention log firewall o switch |
 | A.5.37 Documented operating procedures | In corso | Questo progetto (network-design), piu' PSGSI rev.1 firmata il 16/10/2025 (avvio formale SGSI) |
 | A.8.8 Management of technical vulnerabilities | Non verificato | Patch management di switch Nebula, firewall e firmware NAS non documentato (Fase 4 step 1); un VA esterno non credenzialato (06/11/2025, Onova) ha rilevato 8 anomalie, dettaglio in `vulnerability-assessment-nov2025.md` |
@@ -115,7 +166,8 @@ guasto reale da un AP che si stava solo re-inizializzando |
 | A.8.1 User endpoint devices | Conforme (endpoint) / Parziale (gestione centralizzata) | BitLocker XTS-AES 128 bit attivo su tutti gli endpoint Windows dal 03/07/2026, chiavi in escrow su NinjaOne; manca pero' Microsoft Intune (MDM) perche' la licenza M365 e' Business Standard, non Premium — nessuna policy di conformita' dispositivo centralizzata oltre l'AV Bitdefender (GAP-TBC #113, SEC-014) |
 | A.8.13 Information backup | Documentato | Inventario NAS fleet consolidato in `vendor-management.md` §QNAP – NAS (RAID, capacita', backup per dispositivo); NAS HERO replicato offsite su Azure Blob Storage. Resta [TBC] la verifica periodica dei restore (non documentata) |
 | A.7.1 Physical security perimeter | Parziale | CED con badge lettore impronte (BioStar) gia' attivo; badge dedicato per l'accesso alla sala server ancora da implementare (azione emersa dalla gap analysis ISO 27001 del 18/04/2025, vedi `cybersecurity-governance.md`) |
-| A.8.24 Use of cryptography | Non verificato | Nessuna policy crittografica documentata a livello aziendale; a livello di rete, il wildcard SSL su Plesk/Fastnet ha un limite tecnico noto (vedi `scenia-project.md` §Architettura domini) e la VM interna "intrasite" (VM206) usa un certificato auto-firmato, coerente con l'uso puramente interno |
+| A.8.24 Use of cryptography | Non verificato | Nessuna policy crittografica documentata a livello aziendale; a livello di rete, il wildcard SSL su Plesk/Fastnet ha un limite tecnico noto (vedi `scenia-project.md` §Architettura domini) e la VM interna "intrasite" (VM206) usa un certificato auto-firmato, coerente con l'uso puramente interno. **Aggiornamento 27/07/2026**: il pilota sulla VM208 introduce una terza catena di fiducia interna, una CA generata dal reverse proxy la cui root va importata a mano su ogni client, senza inventario delle macchine coinvolte ne' procedura di revoca o rinnovo (SEC-016, GAP-TBC #119). Tre soluzioni diverse per lo stesso problema — certificato pubblico, auto-firmato, CA interna — sono il segnale che la policy crittografica va scritta prima che i servizi interni si moltiplichino |
+| A.8.4 Access to source code / A.8.31 Separation of environments | Non normato | I progetti applicativi ospitati sulle VM aziendali (VM207, VM208) non hanno una regola scritta su dove viva il codice: uno dei due repository ha un secondo remote verso l'account GitHub personale di un collaboratore e l'identita' di commit locale di quella persona (SEC-017, GAP-TBC #121). Sul lato separazione degli ambienti, il pilota della VM208 ha una decisione di progetto per isolare pre-produzione e produzione sulla stessa VM (progetti container e hostname distinti), ma alla verifica del 27/07/2026 risultava attuata solo a livello di configurazione: la seconda copia di lavoro e il relativo ramo non erano ancora stati creati, e accanto al pilota girava un insieme di servizi dati di sviluppo |
 
 ## Prossimi passi di hardening (da pianificare)
 

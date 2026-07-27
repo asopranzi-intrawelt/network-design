@@ -318,8 +318,17 @@ Struttura generale:
 - Guest -> LAN: deny
 - DMZ -> LAN: deny log alert (nuova regola, revisione 05/06/2026)
 - DMZ -> WAN: allow (aggiornamenti e certificati)
-- WIFI_STAFF -> LAN1: deny log (nuova regola, M13a, 16/07/2026 — isolamento Wi-Fi staff da NET-005)
+- WIFI_STAFF -> LAN1: **allow** dal 22/07/2026 (era deny log dal 16/07/2026, M13a). La
+  regola e' stata rinominata di conseguenza (`WIFI_STAFF_to_LAN1_allow`): decisione
+  esplicita dell'IT Manager, la Wi-Fi staff deve lavorare come una postazione cablata,
+  NAS incluso, mentre l'isolamento resta solo sulla rete ospiti. Verificato dopo la
+  modifica che un dispositivo sull'SSID staff raggiunge il NAS. NET-005 diventa un
+  rischio accettato e la sua chiusura passa da M22 (segmentazione reale della LAN), non
+  da questa ACL. Reversibile cambiando l'azione della regola.
 - WIFI_STAFF -> WAN/altre zone: allow (nuova regola, M13a, 16/07/2026 — uscita generale, stesso pattern di LAN1_Outgoing)
+- GUEST -> WAN: allow, **ristretta il 22/07/2026** da destinazione `any` a sola WAN
+  (regola `GUEST_Outgoing`). Verificato che la rete ospiti naviga e non raggiunge la LAN
+  interna. Sulla stessa zona agisce la policy route `GUEST_SNAT` (vedi §Policy Route)
 
 ---
 
@@ -610,7 +619,7 @@ Diagrammi prodotti durante l'analisi del 29/05-05/06/2026, archiviati in
 | `topologia_stella_lan_dmz_proxmox_05062026.svg` | 05/06/2026 | Topologia a stella LAN/DMZ/Proxmox del piano finale |
 | `rete_stato_target_08072026.drawio` | 08/07/2026 | Revisione dello stato target: secondo trunk 802.1Q tra lo switch 30 porte (Piano Terra) e il 54 porte (Piano 2) che porta la VLAN dati del Piano Terra e la VLAN fonia (ID fissato a 100 dal diagramma fonia sotto; aperti NET-008 e TEL-002) |
 | `rete_fonia_voip_08072026_2.drawio-claudio.drawio` | 08/07/2026 | Target fonia VoIP (prodotto dall'utente): VLAN 100 fonia (10.61.100.0/24), interfaccia VLAN 100 su ge5 del FLEX 500 con zona VOICE, DHCP sul firewall e SIP ALG disattivato; trunk VLAN 1 untagged + VLAN 100 tagged su entrambi gli switch e sulla fibra di dorsale; porte telefoni access PVID 100 con PoE priority High (3 al Piano 2, 2 al Piano Terra); PBX cloud, telefoni in uscita via WAN; ordine di implementazione in cinque step (1-2 hitless). Nota: i modelli sono etichettati GS2220-50HP/28HP, altrove documentati come XGS2220-54HP/30HP — refuso probabile. Rispetto allo stato attuale (FW-012: DHCP fonia Vianova isolato dal firewall) questo target sposta DHCP e policy della fonia sul firewall: converge con M11/M12. **Annotato 17/07/2026 come non applicato**: la fonia realmente implementata resta su VLAN 2 con DHCP Vianova sulla porta 8 del 54HP, non su VLAN 100/firewall |
-| `rete_stato_attuale_17072026.drawio` | 17/07/2026 | Topologia corrente confermata dall'utente (corroborata da screenshot del pannello porte Nebula del 54HP): la dorsale Piano Terra <-> Piano 2 e' un trunk 802.1Q diretto tra i due switch XGS2220 (porta 52 del 54HP, VLAN dati PT untagged + VLAN 2 fonia tagged); il QNAP QSW-1208-8c non e' un hop intermedio, resta un ramo separato sulla porta 51 verso NAS fleet e le postazioni a 10 Gbps (invariato). Riporta anche gli aperti: porta 6 del 54HP con PVID 2 come la porta 8 ma ruolo non confermato, e i due telefoni IP del Piano Terra non visibili (TEL-002). Supera, per la sola parte di dorsale/QNAP, sia `rete_stato_attuale_29052026.drawio` sia `rete_stato_target_08072026.drawio` |
+| `rete_stato_attuale_17072026.drawio` | 17/07/2026 | Topologia corrente confermata dall'utente (corroborata da screenshot del pannello porte Nebula del 54HP): la dorsale Piano Terra <-> Piano 2 e' un trunk 802.1Q diretto tra i due switch XGS2220 (VLAN dati PT untagged + VLAN 2 fonia tagged); il QNAP QSW-1208-8c non e' un hop intermedio, resta un ramo separato a 10 Gbps verso NAS fleet e le postazioni (invariato). **Nota di correzione del 23/07/2026**: le due fibre erano invertite nella descrizione originale del diagramma — il trunk verso il Piano Terra e' la porta 51 del 54HP (LLDP "Switch piano terra", lato Piano Terra porta 29 del 30HP), il ramo QNAP e' la porta 52. Riporta anche gli aperti: porta 6 del 54HP con PVID 2 come la porta 8 ma ruolo non confermato, e i due telefoni IP del Piano Terra non visibili (TEL-002). Supera, per la sola parte di dorsale/QNAP, sia `rete_stato_attuale_29052026.drawio` sia `rete_stato_target_08072026.drawio` |
 
 Nota: i diagrammi "target" descrivono lo stato pianificato: alcuni sono stati
 nel frattempo confermati come applicati (la dorsale diretta PT<->P2 e il QNAP

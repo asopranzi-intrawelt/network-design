@@ -10,7 +10,7 @@ Dopo aver eseguito `Get-ProxmoxSnapshot.ps1`, verificare nel report Markdown:
 
 1. **Nodi**: deve apparire almeno `pve` con uptime e versione PVE
 2. **Bridge**: devono comparire vmbr0-vmbr3 con le porte fisiche eno1-eno4
-3. **VM QEMU**: devono comparire tutte le 9 VM attive (100, 202, 203, 204, 205, 206, 207, 602, 810); VM803 risulta rimossa rispetto ai log vzdump di febbraio 2026 (vedi design-and-security.md)
+3. **VM QEMU**: devono comparire tutte le 10 VM censite (100, 202, 203, 204, 205, 206, 207, 208, 602, 810), nove in esecuzione piu' la 203 template ferma; VM803 risulta rimossa rispetto ai log vzdump di febbraio 2026 (vedi design-and-security.md). La VM208 `portaleAsset` e' nata il 21/07/2026, dopo lo snapshot v4, ed e' stata censita con la riconciliazione live del 27/07/2026: il primo snapshot che la conterra' e' il v5 (M18)
 4. **IP guest agent**: VM100 deve avere .12 su vmbr0 e .13 su vmbr1
 5. **Pool**: devono comparire `Servizi` e `Programmazione`
 6. **Backup**: devono comparire i 9 job verso NAS_INTRA (VM100 anche verso NAS_HERO)
@@ -42,7 +42,7 @@ VM602 e VM810 non hanno il guest agent installato o attivo. I warning sono norma
 ```powershell
 $data = Get-Content .\output\proxmox-snapshot.json | ConvertFrom-Json
 $data.nodes.Count       # atteso: 1
-$data.vms.Count         # atteso: ~10
+$data.vms.Count         # atteso: 10 (dal 21/07/2026, VM208 inclusa)
 $data.bridges.Count     # atteso: 4 bridge principali
 $data.clusterFirewall.options.enable  # atteso: 0 (inattivo)
 ```
