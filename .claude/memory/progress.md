@@ -57,9 +57,37 @@ quindi era nuova alla documentazione e non all'infrastruttura; il suo servizio
 (backend sotto systemd, utente dedicato, porta 8000 sull'indirizzo di LAN, CIFS
 verso il NAS-INTRA2) e' attivo dal 23/07. Quattro gap nuovi e due ADR. Nessuna
 modifica alla configurazione della rete in questa sessione: solo lettura,
-verifica e scrittura di documentazione. Prossimo filone concordato con l'utente:
-il design dell'infrastruttura di rete ripartendo dalla roadmap, con M22
-(segmentazione reale della `/19`) come progetto strutturale.
+verifica e scrittura di documentazione.
+
+Seconda parte della stessa sessione: **aperto il design di M22**. Nuovi file
+tracciati `docs/segmentazione-lan-m22.md` (documento di design su tre livelli:
+concettuale, deep-dive tecnico con matrice dei flussi e sintassi verificata,
+operativo con rollback) e
+`.claude/context/diagrams/segmentazione-target-m22.mmd` (diagramma target
+versionato). Aggiornati `docs/network-diagram.md` (tabella VLAN corretta e
+tabella dei segmenti target), `.claude/context/roadmap.md` (M22 con cinque
+sotto-step M22a-M22e), `.claude/context/design-and-security.md` (A.8.22 con il
+rimando al design e il fronte gestione apparati), `.claude/context/current-work.md`
+e la voce di timeline del 27/07.
+
+Decisioni dell'IT Manager raccolte in sessione: cinque segmenti con IoT/OT
+separato, primo intervento sulle stampanti usando soli switch e firewall (senza
+toccare la rete del nodo Proxmox), strategia di indirizzamento rimandata al
+censimento. Su richiesta esplicita dell'utente il design e' stato riscritto per
+innestarsi sugli artefatti esistenti — idioma di configurazione della VLAN 40 e
+della DMZ, convenzione ottetto uguale ID VLAN, script Nebula, diagrammi drawio di
+stato attuale e target, mappatura porte fisiche — invece di ripartire da zero.
+
+Tre correzioni emerse dal confronto con il materiale preesistente: (1) la nota
+della scheda firewall secondo cui ogni porta ha `allowedVLAN: all` e' superata dal
+23/07, il trunk del Piano Terra porta una lista esplicita e ogni VLAN nuova va
+aggiunta alla porta 29 del 30HP; (2) la tabella VLAN di `network-diagram.md`
+invertiva il ruolo delle classi `.10` (postazioni, `lan1`) e `.20` (server,
+`lan1:1`) rispetto alla configurazione reale e dava per `[TBC]` la classe
+stampanti; (3) emerso un sesto segmento candidato, la gestione degli apparati,
+oggi promiscua nella classe delle postazioni con la iLO su una classe `.1` non
+descritta come segmento. Prossimo passo operativo: M22a, il censimento, che
+richiede chiave API Nebula e accesso GUI firewall dell'utente.
 
 ## 2026-07-22 — Wi-Fi ospiti VLAN 90: ripristino navigazione, SNAT mancante (sessione corrente)
 
