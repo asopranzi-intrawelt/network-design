@@ -90,7 +90,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 | A.9.4 | Diritti di accesso privilegiato | SI | Parziale | 4 account Azure admin identificati. Account locali admin non censiti. |
 | A.9.5 | Autenticazione sicura | SI | SI – Parziale | Password policy M365 attiva. Robustezza criteri da rivedere (Consulente-ISO27001-1). |
 | A.9.6 | Gestione delle password | SI | Parziale | Password manager non adottato aziendalmente. |
-| A.9.7 | Controllo degli accessi ai sistemi e alle applicazioni | SI | Parziale | Firewall policy, VLAN segmentation. Accessi applicativi non documentati. |
+| A.9.7 | Controllo degli accessi ai sistemi e alle applicazioni | SI | Parziale | Firewall policy, VLAN segmentation. Accessi applicativi non documentati. **Aggiornamento 27/07/2026**: sulla VM207 la configurazione QEMU porta un parametro di console VNC su tutte le interfacce (display 77) invece che sul solo loopback, ed e' presente un file di credenziali in chiaro nella home dell'utente di servizio: da verificare se la console sia effettivamente attiva e protetta da password (SRV-005, `GAP-TBC.md` #120). Le console delle VM vanno raggiunte via tunnel o dall'interfaccia Proxmox autenticata, non da una porta in ascolto sulla LAN. |
 
 ---
 
@@ -98,7 +98,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.10.1 | Crittografia | SI | Parziale | VPN IPsec attiva. BitLocker su endpoint? [TBC]. Crittografia NAS [TBC]. |
+| A.10.1 | Crittografia | SI | Parziale | VPN IPsec attiva. BitLocker XTS-AES 128 attivo su tutti gli endpoint Windows dal 03/07/2026, chiavi in escrow su NinjaOne. Crittografia NAS [TBC]. **Aggiornamento 27/07/2026**: nessuna policy crittografica aziendale scritta, e i servizi interni stanno divergendo — certificato pubblico Let's Encrypt sui domini esposti, certificato auto-firmato sulla VM206, CA interna del reverse proxy sulla VM208 con root da importare a mano su ogni client e nessuna procedura di revoca o rinnovo (SEC-016, `GAP-TBC.md` #119). Nel frattempo il portale GroupShare viaggia in chiaro (SEC-015). La policy va scritta prima che i servizi interni si moltiplichino ulteriormente. |
 
 ---
 
@@ -129,7 +129,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.13.1 | Gestione della sicurezza delle reti | SI | Parziale | Firewall UTM, VLAN segmentation. Switch mgmt su VLAN guest (ANOMALIA FW-002). **Aggiornamento 22/07/2026**: la rete ospiti VLAN 90 e' ora una vera rete Wi-Fi guest, ripulita dall'infrastruttura legacy che vi era finita per errore, e naviga su Internet tramite SNAT esplicito (policy route `GUEST_SNAT`, vedi `firewall-zyxel-usg-flex-500.md` §Policy Route). Resta da isolarla dalle zone interne: la regola `GUEST_Outgoing` ha destinazione ancora `any` (NET-001 resta aperto), restringimento a sola WAN pianificato, eventualmente con isolamento anche lato access point. |
+| A.13.1 | Gestione della sicurezza delle reti | SI | Parziale | Firewall UTM, VLAN segmentation. Switch mgmt su VLAN guest (ANOMALIA FW-002). **Aggiornamento 22/07/2026**: la rete ospiti VLAN 90 e' ora una vera rete Wi-Fi guest, ripulita dall'infrastruttura legacy che vi era finita per errore, e naviga su Internet tramite SNAT esplicito (policy route `GUEST_SNAT`, vedi `firewall-zyxel-usg-flex-500.md` §Policy Route). Resta da isolarla dalle zone interne: la regola `GUEST_Outgoing` ha destinazione ancora `any` (NET-001 resta aperto), restringimento a sola WAN pianificato, eventualmente con isolamento anche lato access point. **Aggiornamento 22-23/07/2026, tre fatti**: (1) la regola `GUEST_Outgoing` e' stata ristretta da destinazione `any` a sola WAN e la restrizione e' stata verificata — la rete ospiti naviga e non raggiunge la LAN interna; (2) per la Wi-Fi staff l'IT Manager ha deciso l'opposto, cioe' **accesso completo alla LAN come una postazione cablata**: la regola `WIFI_STAFF_to_LAN1_deny` e' stata portata ad `allow`, quindi l'isolamento tentato con M13a e' stato deliberatamente rimosso. Il razionale e' che i due SSID sono distinti e protetti da password, quindi la staff e' popolata da dispositivi fidati mentre la guest fa da rete non fidata; l'effetto e' che NET-005 resta aperto come **rischio accettato e consapevole**, non come difetto residuo, e la sua chiusura passa dalla segmentazione reale della LAN (M22/NET-009) invece che da una ACL sulla sola Wi-Fi. La modifica e' reversibile cambiando l'azione della regola; (3) la gestione dei due switch Nebula viaggia sulla VLAN nativa dei dati (classe `.10`), non sulla VLAN 90 come indicava FW-002 in una versione datata: un PVID non valido sul trunk fa quindi cadere il piano di gestione, come e' accaduto il 23/07 in modo transitorio. **Aggiornamento 27/07/2026**: sul fronte opposto, il pilota della VM208 pubblica un'applicazione con identity provider su TCP/80 e 443 verso tutta la LAN piatta `/19` senza filtro interposto (NET-011, `GAP-TBC.md` #118). |
 | A.13.2 | Trasferimento delle informazioni | SI | Parziale | VPN per accesso remoto. File transfer tramite SharePoint/Teams. Policy non formale. **Gap aperto (SEC-015, GAP-TBC #117)**: portale GroupShare (`gs.intrawelt.com`, Seeweb) servito in chiaro su HTTP dopo la scomparsa del certificato/binding HTTPS del 17/07/2026 — ripristinata solo la connettivita' HTTP per sbloccare i PM, non la cifratura. |
 
 ---
@@ -139,7 +139,7 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
 | A.14.1 | Sicurezza nei processi di sviluppo | SI | Parziale | SCENIA: requisiti sicurezza AIDAPT documentati. Sviluppo interno IntraLino: sicurezza ad-hoc. |
-| A.14.2 | Sicurezza dei servizi di sviluppo e supporto | SI | Parziale | Repository GitHub. CI/CD non formalizzato. |
+| A.14.2 | Sicurezza dei servizi di sviluppo e supporto | SI | Parziale | Repository GitHub. CI/CD non formalizzato. **Aggiornamento 27/07/2026**: due progetti applicativi girano su VM Proxmox aziendali (VM207, VM208) con repository propri. Manca una regola scritta su dove viva il codice prodotto su asset aziendali: uno dei due repository ha un secondo remote verso l'account GitHub personale di un collaboratore, con l'identita' di commit locale di quella persona, e non esiste procedura di revoca dell'accesso all'uscita di un collaboratore (SEC-017, `GAP-TBC.md` #121). Sul lato separazione degli ambienti, il pilota della VM208 ha una decisione di progetto per isolare pre-produzione e produzione sulla stessa VM, attuata alla data solo a livello di configurazione. |
 | A.14.3 | Dati di test | SI | Parziale | Uso dati reali in test [TBC – da verificare]. |
 
 ---

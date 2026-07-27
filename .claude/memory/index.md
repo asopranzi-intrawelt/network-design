@@ -7,8 +7,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 7463b73 (HEAD al 17/07/2026, chiusura ADR-011 Fibercop)
-Data snapshot:         2026-07-22
+Commit di riferimento: 0bbc9f3 (HEAD al 23/07/2026, pointer a RESUME_PROMPT)
+Data snapshot:         2026-07-27
 ```
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
@@ -19,16 +19,36 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
-| design-and-security.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
-| deployment.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
-| dev-testing.md | 347f79c | da riverificare (drift accumulato, non toccata in questa sessione) |
-| current-work.md | 7463b73 (contenuto) | allineata (Fase B Wi-Fi: modello/quantita' AP scelti 20/07) |
-| roadmap.md | 7463b73 (contenuto) | allineata (M13b aggiornato con preventivo scelto) |
+| STACK.md | 347f79c | da riverificare (drift accumulato, non toccata il 27/07) |
+| design-and-security.md | 347f79c (frontmatter) | contenuto aggiornato il 27/07 per inventario VM (dieci VM, VM208 nuova), gap A.8.22/A.8.24/A.8.4-A.8.31; il resto resta ancorato allo snapshot v4 |
+| deployment.md | 347f79c | da riverificare (drift accumulato, non toccata il 27/07) |
+| dev-testing.md | 347f79c (frontmatter) | contenuto aggiornato il 27/07 (conteggio VM a dieci, VM208) |
+| current-work.md | 347f79c (frontmatter) | contenuto allineato al 27/07: arretrati chiusi, filone attivo = design di rete (M22) |
+| roadmap.md | 347f79c (frontmatter) | contenuto allineato al 27/07 (M12/M13a/M13b/M22 aggiornati con l'esito di luglio) |
 
 ## Punto di ripresa
 
-**Ripresa 23/07/2026 (fine sessione Wi-Fi/telefoni): leggere per prima cosa
+**Ripresa 27/07/2026 — leggere questo blocco per primo.** La sessione del 27/07 ha
+chiuso tutti gli arretrati documentali della sessione Wi-Fi/telefoni (correzione
+della dorsale a porta 51, TEL-002 parte di rete risolta, postura Wi-Fi staff come
+rischio accettato in ADR-014, management switch sulla VLAN dati `.10`, incidente del
+PVID sul trunk, sezione Riferimenti utili) e ha censito quello che era comparso su
+Proxmox: **dieci VM**, con la VM208 `portaleAsset` nata il 21/07 e attestata su
+`vmbr0`, cioe' sul segmento piatto, dove pubblica un pilota applicativo con identity
+provider su 80/443 verso tutta la `/19`. Quattro gap nuovi (#118 NET-011, #119
+SEC-016, #120 SRV-005, #121 SEC-017) e il perimetro documentale delle VM applicative
+fissato in ADR-015.
+
+Filone attivo dalla sessione successiva: **design dell'infrastruttura di rete**,
+ripartendo dai micro-step di Fase 3 con **M22 (segmentazione reale della `/19`)
+promosso a progetto strutturale**, perche' tutte le evidenze di luglio convergono
+li'. Dipendenze e ordine in `roadmap.md`; inquadramento e cose da progettare prima di
+toccare la rete in `current-work.md` §Stato al 27/07/2026. Pendenze operative non
+chiuse: provisioning dei due telefoni lato Vianova/myOffice (attesa esterna, email
+pronta), binding HTTPS GroupShare (SEC-015), access key AWS non ruotata (SEC-012),
+riscrittura storia git della Fase B.
+
+Ripresa precedente 23/07/2026 (fine sessione Wi-Fi/telefoni): leggere
 `_notes/RESUME_PROMPT.md`** — riassunto della sessione e recap completo delle
 pendenze. Stato in breve: guest SNAT risolto e verificato; regola guest ristretta
 a sola WAN; staff Wi-Fi con accesso completo alla LAN (per scelta, i due SSID sono

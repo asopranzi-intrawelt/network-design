@@ -877,12 +877,20 @@ QSW-1208-8c, che restava ambigua nelle fonti precedenti (la sostituzione dei
 connettori SFP+ dell'08/05/2026 descriveva il vecchio connettore dorsale come
 posizionato "sopra al QNAP", lasciando aperta l'ipotesi che il QNAP fosse un
 hop intermedio sul collegamento switch-switch). Confermato: dallo switch
-XGS2220-54HP (Piano 2) partono due fibre SFP+ 10 Gbps separate, la porta 52
-verso lo switch XGS2220-30HP (Piano Terra, dorsale diretta, trunk 802.1Q con
-VLAN dati Piano Terra untagged e VLAN 2 fonia tagged) e la porta 51 verso il
-QNAP QSW-1208-8c, che resta un ramo a parte per NAS fleet e le postazioni a
-10 Gbps, invariato rispetto a prima. Il secondo collegamento diretto PT<->P2,
-pianificato l'08/07/2026 (vedi sopra), risulta oggi attivo.
+XGS2220-54HP (Piano 2) partono due fibre SFP+ 10 Gbps separate, una verso lo
+switch XGS2220-30HP (Piano Terra, dorsale diretta, trunk 802.1Q con VLAN dati
+Piano Terra untagged e VLAN 2 fonia tagged) e una verso il QNAP QSW-1208-8c,
+che resta un ramo a parte per NAS fleet e le postazioni a 10 Gbps, invariato
+rispetto a prima. Il secondo collegamento diretto PT<->P2, pianificato
+l'08/07/2026 (vedi sopra), risulta oggi attivo.
+
+Correzione del 23/07/2026 su questa stessa voce: l'assegnazione delle due
+fibre annotata oggi era invertita. La vista di dettaglio della porta in Nebula,
+che espone il vicino LLDP, mostra che la dorsale verso il Piano Terra e' la
+**porta 51** del 54HP e il ramo verso il QNAP e' la **porta 52**. La sostanza
+della topologia, cioe' due fibre indipendenti e il QNAP fuori dalla dorsale,
+resta confermata; cambia solo l'etichetta delle porte, che pero' conta quando
+si mette mano alla configurazione.
 
 Confermato anche, sulla porta 8 del 54HP (Vianova DHCP fonia, PVID 2,
 FW-012), che una seconda porta dello stesso switch, la porta 6, condivide lo
@@ -1088,3 +1096,146 @@ dal tipo di interfaccia, non dall'indirizzo. Per una rete ospiti tenere la guest
 come `general` con SNAT esplicito e' anche la scelta piu' sicura, perche' il
 firewall non la tratta come rete interna fidata. Dettaglio in
 `firewall-zyxel-usg-flex-500.md` §Policy Route (SNAT).
+
+---
+
+## 21/07/2026 - Nasce la VM208 "portaleAsset": pilota interno del portale ISO27001 sulla LAN
+
+Sul nodo Proxmox viene creata la decima macchina virtuale, `portaleAsset`
+(VMID 208): quattro core, 8 GB di RAM con balloon a 4 GB, disco da 100 GB sullo
+storage SERVIZI, avvio automatico all'accensione del nodo, guest agent attivo e
+console grafica. Ospita il pilota interno di un portale di supporto operativo alla
+ISO/IEC 27001:2022, un progetto software con repository e documentazione propri che
+fino a quel momento girava solo sulla postazione di sviluppo.
+
+Il fatto rilevante per la rete non e' la VM in se' ma dove viene attestata: il
+bridge `vmbr0`, cioe' la LAN unica `/19` dei servizi, la stessa su cui vivono
+postazioni, stampanti e server. Dal 22/07 lo stack del pilota pubblica su TCP/80 e
+TCP/443 di tutte le interfacce, identity provider incluso, e la NIC ha il flag
+`firewall=1` a livello Proxmox che pero' non produce alcun effetto perche' il
+firewall di cluster resta inattivo e senza regole. E' la prima volta che un servizio
+applicativo interno viene esposto in questo modo sulla rete piatta, e trasforma la
+mancata segmentazione da rischio teorico in requisito concreto per il micro-step
+M22 (vedi `GAP-TBC.md` #118/NET-011).
+
+Nello stesso giorno vengono registrati su Nebula i tre access point Zyxel NWA130BE
+acquistati per la Fase B, con i nomi di sito "AP piano terra", "AP Piano 1" e
+"AP Piano 2" (dettaglio in `runbook-anomalie.md` §AP-001).
+
+---
+
+## 23/07/2026 - Telefoni IP del Piano Terra: parte di rete risolta, e la dorsale era documentata invertita
+
+Ripreso TEL-002, il sintomo aperto dal 07/07: i due telefoni IP del Piano Terra non
+si registrano, mentre quelli del Piano 2 funzionano. La diagnosi e' partita
+dall'apparato che funziona invece che da quello rotto, che e' il modo piu' rapido di
+ottenere una specifica: sul 54HP un telefono operativo sta su una porta Access con
+PVID 2, il DHCP e il gateway della fonia di Vianova stanno anch'essi su una porta
+Access PVID 2, e sulla porta 6, il cui ruolo era rimasto aperto dal 17/07, c'e' un
+dispositivo voce Grandstream dello stesso fornitore, coerentemente su PVID 2. Sul
+54HP, quindi, la VLAN 2 e' la rete della fonia e il tag lo mette lo switch tramite
+il PVID: Vianova e' semplicemente un endpoint untagged su quella VLAN, non un
+apparato che tagga.
+
+La verifica di dettaglio delle porte ha prodotto anche una correzione di topologia
+che la documentazione portava invertita da giorni. Il vicino LLDP dichiarato sulla
+porta 51 del 54HP e' lo switch del Piano Terra: la dorsale e' quella, non la 52, che
+e' invece il ramo verso il QNAP. La conseguenza immediata e' che l'ipotesi di
+partenza andava scartata, perche' quel trunk ammetteva `All` e portava quindi anche
+la VLAN 2 verso il basso.
+
+La causa vera era dall'altra parte, ed era doppia. Il trunk lato Piano Terra, la
+porta 29 del 30HP, aveva `Allowed VLANs` uguale a `1, 40, 90`: la VLAN 2 della fonia
+non era nella lista e veniva scartata all'ingresso dello switch, quindi la fonia
+arrivava fino al Piano Terra e li' si fermava. E le due porte dei telefoni, la 13 e
+la 23, erano Access con PVID 1, cioe' sulla VLAN dati. Corretti entrambi i difetti,
+la tabella MAC del 30HP mostra i due apparecchi sulla VLAN 2 alle rispettive porte e
+il MAC VRRP del gateway Vianova raggiungibile sulla VLAN 2 attraverso la porta 29:
+la parte switch e VLAN di TEL-002 e' risolta e verificata.
+
+Resta aperto il solo livello DHCP, perche' i due telefoni non ottengono un lease.
+L'ipotesi principale e' che il provisioning per MAC non sia mai stato eseguito lato
+Vianova/myOffice per questi due apparecchi; l'alternativa e' un DHCP snooping che
+scarta le offerte in arrivo dal trunk se la porta non e' marcata come trusted. Il
+test decisivo, non ancora eseguito, e' collegare un portatile a una porta del 30HP in
+Access PVID 2: se non ottiene un indirizzo il problema e' lato switch, se lo ottiene
+il problema e' il provisioning del fornitore. L'email al fornitore e' pronta.
+
+### Incidente della stessa giornata: PVID non valido sul trunk, il core switch cade dal cloud
+
+Durante l'intervento la porta 51 del 54HP e' stata salvata con i due campi
+invertiti, cioe' con la lista `1,2,40,90` nel campo PVID, che accetta un valore
+singolo, e `All` nel campo delle VLAN ammesse. Con il controllo della VLAN di
+gestione attivo, un PVID non valido sul trunk fa perdere allo switch la VLAN di
+management: il 54HP e' comparso offline in Nebula, con tutte le porte grigie e i
+sensori non disponibili. Il piano dati ha continuato a funzionare, perche' uno switch
+Zyxel commuta anche senza il cloud, e l'apparato si e' riconnesso da solo poco dopo
+il salvataggio della configurazione corretta, senza riavvio e senza interruzione
+reale per gli utenti.
+
+Da qui due acquisizioni che valgono oltre l'episodio. La prima e' una regola
+operativa: su questi trunk il PVID e' sempre un valore singolo e la lista delle VLAN
+va solo nel campo `Allowed VLANS`. La seconda e' una correzione documentale: la
+gestione dei due switch viaggia sulla VLAN nativa dei dati, la classe `.10`, e non
+sulla VLAN 90 come indicava FW-002 in una versione datata, ed e' esattamente per
+questo che un PVID rotto sul trunk porta con se' il piano di gestione. Sul core
+switch si e' scelto di lasciare la porta 51 su `Allowed VLANs = All`, che funziona e
+passa la VLAN 2, rinunciando per ora alla lista esplicita: su un apparato centrale il
+rischio della modifica supera il beneficio della restrizione.
+
+### Wi-Fi: la staff diventa rete piena, la guest resta isolata
+
+Nella stessa giornata si e' consolidata la postura Wi-Fi decisa il 22/07. La regola
+`WIFI_STAFF_to_LAN1_deny` e' passata ad `allow`: la Wi-Fi staff ha accesso completo
+alla LAN, NAS compreso, come una postazione cablata, perche' i due SSID sono distinti
+e protetti da password e la rete non fidata e' la guest. Specularmente, la regola di
+uscita della guest e' stata ristretta da destinazione `any` a sola WAN. Entrambe le
+cose sono state verificate in campo. L'effetto documentale e' che NET-005 resta
+aperto come rischio accettato e non come difetto residuo, e la sua chiusura si sposta
+su M22, la segmentazione reale della LAN piatta (vedi `runbook-anomalie.md` §NET-005,
+aggiornamento 22-23/07/2026).
+
+---
+
+## 27/07/2026 - Ricognizione delle VM applicative: l'inventario Proxmox passa a dieci macchine
+
+Sessione di riallineamento documentale, senza modifiche alla rete. Interrogato
+direttamente il nodo Proxmox e ispezionate via SSH le due VM piu' recenti, per capire
+cosa girasse davvero su una rete che nel frattempo aveva accumulato servizi non
+censiti.
+
+Il nodo e' in salute e scarico: 48 core al 4 per cento, 96.7 GiB di RAM occupati su
+125.4, 68 giorni di uptime, nulla di cambiato su storage, job di backup e stato del
+firewall rispetto allo snapshot v4 dell'08/07. Le macchine virtuali sono pero'
+diventate dieci, nove in esecuzione piu' la 203 che e' un template fermo: il
+conteggio a nove scritto nelle schede era superato dalla nascita della VM208 del
+21/07. Emersa anche una correzione anagrafica sulla VM207, documentata come "nuova"
+il 13/07/2026 mentre il metadato di creazione della sua configurazione la data
+all'08/02/2025: era nuova alla documentazione, non all'infrastruttura.
+
+Le due VM ospitano progetti software distinti, con repository e cicli di vita propri,
+che in questo progetto interessano come asset di rete. La VM207 esegue un servizio di
+estrazione di contenuti da siti web: backend sotto systemd con utente di servizio
+dedicato, in ascolto in HTTP non cifrato sulla porta 8000 legata al proprio indirizzo
+di LAN, dati su un disco separato e una condivisione del NAS-INTRA2 montata in CIFS
+con un account di servizio dedicato, che e' la scelta corretta. Attivo e verificato
+dal 23/07. La VM208 esegue il pilota del portale ISO27001, con database, cache,
+identity provider, API e reverse proxy in container: l'endpoint di prontezza risponde
+correttamente e il servizio e' pubblicato in HTTPS sulla LAN.
+
+Dalla ricognizione sono nati quattro gap tracciati in `GAP-TBC.md`: l'esposizione del
+pilota sulla LAN piatta senza filtro interposto (#118/NET-011), la catena di fiducia
+costruita a mano con file `hosts` e CA interna importata macchina per macchina
+(#119/SEC-016), un parametro di console VNC su tutte le interfacce nella
+configurazione della VM207 insieme a un file di credenziali in chiaro nella home
+(#120/SRV-005), e l'assenza di una regola su dove viva il codice prodotto su asset
+aziendali, dato che uno dei due repository pubblica anche verso l'account GitHub
+personale di un collaboratore (#121/SEC-017). Registrate le voci corrispondenti nella
+Statement of Applicability (`design-and-security.md` §A.9.7, §A.10.1, §A.13.1,
+§A.14.2) e la riconciliazione dell'inventario in
+`.claude/context/design-and-security.md`.
+
+Delimitato anche il perimetro documentale, perche' la domanda si riproporra' a ogni
+nuovo progetto interno: questo repository documenta le VM come asset di rete, cioe'
+che cosa espongono, su quale segmento e con quale postura di sicurezza, mentre lo
+stato di avanzamento del software resta nei rispettivi progetti (vedi ADR-015).

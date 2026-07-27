@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3618" viewBox="0 0 1060 3618" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3618" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3690" viewBox="0 0 1060 3690" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3690" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,22 +15,22 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">136 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 22/07/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">139 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 27/07/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
 <text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
-<text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(33)</tspan></text>
+<text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(34)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
 <text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(14)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(11)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
-<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(15)</tspan></text>
+<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(16)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
-<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(8)</tspan></text>
+<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(9)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
 <text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(21)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
@@ -2153,7 +2153,7 @@
 <foreignObject id="ev-132-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta">17/07/2026 &#8212; Chiarita la topologia dorsale/QNAP, aggiornati i diagrammi</p>
-<p>Fonte: comunicazione verbale dell'utente in sessione, corroborata da uno screenshot del pannello porte Nebula dello switch XGS2220-54HP.</p><p>Chiarita la topologia fisica tra i due switch Piano Terra/Piano 2 e il QNAP QSW-1208-8c, che restava ambigua nelle fonti precedenti (la sostituzione dei connettori SFP+ dell'08/05/2026 descriveva il vecchio connettore dorsale come posizionato "sopra al QNAP", lasciando aperta l'ipotesi che il QNAP fosse un hop intermedio sul collegamento switch-switch). Confermato: dallo switch XGS2220-54HP (Piano 2) partono due fibre SFP+ 10 Gbps separate, la porta 52 verso lo switch XGS2220-30HP (Piano Terra, dorsale diretta, trunk 802.1Q con VLAN dati Piano Terra untagged e VLAN 2 fonia tagged) e la porta 51 verso il QNAP QSW-1208-8c, che resta un ramo a parte per NAS fleet e le postazioni a 10 Gbps, invariato rispetto a prima. Il secondo collegamento diretto PT&lt;-&gt;P2, pianificato l'08/07/2026 (vedi sopra), risulta oggi attivo.</p><p>Confermato anche, sulla porta 8 del 54HP (Vianova DHCP fonia, PVID 2, FW-012), che una seconda porta dello stesso switch, la porta 6, condivide lo stesso PVID 2: il ruolo di questa porta non e' confermato, il pannello d'insieme di Nebula mostra solo velocita'/PoE/uplink per porta, non il PVID assegnato. Resta aperto anche il sintomo di TEL-002: i due telefoni IP del Piano Terra, collegati a porte dello switch XGS2220-30HP stesso (non solo al tratto del vano ascensore come descritto il 07/07), non risultano visibili neppure dopo la conferma del trunk diretto; non e' chiaro se il sintomo precede o segue l'attivazione di quel collegamento.</p><p>Aggiornati di conseguenza: GAP-TBC.md (NET-008 #102, TEL-002 #103 e nuova voce #116), docs/network-diagram.md (topologia ASCII e VLAN), e i diagrammi in .claude/context/diagrams/firewall-dmz-2026/ — nuovo rete_stato_attuale_17072026.drawio con la topologia corrente, note di aggiornamento aggiunte a rete_stato_attuale_29052026.drawio, rete_stato_target_08072026.drawio e rete_fonia_voip_08072026_2.drawio-claudio.drawio per marcare cosa e' confermato e cosa resta un target non applicato (in particolare la fonia su VLAN 100/DHCP-firewall di quest'ultimo, mai realizzata: l'implementazione real… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+<p>Fonte: comunicazione verbale dell'utente in sessione, corroborata da uno screenshot del pannello porte Nebula dello switch XGS2220-54HP.</p><p>Chiarita la topologia fisica tra i due switch Piano Terra/Piano 2 e il QNAP QSW-1208-8c, che restava ambigua nelle fonti precedenti (la sostituzione dei connettori SFP+ dell'08/05/2026 descriveva il vecchio connettore dorsale come posizionato "sopra al QNAP", lasciando aperta l'ipotesi che il QNAP fosse un hop intermedio sul collegamento switch-switch). Confermato: dallo switch XGS2220-54HP (Piano 2) partono due fibre SFP+ 10 Gbps separate, una verso lo switch XGS2220-30HP (Piano Terra, dorsale diretta, trunk 802.1Q con VLAN dati Piano Terra untagged e VLAN 2 fonia tagged) e una verso il QNAP QSW-1208-8c, che resta un ramo a parte per NAS fleet e le postazioni a 10 Gbps, invariato rispetto a prima. Il secondo collegamento diretto PT&lt;-&gt;P2, pianificato l'08/07/2026 (vedi sopra), risulta oggi attivo.</p><p>Correzione del 23/07/2026 su questa stessa voce: l'assegnazione delle due fibre annotata oggi era invertita. La vista di dettaglio della porta in Nebula, che espone il vicino LLDP, mostra che la dorsale verso il Piano Terra e' la porta 51 del 54HP e il ramo verso il QNAP e' la porta 52. La sostanza della topologia, cioe' due fibre indipendenti e il QNAP fuori dalla dorsale, resta confermata; cambia solo l'etichetta delle porte, che pero' conta quando si mette mano alla configurazione.</p><p>Confermato anche, sulla porta 8 del 54HP (Vianova DHCP fonia, PVID 2, FW-012), che una seconda porta dello stesso switch, la porta 6, condivide lo stesso PVID 2: il ruolo di questa porta non e' confermato, il pannello d'insieme di Nebula mostra solo velocita'/PoE/uplink per porta, non il PVID assegnato. Resta aperto anche il sintomo di TEL-002: i due telefoni IP del Piano Terra, collegati a porte dello switch XGS2220-30HP stesso (non solo al tratto del vano ascensore come descritto il 07/07), non risultano visibili neppure dopo la conferma del trunk diretto; non e' chiaro se il sintomo precede o segue l'attivazione di quel collegamento.</p><p>Aggiornati di conseguenza: GAP-TBC.md (NET-008 #102, TEL-002 #103 e nuova voce #116), docs/network-diagram.md (topologia A… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
 </div>
 </foreignObject>
 </g>
@@ -2209,19 +2209,67 @@
 <g class="ev-summary" onclick="toggleEv('ev-136')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#008300"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">21/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Nasce la VM208 "portaleAsset": pilota interno del portale ISO27001 sulla LAN <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">STOR</tspan></text>
+</g>
+<foreignObject id="ev-136-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">21/07/2026 &#8212; Nasce la VM208 "portaleAsset": pilota interno del portale ISO27001 sulla LAN</p>
+<p>Sul nodo Proxmox viene creata la decima macchina virtuale, portaleAsset (VMID 208): quattro core, 8 GB di RAM con balloon a 4 GB, disco da 100 GB sullo storage SERVIZI, avvio automatico all'accensione del nodo, guest agent attivo e console grafica. Ospita il pilota interno di un portale di supporto operativo alla ISO/IEC 27001:2022, un progetto software con repository e documentazione propri che fino a quel momento girava solo sulla postazione di sviluppo.</p><p>Il fatto rilevante per la rete non e' la VM in se' ma dove viene attestata: il bridge vmbr0, cioe' la LAN unica /19 dei servizi, la stessa su cui vivono postazioni, stampanti e server. Dal 22/07 lo stack del pilota pubblica su TCP/80 e TCP/443 di tutte le interfacce, identity provider incluso, e la NIC ha il flag firewall=1 a livello Proxmox che pero' non produce alcun effetto perche' il firewall di cluster resta inattivo e senza regole. E' la prima volta che un servizio applicativo interno viene esposto in questo modo sulla rete piatta, e trasforma la mancata segmentazione da rischio teorico in requisito concreto per il micro-step M22 (vedi GAP-TBC.md #118/NET-011).</p><p>Nello stesso giorno vengono registrati su Nebula i tre access point Zyxel NWA130BE acquistati per la Fase B, con i nomi di sito "AP piano terra", "AP Piano 1" e "AP Piano 2" (dettaglio in runbook-anomalie.md §AP-001).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-137" class="ev-block has-detail" transform="translate(0,3572)">
+<g class="ev-summary" onclick="toggleEv('ev-137')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
 <circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">22/07/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
 <text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Wi-Fi ospiti su VLAN 90: navigazione ripristinata (SNAT mancante) <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
 </g>
-<foreignObject id="ev-136-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<foreignObject id="ev-137-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta">22/07/2026 &#8212; Wi-Fi ospiti su VLAN 90: navigazione ripristinata (SNAT mancante)</p>
 <p>La rete Wi-Fi ospiti (SSID Intrawelt (GUEST), VLAN 90, servita in multi-SSID dal nuovo access point Zyxel insieme all'SSID staff su VLAN 40) presentava un guasto netto: i client si agganciavano e prendevano regolarmente un indirizzo sulla 10.61.90.0/24 dal DHCP dell'interfaccia guest del firewall (.90.1), ma non navigavano. Confermato sia via Wi-Fi sia via cavo, collegando un portatile a una porta dello switch Piano Terra messa temporaneamente in access sulla VLAN 90: segno che il difetto era comune all'intera VLAN 90, non dell'access point ne' del tagging dell'SSID.</p><p>La diagnosi ha proceduto per esclusione, a strati. Il livello 2 verso il gateway era integro: l'ARP del client risolveva il MAC dell'interfaccia guest del firewall, quindi il pacchetto arrivava all'apparato. La security policy permetteva l'uscita: la regola GUEST_Outgoing (dalla zona guest verso qualsiasi destinazione) era attiva, e nel log del firewall, filtrato sull'IP del client verso 8.8.8.8 durante un ping continuo, non compariva alcun drop. La tabella NAT conteneva solo virtual server e la tabella Policy Route era vuota. Ne restava una sola spiegazione: il SNAT mancante.</p><p>Sullo ZLD il mascheramento verso la WAN e' automatico solo per le interfacce LAN di fabbrica; la guest, interfaccia aggiunta in seguito, ne restava fuori, quindi i pacchetti uscivano con IP sorgente privato e la risposta non poteva tornare. Creato l'oggetto indirizzo GUEST_SUBNET e una policy route GUEST_SNAT con SNAT outgoing-interface sulla sola subnet guest. Applicata, il portatile ha ottenuto risposta dal ping verso 8.8.8.8 e i dispositivi sull'SSID ospiti hanno ripreso a navigare. Da rilevare, la VLAN 90 risulta ormai ripulita dall'infrastruttura che vi era finita per errore (management degli switch, UPS, server domotica, vecchi AP): oggi ospita solo il gateway del firewall e client di tipo laptop/telefono, cioe' e' finalmente una vera rete ospiti.</p><p>Restano aperti due affinamenti, non urgenti. Il primo e' di segmentazione: restringere la regola GUEST_Outgoing dalla destinazione any alla sola WAN (la guest oggi potrebbe raggiungere anche le zone interne), meglio sul firewall che sull'access point, perche' su Nebula il toggle… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3602" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-138" class="ev-block has-detail" transform="translate(0,3596)">
+<g class="ev-summary" onclick="toggleEv('ev-138')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">23/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Telefoni IP del Piano Terra: parte di rete risolta, e la dorsale era documentata invertita <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">TEL</tspan></text>
+</g>
+<foreignObject id="ev-138-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">23/07/2026 &#8212; Telefoni IP del Piano Terra: parte di rete risolta, e la dorsale era documentata invertita</p>
+<p>Ripreso TEL-002, il sintomo aperto dal 07/07: i due telefoni IP del Piano Terra non si registrano, mentre quelli del Piano 2 funzionano. La diagnosi e' partita dall'apparato che funziona invece che da quello rotto, che e' il modo piu' rapido di ottenere una specifica: sul 54HP un telefono operativo sta su una porta Access con PVID 2, il DHCP e il gateway della fonia di Vianova stanno anch'essi su una porta Access PVID 2, e sulla porta 6, il cui ruolo era rimasto aperto dal 17/07, c'e' un dispositivo voce Grandstream dello stesso fornitore, coerentemente su PVID 2. Sul 54HP, quindi, la VLAN 2 e' la rete della fonia e il tag lo mette lo switch tramite il PVID: Vianova e' semplicemente un endpoint untagged su quella VLAN, non un apparato che tagga.</p><p>La verifica di dettaglio delle porte ha prodotto anche una correzione di topologia che la documentazione portava invertita da giorni. Il vicino LLDP dichiarato sulla porta 51 del 54HP e' lo switch del Piano Terra: la dorsale e' quella, non la 52, che e' invece il ramo verso il QNAP. La conseguenza immediata e' che l'ipotesi di partenza andava scartata, perche' quel trunk ammetteva All e portava quindi anche la VLAN 2 verso il basso.</p><p>La causa vera era dall'altra parte, ed era doppia. Il trunk lato Piano Terra, la porta 29 del 30HP, aveva Allowed VLANs uguale a 1, 40, 90: la VLAN 2 della fonia non era nella lista e veniva scartata all'ingresso dello switch, quindi la fonia arrivava fino al Piano Terra e li' si fermava. E le due porte dei telefoni, la 13 e la 23, erano Access con PVID 1, cioe' sulla VLAN dati. Corretti entrambi i difetti, la tabella MAC del 30HP mostra i due apparecchi sulla VLAN 2 alle rispettive porte e il MAC VRRP del gateway Vianova raggiungibile sulla VLAN 2 attraverso la porta 29: la parte switch e VLAN di TEL-002 e' risolta e verificata.</p><p>Resta aperto il solo livello DHCP, perche' i due telefoni non ottengono un lease. L'ipotesi principale e' che il provisioning per MAC non sia mai stato eseguito lato Vianova/myOffice per questi due apparecchi; l'alternativa e' un DHCP snooping che scarta le offerte in arrivo dal trunk se la porta non e' marcata come trusted. Il test decisivo, non ancora eseguito, e' co… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-139" class="ev-block has-detail" transform="translate(0,3620)">
+<g class="ev-summary" onclick="toggleEv('ev-139')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">27/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Ricognizione delle VM applicative: l'inventario Proxmox passa a dieci macchine <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-139-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">27/07/2026 &#8212; Ricognizione delle VM applicative: l'inventario Proxmox passa a dieci macchine</p>
+<p>Sessione di riallineamento documentale, senza modifiche alla rete. Interrogato direttamente il nodo Proxmox e ispezionate via SSH le due VM piu' recenti, per capire cosa girasse davvero su una rete che nel frattempo aveva accumulato servizi non censiti.</p><p>Il nodo e' in salute e scarico: 48 core al 4 per cento, 96.7 GiB di RAM occupati su 125.4, 68 giorni di uptime, nulla di cambiato su storage, job di backup e stato del firewall rispetto allo snapshot v4 dell'08/07. Le macchine virtuali sono pero' diventate dieci, nove in esecuzione piu' la 203 che e' un template fermo: il conteggio a nove scritto nelle schede era superato dalla nascita della VM208 del 21/07. Emersa anche una correzione anagrafica sulla VM207, documentata come "nuova" il 13/07/2026 mentre il metadato di creazione della sua configurazione la data all'08/02/2025: era nuova alla documentazione, non all'infrastruttura.</p><p>Le due VM ospitano progetti software distinti, con repository e cicli di vita propri, che in questo progetto interessano come asset di rete. La VM207 esegue un servizio di estrazione di contenuti da siti web: backend sotto systemd con utente di servizio dedicato, in ascolto in HTTP non cifrato sulla porta 8000 legata al proprio indirizzo di LAN, dati su un disco separato e una condivisione del NAS-INTRA2 montata in CIFS con un account di servizio dedicato, che e' la scelta corretta. Attivo e verificato dal 23/07. La VM208 esegue il pilota del portale ISO27001, con database, cache, identity provider, API e reverse proxy in container: l'endpoint di prontezza risponde correttamente e il servizio e' pubblicato in HTTPS sulla LAN.</p><p>Dalla ricognizione sono nati quattro gap tracciati in GAP-TBC.md: l'esposizione del pilota sulla LAN piatta senza filtro interposto (#118/NET-011), la catena di fiducia costruita a mano con file hosts e CA interna importata macchina per macchina (#119/SEC-016), un parametro di console VNC su tutte le interfacce nella configurazione della VM207 insieme a un file di credenziali in chiaro nella home (#120/SRV-005), e l'assenza di una regola su dove viva il codice prodotto su asset aziendali, dato che uno dei due repository pubblica anche verso l'account GitHub personale… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3674" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2363,7 +2411,10 @@
   {id:'ev-133',type:'event',h:24},
   {id:'ev-134',type:'event',h:24},
   {id:'ev-135',type:'event',h:24},
-  {id:'ev-136',type:'event',h:24}
+  {id:'ev-136',type:'event',h:24},
+  {id:'ev-137',type:'event',h:24},
+  {id:'ev-138',type:'event',h:24},
+  {id:'ev-139',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2404,7 +2455,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3618').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3690').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

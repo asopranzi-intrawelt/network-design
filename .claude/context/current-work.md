@@ -142,9 +142,16 @@ informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 Fuori dal filone Wi-Fi/AP (Fase A/B sotto): chiarita con l'utente, corroborata
 da uno screenshot del pannello porte Nebula del 54HP, la topologia fisica tra
 i due switch Zyxel e il QNAP QSW-1208-8c. Il QNAP non e' un hop intermedio
-sulla dorsale: dal 54HP partono due fibre 10G separate, porta 52 verso il
-30HP (dorsale diretta, trunk VLAN dati + VLAN 2 fonia, oggi attiva) e porta
-51 verso il QNAP (ramo a parte per NAS fleet e postazioni, invariato).
+sulla dorsale: dal 54HP partono due fibre 10G separate, una verso il 30HP
+(dorsale diretta, trunk VLAN dati + VLAN 2 fonia, oggi attiva) e una verso il
+QNAP (ramo a parte per NAS fleet e postazioni, invariato).
+**Correzione 23/07/2026**: l'assegnazione delle due porte era invertita in
+tutte le schede. La vista di dettaglio in Nebula, con il vicino LLDP
+dichiarato, stabilisce che la dorsale verso il 30HP e' la **porta 51** del
+54HP (lato Piano Terra, porta 29 del 30HP) e che la **porta 52** e' il ramo
+verso il QNAP. Corretto in `network-diagram.md`, `GAP-TBC.md` (#102, #116),
+`firewall-zyxel-usg-flex-500.md` §Diagrammi e nella voce di timeline del
+17/07.
 Dettaglio completo, gap aggiornati (NET-008 #102, TEL-002 #103/#116) e
 diagrammi in `docs/infrastructure-timeline/2026-switch-piano-terra.md`
 (voce 17/07/2026), `GAP-TBC.md` e `.claude/context/diagrams/firewall-dmz-2026/`
@@ -353,3 +360,42 @@ ma non applicato: da completare come azione separata.
   (storia hardware/infrastruttura); per gli altri tre la sintesi gia'
   scritta resta la fonte di riferimento salvo richiesta esplicita di
   scavare un punto preciso.
+
+## Stato al 27/07/2026: arretrati documentali chiusi, si torna al design di rete
+
+Sessione di riallineamento, nessuna modifica alla rete. Chiuse tutte le
+formalizzazioni che erano rimaste solo in `_notes/DIARIO.md` e in memoria dopo la
+sessione Wi-Fi/telefoni del 22-23/07, e censito quello che nel frattempo era
+comparso sul nodo Proxmox.
+
+Formalizzato nei file tracciati: la correzione di topologia della dorsale (porta 51
+del 54HP verso il 30HP, porta 52 verso il QNAP) su tutte le schede che la
+riportavano invertita; la risoluzione della parte switch/VLAN di TEL-002 (trunk 29
+del 30HP senza VLAN 2, porte telefono su PVID 1) con il residuo aperto sul solo
+livello DHCP in attesa del fornitore; la nuova postura Wi-Fi (staff con accesso
+completo alla LAN come rischio accettato in ADR-014, guest ristretta a sola WAN); la
+nota che la gestione degli switch viaggia sulla VLAN nativa dei dati `.10` e non
+sulla VLAN 90 come indicava FW-002; l'incidente del PVID non valido sul trunk con la
+regola operativa che ne deriva; una sezione "Riferimenti utili" in
+`runbook-anomalie.md`.
+
+Censito lato Proxmox: l'inventario passa a dieci VM con la nascita della VM208
+`portaleAsset` il 21/07 (pilota interno del portale ISO27001, attestato su `vmbr0`,
+cioe' sulla LAN piatta, con pubblicazione su 80/443 verso tutta la `/19`), la VM207
+`websiteAnalyst` risulta creata l'08/02/2025 e non a luglio 2026, e sono nati quattro
+gap nuovi (#118 NET-011, #119 SEC-016, #120 SRV-005, #121 SEC-017). Il perimetro
+documentale delle VM applicative e' fissato in ADR-015: qui si documenta cosa
+espongono e su quale segmento, non l'avanzamento del loro software.
+
+**Filone attivo dalla prossima sessione: il design dell'infrastruttura di rete**,
+ripreso dai micro-step di Fase 3 in `roadmap.md`. Il baricentro si e' spostato:
+l'evidenza raccolta in luglio (Wi-Fi staff senza isolamento per scelta, pilota
+applicativo esposto su tutta la LAN, stampanti con scan-to-folder verso cartelle
+utente) converge tutta su M22, cioe' sulla segmentazione reale della `/19`, che era
+nato come micro-step secondario e diventa il progetto strutturale. Da progettare
+prima di toccare la rete: il piano di indirizzamento e di VLAN per PC, server,
+stampanti e servizi applicativi interni, le zone e le ACL corrispondenti sul
+firewall, l'ordine di migrazione porta per porta con la lezione di change management
+del 16 e del 23/07 (una porta alla volta, PVID singolo sui trunk, rollback pronto,
+mai sul core switch a fine giornata), e il rapporto con la DMZ di M4-M9, che oggi e'
+l'unica strada prevista per esporre il pilota della VM208 fuori dalla LAN.

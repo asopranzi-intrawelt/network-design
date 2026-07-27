@@ -511,3 +511,71 @@ HTTPS con host header + win-acme) resta identificato e non applicato: da
 completare come azione separata, non implicita in questa decisione. La
 decisione e' un compromesso esplicito disponibilita'-contro-cifratura,
 non una chiusura del problema.
+
+## ADR-014 — Wi-Fi staff con accesso completo alla LAN: isolamento rimosso per scelta, rischio accettato
+
+Data: 2026-07-22 (consolidata il 23/07/2026)
+Stato: attiva
+
+Contesto: il micro-step M13a era nato per isolare la Wi-Fi aziendale dalla LAN
+interna, perche' NET-005 aveva evidenziato che un dispositivo non censito
+connesso alla Wi-Fi otteneva un indirizzo nella stessa `/19` su cui vivono
+switch, server e infrastruttura di gestione. Il 16/07/2026 l'isolamento e' stato
+realizzato lato firewall con la regola `WIFI_STAFF_to_LAN1_deny`. Con la messa
+in opera dei due SSID distinti (staff e ospiti, entrambi protetti da password) e
+il funzionamento della rete ospiti su VLAN 90 con SNAT esplicito, il quadro e'
+cambiato: la rete non fidata esiste ed e' separata, mentre lo SSID staff serve
+i dispositivi aziendali che devono lavorare come le postazioni cablate, NAS
+compreso.
+
+Decisione: portare la regola da `deny` ad `allow` (rinominata
+`WIFI_STAFF_to_LAN1_allow`), dando alla Wi-Fi staff accesso completo alla LAN, e
+mantenere l'isolamento solo sulla rete ospiti, la cui regola di uscita e' stata
+contestualmente ristretta da destinazione `any` a sola WAN. Verificato in campo:
+un dispositivo sullo SSID staff raggiunge il NAS, un client ospite naviga e non
+raggiunge la LAN interna.
+
+Conseguenze: NET-005 resta aperto, ma cambia natura — da difetto da correggere a
+**rischio accettato** in modo consapevole, ed e' cosi' che va letto nelle
+schede (`runbook-anomalie.md` §NET-005 aggiornamento 22-23/07/2026,
+`design-and-security.md` §A.13.1). Il rischio residuo e' che un dispositivo
+staff compromesso abbia la stessa visibilita' di un PC cablato, cioe' l'intera
+`/19`; la mitigazione non e' un'ACL sulla Wi-Fi ma la segmentazione reale delle
+tre classi della LAN piatta, che e' il micro-step M22 (NET-009). La decisione e'
+reversibile a costo nullo riportando l'azione della regola a `deny`, e va
+rivalutata quando M22 sara' pianificato: a segmentazione fatta, "accesso come una
+postazione cablata" significhera' accesso a un segmento delimitato, non a tutta
+la rete.
+
+## ADR-015 — Perimetro documentale delle VM applicative: asset di rete qui, avanzamento software nei loro progetti
+
+Data: 2026-07-27
+Stato: attiva
+
+Contesto: sul nodo Proxmox girano due VM che ospitano progetti software interni
+con repository, documentazione e sistema di contesto propri (VM207 website-analyst,
+VM208 pilota Portale Asset IT), e la loro popolazione e' destinata a crescere. La
+ricognizione del 27/07/2026 ha mostrato il rischio di due derive opposte:
+ignorarle, e allora questo repository descrive una rete che non contiene i servizi
+che vi girano davvero, oppure duplicarne lo stato di avanzamento, e allora la
+documentazione diverge dai progetti originali appena questi fanno un commit.
+
+Decisione: questo repository documenta le VM applicative come *asset di rete* e
+si fermano li'. Rientrano nel perimetro l'esistenza della VM nell'inventario, le
+sue risorse, il bridge e il segmento su cui e' attestata, le porte e i servizi
+che espone, i flussi verso NAS o servizi esterni, la postura di sicurezza e i
+gap che ne derivano. Restano fuori dal perimetro le fasi di sviluppo, le
+decisioni architetturali applicative, lo stato dei test e la pianificazione delle
+feature: quelli vivono nei rispettivi repository, che hanno una propria memoria di
+progetto. Il riferimento incrociato e' per nome e ruolo, mai per copia dei
+contenuti.
+
+Conseguenze: quando una VM applicativa cambia qualcosa che tocca la rete (nuova
+porta pubblicata, cambio di bridge, nuovo flusso verso un NAS o verso Internet,
+esposizione dietro la DMZ), la modifica va registrata qui; quando avanza solo il
+software, no. La verifica periodica avviene alla riconciliazione dell'inventario
+Proxmox, cioe' al prossimo `Get-ProxmoxSnapshot.ps1` (M18) e a ogni ricognizione
+live come quella del 27/07. Corollario operativo: l'accesso SSH alle VM e' uno
+strumento diagnostico legittimo per questo progetto, perche' e' l'unico modo di
+sapere quali porte una VM espone davvero, e non un'intrusione nel progetto
+ospitato.

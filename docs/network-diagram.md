@@ -82,11 +82,34 @@ INTERNET
 Nota fisica confermata dall'utente il 17/07/2026, corroborata da uno screenshot del
 pannello porte Nebula del 54HP (porta 33 con icona uplink, porte 3/5/44 con icona PoE,
 porte 51 e 52 a 10 Gbps): il QNAP QSW-1208-8c non e' un hop intermedio sulla dorsale.
-Dalla porta 51 dello switch Piano 2 parte un ramo a 10 Gbps dedicato verso il QNAP, che
-aggrega NAS fleet e le postazioni ad alta velocita' senza toccare il traffico dati/fonia
-diretto verso il Piano Terra sulla porta 52. Il pannello d'insieme di Nebula non mostra
-il PVID di ciascuna porta, quindi il ruolo della porta 6 (che condivide il PVID 2 con la
-porta 8 Vianova) resta da chiarire con una vista di dettaglio della porta stessa.
+Dallo switch Piano 2 partono due fibre a 10 Gbps indipendenti, una verso il Piano Terra
+per il traffico dati e fonia e una verso il QNAP, che aggrega NAS fleet e le postazioni
+ad alta velocita' senza toccare il traffico della dorsale.
+
+Correzione del 23/07/2026 sull'assegnazione delle due fibre, che la documentazione
+riportava invertita: la vista di dettaglio delle porte in Nebula, con il vicino LLDP
+dichiarato ("Switch piano terra"), stabilisce che la dorsale verso il Piano Terra e' la
+**porta 51 del 54HP** (Trunk, PVID 1, Allowed VLANs `All`), mentre la **porta 52** e' il
+ramo verso il QNAP. Lato Piano Terra il trunk termina sulla porta 29 del 30HP (Trunk,
+PVID 1, Allowed VLANs `1,2,40,90` dopo la correzione del 23/07: la VLAN 2 fonia
+mancava). Chiarito nella stessa verifica anche il ruolo della porta 6 del 54HP, che
+resta su PVID 2 perche' vi e' collegato un dispositivo voce Grandstream di Vianova.
+
+Regola operativa appresa lo stesso giorno, valida per qualunque trunk di questi switch:
+il PVID e' un valore singolo (1) e la lista delle VLAN ammesse va solo nel campo
+`Allowed VLANS`. Invertire i due campi sul trunk del core switch fa perdere la VLAN di
+gestione, perche' la gestione dei due apparati viaggia sulla VLAN nativa dei dati
+(classe `.10`) e non sulla VLAN 90 come indicava FW-002 in una versione datata.
+
+Aggiunta del 27/07/2026 sul lato server: due VM del nodo Proxmox ospitano ora servizi
+applicativi interni raggiungibili dalla LAN, e vanno lette come endpoint del diagramma
+e non solo come carichi del server. La VM207 (`10.61.20.24`, bridge `vmbr3`) espone un
+backend HTTP sulla porta 8000 legata al proprio indirizzo di LAN e monta in CIFS una
+condivisione del NAS `10.61.20.177`. La VM208 (`10.61.20.25`, bridge `vmbr0`) pubblica
+su TCP/80 e TCP/443 il pilota del portale ISO27001, identity provider incluso, verso
+l'intero dominio di broadcast della `/19`: e' il primo servizio applicativo interno
+esposto in questo modo e non ha nessun filtro interposto, il che rende concreta la
+mancata segmentazione della LAN piatta (NET-009/NET-011, micro-step M22).
 
 ---
 

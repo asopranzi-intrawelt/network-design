@@ -259,7 +259,7 @@ diretto, non dorsale):
 |---|---|---|---|
 | Ubiquiti #1 | XGS2220-54HP (Piano 2) | 41 | Non in trunk (le porte trunk di questo switch sono 49-54) |
 | Ubiquiti #2 | XGS2220-54HP (Piano 2) | 45 | Idem |
-| Ubiquiti #3 | XGS2220-30HP (Piano Terra) | 1 | Visto anche su XGS2220-54HP porta 52, che pero' e' la porta trunk verso il dorsale: conferma che il collegamento reale e' sul Piano Terra, non sul Piano 2 |
+| Ubiquiti #3 | XGS2220-30HP (Piano Terra) | 1 | Visto anche su una delle due porte a 10 Gbps del XGS2220-54HP, coerente con l'apprendimento del MAC attraverso il collegamento tra i due switch: il collegamento reale e' sul Piano Terra, non sul Piano 2. Nota del 23/07/2026: il numero di porta annotato nel rilievo del 14/07 (52) va letto con la correzione di topologia dello stesso 23/07 — la porta della dorsale e' la 51, la 52 e' il ramo verso il QNAP. La conclusione sull'ubicazione dell'AP non cambia, ma su quale delle due porte fosse comparso il MAC serve un nuovo rilievo per esserne certi |
 
 Corrispondenza con le cinque ubicazioni fisiche note
 (`mappatura-porte-fisiche.md`: Piano Terra 0-7-1, tetto 0-9-1, Piano 1
@@ -635,7 +635,9 @@ L'UPS (Emerson Liebert IntelliSlot, IP 10.61.90.33, porta gestione 6004) è sull
 
 **Severity**: ALTA
 **Origine**: task_47 (Piano Attività IT v3.xlsx); confermato live il 14/07/2026
-**Stato**: APERTO — Fase A tentata e ripristinata il 16/07/2026, vedi "Incidente 16/07/2026" piu' sotto
+**Stato**: APERTO come **rischio accettato** dal 22/07/2026 (decisione dell'IT
+Manager, vedi "Aggiornamento 22-23/07/2026" in fondo alla sezione). Fase A
+tentata e ripristinata il 16/07/2026, vedi "Incidente 16/07/2026" piu' sotto
 
 ### Contesto
 
@@ -700,6 +702,34 @@ ipconfig
 Test-NetConnection -ComputerName 10.61.10.1 -Port 443
 # Atteso: timeout/reset (isolamento dalla LAN management funzionante)
 ```
+
+### Aggiornamento 22-23/07/2026: la postura si divide in due, e per la staff e' una scelta
+
+Con la messa in opera della Wi-Fi a due SSID l'intento di questa anomalia si e'
+diviso in due strade opposte, e la distinzione va tenuta ferma per non leggere il
+gap come un difetto ancora da correggere.
+
+Per la rete ospiti la direzione e' quella originaria e il lavoro e' fatto: la VLAN
+90 e' stata ripulita dall'infrastruttura che vi era finita per errore (management
+degli switch, UPS, server domotica, vecchi AP), ha un SSID dedicato, esce su
+Internet tramite la policy route `GUEST_SNAT` e la sua regola di uscita e' stata
+ristretta da destinazione `any` a sola WAN. Verificato che un client ospite naviga e
+non raggiunge la LAN interna.
+
+Per la Wi-Fi staff la direzione e' stata invertita su decisione esplicita dell'IT
+Manager: la regola `WIFI_STAFF_to_LAN1_deny` e' passata ad `allow` (rinominata di
+conseguenza), quindi la staff ha **accesso completo alla LAN**, NAS compreso,
+esattamente come una postazione cablata. Il razionale e' che i due SSID sono
+distinti e protetti da password: la staff serve i dispositivi fidati dell'azienda,
+la rete non fidata e' la guest. Verificato dopo la modifica che un dispositivo sullo
+SSID staff raggiunge il NAS.
+
+La conseguenza documentale e' che NET-005 non si chiude con una ACL sulla sola
+Wi-Fi. L'isolamento tentato con M13a e' stato rimosso per scelta, il rischio
+residuo (un dispositivo staff compromesso ha la stessa visibilita' di un PC
+cablato) e' accettato consapevolmente, e la chiusura vera passa da M22, cioe' dalla
+segmentazione reale delle tre classi della LAN piatta `/19` (NET-009). La modifica
+resta reversibile: basta riportare l'azione della regola a `deny`.
 
 ---
 
@@ -1030,6 +1060,19 @@ appesa (vedi nota ISO27001 in `design-and-security.md` §A.9.2).
 | 0x80090011 | NTE_NOT_FOUND | Oggetto/contenitore inesistente |
 | 0x8009000D | — | Keyset non esistente (fallback dopo la rimozione, sparisce con la nuova registrazione) |
 | Tag 657rx, sub status 6008 | — | Credential invalid via broker AAD |
+
+---
+
+## Riferimenti utili
+
+Raccolta di riferimenti esterni verificati durante gli interventi, tenuta qui perche'
+sono le pagine che servono davvero in mezzo a un intervento e ritrovarle costa tempo.
+Ogni voce indica a cosa e' servita, non solo cosa contiene.
+
+| Riferimento | A cosa serve | URL |
+|---|---|---|
+| Yealink, credenziali di fabbrica | Accedere all'interfaccia web di un telefono Yealink resettato o non provisionato (utenza e password predefinite `admin`/`admin` sui modelli in uso, T31G e T34W): serve quando il provisioning per MAC lato operatore non e' ancora stato eseguito e si vuole leggere lo stato SIP dall'apparato | https://www.yealink.com/en/onepage/yealink-default-password |
+| Nebula Control Center | Gestione cloud dei due switch XGS2220 e degli access point Zyxel: vista di dettaglio della singola porta (l'unica che espone PVID, Allowed VLANs e vicino LLDP), tabella MAC, cronologia eventi | https://nebula.zyxel.com |
 
 ---
 
