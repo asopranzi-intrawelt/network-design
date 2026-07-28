@@ -364,6 +364,38 @@ equivarrebbe a pubblicare il MAC che la regola impone di sostituire. Nei file tr
 cita percio' il modello e la forma del nome, non il nome stesso; la corrispondenza completa
 sta nella mappa privata.
 
+### Accesso amministrativo alle multifunzione, e perche' riguarda M22
+
+Entrambe le multifunzione hanno un pannello amministrativo web raggiungibile dalla LAN, e
+l'accesso e' disponibile: la Kyocera espone Command Center RX su HTTPS, con redirezione
+automatica dalla porta 80, la Canon la propria Remote UI. Le credenziali non sono scritte
+qui ne' in nessun altro file di questo repository, che e' pubblico, e vanno conservate nel
+password manager aziendale sulla VM202 — e' la stessa igiene che i gap SEC-007, SEC-010 e
+SEC-011 chiedono per tutti i segreti operativi oggi sparsi nel filesystem.
+
+Un fatto emerso proprio da questa verifica va pero' trattato come parte del progetto e non
+come nota a margine: la Kyocera e' protetta dalla **coppia di credenziali di fabbrica** del
+produttore, quella documentata pubblicamente per la sua linea (gap SEC-019,
+`GAP-TBC.md` #125). Riguarda M22 direttamente, per due motivi. Il primo e' che il pannello
+amministrativo di una multifunzione governa indirizzamento, protocolli esposti e rubrica
+delle destinazioni di scansione, cioe' esattamente le cose che questo micro-step va a
+cambiare. Il secondo, piu' importante ai fini della protezione dei dati, e' che una
+destinazione di scansione verso una cartella di rete richiede le credenziali di accesso a
+quella condivisione, e l'apparato le conserva al proprio interno: un accesso
+amministrativo con password di fabbrica e' quindi anche una strada verso le credenziali di
+un account che scrive su una share aziendale. Ne segue che il cambio della credenziale di
+fabbrica non e' un'attivita' separata da rimandare, ma va fatto nello stesso passaggio in
+cui si riconfigurano le destinazioni di scansione, perche' e' la stessa schermata e lo
+stesso apparato.
+
+Sul metodo, una nota utile per il futuro: il pannello della Kyocera non e' interrogabile da
+riga di comando. La radice risponde ma ogni percorso interno restituisce errore, perche'
+Command Center RX e' un'applicazione a frame guidata da JavaScript che si aspetta la propria
+sequenza di richieste; ne' l'aggiunta di una sessione ne' un User-Agent da browser cambiano
+l'esito. La lettura dei valori di rete di questi apparati resta quindi un'operazione
+manuale, da pannello web o da display, e va messa in conto nel tempo dell'intervento invece
+di sperare in uno script.
+
 ### Baseline funzionale pre-migrazione, misurata il 28/07/2026
 
 Le misure prese *prima* di cambiare qualcosa sono l'unico riferimento con cui giudicare le
