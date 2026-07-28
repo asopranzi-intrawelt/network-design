@@ -589,6 +589,36 @@ rete, ASPM PCIe, driver, cavo) — da controllare direttamente sull'host con
 `ethtool` (non Gestione Dispositivi Windows, ipotesi iniziale errata
 corretta dall'utente) prima di considerare risolto NET-010.
 
+### Nuova occorrenza NEB-001 (27/07/2026): il 54HP fuori dal piano di gestione
+
+Durante la raccolta dello snapshot Nebula per il censimento del micro-step M22a, la
+lettura della tabella MAC del solo XGS2220-54HP e' stata rifiutata con
+`422 DEVICE_IS_OFFLINE`, mentre ogni lettura sul XGS2220-30HP e' andata a buon fine
+(configurazione delle 30 porte e tabella MAC con 58 voci). Il 54HP risulta quindi
+assente dal piano di gestione a quattro giorni dall'episodio del 23/07, quando era
+andato offline per un PVID non valido sul trunk ed era rientrato da solo dopo il
+salvataggio della configurazione corretta.
+
+Ci sono tre letture possibili e non e' ancora deciso quale sia: una ricaduta dello
+stesso evento del 23/07, una nuova manifestazione dell'inaffidabilita' del canale
+Nebula su questo specifico switch, o un'anomalia distinta. L'indizio a favore di un
+problema circoscritto al piano di gestione e' che il piano dati risulta integro:
+nella tabella MAC del 30HP compaiono MAC del Piano 2 appresi attraverso la dorsale,
+compresi quelli dei due access point Zyxel del Piano 1 e del Piano 2, quindi lo
+switch continua a commutare e la dorsale trasporta tutte e quattro le VLAN.
+
+Verifica da fare, nell'ordine: controllare lo stato del 54HP nel pannello Nebula
+(online, porte, temperature); se e' offline, verificare da un client cablato del
+Piano 2 che navigazione e accesso ai NAS funzionino, cosi' da separare piano dati e
+piano gestione; solo dopo, se resta offline, valutare un intervento sull'apparato
+tenendo presente che e' il core switch e che un riavvio non e' un'azione innocua.
+Non ripetere l'errore del 23/07: le modifiche di configurazione si salvano anche da
+offline e vengono applicate al rientro, quindi non serve forzare nulla per scriverle.
+
+Effetto sul progetto: il censimento di M22a e' completo per il Piano Terra e
+mancante per il Piano 2, e la seconda meta' va ripresa quando lo switch torna
+gestibile.
+
 **Interpretazione**: il problema non e' (solo) una sincronizzazione cloud
 generica inaffidabile — e' plausibilmente specifico del 54HP, dove una
 porta guasta o mal collegata genera churn continuo (flap + STP) che

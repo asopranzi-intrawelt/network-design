@@ -50,10 +50,29 @@ dal 23/07, la tabella VLAN di `network-diagram.md` invertiva le classi `.10` e `
 emerso un sesto segmento candidato (gestione degli apparati, oggi promiscua nella classe
 delle postazioni, iLO su classe `.1`).
 
-**Prossimo passo operativo: M22a, il censimento.** Serve materiale dell'utente: uno
-snapshot Nebula nuovo (chiave API) e la lettura dalla GUI del firewall di ambiti DHCP,
-riserve per MAC e oggetti indirizzo. Da quel censimento dipende la scelta tra rinumerare
-le classi e affiancare segmenti nuovi. Pendenze operative non chiuse: provisioning dei due telefoni lato Vianova/myOffice (attesa esterna, email
+**M22a avviato il 27/07, prima meta' acquisita.** Snapshot Nebula raccolto dall'utente:
+censimento completo per il Piano Terra (30 porte, tabella MAC di 58 voci) e mancante per
+il Piano 2, perche' il 54HP ha risposto `DEVICE_IS_OFFLINE` sulla tabella MAC (nuova
+occorrenza NEB-001; piano dati integro, e' il piano di gestione a essere assente). Tre
+risultati: i **tre AP Zyxel della Fase B risultano installati e in servizio** (M13b era
+dato come da installare), la porta 1 del 30HP e' ora un trunk che porta VLAN 1 e 40 —
+cioe' l'isolamento Wi-Fi tentato con M13a e' operativo sul nuovo hardware — e sono
+emersi due residui: protezioni DHCP di livello 2 disattivate sul 30HP (#122 NET-012) e
+porta 19 ancora su PVID 90 (#123 NET-013).
+
+**Requisito vincolante posto dall'IT Manager il 28/07**: la migrazione non deve rompere
+niente, un PC deve continuare a raggiungere stampante e NAS. Tradotto in progetto nella
+sezione §Requisito vincolante di `docs/segmentazione-lan-m22.md`, con la regola d'oro
+che ne deriva (si spostano i client, non gli endpoint referenziati: NAS e server restano
+fermi fino all'ultimo), l'eccezione delle stampanti (endpoint referenziato dalle code di
+stampa, quindi serve rilevare il tipo di coda e ri-puntarla, preferibilmente a un nome) e
+la checklist di verifica funzionale per ogni porta spostata, dove il canary e' una
+lettura piu' scrittura su share NAS e non un ping (precedente NET-008).
+
+**Prossimo passo operativo**: completare M22a — tabella MAC del 54HP a switch rientrato,
+ambiti e riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa,
+censimento degli host statici, e rilevamento del tipo di code di stampa su una postazione
+reale. Pendenze operative non chiuse: provisioning dei due telefoni lato Vianova/myOffice (attesa esterna, email
 pronta), binding HTTPS GroupShare (SEC-015), access key AWS non ruotata (SEC-012),
 riscrittura storia git della Fase B.
 
