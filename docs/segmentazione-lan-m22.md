@@ -322,6 +322,87 @@ ne' la lista VLAN esplicita sulla porta 29, e per lo XGS2220-30HP la tabella MAC
 assente, cioe' mancava proprio per il Piano Terra. La raccolta del 27/07 ha colmato
 esattamente quel buco, invertendo pero' l'asimmetria: ora manca il Piano 2.
 
+### Code di stampa: rilevate il 28/07/2026, sono code dirette per indirizzo
+
+Rilevamento eseguito su una postazione reale con `Get-Printer` e `Get-PrinterPort`. Esito
+netto: **non esiste un server di stampa e non ci sono code WSD**. Le code sono dirette
+"Standard TCP/IP" e puntano all'indirizzo della stampante, con il nome di porta nella forma
+`IP_<indirizzo>`. Siamo quindi nel caso intermedio dei tre previsti: spostare una stampante
+in un segmento nuovo cambia il suo indirizzo, e ogni postazione che la usa va toccata una
+volta per ri-puntare la coda.
+
+Due dettagli del rilevamento cambiano la stima del lavoro, entrambi in meglio. Il primo e'
+che **le code sono installate per piano e non tutte su tutti**: la postazione esaminata ha
+la sola multifunzione del proprio piano, non l'intero parco. Il costo del ri-puntamento non
+e' quindi numero di PC per numero di stampanti, ma la somma delle code effettivamente
+installate, e va misurata sull'inventario dell'RMM invece che stimata. Il secondo e' che
+sulla stessa postazione convivono **due porte verso lo stesso indirizzo**, una nella forma
+`IP_<indirizzo>` e una nella forma `IP_2_<indirizzo>`, con la coda attiva che usa la
+seconda: e' la traccia di un ri-puntamento gia' avvenuto in passato, fatto creando una
+porta nuova invece di modificare quella esistente. La porta orfana e' innocua ma va
+inclusa nella pulizia, perche' altrimenti alla prossima migrazione ci si trovano tre porte
+per due indirizzi e non si capisce piu' quale sia viva.
+
+Ne segue la raccomandazione operativa, che era gia' nel piano e ora ha una base misurata:
+il ri-puntamento si fa una volta sola e conviene farlo **verso un nome** invece che verso
+un indirizzo, distribuendo il nome con lo stesso RMM che distribuira' lo script. Da quel
+momento ogni spostamento successivo di una stampante non tocca nessuna postazione, perche'
+cambia solo cio' a cui il nome punta. E' il primo caso concreto in cui l'assenza di
+risoluzione nomi interna (gap SEC-016) si traduce in lavoro manuale ripetuto.
+
+### Le stampanti identificate
+
+| Apparato | Indirizzo | Dove | Come e' stato identificato |
+|---|---|---|---|
+| Multifunzione Kyocera TASKalfa 2552ci | `10.61.30.10` | Piano Terra, porta 6 del XGS2220-30HP, access PVID 1, 1 Gbps | Correlazione tra la tabella MAC dello snapshot del 27/07 e il nome host di fabbrica dell'apparato, che Kyocera deriva dagli ultimi tre byte del MAC: i due coincidono |
+| Multifunzione Canon DXC 5840 | `10.61.30.133` | Piano 1 (dalla denominazione della coda) | Coda di stampa sulla postazione esaminata il 28/07; porta fisica non ancora attribuita, richiede la tabella MAC del 54HP |
+
+La correlazione nome host - MAC merita una nota di igiene documentale, perche' e' un caso
+non ovvio della regola di anonimizzazione: il nome di fabbrica di questi apparati
+*contiene* meta' del MAC reale, quindi scriverlo per esteso in un file tracciato
+equivarrebbe a pubblicare il MAC che la regola impone di sostituire. Nei file tracciati si
+cita percio' il modello e la forma del nome, non il nome stesso; la corrispondenza completa
+sta nella mappa privata.
+
+### Baseline funzionale pre-migrazione, misurata il 28/07/2026
+
+Le misure prese *prima* di cambiare qualcosa sono l'unico riferimento con cui giudicare le
+misure prese dopo. Questa e' la baseline delle due multifunzione dalla postazione dell'IT
+Manager, che sta nella classe delle postazioni.
+
+| Misura | Kyocera `10.61.30.10` | Canon `10.61.30.133` | Cosa dimostra |
+|---|---|---|---|
+| Ping | risponde, RTT 0 ms | non misurato | Raggiungibilita' L3 di base |
+| TCP 9100 (stampa RAW) | connessione riuscita | connessione riuscita | E' la misura che conta: una stampante puo' ignorare il ping e stampare benissimo, quindi la porta di stampa e' il vero test |
+| NextHop della rotta | `0.0.0.0` | idem per costruzione | Consegna diretta sullo stesso livello 2, cioe' la conferma operativa che oggi il firewall non e' sul percorso (NET-009) |
+| Risoluzione del nome | risponde il nome mDNS `<nome di fabbrica>.local` | non verificata | **Su questa rete mDNS funziona**, e questo apre la trappola descritta sotto |
+
+Dopo la migrazione le stesse quattro misure vanno rifatte con un'attesa diversa e
+dichiarata: ping e TCP 9100 devono continuare a riuscire, il NextHop deve diventare
+l'indirizzo del gateway del segmento delle postazioni — ed e' proprio quel cambiamento a
+dimostrare che il traffico ora attraversa il firewall — e la risoluzione mDNS **deve**
+smettere di funzionare, perche' e' basata su multicast e non attraversa un confine di
+livello 3.
+
+### La trappola mDNS nel ri-puntamento delle code
+
+Il piano prevede di ri-puntare le code verso un nome invece che verso un indirizzo, per
+rendere gratuiti gli spostamenti futuri. La misura di oggi mostra che su questa rete un
+nome esiste gia' ed e' comodo, quello mDNS[^7] in `.local` pubblicato dall'apparato stesso:
+sarebbe la scelta piu' rapida ed e' esattamente quella sbagliata, perche' mDNS si risolve
+via multicast dentro un dominio di broadcast e cessa di funzionare nel momento in cui la
+stampante finisce in un segmento diverso. Ri-puntare le code al nome `.local` significa
+costruire una coda che funziona oggi e si rompe il giorno della migrazione, cioe' spostare
+il guasto in avanti invece di eliminarlo.
+
+Il nome da usare deve essere risolvibile in unicast: una voce `hosts` distribuita
+dall'RMM, che e' la strada immediatamente disponibile perche' non esiste un DNS di LAN
+(gap SEC-016), oppure un record in un servizio di risoluzione nomi interno se e quando
+verra' introdotto. Da qui una conseguenza sull'inventario delle code da estrarre
+dall'RMM: non basta contare le code, va anche verificato se qualcuna punta gia' a un nome
+`.local`, perche' quelle sono le prime a rompersi e non se ne accorgerebbe nessuno fino al
+primo tentativo di stampa.
+
 ### Cosa resta da raccogliere, e come
 
 Il primo elemento e' la tabella MAC del XGS2220-54HP, che completa il censimento sul
@@ -582,6 +663,11 @@ risposte da Internet.
 [^5]: *OUI*, Organizationally Unique Identifier - i primi tre byte di un indirizzo MAC,
 assegnati dallo IEEE a un produttore; permettono di risalire al costruttore di un
 dispositivo dal solo MAC.
+
+[^7]: *mDNS*, multicast DNS - meccanismo di risoluzione nomi senza server in cui ogni
+dispositivo risponde per il proprio nome nel dominio `.local` a una richiesta inviata in
+multicast sulla rete locale; per costruzione non attraversa un router, quindi funziona
+dentro un segmento e cessa di funzionare tra segmenti diversi.
 
 [^6]: *WSD*, Web Services for Devices - meccanismo Windows con cui una stampante viene
 scoperta e installata automaticamente annunciandosi in rete; si appoggia a messaggi
