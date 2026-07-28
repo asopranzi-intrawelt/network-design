@@ -86,8 +86,33 @@ invertiva il ruolo delle classi `.10` (postazioni, `lan1`) e `.20` (server,
 `lan1:1`) rispetto alla configurazione reale e dava per `[TBC]` la classe
 stampanti; (3) emerso un sesto segmento candidato, la gestione degli apparati,
 oggi promiscua nella classe delle postazioni con la iLO su una classe `.1` non
-descritta come segmento. Prossimo passo operativo: M22a, il censimento, che
-richiede chiave API Nebula e accesso GUI firewall dell'utente.
+descritta come segmento.
+
+Terza parte della sessione (27/07, tardo pomeriggio): **M22a avviato, prima meta'
+del censimento acquisita**. L'utente ha eseguito `Get-NebulaSnapshot.ps1`; lo
+snapshot e' arrivato asimmetrico — Piano Terra completo (30 porte, tabella MAC di
+58 voci) e Piano 2 senza tabella MAC per `422 DEVICE_IS_OFFLINE` sul 54HP.
+Analizzato il dato e tracciato in `docs/segmentazione-lan-m22.md` (nuova sezione
+§Censimento eseguito con la tabella porta per porta del Piano Terra e le due
+pulizie da fare prima di M22b), `docs/infrastructure-timeline/2026-switch-piano-terra.md`
+(voce dedicata), `GAP-TBC.md` (#122 NET-012 protezioni DHCP di livello 2
+disattivate, #123 NET-013 porta 19 residua su PVID 90, aggiornamento #101 NEB-001
+con la nuova occorrenza, aggiornamento #116 con la verifica che ha scagionato lo
+switch e con l'uniformazione del VLAN type), `docs/runbook-anomalie.md` (sezione
+sulla nuova occorrenza NEB-001 con la procedura di verifica),
+`.claude/context/design-and-security.md` (A.8.20) e `roadmap.md` (M13b e M22a).
+
+Tre risultati sostanziali. Primo: **i tre AP Zyxel della Fase B sono installati e in
+servizio**, non solo registrati — la roadmap li dava ancora da installare. Secondo:
+la porta 1 del 30HP e' stata convertita da access a trunk e porta VLAN 1 e VLAN 40,
+quindi l'isolamento Wi-Fi che M13a aveva tentato sui vecchi AP e' operativo sul
+nuovo hardware. Terzo: recuperati in file tracciato tre fatti verificati il 23/07 e
+rimasti solo in DIARIO — DHCP Server Guard e IP source guard disattivati, feature
+Voice VLAN globale disattivata con conseguente uniformazione del VLAN type delle due
+porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su PVID
+90. Restano da raccogliere: tabella MAC del 54HP a switch rientrato, ambiti e
+riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
+statici.
 
 ## 2026-07-22 — Wi-Fi ospiti VLAN 90: ripristino navigazione, SNAT mancante (sessione corrente)
 
