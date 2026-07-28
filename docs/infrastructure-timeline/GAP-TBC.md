@@ -375,6 +375,14 @@ loro sviluppo.
 
 ---
 
+## Multifunzione: credenziali amministrative di fabbrica (28/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 125 | SEC-019 | La multifunzione Kyocera TASKalfa 2552ci del Piano Terra (`10.61.30.10`) ha l'interfaccia amministrativa Command Center RX raggiungibile da tutta la LAN piatta e protetta dalle **credenziali di fabbrica del produttore**, cioe' la coppia predefinita documentata pubblicamente per quella linea di prodotti. Non e' un dettaglio minore per due ragioni concrete. La prima e' che il pannello amministrativo di una multifunzione controlla l'indirizzamento di rete, i protocolli esposti e la rubrica delle destinazioni di scansione: chi vi accede riconfigura l'apparato e vede dove finiscono i documenti. La seconda, piu' rilevante ai fini della protezione dei dati, e' che le destinazioni di scansione verso cartelle di rete richiedono credenziali di accesso alla condivisione, che l'apparato conserva al proprio interno: un accesso amministrativo con password di fabbrica e' quindi anche una via verso le credenziali di un account che scrive su una share aziendale. L'altra multifunzione, la Canon del Piano 1, risulta invece con una password amministrativa propria, non di fabbrica. Azione: cambiare la credenziale di fabbrica e conservarla nel password manager aziendale (VM202), contestualmente al micro-step M22b che tocca comunque queste due macchine. Rilevante per A.9.4 (accesso privilegiato) e A.5.17 (informazioni di autenticazione) | Comunicata dall'IT Manager il 28/07/2026 durante il censimento M22a; coppia di fabbrica non riportata qui per policy |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -412,5 +420,6 @@ loro sviluppo.
 | VM applicative su Proxmox, ricognizione live (27/07/2026) | 118-121 |
 | Censimento M22a, snapshot Nebula (27/07/2026) | 122-123 |
 | Ultimo AP EOL residuo (28/07/2026) | 124 |
-| **Totale identificati** | **124** |
+| Multifunzione con credenziali di fabbrica (28/07/2026) | 125 |
+| **Totale identificati** | **125** |
 | **Di cui risolti** | **8** (14, 54, 55, 61, 63, 106, 111, 116 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
