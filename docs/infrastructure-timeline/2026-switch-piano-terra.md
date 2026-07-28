@@ -1433,3 +1433,27 @@ assenza di un DNS di LAN la strada disponibile e' una voce `hosts` distribuita d
 RMM. Ne segue anche un controllo in piu' da fare sull'inventario delle code: verificare se
 qualcuna punta gia' a un nome `.local`, perche' quelle sono le prime a rompersi e nessuno se
 ne accorgerebbe fino al primo tentativo di stampa.
+
+A chiudere la giornata, la lettura della configurazione di rete della multifunzione del
+Piano Terra dal suo pannello di amministrazione. Tre esiti cambiano il piano e uno lo
+tranquillizza. L'indirizzo e' **statico sull'apparato**, quindi l'inferenza fatta
+dall'assenza di un ambito DHCP sulla classe stampanti era corretta, e ne segue che conviene
+convertirlo in riserva DHCP *prima* di migrare: si paga una volta la conversione e da quel
+momento ogni cambio di indirizzo e' una modifica sul firewall invece di un intervento sulla
+macchina. L'apparato **non ha nessun server DNS ne' WINS configurato**, quindi non risolve
+nomi: le destinazioni di scansione devono essere indirizzi e non nomi, e questo va sapputo
+prima di progettare la share di scansione. E il pannello dichiara che le modifiche di rete
+si applicano solo dopo l'invio **e un riavvio della rete o del dispositivo**, cioe' il cambio
+di indirizzo comporta una breve indisponibilita' da mettere in finestra e non da fare a
+stampa in corso. Il dato che tranquillizza e' la maschera: `255.255.224.0`, cioe' una `/19`
+coerente con la rete piatta, quindi il sospetto di una `/24` mal configurata e' rientrato e
+non c'e' un difetto preesistente da sanare prima della migrazione.
+
+Due scoperte collaterali dello stesso pannello. La prima e' che Bonjour e' attivo, il che
+conferma dal lato apparato il comportamento mDNS misurato dalla postazione, e va disabilitato
+come irrobustimento perche' dopo la segmentazione non serve a nessuno e resta solo come
+annuncio in multicast. La seconda e' piu' utile: l'apparato dispone di una funzione di
+**filtro IP** propria, quindi l'accesso amministrativo si puo' restringere alle sole
+postazioni IT subito, senza attendere la segmentazione e senza dipendere dal firewall, che
+sulla LAN piatta non vede quel traffico. E' il controllo compensativo che mancava a SEC-019:
+riduce la platea da tutta la `/19` a due indirizzi al costo di una configurazione.
