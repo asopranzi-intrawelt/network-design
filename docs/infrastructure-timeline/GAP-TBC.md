@@ -367,6 +367,14 @@ loro sviluppo.
 
 ---
 
+## Ultimo access point EOL residuo (28/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 124 | SEC-018 | Con la sostituzione dei tre AP Ubiquiti di Piano Terra, Piano 1 e Piano 2 (Fase B, in servizio dal 21-27/07/2026), resta in rete **un solo dispositivo della vecchia classe**: l'AP "EsternoIrrigazione" sulla porta 4 del XGS2220-30HP, che serve la centrale di irrigazione sul tetto. Il referto Nessus della VA del 06/11/2025 lo descrive come gemello hardware degli altri: Debian 7 con Dropbear SSH come unica porta aperta, cioe' un sistema operativo fuori supporto dal 2016, non gestibile (credenziali perdute, nessuna interfaccia web), collegato senza filtri alla LAN piatta `/19`. Finche' erano quattro il problema era di classe; ora e' concentrato su un singolo apparato identificato, con una porta nota, e quindi risolvibile. Portato in scope come micro-step M13c il 28/07/2026 (ADR-016), con due esiti possibili: eliminazione dell'AP se la centrale di irrigazione puo' essere cablata, oppure sostituzione con un apparato per esterni gestito. Mitigazione interim da valutare nel frattempo, dato che il firewall non puo' filtrare traffico interno alla `/19`: isolamento di porta a livello switch | Referto Nessus VA Onova 06/11/2025; snapshot Nebula 27/07/2026 (porta 4, `AUTO_100M`, PoE attivo); rilievo fisico `mappatura-porte-fisiche.md` (0-9-1 via patch da 0-8-1) |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -403,5 +411,6 @@ loro sviluppo.
 | GroupShare Seeweb, HTTPS non ripristinato (17-20/07/2026) | 117 |
 | VM applicative su Proxmox, ricognizione live (27/07/2026) | 118-121 |
 | Censimento M22a, snapshot Nebula (27/07/2026) | 122-123 |
-| **Totale identificati** | **123** |
+| Ultimo AP EOL residuo (28/07/2026) | 124 |
+| **Totale identificati** | **124** |
 | **Di cui risolti** | **8** (14, 54, 55, 61, 63, 106, 111, 116 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |

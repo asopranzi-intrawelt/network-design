@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3690" viewBox="0 0 1060 3690" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3690" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3714" viewBox="0 0 1060 3714" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3714" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">139 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 28/07/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">140 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 28/07/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -32,7 +32,7 @@
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(9)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
-<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(21)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(22)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#e6ede9"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#0e5c62" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">2024</text>
@@ -2269,7 +2269,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3674" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-140" class="ev-block has-detail" transform="translate(0,3644)">
+<g class="ev-summary" onclick="toggleEv('ev-140')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">28/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">L'ultimo access point EOL entra in scope, e il vincolo di continuita' diventa progetto <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-140-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">28/07/2026 &#8212; L'ultimo access point EOL entra in scope, e il vincolo di continuita' diventa progetto</p>
+<p>Due decisioni dell'IT Manager chiudono la giornata precedente e ne aprono una nuova.</p><p>La prima riguarda il quarto access point Ubiquiti, quello che serve la centrale di irrigazione sul tetto. Il preventivo di Fase B lo aveva escluso perche' non serve copertura Wi-Fi per le persone, e la decisione era registrata come "fuori scope, scelta separata non ancora presa". Con i tre AP nuovi in servizio, quella scelta e' stata presa: si sostituisce anche lui, come micro-step a se' stante M13c (ADR-016). Il motivo non e' estetico. Finche' erano quattro, i dispositivi con Debian 7 e Dropbear SSH erano una condizione diffusa e la loro bonifica era un progetto; oggi e' un singolo apparato, su una porta nota, con un ruolo circoscritto — cioe' un problema finito, che si chiude invece di gestirlo. Il rischio residuo e' registrato come gap dedicato SEC-018 (GAP-TBC.md #124) invece di restare una nota dentro AP-001.</p><p>L'intervento e' stato scomposto in otto sotto-passi tracciati, perche' quattro fatti accertati lo rendono meno banale di una sostituzione di apparato. Il collegamento al tetto e' cablato, non un ponte radio: il rilievo fisico registra un patch intermedio nel locale caldaia, quindi l'AP e' alimentato in PoE dalla porta 4 e il client radio e' la centrale. La porta 4 negozia a 100 Mbps mentre le porte delle postazioni dello stesso switch vanno a 1 Gbps, e va chiarito se il limite sia l'eta' dell'apparato o la tratta stessa, perche' nel secondo caso un apparato nuovo resterebbe strozzato. La passphrase della rete radio attuale non e' recuperabile, perche' l'AP e' inaccessibile: l'SSID si legge con una scansione, la chiave no, quindi l'intervento comporta per costruzione la creazione di una rete nuova e la riconfigurazione della centrale, con il possibile coinvolgimento del fornitore dell'impianto. E la prima opzione da valutare non e' un access point nuovo ma nessun access point: se la centrale espone una porta Ethernet raggiungibile dal cavo che arriva al tetto, il collegamento diventa cablato e l'apparato fuori supporto sparisce invece di essere sostituito. Il collaudo, per la stessa logica del canary usata altrove, non e' la raggiungibilita' IP della centrale ma la parte… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3698" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2414,7 +2430,8 @@
   {id:'ev-136',type:'event',h:24},
   {id:'ev-137',type:'event',h:24},
   {id:'ev-138',type:'event',h:24},
-  {id:'ev-139',type:'event',h:24}
+  {id:'ev-139',type:'event',h:24},
+  {id:'ev-140',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2455,7 +2472,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3690').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3714').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
