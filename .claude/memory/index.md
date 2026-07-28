@@ -69,6 +69,15 @@ stampa, quindi serve rilevare il tipo di coda e ri-puntarla, preferibilmente a u
 la checklist di verifica funzionale per ogni porta spostata, dove il canary e' una
 lettura piu' scrittura su share NAS e non un ping (precedente NET-008).
 
+**Nuovo filone aperto il 28/07**: sostituzione del quarto AP Ubiquiti EOL
+"EsternoIrrigazione" (porta 4 del 30HP, tetto, serve la centrale di irrigazione),
+portata in scope superando la clausola "fuori scope" di ADR-012 — vedi **ADR-016**, gap
+**SEC-018** (#124) e gli otto sotto-passi **M13c-1..M13c-8** in `roadmap.md`. Quattro
+fatti che ne condizionano l'esecuzione: la tratta al tetto e' cablata con patch nel locale
+caldaia (non un ponte radio), la porta 4 negozia a 100 Mbps contro 1 Gbps delle altre, la
+passphrase della rete radio attuale non e' recuperabile quindi la centrale va comunque
+riconfigurata, e la prima opzione da valutare e' eliminare l'AP cablando la centrale.
+
 **Prossimo passo operativo**: completare M22a — tabella MAC del 54HP a switch rientrato,
 ambiti e riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa,
 censimento degli host statici, e rilevamento del tipo di code di stampa su una postazione

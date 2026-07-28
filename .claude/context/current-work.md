@@ -422,7 +422,26 @@ configurazione reale del firewall (`lan1` = PC, `lan1:1` = server), e una terza 
 candidato, la gestione degli apparati, oggi promiscua nella classe delle postazioni con
 la iLO su una classe `.1` che nessun documento descrive come segmento (SRV-003, #108).
 
-**Prossimo passo operativo: M22a, il censimento.** Richiede la chiave API Nebula per un
-nuovo snapshot e l'accesso alla GUI del firewall per ambiti DHCP, riserve e oggetti
-indirizzo: entrambi dell'utente, quindi il passo si apre con una richiesta esplicita e
-non con un'azione dell'agente.
+**M22a avviato il 27/07, prima meta' acquisita**: snapshot Nebula raccolto dall'utente,
+censimento completo per il Piano Terra e mancante per il Piano 2 (54HP fuori dal piano di
+gestione, nuova occorrenza NEB-001). Da quello snapshot: i tre AP Zyxel della Fase B
+risultano installati e in servizio, la porta 1 del 30HP e' ora un trunk con VLAN 1 e 40, e
+sono emersi due residui tracciati (#122 protezioni DHCP di livello 2 disattivate sul 30HP,
+#123 porta 19 ancora su PVID 90).
+
+**Nuovo filone del 28/07: M13c**, sostituzione o eliminazione del quarto AP Ubiquiti EOL
+(EsternoIrrigazione, porta 4 del 30HP, tetto), portata in scope con ADR-016 e gap SEC-018,
+scomposta in otto sotto-passi in `roadmap.md`. Si incontra con M22 al passo M13c-8, quando
+la porta 4 va nel segmento IoT/OT.
+
+**Vincolo di progetto posto il 28/07**: la migrazione non deve rompere niente e un PC deve
+continuare a raggiungere stampante e NAS. Formalizzato in `docs/segmentazione-lan-m22.md`
+§Requisito vincolante — si spostano i client e non gli endpoint referenziati, le stampanti
+sono l'eccezione dichiarata perche' ogni coda punta al loro indirizzo, e la verifica di
+ogni passo usa come canary una lettura piu' scrittura su share NAS invece di un ping.
+
+**Prossimo passo operativo: completare M22a.** Le informazioni mancanti si chiedono
+all'utente **una per volta**, con l'indicazione precisa di dove prenderle: tipo di
+configurazione delle code di stampa, tabella MAC del 54HP a switch rientrato, ambiti e
+riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa, censimento degli
+host con indirizzo statico.

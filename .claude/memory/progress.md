@@ -114,6 +114,41 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-28 — Quarto AP EOL in scope (M13c) e continuita' di servizio come requisito
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `.claude/context/roadmap.md` (nuovo micro-step M13c con gli
+otto sotto-passi M13c-1..M13c-8), `.claude/memory/decisions.md` (ADR-016),
+`docs/infrastructure-timeline/GAP-TBC.md` (#124 SEC-018, riepilogo a 124),
+`docs/runbook-anomalie.md` (§AP-001, aggiornamento che supera la clausola "fuori
+scope" con i quattro fatti tecnici accertati), `docs/segmentazione-lan-m22.md`
+(sezione §Requisito vincolante con la regola d'oro della migrazione e la checklist di
+verifica funzionale, riga della porta 4 nel censimento, passo 5 sulle code di stampa),
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce 28/07),
+`.claude/memory/index.md`. File privati: `_notes/DIARIO.md` (livello didattico del
+censimento e del vincolo), `_notes/.anonymization-map.md` (MAC della stampante
+Kyocera, collocazione dei tre AP nuovi, MAC randomizzati non mappati).
+
+Motivo: due decisioni dell'IT Manager. La prima porta in scope la sostituzione del
+quarto AP Ubiquiti EOL, l'EsternoIrrigazione, che ADR-012 aveva escluso: con i tre AP
+nuovi in servizio il rischio della classe (Debian 7, Dropbear SSH, non gestibile, LAN
+piatta) si concentra su un singolo apparato identificato, quindi si chiude invece di
+gestirlo. Scomposto in otto sotto-passi perche' quattro fatti accertati lo rendono non
+banale: tratta al tetto cablata con patch nel locale caldaia e non ponte radio, porta 4
+a 100 Mbps contro 1 Gbps delle altre porte, passphrase radio non recuperabile quindi
+riconfigurazione della centrale obbligatoria, e prima opzione da valutare
+l'eliminazione dell'AP cablando la centrale. Collaudo definito come partenza di un
+ciclo di irrigazione reale, non raggiungibilita' IP.
+
+La seconda e' un vincolo di progetto: la migrazione VLAN non deve rompere niente e un
+PC deve continuare a raggiungere stampante e NAS. Tradotto nella regola d'oro "si
+spostano i client, non gli endpoint referenziati" (NAS e server fermi fino all'ultimo,
+accesso da PC migrato come traffico instradato consentito dalla matrice),
+nell'eccezione dichiarata delle stampanti (endpoint referenziato dalle code, tre
+configurazioni possibili con costi diversi, ri-puntamento preferibilmente a un nome) e
+in una checklist di verifica per ogni porta spostata che usa come canary una lettura
+piu' scrittura su share NAS invece di un ping, per il precedente NET-008 del 07/07.
+
 ## 2026-07-22 — Wi-Fi ospiti VLAN 90: ripristino navigazione, SNAT mancante (sessione corrente)
 
 Commit: PENDING (da fare manualmente)
