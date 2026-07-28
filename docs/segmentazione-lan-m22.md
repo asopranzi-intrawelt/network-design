@@ -396,6 +396,48 @@ l'esito. La lettura dei valori di rete di questi apparati resta quindi un'operaz
 manuale, da pannello web o da display, e va messa in conto nel tempo dell'intervento invece
 di sperare in uno script.
 
+### Configurazione di rete della Kyocera, letta dal pannello il 28/07/2026
+
+Lettura diretta da Command Center RX, `Impostazioni di rete > TCP/IP`. E' la
+configurazione di partenza dell'apparato che apre il primo giro di M22b, e va conosciuta
+riga per riga perche' meta' di queste voci cambia con la migrazione e l'altra meta' decide
+*come* si puo' migrare.
+
+| Voce | Valore attuale | Cosa comporta per M22b |
+|---|---|---|
+| TCP/IP | On | — |
+| **DHCP** | **Off** | Indirizzamento **statico sull'apparato**: l'inferenza fatta dall'assenza di un ambito DHCP sulla classe stampanti e' confermata. Il giorno della migrazione l'indirizzo va cambiato sul pannello, a meno di convertire prima in riserva DHCP |
+| Auto-IP | Off | Nessun rischio di indirizzi 169.254 in caso di DHCP assente |
+| Indirizzo IP | `10.61.30.10` | Diventera' un indirizzo nel nuovo segmento |
+| **Subnet mask** | **255.255.224.0** | E' una `/19`, coerente con la LAN piatta: **nessun difetto preesistente di maschera**, il sospetto e' rientrato. Con la migrazione diventera' una `/24` |
+| Gateway predefinito | `10.61.30.1` | E' l'alias `lan1:2` del firewall, non il gateway della classe postazioni: l'apparato e' gia' configurato per uscire dal firewall, che semplifica il passaggio al gateway del nuovo segmento |
+| Nome dominio | vuoto | — |
+| **Server DNS** | selezionato "usa i seguenti", ma **entrambi i campi vuoti** | L'apparato **non risolve nomi**. Conseguenza diretta: le destinazioni di scansione devono essere indirizzi IP, non nomi, e lo stesso vale per qualunque riferimento a un NAS. Se in futuro si vuole usare un nome, va prima configurato un server DNS sull'apparato |
+| **Server WINS** | selezionato "usa i seguenti", entrambi vuoti | Nessuna risoluzione nomi NetBIOS: conferma la riga precedente sul lato condivisioni SMB |
+| Nome host | da impostazione dispositivo (nome di fabbrica derivato dal MAC) | Resta invariato; e' il nome che compare in mDNS |
+| IPv6 | Off | Semplifica: un solo piano di indirizzamento da migrare |
+| **Bonjour** | **On**, con nome di servizio `Kyocera TASKalfa 2552ci` | E' la conferma dal pannello del comportamento mDNS misurato dalla postazione. Da disabilitare come parte dell'irrobustimento: dopo la segmentazione non serve piu' a nessuno, perche' non attraversa il confine, e resta solo come annuncio in multicast |
+| **Filtri IP (IPv4)** | disponibili, non ispezionati | **E' una mitigazione immediata disponibile oggi**: l'apparato puo' limitare da quali indirizzi accetta connessioni, quindi l'accesso amministrativo si puo' restringere alle sole postazioni IT senza attendere la segmentazione (vedi SEC-019) |
+| Stampanti logiche | disponibili, non ispezionate | Da controllare al momento del ri-puntamento: se sono in uso, cambiano le porte a cui puntano le code |
+| IPSec | Off | Nessuna cifratura del traffico verso l'apparato; irrilevante nel breve, da annotare per A.8.24 |
+
+Due elementi operativi che il pannello stesso dichiara e che vanno nel piano. Il primo e'
+che le modifiche a questa pagina si applicano solo dopo `Invia` **e un riavvio della rete o
+del dispositivo**: cambiare indirizzo non e' istantaneo e comporta una breve
+indisponibilita' dell'apparato, quindi va fatto in una finestra dichiarata e non a stampa in
+corso. Il secondo, minore ma utile, e' che il campo `Posizione` dell'apparato e' vuoto:
+compilarlo con l'ubicazione fisica reale costa nulla e rende l'inventario leggibile dal
+pannello stesso, che e' il punto in cui lo si consulta quando si e' davanti alla macchina.
+
+La conseguenza piu' importante di tutta questa lettura riguarda pero' l'ordine dei passi.
+Poiche' l'apparato ha indirizzo statico e non risolve nomi, la strada piu' pulita non e'
+cambiare l'indirizzo a mano il giorno della migrazione, ma **convertirlo prima in riserva
+DHCP** nell'ambito del nuovo segmento: si crea l'ambito, si registra la riserva per MAC, si
+porta l'apparato da statico a DHCP, e da quel momento ogni cambio di indirizzo futuro e'
+una modifica sul firewall e non un intervento sull'apparato. E' lo stesso principio del
+ri-puntamento delle code verso un nome: si paga una volta la conversione e si smette di
+pagare a ogni cambiamento.
+
 ### Baseline funzionale pre-migrazione, misurata il 28/07/2026
 
 Le misure prese *prima* di cambiare qualcosa sono l'unico riferimento con cui giudicare le
