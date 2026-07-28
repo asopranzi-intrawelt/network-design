@@ -1394,3 +1394,42 @@ coda che passa da un server di stampa non richiede di toccare nessun PC, una cod
 Standard TCP/IP si ri-punta una volta e conviene puntarla a un nome invece che a un
 indirizzo, una coda WSD non si ri-punta affatto e va ricreata, perche' si appoggia alla
 scoperta broadcast che il confine di livello 3 taglia.
+
+### Rilevamento delle code di stampa e baseline funzionale (28/07/2026)
+
+Il rilevamento e' stato eseguito nel pomeriggio su una postazione reale e ha dato una
+risposta netta: nessun server di stampa, nessuna coda WSD, code dirette Standard TCP/IP che
+puntano all'indirizzo dell'apparato. Siamo quindi nel caso intermedio, quello che richiede
+di ri-puntare le code una volta per postazione. Due dettagli abbassano il costo rispetto
+alla stima peggiore: le code sono installate per piano e non tutte su tutte le postazioni,
+quindi il lavoro e' la somma delle code effettivamente presenti e va misurato
+sull'inventario dell'RMM invece che stimato; e sulla postazione esaminata convivono due
+porte verso lo stesso indirizzo, una orfana e una in uso, cioe' la traccia di un
+ri-puntamento gia' avvenuto in passato con lo stesso metodo che useremo noi.
+
+Identificate due multifunzione. La Kyocera del Piano Terra e' stata riconosciuta per
+correlazione tra la tabella MAC dello snapshot e il nome host di fabbrica dell'apparato,
+che Kyocera deriva dagli ultimi tre byte del MAC: e' l'apparato sulla porta 6 dello switch
+del Piano Terra. La Canon del Piano 1 e' nota dalla coda di stampa, mentre la sua porta
+fisica resta da attribuire perche' serve la tabella MAC del 54HP.
+
+Presa anche la baseline funzionale, che e' l'unico riferimento con cui giudicare le misure
+dopo la migrazione: dalla classe delle postazioni entrambe le multifunfioni rispondono
+sulla porta di stampa RAW, la Kyocera risponde al ping con latenza nulla e la rotta verso di
+lei ha *next hop* nullo, cioe' consegna diretta sullo stesso livello 2 — la conferma
+operativa che oggi il firewall non e' sul percorso, che e' esattamente il difetto NET-009.
+Dopo la migrazione le stesse misure devono dare ping e porta 9100 ancora funzionanti e next
+hop diventato il gateway del segmento: e' quel cambiamento a dimostrare che il traffico ora
+passa dal firewall.
+
+La verifica ha fatto emergere una trappola che il piano non aveva previsto. Su questa rete
+**mDNS funziona**, e le stampanti pubblicano un proprio nome nel dominio `.local`: sarebbe
+il nome piu' comodo a cui puntare le code, ed e' quello sbagliato, perche' mDNS si risolve
+in multicast dentro un dominio di broadcast e cessa di funzionare appena la stampante
+finisce in un segmento diverso. Ri-puntare le code a un nome `.local` produrrebbe code che
+funzionano oggi e si rompono il giorno della migrazione, cioe' sposterebbe il guasto in
+avanti invece di eliminarlo. Il nome da usare deve essere risolvibile in unicast, e in
+assenza di un DNS di LAN la strada disponibile e' una voce `hosts` distribuita dallo stesso
+RMM. Ne segue anche un controllo in piu' da fare sull'inventario delle code: verificare se
+qualcuna punta gia' a un nome `.local`, perche' quelle sono le prime a rompersi e nessuno se
+ne accorgerebbe fino al primo tentativo di stampa.
