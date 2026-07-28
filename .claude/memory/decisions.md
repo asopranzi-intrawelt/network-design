@@ -547,6 +547,43 @@ rivalutata quando M22 sara' pianificato: a segmentazione fatta, "accesso come un
 postazione cablata" significhera' accesso a un segmento delimitato, non a tutta
 la rete.
 
+## ADR-016 — Il quarto AP EOL entra in scope: sostituzione o eliminazione dell'EsternoIrrigazione
+
+Data: 2026-07-28
+Stato: attiva. Supera, limitatamente a questo punto, la clausola "fuori scope" di
+ADR-012 e la nota corrispondente del micro-step M13b.
+
+Contesto: ADR-012 (20/07/2026) aveva scelto tre access point Zyxel per sostituire i
+tre Ubiquiti EOL che coprono personale e ospiti, escludendo esplicitamente il quarto,
+"EsternoIrrigazione", perche' non serve copertura Wi-Fi per le persone ma la centrale
+di irrigazione sul tetto, e la sua eventuale sostituzione era una decisione separata
+non ancora presa. La sostituzione dei tre e' avvenuta ed e' stata verificata in campo
+il 27/07/2026: i tre AP nuovi sono in servizio e i tre vecchi sono scomparsi dalle
+tabelle MAC. Il quadro percio' e' cambiato in un punto sostanziale. Finche' erano
+quattro, il problema dei dispositivi con Debian 7 e Dropbear SSH era una condizione
+diffusa e la sua mitigazione passava per un progetto di sostituzione; oggi e' un
+singolo apparato, su una porta nota, con un ruolo circoscritto — cioe' un problema
+finito, che si chiude invece di gestirlo.
+
+Decisione: portare in scope la bonifica del quarto AP come micro-step M13c, con otto
+sotto-passi tracciati in `roadmap.md`, e trattarla come intervento a se' stante e non
+come appendice di M13b. La decisione non prescrive l'esito tecnico: la prima opzione
+da valutare e' l'eliminazione dell'access point, se la centrale di irrigazione
+espone una porta Ethernet raggiungibile dal cavo che arriva al tetto, perche' toglie
+insieme un apparato fuori supporto e un salto radio; solo se il collegamento deve
+restare wireless si acquista un apparato per esterni gestito.
+
+Conseguenze: il rischio residuo della classe (sistema operativo fuori supporto dal
+2016 su un host non gestibile e non filtrabile dentro la LAN piatta) e' ora tracciato
+come gap singolo SEC-018 (`GAP-TBC.md` #124) invece che come nota dentro AP-001, e ha
+un micro-step assegnato. Due dipendenze da tenere presenti: la passphrase della rete
+radio attuale non e' recuperabile, quindi l'intervento comporta per costruzione la
+riconfigurazione della centrale di irrigazione, e questo puo' richiedere il fornitore
+dell'impianto; e la collocazione finale del dispositivo, o del suo sostituto, e' nel
+segmento IoT/OT di M22c, quindi M13c e M22 si incontrano al passo M13c-8. Fino a
+quel momento il dispositivo resta nella LAN piatta e l'unica mitigazione disponibile
+e' a livello di switch, non di firewall.
+
 ## ADR-015 — Perimetro documentale delle VM applicative: asset di rete qui, avanzamento software nei loro progetti
 
 Data: 2026-07-27

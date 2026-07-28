@@ -419,6 +419,33 @@ copertura Wi-Fi per il personale) resta fuori da questo preventivo e fuori
 scope per questa fase: la sua eventuale sostituzione, se necessaria, e' una
 decisione separata non ancora presa.
 
+**Aggiornamento 28/07/2026: l'EsternoIrrigazione entra in scope (M13c, ADR-016).**
+La clausola "fuori scope" scritta qui sopra vale per il preventivo di Fase B e
+resta storicamente corretta, ma la decisione e' stata superata. Con i tre AP nuovi
+in servizio dal 21-27/07 e i tre vecchi scomparsi dalle tabelle MAC, questo e'
+l'unico dispositivo della classe ancora in rete: Debian 7 con Dropbear SSH come
+sola porta aperta, non gestibile, collegato senza filtri alla LAN piatta. Il
+problema e' passato da condizione diffusa a singolo apparato identificato, e come
+tale si chiude. Otto sotto-passi tracciati in `roadmap.md` (M13c-1 a M13c-8), gap
+dedicato SEC-018 (`GAP-TBC.md` #124).
+
+Quattro fatti tecnici da tenere presenti quando si affronta quell'intervento, tutti
+gia' accertati e nessuno ovvio. Il collegamento al tetto e' **cablato**, non un ponte
+radio: il rilievo fisico registra un patch intermedio nel locale caldaia
+(`mappatura-porte-fisiche.md`, 0-8-1 patch verso 0-9-1), quindi l'apparato sul tetto
+e' un access point alimentato in PoE dalla porta 4 e il client radio e' la centrale
+di irrigazione. La porta 4 negozia a **100 Mbps** mentre le porte delle postazioni
+dello stesso switch negoziano a 1 Gbps: va chiarito se il limite sia l'eta'
+dell'apparato o la tratta (patch e cavo verso il tetto), perche' nel secondo caso un
+AP nuovo resterebbe strozzato. La **passphrase della rete radio attuale non e'
+recuperabile**, perche' l'AP e' inaccessibile: l'SSID si legge con una scansione dal
+tetto, la chiave no, quindi l'intervento comporta per costruzione la creazione di una
+rete nuova e la riconfigurazione della centrale, che puo' richiedere il fornitore
+dell'impianto. E la prima opzione da valutare non e' un AP nuovo ma **nessun AP**: se
+la centrale espone una porta Ethernet raggiungibile dal cavo che arriva al tetto, il
+collegamento diventa cablato e l'apparato fuori supporto sparisce invece di essere
+sostituito.
+
 Resta aperta l'ambiguita' gia' segnalata su PianoSecondo (porta 45 del
 54HP): il rilievo fisico conosce cinque ubicazioni AP, ma solo quattro
 dispositivi Ubiquiti risultano oggi effettivamente in rete, e PianoSecondo

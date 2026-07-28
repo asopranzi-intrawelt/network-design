@@ -278,7 +278,7 @@ Quadro del Piano Terra, che e' il piano da cui parte l'intervento sulle stampant
 | Porta | Configurazione | Link | Cosa c'e' | Rilevanza per M22 |
 |---|---|---|---|---|
 | 1 | **trunk**, PVID 1 | 1 Gbps, PoE attivo | Access point Zyxel NWA130BE "AP piano terra", piu' due client Wi-Fi sulla VLAN 40 con MAC randomizzati | La porta e' stata convertita da access a trunk e porta VLAN 1 e VLAN 40: e' la Fase A realizzata sul nuovo hardware invece che sui vecchi AP |
-| 4 | access, PVID 1 | 100 Mbps, PoE attivo | Access point Ubiquiti "EsternoIrrigazione" (unico dei quattro legacy ancora visibile) | Resta fuori scope Fase B; da valutare se spostarlo nel segmento IoT/OT insieme alla centrale irrigazione |
+| 4 | access, PVID 1 | 100 Mbps, PoE attivo | Access point Ubiquiti "EsternoIrrigazione" (unico dei quattro legacy ancora in rete) | **Portato in scope il 28/07/2026** come micro-step M13c (ADR-016, gap SEC-018): e' un Debian 7 non gestibile sulla LAN piatta. Destinazione finale il segmento IoT/OT, oppure la sparizione dell'apparato se la centrale di irrigazione si puo' cablare. La negoziazione a 100 Mbps mentre le altre porte vanno a 1 Gbps e' un indizio da verificare sulla tratta verso il tetto |
 | 6 | access, PVID 1 | 1 Gbps | Apparato di stampa Kyocera | **Prima porta stampante identificata con certezza**: e' un candidato del primo giro di M22b |
 | 13, 23 | access, PVID 2 | 1 Gbps | I due telefoni Yealink del Piano Terra | Conferma che il fix del 23/07 tiene; nessun impatto su M22 |
 | 19 | access, **PVID 90** | nessun link | Nulla collegato | Residuo del test cablato del 22/07 mai ripristinato: una presa che consegna in rete ospiti (`GAP-TBC.md` #123) |

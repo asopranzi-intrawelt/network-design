@@ -1335,3 +1335,62 @@ LAN piatta, i client dell'intera `/19`. L'attivazione non e' gratuita e va piani
 dentro M22 segmento per segmento, marcando trusted il solo trunk verso il firewall:
 attivarla in blocco senza quella accortezza scarta le offerte legittime, che e'
 precisamente il tranello ipotizzato per i telefoni muti (NET-012, `GAP-TBC.md` #122).
+
+---
+
+## 28/07/2026 - L'ultimo access point EOL entra in scope, e il vincolo di continuita' diventa progetto
+
+Due decisioni dell'IT Manager chiudono la giornata precedente e ne aprono una nuova.
+
+La prima riguarda il quarto access point Ubiquiti, quello che serve la centrale di
+irrigazione sul tetto. Il preventivo di Fase B lo aveva escluso perche' non serve
+copertura Wi-Fi per le persone, e la decisione era registrata come "fuori scope, scelta
+separata non ancora presa". Con i tre AP nuovi in servizio, quella scelta e' stata presa:
+si sostituisce anche lui, come micro-step a se' stante M13c (ADR-016). Il motivo non e'
+estetico. Finche' erano quattro, i dispositivi con Debian 7 e Dropbear SSH erano una
+condizione diffusa e la loro bonifica era un progetto; oggi e' un singolo apparato, su una
+porta nota, con un ruolo circoscritto — cioe' un problema finito, che si chiude invece di
+gestirlo. Il rischio residuo e' registrato come gap dedicato SEC-018 (`GAP-TBC.md` #124)
+invece di restare una nota dentro AP-001.
+
+L'intervento e' stato scomposto in otto sotto-passi tracciati, perche' quattro fatti
+accertati lo rendono meno banale di una sostituzione di apparato. Il collegamento al tetto
+e' cablato, non un ponte radio: il rilievo fisico registra un patch intermedio nel locale
+caldaia, quindi l'AP e' alimentato in PoE dalla porta 4 e il client radio e' la centrale.
+La porta 4 negozia a 100 Mbps mentre le porte delle postazioni dello stesso switch vanno a
+1 Gbps, e va chiarito se il limite sia l'eta' dell'apparato o la tratta stessa, perche' nel
+secondo caso un apparato nuovo resterebbe strozzato. La passphrase della rete radio
+attuale non e' recuperabile, perche' l'AP e' inaccessibile: l'SSID si legge con una
+scansione, la chiave no, quindi l'intervento comporta per costruzione la creazione di una
+rete nuova e la riconfigurazione della centrale, con il possibile coinvolgimento del
+fornitore dell'impianto. E la prima opzione da valutare non e' un access point nuovo ma
+nessun access point: se la centrale espone una porta Ethernet raggiungibile dal cavo che
+arriva al tetto, il collegamento diventa cablato e l'apparato fuori supporto sparisce
+invece di essere sostituito. Il collaudo, per la stessa logica del canary usata altrove,
+non e' la raggiungibilita' IP della centrale ma la partenza di un ciclo di irrigazione
+reale, e il vecchio apparato non si smaltisce prima di quella verifica.
+
+La seconda decisione e' un vincolo posto sulla segmentazione: mettere le mani alle VLAN non
+deve rompere niente, e un PC deve continuare a raggiungere una stampante e un NAS. Tradotto
+in progetto, ha prodotto una sezione dedicata del documento di design. Segmentare non
+rompe il routing, che si autorizza con una regola; rompe la scoperta basata su broadcast e
+rompe ogni riferimento scritto per indirizzo IP quando quell'indirizzo cambia. Su questa
+rete i riferimenti per indirizzo sono la norma, perche' non esiste un DNS interno: unita'
+di rete mappate, voci nei file `hosts`, job di backup, license server, code di stampa. Da
+qui la regola d'oro della migrazione, che riscrive l'ordine in modo non ovvio: si spostano
+i client, non gli endpoint referenziati. Un PC che cambia indirizzo non rompe niente,
+perche' nessuno lo cerca per indirizzo; un NAS che cambia indirizzo rompe insieme le
+mappature di tutte le postazioni, i backup e le voci `hosts`. I server restano quindi fermi
+fino all'ultimo, e un PC migrato raggiunge il NAS non migrato come traffico instradato che
+la matrice consente: il servizio continua e il controllo si aggiunge.
+
+L'eccezione, dichiarata invece di essere scoperta in corsa, riguarda proprio il primo
+segmento scelto: la stampante e' essa stessa un endpoint referenziato, perche' ogni coda di
+stampa punta al suo indirizzo. L'accoppiamento minimo delle stampanti e' a livello di rete,
+non a livello applicativo. L'ordine non cambia, perche' resta il posto giusto dove
+sbagliare, ma il piano guadagna un passo prima dello spostamento: rilevare come sono
+configurate le code, dato che le tre configurazioni possibili hanno costi diversi — una
+coda che passa da un server di stampa non richiede di toccare nessun PC, una coda diretta
+Standard TCP/IP si ri-punta una volta e conviene puntarla a un nome invece che a un
+indirizzo, una coda WSD non si ri-punta affatto e va ricreata, perche' si appoggia alla
+scoperta broadcast che il confine di livello 3 taglia.
