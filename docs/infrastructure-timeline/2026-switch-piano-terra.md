@@ -1273,8 +1273,65 @@ degli apparati, che oggi vive nella stessa classe delle postazioni per lo switch
 Piano Terra e su una classe `.1` mai descritta come segmento per la iLO del server, cioe'
 esattamente l'adiacenza che una segmentazione dovrebbe eliminare per prima.
 
-Il primo passo operativo, non ancora eseguito, e' il censimento (M22a): uno snapshot
-Nebula posteriore al 23/07 con la tabella MAC di entrambi gli switch, la lettura degli
-ambiti DHCP e delle riserve dalla GUI del firewall, e l'inventario degli host con
-indirizzo statico o scritto a mano, che e' la condizione posta per scegliere tra
-rinumerare le classi e affiancare segmenti nuovi svuotando il legacy.
+Il primo passo operativo e' il censimento (M22a): uno snapshot Nebula posteriore al 23/07
+con la tabella MAC di entrambi gli switch, la lettura degli ambiti DHCP e delle riserve
+dalla GUI del firewall, e l'inventario degli host con indirizzo statico o scritto a mano,
+che e' la condizione posta per scegliere tra rinumerare le classi e affiancare segmenti
+nuovi svuotando il legacy.
+
+### Censimento M22a, prima meta' (27/07/2026, ore 14:54): il Piano Terra parla, il Piano 2 no
+
+Lo snapshot e' stato raccolto ed e' arrivato asimmetrico, in modo istruttivo. Lo switch
+del Piano Terra ha risposto a tutto: trenta porte di configurazione e una tabella MAC di
+cinquantotto voci, cioe' esattamente il dato che mancava nella raccolta del 21/07. Lo
+switch del Piano 2 ha risposto sulla configurazione delle sue cinquantaquattro porte ma ha
+rifiutato la tabella MAC con `422 DEVICE_IS_OFFLINE`: e' fuori dal piano di gestione, a
+quattro giorni dall'episodio del 23/07 quando ci era finito per un PVID non valido sul
+trunk e ne era uscito da solo. Il piano dati risulta integro, perche' nella tabella del
+Piano Terra compaiono MAC del Piano 2 appresi attraverso la dorsale, ma il censimento
+resta a meta' e la seconda parte va ripresa a switch rientrato (registrato come nuova
+occorrenza di NEB-001, `runbook-anomalie.md`).
+
+Dalla meta' che c'e' sono uscite tre notizie che valgono piu' del censimento stesso.
+
+La prima e' che **i tre access point Zyxel della Fase B non sono solo registrati, sono
+installati e in servizio**. Quello del Piano Terra e' appreso sulla porta 1 del 30HP, e
+quelli del Piano 1 e del Piano 2 sono appresi attraverso la dorsale, quindi attestati sul
+54HP e online. Dei quattro Ubiquiti legacy nella tabella MAC ne resta uno solo,
+l'EsternoIrrigazione sulla porta 4: i tre sostituiti sono spariti, coerentemente con una
+sostituzione avvenuta. La roadmap dava M13b come "hardware consegnato, installazione da
+fare": era superata dai fatti.
+
+La seconda e' che la porta 1 del 30HP, che era una porta access, e' ora un **trunk** che
+porta la VLAN 1 e la VLAN 40, con due client Wi-Fi appresi sulla 40 con MAC randomizzati.
+Detto in altri termini: l'isolamento della Wi-Fi staff che il micro-step M13a aveva
+tentato sui vecchi access point, ottenendo solo di farli smettere di trasmettere, e' oggi
+operativo sul nuovo hardware. Non e' stato "risolto" il problema di allora — e' stato
+sostituito l'hardware che lo causava, che era esattamente la decisione presa il
+15/07/2026.
+
+La terza e' un residuo: la porta 19 dello stesso switch e' ancora configurata come access
+con **PVID 90**, cioe' nella rete ospiti. E' l'avanzo del test cablato del 22/07, quando
+ci era stato collegato un portatile per verificare che il difetto della VLAN 90 non fosse
+specifico del Wi-Fi, e risultava riportato a PVID 1 a fine test. La configurazione dice il
+contrario. Al momento la porta non ha link, quindi non c'e' impatto in atto, ma una presa
+a muro che consegna chi si collega direttamente in rete ospiti e' una segmentazione al
+contrario, e va chiusa prima di aggiungere segmenti nuovi (`GAP-TBC.md` #123).
+
+Sul fronte del censimento vero e proprio, il Piano Terra risulta con una stampante Kyocera
+identificata con certezza sulla porta 6, i due telefoni ancora correttamente sulla VLAN 2
+alle porte 13 e 23, la dorsale sulla porta 29 a 10 Gbps con tutte e quattro le VLAN
+ammesse, dodici porte con un solo MAC appreso ciascuna ancora da attribuire per ruolo, e
+undici porte libere, che sono capacita' piu' che sufficiente per migrare a gruppi senza
+scollegare nulla.
+
+Registrato infine un fatto di sicurezza che era stato verificato il 23/07 e mai scritto in
+un file tracciato: sul 30HP il DHCP Server Guard, che e' il nome Zyxel del DHCP snooping, e
+l'IP source guard sono entrambi disattivati. La verifica era nata per scagionare lo switch
+dal sospetto di scartare le offerte DHCP della fonia, e in quel senso e' servita, ma
+lascia il fatto che nessuna protezione impedisce a un dispositivo collegato a una presa di
+rispondere a una richiesta DHCP e dirottare i client su gateway e DNS arbitrari — su una
+LAN piatta, i client dell'intera `/19`. L'attivazione non e' gratuita e va pianificata
+dentro M22 segmento per segmento, marcando trusted il solo trunk verso il firewall:
+attivarla in blocco senza quella accortezza scarta le offerte legittime, che e'
+precisamente il tranello ipotizzato per i telefoni muti (NET-012, `GAP-TBC.md` #122).

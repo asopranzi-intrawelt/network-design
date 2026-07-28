@@ -262,7 +262,48 @@ differenza tra spostare una stampante e scoprire in produzione che su quella por
 anche un lettore di badge. Il censimento e' anche la condizione posta dall'IT Manager il
 27/07/2026 per decidere la strategia di indirizzamento (vedi §Il nodo dell'indirizzamento).
 
-### Cosa e' gia' ricavabile dai dati in casa
+### Censimento eseguito: snapshot del 27/07/2026, Piano Terra completo
+
+Lo snapshot nuovo e' stato raccolto dall'IT Manager il 27/07/2026 alle 14:54 con
+`Get-NebulaSnapshot.ps1`. L'esito e' asimmetrico e va letto per quello che e': il
+XGS2220-30HP del Piano Terra ha risposto a tutto, con 30 porte di configurazione e una
+tabella MAC di 58 voci; il XGS2220-54HP del Piano 2 ha risposto sulla configurazione
+delle 54 porte ma ha rifiutato la lettura della tabella MAC con `422 DEVICE_IS_OFFLINE`,
+cioe' e' fuori dal piano di gestione (nuova occorrenza di NEB-001, `GAP-TBC.md` #101). Il
+censimento e' quindi **completo per il Piano Terra e mancante per il Piano 2**, e la
+seconda meta' va ripresa quando il 54HP torna gestibile.
+
+Quadro del Piano Terra, che e' il piano da cui parte l'intervento sulle stampanti.
+
+| Porta | Configurazione | Link | Cosa c'e' | Rilevanza per M22 |
+|---|---|---|---|---|
+| 1 | **trunk**, PVID 1 | 1 Gbps, PoE attivo | Access point Zyxel NWA130BE "AP piano terra", piu' due client Wi-Fi sulla VLAN 40 con MAC randomizzati | La porta e' stata convertita da access a trunk e porta VLAN 1 e VLAN 40: e' la Fase A realizzata sul nuovo hardware invece che sui vecchi AP |
+| 4 | access, PVID 1 | 100 Mbps, PoE attivo | Access point Ubiquiti "EsternoIrrigazione" (unico dei quattro legacy ancora visibile) | Resta fuori scope Fase B; da valutare se spostarlo nel segmento IoT/OT insieme alla centrale irrigazione |
+| 6 | access, PVID 1 | 1 Gbps | Apparato di stampa Kyocera | **Prima porta stampante identificata con certezza**: e' un candidato del primo giro di M22b |
+| 13, 23 | access, PVID 2 | 1 Gbps | I due telefoni Yealink del Piano Terra | Conferma che il fix del 23/07 tiene; nessun impatto su M22 |
+| 19 | access, **PVID 90** | nessun link | Nulla collegato | Residuo del test cablato del 22/07 mai ripristinato: una presa che consegna in rete ospiti (`GAP-TBC.md` #123) |
+| 29 | **trunk**, PVID 1, Allowed `1,2,40,90` | 10 Gbps | Dorsale verso il Piano 2, 38 MAC appresi su quattro VLAN | E' la porta dove va aggiunto ogni ID VLAN nuovo: senza quello il segmento non arriva al Piano Terra |
+| 2, 3, 5, 8, 10-12, 14, 16, 18, 20, 22 | access, PVID 1 | da 10 Mbps a 1 Gbps | Un solo MAC appreso ciascuna: postazioni e apparati da attribuire | Sono le porte che il censimento deve ancora attribuire per ruolo, incrociando `mappatura-porte-fisiche.md` |
+| 9, 15, 17, 21, 24-28, 30 | access, PVID 1 | nessun link | Libere | Capacita' disponibile: undici porte, sufficienti per gestire una migrazione a gruppi senza scollegare nulla |
+
+Tre acquisizioni che cambiano il piano piu' di quanto sembri. La prima e' che **i tre
+access point Zyxel della Fase B sono fisicamente installati e in servizio**, non solo
+registrati: quello del Piano Terra e' appreso sulla porta 1 del 30HP, e quelli del Piano 1
+e del Piano 2 sono appresi attraverso la dorsale, quindi sono attestati sul 54HP e
+online. La seconda e' che dei quattro access point Ubiquiti legacy nella tabella MAC ne
+resta uno solo, l'EsternoIrrigazione: i tre sostituiti non compaiono piu', coerentemente
+con una sostituzione avvenuta. La terza e' che la porta 1, che era access, e' ora un trunk
+che porta la VLAN 40: l'isolamento della Wi-Fi staff che M13a aveva tentato e ripristinato
+sui vecchi AP e' operativo sul nuovo hardware, ed e' il motivo per cui i due SSID
+funzionano.
+
+Sulla domanda specifica della localizzazione degli AP per prefisso Ubiquiti, che era il
+metodo usato il 14/07 per trovarli, l'esito oggi e' questo: l'unico MAC Ubiquiti presente
+e' quello dell'EsternoIrrigazione sulla porta 4 del 30HP. I tre AP legacy di Piano Terra,
+Piano 1 e Piano 2 non sono piu' nelle tabelle MAC, e per confermarlo definitivamente sul
+Piano 2 serve la tabella del 54HP, oggi non leggibile.
+
+### Cosa era ricavabile dallo snapshot precedente
 
 Dallo snapshot Nebula del 21/07/2026 (`output/nebula-snapshot.json`, non versionato) si
 legge la configurazione porta per porta di entrambi gli switch e, per il solo XGS2220-54HP,
@@ -275,17 +316,18 @@ Kyocera appreso *attraverso* il trunk, quindi fisicamente al Piano Terra. La mag
 dei prefissi non e' attribuibile senza una tabella OUI[^5] completa, che offline non c'e':
 quei dispositivi restano da identificare.
 
-Due limiti dello snapshot cambiano il piano e vanno dichiarati. E' anteriore agli
-interventi del 23/07, quindi non contiene le porte telefono del 30HP portate su PVID 2 ne'
-la lista VLAN esplicita sulla porta 29; e per lo XGS2220-30HP la tabella MAC e' assente
-(`l2_mac_table` nullo), cioe' manca proprio per il Piano Terra, dove vive la maggior parte
-delle postazioni e delle stampanti.
+Due limiti di quello snapshot ne hanno motivato la ripetizione: era anteriore agli
+interventi del 23/07, quindi non conteneva le porte telefono del 30HP portate su PVID 2
+ne' la lista VLAN esplicita sulla porta 29, e per lo XGS2220-30HP la tabella MAC era
+assente, cioe' mancava proprio per il Piano Terra. La raccolta del 27/07 ha colmato
+esattamente quel buco, invertendo pero' l'asimmetria: ora manca il Piano 2.
 
 ### Cosa resta da raccogliere, e come
 
-Il primo passo e' uno snapshot Nebula nuovo, posteriore al 23/07 e con la tabella MAC di
-entrambi gli switch. Lo script e' in sola lettura e richiede la chiave API, in mano
-all'IT Manager (ADR-009).
+Il primo elemento e' la tabella MAC del XGS2220-54HP, che completa il censimento sul
+Piano 2 e permette anche di chiudere la verifica sui tre access point legacy. Richiede che
+lo switch sia tornato gestibile da Nebula: la lettura si ripete con lo stesso script, in
+sola lettura, senza toccare la configurazione.
 
 ```powershell
 .\scripts\Get-NebulaSnapshot.ps1
@@ -335,17 +377,22 @@ adottato per il firewall.
    scansione delle multifunzione. Questo passo precede lo spostamento delle porte:
    altrimenti si sposta una stampante che non sa piu' dove scrivere, e si attribuisce alla
    VLAN un guasto che e' di configurazione applicativa.
-5. **Trunk**: aggiungere l'ID 30 alla lista delle VLAN ammesse della porta 29 del 30HP
+5. **Code di stampa**: rilevare su una postazione reale come sono configurate (server di
+   stampa, coda diretta Standard TCP/IP, coda WSD), poi predisporre il ri-puntamento —
+   nome invece di indirizzo dove possibile, script NinjaOne come veicolo — e riservare
+   l'indirizzo di ogni stampante per MAC nel nuovo ambito DHCP, cosi' che l'indirizzo sia
+   stabile e governato dal firewall invece che digitato sul pannello dell'apparato.
+6. **Trunk**: aggiungere l'ID 30 alla lista delle VLAN ammesse della porta 29 del 30HP
    (passo obbligatorio, vedi la lezione della VLAN 2), verificando a schermo; sul 54HP la
    porta 51 e' su `All` e non richiede modifiche, e su quel core switch la lista esplicita
    resta deliberatamente non introdotta perche' il rischio supera il beneficio. Regola non
    negoziabile appresa il 23/07 al costo di un blackout del piano di gestione: il PVID e'
    un valore singolo, la lista sta solo in `Allowed VLANS`.
-6. **Una porta stampante per volta** su access con PVID 30: verificare che l'apparato
+7. **Una porta stampante per volta** su access con PVID 30: verificare che l'apparato
    prenda indirizzo nel nuovo ambito, che una stampa di prova esca, che una scansione
    arrivi nella share dedicata e che il tentativo di scrivere in una cartella di
    postazione ora fallisca. Solo dopo passare alla successiva.
-7. **Pulizia**, a migrazione completa: rimuovere riserve e oggetti indirizzo diventati
+8. **Pulizia**, a migrazione completa: rimuovere riserve e oggetti indirizzo diventati
    inutili sulla vecchia convenzione `.30`, e togliere il vecchio ambito solo quando
    nessun apparato lo usa piu'.
 
@@ -353,6 +400,119 @@ Criterio di rollback, uniforme su tutti i passi: se un apparato non prende indir
 due tentativi DHCP, si riporta quella singola porta al PVID precedente e si indaga a
 freddo, senza proseguire con le altre. Il rollback e' sempre una sola modifica su una sola
 porta, che e' precisamente il motivo per cui si procede una porta alla volta.
+
+### Requisito vincolante: non si rompe niente, e un PC continua a raggiungere stampante e NAS
+
+E' un requisito posto esplicitamente dall'IT Manager e va trattato come tale, non come
+buon senso implicito. Vale la pena capire *cosa* esattamente rischia di rompersi, perche'
+non e' il routing: quello si autorizza con una regola e funziona. Segmentare rompe altre
+due cose, e sono entrambe prevedibili.
+
+La prima e' la **scoperta basata su broadcast**. Dentro un dominio di broadcast i
+meccanismi che trovano le cose da soli funzionano: la sezione Rete di Esplora risorse, la
+scoperta WSD[^6] delle stampanti, mDNS/Bonjour. Attraversando un confine di livello 3
+smettono, perche' i broadcast non vengono inoltrati. Non si rompe l'accesso, si rompe il
+*trovare da soli*: una share raggiunta per percorso `\\indirizzo\condivisione` continua a
+funzionare, una raggiunta cliccando su un'icona apparsa in Rete no.
+
+La seconda, che e' quella che conta davvero qui, e' che **ogni riferimento scritto per
+indirizzo IP si rompe quando quell'indirizzo cambia**. Su questa rete i riferimenti per
+indirizzo sono la norma e non l'eccezione: le unita' di rete mappate con `net use` verso i
+NAS, le voci nei file `hosts` delle postazioni (che qui sono un meccanismo in uso
+deliberato, non un residuo — vedi NAS-HERO e il portale sulla VM208), i job di backup, i
+license server, e le code di stampa. Non esiste un DNS di LAN che faccia da livello di
+indirezione (gap SEC-016): questo e' il vero moltiplicatore di costo di qualunque
+rinumerazione.
+
+Da qui la regola d'oro della migrazione, che riscrive l'ordine in modo non ovvio: **si
+spostano i client, non gli endpoint referenziati**. Un PC che cambia indirizzo non rompe
+niente, perche' nessuno lo cerca per indirizzo; un NAS che cambia indirizzo rompe
+simultaneamente le unita' mappate di tutte le postazioni, i job di backup e le voci
+`hosts`. Ne segue che NAS e server restano dove sono fino all'ultimo passo possibile, e
+che l'accesso da un PC migrato verso un NAS non migrato e' semplicemente traffico
+instradato che la matrice dei flussi consente (SMB da PC verso server): il PC continua a
+raggiungere il NAS, con il firewall in mezzo che ora puo' vederlo e registrarlo, che e'
+tutto il guadagno dell'operazione. E' anche il motivo per cui M22e, i segmenti postazioni
+e server, viene per ultimo e non per primo.
+
+Le stampanti sono l'eccezione a questa regola, ed e' giusto guardarla in faccia: una
+stampante *e'* un endpoint referenziato, perche' ogni coda di stampa punta al suo
+indirizzo. Spostarla nel segmento nuovo significa cambiarle indirizzo, e quindi rompere la
+coda su ogni PC che la usa, a meno di fare una delle tre cose seguenti. La verifica
+preliminare, che decide tutto, e' come sono configurate le code oggi: se passano da un
+server di stampa, spostare la stampante non tocca nessun PC, perche' cambia solo il tratto
+server-stampante; se sono code dirette "Standard TCP/IP" verso l'indirizzo, ogni PC va
+toccato una volta; se sono code WSD, non si ri-puntano affatto e vanno ricreate come
+TCP/IP, perche' WSD si appoggia proprio alla scoperta broadcast che il confine L3 taglia.
+In questo repository non risulta documentato nessun server di stampa, quindi l'ipotesi di
+lavoro e' code dirette, da confermare su una postazione reale prima di procedere.
+
+Con code dirette le strade sono due, e conviene la seconda. Ri-puntare le code
+centralmente con uno script distribuito via NinjaOne, che e' l'RMM gia' in uso su tutti gli
+endpoint, e' il percorso piu' rapido e ha un costo una volta sola. Introdurre invece un
+nome per ogni stampante e puntare le code al nome — un DNS interno, o in mancanza di quello
+una voce `hosts` distribuita dallo stesso RMM — costa quasi lo stesso oggi e rende gratuiti
+tutti gli spostamenti futuri, oltre a chiudere in parte il gap SEC-016 sulla risoluzione
+nomi fatta a mano. E' la scelta che rende la rete piu' facile da cambiare la prossima
+volta, che dopo questo progetto e' un criterio che vale piu' della rapidita'.
+
+Terza cosa che va comunicata invece che scoperta: lo **scan-to-folder verso le cartelle
+utente smette di funzionare per progetto**, non per errore. E' l'obiettivo dichiarato della
+riga "stampanti verso PC negato" della matrice. Per questo la share di scansione sul NAS e
+la riconfigurazione delle destinazioni sulle multifunzione precedono lo spostamento delle
+porte, e per questo agli utenti va detto dove finiranno le scansioni prima che se ne
+accorgano da soli.
+
+Ultimo elemento, che e' anche il precedente da non ripetere: il 07/07/2026 taggare la VLAN 1
+sulla dorsale fece perdere agli endpoint Windows l'accesso al NAS-HERO, senza che nessun
+file `hosts` fosse cambiato (NET-008, `GAP-TBC.md` #102). La causa non e' mai stata isolata
+con certezza, l'ipotesi resta un native VLAN mismatch sul trunk. La lezione operativa e'
+che su questa rete **il traffico verso i NAS e' il canary**: ogni passo di M22 si verifica
+con una lettura e una scrittura su una share NAS, non con un ping, perche' il ping
+sopravvive a difetti che SMB non sopravvive.
+
+### Verifica funzionale di ogni passo
+
+La stessa checklist per ogni porta spostata, da eseguire prima di passare alla successiva.
+Non e' una formalita': e' cio' che rende il rollback una decisione di trenta secondi invece
+di un'indagine.
+
+| Verifica | Esito atteso | Perche' |
+|---|---|---|
+| Indirizzo assunto dall'apparato | Nel nuovo ambito DHCP del segmento | Conferma che il PVID e' attivo e il DHCP del firewall risponde attraverso il trunk |
+| Gateway del proprio segmento | Risponde | Conferma che l'interfaccia sul firewall e' su e la VLAN attraversa la dorsale |
+| Lettura **e** scrittura su una share NAS | Entrambe riuscite | E' il canary di questa rete (NET-008): il ping non basta |
+| Stampa di prova dalla postazione di riferimento | Esce | Verifica la regola PC verso stampanti e la coda ri-puntata |
+| Scansione verso la share dedicata | Arriva nella share | Verifica la nuova destinazione e la regola stampanti verso server |
+| Scansione verso una cartella di postazione | **Fallisce** | E' la conferma che l'obiettivo di sicurezza e' raggiunto, non un difetto |
+| Navigazione Internet, dove prevista dalla matrice | Coerente con la matrice | Verifica il mascheramento e la regola di uscita |
+
+### Due pulizie da fare prima, e una decisione che il censimento ha aperto
+
+Il censimento ha fatto emergere due residui da chiudere prima di aggiungere segmenti
+nuovi, perche' sono entrambi difetti dello stesso tipo di quelli che M22 vuole eliminare.
+Il primo e' la porta 19 del 30HP, ancora su PVID 90: e' una presa del Piano Terra che
+consegna chi si collega direttamente nella rete ospiti, cioe' una segmentazione al
+contrario, e va riportata a PVID 1 (`GAP-TBC.md` #123). Il secondo e' la pagina 2 degli
+oggetti indirizzo del firewall, mai verificata, dove possono restare riferimenti alla
+vecchia subnet staff: la pulizia va fatta nello stesso passaggio in cui si leggono gli
+oggetti per il censimento, perche' e' la stessa pagina.
+
+La decisione aperta riguarda invece le protezioni di livello 2 sul DHCP. La verifica del
+23/07 ha stabilito che sul 30HP il DHCP Server Guard, che e' il nome Zyxel del DHCP
+snooping, e l'IP source guard sono entrambi disattivati (`GAP-TBC.md` #122, NET-012).
+Questo significa che oggi qualunque dispositivo collegato a una presa puo' rispondere a
+una richiesta DHCP e dirottare i client su un gateway e un DNS arbitrari, senza che lo
+switch se ne accorga, e su una LAN piatta l'effetto e' l'intera `/19`. Il meccanismo vale
+la spiegazione perche' e' il tranello classico di questa funzione: lo snooping accetta le
+risposte DHCP solo dalle porte marcate *trusted* e le scarta da tutte le altre, quindi se
+si attiva senza marcare come trusted la porta da cui arrivano le offerte legittime — che
+su un segmento servito dal firewall e' il trunk — si finisce per bloccare il DHCP vero e
+i client non prendono indirizzo. E' esattamente l'ipotesi che avevamo formulato per i
+telefoni muti prima di scartarla. La proposta e' quindi di abilitare snooping e IP source
+guard **contestualmente a ciascun segmento nuovo**, marcando trusted il solo trunk verso
+il firewall, invece di attivarli in blocco sulla rete piatta: segmento per segmento la
+lista delle porte trusted e' corta, verificabile e reversibile.
 
 ### Il nodo dell'indirizzamento, deliberatamente aperto
 
@@ -422,3 +582,8 @@ risposte da Internet.
 [^5]: *OUI*, Organizationally Unique Identifier - i primi tre byte di un indirizzo MAC,
 assegnati dallo IEEE a un produttore; permettono di risalire al costruttore di un
 dispositivo dal solo MAC.
+
+[^6]: *WSD*, Web Services for Devices - meccanismo Windows con cui una stampante viene
+scoperta e installata automaticamente annunciandosi in rete; si appoggia a messaggi
+multicast/broadcast e quindi non funziona attraverso un confine di livello 3, a differenza
+di una coda "Standard TCP/IP" che punta a un indirizzo e continua a funzionare instradata.
