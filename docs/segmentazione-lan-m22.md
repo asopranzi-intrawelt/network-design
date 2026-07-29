@@ -438,6 +438,48 @@ una modifica sul firewall e non un intervento sull'apparato. E' lo stesso princi
 ri-puntamento delle code verso un nome: si paga una volta la conversione e si smette di
 pagare a ogni cambiamento.
 
+### Le destinazioni di scansione, lette il 29/07/2026: quattro su quattro verso postazioni
+
+La rubrica della multifunzione del Piano Terra e' stata letta voce per voce. L'esito e'
+netto e conferma per misura quello che NET-009 registrava come osservazione: **tutte e
+quattro** le destinazioni configurate sono cartelle di rete SMB su porta 445 e puntano a
+condivisioni di **singole postazioni** nella classe delle postazioni, con percorsi del tipo
+`SCANNER` o `Scanner_<nome>`. Nessuna punta a un NAS, nessuna e' di tipo e-mail, i campi
+FTP sono vuoti su tutte. Per ciascuna voce l'apparato conserva nome utente e password di
+accesso alla condivisione, e in almeno un caso l'utenza e' il nome e cognome di una persona
+fisica invece di un account di servizio.
+
+| Destinazione | Tipo | Host | Percorso | Utenza memorizzata |
+|---|---|---|---|---|
+| Postazione di Persona-D | SMB (cartella) | `10.61.10.19` | `SCANNER` | utenza generica |
+| Postazione di Persona-E | SMB (cartella) | `10.61.10.74` | `Scanner` | utenza generica |
+| Postazione di Persona-C | SMB (cartella) | `10.61.10.20` | `SCANNER` | **nome e cognome della persona** |
+| Postazione dell'IT Manager | SMB (cartella) | `10.61.10.73` | `Scanner_<nome>` | utenza generica |
+
+Questo dato cambia due cose nel piano, una in peggio e una in meglio.
+
+In peggio, dimensiona il lavoro nascosto di M22b: la riga "stampanti verso postazioni
+negato" della matrice dei flussi non e' una restrizione teorica, e' la disattivazione di
+quattro destinazioni di scansione realmente in uso. Se si spostasse la porta della
+stampante senza preparare le destinazioni sostitutive, quattro persone perderebbero la
+scansione lo stesso giorno, e la perderebbero in modo silenzioso: la macchina accetta il
+lavoro e poi fallisce l'invio. Il passo "share di scansione prima dello spostamento" era
+gia' nel piano ed e' confermato come vincolante.
+
+In meglio, e questo e' il punto piu' utile emerso oggi, quel passo **non ha bisogno della
+segmentazione**. Creare la share dedicata sul NAS, spostarvi le quattro destinazioni e
+verificarle si puo' fare adesso, sulla rete piatta, senza toccare nessuna VLAN e senza
+finestra di manutenzione: il beneficio di governo dei dati arriva subito e il giorno della
+migrazione quel fronte e' gia' chiuso. E' stato quindi staccato dal micro-step strutturale e
+tracciato come intervento non bloccante R8 nel registro
+`docs/interventi-robustezza.md`, con R9 per la sostituzione dell'utenza nominale con un
+account di servizio.
+
+Un dettaglio che conferma la coerenza di tutto il quadro: le destinazioni sono indirizzi e
+non nomi, come deve essere, perche' l'apparato non ha alcun server DNS ne' WINS configurato
+(vedi la lettura della configurazione di rete sopra). Quando le destinazioni si spostano sul
+NAS, va usato l'indirizzo del NAS per la stessa ragione.
+
 ### Baseline funzionale pre-migrazione, misurata il 28/07/2026
 
 Le misure prese *prima* di cambiare qualcosa sono l'unico riferimento con cui giudicare le

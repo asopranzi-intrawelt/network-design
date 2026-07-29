@@ -78,6 +78,19 @@ caldaia (non un ponte radio), la porta 4 negozia a 100 Mbps contro 1 Gbps delle 
 passphrase della rete radio attuale non e' recuperabile quindi la centrale va comunque
 riconfigurata, e la prima opzione da valutare e' eliminare l'AP cablando la centrale.
 
+**Nuovo artefatto del 29/07: `docs/interventi-robustezza.md`**, registro dei
+micro-interventi non bloccanti (R1-R9), aperto su indicazione dell'IT Manager per gli
+interventi puntuali eseguibili uno alla volta senza fermare la rete. Regola di ammissione:
+nessuna finestra di manutenzione, nessun tocco al piano dati di apparati centrali, rollback
+di una sola azione. Due voci sono anche prerequisiti di M22b e si possono fare prima della
+segmentazione (R7 riserve DHCP, R8 destinazioni di scansione sul NAS); R5 chiude NET-013.
+
+**Misura del 29/07 che ha motivato il registro**: la rubrica della multifunzione del Piano
+Terra ha quattro destinazioni di scansione su quattro verso cartelle condivise di singole
+postazioni, nessuna verso un NAS, con credenziali della condivisione memorizzate
+nell'apparato e un'utenza nominale (SEC-020, #126; NET-009 passa da osservazione a misura).
+Aggancio ISO su A.5.14/A.8.3 nella scheda di contesto e su §A.13.2 nella SoA.
+
 **Prossimo passo operativo**: completare M22a — tabella MAC del 54HP a switch rientrato,
 ambiti e riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa,
 censimento degli host statici, e rilevamento del tipo di code di stampa su una postazione

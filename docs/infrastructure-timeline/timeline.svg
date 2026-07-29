@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3714" viewBox="0 0 1060 3714" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3714" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3738" viewBox="0 0 1060 3738" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3738" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">140 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 28/07/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">141 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 29/07/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -32,7 +32,7 @@
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(9)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
-<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(22)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(23)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#e6ede9"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#0e5c62" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">2024</text>
@@ -2285,7 +2285,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3698" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-141" class="ev-block has-detail" transform="translate(0,3668)">
+<g class="ev-summary" onclick="toggleEv('ev-141')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">29/07/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Le scansioni finiscono sui PC: misurato, e aperto il registro dei micro-interventi <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-141-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">29/07/2026 &#8212; Le scansioni finiscono sui PC: misurato, e aperto il registro dei micro-interventi</p>
+<p>Letta voce per voce la rubrica delle destinazioni di scansione della multifunzione del Piano Terra. Il risultato trasforma in misura quello che il gap NET-009 registrava come osservazione dell'IT Manager: tutte e quattro le destinazioni configurate sono cartelle di rete SMB su porta 445 e puntano a condivisioni di singole postazioni, con percorsi del tipo SCANNER. Nessuna punta a un NAS, nessuna e' di tipo e-mail, i campi FTP sono vuoti. Per ciascuna voce l'apparato conserva nome utente e password di accesso alla condivisione, e in almeno un caso l'utenza e' il nome e cognome di una persona fisica invece di un account di servizio.</p><p>Ne derivano quattro problemi indipendenti, e vale la pena separarli perche' hanno rimedi diversi. Il primo e' di governo dei dati: i documenti scansionati, che tipicamente contengono dati personali, si depositano su endpoint invece che su uno spazio presidiato con backup noto. Il secondo e' di affidabilita' e non di sicurezza: la scansione funziona solo se quella postazione e' accesa e la condivisione attiva. Il terzo e' che la multifunzione diventa un deposito di credenziali di accesso a share aziendali, e questo pesa molto piu' del previsto perche' il suo pannello amministrativo e' protetto dalle credenziali di fabbrica ed e' raggiungibile da tutta la LAN piatta. Il quarto e' che un'utenza nominale usata da un apparato non e' attribuibile a nessuno e si rompe silenziosamente il giorno in cui quella persona lascia l'azienda. Registrato come SEC-020 (GAP-TBC.md #126) e come aggiornamento misurato di NET-009.</p><p>La conseguenza sul progetto di segmentazione e' doppia. Da un lato dimensiona il lavoro nascosto di M22b: la riga "stampanti verso postazioni negato" della matrice dei flussi non e' una restrizione teorica, e' la disattivazione di quattro destinazioni realmente in uso, e spostare la porta della stampante senza preparare le sostitutive farebbe perdere la scansione a quattro persone in modo silenzioso, perche' la macchina accetta il lavoro e poi fallisce l'invio. Dall'altro, ed e' la scoperta utile, quel lavoro non ha bisogno della segmentazione: creare la share dedicata sul NAS e spostarvi le destinazioni si puo' fare subito, sulla r… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3722" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2431,7 +2447,8 @@
   {id:'ev-137',type:'event',h:24},
   {id:'ev-138',type:'event',h:24},
   {id:'ev-139',type:'event',h:24},
-  {id:'ev-140',type:'event',h:24}
+  {id:'ev-140',type:'event',h:24},
+  {id:'ev-141',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2472,7 +2489,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3714').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3738').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
