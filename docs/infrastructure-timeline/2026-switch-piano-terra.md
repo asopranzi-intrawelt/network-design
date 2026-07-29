@@ -1457,3 +1457,63 @@ annuncio in multicast. La seconda e' piu' utile: l'apparato dispone di una funzi
 postazioni IT subito, senza attendere la segmentazione e senza dipendere dal firewall, che
 sulla LAN piatta non vede quel traffico. E' il controllo compensativo che mancava a SEC-019:
 riduce la platea da tutta la `/19` a due indirizzi al costo di una configurazione.
+
+---
+
+## 29/07/2026 - Le scansioni finiscono sui PC: misurato, e aperto il registro dei micro-interventi
+
+Letta voce per voce la rubrica delle destinazioni di scansione della multifunzione del
+Piano Terra. Il risultato trasforma in misura quello che il gap NET-009 registrava come
+osservazione dell'IT Manager: **tutte e quattro** le destinazioni configurate sono cartelle
+di rete SMB su porta 445 e puntano a condivisioni di **singole postazioni**, con percorsi
+del tipo `SCANNER`. Nessuna punta a un NAS, nessuna e' di tipo e-mail, i campi FTP sono
+vuoti. Per ciascuna voce l'apparato conserva nome utente e password di accesso alla
+condivisione, e in almeno un caso l'utenza e' il nome e cognome di una persona fisica
+invece di un account di servizio.
+
+Ne derivano quattro problemi indipendenti, e vale la pena separarli perche' hanno rimedi
+diversi. Il primo e' di governo dei dati: i documenti scansionati, che tipicamente
+contengono dati personali, si depositano su endpoint invece che su uno spazio presidiato con
+backup noto. Il secondo e' di affidabilita' e non di sicurezza: la scansione funziona solo
+se quella postazione e' accesa e la condivisione attiva. Il terzo e' che la multifunzione
+diventa un deposito di credenziali di accesso a share aziendali, e questo pesa molto piu' del
+previsto perche' il suo pannello amministrativo e' protetto dalle credenziali di fabbrica ed
+e' raggiungibile da tutta la LAN piatta. Il quarto e' che un'utenza nominale usata da un
+apparato non e' attribuibile a nessuno e si rompe silenziosamente il giorno in cui quella
+persona lascia l'azienda. Registrato come SEC-020 (`GAP-TBC.md` #126) e come aggiornamento
+misurato di NET-009.
+
+La conseguenza sul progetto di segmentazione e' doppia. Da un lato dimensiona il lavoro
+nascosto di M22b: la riga "stampanti verso postazioni negato" della matrice dei flussi non
+e' una restrizione teorica, e' la disattivazione di quattro destinazioni realmente in uso, e
+spostare la porta della stampante senza preparare le sostitutive farebbe perdere la
+scansione a quattro persone in modo silenzioso, perche' la macchina accetta il lavoro e poi
+fallisce l'invio. Dall'altro, ed e' la scoperta utile, quel lavoro **non ha bisogno della
+segmentazione**: creare la share dedicata sul NAS e spostarvi le destinazioni si puo' fare
+subito, sulla rete piatta, senza toccare nessuna VLAN e senza finestra di manutenzione.
+
+### Aperto il registro dei micro-interventi di robustezza
+
+Da questa osservazione e' nato un artefatto nuovo, `docs/interventi-robustezza.md`, su
+indicazione dell'IT Manager. Le analisi di questo progetto producono due tipi di risultato:
+difetti strutturali, che richiedono progetto, finestre e coordinamento, e difetti puntuali
+che si scoprono guardando dentro un apparato per un'altra ragione — una credenziale di
+fabbrica mai cambiata, un annuncio multicast inutile, una porta rimasta in una VLAN di test,
+un campo descrittivo vuoto. Il secondo tipo ha un rapporto tra riduzione del rischio e costo
+altissimo e un rischio di rompere qualcosa quasi nullo, ma tenuto insieme ai micro-step
+strutturali finisce per aspettare indefinitamente.
+
+Il registro li raccoglie con una regola di ammissione esplicita, che e' l'unica cosa che
+impedisce a un contenitore del genere di diventare una lista di lavori arretrati: un
+intervento entra solo se non richiede finestre di manutenzione, non tocca il piano dati di
+apparati centrali e ha un rollback di una sola azione. Nove voci alla data di apertura, da
+R1 a R9: cambio delle credenziali di fabbrica della multifunzione e conservazione nel
+password manager, filtro IP sull'apparato come controllo compensativo dove il firewall non
+arriva, disabilitazione di Bonjour, compilazione del campo Posizione, ripristino della porta
+19 dello switch del Piano Terra da PVID 90 a PVID 1, rimozione delle porte di stampa orfane
+sulle postazioni, conversione delle stampanti da indirizzo statico a riserva DHCP,
+spostamento delle destinazioni di scansione su una share dedicata del NAS, e sostituzione
+dell'utenza nominale con un account di servizio. Ognuna con motivo, procedura, verifica,
+criterio di rollback e stato; una sola, la conversione a riserva DHCP, comporta pochi minuti
+di indisponibilita' perche' l'apparato richiede il riavvio della rete per applicare il
+cambio.

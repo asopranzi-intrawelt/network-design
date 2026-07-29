@@ -114,6 +114,56 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-29 — Destinazioni di scansione misurate (SEC-020) e apertura del registro dei micro-interventi
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): **nuovo** `docs/interventi-robustezza.md` (registro dei
+micro-interventi non bloccanti, regola di ammissione, nove voci R1-R9 con motivo,
+procedura, verifica, rollback e stato); `docs/infrastructure-timeline/GAP-TBC.md`
+(nuovo #126 SEC-020, aggiornamento misurato di #114 NET-009, riepilogo a 126);
+`docs/segmentazione-lan-m22.md` (sezione con la tabella delle quattro destinazioni e la
+doppia conseguenza sul piano); `docs/infrastructure-timeline/2026-switch-piano-terra.md`
+(voce 29/07 con la misura e l'apertura del registro);
+`.claude/context/design-and-security.md` (nuova riga A.5.14/A.8.3);
+`docs/design-and-security.md` (§A.13.2 aggiornato); `.claude/context/roadmap.md`
+(sezione sul registro parallelo e sui due prerequisiti di M22b che vi appartengono).
+File privati: `_notes/.anonymization-map.md` (tabella delle quattro destinazioni con
+host, percorsi e utenze reali, piu' la nota che le password memorizzate non vanno
+lette ne' trascritte), `_notes/DIARIO.md` (livello didattico: il gap che sembrava di
+rete ed e' di governo dei dati, staccare i benefici incassabili subito da un progetto
+grande, perche' un registro separato per le cose piccole e perche' la sua regola di
+ammissione va scritta dentro il documento).
+
+Motivo: lettura voce per voce della rubrica delle destinazioni di scansione della
+multifunzione del Piano Terra, su richiesta dell'analisi di M22b. Esito: **quattro
+destinazioni su quattro** sono cartelle SMB su porta 445 verso condivisioni di singole
+postazioni, nessuna verso un NAS, nessuna e-mail, campi FTP vuoti; per ciascuna
+l'apparato conserva utenza e password della condivisione, e in un caso l'utenza e' il
+nome e cognome di una persona fisica. Quattro problemi distinti in un solo fatto:
+documenti con dati personali depositati su endpoint, scansione dipendente
+dall'accensione di quel PC, apparato che diventa deposito di credenziali (aggravato
+dalle credenziali di fabbrica del suo pannello, SEC-019), utenza nominale non
+attribuibile e destinata a rompersi alla dismissione dell'account.
+
+Conseguenze registrate. NET-009 passa da osservazione a misura. Il passo "share di
+scansione prima dello spostamento" di M22b e' confermato vincolante, perche' altrimenti
+quattro persone perderebbero la scansione in modo silenzioso (la macchina accetta il
+lavoro e poi fallisce l'invio). Soprattutto: quel passo **non dipende dalla
+segmentazione** e puo' essere eseguito subito sulla rete piatta, quindi e' stato
+staccato dal micro-step strutturale.
+
+Su indicazione dell'IT Manager e' stato aperto il registro dei micro-interventi di
+robustezza, per gli interventi puntuali eseguibili uno alla volta senza bloccare la
+rete: R1 credenziali di fabbrica della multifunzione nel password manager, R2 filtro IP
+come controllo compensativo dove il firewall non arriva, R3 disabilitazione di Bonjour,
+R4 campo Posizione, R5 porta 19 del 30HP da PVID 90 a PVID 1 (chiude NET-013), R6
+rimozione delle porte di stampa orfane, R7 conversione delle stampanti a riserva DHCP,
+R8 destinazioni di scansione su share dedicata del NAS, R9 account di servizio invece di
+utenza nominale. Regola di ammissione scritta dentro il documento: nessuna finestra di
+manutenzione, nessun tocco al piano dati di apparati centrali, rollback di una sola
+azione; se un intervento si rivela piu' invasivo viene promosso a micro-step della
+roadmap con la nota del perche'.
+
 ## 2026-07-28 — Quarto AP EOL in scope (M13c) e continuita' di servizio come requisito
 
 Commit: PENDING (da fare manualmente)
