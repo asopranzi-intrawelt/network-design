@@ -1577,3 +1577,38 @@ perche', e' usare le cartelle personali che l'apparato offre nativamente: sono i
 costruzione, ma scrivervi dall'esterno richiede privilegi amministrativi sul NAS, quindi la
 multifunzione dovrebbe conservare una credenziale amministrativa — si risolverebbe il
 problema degli utenti creandone uno molto piu' grande sull'apparato.
+
+### Verifica sul NAS: autorizzazioni avanzate disattivate, e due cose viste per strada
+
+Verificato lo stesso giorno sul pannello di controllo dell'apparato, alla scheda delle
+autorizzazioni avanzate delle cartelle condivise: **entrambe le caselle sono deselezionate**,
+sia quella delle autorizzazioni per cartella e sottocartella sia quella del supporto Windows
+ACL. Oggi i permessi vivono quindi solo a livello di cartella condivisa, e chi accede a una
+condivisione vede tutto il suo contenuto: il requisito di separazione per utente richiede di
+attivare la prima delle due opzioni, oppure di ripiegare sulle cartelle condivise separate.
+La seconda casella va lasciata dov'e', perche' cambia il modello di permessi verso quello
+NTFS e ha senso solo appoggiandosi a un dominio.
+
+Registrato anche un comportamento da provare in campo prima di migrare le destinazioni,
+invece di fidarsi della documentazione del produttore: quando un utente ha permesso su una
+sottocartella ma non sulla condivisione che la contiene, l'accesso per percorso diretto
+funziona ma l'elenco della condivisione puo' essere negato. Per gli utenti e' esattamente il
+comportamento desiderato; per l'account di servizio della multifunzione, che si connette alla
+condivisione e poi scende nella sottocartella, va verificato che la connessione non richieda
+un permesso che non ha — altrimenti la scansione fallisce con un errore che sul display non
+dice nulla di utile.
+
+Due fatti visti per strada nella stessa sessione, entrambi tracciati perche' non erano
+cercati e sono piu' significativi del motivo per cui si era aperto quel pannello. Il primo:
+la cartella condivisa del backup ufficio contiene **14,37 TB su circa 3,45 milioni di cartelle
+e 1,86 milioni di file**, cioe' da sola quasi tutta la capacita' utile dell'apparato, e non
+c'e' nel progetto nessuna fonte che dica cosa contenga, se sia protetta da una copia propria o
+sia soltanto la destinazione di copie altrui, e quanto tempo richiederebbe un ripristino
+selettivo con quel numero di oggetti (gap STOR-001, `GAP-TBC.md` #127; rilevante per A.8.13 e
+per il tempo di ripristino dichiarato nel piano di continuita'). Il secondo: l'interfaccia di
+amministrazione dell'apparato risponde con lentezza marcata, con attese di decine di secondi
+per cambiare sezione, mentre il servizio file resta pienamente reattivo — registrato come
+NAS-003 in `runbook-anomalie.md`, con la mole di oggetti come ipotesi principale, la dotazione
+hardware come seconda e un job in corso come terza, da escludere per prima perche' e' la piu'
+facile da verificare. Conta perche' R8 richiede diversi passaggi in quella interfaccia e la
+stima dei tempi passa da minuti a decine di minuti.

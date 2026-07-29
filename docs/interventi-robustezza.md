@@ -274,6 +274,40 @@ siano gia' attive. La seconda resta il piano di ripiego se per qualche motivo no
 toccare quell'impostazione globale, e non e' una scelta di serie B — e' solo meno ordinata
 nella lista delle condivisioni.
 
+#### Stato verificato il 29/07/2026: le autorizzazioni avanzate sono disattivate
+
+Verifica eseguita sul pannello di controllo di NAS-INTRA2, sezione privilegi, cartelle
+condivise, scheda delle autorizzazioni avanzate: **entrambe le caselle sono deselezionate**,
+sia quella delle autorizzazioni avanzate per cartella sia quella del supporto Windows ACL.
+Oggi, quindi, i permessi vivono solo a livello di cartella condivisa e chi accede a una
+condivisione vede tutto il suo contenuto: il requisito di separazione per utente non e'
+soddisfabile senza intervenire su una delle due strade descritte sopra.
+
+Due precisazioni che contano per non fare danni. La casella da attivare e' **solo** la prima,
+quella delle autorizzazioni avanzate per cartella: la seconda, il supporto Windows ACL, e'
+un'altra cosa e va lasciata disattivata, perche' cambia il modello di permessi verso quello
+NTFS e ha senso solo con un dominio a cui appoggiarsi. Attivare la prima non modifica da sola
+nessun permesso esistente, non richiede riavvio e non tocca le condivisioni in uso: aggiunge
+la possibilita' di assegnare permessi anche alle sottocartelle, che finche' non si assegnano
+restano quelli della cartella condivisa.
+
+C'e' poi un comportamento da **verificare in campo prima di migrare le destinazioni**, e non
+da dare per scontato leggendo la documentazione del produttore: quando un utente ha permesso
+su una sottocartella ma non sulla cartella condivisa che la contiene, l'accesso funziona per
+percorso diretto ma l'elenco della cartella condivisa puo' essere negato. E' esattamente il
+comportamento che vogliamo per gli utenti, che devono raggiungere la propria cartella e non
+vedere quelle altrui, ma va provato anche per l'**account di servizio della multifunzione**,
+che si connette alla condivisione e poi scende nella sottocartella: se la connessione alla
+condivisione richiede un permesso che l'account non ha, la scansione fallisce con un errore
+che sul display dell'apparato non dice nulla di utile. La prova si fa con un utente di test e
+una cartella di test, prima di toccare la rubrica, ed e' il motivo per cui il passo 3 della
+procedura viene prima del passo 4.
+
+Nota operativa sull'apparato: la sua interfaccia di amministrazione risponde con lentezza
+marcata, cosa rilevata durante questa stessa verifica e registrata in
+`runbook-anomalie.md` §NAS-003. Va messo in conto nel tempo dell'intervento, perche' R8
+richiede diversi passaggi in quella interfaccia.
+
 Nota a margine emersa dalla stessa lettura: tra le cartelle condivise di primo livello
 esiste una cartella pubblica, tipicamente accessibile a tutti gli utenti. Va evitato che la
 cartella delle scansioni le somigli per permessi, ed e' un motivo in piu' per verificare i
