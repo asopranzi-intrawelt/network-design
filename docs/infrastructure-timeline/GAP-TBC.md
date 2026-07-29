@@ -391,6 +391,14 @@ loro sviluppo.
 
 ---
 
+## NAS-INTRA2: cartella di backup ufficio da 14 TB e milioni di oggetti (29/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 127 | STOR-001 | Ispezionando le cartelle condivise di NAS-INTRA2 (QNAP TS-435XeU, QTS 5.2.9, 4 GB di RAM) per preparare l'intervento R8, e' emerso che la cartella condivisa dedicata al backup dell'ufficio contiene **14,37 TB distribuiti su circa 3,45 milioni di cartelle e 1,86 milioni di file**, cioe' da sola quasi tutta la capacita' utile dell'apparato. Tre domande aperte che nessuna fonte del progetto risponde: cosa contenga davvero (backup di postazioni, archivio storico, copia di altri NAS), se sia essa stessa protetta da una copia o solo la destinazione di copie altrui, e quanto tempo richiederebbe un ripristino selettivo con quel numero di oggetti — perche' un conteggio di file di quell'ordine rende lentissime le operazioni che attraversano l'albero, dagli snapshot all'antivirus all'indicizzazione, e trasforma un restore "veloce" in un'operazione di ore. Rilevante per A.8.13 (backup) e per il piano di continuita', dove va dichiarato un tempo di ripristino realistico e non ottimistico. Non e' un difetto in se': e' una concentrazione di dati e di rischio che va conosciuta prima di aggiungere su quello stesso apparato la cartella delle scansioni | Pannello cartelle condivise di NAS-INTRA2, letto il 29/07/2026 |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -430,5 +438,6 @@ loro sviluppo.
 | Ultimo AP EOL residuo (28/07/2026) | 124 |
 | Multifunzione con credenziali di fabbrica (28/07/2026) | 125 |
 | Destinazioni di scansione verso postazioni (29/07/2026) | 126 |
-| **Totale identificati** | **126** |
+| NAS-INTRA2, cartella backup ufficio da 14 TB (29/07/2026) | 127 |
+| **Totale identificati** | **127** |
 | **Di cui risolti** | **8** (14, 54, 55, 61, 63, 106, 111, 116 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |

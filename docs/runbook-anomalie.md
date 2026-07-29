@@ -812,6 +812,54 @@ e' documentata nella fonte.
 
 ---
 
+## NAS-003: interfaccia di amministrazione di NAS-INTRA2 molto lenta
+
+**Severity**: BASSA (nessun impatto sul servizio file, impatto sul lavoro amministrativo)
+**Origine**: rilevata il 29/07/2026 durante la preparazione dell'intervento R8
+**Stato**: aperto, causa non isolata
+
+### Contesto
+
+L'interfaccia web di amministrazione dell'apparato (porta 8080) risponde con lentezza
+marcata: la navigazione tra le sezioni del pannello di controllo richiede attese di
+diverse decine di secondi, al punto che raggiungere una specifica scheda diventa un
+esercizio di pazienza. Il servizio file non e' interessato: le condivisioni rispondono e
+le multifunzione e le postazioni vi accedono normalmente.
+
+### Ipotesi, in ordine di plausibilita'
+
+La prima e' la mole di oggetti che l'apparato deve contabilizzare. La stessa lettura che ha
+rilevato la lentezza ha mostrato che una singola cartella condivisa contiene circa 3,45
+milioni di cartelle e 1,86 milioni di file per 14,37 TB (gap STOR-001, `GAP-TBC.md` #127):
+il pannello delle cartelle condivise calcola dimensioni e conteggi, e su un albero di quelle
+proporzioni l'operazione e' intrinsecamente costosa. Coerente con il fatto che la lentezza si
+manifesta proprio nelle pagine che mostrano quei numeri.
+
+La seconda e' la dotazione hardware rispetto al carico: l'apparato ha 4 GB di RAM e una CPU
+ARM quad-core, dimensionati per servire file e non per gestire indicizzazione, antivirus,
+snapshot e pannello web su milioni di oggetti contemporaneamente.
+
+La terza, da escludere per prima perche' e' la piu' facile da verificare, e' un'attivita' in
+corso sull'apparato che sta consumando risorse: un job di backup, una verifica di integrita',
+un'indicizzazione multimediale o una scansione antivirus.
+
+### Verifica suggerita
+
+Aprire il monitor delle risorse dell'apparato e osservare carico CPU, occupazione di memoria
+e attivita' disco mentre si naviga il pannello; controllare l'elenco dei job in esecuzione e
+l'eventuale indicizzazione multimediale attiva su cartelle che non ne hanno bisogno, che e'
+una causa classica di carico inutile su questi apparati. Se il carico e' basso e la lentezza
+resta, l'ipotesi si sposta sul conteggio degli oggetti e la mitigazione e' evitare le pagine
+che calcolano dimensioni, non risolvere la lentezza.
+
+### Perche' e' tracciata
+
+Non e' un guasto, ma va conosciuta prima di pianificare interventi che richiedono diversi
+passaggi in quella interfaccia — come R8, la creazione della cartella delle scansioni con i
+permessi per sottocartella — perche' cambia la stima dei tempi da minuti a decine di minuti.
+
+---
+
 ## NAS-002: Unita' di rete mappate (`net use`) invisibili in Esplora risorse
 
 **Severity**: BASSA
