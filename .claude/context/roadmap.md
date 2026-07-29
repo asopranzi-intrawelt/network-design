@@ -115,6 +115,23 @@ dell'utente secondo `.claude/rules/git-commands-format.md`), cosi' che la
 storia git rispecchi la sequenza degli interventi fisici sulla rete e non un
 unico commit cumulativo di fine fase.
 
+### Registro parallelo dei micro-interventi non bloccanti (dal 29/07/2026)
+
+Gli interventi puntuali che emergono come effetto collaterale delle analisi — una
+credenziale di fabbrica mai cambiata, un annuncio multicast inutile, una porta rimasta in
+una VLAN di test, destinazioni di scansione verso postazioni, un campo descrittivo vuoto —
+non vivono in questa tabella ma in `docs/interventi-robustezza.md`, con una regola di
+ammissione esplicita: nessuna finestra di manutenzione, nessun tocco al piano dati di
+apparati centrali, rollback di una sola azione. Nove voci all'apertura (R1-R9).
+
+La distinzione non e' burocratica: serve a non far aspettare interventi a rischio quasi
+nullo e beneficio alto dietro micro-step strutturali che richiedono progetto, finestre e
+coordinamento. Due voci di quel registro sono anche prerequisiti di M22b e possono essere
+eseguite prima e indipendentemente dalla segmentazione: R7, conversione delle stampanti da
+indirizzo statico a riserva DHCP, e R8, spostamento delle destinazioni di scansione su una
+share dedicata del NAS. R5, il ripristino della porta 19 del 30HP da PVID 90 a PVID 1,
+chiude il gap NET-013 senza attendere nulla.
+
 ### Micro-step tracciati
 
 | # | Intervento | Priorita' | Gap/fonte | Dipendenza | Stato |
