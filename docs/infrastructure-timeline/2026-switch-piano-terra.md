@@ -1517,3 +1517,44 @@ dell'utenza nominale con un account di servizio. Ognuna con motivo, procedura, v
 criterio di rollback e stato; una sola, la conversione a riserva DHCP, comporta pochi minuti
 di indisponibilita' perche' l'apparato richiede il riavvio della rete per applicare il
 cambio.
+
+### Requisito dell'IT Manager sulla share di scansione, e la tensione che risolve
+
+Nella stessa giornata e' arrivato il requisito che disegna R8: gli utenti hanno gia' accesso a
+NAS-INTRA2 e a due cartelle di primo livello di NAS-HERO, quindi l'accesso esistente si
+sfrutta invece di crearne uno nuovo, ma nella nuova cartella dedicata alle scansioni ciascuno
+deve vedere **soltanto la propria sottocartella**.
+
+Il requisito sembra banale e non lo e', perche' entra in tensione diretta con l'altro
+obiettivo. Se l'isolamento tra utenti lo si ottenesse facendo scrivere l'apparato con le
+credenziali di ciascun utente, come avviene oggi verso le postazioni, la multifunzione
+dovrebbe conservare al proprio interno le credenziali personali di tutti: si peggiorerebbe
+esattamente il problema di SEC-020, su una macchina il cui pannello ha ancora le credenziali
+di fabbrica. La separazione va quindi ottenuta dai permessi del NAS e non dalle credenziali
+dell'apparato: un solo account di servizio, unica credenziale memorizzata nella
+multifunzione, con la sola scrittura sulle sottocartelle, e i permessi degli utenti definiti
+sul NAS in modo che ciascuno acceda solo alla propria. L'utente non usa mai la credenziale
+dell'apparato e l'apparato non usa mai quella dell'utente: sono due percorsi distinti verso
+la stessa cartella.
+
+Il rischio residuo va dichiarato invece di essere nascosto, perche' e' la prima cosa che un
+auditor chiederebbe: l'account di servizio puo' scrivere in tutte le sottocartelle, quindi
+chi ne ottenesse la credenziale potrebbe depositare file nella cartella di chiunque. Non
+puo' pero' leggere le scansioni altrui, se il NAS consente di concedergli la sola scrittura,
+ed e' questa asimmetria a fare la differenza rispetto a oggi, dove l'apparato conserva
+credenziali con accesso completo a cartelle di postazioni. Il rischio passa da lettura e
+scrittura su endpoint a sola scrittura su una cartella presidiata, e viene ridotto
+ulteriormente dagli interventi R1 e R2, che chiudono la via d'accesso al pannello dove quella
+credenziale e' memorizzata.
+
+Registrate nello stesso passaggio tre cose che il disegno porta con se'. La scelta del NAS non
+e' neutra: NAS-HERO e' replicato fuori sede su archiviazione cloud, quindi scegliendolo le
+scansioni erediterebbero una copia esterna — vantaggio di continuita' e insieme un fatto da
+verificare rispetto a quanto dichiarato agli interessati, non da decidere implicitamente con
+una scelta di cartella. Il dubbio sul dialetto SMB dell'apparato si risolve da se' con i dati
+gia' raccolti, perche' le destinazioni attuali sono condivisioni di postazioni Windows 11,
+dove SMB versione 1 e' disabilitato di default, e le scansioni funzionano: l'apparato parla
+gia' SMB 2 o superiore. E serve una regola di conservazione sulla cartella nuova, aggiunta
+come intervento R10, perche' una cartella di scansioni senza scadenza diventa in pochi mesi
+un archivio documentale parallelo, non censito e pieno di dati personali, e una soglia si
+stabilisce molto piu' facilmente su una cartella vuota che su tre anni di documenti.
