@@ -228,18 +228,73 @@ fornitore cloud: va verificato che questo sia coerente con quanto dichiarato agl
 interessati e con il registro dei trattamenti, non deciso implicitamente da una scelta di
 cartella. Decisione dell'IT Manager, da registrare qui quando presa.
 
+#### Come si ottiene davvero la separazione per sottocartella sul NAS scelto
+
+**Decisione dell'IT Manager del 29/07/2026: il NAS di destinazione e' NAS-INTRA2.** Coerente
+con la raccomandazione: se le scansioni sono un mezzo di trasporto con una scadenza (R10) e
+non un archivio, replicarle fuori sede sarebbe un costo di riservatezza senza un beneficio
+di continuita' reale.
+
+La domanda operativa che ne segue e' come si separano gli accessi *dentro* una cartella di
+primo livello, dato che per impostazione predefinita su questi NAS i permessi si assegnano
+alla cartella condivisa e chi vi accede vede tutto quello che contiene. Ci sono due strade
+native, piu' una che va scartata.
+
+La prima strada e' abilitare le **autorizzazioni avanzate per cartella**, che sul pannello di
+controllo del NAS stanno nella sezione dei privilegi, alla voce delle cartelle condivise,
+scheda delle autorizzazioni avanzate. Attivata quell'opzione, i permessi diventano
+assegnabili anche alle sottocartelle, dal gestore file: si seleziona la sottocartella, si
+aprono le proprieta' e si concede a ciascun utente lettura e scrittura sulla propria e
+nessun accesso sulle altre, con la possibilita' di applicare la scelta in modo ricorsivo.
+E' la strada che soddisfa il requisito mantenendo **una sola** cartella di primo livello,
+come chiesto, e scala quando gli utenti aumentano. L'unica cautela e' che l'opzione e'
+globale per l'apparato e cambia il modo in cui i permessi vengono valutati: va attivata
+deliberatamente e va verificato prima se non sia gia' attiva, perche' la presenza di cartelle
+condivise nominative suggerisce che una gestione granulare sia gia' in uso. L'attivazione non
+modifica da sola i permessi esistenti, che restano quelli della cartella condivisa finche'
+non si assegna un permesso specifico a una sottocartella.
+
+La seconda strada e' creare **una cartella condivisa per utente**, cioe' spostare la
+separazione dal livello sottocartella al livello cartella condivisa, dove i permessi
+esistono sempre e senza abilitare nulla. E' la strada piu' semplice e la piu' robusta, e
+richiede zero modifiche di configurazione globale; il costo e' che la lista delle cartelle
+condivise di primo livello, che oggi ha gia' tredici voci tra cartelle di lavoro, backup e
+cartelle di sistema dell'apparato, cresce di una voce per utente e diventa meno leggibile.
+Con quattro destinatari e' del tutto praticabile, con quindici no.
+
+La strada da scartare, ed e' utile dire perche', e' usare le cartelle personali degli utenti
+che l'apparato mette a disposizione nativamente. Sono isolate per costruzione, quindi
+sembrerebbero la risposta ovvia, ma scrivervi dall'esterno richiede privilegi
+amministrativi sul NAS: la multifunzione dovrebbe conservare una credenziale
+amministrativa, che e' esattamente cio' che questo intervento vuole evitare. La separazione
+nativa risolverebbe il problema degli utenti creandone uno molto piu' grande sull'apparato.
+
+Raccomandazione: la prima strada, con verifica preliminare se le autorizzazioni avanzate
+siano gia' attive. La seconda resta il piano di ripiego se per qualche motivo non si vuole
+toccare quell'impostazione globale, e non e' una scelta di serie B — e' solo meno ordinata
+nella lista delle condivisioni.
+
+Nota a margine emersa dalla stessa lettura: tra le cartelle condivise di primo livello
+esiste una cartella pubblica, tipicamente accessibile a tutti gli utenti. Va evitato che la
+cartella delle scansioni le somigli per permessi, ed e' un motivo in piu' per verificare i
+permessi effettivi al termine dell'intervento invece di fidarsi di come sono stati impostati.
+
 #### Procedura
 
 Nell'ordine, e ogni passo verificabile prima del successivo.
 
-1. Sul NAS scelto, creare la cartella di primo livello dedicata alle scansioni.
+1. Su NAS-INTRA2, verificare se le autorizzazioni avanzate per cartella sono gia' attive e,
+   se non lo sono, attivarle; poi creare la cartella condivisa di primo livello dedicata alle
+   scansioni, senza concedervi accesso generalizzato.
 2. Creare l'account di servizio della multifunzione, senza scadenza password e senza
    accesso interattivo ad altri servizi del NAS, e assegnargli la sola scrittura sulle
    sottocartelle.
 3. Creare una sottocartella per ciascuno dei destinatari attuali e assegnare i permessi
-   secondo la tabella sopra, verificando da una postazione che l'utente veda la propria e
-   **non** quelle degli altri: e' la verifica che dimostra il requisito, e va fatta prima di
-   toccare l'apparato.
+   secondo la tabella sopra dal gestore file dell'apparato, verificando **da due postazioni
+   diverse** che ciascun utente veda la propria e non quelle degli altri: e' la verifica che
+   dimostra il requisito, e va fatta prima di toccare la multifunzione, non dopo, perche'
+   scoprire un permesso sbagliato quando i documenti sono gia' dentro significa aver esposto
+   documenti veri.
 4. Sulla multifunzione, riconfigurare ciascuna voce della rubrica: host di destinazione
    l'indirizzo del NAS — un indirizzo e non un nome, perche' l'apparato non ha alcun server
    DNS configurato — percorso la sottocartella del destinatario, utenza quella dell'account
