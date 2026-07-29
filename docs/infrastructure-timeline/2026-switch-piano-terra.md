@@ -1558,3 +1558,22 @@ gia' SMB 2 o superiore. E serve una regola di conservazione sulla cartella nuova
 come intervento R10, perche' una cartella di scansioni senza scadenza diventa in pochi mesi
 un archivio documentale parallelo, non censito e pieno di dati personali, e una soglia si
 stabilisce molto piu' facilmente su una cartella vuota che su tre anni di documenti.
+
+Deciso nella stessa giornata il NAS di destinazione: **NAS-INTRA2**, coerentemente con la
+raccomandazione — se le scansioni hanno una scadenza, replicarle fuori sede sarebbe un costo
+di riservatezza senza un beneficio di continuita' reale. Ne e' seguita la domanda operativa
+vera, cioe' come si separano gli accessi *dentro* una cartella condivisa, dato che per
+impostazione predefinita chi accede a una cartella condivisa vede tutto il suo contenuto. La
+risposta e' che si fa, con due strade native e una da scartare. La prima e' abilitare le
+autorizzazioni avanzate per cartella, opzione del pannello dei privilegi dell'apparato, che
+rende assegnabili i permessi anche alle sottocartelle dal gestore file: soddisfa il requisito
+mantenendo una sola cartella di primo livello e scala con gli utenti, al prezzo di
+un'impostazione globale da attivare deliberatamente e da verificare prima, perche' la
+presenza di cartelle condivise nominative suggerisce che una gestione granulare sia gia' in
+uso. La seconda e' creare una cartella condivisa per utente, spostando la separazione al
+livello dove i permessi esistono sempre: piu' semplice e robusta, al prezzo di allungare una
+lista di condivisioni che ne conta gia' tredici. La strada da scartare, ed e' istruttivo il
+perche', e' usare le cartelle personali che l'apparato offre nativamente: sono isolate per
+costruzione, ma scrivervi dall'esterno richiede privilegi amministrativi sul NAS, quindi la
+multifunzione dovrebbe conservare una credenziale amministrativa — si risolverebbe il
+problema degli utenti creandone uno molto piu' grande sull'apparato.
