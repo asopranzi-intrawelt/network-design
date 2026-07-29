@@ -43,6 +43,7 @@ documentazione ISO27001, non un'intenzione.
 | R7 | Convertire l'indirizzamento delle multifunzione da statico su apparato a riserva DHCP sul firewall | Prerequisito di M22b e miglioramento permanente: i cambi di indirizzo futuri diventano modifiche centrali | Breve indisponibilita' dell'apparato al riavvio della rete: unica voce del registro che richiede una finestra, anche se di minuti | Da fare |
 | R8 | Spostare le destinazioni di scansione dalle cartelle condivise delle postazioni a una share dedicata sul NAS | NET-009 (#114) lato flussi dato, SEC-020 (#126), A.8.3 e A.5.14 | Nessuno sulla rete: si riconfigurano le destinazioni sull'apparato. Cambia dove gli utenti trovano le scansioni, quindi richiede comunicazione | Da fare |
 | R9 | Sostituire negli account di scansione i nomi di persona con un account di servizio dedicato alla share di scansione | SEC-020 (#126), A.9.2: un account nominale usato da un apparato non e' attribuibile a una persona ed e' impossibile da dismettere all'uscita di quella persona | Nessuno se eseguito insieme a R8 | Da fare |
+| R10 | Definire una regola di conservazione sulla cartella delle scansioni (cancellazione automatica oltre una soglia di giorni concordata) | Minimizzazione e limitazione della conservazione: una cartella di scansioni diventa in pochi mesi un archivio documentale parallelo, non censito e pieno di dati personali. Rilevante per A.5.33 e per il principio di limitazione della conservazione | Nessuno sulla rete; va concordata la soglia con chi usa il servizio | Da fare, dipende da R8 |
 
 ## Dettaglio degli interventi
 
@@ -166,16 +167,117 @@ toccare nessuna VLAN**, e produce da subito il beneficio di governo dei dati. Qu
 arrivera' la segmentazione, le destinazioni saranno gia' dove devono essere e il passo si
 riduce a una regola sul firewall.
 
-Procedura, nell'ordine: creare sul NAS una condivisione dedicata alle scansioni, con una
-sottocartella per destinatario se si vuole mantenere la separazione a cui gli utenti sono
-abituati; creare un account di servizio dedicato alla scrittura su quella share (vedi R9);
-sull'apparato, riconfigurare ciascuna voce della rubrica in modo che l'host di destinazione
-sia il NAS e il percorso la nuova cartella, usando l'indirizzo e non un nome, perche'
-l'apparato non ha alcun server DNS configurato; provare ciascuna voce con il pulsante di
-prova connessione; comunicare agli utenti dove trovano da ora le scansioni. Verifica:
-scansione reale da display verso ciascuna destinazione, con il file che compare nella
-cartella attesa sul NAS. Rollback: le voci precedenti vanno annotate prima della modifica,
-e ripristinarle e' una riscrittura di due campi per voce.
+#### Requisito posto dall'IT Manager il 29/07/2026
+
+Gli utenti hanno gia' accesso a NAS-INTRA2 e a due cartelle di primo livello di NAS-HERO,
+quindi l'accesso esistente si puo' sfruttare invece di crearne uno nuovo. La condizione e'
+che nella nuova cartella di primo livello dedicata alle scansioni **ciascun utente veda
+soltanto la propria sottocartella** e non quelle degli altri.
+
+Il requisito sembra banale e non lo e', perche' entra in tensione diretta con R9. Se
+l'isolamento tra utenti lo si ottenesse facendo scrivere l'apparato con le credenziali di
+ciascun utente, come avviene oggi verso le postazioni, allora la multifunzione dovrebbe
+conservare al proprio interno le credenziali personali di tutti — cioe' si peggiorerebbe
+esattamente il problema che SEC-020 registra, su un apparato il cui pannello ha ancora le
+credenziali di fabbrica. La separazione va quindi ottenuta dal lato dei permessi del NAS, non
+dal lato delle credenziali dell'apparato.
+
+#### Il disegno che soddisfa entrambe le cose
+
+Un solo **account di servizio** dedicato alla scansione, che e' l'unica credenziale
+memorizzata nella multifunzione, con permesso di scrittura su tutte le sottocartelle; e i
+permessi degli utenti definiti sul NAS in modo che ciascuno acceda solo alla propria. L'utente
+non usa mai la credenziale dell'apparato e l'apparato non usa mai quella dell'utente: sono due
+percorsi distinti verso la stessa cartella, ed e' questa separazione a rendere il disegno
+sostenibile.
+
+```
+<cartella di primo livello: Scansioni>
+├── <utente-1>/   servizio: scrittura   utente-1: lettura/scrittura   altri: nessun accesso
+├── <utente-2>/   servizio: scrittura   utente-2: lettura/scrittura   altri: nessun accesso
+├── <utente-3>/   servizio: scrittura   utente-3: lettura/scrittura   altri: nessun accesso
+└── <utente-4>/   servizio: scrittura   utente-4: lettura/scrittura   altri: nessun accesso
+```
+
+| Soggetto | Sulla cartella di primo livello | Sulla propria sottocartella | Sulle sottocartelle altrui |
+|---|---|---|---|
+| Account di servizio della multifunzione | attraversamento, nessuna lettura dell'elenco se il NAS lo consente | scrittura e creazione file | scrittura e creazione file (inevitabile: e' un solo account per tutte le destinazioni) |
+| Utente | attraversamento | lettura e scrittura, cancellazione dei propri file | **nessun accesso** |
+| Amministratore IT | pieno | pieno | pieno |
+
+Sul rischio residuo bisogna essere onesti, perche' e' il punto che un auditor chiederebbe:
+l'account di servizio puo' scrivere in tutte le sottocartelle, quindi chi ne ottenesse la
+credenziale potrebbe depositare file nella cartella di chiunque. Non puo' pero' *leggere* le
+scansioni altrui se il NAS permette di concedergli la sola scrittura, ed e' questa
+asimmetria a fare la differenza rispetto a oggi: attualmente l'apparato conserva credenziali
+che danno accesso completo a cartelle condivise di postazioni. Il rischio passa quindi da
+lettura e scrittura su endpoint a sola scrittura su una cartella presidiata, e viene ridotto
+ulteriormente da R1 e R2, che chiudono la via d'accesso al pannello dove quella credenziale
+e' memorizzata.
+
+#### Su quale NAS, e la nota che ne consegue
+
+La scelta e' tra i due apparati a cui gli utenti hanno gia' accesso. Il criterio non e' lo
+spazio, che in entrambi i casi e' ampiamente sufficiente, ma la copertura di backup e le
+implicazioni di un'eventuale replica fuori sede: NAS-HERO e' replicato offsite su
+archiviazione cloud secondo quanto documentato in
+`business-continuity-disaster-recovery.md`, quindi scegliendolo le scansioni erediterebbero
+automaticamente una copia esterna. E' un vantaggio di continuita' e insieme un fatto da
+dichiarare, perche' significa che documenti con dati personali vengono replicati presso un
+fornitore cloud: va verificato che questo sia coerente con quanto dichiarato agli
+interessati e con il registro dei trattamenti, non deciso implicitamente da una scelta di
+cartella. Decisione dell'IT Manager, da registrare qui quando presa.
+
+#### Procedura
+
+Nell'ordine, e ogni passo verificabile prima del successivo.
+
+1. Sul NAS scelto, creare la cartella di primo livello dedicata alle scansioni.
+2. Creare l'account di servizio della multifunzione, senza scadenza password e senza
+   accesso interattivo ad altri servizi del NAS, e assegnargli la sola scrittura sulle
+   sottocartelle.
+3. Creare una sottocartella per ciascuno dei destinatari attuali e assegnare i permessi
+   secondo la tabella sopra, verificando da una postazione che l'utente veda la propria e
+   **non** quelle degli altri: e' la verifica che dimostra il requisito, e va fatta prima di
+   toccare l'apparato.
+4. Sulla multifunzione, riconfigurare ciascuna voce della rubrica: host di destinazione
+   l'indirizzo del NAS — un indirizzo e non un nome, perche' l'apparato non ha alcun server
+   DNS configurato — percorso la sottocartella del destinatario, utenza quella dell'account
+   di servizio. Annotare prima i valori attuali di ciascuna voce, perche' sono il rollback.
+5. Provare ciascuna voce con il pulsante di prova connessione dell'apparato, poi con una
+   scansione reale dal display, verificando che il file compaia nella cartella attesa.
+6. Comunicare agli utenti dove trovano da ora le scansioni, prima che se ne accorgano da
+   soli. E' l'unico intervento del registro che cambia un'abitudine, quindi la
+   comunicazione fa parte della procedura e non e' un extra.
+7. Solo dopo che tutte le destinazioni funzionano, rimuovere le condivisioni di scansione
+   dalle postazioni e le credenziali che le servivano.
+
+Verifica complessiva: quattro scansioni reali, una per destinazione, e un controllo di
+accesso incrociato da due postazioni diverse. Rollback: ripristino dei valori annotati al
+passo 4, una riscrittura di tre campi per voce.
+
+#### Un dettaglio tecnico che il quadro attuale risolve da se'
+
+Un dubbio legittimo prima di toccare l'apparato e' se la multifunzione parli una versione di
+SMB accettata da un NAS configurato correttamente, perche' molti apparati di questa
+generazione nascono con SMB versione 1 e i NAS aggiornati la rifiutano. Qui la risposta si
+ricava dai fatti gia' raccolti senza fare prove: le destinazioni attuali sono cartelle
+condivise di postazioni Windows 11, dove SMB versione 1 e' disabilitato per impostazione
+predefinita, e le scansioni funzionano. Ne segue che l'apparato parla gia' SMB 2 o
+superiore, quindi il passaggio al NAS non incontrera' quell'ostacolo. Resta buona pratica
+verificare sul NAS quale dialetto minimo e' accettato, ma non e' un rischio aperto.
+
+#### Evoluzione futura, da non confondere con questo intervento
+
+Il disegno qui descritto e' quello corretto per la situazione attuale, in cui l'utente non
+si autentica sull'apparato. Se in futuro la multifunzione venisse integrata con la
+directory aziendale e gli utenti si autenticassero al pannello, diventerebbe possibile la
+soluzione piu' elegante, in cui l'apparato invia alla cartella personale
+dell'utente autenticato usando la sua identita': niente account di servizio e isolamento
+garantito dall'autenticazione invece che dai permessi. E' un progetto a se', con impatto
+sull'esperienza d'uso (l'utente deve identificarsi prima di scansionare) e con una
+dipendenza dalla directory: va valutato quando si affrontera' la gestione delle identita',
+non adesso.
 
 ### R9 — Account di servizio invece di account nominali
 
@@ -186,6 +288,27 @@ memorizzata in un dispositivo che quella persona non controlla, e alla sua uscit
 dall'azienda la disattivazione dell'account rompe silenziosamente la scansione. Un account
 di servizio dedicato, con permesso di scrittura solo sulla share di scansione, risolve
 tutti e tre. Va eseguito insieme a R8, perche' e' la stessa configurazione.
+
+### R10 — Regola di conservazione sulla cartella delle scansioni
+
+Va deciso insieme a R8 e non dopo, perche' e' molto piu' facile stabilire una regola su una
+cartella nuova che su una cartella che ha gia' accumulato tre anni di documenti. Una cartella
+di scansioni non presidiata diventa in pochi mesi un archivio documentale parallelo: non
+censito, non classificato, pieno di documenti che contengono dati personali e che nessuno
+ricorda di aver messo li'. Il fatto che sia su un NAS con backup peggiora il quadro invece di
+migliorarlo, perche' le copie si moltiplicano.
+
+La regola da concordare e' semplice: le scansioni sono un mezzo di trasporto dal vetro dello
+scanner alla propria postazione o al proprio archivio, non un luogo di conservazione, quindi
+oltre una soglia di giorni concordata con chi usa il servizio vengono cancellate
+automaticamente. La soglia la decide chi lavora, non l'IT: quindici giorni sono comodi,
+trenta sono generosi, novanta significano che la cartella e' diventata un archivio e allora
+il problema e' un altro. Procedura: una regola di cancellazione pianificata sul NAS, oppure
+uno script schedulato, applicata alla cartella delle scansioni e non alle cartelle di lavoro.
+Verifica: dopo il primo ciclo, i file oltre soglia non ci sono piu' e quelli entro soglia si.
+Rollback: disattivare la regola; i file gia' cancellati restano recuperabili solo dallo
+snapshot o dal backup del NAS, quindi la prima applicazione va fatta con una soglia
+volutamente larga e ristretta poi, non il contrario.
 
 ## Come si aggiorna questo registro
 

@@ -152,6 +152,26 @@ lavoro e poi fallisce l'invio). Soprattutto: quel passo **non dipende dalla
 segmentazione** e puo' essere eseguito subito sulla rete piatta, quindi e' stato
 staccato dal micro-step strutturale.
 
+Requisito dell'IT Manager arrivato nella stessa sessione e progettato in R8: gli utenti
+hanno gia' accesso a NAS-INTRA2 e a due cartelle di primo livello di NAS-HERO, quindi
+si sfrutta l'accesso esistente, ma nella cartella delle scansioni ciascuno deve vedere
+solo la propria sottocartella. Risolta la tensione con R9 (se l'isolamento venisse dalle
+credenziali degli utenti, l'apparato dovrebbe conservarle tutte, peggiorando SEC-020):
+la separazione si ottiene dai permessi del NAS, con **un solo account di servizio** con
+la sola scrittura come unica credenziale memorizzata nell'apparato. Documentati la
+matrice dei permessi, il rischio residuo dichiarato (il servizio puo' scrivere in tutte
+le sottocartelle ma non leggerle), la procedura in sette passi con la verifica di
+accesso incrociato **prima** di toccare l'apparato, e il rollback. Tre corollari:
+scegliere NAS-HERO farebbe ereditare alle scansioni la replica offsite su cloud, che va
+verificata rispetto a quanto dichiarato agli interessati e non decisa implicitamente; il
+dubbio sul dialetto SMB si risolve per deduzione, perche' le destinazioni attuali sono
+condivisioni Windows 11 dove SMBv1 e' disabilitato di default e funzionano, quindi
+l'apparato parla gia' SMB2+; e serve una regola di conservazione, aggiunta come **R10**,
+perche' una cartella di scansioni senza scadenza diventa un archivio documentale
+parallelo pieno di dati personali. Evoluzione futura annotata e tenuta distinta:
+integrazione dell'apparato con la directory e invio alla cartella personale dell'utente
+autenticato, che elimina l'account di servizio ma richiede autenticazione al pannello.
+
 Su indicazione dell'IT Manager e' stato aperto il registro dei micro-interventi di
 robustezza, per gli interventi puntuali eseguibili uno alla volta senza bloccare la
 rete: R1 credenziali di fabbrica della multifunzione nel password manager, R2 filtro IP
