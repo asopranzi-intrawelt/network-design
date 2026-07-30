@@ -1712,3 +1712,41 @@ adottare i permessi per sottocartella come standard del NAS, si passera' all'alt
 intervento pianificato. La soglia della regola resta a sei per il caso generale: qui e' stata
 superata di uno con una mitigazione specifica e verificabile, e la deviazione e' scritta nel
 registro invece di essere coperta riscrivendo la soglia a posteriori.
+
+### La questione del protocollo: FTP, SMB, e una premessa che vale piu' del progetto
+
+Chiuso il censimento, l'IT Manager ha posto la domanda successiva sotto forma di due strade:
+portare le scansioni sul NAS usando FTP invece di SMB, nel presupposto che le multifunzione
+parlino soltanto SMB versione 1 e che quella versione non sia accettabile; oppure installare un
+server FTP su ciascuna postazione e cambiare protocollo nelle rubriche, lasciando le
+destinazioni dove sono.
+
+La seconda strada e' stata scartata con quattro ragioni indipendenti dalla versione di SMB.
+Non risolve il problema per cui l'intervento esiste, perche' i documenti continuerebbero a
+depositarsi sulle postazioni: cambierebbe il trasporto, non la destinazione dei dati. Aggiunge
+un servizio in ascolto su ogni endpoint, allargando la superficie di attacco esattamente dove
+si sta lavorando per ridurla, e su una LAN piatta quel servizio e' raggiungibile da chiunque.
+Moltiplica la manutenzione per il numero di postazioni e mantiene la dipendenza dal fatto che
+quel PC sia accesso. E il protocollo in chiaro trasporterebbe credenziali e documenti in
+chiaro sulla rete.
+
+La prima strada ha il disegno giusto — il NAS come destinazione, che e' esattamente R8 — ma
+poggia su una premessa non ancora verificata, e la verifica conta piu' della scelta del
+protocollo. Se gli apparati parlano SMB 2 o superiore, si va sul NAS in SMB e la questione FTP
+non si pone. Se parlano davvero solo SMB versione 1 e le scansioni verso le postazioni
+funzionano, allora il fatto rilevante non e' la multifunzione: e' che **SMB versione 1 risulta
+abilitato sulle postazioni**, cioe' un protocollo dismesso e vettore di famiglie di malware
+note e' attivo sugli endpoint aziendali — un gap piu' grave di quello che si stava chiudendo.
+
+Registrata anche una correzione di metodo su quanto scritto il giorno prima. Il dubbio era
+stato dato per risolto deducendo che, poiche' le destinazioni sono condivisioni di postazioni
+Windows 11 dove la versione legacy e' disabilitata per impostazione predefinita, gli apparati
+dovevano necessariamente parlare SMB 2 o superiore. La deduzione vale solo se su quelle
+postazioni nessuno ha riattivato il protocollo legacy, cosa non scontata in un parco cresciuto
+per stratificazioni: e' stata percio' declassata da fatto a ipotesi da misurare. La misura si
+fa in tre modi indipendenti, tutti a costo nullo — leggere il dialetto negoziato dalle sessioni
+SMB della postazione subito dopo una scansione di prova, leggere le impostazioni di protocollo
+degli apparati, alzare a SMB 2 la versione minima accettata dal NAS e osservare chi smette di
+funzionare — e l'ordine di preferenza del protocollo e' stato fissato prima di conoscere
+l'esito: SMB 2 o 3 come prima scelta, FTP esplicito su TLS solo per un apparato che non possa
+superare la versione legacy, FTP in chiaro solo come debito dichiarato e registrato come gap.

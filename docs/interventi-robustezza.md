@@ -509,16 +509,85 @@ Verifica complessiva: quattro scansioni reali, una per destinazione, e un contro
 accesso incrociato da due postazioni diverse. Rollback: ripristino dei valori annotati al
 passo 4, una riscrittura di tre campi per voce.
 
-#### Un dettaglio tecnico che il quadro attuale risolve da se'
+#### La scelta del protocollo, e la premessa da verificare prima di scegliere
 
-Un dubbio legittimo prima di toccare l'apparato e' se la multifunzione parli una versione di
-SMB accettata da un NAS configurato correttamente, perche' molti apparati di questa
-generazione nascono con SMB versione 1 e i NAS aggiornati la rifiutano. Qui la risposta si
-ricava dai fatti gia' raccolti senza fare prove: le destinazioni attuali sono cartelle
-condivise di postazioni Windows 11, dove SMB versione 1 e' disabilitato per impostazione
-predefinita, e le scansioni funzionano. Ne segue che l'apparato parla gia' SMB 2 o
-superiore, quindi il passaggio al NAS non incontrera' quell'ostacolo. Resta buona pratica
-verificare sul NAS quale dialetto minimo e' accettato, ma non e' un rischio aperto.
+Sul tavolo, il 30/07/2026, sono arrivate due proposte alternative: portare le scansioni sul
+NAS usando **FTP** invece di SMB, nel presupposto che le multifunzione parlino soltanto SMB
+versione 1 e che quella versione non sia accettabile; oppure installare **un server FTP su
+ciascuna postazione** e cambiare protocollo nelle rubriche, lasciando le destinazioni dove
+sono. Vanno valutate separatamente, perche' la prima e' una scelta di protocollo dentro il
+disegno giusto e la seconda e' un disegno diverso.
+
+**La seconda proposta va scartata**, e le ragioni sono quattro e indipendenti. Non risolve il
+problema che R8 esiste per risolvere, perche' i documenti continuerebbero a depositarsi sulle
+postazioni: cambierebbe il protocollo del trasporto, non la destinazione dei dati. Aggiunge un
+servizio in ascolto su ogni endpoint, cioe' allarga la superficie di attacco esattamente dove
+si e' investito per ridurla, e su una LAN piatta quel servizio e' raggiungibile da tutti.
+Moltiplica il lavoro di gestione per il numero di postazioni, con un server da installare,
+aggiornare e configurare su ciascuna, e mantiene la dipendenza dal fatto che quel PC sia
+accesso. E il protocollo in chiaro trasporterebbe credenziali e documenti in chiaro sulla rete.
+Nessuno dei quattro punti dipende dalla versione di SMB: la proposta e' peggiore a
+prescindere.
+
+**La prima proposta ha il disegno giusto ma la premessa da verificare**, e la premessa e'
+decisiva perche' se cade, cade anche la scelta di FTP. L'affermazione che gli apparati parlino
+solo SMB versione 1 non e' ancora un fatto verificato, e ci sono due scenari possibili, entrambi
+significativi. Se gli apparati parlano SMB 2 o superiore, allora si va sul NAS in SMB e la
+questione FTP non si pone. Se davvero parlano solo SMB versione 1 e le scansioni verso le
+postazioni funzionano, allora il fatto interessante non e' la multifunzione: e' che **SMB
+versione 1 e' abilitato sulle postazioni**, cioe' un protocollo dismesso da anni e vettore di
+famiglie di malware note e' attivo sugli endpoint aziendali. Sarebbe un gap piu' grave di
+quello che stiamo chiudendo, e andrebbe registrato come tale.
+
+Nota di correzione: una versione precedente di questo documento dava per risolto il dubbio
+deducendolo dal fatto che le destinazioni sono condivisioni di postazioni Windows 11, dove SMB
+versione 1 e' disabilitato per impostazione predefinita, quindi gli apparati dovevano
+necessariamente parlare SMB 2 o superiore. La deduzione e' valida solo se su quelle postazioni
+nessuno ha riattivato SMB versione 1, che in un parco cresciuto per stratificazioni non e'
+scontato. Resta un'inferenza plausibile, non un fatto: va misurata.
+
+##### Come si misura, in tre modi indipendenti
+
+Il primo e' il piu' diretto e non richiede di toccare nulla: si fa una scansione di prova
+verso una postazione e, subito dopo, su quella postazione si leggono le sessioni SMB aperte,
+che riportano il dialetto negoziato dal client.
+
+```powershell
+# Sulla postazione che riceve la scansione, subito dopo l'invio
+Get-SmbSession | Select-Object ClientComputerName, ClientUserName, Dialect, NumOpens
+Get-SmbConnection | Select-Object ServerName, Dialect     # per le connessioni in uscita
+# Stato del protocollo legacy sulla postazione
+Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol | Select-Object FeatureName, State
+Get-SmbServerConfiguration | Select-Object EnableSMB1Protocol, EnableSMB2Protocol, RequireSecuritySignature
+```
+
+Il valore di `Dialect` chiude la questione: se e' `2.x` o `3.x` la premessa cade e si va in
+SMB; se e' `1.x`, la premessa e' confermata e con essa il gap sulle postazioni.
+
+Il secondo e' leggere le impostazioni di protocollo degli apparati stessi, dove entrambi i
+modelli espongono la versione SMB del proprio client: sulla Kyocera nella pagina dei
+protocolli di Command Center RX, sulla Canon nelle impostazioni di rete alla voce del client
+SMB, dove tipicamente si impostano versione minima e massima. Se l'apparato consente di
+alzare la versione minima, il problema si risolve configurandolo e non cambiando protocollo.
+
+Il terzo e' lato NAS: nelle impostazioni della condivisione file di rete Microsoft si puo'
+fissare la versione minima accettata. Alzandola a SMB 2 si ottengono due cose insieme, cioe'
+la certezza che nessun client possa negoziare la versione legacy e una prova pratica
+immediata, perche' un apparato che dopo quella modifica non riesce piu' a scrivere e' un
+apparato che stava usando la versione legacy.
+
+##### Ordine di preferenza del protocollo, deciso a monte del risultato
+
+Anche qui la regola si fissa prima di conoscere l'esito, per non adattarla al risultato. La
+prima scelta e' **SMB 2 o 3 verso il NAS**, con la firma attiva e, se il NAS e gli apparati lo
+consentono, la cifratura SMB 3: e' il protocollo che il NAS gestisce nativamente con permessi
+per utente, ed e' quello che stiamo gia' usando per tutto il resto. La seconda scelta, se e
+solo se un apparato non e' in grado di superare SMB versione 1, e' **FTP esplicito su TLS**
+verso il servizio FTP del NAS, limitato a quell'apparato, con un account dedicato che non
+serve nient'altro: cifra il trasporto e resta centralizzato. La terza, cioe' **FTP in chiaro**,
+si adotta solo se le prime due sono impossibili, e in quel caso non e' una scelta ma un debito:
+va registrata come gap con la stessa serieta' con cui e' stato registrato il portale servito in
+chiaro, perche' significa far viaggiare documenti e credenziali in chiaro sulla LAN.
 
 #### Evoluzione futura, da non confondere con questo intervento
 
