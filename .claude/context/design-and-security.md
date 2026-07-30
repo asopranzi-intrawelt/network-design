@@ -131,6 +131,34 @@ con un secondo job della VM100 verso NAS_HERO alle 00:30.
 - VM202: `firewall=1` a livello NIC, 0 regole esplicite — nessun effetto pratico
 - Tutte le altre VM: firewall non abilitato
 
+## Contesto di gestione degli endpoint: vincolo trasversale a ogni intervento di rete
+
+Registrato il 30/07/2026 su indicazione dell'IT Manager, e va tenuto presente in ogni
+intervento di questo progetto, non solo in quelli che toccano le postazioni. Gli endpoint
+non sono gestiti a mano: vivono sotto un RMM distribuito, NinjaOne, che applica policy,
+script e automazioni, e che **impone la rotazione della password locale ogni trenta
+giorni**.
+
+Le conseguenze per il design di rete sono tre, e nessuna e' ovvia. La prima e' che
+qualunque credenziale di postazione memorizzata in un apparato di rete ha una vita massima
+di trenta giorni: e' esattamente il caso delle due multifunzione, che conservano utenza e
+password delle condivisioni degli utenti per scrivervi le scansioni (SEC-020), quindi quel
+difetto non e' solo di sicurezza ma di fragilita' strutturale — la scansione si rompe da
+sola alla rotazione successiva, e il rimedio corretto (un account di servizio sul NAS,
+fuori dal perimetro di rotazione degli endpoint) e' anche quello che elimina una
+manutenzione ricorrente. La seconda e' che l'RMM e' il veicolo con cui si distribuiscono
+modifiche massive alle postazioni, quindi ogni intervento che richiede di toccare tutte le
+macchine — il ri-puntamento delle code di stampa di M22b, la distribuzione di una voce
+`hosts` o di una CA interna — si progetta come script distribuito e non come giro fisico.
+La terza e' che le policy e le automazioni dell'RMM agiscono sugli endpoint mentre la rete
+cambia sotto di loro: prima di modificare indirizzamento o segmentazione va saputo cosa
+quelle policy fanno, e per questo esiste lo snapshot in sola lettura
+`scripts/Get-NinjaSnapshot.ps1` (ADR-017).
+
+Nota sulle credenziali, perche' e' un vincolo e non un dettaglio: le credenziali API
+dell'RMM appartengono al provider MSP che lo gestisce, lo scope usato da questo progetto e'
+di sola lettura e nel repository non esiste alcun valore.
+
 ## Gap di sicurezza identificati (ISO27001 Annex A)
 
 Gap analysis completata il 10/07/2026 incrociando lo snapshot Proxmox v4, il

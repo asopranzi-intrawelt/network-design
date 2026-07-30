@@ -547,6 +547,54 @@ rivalutata quando M22 sara' pianificato: a segmentazione fatta, "accesso come un
 postazione cablata" significhera' accesso a un segmento delimitato, non a tutta
 la rete.
 
+## ADR-017 — Snapshot NinjaOne in sola lettura: la gestione endpoint entra nel perimetro del network design
+
+Data: 2026-07-30
+Stato: attiva
+
+Contesto: gli endpoint di questa rete non sono gestiti a mano ma da un RMM
+distribuito, NinjaOne, che applica policy, script e automazioni e che ruota le
+password locali ogni trenta giorni. La conseguenza pratica e' emersa il 30/07/2026
+lavorando su R8: qualunque credenziale di postazione memorizzata in un apparato di
+rete — come quelle che le due multifunzione conservano per scrivere nelle cartelle
+condivise degli utenti — si rompe alla rotazione successiva, quindi il difetto di
+SEC-020 non e' solo di sicurezza ma anche di fragilita' strutturale. Piu' in
+generale, progettare segmentazione, indirizzamento e flussi senza sapere cosa l'RMM
+fa a quegli endpoint significa progettare a occhi chiusi. L'IT Manager ha indicato
+che la connessione alle API di NinjaOne e' gia' attiva in un progetto interno
+separato, da cui riusare il pattern di autenticazione.
+
+Decisione: la gestione endpoint entra nel perimetro documentale di questo progetto,
+ma **solo in lettura e solo come fotografia**. Aggiunto lo script
+`scripts/Get-NinjaSnapshot.ps1`, che si autentica con il flusso OAuth2 client
+credentials, interroga in best-effort gli endpoint di inventario, policy, script e
+interrogazioni diagnostiche, e produce `output/ninjaone-snapshot.json` piu' un
+riepilogo Markdown. Nessuna operazione di scrittura, nessuna esecuzione di script
+remoti, nessuna modifica di policy: quelle restano nell'interfaccia dell'RMM e in
+mano a chi lo gestisce.
+
+Vincoli sulle credenziali, che sono la parte piu' importante di questa decisione
+perche' **le credenziali API appartengono al provider MSP** che gestisce l'RMM e non
+al progetto. Lo scope richiesto e' di sola lettura (`monitoring`) e non va esteso a
+scope di scrittura: se un giorno servisse scrivere, sara' una decisione separata con
+credenziali proprie. Il segreto non viene mai scritto su disco dallo script ne'
+passato in chiaro sulla riga di comando: si risolve da parametro, poi da variabile
+d'ambiente utente, infine da prompt a runtime come SecureString, lo stesso schema
+adottato per Proxmox in ADR-007/008 e per Nebula in ADR-009. Nel repository non
+esiste e non deve esistere alcun file con quei valori: `.env` e `.env.*` sono
+ignorati da git e non vengono letti da questo script.
+
+Conseguenze: lo snapshot contiene nomi host, utenti connessi e indirizzi reali,
+quindi vive in `output/`, che e' ignorato da git, e nulla di quel contenuto entra in
+un file tracciato senza passare per `.claude/rules/anonymization.md`. In cambio il
+progetto guadagna tre cose concrete: l'inventario delle policy e degli script che
+agiscono sugli endpoint, che va conosciuto prima di cambiare rete sotto di loro; il
+veicolo per il ri-puntamento massivo delle code di stampa previsto da M22b, perche'
+l'RMM e' lo strumento con cui si distribuisce uno script a tutte le postazioni; e
+l'interrogazione delle interfacce di rete per dispositivo, che e' la fonte piu'
+rapida per il censimento degli indirizzi statici richiesto da M22a e che
+sostituisce, dove risponde, un lavoro manuale postazione per postazione.
+
 ## ADR-016 — Il quarto AP EOL entra in scope: sostituzione o eliminazione dell'EsternoIrrigazione
 
 Data: 2026-07-28

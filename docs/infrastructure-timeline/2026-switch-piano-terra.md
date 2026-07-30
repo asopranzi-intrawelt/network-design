@@ -1768,4 +1768,48 @@ da valutare quando si sara' certi che nessun client legacy resti in giro. E la s
 osservata proveniva da un'altra postazione autenticandosi con un account **locale** della
 postazione dell'IT Manager: un account locale condiviso tra macchine e' comodo e opaco, perche'
 l'accesso non risulta attribuibile a una persona, e va chiarito a cosa serve prima di decidere
-se sostituirlo.
+se sostituirlo. Chiarito subito dall'IT Manager: e' un accesso deliberato e noto, concesso a un
+collega verso un disco interno di quella macchina. Resta annotato non come anomalia ma perche'
+una configurazione del genere, se non scritta da nessuna parte, in due anni diventa
+inspiegabile.
+
+### Esito definitivo: entrambi gli apparati scrivono in SMB, e un vincolo nuovo che pesa sul disegno
+
+Le due scansioni di prova verso la cartella della postazione dell'IT Manager sono riuscite:
+la multifunzione del Piano Terra ha depositato il proprio PDF, quella del Piano 1 — comandata
+a distanza dallo strumento di controllo remoto del produttore invece che dal display fisico —
+ha depositato il proprio nella stessa cartella, vuoto perche' la prova e' stata fatta senza
+foglio, cosa che non inficia il risultato dato che si stava verificando la connessione e non
+l'immagine. Poiche' su quella postazione il protocollo legacy e' disattivato, **entrambi gli
+apparati parlano necessariamente SMB 2 o superiore**: la proposta FTP e' archiviata, le sette
+condivisioni si configureranno in SMB. Guadagnata anche un'informazione operativa: la
+multifunzione del Piano 1 e' pilotabile a distanza, quindi le prove dei passi successivi si
+fanno dalla postazione senza salire al piano.
+
+L'IT Manager ha poi posto un vincolo che vale oltre questo intervento e che e' stato
+registrato come contesto trasversale del progetto: gli endpoint non sono gestiti a mano ma da
+un RMM distribuito che applica policy, script e automazioni e **impone la rotazione della
+password locale ogni trenta giorni**. Le conseguenze per il design di rete sono tre. La prima
+riguarda direttamente le scansioni: qualunque credenziale di postazione memorizzata in un
+apparato ha una vita massima di trenta giorni, quindi le undici destinazioni censite non sono
+solo un problema di protezione dei dati ma una manutenzione ricorrente che si rompe da sola a
+ogni rotazione — e questo capovolge il modo di presentare l'intervento, che non chiede uno
+sforzo in cambio di rischio ridotto ma elimina un lavoro ripetuto e in piu' riduce il rischio.
+La seconda e' che l'RMM e' il veicolo con cui si distribuiscono modifiche massive alle
+postazioni, quindi il ri-puntamento delle code di stampa, una voce `hosts` o una CA interna si
+progettano come script distribuito e non come giro fisico. La terza e' che le policy agiscono
+sugli endpoint mentre la rete cambia sotto di loro, e prima di modificare indirizzamento o
+segmentazione va saputo cosa quelle policy fanno.
+
+Da qui una decisione di perimetro, ADR-017: la gestione endpoint entra nella documentazione di
+questo progetto **in sola lettura e come fotografia**. Aggiunto lo script
+`scripts/Get-NinjaSnapshot.ps1`, che si autentica con il flusso OAuth2 client credentials
+riusando il pattern gia' verificato in un progetto interno separato, interroga in best-effort
+inventario, policy, script, automazioni e interrogazioni diagnostiche, e scrive uno snapshot in
+`output/`. Nessuna scrittura, nessuna esecuzione remota di script, nessuna modifica di policy.
+Il vincolo piu' importante non e' tecnico: le credenziali API appartengono al provider MSP che
+gestisce l'RMM, quindi lo scope e' di sola lettura, non va esteso, e nel repository non esiste
+alcun valore — il segreto si risolve da variabile d'ambiente o da prompt a runtime, come gia'
+per Proxmox e per Nebula. Fra gli endpoint interrogati ce n'e' uno che serve subito a un altro
+fronte: l'interrogazione delle interfacce di rete per dispositivo, che dove risponde sostituisce
+il censimento manuale degli indirizzi statici richiesto da M22a.
