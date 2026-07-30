@@ -64,6 +64,12 @@
 .PARAMETER OrganizationId
     Alternativa numerica a -OrganizationName, quando l'id e' noto e si vuole essere
     espliciti.
+.PARAMETER IncludeInstanceWideObjects
+    Conserva anche gli oggetti globali dell'istanza (elenco completo delle policy,
+    gruppi, libreria script). Per default si conservano soltanto le policy applicate
+    ai dispositivi dell'organizzazione filtrata e si scartano gruppi e libreria
+    script, perche' appartengono all'istanza del provider MSP e i loro nomi possono
+    riferirsi ad altri suoi clienti.
 .PARAMETER AllOrganizations
     Disattiva il filtro e conserva tutte le organizzazioni dell'istanza. Da usare
     solo con una ragione dichiarata: significa scrivere su disco dati di aziende
@@ -89,7 +95,8 @@ param(
     [string] $OutputDir,
     [string] $OrganizationName = 'intrawelt',
     [int] $OrganizationId = 0,
-    [switch] $AllOrganizations
+    [switch] $AllOrganizations,
+    [switch] $IncludeInstanceWideObjects
 )
 
 Set-StrictMode -Version Latest
@@ -315,7 +322,13 @@ if ($AllOrganizations) {
         $sample = $rows[0]
         if ($sample.PSObject.Properties.Name -contains 'organizationId') {
             $filtered = @($rows | Where-Object { $targetOrgIds -contains (Get-Prop -Object $_ -Name 'organizationId' -Default -1) })
-            foreach ($x in $filtered) { $keptDeviceIds[[string](Get-Prop $x 'id' '')] = $true }
+            # Gli id si raccolgono SOLO dagli endpoint dei dispositivi: /v2/locations porta
+            # anch'esso organizationId e un proprio id, e mescolarlo qui inquinerebbe
+            # l'insieme usato per filtrare le interrogazioni diagnostiche per deviceId,
+            # facendo passare righe di dispositivi di altre organizzazioni.
+            if ($r.path -like '/v2/devices*') {
+                foreach ($x in $filtered) { $keptDeviceIds[[string](Get-Prop -Object $x -Name 'id' -Default '')] = $true }
+            }
             $r.data = $filtered
             $r.count = $filtered.Count
         } elseif ($r.path -eq '/v2/organizations') {
@@ -336,7 +349,39 @@ if ($AllOrganizations) {
             $r.count = $filtered.Count
         }
     }
-    Write-Host ('Dopo il filtro: {0} dispositivi conservati.' -f $keptDeviceIds.Count)
+    # Oggetti globali dell'istanza: policy, gruppi e libreria script non portano
+    # organizationId perche' appartengono all'istanza del provider, non a una singola
+    # azienda. Conservarli integralmente significa tenere su disco la configurazione
+    # dell'MSP e nomi che possono riferirsi ad altri suoi clienti. Per default si
+    # conservano solo le policy effettivamente applicate ai dispositivi filtrati e si
+    # scartano gruppi e libreria script.
+    $devEntry = $results | Where-Object { $_.path -eq '/v2/devices-detailed' -and $_.ok }
+    if (-not $devEntry) { $devEntry = $results | Where-Object { $_.path -eq '/v2/devices' -and $_.ok } }
+    $referencedPolicyIds = @{}
+    if ($devEntry) {
+        foreach ($dv in @(Get-RowSet -Data $devEntry.data)) {
+            $policyRef = Get-Prop -Object $dv -Name 'policyId' -Default 0
+            if ($policyRef) { $referencedPolicyIds[[string] $policyRef] = $true }
+        }
+    }
+    foreach ($r in $results) {
+        if (-not $r.ok) { continue }
+        if ($IncludeInstanceWideObjects) { continue }
+        if ($r.path -eq '/v2/policies') {
+            $rows = @(Get-RowSet -Data $r.data)
+            $filtered = @($rows | Where-Object { $referencedPolicyIds.ContainsKey([string](Get-Prop -Object $_ -Name 'id' -Default '')) })
+            $r.data = $filtered
+            $r.count = $filtered.Count
+        } elseif ($r.path -eq '/v2/groups' -or $r.path -eq '/v2/automation/scripts' -or $r.path -eq '/v2/scripting/scripts') {
+            $r.data = @()
+            $r.count = 0
+        }
+    }
+
+    Write-Host ('Dopo il filtro: {0} dispositivi conservati, {1} policy referenziate.' -f $keptDeviceIds.Count, $referencedPolicyIds.Count)
+    if (-not $IncludeInstanceWideObjects) {
+        Write-Host 'Gruppi e libreria script scartati: sono oggetti dell''istanza del provider, non dell''organizzazione (usare -IncludeInstanceWideObjects per conservarli).'
+    }
     Write-Host ''
 }
 
