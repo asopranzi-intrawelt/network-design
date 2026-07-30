@@ -43,6 +43,7 @@ documentazione ISO27001, non un'intenzione.
 | R7 | Convertire l'indirizzamento delle multifunzione da statico su apparato a riserva DHCP sul firewall | Prerequisito di M22b e miglioramento permanente: i cambi di indirizzo futuri diventano modifiche centrali | Breve indisponibilita' dell'apparato al riavvio della rete: unica voce del registro che richiede una finestra, anche se di minuti | Da fare |
 | R8 | Spostare le destinazioni di scansione dalle cartelle condivise delle postazioni a una share dedicata sul NAS | NET-009 (#114) lato flussi dato, SEC-020 (#126), A.8.3 e A.5.14 | Nessuno sulla rete: si riconfigurano le destinazioni sull'apparato. Cambia dove gli utenti trovano le scansioni, quindi richiede comunicazione | Da fare |
 | R9 | Sostituire negli account di scansione i nomi di persona con un account di servizio dedicato alla share di scansione | SEC-020 (#126), A.9.2: un account nominale usato da un apparato non e' attribuibile a una persona ed e' impossibile da dismettere all'uscita di quella persona | Nessuno se eseguito insieme a R8 | Da fare |
+| R11 | Attivare la conferma della destinazione prima dell'invio sulle destinazioni di scansione di entrambe le multifunzione | SEC-020 (#126): su tutte le voci censite l'opzione e' disattivata, quindi una selezione sbagliata dal display invia documenti nella cartella di un'altra persona senza alcun passaggio che permetta di accorgersene | Nessuno sulla rete; aggiunge un tocco in piu' all'utente che scansiona, ed e' il compromesso da spiegare | Da fare |
 | R10 | Definire una regola di conservazione sulla cartella delle scansioni (cancellazione automatica oltre una soglia di giorni concordata) | Minimizzazione e limitazione della conservazione: una cartella di scansioni diventa in pochi mesi un archivio documentale parallelo, non censito e pieno di dati personali. Rilevante per A.5.33 e per il principio di limitazione della conservazione | Nessuno sulla rete; va concordata la soglia con chi usa il servizio | Da fare, dipende da R8 |
 
 ## Dettaglio degli interventi
@@ -191,19 +192,22 @@ non usa mai la credenziale dell'apparato e l'apparato non usa mai quella dell'ut
 percorsi distinti verso la stessa cartella, ed e' questa separazione a rendere il disegno
 sostenibile.
 
+La struttura, nella forma decisa il 29/07/2026 dopo la correzione descritta sotto, e' una
+cartella condivisa per destinatario invece di una cartella unica con sottocartelle. Il
+disegno dei permessi non cambia, cambia solo il livello a cui vengono applicati.
+
 ```
-<cartella di primo livello: Scansioni>
-├── <utente-1>/   servizio: scrittura   utente-1: lettura/scrittura   altri: nessun accesso
-├── <utente-2>/   servizio: scrittura   utente-2: lettura/scrittura   altri: nessun accesso
-├── <utente-3>/   servizio: scrittura   utente-3: lettura/scrittura   altri: nessun accesso
-└── <utente-4>/   servizio: scrittura   utente-4: lettura/scrittura   altri: nessun accesso
+\\<nas>\Scan_<destinatario-1>   servizio: scrittura   destinatario-1: lettura/scrittura   altri: nessun accesso
+\\<nas>\Scan_<destinatario-2>   servizio: scrittura   destinatario-2: lettura/scrittura   altri: nessun accesso
+\\<nas>\Scan_<destinatario-3>   servizio: scrittura   destinatario-3: lettura/scrittura   altri: nessun accesso
+\\<nas>\Scan_<destinatario-4>   servizio: scrittura   destinatario-4: lettura/scrittura   altri: nessun accesso
 ```
 
-| Soggetto | Sulla cartella di primo livello | Sulla propria sottocartella | Sulle sottocartelle altrui |
-|---|---|---|---|
-| Account di servizio della multifunzione | attraversamento, nessuna lettura dell'elenco se il NAS lo consente | scrittura e creazione file | scrittura e creazione file (inevitabile: e' un solo account per tutte le destinazioni) |
-| Utente | attraversamento | lettura e scrittura, cancellazione dei propri file | **nessun accesso** |
-| Amministratore IT | pieno | pieno | pieno |
+| Soggetto | Sulla propria condivisione | Sulle condivisioni altrui |
+|---|---|---|
+| Account di servizio della multifunzione | scrittura e creazione file | scrittura e creazione file (inevitabile: e' un solo account per tutte le destinazioni) |
+| Destinatario | lettura e scrittura, cancellazione dei propri file | **nessun accesso** |
+| Amministratore IT | pieno | pieno |
 
 Sul rischio residuo bisogna essere onesti, perche' e' il punto che un auditor chiederebbe:
 l'account di servizio puo' scrivere in tutte le sottocartelle, quindi chi ne ottenesse la
@@ -269,10 +273,22 @@ amministrativi sul NAS: la multifunzione dovrebbe conservare una credenziale
 amministrativa, che e' esattamente cio' che questo intervento vuole evitare. La separazione
 nativa risolverebbe il problema degli utenti creandone uno molto piu' grande sull'apparato.
 
-Raccomandazione: la prima strada, con verifica preliminare se le autorizzazioni avanzate
-siano gia' attive. La seconda resta il piano di ripiego se per qualche motivo non si vuole
-toccare quell'impostazione globale, e non e' una scelta di serie B — e' solo meno ordinata
-nella lista delle condivisioni.
+**Raccomandazione rivista il 29/07/2026: la seconda strada, una cartella condivisa per
+utente.** La prima stesura raccomandava le autorizzazioni avanzate, sulla base
+dell'assunzione errata che l'attivazione fosse a costo nullo. Con i dati veri il confronto si
+capovolge. Le quattro destinazioni attuali richiedono quattro cartelle condivise: quattro
+righe in piu' in una lista che ne ha dodici, permessi assegnati dove esistono nativamente,
+nessuna impostazione globale toccata, nessuna riscrittura di permessi su milioni di oggetti,
+nessun cambiamento nel modello di gestione dei permessi del resto del NAS, e l'intervento e'
+eseguibile subito e in orario di lavoro — cioe' rispetta la regola di ammissione di questo
+registro, che la prima strada non rispetta piu'.
+
+La prima strada resta quella giusta se e quando i destinatari diventeranno molti, o se si
+decidera' di adottare permessi per sottocartella come modello generale del NAS. In quel caso
+diventa un intervento a se', da pianificare fuori orario con la durata misurata su una prova,
+e non un passaggio dentro R8. La differenza tra le due non e' tecnica ma di ordine di
+grandezza: quattro utenti non giustificano una riscrittura di permessi su cinque milioni di
+oggetti.
 
 #### Stato verificato il 29/07/2026: le autorizzazioni avanzate sono disattivate
 
@@ -286,10 +302,30 @@ soddisfabile senza intervenire su una delle due strade descritte sopra.
 Due precisazioni che contano per non fare danni. La casella da attivare e' **solo** la prima,
 quella delle autorizzazioni avanzate per cartella: la seconda, il supporto Windows ACL, e'
 un'altra cosa e va lasciata disattivata, perche' cambia il modello di permessi verso quello
-NTFS e ha senso solo con un dominio a cui appoggiarsi. Attivare la prima non modifica da sola
-nessun permesso esistente, non richiede riavvio e non tocca le condivisioni in uso: aggiunge
-la possibilita' di assegnare permessi anche alle sottocartelle, che finche' non si assegnano
-restano quelli della cartella condivisa.
+NTFS e ha senso solo con un dominio a cui appoggiarsi.
+
+**Correzione del 29/07/2026, importante perche' ribalta la raccomandazione.** Una prima
+stesura di questo documento affermava che attivare l'opzione non modifica i permessi
+esistenti. E' falso, e lo dice l'apparato stesso nel dialogo di conferma che compare
+spuntando la casella: all'attivazione **tutte le autorizzazioni delle sottocartelle vengono
+impostate come quelle delle cartelle principali**, con un'operazione che puo' richiedere
+diversi minuti in funzione del numero di file e cartelle da elaborare. Non e' una spunta di
+configurazione, e' una riscrittura massiva di permessi su tutto il volume.
+
+Su questo apparato specifico quel "diversi minuti" va letto con i numeri veri: una sola
+cartella condivisa contiene circa 3,45 milioni di cartelle e 1,86 milioni di file (gap
+STOR-001, `GAP-TBC.md` #127), e il pannello di amministrazione e' gia' marcatamente lento
+(NAS-003 in `runbook-anomalie.md`). L'inizializzazione attraverserebbe l'intero albero
+generando I/O su un apparato con 4 GB di RAM e CPU ARM che nel frattempo serve le
+condivisioni di lavoro. Ne derivano due conseguenze: la durata reale e' imprevedibile e va
+misurata, non stimata, e l'operazione va comunque fuori orario di lavoro.
+
+C'e' anche una conseguenza di lungo periodo, meno visibile e piu' importante: dopo
+l'inizializzazione ogni sottocartella porta permessi espliciti propri, quindi la gestione dei
+permessi diventa granulare **e** manuale, e una modifica al permesso di una cartella
+condivisa non si propaga piu' implicitamente a tutto il suo contenuto. Su un NAS con
+quell'albero significa un modello di permessi molto piu' potente e molto piu' facile da
+sbagliare.
 
 C'e' poi un comportamento da **verificare in campo prima di migrare le destinazioni**, e non
 da dare per scontato leggendo la documentazione del produttore: quando un utente ha permesso
@@ -313,22 +349,150 @@ esiste una cartella pubblica, tipicamente accessibile a tutti gli utenti. Va evi
 cartella delle scansioni le somigli per permessi, ed e' un motivo in piu' per verificare i
 permessi effettivi al termine dell'intervento invece di fidarsi di come sono stati impostati.
 
+#### Passo zero: censimento globale dei destinatari su tutti gli apparati
+
+Richiesto dall'IT Manager il 29/07/2026, prima di creare qualunque cartella, ed e' la
+domanda giusta al momento giusto: il disegno di R8 dimensionato su quattro destinatari e' una
+cosa, lo stesso disegno su dodici e' un'altra, e la scelta tra cartelle condivise separate e
+autorizzazioni per sottocartella dipende esattamente da quel numero. La rubrica letta finora
+e' solo quella della multifunzione del Piano Terra; l'altra multifunzione, la Canon del Piano
+1, ha la propria rubrica indipendente e i due insiemi vanno **unificati e non sommati**,
+perche' chi lavora su due piani puo' comparire in entrambe.
+
+| Apparato | Destinazioni rilevate | Di cui verso postazioni | Stato del censimento |
+|---|---|---|---|
+| Kyocera TASKalfa 2552ci (Piano Terra) | 4 | 4 | **Fatto 29/07/2026** |
+| Canon iR-ADV C5840 (Piano 1) | 7, tutte nell'elenco a selezione veloce | 7 | **Fatto 29/07/2026** |
+| **Unione dei destinatari distinti** | **7** | 7 | **Censimento chiuso** |
+
+Le undici destinazioni si riducono a sette destinatari distinti perche' quattro persone sono
+censite su entrambe le multifunzione: le quattro voci della Kyocera sono un sottoinsieme delle
+sette della Canon, che aggiunge tre destinatari non presenti al Piano Terra. Nessuna
+destinazione e' di tipo e-mail o FTP: sono **undici su undici cartelle di rete SMB**, tutte
+verso condivisioni di postazioni, con la conferma che il fronte scan-to-folder e' totale su
+entrambi gli apparati e non una particolarita' di uno dei due.
+
+Tre fatti nuovi emersi dalla rubrica della Canon, che il primo censimento non poteva mostrare.
+
+Il primo e' che **due destinazioni su sette usano un nome NetBIOS della postazione invece
+dell'indirizzo** (`\\<nome-postazione>\<condivisione>`). Funzionano oggi perche' la risoluzione
+NetBIOS avviene in broadcast dentro il dominio di livello 2, ed e' lo stesso meccanismo che
+muore attraversando un confine di livello 3: e' quindi una terza forma della stessa trappola
+gia' vista con mDNS sulle stampanti e con l'assenza di un DNS interno. Dopo R8 la questione
+si estingue da se', perche' tutte le destinazioni puntano al NAS per indirizzo, ma va
+registrata perche' spiega perche' quelle due voci si romperebbero **prima** delle altre.
+
+Il secondo e' che i nomi utente memorizzati includono **due utenze nominali** invece di
+account di servizio, una su ciascun apparato: la motivazione di R9 e' quindi doppia e non un
+caso isolato.
+
+Il terzo e' un dettaglio della configurazione che vale un intervento a se': su tutte e sette
+le voci l'opzione di **conferma prima dell'invio e' disattivata**. Significa che chi
+scansiona non vede una richiesta di conferma della destinazione scelta, quindi una selezione
+sbagliata dal display invia i documenti nella cartella di un'altra persona senza nessun
+passaggio che permetta di accorgersene. Aggiunto al registro come R11.
+
+Sulla lettura della rubrica del secondo apparato c'e' una particolarita' del modello che vale
+la pena annotare, perche' a prima vista fa sembrare il censimento un lavoro enorme quando non
+lo e'. La rubrica espone un elenco personale, cinquanta elenchi per gruppi di utenti, dieci
+elenchi indirizzi e un elenco per amministratori: sessantadue contenitori, tutti creati a
+vuoto per costruzione. La colonna dei conteggi lo dice a chiare lettere, perche' tutti
+riportano zero destinazioni tranne l'**elenco a selezione veloce**, che ne contiene sette.
+Tutta la rubrica utile di quell'apparato sta quindi in un solo elenco, e leggerla e' un clic.
+
+Per completezza, dato che era stata cercata: la funzione di importazione ed esportazione su
+questo modello sta in `Impostazioni/Registrazione`, sezione `Impostazioni gestione`, voce
+**`Gestione dati`**, dove si trovano importazione ed esportazione sia complessive sia per
+singolo elemento, incluso l'elenco indirizzi. Con sette voci, pero', aprire l'elenco a
+selezione veloce e' piu' rapido dell'esportazione, e non produce un file con dati reali da
+custodire.
+
+Regola di decisione fissata prima di conoscere il numero, cosi' che il numero non venga
+piegato alla soluzione preferita. Fino a **sei** destinatari distinti si procede con una
+cartella condivisa per destinatario, che e' la strada senza impostazioni globali e senza
+riscritture di permessi. Oltre sei, la lista delle condivisioni diventa illeggibile e conviene
+la strada delle autorizzazioni per sottocartella, che a quel punto va pianificata come
+intervento a se' fuori orario, con la durata dell'inizializzazione misurata su una prova, e
+non piu' dentro questo registro.
+
+#### Esito: sette destinatari, uno oltre la soglia, e la deviazione dichiarata
+
+Il censimento chiuso da' **sette** destinatari distinti, cioe' uno oltre la soglia. Applicando
+la regola alla lettera si dovrebbe passare alle autorizzazioni per sottocartella e rimandare
+R8 a un intervento fuori orario. La regola pero' aveva una ragione dichiarata, non era un
+numero magico: il costo delle cartelle condivise separate e' che la lista delle condivisioni
+diventa illeggibile. Quel costo, su questo apparato, e' **eliminabile**: il NAS ha per ogni
+cartella condivisa l'opzione che la nasconde dalla navigazione di rete, e una condivisione
+nascosta resta raggiungibile per percorso diretto senza comparire nell'elenco che si vede
+sfogliando il server. Sette condivisioni nascoste non allungano nessuna lista visibile agli
+utenti, restano ordinate nel pannello di amministrazione, e ciascun destinatario raggiunge la
+propria con un'unita' di rete mappata al percorso completo.
+
+Decisione presa, con la deviazione dalla regola dichiarata invece che nascosta riscrivendo la
+soglia a posteriori: **si procede con sette cartelle condivise nascoste**, una per
+destinatario. Il beneficio e' che nessuna impostazione globale viene toccata, nessuna
+riscrittura di permessi attraversa cinque milioni di oggetti, e l'intervento resta dentro la
+regola di ammissione di questo registro. Il costo accettato e' che il modello non scala
+elegantemente: alla decina di destinatari, o quando si voglia adottare i permessi per
+sottocartella come standard del NAS, si passa all'altra strada come intervento pianificato
+fuori orario. La soglia della regola resta a sei per il caso generale; qui e' stata superata
+di uno con una mitigazione specifica e verificabile, non per comodita'.
+
+Come leggere la rubrica dell'altra multifunzione. Il suo pannello di amministrazione non e'
+interrogabile da riga di comando, per un motivo diverso ma con lo stesso esito della Kyocera:
+la pagina di autenticazione cifra la password nel browser combinandola con un *challenge* di
+sessione e una chiave pubblica RSA generata per quella pagina, quindi uno script dovrebbe
+replicare quella cifratura. Restano due strade manuali, e la seconda e' molto piu' rapida
+della prima. La prima e' aprire l'elenco degli indirizzi e guardare le voci una per una, come
+fatto sull'altra macchina. La seconda e' usare la funzione di **esportazione della rubrica**
+dell'apparato, che produce un file unico con tutte le voci: si trova nelle impostazioni di
+gestione dei dati, alla voce di importazione ed esportazione, scegliendo l'elenco indirizzi.
+Nell'esportazione va **esclusa** l'opzione che include le password, se presente, perche'
+altrimenti il file contiene credenziali in chiaro; e il file, contenendo indirizzi e nomi
+reali, resta materiale privato e non entra mai in un file tracciato di questo repository.
+
 #### Procedura
 
 Nell'ordine, e ogni passo verificabile prima del successivo.
 
-1. Su NAS-INTRA2, verificare se le autorizzazioni avanzate per cartella sono gia' attive e,
-   se non lo sono, attivarle; poi creare la cartella condivisa di primo livello dedicata alle
-   scansioni, senza concedervi accesso generalizzato.
+1. Su NAS-INTRA2, creare **una cartella condivisa per destinatario** — sette secondo il
+   censimento chiuso — spuntando per ciascuna l'opzione che la nasconde dalla navigazione di
+   rete, senza attivare le autorizzazioni avanzate per cartella e senza concedere accesso
+   generalizzato: i permessi si assegnano nel dialogo di creazione della condivisione, dove
+   esistono nativamente. Se in futuro si decidera' di passare al modello per sottocartella,
+   sara' un intervento separato da pianificare fuori orario, non un passaggio di R8.
 2. Creare l'account di servizio della multifunzione, senza scadenza password e senza
    accesso interattivo ad altri servizi del NAS, e assegnargli la sola scrittura sulle
    sottocartelle.
-3. Creare una sottocartella per ciascuno dei destinatari attuali e assegnare i permessi
-   secondo la tabella sopra dal gestore file dell'apparato, verificando **da due postazioni
-   diverse** che ciascun utente veda la propria e non quelle degli altri: e' la verifica che
-   dimostra il requisito, e va fatta prima di toccare la multifunzione, non dopo, perche'
-   scoprire un permesso sbagliato quando i documenti sono gia' dentro significa aver esposto
-   documenti veri.
+3. Assegnare i permessi di ciascuna condivisione secondo la tabella sopra — il destinatario
+   in lettura e scrittura, l'account di servizio in sola scrittura, nessun altro — e
+   verificare l'isolamento **prima** di toccare la multifunzione, non dopo, perche' scoprire
+   un permesso sbagliato quando i documenti sono gia' dentro significa aver esposto documenti
+   veri.
+
+   La verifica non richiede piu' postazioni: si fa tutta da una sola macchina, perche' quello
+   che conta e' l'identita' con cui si apre la connessione e non il computer da cui si parte.
+   Da una finestra di comando, la prova positiva e' montare la condivisione con le credenziali
+   del proprio destinatario e riuscire a scrivere un file; la prova negativa, che e' quella
+   che dimostra il requisito, e' tentare di montare la condivisione di un altro destinatario
+   con le stesse credenziali e ricevere un rifiuto.
+
+   ```powershell
+   # Prova positiva: il destinatario accede alla propria condivisione
+   net use X: \\<indirizzo-nas>\<condivisione-destinatario-1> /user:<utente-1>
+   # Prova negativa attesa: accesso negato alla condivisione di un altro destinatario
+   net use Y: \\<indirizzo-nas>\<condivisione-destinatario-2> /user:<utente-1>
+   net use X: /delete ; net use Y: /delete
+   ```
+
+   Un dettaglio di Windows che fa perdere tempo se non lo si sa: verso lo stesso server non si
+   possono tenere aperte contemporaneamente connessioni con identita' diverse, e il tentativo
+   restituisce un errore di conflitto di sessione che sembra un problema di permessi e non lo
+   e'. Prima di ogni prova con un'altra utenza va quindi chiusa la sessione precedente con
+   `net use * /delete`, altrimenti si finisce per interpretare come "negato" un rifiuto che
+   Windows produce da solo. Lo stesso vale per l'account di servizio, che va provato con la
+   sua credenziale: deve riuscire a **scrivere** in ciascuna condivisione e, se il NAS lo
+   consente, non riuscire a **leggerne** il contenuto.
 4. Sulla multifunzione, riconfigurare ciascuna voce della rubrica: host di destinazione
    l'indirizzo del NAS — un indirizzo e non un nome, perche' l'apparato non ha alcun server
    DNS configurato — percorso la sottocartella del destinatario, utenza quella dell'account

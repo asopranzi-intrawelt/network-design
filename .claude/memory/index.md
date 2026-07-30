@@ -85,11 +85,22 @@ nessuna finestra di manutenzione, nessun tocco al piano dati di apparati central
 di una sola azione. Due voci sono anche prerequisiti di M22b e si possono fare prima della
 segmentazione (R7 riserve DHCP, R8 destinazioni di scansione sul NAS); R5 chiude NET-013.
 
-**Misura del 29/07 che ha motivato il registro**: la rubrica della multifunzione del Piano
-Terra ha quattro destinazioni di scansione su quattro verso cartelle condivise di singole
-postazioni, nessuna verso un NAS, con credenziali della condivisione memorizzate
-nell'apparato e un'utenza nominale (SEC-020, #126; NET-009 passa da osservazione a misura).
-Aggancio ISO su A.5.14/A.8.3 nella scheda di contesto e su §A.13.2 nella SoA.
+**Misura del 29-30/07 che ha motivato il registro, censimento chiuso su entrambe le
+multifunzione**: undici destinazioni di scansione su undici sono cartelle SMB verso
+condivisioni di singole postazioni, nessuna verso un NAS, che si riducono a **sette
+destinatari distinti** (le quattro della Kyocera sono un sottoinsieme delle sette della
+Canon). Due destinazioni puntano alla postazione per nome NetBIOS, quindi dipendono dal
+broadcast e sono le prime a rompersi con la segmentazione; due utenze memorizzate sono
+nominali; la conferma della destinazione prima dell'invio e' disattivata su tutte (R11).
+SEC-020 (#126) esteso; NET-009 passa da osservazione a misura. Aggancio ISO su A.5.14/A.8.3
+nella scheda di contesto e su §A.13.2 nella SoA.
+
+**Decisione su R8 del 30/07**: NAS-INTRA2, **sette cartelle condivise nascoste** una per
+destinatario, con un solo account di servizio in sola scrittura come unica credenziale
+memorizzata negli apparati. Sette destinatari erano uno oltre la soglia di sei fissata prima
+di conoscere il numero: la deviazione e' dichiarata nel registro con la sua motivazione (il
+costo che la soglia proteggeva, la illeggibilita' della lista delle condivisioni, e'
+eliminabile nascondendole), e la soglia resta a sei per il caso generale.
 
 **Prossimo passo operativo**: completare M22a — tabella MAC del 54HP a switch rientrato,
 ambiti e riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa,
