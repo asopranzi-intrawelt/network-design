@@ -578,6 +578,37 @@ indirizzi in sede che cadono fuori da quell'intervallo sono statici o riservati,
 con i ventidue PC dichiarati come oggetto indirizzo nella configurazione del firewall. Resta
 quindi da leggere dalla GUI del firewall un solo dato, le riserve, e il censimento e' completo.
 
+### Censimento chiuso: 22 statici e 4 dinamici sulle postazioni (30/07/2026)
+
+L'ultimo dato mancante e' arrivato dalla verifica diretta dell'ambito DHCP di `lan1` sul
+firewall: intervallo che parte da `10.61.10.200` con dimensione 55, quindi da `.200` a `.254`,
+lease di due giorni. Incrociandolo con i ventisei indirizzi della classe postazioni censiti
+dall'RMM, la ripartizione si chiude per aritmetica e senza aprire una postazione:
+
+| Insieme | Numero | Dove cadono |
+|---|---|---|
+| Indirizzi **fuori** dall'ambito DHCP, quindi statici o riservati | **22** | da `.17` a `.95` |
+| Indirizzi **dentro** l'ambito DHCP | **4** | `.206`, `.208`, `.209`, `.248` |
+
+Il numero 22 e' la corroborazione indipendente piu' pulita ottenuta in questo progetto:
+coincide esattamente con i ventidue PC dichiarati come oggetto indirizzo nella
+configurazione del firewall, contati da una fonte completamente diversa. Va invece corretto
+l'intervallo documentato per quegli statici, che la scheda firewall riportava come `.18-.84`
+mentre la misura mostra `.17-.95`.
+
+Cosa significa per il piano di migrazione. Per quattro postazioni il cambio di indirizzo e'
+gratuito: seguono il DHCP e non richiedono alcun intervento sulla macchina. Per ventidue
+serve un tocco a testa, ed e' qui che si decide la strategia — convertirle in **riserve** nel
+nuovo ambito, cosi' che l'indirizzo torni a essere governato dal firewall e ogni cambio
+successivo sia centrale, invece di ripetere la configurazione statica sulla macchina. E'
+la stessa scelta fatta per le stampanti in R7, per la stessa ragione: si paga una volta la
+conversione e si smette di pagare a ogni cambiamento.
+
+Resta un solo raffinamento, non bloccante: sapere quante di quelle ventidue siano statiche
+*sull'apparato* e quante siano gia' riserve DHCP sul firewall. Cambia solo la quantita' di
+lavoro manuale del giorno della migrazione, non il disegno, e si legge dalla tabella delle
+assegnazioni statiche nello stesso dialogo dell'ambito.
+
 ### Cosa resta da raccogliere, e come
 
 Il primo elemento e' la tabella MAC del XGS2220-54HP, che completa il censimento sul
