@@ -519,6 +519,49 @@ Nell'esportazione va **esclusa** l'opzione che include le password, se presente,
 altrimenti il file contiene credenziali in chiaro; e il file, contenendo indirizzi e nomi
 reali, resta materiale privato e non entra mai in un file tracciato di questo repository.
 
+#### Disposizione confermata dall'IT Manager il 30/07/2026
+
+Sette condivisioni nascoste, una per destinatario, con il nome nella forma
+`scansioni_<nome>`. Ciascun utente ha mappata sulla propria postazione **solo la propria**, e
+**entrambe** le multifunzione puntano alla cartella di ciascun destinatario: ne segue che le
+voci di rubrica da configurare sono quattordici, sette per apparato, e che la macchina del
+Piano Terra ne guadagna tre che oggi non ha, dato che la sua rubrica conta quattro
+destinatari contro i sette dell'altra.
+
+#### Che cosa fa davvero una condivisione nascosta, e cosa non fa
+
+La distinzione va capita perche' la parola promette piu' di quanto mantenga, e confonderla
+porta a credere protetto cio' che non lo e'.
+
+Nascondere una condivisione significa **escluderla dall'elenco** che il NAS restituisce quando
+un client chiede "quali condivisioni offri". In pratica, sfogliando il server da Esplora
+risorse quella cartella non compare: chi guarda vede solo le condivisioni visibili, e la lista
+resta leggibile — che nel nostro caso e' il motivo per cui la usiamo, perche' sette cartelle
+in piu' su una lista che ne conta dodici la renderebbero un elenco da leggere due volte.
+
+Cio' che **non** fa e' proteggere. Una condivisione nascosta risponde normalmente a chi la
+chiama per nome esatto: `\\<indirizzo-nas>\scansioni_<nome>` funziona come qualunque altra.
+Chiunque indovini o conosca il nome ci arriva, ed e' esattamente cio' che vogliamo, perche' e'
+cosi' che vi arriveranno la multifunzione e la scorciatoia sul desktop dell'utente. La
+protezione, quindi, non viene dal nascondere: viene **solo** dai permessi assegnati a ciascuna
+condivisione, cioe' il destinatario in lettura e scrittura sulla propria, l'account di servizio
+in sola scrittura, e nessun accesso per tutti gli altri. Se quei permessi sono sbagliati, la
+cartella nascosta e' esposta come qualunque altra; se sono giusti, il fatto che sia nascosta non
+aggiunge sicurezza, aggiunge ordine.
+
+Tre conseguenze pratiche del nasconderle, tutte volute. Gli utenti non possono trovarle
+sfogliando il NAS, quindi la scorciatoia o l'unita' mappata sulla propria cartella non e' una
+comodita' ma il modo previsto per arrivarci — ed e' anche la ragione per cui mapparne una sola
+per postazione ha senso: nessuno vede l'esistenza delle altre. L'amministratore continua a
+vederle tutte nel pannello di controllo del NAS, dove l'elenco e' completo per definizione. E
+le multifunzione non se ne accorgono: si connettono al percorso esatto scritto in rubrica, e
+per loro una condivisione nascosta e' indistinguibile da una visibile.
+
+Una nota di onesta' su come chiamarla nei documenti: questo e' un accorgimento di *ordine*, non
+un controllo di sicurezza, e va scritto cosi' anche quando si racconta l'intervento. Chiamarlo
+misura di protezione sarebbe sicurezza per oscurita', che e' precisamente il tipo di
+affermazione che un audit smonta in trenta secondi.
+
 #### Procedura
 
 Nell'ordine, e ogni passo verificabile prima del successivo.
@@ -547,9 +590,9 @@ Nell'ordine, e ogni passo verificabile prima del successivo.
 
    ```powershell
    # Prova positiva: il destinatario accede alla propria condivisione
-   net use X: \\<indirizzo-nas>\<condivisione-destinatario-1> /user:<utente-1>
+   net use X: \\<indirizzo-nas>\scansioni_<nome-1> /user:<utente-1>
    # Prova negativa attesa: accesso negato alla condivisione di un altro destinatario
-   net use Y: \\<indirizzo-nas>\<condivisione-destinatario-2> /user:<utente-1>
+   net use Y: \\<indirizzo-nas>\scansioni_<nome-2> /user:<utente-1>
    net use X: /delete ; net use Y: /delete
    ```
 
