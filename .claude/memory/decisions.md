@@ -547,6 +547,92 @@ rivalutata quando M22 sara' pianificato: a segmentazione fatta, "accesso come un
 postazione cablata" significhera' accesso a un segmento delimitato, non a tutta
 la rete.
 
+## ADR-019 — Scansioni su NAS in SMB con un account di servizio; scartato il server FTP sulle postazioni
+
+Data: 2026-07-30
+Stato: attiva
+
+Contesto: le undici destinazioni di scansione censite sulle due multifunzione puntano tutte
+a cartelle condivise di singole postazioni, con le credenziali di quelle postazioni
+memorizzate negli apparati (SEC-020). Poiche' l'RMM ruota le password locali di Windows ogni
+trenta giorni, quelle destinazioni sono anche una manutenzione ricorrente. L'IT Manager ha
+formulato due alternative concrete: portare le scansioni su una cartella del NAS con un
+utente di servizio dedicato, mantenendo SMB e cambiando solo il percorso nelle rubriche;
+oppure installare un server FTP su ciascuna postazione, limitarlo a una cartella di
+scansione e cambiare protocollo nelle rubriche.
+
+Decisione: la prima. Le scansioni vanno su NAS-INTRA2 in **SMB**, con un unico **account di
+servizio locale del NAS** come sola credenziale memorizzata negli apparati, e ciascun utente
+raggiunge la propria cartella con la propria utenza NAS, tipicamente tramite una scorciatoia
+sul desktop.
+
+Motivazioni, e sono quattro indipendenti. La destinazione dei dati cambia: i documenti
+smettono di depositarsi sugli endpoint e finiscono su uno spazio presidiato con backup noto,
+che e' il problema per cui l'intervento esiste — la seconda alternativa cambiava il protocollo
+del trasporto e lasciava i dati dove sono. La superficie di attacco non cresce: un server FTP
+su ogni postazione sarebbe un servizio in ascolto su ogni endpoint, raggiungibile da tutta la
+LAN piatta, esattamente dove si sta lavorando per ridurre. Il trasporto resta cifrabile e
+autenticato: le prove del 30/07 hanno dimostrato che entrambe le multifunzione parlano SMB 2
+o superiore, mentre FTP in chiaro trasporterebbe credenziali e documenti in chiaro. E la
+manutenzione diventa nulla invece di moltiplicarsi: un account di servizio locale del NAS sta
+fuori dal perimetro di rotazione dell'RMM, mentre la seconda alternativa avrebbe richiesto di
+installare, aggiornare e configurare un server su ciascuna macchina.
+
+Conseguenze e vincoli. L'account di servizio ha la sola scrittura sulle cartelle di
+destinazione e nessun privilegio amministrativo sul NAS; va verificato che nessuna politica di
+scadenza password lo riporti dentro il problema. Le rubriche delle multifunzione conservano
+una sola credenziale, quella del servizio, e le destinazioni restano espresse per **indirizzo**
+e non per nome, perche' quegli apparati non hanno alcun server DNS configurato. L'isolamento
+tra utenti si ottiene dai permessi del NAS e non dalle credenziali degli apparati: la
+disposizione delle cartelle che lo realizza e' quella decisa il 30/07/2026, sette condivisioni
+nascoste una per destinatario, scelta per evitare la riscrittura massiva di permessi che
+l'alternativa a cartella unica con sottocartelle avrebbe richiesto su questo NAS. Restano
+agganciati R9, l'account di servizio al posto delle utenze nominali, e R10, la regola di
+conservazione sulla cartella.
+
+## ADR-018 — Nomi interni su un sottodominio del dominio aziendale, risolto solo dal DNS interno
+
+Data: 2026-07-30
+Stato: attiva
+
+Contesto: la verifica dell'ambito DHCP del 30/07/2026 ha mostrato che i client ricevono
+come primo server DNS il firewall stesso, quindi un resolver interno esiste e manca solo
+il contenuto. Prima di pubblicare i primi record serviva scegliere il suffisso, e la
+ricognizione dei nomi interni in uso ha rivelato tre convenzioni diverse, due delle quali
+sul suffisso `.local` che e' riservato a mDNS dallo standard e percio' non risolvibile in
+modo prevedibile via DNS unicast (NET-014, `GAP-TBC.md` #131). La scelta era quindi tra un
+suffisso di uso privato, come il `.lan` gia' adottato per il portale della VM208, e un
+sottodominio del dominio pubblico che l'azienda possiede.
+
+Decisione dell'IT Manager: **i nomi interni vivono su un sottodominio del dominio
+aziendale**, nella forma `<host>.int.<dominio-aziendale>`, con i record pubblicati
+**soltanto** sul DNS interno del firewall e mai sul DNS pubblico. E' una configurazione a
+orizzonte separato: lo stesso dominio risponde con nomi diversi a chi interroga da dentro e
+a chi interroga da fuori, e da fuori quei nomi semplicemente non esistono.
+
+Motivazioni, in ordine di peso. La prima e' che un dominio di cui l'azienda e' titolare non
+collidera' mai con nulla, mentre un suffisso inventato puo' diventare un giorno un dominio di
+primo livello reale e trasformare una rete funzionante in una rete che risolve nomi altrui.
+La seconda, che e' il vero guadagno, riguarda i certificati: per un nome sotto un dominio
+posseduto e' possibile ottenere un certificato da un'autorita' pubblica tramite la
+validazione che usa un record DNS, **senza esporre il servizio su Internet**. Ne segue che il
+portale interno della VM208, oggi servito da una CA interna la cui radice va importata a mano
+su ogni postazione, potrebbe passare a un certificato pubblicamente riconosciuto: SEC-016 si
+chiude per intero invece che a meta'.
+
+Conseguenze e vincoli operativi. I record di indirizzo vanno solo sul firewall: pubblicarli
+anche sul DNS pubblico esporrebbe l'indirizzamento interno senza alcun beneficio. Il
+beneficio sui certificati ha una dipendenza da dichiarare: la validazione via DNS richiede di
+poter creare un record di testo sulla zona **pubblica** del dominio, quindi richiede accesso
+al DNS pubblico presso il fornitore che lo ospita — non richiede invece nessun record di
+indirizzo pubblico. Chi interroga un resolver esterno non risolvera' quei nomi, ed e'
+corretto: i client VPN funzionano perche' la VPN distribuisce il firewall come DNS, mentre la
+rete ospiti, che riceve DNS pubblici, non li risolvera' — anche questo e' voluto. Resta
+invece un caso da correggere e non da accettare, emerso proprio da questa decisione: la Wi-Fi
+staff riceve oggi DNS pubblici, quindi non risolverebbe i nomi interni; e' diventato un
+sotto-passo di R12. Infine i due nomi `.local` esistenti sono un debito da migrare a questa
+convenzione (intervento R13), creando il nome nuovo prima di rimuovere il vecchio.
+
 ## ADR-017 — Snapshot NinjaOne in sola lettura: la gestione endpoint entra nel perimetro del network design
 
 Data: 2026-07-30
