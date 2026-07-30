@@ -553,6 +553,31 @@ dall'RMM: non basta contare le code, va anche verificato se qualcuna punta gia' 
 `.local`, perche' quelle sono le prime a rompersi e non se ne accorgerebbe nessuno fino al
 primo tentativo di stampa.
 
+### Censimento degli indirizzi: chiuso in gran parte dallo snapshot RMM del 30/07/2026
+
+L'interrogazione delle interfacce di rete per dispositivo dell'RMM ha restituito, per la sola
+organizzazione Intrawelt, 1381 righe di adattatori su 26 dispositivi gestiti, che si
+riducono a **75 indirizzi IPv4 distinti su 25 dispositivi**. E' il censimento che si voleva
+evitare di fare postazione per postazione, e la sua lettura aggregata dice tre cose.
+
+Ventisei indirizzi stanno nella classe delle postazioni con maschera `/19` e gateway
+`10.61.10.1`: sono le macchine in sede, coerenti con `lan1` del firewall, e sono la
+popolazione che M22e dovra' spostare. Quattro indirizzi stanno su altri segmenti aziendali,
+due nella classe dei server e due nella VLAN 40 della Wi-Fi staff, che e' la conferma
+indipendente che quel segmento e' in uso. Undici indirizzi stanno in una classe `192.168.1.x`
+con gateway `.1.1`: non sono rete aziendale, sono le reti domestiche dei portatili fuori sede,
+e vanno esclusi dal censimento invece di essere confusi con indirizzi interni. Il resto sono
+adattatori virtuali e di VPN, riconoscibili perche' hanno gateway nullo o maschere estranee al
+piano aziendale.
+
+Un limite metodologico va dichiarato, perche' e' esattamente la domanda a cui il censimento
+doveva rispondere: l'interrogazione riporta l'indirizzo **corrente**, non se sia statico o
+assegnato dal DHCP. La distinzione si chiude incrociando questi indirizzi con l'ambito DHCP
+del firewall — che parte da `10.61.10.200` con 55 assegnazioni — e con le riserve: gli
+indirizzi in sede che cadono fuori da quell'intervallo sono statici o riservati, coerentemente
+con i ventidue PC dichiarati come oggetto indirizzo nella configurazione del firewall. Resta
+quindi da leggere dalla GUI del firewall un solo dato, le riserve, e il censimento e' completo.
+
 ### Cosa resta da raccogliere, e come
 
 Il primo elemento e' la tabella MAC del XGS2220-54HP, che completa il censimento sul

@@ -159,6 +159,30 @@ Nota sulle credenziali, perche' e' un vincolo e non un dettaglio: le credenziali
 dell'RMM appartengono al provider MSP che lo gestisce, lo scope usato da questo progetto e'
 di sola lettura e nel repository non esiste alcun valore.
 
+**Nessun servizio di directory (misurato il 30/07/2026).** Il primo snapshot ha chiarito un
+fatto strutturale che il progetto aveva solo sfiorato: i 26 dispositivi gestiti
+dell'organizzazione sono **tutti standalone**, in workgroup, senza alcun dominio — quattordici
+workstation Windows con un workgroup aziendale, dieci con il workgroup predefinito, un server
+Windows in workgroup e una postazione Linux. Non e' una curiosita' architetturale, e' la causa
+comune di quattro fatti finora tracciati separatamente: ogni accesso tra sistemi usa
+credenziali locali memorizzate (che e' il meccanismo di SEC-020 sulle multifunzione e
+dell'accesso tra due postazioni); quelle credenziali, essendo utenze locali di Windows, hanno
+vita massima trenta giorni per la policy dell'RMM; non esiste risoluzione nomi interna, quindi
+si dipende dal broadcast e dai file `hosts` distribuiti a mano (SEC-016), che e' cio' che rende
+fragile qualunque segmentazione perche' il broadcast non attraversa un confine di livello 3; e
+non e' possibile alcuna separazione degli accessi basata su identita'. Registrato come
+SEC-021 (`GAP-TBC.md` #128). L'introduzione di un servizio di directory con DNS interno
+chiuderebbe insieme quattro fronti, ma cambia il modello di gestione degli endpoint e va
+valutata come progetto a se'.
+
+**Effetto collaterale del primo snapshot, corretto in giornata.** L'istanza dell'RMM e'
+multi-tenant e la chiave API del provider vede anche altre aziende sue clienti: la prima
+raccolta ha restituito 99 dispositivi su 26 organizzazioni, cioe' l'inventario di venticinque
+terzi che questo progetto non ha titolo di detenere. Lo script filtra ora per organizzazione
+per default e va usato cosi'; lo snapshot non filtrato va rigenerato e cancellato. Registrato
+come SEC-022 (`GAP-TBC.md` #129), rilevante per la minimizzazione e per il rapporto con il
+fornitore.
+
 ## Gap di sicurezza identificati (ISO27001 Annex A)
 
 Gap analysis completata il 10/07/2026 incrociando lo snapshot Proxmox v4, il
