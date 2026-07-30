@@ -1750,3 +1750,22 @@ degli apparati, alzare a SMB 2 la versione minima accettata dal NAS e osservare 
 funzionare — e l'ordine di preferenza del protocollo e' stato fissato prima di conoscere
 l'esito: SMB 2 o 3 come prima scelta, FTP esplicito su TLS solo per un apparato che non possa
 superare la versione legacy, FTP in chiaro solo come debito dichiarato e registrato come gap.
+
+La prima misura, eseguita subito sulla postazione dell'IT Manager, ha dato un esito che
+restringe molto il campo. Su quella postazione il protocollo legacy non e' attivo — la
+funzione opzionale di Windows risulta disabilitata e la configurazione del servizio riporta la
+versione 1 disattivata e la versione 2 attiva — e la sessione osservata in quel momento
+negoziava dialetto 3.1.1, quindi tra Windows e Windows la rete lavora gia' sulla versione piu'
+recente. Poiche' entrambe le multifunzione hanno una destinazione proprio su quella
+postazione, e un apparato che parlasse solo la versione legacy non riuscirebbe nemmeno a
+connettersi, la conclusione e' che se quelle due destinazioni funzionano gli apparati parlano
+necessariamente SMB 2 o superiore: la premessa che motivava la proposta FTP cade, e la verifica
+residua e' una scansione di prova per apparato verso quella postazione.
+
+Due osservazioni collaterali dallo stesso output, tracciate perche' piccole e facili da
+perdere. La firma SMB non e' richiesta sulla postazione, quindi e' un irrobustimento candidato
+da valutare quando si sara' certi che nessun client legacy resti in giro. E la sessione
+osservata proveniva da un'altra postazione autenticandosi con un account **locale** della
+postazione dell'IT Manager: un account locale condiviso tra macchine e' comodo e opaco, perche'
+l'accesso non risulta attribuibile a una persona, e va chiarito a cosa serve prima di decidere
+se sostituirlo.

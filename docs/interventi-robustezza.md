@@ -576,6 +576,37 @@ la certezza che nessun client possa negoziare la versione legacy e una prova pra
 immediata, perche' un apparato che dopo quella modifica non riesce piu' a scrivere e' un
 apparato che stava usando la versione legacy.
 
+##### Prima misura, 30/07/2026: sulla postazione dell'IT Manager il protocollo legacy e' disattivato
+
+Eseguiti i comandi sulla postazione dell'IT Manager, che e' anche una delle sette destinazioni
+di scansione censite su entrambi gli apparati. Tre risultati.
+
+Il protocollo legacy **non e' attivo**: la funzione opzionale di Windows risulta disabilitata e
+la configurazione del servizio riporta il protocollo versione 1 disattivato e la versione 2
+attiva. La sessione SMB osservata in quel momento negoziava **dialetto 3.1.1**, cioe' la
+versione piu' recente, il che dimostra che su questa rete SMB 3 funziona senza problemi tra
+Windows e Windows.
+
+Da qui una deduzione che vale come prova, e non piu' come inferenza. Entrambe le multifunzione
+hanno tra le proprie destinazioni una condivisione **su questa stessa postazione**. Se il
+protocollo versione 1 e' disattivato su di essa, un apparato che parlasse solo quella versione
+non riuscirebbe nemmeno a stabilire la connessione: quindi **se quelle due destinazioni
+funzionano, gli apparati parlano necessariamente SMB 2 o superiore**, e la premessa che aveva
+motivato la proposta FTP cade. La verifica residua e' percio' minima e non tecnica: basta una
+scansione di prova da ciascun apparato verso quella postazione e osservare se il file arriva.
+Per leggere anche il dialetto esatto negoziato dall'apparato, il comando sulle sessioni va
+eseguito entro pochi secondi dall'invio, perche' queste macchine chiudono la sessione appena
+finito il trasferimento.
+
+Due osservazioni collaterali dallo stesso output, entrambe minori ma da non perdere. La firma
+SMB non e' richiesta sulla postazione: e' un irrobustimento candidato, da valutare quando si
+sara' certi che tutti i client parlano almeno SMB 2, perche' richiederla con un client legacy
+in giro romperebbe quel client. E la sessione osservata proveniva da un'altra postazione
+autenticandosi con un account **locale** della postazione dell'IT Manager: un account locale
+condiviso tra macchine e' una pratica comoda e opaca, perche' l'accesso non e' attribuibile a
+una persona; da verificare a cosa serve prima di decidere se sostituirlo con un account
+nominale o di servizio.
+
 ##### Ordine di preferenza del protocollo, deciso a monte del risultato
 
 Anche qui la regola si fissa prima di conoscere l'esito, per non adattarla al risultato. La
