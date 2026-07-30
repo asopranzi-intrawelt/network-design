@@ -480,6 +480,40 @@ non nomi, come deve essere, perche' l'apparato non ha alcun server DNS ne' WINS 
 (vedi la lettura della configurazione di rete sopra). Quando le destinazioni si spostano sul
 NAS, va usato l'indirizzo del NAS per la stessa ragione.
 
+**Censimento chiuso il 29-30/07/2026 su entrambe le multifunzione.** La Canon del Piano 1 ha
+sette destinazioni registrate nel proprio elenco a selezione veloce, e sono sette su sette
+cartelle di rete SMB verso condivisioni di postazioni: nessuna e-mail, nessun FTP. Il totale
+sui due apparati e' quindi undici destinazioni che si riducono a **sette destinatari
+distinti**, perche' le quattro della Kyocera sono un sottoinsieme delle sette della Canon.
+Rilevanza per M22b: le regole della matrice dovranno reggere sette percorsi e non quattro, e
+la preparazione delle destinazioni sostitutive dimensiona il lavoro preliminare in modo
+proporzionato.
+
+Due aggravanti della seconda rubrica che toccano direttamente il progetto di segmentazione.
+Due destinazioni su sette puntano alla postazione per **nome NetBIOS** invece che per
+indirizzo: funzionano oggi perche' la risoluzione NetBIOS avviene in broadcast dentro il
+dominio di livello 2, e sono le prime due che si romperebbero attraversando un confine
+instradato — terza forma della stessa trappola dopo mDNS sulle stampanti e l'assenza di un DNS
+interno, e conferma che su questa rete la risoluzione nomi e' interamente affidata al
+broadcast. E su tutte e sette le voci la **conferma della destinazione prima dell'invio e'
+disattivata**, quindi oggi una selezione sbagliata dal display deposita documenti nella
+cartella di un'altra persona senza alcun passaggio che permetta di accorgersene: e' un difetto
+indipendente dalla rete, tracciato come intervento R11.
+
+Il censimento non era completo con la sola macchina del Piano Terra: la seconda multifunzione,
+la Canon del Piano 1, ha una rubrica indipendente e andava letta prima di dimensionare
+l'intervento,
+perche' i due insiemi di destinatari si **uniscono** e non si sommano — chi lavora su due
+piani puo' comparire in entrambe. Il conteggio complessivo dei destinatari distinti e' anche
+il criterio che decide la strategia di R8 tra cartelle condivise separate e autorizzazioni
+per sottocartella, con la soglia fissata a sei prima di conoscere il numero, per non piegare
+il numero alla soluzione preferita (vedi `docs/interventi-robustezza.md` §Passo zero). Nota
+tecnica emersa provando: nemmeno il pannello della Canon e' interrogabile da riga di comando,
+perche' la sua pagina di autenticazione cifra la password nel browser combinandola con un
+*challenge* di sessione e una chiave pubblica RSA — motivo diverso da quello della Kyocera,
+stesso esito, e conferma che l'inventario di questi apparati resta un lavoro manuale da
+mettere in conto nei tempi.
+
 ### Baseline funzionale pre-migrazione, misurata il 28/07/2026
 
 Le misure prese *prima* di cambiare qualcosa sono l'unico riferimento con cui giudicare le

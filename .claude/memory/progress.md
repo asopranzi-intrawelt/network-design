@@ -114,6 +114,41 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-30 — Censimento chiuso su entrambe le multifunzione: sette destinatari, R11, deviazione dichiarata
+
+Commit: PENDING (da fare manualmente; su richiesta dell'IT Manager il commit era stato
+sospeso in attesa della stima globale, che ora e' completa)
+File toccati (tracciati): `docs/interventi-robustezza.md` (censimento chiuso con la tabella
+per apparato e l'unione, esito e deviazione dalla soglia dichiarata, sette condivisioni
+nascoste nel passo 1 della procedura, nuovo intervento R11), `GAP-TBC.md` (#126 SEC-020
+esteso alla seconda multifunzione con le tre aggravanti),
+`docs/segmentazione-lan-m22.md` (censimento chiuso e implicazioni per M22b),
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce 30/07).
+File privati: `_notes/.anonymization-map.md` (tabella delle sette voci della Canon con
+destinazioni reali, placeholder, utenze e la nota sull'omonimia da disambiguare; nuovi
+indirizzi 10.61.10.75 e 10.61.10.80).
+
+Motivo: l'IT Manager ha chiesto la stima globale delle utenze prima di committare, e la
+richiesta era giusta nel merito perche' la strategia di R8 dipende dal numero. Letta la
+rubrica della Canon iR-ADV C5840: dei sessantadue elenchi che il firmware espone solo
+l'elenco a selezione veloce e' popolato, con sette voci, e sono **sette su sette cartelle
+SMB verso condivisioni di postazioni**. Totale sui due apparati undici destinazioni,
+**sette destinatari distinti** (le quattro della Kyocera sono un sottoinsieme delle sette
+della Canon). Tre fatti nuovi: due destinazioni per nome NetBIOS invece che per indirizzo,
+quindi dipendenti da risoluzione in broadcast e prime a rompersi attraversando un confine
+instradato; due utenze nominali, una per apparato, quindi R9 non e' un caso isolato; e
+conferma della destinazione prima dell'invio disattivata su tutte e sette le voci, difetto
+indipendente dalla rete tracciato come **R11**.
+
+Decisione: sette destinatari sono uno oltre la soglia di sei fissata prima di conoscere il
+numero. La soglia proteggeva dalla illeggibilita' della lista delle condivisioni, e quel
+costo e' eliminabile con l'opzione che nasconde una condivisione dalla navigazione di rete
+lasciandola raggiungibile per percorso diretto. Si procede quindi con **sette cartelle
+condivise nascoste**, senza toccare impostazioni globali ne' riscrivere permessi su cinque
+milioni di oggetti; la deviazione dalla regola e' scritta nel registro con la sua
+motivazione invece di essere coperta riscrivendo la soglia a posteriori, e la soglia resta
+a sei per il caso generale.
+
 ## 2026-07-29 — Destinazioni di scansione misurate (SEC-020) e apertura del registro dei micro-interventi
 
 Commit: PENDING (da fare manualmente)
@@ -171,6 +206,28 @@ perche' una cartella di scansioni senza scadenza diventa un archivio documentale
 parallelo pieno di dati personali. Evoluzione futura annotata e tenuta distinta:
 integrazione dell'apparato con la directory e invio alla cartella personale dell'utente
 autenticato, che elimina l'account di servizio ma richiede autenticazione al pannello.
+
+Verifica sul NAS e **capovolgimento della raccomandazione** (fine 29/07): NAS scelto
+NAS-INTRA2 (QNAP TS-435XeU, QTS 5.2.9, 4 GB RAM). Le autorizzazioni avanzate per cartella
+risultano disattivate, e il dialogo di conferma che compare spuntandole ha rivelato che
+l'attivazione **riscrive tutte le autorizzazioni delle sottocartelle uguagliandole a quelle
+delle cartelle principali**, con durata proporzionale al numero di oggetti. Una nota
+scritta poche ore prima in questo stesso progetto affermava il contrario ed era sbagliata:
+corretta nel documento con la ragione. Con circa cinque milioni di oggetti sull'apparato
+la strada delle autorizzazioni avanzate esce dalla regola di ammissione del registro
+(durata imprevedibile, da fare fuori orario, e gestione permessi che diventa granulare e
+manuale per sempre). **Decisione: quattro cartelle condivise, una per destinatario**, con
+permessi al livello dove esistono nativamente; il modello per sottocartella resta valido
+per quando i destinatari saranno molti, come intervento separato. Registrato anche il
+metodo di verifica da una sola postazione (l'identita' della connessione conta, non la
+macchina) con il tranello Windows delle sessioni multiple verso lo stesso server.
+
+Due fatti collaterali emersi dall'ispezione del NAS e tracciati: **STOR-001** (#127) la
+cartella condivisa del backup ufficio contiene 14,37 TB su ~3,45 milioni di cartelle e
+1,86 milioni di file, contenuto e protezione non documentati e tempo di ripristino
+realistico da stabilire (A.8.13); **NAS-003** in `runbook-anomalie.md`, interfaccia di
+amministrazione marcatamente lenta con tre ipotesi in ordine di plausibilita' e la
+verifica suggerita.
 
 Su indicazione dell'IT Manager e' stato aperto il registro dei micro-interventi di
 robustezza, per gli interventi puntuali eseguibili uno alla volta senza bloccare la
