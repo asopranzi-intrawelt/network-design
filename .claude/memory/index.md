@@ -95,6 +95,23 @@ nominali; la conferma della destinazione prima dell'invio e' disattivata su tutt
 SEC-020 (#126) esteso; NET-009 passa da osservazione a misura. Aggancio ISO su A.5.14/A.8.3
 nella scheda di contesto e su §A.13.2 nella SoA.
 
+**Protocollo deciso (30/07)**: due scansioni di prova riuscite da entrambe le multifunzione
+verso una postazione dove SMBv1 e' disattivato, quindi **entrambi gli apparati parlano
+SMB 2+** e la proposta di usare FTP e' archiviata. Ordine di preferenza fissato prima
+dell'esito: SMB 2/3, poi FTPS solo per un apparato incapace, FTP in chiaro solo come debito
+dichiarato.
+
+**Vincolo trasversale registrato il 30/07 (ADR-017 e `design-and-security.md` §Contesto di
+gestione degli endpoint)**: gli endpoint vivono su un RMM distribuito (NinjaOne) che applica
+policy, script e automazioni e **ruota la password locale ogni trenta giorni**. Ne segue che
+ogni credenziale di postazione memorizzata in un apparato dura al massimo trenta giorni (R8
+elimina quindi un lavoro ricorrente, non solo un rischio), che le modifiche massive alle
+postazioni si progettano come script distribuito via RMM, e che le policy vanno conosciute
+prima di cambiare rete sotto di esse. Aggiunto `scripts/Get-NinjaSnapshot.ps1`, **sola
+lettura**: le credenziali API sono del provider MSP, scope non estendibile, nessun valore nel
+repository, output in `output/`. Beneficio collaterale: l'interrogazione delle interfacce di
+rete per dispositivo puo' sostituire il censimento manuale degli indirizzi statici di M22a.
+
 **Decisione su R8 del 30/07**: NAS-INTRA2, **sette cartelle condivise nascoste** una per
 destinatario, con un solo account di servizio in sola scrittura come unica credenziale
 memorizzata negli apparati. Sette destinatari erano uno oltre la soglia di sei fissata prima

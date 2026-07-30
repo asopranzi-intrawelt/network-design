@@ -168,6 +168,22 @@ toccare nessuna VLAN**, e produce da subito il beneficio di governo dei dati. Qu
 arrivera' la segmentazione, le destinazioni saranno gia' dove devono essere e il passo si
 riduce a una regola sul firewall.
 
+#### Un argomento in piu', che da solo giustificherebbe l'intervento
+
+Registrato il 30/07/2026: gli endpoint sono gestiti da un RMM distribuito che **impone la
+rotazione della password locale ogni trenta giorni** (vedi
+`.claude/context/design-and-security.md` §Contesto di gestione degli endpoint e ADR-017). Ne
+segue che qualunque credenziale di postazione memorizzata nelle multifunzione ha una vita
+massima di trenta giorni: le undici destinazioni censite non sono soltanto un problema di
+protezione dei dati, sono una manutenzione ricorrente che si rompe da sola a ogni rotazione e
+che qualcuno deve rimettere a posto ogni volta, apparato per apparato.
+
+Questo cambia il modo di presentare R8 a chi lo deve approvare. Non e' un intervento di
+sicurezza che chiede uno sforzo in cambio di un rischio ridotto: e' un intervento che
+**elimina un lavoro ricorrente** e in piu' riduce il rischio. L'account di servizio sul NAS
+vive fuori dal perimetro di rotazione degli endpoint, quindi la destinazione di scansione
+smette di scadere.
+
 #### Requisito posto dall'IT Manager il 29/07/2026
 
 Gli utenti hanno gia' accesso a NAS-INTRA2 e a due cartelle di primo livello di NAS-HERO,
@@ -598,14 +614,33 @@ Per leggere anche il dialetto esatto negoziato dall'apparato, il comando sulle s
 eseguito entro pochi secondi dall'invio, perche' queste macchine chiudono la sessione appena
 finito il trasferimento.
 
-Due osservazioni collaterali dallo stesso output, entrambe minori ma da non perdere. La firma
-SMB non e' richiesta sulla postazione: e' un irrobustimento candidato, da valutare quando si
-sara' certi che tutti i client parlano almeno SMB 2, perche' richiederla con un client legacy
-in giro romperebbe quel client. E la sessione osservata proveniva da un'altra postazione
-autenticandosi con un account **locale** della postazione dell'IT Manager: un account locale
-condiviso tra macchine e' una pratica comoda e opaca, perche' l'accesso non e' attribuibile a
-una persona; da verificare a cosa serve prima di decidere se sostituirlo con un account
-nominale o di servizio.
+Due osservazioni collaterali dallo stesso output. La firma SMB non e' richiesta sulla
+postazione: e' un irrobustimento candidato, da valutare quando si sara' certi che tutti i
+client parlano almeno SMB 2, perche' richiederla con un client legacy in giro romperebbe quel
+client. La sessione osservata proveniva invece da un'altra postazione autenticandosi con un
+account **locale** della postazione dell'IT Manager: chiarito subito dall'IT Manager che si
+tratta di un accesso deliberato e noto, concesso a un collega verso un disco interno di quella
+macchina. Non e' quindi un accesso opaco ma un accordo documentato, e resta annotato solo
+perche' un account locale condiviso tra macchine e' il tipo di configurazione che, se non
+scritta da nessuna parte, in due anni diventa inspiegabile: ora e' scritta.
+
+##### Esito definitivo, 30/07/2026: entrambi gli apparati scrivono, premessa FTP decaduta
+
+Eseguite le due scansioni di prova verso la cartella della postazione dell'IT Manager, dove
+il protocollo legacy e' disattivato. La multifunzione del Piano Terra ha depositato il proprio
+PDF; quella del Piano 1, comandata a distanza dallo strumento di controllo remoto del
+produttore invece che dal display fisico, ha depositato il proprio nella stessa cartella. Il
+secondo file e' un PDF vuoto perche' la prova e' stata fatta senza foglio, cosa che non
+inficia il risultato: quello che si stava verificando e' la connessione, non l'immagine.
+
+Conclusione: **entrambe le multifunzione parlano SMB 2 o superiore**, perche' nessun apparato
+limitato al protocollo legacy potrebbe stabilire una connessione con un host che quel
+protocollo ha disabilitato. La premessa che motivava la proposta FTP e' decaduta, la prima
+opzione dell'ordine di preferenza e' percorribile, e le sette condivisioni del NAS si
+configurano in SMB. Da qui deriva anche un'informazione operativa utile per il resto
+dell'intervento: la multifunzione del Piano 1 e' pilotabile a distanza dal proprio strumento
+di controllo remoto, quindi le prove di scansione dei passi successivi si possono fare dalla
+postazione senza salire al piano.
 
 ##### Ordine di preferenza del protocollo, deciso a monte del risultato
 
