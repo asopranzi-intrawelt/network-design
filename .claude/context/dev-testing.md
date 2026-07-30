@@ -47,6 +47,35 @@ $data.bridges.Count     # atteso: 4 bridge principali
 $data.clusterFirewall.options.enable  # atteso: 0 (inattivo)
 ```
 
+## Due trappole di PowerShell trovate sullo script NinjaOne (30/07/2026)
+
+Valgono per qualunque script di questo progetto che consumi JSON di un'API, quindi stanno
+qui e non nella documentazione del singolo script. Entrambe si manifestano solo con
+`Set-StrictMode -Version Latest` attivo, che questi script usano di proposito perche'
+trasforma in errore quello che altrimenti sarebbe un valore vuoto silenzioso.
+
+La prima e' l'accesso a una **proprieta' assente**. Le API tendono a omettere i campi nulli
+invece di riportarli vuoti, quindi `$oggetto.campoAssente` non e' `$null`: e' un errore
+`PropertyNotFoundStrict` che interrompe lo script. Il rimedio adottato e' una funzione di
+lettura difensiva che controlla `PSObject.Properties.Name` prima di leggere e ritorna un
+valore predefinito. Quando il predefinito e' negativo va passato per nome
+(`-Default -1`), altrimenti il parser puo' interpretare `-1` come nome di parametro.
+
+La seconda e' piu' insidiosa: PowerShell **srotola gli array restituiti da una funzione**.
+Una funzione che ritorna un array di un solo elemento consegna al chiamante uno scalare, e
+la lettura di `.Count` su quello scalare fallisce sotto modalita' rigorosa. Il rimedio
+corretto e' avvolgere sempre l'esito nel chiamante, `@(Get-RowSet -Data $x)`. Il rimedio
+sbagliato, provato e scartato in giornata, e' usare l'operatore virgola nel `return`: quello
+produce un array annidato e tutti i conteggi risultano pari a uno, che e' un difetto
+peggiore del precedente perche' non solleva errori e falsifica i numeri in silenzio.
+
+Verifica minima di regressione, da rifare quando si tocca una funzione che normalizza
+payload: si prova con quattro forme di dato — array di piu' elementi, array di un solo
+elemento, oggetto paginato con i risultati dentro un campo, e `$null` — e si controlla che i
+conteggi siano rispettivamente il numero reale, uno, il numero reale e zero. E' il test che
+ha smascherato il rimedio sbagliato: senza di esso lo script sarebbe stato "funzionante" e
+i filtri avrebbero conservato un elemento per endpoint.
+
 ## Encoding
 
 Lo script e' ASCII puro (tutti i caratteri < 128). Compatibile con PS5.1 e UTF-8 senza BOM.
