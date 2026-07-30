@@ -114,6 +114,50 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-30 (seconda parte) — SMB provato su entrambi gli apparati, vincolo RMM e snapshot NinjaOne (ADR-017)
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): **nuovo** `scripts/Get-NinjaSnapshot.ps1` (snapshot NinjaOne in
+sola lettura, OAuth2 client credentials, endpoint best-effort, output in `output/`;
+sintassi verificata e ASCII puro come gli altri script del progetto);
+`.claude/memory/decisions.md` (**ADR-017**); `CLAUDE.md` (sezione sullo script nuovo);
+`.claude/context/design-and-security.md` (nuova sezione §Contesto di gestione degli
+endpoint come vincolo trasversale); `docs/interventi-robustezza.md` (esito definitivo
+della misura SMB, argomento della rotazione a favore di R8, chiarimento sull'account
+locale); `docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce del 30/07
+estesa con esito, vincolo RMM e decisione di perimetro).
+
+Motivo, tre fatti in sequenza. Primo: le due scansioni di prova verso la cartella della
+postazione dell'IT Manager sono riuscite da entrambe le multifunzione — quella del Piano 1
+comandata a distanza dallo strumento di controllo remoto del produttore — e poiche' su
+quella postazione il protocollo legacy e' disattivato ne segue che **entrambi gli apparati
+parlano SMB 2 o superiore**. La premessa che motivava la proposta FTP e' decaduta e le
+sette condivisioni si configureranno in SMB. Chiarito anche l'account locale visto nella
+sessione precedente: accesso deliberato concesso a un collega verso un disco interno,
+quindi non un'anomalia, annotato perche' una configurazione non scritta in due anni
+diventa inspiegabile.
+
+Secondo: l'IT Manager ha posto un vincolo trasversale, ora registrato come contesto del
+progetto e non come nota di un singolo intervento. Gli endpoint sono gestiti da un RMM
+distribuito che applica policy, script e automazioni e **impone la rotazione della password
+locale ogni trenta giorni**. Tre conseguenze di design: ogni credenziale di postazione
+memorizzata in un apparato ha vita massima trenta giorni, quindi SEC-020 e' anche una
+manutenzione ricorrente e R8 diventa un intervento che *elimina lavoro* invece di
+chiederne; l'RMM e' il veicolo per le modifiche massive alle postazioni, quindi il
+ri-puntamento delle code di M22b si progetta come script distribuito; e le policy agiscono
+sugli endpoint mentre la rete cambia sotto di loro, quindi va saputo cosa fanno prima di
+toccare indirizzamento e segmentazione.
+
+Terzo: decisione di perimetro in **ADR-017**. La gestione endpoint entra nella
+documentazione del progetto in sola lettura e come fotografia, con lo script nuovo che
+riusa il pattern di autenticazione gia' verificato in un progetto interno separato.
+Vincolo principale non tecnico: le credenziali API appartengono al provider MSP che
+gestisce l'RMM, quindi scope di sola lettura non estendibile, nessun valore nel
+repository, segreto da variabile d'ambiente o prompt a runtime, output in `output/` perche'
+contiene nomi host, utenti e indirizzi reali. Beneficio immediato oltre l'inventario:
+l'interrogazione delle interfacce di rete per dispositivo, dove risponde, sostituisce il
+censimento manuale degli indirizzi statici di M22a.
+
 ## 2026-07-30 — Censimento chiuso su entrambe le multifunzione: sette destinatari, R11, deviazione dichiarata
 
 Commit: PENDING (da fare manualmente; su richiesta dell'IT Manager il commit era stato

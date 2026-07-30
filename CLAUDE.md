@@ -41,6 +41,23 @@ dell'infrastruttura in `output/proxmox-snapshot.json` e `output/proxmox-config.m
 L'output e' ignorato da git (dati infrastrutturali sensibili). Eseguire dalla radice
 del progetto passando l'host reale a `-ProxmoxHost` (vedi `.claude/rules/anonymization.md`).
 
+## Script snapshot NinjaOne (gestione endpoint)
+
+`scripts/Get-NinjaSnapshot.ps1` fotografa in **sola lettura** la gestione endpoint
+su NinjaOne (RMM): organizzazioni, dispositivi, policy, script, automazioni e
+interrogazioni diagnostiche, fra cui le interfacce di rete per dispositivo, che
+sono la fonte piu' rapida per il censimento degli indirizzi statici di M22a.
+Serve a questo progetto perche' gli endpoint non sono gestiti a mano: policy e
+automazioni agiscono su di loro e le password locali ruotano ogni trenta giorni,
+quindi qualunque credenziale di postazione memorizzata in un apparato di rete si
+rompe alla rotazione. Autenticazione OAuth2 client credentials con scope di sola
+lettura; il segreto si risolve da parametro, variabile d'ambiente o prompt a
+runtime e non viene mai scritto su disco. **Le credenziali API appartengono al
+provider MSP che gestisce l'RMM**: nessuno scope di scrittura, nessun valore nel
+repository. L'output va in `output/` (ignorato da git) perche' contiene nomi host,
+utenti e indirizzi reali. Decisione e vincoli in ADR-017
+(`.claude/memory/decisions.md`).
+
 ## Script di controllo delta OneDrive
 
 `scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive "Documenti - IT"
