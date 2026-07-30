@@ -119,6 +119,28 @@ di conoscere il numero: la deviazione e' dichiarata nel registro con la sua moti
 costo che la soglia proteggeva, la illeggibilita' della lista delle condivisioni, e'
 eliminabile nascondendole), e la soglia resta a sei per il caso generale.
 
+**Esecuzione avviata il 30/07/2026, un passo per volta e ciascuno documentato.** Sequenza
+**corretta** dopo un'obiezione dell'IT Manager: la prima versione metteva R12 in testa
+definendolo prerequisito, ed era un errore di priorita' — R12 non serve alle scansioni (le
+multifunzione non hanno DNS, quindi le destinazioni devono essere indirizzi) ne' alla
+migrazione delle stampanti (le code si ri-puntano al nuovo indirizzo), e in un'azienda dove
+la pratica consolidata e' modificare il file `hosts` per endpoint non produce nemmeno un
+risparmio immediato, perche' il file locale ha precedenza sul DNS e per ottenere il beneficio
+andrebbero anche ripulite le voci esistenti. Sequenza valida: **R8 con R9 e R10** (scansioni
+sul NAS, il problema da cui tutto e' partito, indipendente da tutto); poi gli interventi brevi
+R1, R2, R3, R5, R6; poi **M22b**; R12 e R13 come miglioramento a se', quando conviene.
+
+**R12 in corso**: procedura nei tre sotto-passi in `docs/interventi-robustezza.md` §R12.
+Bloccato su una decisione: il **suffisso** dei nomi interni. Emerso che i due nomi interni
+esistenti usano `.local`, che e' riservato a mDNS e non e' quindi lo standard da seguire ma un
+debito da migrare (NET-014 #131, intervento R13). Le due strade sono un suffisso di uso privato
+(`.lan`, gia' usato per il portale della VM208) oppure un sottodominio del dominio pubblico
+aziendale, che in piu' rende ottenibili certificati pubblicamente riconosciuti e chiuderebbe
+SEC-016 per intero.
+
+**M22a e' chiuso** (30/07): 22 indirizzi statici o riservati e 4 dinamici sulle postazioni, con
+il 22 corroborato in modo indipendente dagli oggetti indirizzo del firewall.
+
 **Prossimo passo operativo**: completare M22a — tabella MAC del 54HP a switch rientrato,
 ambiti e riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa,
 censimento degli host statici, e rilevamento del tipo di code di stampa su una postazione
