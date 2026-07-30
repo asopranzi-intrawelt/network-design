@@ -86,6 +86,32 @@ Le tre sottoreti condividono lo stesso segmento broadcast fisico.
 DHCP pool LAN1_POOL: 10.61.10.200, 55 assegnazioni, lease 2 giorni.
 22 PC fissi dichiarati come address-object con IP statici (range 10.61.10.18-84).
 
+**Verifica diretta del 30/07/2026** (dialogo `Edit Ethernet` di `lan1`, sezione DHCP
+Setting, con le impostazioni avanzate espanse). Confermati ambito `10.61.10.200` con
+dimensione 55, quindi da `.200` a `.254`, lease di 2 giorni e Default Router impostato
+sull'IP di `lan1`. Nessuna opzione DHCP estesa configurata. Due dettagli che il progetto
+non aveva ancora registrato e che cambiano due ragionamenti in corso.
+
+Il primo: il **First DNS Server distribuito ai client e' `ZyWALL`**, cioe' il firewall
+stesso, mentre secondo e terzo DNS sono `None` e i due campi WINS sono vuoti. Ne segue una
+correzione importante a un'affermazione ripetuta piu' volte in questo progetto: non e' vero
+che sulla LAN non esista un servizio di risoluzione nomi — esiste, ed e' il firewall, che
+oggi funziona da solo inoltratore verso l'esterno. Il firewall ZLD puo' pero' ospitare
+record di indirizzo propri, quindi i **nomi interni si possono pubblicare qui**, senza
+introdurre un dominio e senza toccare gli endpoint, che gia' puntano a lui per la
+risoluzione. E' la via piu' economica per chiudere la dipendenza dal broadcast (mDNS,
+NetBIOS) e per poter ri-puntare le code di stampa a un nome invece che a un indirizzo:
+tracciata come intervento R12 in `docs/interventi-robustezza.md`.
+
+Il secondo: la verifica dell'elenco completo delle interfacce (14 voci) mostra che
+accanto a quelle in uso ne convivono alcune **residue**, fra cui una interfaccia
+denominata `guest` su una subnet `/24` appartenente a un blocco RFC1918 diverso da quello
+del piano di indirizzamento documentale (valore reale nella mappa privata). Non e' la rete
+ospiti funzionante, che dal 22/07/2026 e' l'interfaccia `vlan90` agganciata a `lan1`: e'
+il residuo della configurazione precedente, quando la guest era una porta fisica. Insieme
+a `sfp`, `reserved` e `lan2` — quest'ultima gia' documentata come da dismettere — forma un
+insieme di interfacce da bonificare, tracciato come FW-013 in `GAP-TBC.md` (#130).
+
 **lan1:1** (subnet server): 10.61.20.1/19. 9 host nominati come address-object:
 NAS FTP (.168), INTRA (.168), INTRA2 (.177), HERO (.169), EGETRAD, EGETRAD_TEST,
 DOMV (.116), server demo, server OpenVPN.

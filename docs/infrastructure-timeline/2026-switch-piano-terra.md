@@ -1883,3 +1883,40 @@ credenziali memorizzate, l'assenza di DNS interno, la dipendenza dal broadcast p
 mDNS, la distribuzione a mano dei file `hosts` — ma e' un progetto con impatto organizzativo e
 non un intervento di rete, e nel frattempo la coppia di utenze locali del NAS rende la scansione
 immune senza dipendere da esso.
+
+### Chiusura del censimento M22a, e due scoperte dal firewall che valgono di piu'
+
+Letto dalla GUI del firewall l'ambito DHCP della rete delle postazioni e l'elenco completo
+delle interfacce. Il censimento si chiude per aritmetica: l'ambito parte dall'indirizzo `.200`
+con dimensione 55, quindi copre `.200-.254`, e incrociandolo con i ventisei indirizzi della
+classe postazioni censiti dall'RMM restano **ventidue indirizzi statici o riservati**, da `.17`
+a `.95`, e **quattro dentro l'ambito DHCP**. Il ventidue e' la corroborazione indipendente piu'
+pulita ottenuta finora in questo progetto, perche' coincide esattamente con i ventidue PC
+dichiarati come oggetto indirizzo nella configurazione del firewall, contati da una fonte
+completamente diversa; va invece corretto l'intervallo documentato per quegli statici, che la
+scheda riportava come `.18-.84` mentre la misura dice `.17-.95`. Per il piano di migrazione
+significa che quattro postazioni cambiano indirizzo gratis, seguendo il DHCP, e ventidue
+richiedono un tocco a testa — da spendere convertendole in riserve, cosi' che l'indirizzo torni
+governato dal firewall e ogni cambio successivo sia centrale.
+
+La prima scoperta smentisce un'affermazione che questo progetto ha ripetuto piu' volte: non e'
+vero che sulla LAN non esista risoluzione nomi interna. L'ambito DHCP distribuisce come primo
+server DNS **il firewall stesso**, con secondo e terzo assenti e i campi WINS vuoti. Esiste
+quindi un resolver, ed e' un apparato che governiamo: quello che manca non e' il servizio, sono
+i record. Poiche' il firewall ZLD puo' ospitare record di indirizzo propri, i nomi interni si
+possono pubblicare li' senza introdurre un dominio e senza toccare gli endpoint, che gia'
+interrogano lui. E' la via piu' economica per chiudere la dipendenza dal broadcast — mDNS e
+NetBIOS, la trappola incontrata tre volte in questa stessa settimana — e per ri-puntare le code
+di stampa a un nome invece che a un indirizzo, rendendo gratuiti tutti gli spostamenti futuri.
+Tracciata come intervento R12, con la nota di sequenza che va fatta **prima** di M22b, per non
+ri-puntare le code due volte.
+
+La seconda e' una lezione documentale. L'elenco delle interfacce conta quattordici voci, e
+accanto a quelle in servizio ne convivono alcune residue: fra queste un'interfaccia denominata
+`guest` su una `/24` appartenente a un blocco di indirizzi estraneo al piano documentale, che
+non e' la rete ospiti funzionante — quella dal 22/07 e' la `vlan90` agganciata a `lan1` — ma il
+residuo dell'epoca in cui la guest era una porta fisica. Insieme a `lan2`, gia' data per
+dismessa, e a due interfacce senza indirizzo, forma un insieme da bonificare (FW-013,
+`GAP-TBC.md` #130). Il rischio che creano non e' operativo ma interpretativo, e questo progetto
+lo ha appena sperimentato: leggendo l'elenco senza sapere quale interfaccia sia viva si
+attribuisce alla rete ospiti una subnet che non usa piu'.
