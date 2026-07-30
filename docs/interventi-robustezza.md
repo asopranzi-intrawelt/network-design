@@ -45,6 +45,7 @@ documentazione ISO27001, non un'intenzione.
 | R9 | Sostituire negli account di scansione i nomi di persona con un account di servizio dedicato alla share di scansione | SEC-020 (#126), A.9.2: un account nominale usato da un apparato non e' attribuibile a una persona ed e' impossibile da dismettere all'uscita di quella persona | Nessuno se eseguito insieme a R8 | Da fare |
 | R11 | Attivare la conferma della destinazione prima dell'invio sulle destinazioni di scansione di entrambe le multifunzione | SEC-020 (#126): su tutte le voci censite l'opzione e' disattivata, quindi una selezione sbagliata dal display invia documenti nella cartella di un'altra persona senza alcun passaggio che permetta di accorgersene | Nessuno sulla rete; aggiunge un tocco in piu' all'utente che scansiona, ed e' il compromesso da spiegare | Da fare |
 | R12 | Pubblicare i nomi interni come record di indirizzo sul DNS del firewall, che i client ricevono gia' via DHCP come primo server DNS | Chiude in gran parte SEC-016 e la dipendenza dal broadcast (mDNS, NetBIOS) senza introdurre un dominio; abilita il ri-puntamento delle code di stampa a un nome, quindi rende gratuiti gli spostamenti futuri | Nessuno: si aggiungono record, non si cambia nulla lato client, che gia' interroga il firewall | Da fare |
+| R13 | Migrare i due nomi interni che usano il suffisso `.local` al suffisso scelto in R12, aggiornando prima le configurazioni che li referenziano | NET-014 (#131): `.local` e' riservato a mDNS, quindi quei nomi si risolvono via multicast e non sopravvivono a un confine di livello 3 | Nessuno se si crea il nome nuovo prima di rimuovere il vecchio: per un periodo rispondono entrambi | Da fare, dipende da R12 |
 | R10 | Definire una regola di conservazione sulla cartella delle scansioni (cancellazione automatica oltre una soglia di giorni concordata) | Minimizzazione e limitazione della conservazione: una cartella di scansioni diventa in pochi mesi un archivio documentale parallelo, non censito e pieno di dati personali. Rilevante per A.5.33 e per il principio di limitazione della conservazione | Nessuno sulla rete; va concordata la soglia con chi usa il servizio | Da fare, dipende da R8 |
 
 ## Dettaglio degli interventi
@@ -760,8 +761,154 @@ una postazione risponde con l'indirizzo atteso e, dopo la segmentazione, continu
 che e' precisamente cio' che mDNS non farebbe. Rollback: rimuovere il record, dato che nessuna
 configurazione dipende dal nome finche' non la si cambia.
 
-Nota di sequenza: conviene creare i record **prima** di M22b, cosi' il ri-puntamento delle code
-avviene una volta sola e verso un nome. Farlo dopo significherebbe ri-puntare due volte.
+#### Correzione di priorita' del 30/07/2026: R12 non e' un prerequisito
+
+Una prima stesura di questa voce presentava R12 come prerequisito degli altri interventi e
+come primo passo dell'esecuzione. **E' un errore di priorita' e va corretto qui**, perche'
+altrimenti torna alla sessione successiva.
+
+R12 non serve al problema delle scansioni e non serve alla migrazione delle stampanti. Le
+destinazioni di scansione di R8 devono essere indirizzi in ogni caso, perche' le
+multifunzione non hanno alcun server DNS configurato: il nome non lo risolverebbero
+comunque. E lo spostamento delle stampanti in un segmento dedicato si fa ri-puntando le code
+al nuovo indirizzo, esattamente come si e' sempre fatto qui.
+
+Il beneficio reale di R12 e' un altro e piu' ristretto: evitare che *ogni prossimo* cambio
+di indirizzo di un servizio interno richieda di toccare tutte le postazioni. Va pesato contro
+il fatto che in questa azienda la pratica consolidata e' modificare il file `hosts` di ogni
+endpoint quando serve, che e' una pratica che funziona e che le persone conoscono. Con quel
+punto di partenza, il guadagno immediato di un record DNS e' nullo per un singolo
+spostamento: la voce `hosts` costa lo stesso lavoro del ri-puntamento diretto. E c'e' un
+costo che la prima stesura non aveva dichiarato — un record DNS **non** sostituisce le voci
+`hosts` esistenti: il file locale ha precedenza, quindi finche' quelle voci restano il record
+e' invisibile, e per ottenere il beneficio bisogna anche ripulirle su ogni postazione. Il
+lavoro non diminuisce, si sposta.
+
+R12 resta quindi un intervento valido ma **indipendente e non urgente**, e le sue vere
+motivazioni sono altre tre, tutte estranee alle stampanti: chiude la dipendenza dal broadcast
+(mDNS e NetBIOS) che rendera' fragile la segmentazione; elimina progressivamente la
+proliferazione delle voci `hosts`, che oggi nessuno inventaria; e, grazie alla convenzione di
+ADR-018, apre la strada al certificato pubblico per il portale interno, che e' il pezzo
+mancante di SEC-016. Si esegue quando conviene, non prima di R8.
+
+**Sequenza corretta**: prima R8 con R9 e R10, che risolvono il problema da cui tutto e'
+partito e non dipendono da nulla; poi gli interventi brevi R1, R2, R3, R5, R6; poi M22b, il
+segmento stampanti; R12 e R13 quando si vuole, come miglioramento a se'.
+
+#### Passo R12-1: la convenzione dei nomi, e un difetto nei nomi gia' in uso
+
+Prima di creare un solo record va deciso il suffisso, perche' cambiarlo dopo significa
+rifare ogni configurazione che lo usa. La ricognizione dei nomi interni attualmente in uso
+nel progetto mostra tre convenzioni diverse convissute nel tempo: un servizio interno su
+`.intrawelt.local`, un altro su un nome breve seguito da `.local`, e il portale della VM208
+su `.intrawelt.lan`.
+
+Il problema non e' l'incoerenza, e' che **`.local` e' riservato a mDNS** dallo standard che
+lo definisce. Un nome che finisce in `.local` viene risolto dai sistemi operativi
+interrogando il multicast, non il DNS unicast: pubblicare record `.local` su un server DNS
+produce un comportamento che dipende dall'ordine dei risolutori del singolo client, quindi
+funziona su una macchina e non sull'altra, e smette di funzionare attraversando un confine
+di livello 3. E' la stessa trappola che abbiamo incontrato tre volte questa settimana, con
+la differenza che qui e' incorporata nella scelta del nome. Ne segue che i due nomi `.local`
+esistenti non sono uno standard da seguire ma un debito da migrare.
+
+Restano due strade sensate.
+
+La prima e' un suffisso di uso privato, `.lan`, che il portale della VM208 usa gia'. E'
+semplice, non collide con mDNS, non richiede nulla dall'esterno. Il limite e' che non e' un
+nome di cui l'azienda sia titolare: non e' assegnabile a nessuna autorita' di certificazione
+pubblica, quindi ogni servizio interno servito in HTTPS continuera' a dipendere da una CA
+interna e dalla sua distribuzione a mano, che e' esattamente il gap SEC-016.
+
+La seconda e' un sottodominio del dominio pubblico che l'azienda possiede, per esempio la
+forma `<host>.int.<dominio-aziendale>`, con i record pubblicati **solo** sul DNS interno e
+mai su quello pubblico. Costa una riga di convenzione in piu' e ha due vantaggi che la prima
+non ha. Non collidera' mai con nulla, perche' il dominio e' dell'azienda, mentre un suffisso
+inventato puo' un giorno diventare un dominio di primo livello reale. E rende ottenibile un
+**certificato di una CA pubblica** per i servizi interni, tramite la validazione via record
+DNS che non richiede di esporre il servizio su Internet: il portale interno smetterebbe di
+dipendere da una CA importata macchina per macchina, e SEC-016 si chiuderebbe per intero
+invece che a meta'.
+
+**Decisione dell'IT Manager del 30/07/2026: la seconda** — i nomi interni vivono su un
+sottodominio del dominio aziendale, nella forma `<host>.int.<dominio-aziendale>`, con i
+record pubblicati soltanto sul DNS interno del firewall e mai su quello pubblico. Razionale
+completo e vincoli in ADR-018. Ne segue che i due nomi `.local` esistenti sono un debito da
+migrare a questa convenzione (intervento R13), e che il beneficio sui certificati ha una
+dipendenza da conoscere in anticipo: la validazione via record DNS richiede di poter creare
+un record di testo sulla zona **pubblica** del dominio presso il fornitore che la ospita, ma
+non richiede alcun record di indirizzo pubblico.
+
+#### Passo R12-2: i record da creare
+
+Elenco minimo, quello che serve ai fronti aperti. I nomi sono indicativi e vanno confermati
+insieme al suffisso; gli indirizzi sono quelli documentali, i reali stanno nella mappa privata.
+
+Nomi pienamente qualificati secondo la convenzione decisa (`int.<dominio-aziendale>`);
+gli indirizzi sono quelli documentali, i reali stanno nella mappa privata.
+
+| Nome pienamente qualificato | Punta a | Serve per |
+|---|---|---|
+| `nas-intra2.int.<dominio>` | `10.61.20.177` | Destinazione delle scansioni di R8: e' il nome che entrera' nelle rubriche delle multifunzione al posto dell'indirizzo |
+| `stampante-pt.int.<dominio>` | `10.61.30.10` | Ri-puntamento della coda della multifunzione del Piano Terra a un nome, cosi' lo spostamento di M22b non tocca piu' le postazioni |
+| `stampante-p1.int.<dominio>` | `10.61.30.133` | Idem per la multifunzione del Piano 1 |
+| `nas-hero.int.<dominio>` | `10.61.20.169` | Riferimento stabile per le unita' di rete oggi mappate per indirizzo |
+| `nas-intra.int.<dominio>` | `10.61.20.168` | Idem |
+| `asset.int.<dominio>` | `10.61.20.25` | Portale interno della VM208, che oggi si risolve per file `hosts` su ogni postazione: e' il caso che dimostra il beneficio, perche' quel file smette di servire, e sara' il primo candidato al certificato pubblico |
+
+#### Passo R12-3: dove si creano, e come si verifica
+
+Sul firewall il percorso atteso e' `Configuration > System > DNS`, sezione dei record di
+indirizzo, dove si aggiunge la coppia nome pienamente qualificato e indirizzo. Va confermato
+a schermo, perche' la denominazione esatta della sezione cambia tra le versioni del
+firmware, e va verificato nella stessa pagina che il servizio DNS sia consentito
+dall'interfaccia della LAN — condizione che i client soddisfano gia', dato che ricevono il
+firewall come primo server DNS e navigano.
+
+La verifica va fatta con due accortezze, altrimenti si scambia un successo per un fallimento
+o viceversa. La prima: un'eventuale voce nel file `hosts` della postazione **vince** sul DNS,
+quindi se il nome scelto e' gia' presente in `hosts` la risposta arriva da li' e non prova
+nulla; conviene interrogare esplicitamente il firewall. La seconda: la cache del risolutore
+locale va svuotata, altrimenti si continua a leggere una risposta vecchia.
+
+```powershell
+# Interroga esplicitamente il firewall, ignorando hosts e cache locale
+Resolve-DnsName -Name <nome-scelto> -Server 10.61.10.1 -Type A
+# Poi la risoluzione normale della postazione, che e' quella che conta per le applicazioni
+Clear-DnsClientCache
+Resolve-DnsName -Name <nome-scelto> -Type A
+# Controllo di cosa contiene oggi il file hosts, che ha precedenza sul DNS
+Get-Content "$env:WINDIR\System32\drivers\etc\hosts" | Where-Object { $_ -notmatch '^\s*#' -and $_.Trim() }
+```
+
+#### Passo R12-4: i segmenti che oggi non riceverebbero i nomi
+
+Emerso dalla decisione sulla convenzione, e va corretto contestualmente altrimenti i record
+esistono ma metà della rete non li vede. I client cablati ricevono il firewall come primo
+server DNS e quindi risolveranno i nomi nuovi senza alcun intervento. Non e' cosi' per tutti i
+segmenti.
+
+La **Wi-Fi staff** riceve, per come e' stato configurato il suo ambito DHCP il 16/07/2026,
+`8.8.8.8` come primo DNS e `1.1.1.1` come secondo: sono resolver pubblici, che non conoscono i
+nomi interni. Un dispositivo staff non risolverebbe quindi ne' il NAS ne' le stampanti ne' il
+portale interno, e la nota che lo prevedeva era gia' scritta nella scheda firewall al momento
+della creazione di quell'ambito. Va corretto impostando il firewall come primo DNS di quel
+segmento, coerentemente con la postura decisa in ADR-014, per cui la Wi-Fi staff lavora come
+una postazione cablata.
+
+La **rete ospiti** riceve anch'essa resolver pubblici, e li' non si tocca nulla: e' corretto
+che un ospite non risolva i nomi interni, ed e' coerente con la regola che lo lascia uscire
+solo verso Internet.
+
+I **client VPN** ricevono gia' il firewall come DNS, quindi risolveranno i nomi interni da
+remoto senza alcuna modifica. Vale la pena saperlo perche' e' un beneficio collaterale: i nomi
+funzioneranno anche in VPN, cosa che nessun file `hosts` distribuito a mano ha mai garantito.
+
+Esito atteso: la prima query risponde con l'indirizzo del record appena creato; la seconda
+risponde allo stesso modo, a meno che una voce `hosts` non lo intercetti, e in quel caso la
+voce va rimossa perche' e' precisamente il debito che R12 esiste per eliminare. Rollback:
+rimuovere il record, dato che nessuna configurazione dipende dal nome finche' non la si
+cambia.
 
 ### R10 — Regola di conservazione sulla cartella delle scansioni
 

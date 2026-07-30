@@ -1920,3 +1920,82 @@ dismessa, e a due interfacce senza indirizzo, forma un insieme da bonificare (FW
 `GAP-TBC.md` #130). Il rischio che creano non e' operativo ma interpretativo, e questo progetto
 lo ha appena sperimentato: leggendo l'elenco senza sapere quale interfaccia sia viva si
 attribuisce alla rete ospiti una subnet che non usa piu'.
+
+### Inizio dell'esecuzione: R12, e un difetto nei nomi interni gia' in uso
+
+Chiuso il censimento, l'IT Manager ha chiesto di procedere per passi, documentando ciascuno.
+Il primo passo scelto e' R12, la pubblicazione dei nomi interni sul DNS del firewall, perche'
+e' a rischio nullo e perche' e' prerequisito di tutto il resto: i nomi che crea servono al
+ri-puntamento delle code di M22b e alle destinazioni di scansione di R8, e crearli dopo
+significherebbe rifare quelle configurazioni due volte.
+
+Prima di scrivere un solo record e' emerso un difetto nei nomi interni gia' in uso. La
+ricognizione mostra tre convenzioni convissute nel tempo: un servizio su
+`<nome>.intrawelt.local`, un altro su un nome breve seguito da `.local`, e il portale della
+VM208 su `.intrawelt.lan`. Il problema non e' l'incoerenza ma il suffisso: **`.local` e'
+riservato a mDNS** dallo standard che lo definisce, quindi i sistemi operativi lo risolvono
+interrogando il multicast e non il DNS unicast. Pubblicare quei nomi su un server DNS produce
+un comportamento che dipende dall'ordine dei risolutori del singolo client — funziona su una
+macchina e non sull'altra — e cessa comunque di funzionare attraversando un confine di livello
+3, cioe' proprio cio' che la segmentazione introduce. E' la terza forma della stessa trappola
+in una settimana, dopo l'annuncio Bonjour delle multifunzione e le destinazioni di scansione
+per nome NetBIOS, con la differenza che qui e' incorporata nella scelta del nome. Registrato
+come NET-014 (`GAP-TBC.md` #131) e come intervento R13 di migrazione, subordinato alla scelta
+del suffisso.
+
+La scelta del suffisso e' quindi diventata il primo sotto-passo, e non e' una formalita'.
+Un suffisso di uso privato come `.lan`, gia' adottato per il portale della VM208, e' semplice
+e non collide con mDNS, ma non e' un nome di cui l'azienda sia titolare: nessuna autorita' di
+certificazione pubblica potra' emettere certificati per quei nomi, quindi i servizi interni in
+HTTPS continueranno a dipendere da una CA interna distribuita a mano — che e' il gap SEC-016.
+Un sottodominio del dominio pubblico aziendale, con i record pubblicati solo sul DNS interno,
+costa una riga di convenzione in piu' e in cambio non collidera' mai con nulla e rende
+ottenibile un certificato pubblicamente riconosciuto tramite validazione via record DNS, senza
+esporre il servizio su Internet: SEC-016 si chiuderebbe per intero invece che a meta'.
+Scelta compiuta dall'IT Manager: **il sottodominio del dominio aziendale**, nella forma
+`<host>.int.<dominio>`, con i record solo sul DNS interno del firewall e mai su quello
+pubblico. Razionale e vincoli in ADR-018. Due conseguenze da tenere insieme: il beneficio sui
+certificati non richiede alcun record di indirizzo pubblico ma richiede di poter creare un
+record di testo sulla zona pubblica del dominio presso il fornitore che la ospita, quindi va
+verificato quell'accesso prima di prometterselo; e i due nomi `.local` esistenti diventano un
+debito da migrare a questa convenzione, con il nome nuovo creato prima di rimuovere il vecchio.
+
+La decisione ha anche fatto emergere un passo che non era nel piano. I client cablati
+ricevono il firewall come DNS e risolveranno i nomi nuovi senza interventi, ma la **Wi-Fi
+staff no**: il suo ambito DHCP, configurato il 16/07/2026, distribuisce due resolver pubblici,
+quindi un dispositivo staff non risolverebbe ne' il NAS ne' le stampanti ne' il portale
+interno. La nota che lo prevedeva era gia' scritta nella scheda firewall al momento della
+creazione di quell'ambito, ed e' ora diventata un sotto-passo: impostare il firewall come primo
+DNS di quel segmento, coerentemente con la postura di ADR-014 che tratta la Wi-Fi staff come
+una postazione cablata. Sulla rete ospiti invece non si tocca nulla, perche' e' corretto che un
+ospite non risolva i nomi interni. I client VPN ricevono gia' il firewall come DNS, quindi
+guadagnano la risoluzione dei nomi interni anche da remoto: e' un beneficio che nessun file
+`hosts` distribuito a mano ha mai garantito.
+
+Procedura completa dei quattro sotto-passi, elenco dei nomi pienamente qualificati e verifiche
+in `docs/interventi-robustezza.md` §R12.
+
+### Correzione di priorita' nella stessa giornata: R12 non era un prerequisito
+
+Presentando il piano, R12 era stato messo in testa all'esecuzione e descritto come
+prerequisito degli altri interventi. L'IT Manager ha obiettato con una domanda semplice —
+perche' lo stiamo facendo, e cosa c'entra con la questione delle stampanti — e l'obiezione era
+fondata: **non c'entra**. Le destinazioni di scansione devono essere indirizzi in ogni caso,
+perche' le multifunzione non hanno alcun server DNS configurato e un nome non lo
+risolverebbero; e lo spostamento delle stampanti in un segmento dedicato si fa ri-puntando le
+code al nuovo indirizzo, come si e' sempre fatto qui.
+
+C'e' un secondo elemento che rendeva la priorita' sbagliata e che era stato omesso: in questa
+azienda la pratica consolidata e' modificare il file `hosts` di ogni endpoint quando serve. Con
+quel punto di partenza il guadagno immediato di un record DNS e' nullo per un singolo
+spostamento, perche' la voce `hosts` costa lo stesso lavoro del ri-puntamento diretto; e un
+record DNS **non** sostituisce le voci esistenti, dato che il file locale ha precedenza, quindi
+per ottenere il beneficio bisognerebbe anche ripulirle su ogni postazione. Il lavoro non
+diminuisce, si sposta.
+
+R12 resta valido ma indipendente, e le sue motivazioni vere sono altre tre, tutte estranee
+alle stampanti: chiudere la dipendenza dal broadcast che rendera' fragile la segmentazione,
+arrestare la proliferazione non inventariata delle voci `hosts`, e aprire la strada al
+certificato pubblico per il portale interno grazie alla convenzione di ADR-018. La sequenza
+corretta mette percio' al primo posto R8 con R9 e R10, cioe' le scansioni sul NAS, che sono il
+problema da cui tutto e' partito e non dipendono da nulla.

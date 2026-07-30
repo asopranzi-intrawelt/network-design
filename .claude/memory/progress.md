@@ -114,6 +114,66 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-30 (decima parte) — Correzione di priorita': R12 declassato, si parte da R8
+
+Commit: PENDING (da fare manualmente)
+File toccati: `docs/interventi-robustezza.md` (§R12 con la correzione di priorita'
+dichiarata e la sequenza corretta), `.claude/memory/index.md` (sequenza corretta),
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce con l'obiezione e la
+correzione).
+
+Obiezione dell'IT Manager: perche' stiamo facendo R12, e cosa c'entra con la questione
+delle stampanti. Fondata: **non c'entra**, e presentarlo come prerequisito era un errore
+di priorita' mio. Le destinazioni di scansione devono essere indirizzi in ogni caso,
+perche' le multifunzione non hanno DNS configurato; lo spostamento delle stampanti si fa
+ri-puntando le code al nuovo indirizzo, come si e' sempre fatto. In piu' era stato omesso
+un fatto che rende il guadagno immediato nullo: qui la pratica consolidata e' modificare
+il file `hosts` per endpoint, e un record DNS non sostituisce le voci esistenti perche' il
+file locale ha precedenza — per ottenere il beneficio bisognerebbe anche ripulirle su ogni
+postazione, quindi il lavoro si sposta invece di diminuire.
+
+R12 resta valido ma indipendente, con tre motivazioni proprie estranee alle stampanti:
+dipendenza dal broadcast che rendera' fragile la segmentazione, proliferazione non
+inventariata delle voci `hosts`, e strada al certificato pubblico per il portale interno
+(ADR-018, chiusura piena di SEC-016). Sequenza corretta: **R8 con R9 e R10** prima di
+tutto, poi gli interventi brevi, poi M22b, poi R12/R13 quando conviene.
+
+## 2026-07-30 (nona parte) — Passo R12 aperto: convenzione dei nomi decisa (ADR-018), NET-014, sotto-passo sulla Wi-Fi staff
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `.claude/memory/decisions.md` (**ADR-018**),
+`docs/interventi-robustezza.md` (R12 con i quattro sotto-passi: convenzione, elenco dei
+nomi pienamente qualificati, percorso GUI e verifiche, e il nuovo R12-4 sui segmenti che
+non riceverebbero il DNS interno; **R13** per migrare i nomi `.local`),
+`docs/infrastructure-timeline/GAP-TBC.md` (**#131 NET-014**, e SEC-016 con la via di
+chiusura completa), `docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce
+estesa), `.claude/memory/index.md` (sequenza di esecuzione e stato di R12).
+
+Su richiesta dell'IT Manager si procede per passi, documentando ciascuno. Primo passo
+scelto: **R12**, i nomi interni sul DNS del firewall, perche' e' a rischio nullo ed e'
+prerequisito degli altri — i nomi che crea servono al ri-puntamento delle code di M22b e
+alle destinazioni di R8, e crearli dopo significherebbe rifare quelle configurazioni.
+
+Prima di scrivere un record e' emerso che i due nomi interni esistenti usano il suffisso
+`.local`, **riservato a mDNS**, quindi non risolvibile in modo prevedibile via DNS unicast
+e destinato a rompersi attraversando un confine di livello 3: terza forma della stessa
+trappola in una settimana, registrata come NET-014 (#131) e come intervento R13.
+
+Decisione dell'IT Manager, registrata in **ADR-018**: i nomi interni vivono su un
+sottodominio del dominio aziendale (`<host>.int.<dominio>`), con record solo sul DNS
+interno. Motivazione principale oltre alla non-collisione: rende ottenibile un certificato
+di autorita' pubblica via validazione DNS senza esporre i servizi, quindi **SEC-016 si
+chiude per intero** e il portale interno della VM208 puo' abbandonare la CA interna
+distribuita a mano. Dipendenza dichiarata: accesso alla zona DNS pubblica del dominio per
+il record di validazione; nessun record di indirizzo pubblico necessario.
+
+La decisione ha fatto emergere un sotto-passo non previsto (R12-4): la Wi-Fi staff riceve
+resolver pubblici dal proprio ambito DHCP, quindi non risolverebbe i nomi nuovi — va
+impostato il firewall come primo DNS di quel segmento, coerentemente con ADR-014. Sulla
+rete ospiti non si tocca nulla, perche' e' corretto che un ospite non risolva i nomi
+interni; i client VPN ricevono gia' il firewall come DNS e guadagnano la risoluzione anche
+da remoto.
+
 ## 2026-07-30 (ottava parte) — Censimento M22a chiuso, DNS del firewall scoperto (R12), interfacce residue (FW-013)
 
 Commit: PENDING (da fare manualmente)
