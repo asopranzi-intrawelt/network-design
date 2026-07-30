@@ -76,6 +76,35 @@ conteggi siano rispettivamente il numero reale, uno, il numero reale e zero. E' 
 ha smascherato il rimedio sbagliato: senza di esso lo script sarebbe stato "funzionante" e
 i filtri avrebbero conservato un elemento per endpoint.
 
+La terza trappola, trovata al lancio successivo, e' banale e costa un giro intero: **usare
+come nome di variabile una variabile automatica di PowerShell**. `$pid` sembra
+un'abbreviazione naturale per "policy id" ed e' invece il numero di processo della sessione,
+in sola lettura: l'assegnazione fallisce a runtime con un errore che non nomina la causa.
+Controllo da fare su ogni script prima di considerarlo pronto: cercare assegnazioni a
+`$PID`, `$HOME`, `$HOST`, `$PWD`, `$INPUT`, `$ARGS`, `$ERROR`, `$MATCHES`, `$PROFILE`,
+`$PSHOME`, `$FOREACH`, `$SWITCH`, `$THIS`, `$EVENT`, `$SENDER`, `$LASTEXITCODE` e alle altre
+automatiche. E' una ricerca di dieci secondi che l'analisi sintattica **non** segnala,
+perche' la sintassi e' corretta: l'errore e' semantico e si manifesta solo eseguendo.
+
+## Provare la logica di filtro fuori linea, invece di rilanciare contro l'API
+
+Tre lanci consecutivi falliti su tre difetti diversi hanno insegnato che rilanciare uno
+script contro un'API remota per scoprire se funziona e' il modo piu' lento e piu' invasivo
+di fare un test: ogni tentativo consuma un'autenticazione reale, scarica dati veri e, nel caso
+di un'istanza multi-tenant, li scrive su disco.
+
+La tecnica adottata, molto piu' rapida, e' un banco di prova che **estrae dal file dello
+script il codice vero** — le funzioni di normalizzazione e il blocco di filtro, delimitati
+dai commenti di sezione — e lo esegue su dati sintetici costruiti per riprodurre i casi
+limite noti. Nel caso del filtro per organizzazione i casi che contano sono tre: un
+dispositivo appartenente a un'altra organizzazione, una entita' non-dispositivo che porta lo
+stesso campo di appartenenza (una *location*), e un id di quella entita' che **collide** con
+l'id di un dispositivo di terzi, che e' esattamente il difetto che si era manifestato in
+produzione. Il banco verifica poi che nessuna riga di terzi sopravviva al filtro.
+
+Il vantaggio non e' solo la velocita': testando il codice estratto dal file, e non una sua
+copia riscritta nel test, si prova quello che verra' eseguito davvero.
+
 ## Encoding
 
 Lo script e' ASCII puro (tutti i caratteri < 128). Compatibile con PS5.1 e UTF-8 senza BOM.

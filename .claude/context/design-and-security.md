@@ -175,6 +175,19 @@ SEC-021 (`GAP-TBC.md` #128). L'introduzione di un servizio di directory con DNS 
 chiuderebbe insieme quattro fronti, ma cambia il modello di gestione degli endpoint e va
 valutata come progetto a se'.
 
+**Come sono governati, in concreto (snapshot filtrato del 30/07/2026).** Sui 26 dispositivi
+dell'organizzazione risulta applicata **una sola policy**, e su **25 dei 26** esiste almeno una
+personalizzazione locale che ne scavalca dei parametri. Il dato va interpretato prima di
+giudicarlo, perche' il contenuto delle personalizzazioni non e' stato esaminato, ma il rapporto
+merita attenzione: una policy unica accompagnata da un'eccezione su quasi ogni macchina governa
+molto meno di quanto il numero "una policy" suggerisca, ed e' il tipo di configurazione dove
+un'impostazione che si crede applicata a tutti in realta' non lo e'. Rilevante per A.8.9,
+gestione delle configurazioni, e da approfondire quando si arrivera' a normare il patching e le
+policy endpoint (Fase 4). Le altre letture utili dello stesso snapshot: 26 righe di sistema
+operativo e di utenti connessi coerenti con il numero di dispositivi, 21 campi personalizzati
+definiti, e nessuna interrogazione che riporti dispositivi estranei all'organizzazione dopo la
+correzione del filtro.
+
 **Effetto collaterale del primo snapshot, corretto in giornata.** L'istanza dell'RMM e'
 multi-tenant e la chiave API del provider vede anche altre aziende sue clienti: la prima
 raccolta ha restituito 99 dispositivi su 26 organizzazioni, cioe' l'inventario di venticinque

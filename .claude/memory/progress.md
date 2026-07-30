@@ -114,6 +114,86 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-30 (settima parte) — Snapshot filtrato riuscito e verificato: 26 dispositivi, una policy, zero dati di terzi
+
+Commit: PENDING (da fare manualmente)
+File toccati: `.claude/context/design-and-security.md` (come sono governati gli endpoint,
+dallo snapshot filtrato).
+
+Lancio riuscito e verificato leggendo il file prodotto, non solo l'output a schermo: una
+sola organizzazione conservata, 26 dispositivi, 2 locations, gruppi e libreria script a
+zero, e **zero righe con dispositivi estranei** nelle interrogazioni diagnostiche — il
+difetto della collisione di id e' chiuso, e i conteggi di sistema operativo, utenti
+connessi e sistemi tornano tutti a 26 dove prima erano 28.
+
+Dato di governo emerso dallo snapshot e registrato in `design-and-security.md`: sui 26
+dispositivi risulta applicata **una sola policy**, e su **25 dei 26** esiste almeno una
+personalizzazione locale che ne scavalca dei parametri. Il contenuto delle
+personalizzazioni non e' stato esaminato, quindi il fatto e' registrato come
+osservazione da interpretare e non come giudizio; il rapporto merita comunque
+attenzione, perche' una policy unica con un'eccezione su quasi ogni macchina governa
+molto meno di quanto il numero suggerisca. Rilevante per A.8.9 e da approfondire quando
+si normeranno patching e policy endpoint (Fase 4).
+
+## 2026-07-30 (sesta parte) — Terza trappola PowerShell e banco di prova fuori linea
+
+Commit: PENDING (da fare manualmente)
+File toccati: `scripts/Get-NinjaSnapshot.ps1` (rinominata la variabile),
+`.claude/context/dev-testing.md` (terza trappola e tecnica del banco di prova).
+
+Quarto lancio fallito su un difetto banale: avevo usato `$pid` come nome di variabile
+per "policy id", ed e' una **variabile automatica di PowerShell in sola lettura** (il
+numero di processo della sessione). L'analisi sintattica non lo segnala, perche' la
+sintassi e' corretta: l'errore e' semantico e si vede solo eseguendo. Rinominata, e
+aggiunto in `dev-testing.md` il controllo da fare su ogni script — cercare assegnazioni
+alle automatiche piu' comuni — con la verifica eseguita su questo file, che non ne ha
+altre.
+
+Cambiata anche la tecnica di verifica, perche' tre lanci consecutivi falliti su tre
+difetti diversi hanno mostrato che rilanciare contro l'API per sapere se funziona e' il
+test piu' lento e piu' invasivo possibile: consuma autenticazioni reali, scarica dati
+veri e, su un'istanza multi-tenant, li scrive su disco. Scritto un banco di prova che
+**estrae dal file dello script il codice vero** (funzioni di normalizzazione e blocco di
+filtro, delimitati dai commenti di sezione) e lo esegue su dati sintetici che riproducono
+i casi limite noti: un dispositivo di un'altra organizzazione, una entita'
+non-dispositivo con lo stesso campo di appartenenza, e un id di quella entita' che
+collide con l'id di un dispositivo di terzi — cioe' il difetto manifestatosi in
+produzione. Esito del banco: dispositivi filtrati correttamente, policy ridotte alle
+sole referenziate, gruppi e libreria script svuotati, e zero righe di terzi
+sopravvissute. Tecnica documentata in `dev-testing.md` perche' vale per tutti gli script
+del progetto che interrogano un'API.
+
+## 2026-07-30 (quinta parte) — Filtro organizzazione: due id di troppo, e la minimizzazione degli oggetti di istanza
+
+Commit: PENDING (da fare manualmente)
+File toccati: `scripts/Get-NinjaSnapshot.ps1` (due correzioni),
+`docs/infrastructure-timeline/GAP-TBC.md` (#129 esteso con la seconda iterazione del
+rimedio).
+
+Il terzo lancio e' andato a termine e ha scritto entrambi i file, ma il conteggio
+dichiarava 28 dispositivi conservati invece di 26. La discrepanza, visibile solo perche'
+lo script stampa quel numero, ha rivelato un difetto con conseguenze di riservatezza e
+non di sola aritmetica: l'insieme di id usato per filtrare le interrogazioni
+diagnostiche raccoglieva anche gli id delle *locations*, che portano lo stesso campo di
+appartenenza all'organizzazione, e quei due id coincidevano con dispositivi di altre
+organizzazioni — quindi le loro righe passavano il filtro (28 righe di sistema
+operativo invece di 26, 1384 interfacce invece di 1381). Corretto raccogliendo gli id
+soltanto dagli endpoint dei dispositivi.
+
+Aggiunta nella stessa correzione una minimizzazione che il primo filtro non copriva:
+policy, gruppi e libreria script non portano appartenenza a un'organizzazione perche'
+sono oggetti dell'istanza del provider MSP, e conservarli integralmente significa
+tenere su disco la sua configurazione e nomi che possono riferirsi ad altri suoi
+clienti. Per default si conservano ora solo le policy effettivamente applicate ai
+dispositivi filtrati, ricavate dal campo di riferimento sui dispositivi stessi, e si
+scartano gruppi e libreria script; interruttore `-IncludeInstanceWideObjects` per
+conservarli quando serve davvero.
+
+Lezione di metodo, coerente con quella della quarta parte: un conteggio stampato a
+schermo e' un canary a costo zero. Senza quella riga il filtro sarebbe sembrato
+corretto e due dispositivi di terzi sarebbero rimasti nello snapshot senza che nessuno
+lo notasse.
+
 ## 2026-07-30 (quarta parte) — Due trappole PowerShell sullo script NinjaOne, corrette e testate
 
 Commit: PENDING (da fare manualmente)
