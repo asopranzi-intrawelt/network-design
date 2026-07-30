@@ -54,6 +54,20 @@
     decine di endpoint producono decine di migliaia di righe.
 .PARAMETER OutputDir
     Cartella di output. Default: sottocartella output/ della radice del progetto.
+.PARAMETER OrganizationName
+    Filtro sull'organizzazione da conservare nello snapshot, per corrispondenza
+    parziale sul nome (default 'intrawelt'). ESISTE PER UNA RAGIONE DI RISERVATEZZA,
+    non di comodita': l'istanza e' quella multi-tenant del provider MSP e contiene
+    anche l'inventario di altre aziende sue clienti, che questo progetto non ha
+    alcuna necessita' di conservare. Lo snapshot filtrato tiene solo i dispositivi,
+    le interfacce e le interrogazioni dell'organizzazione richiesta.
+.PARAMETER OrganizationId
+    Alternativa numerica a -OrganizationName, quando l'id e' noto e si vuole essere
+    espliciti.
+.PARAMETER AllOrganizations
+    Disattiva il filtro e conserva tutte le organizzazioni dell'istanza. Da usare
+    solo con una ragione dichiarata: significa scrivere su disco dati di aziende
+    terze.
 .EXAMPLE
     .\scripts\Get-NinjaSnapshot.ps1
     Usa le variabili d'ambiente e chiede il segreto se manca.
@@ -72,7 +86,10 @@ param(
     [System.Security.SecureString] $ClientSecret,
     [string] $Scope = 'monitoring',
     [switch] $IncludeHeavy,
-    [string] $OutputDir
+    [string] $OutputDir,
+    [string] $OrganizationName = 'intrawelt',
+    [int] $OrganizationId = 0,
+    [switch] $AllOrganizations
 )
 
 Set-StrictMode -Version Latest
@@ -131,6 +148,39 @@ function Get-AccessToken {
     return $response.access_token
 }
 
+function Get-Prop {
+    <#
+        Lettura difensiva di una proprieta': con Set-StrictMode attivo, accedere a una
+        proprieta' assente su un oggetto deserializzato da JSON solleva un'eccezione, e
+        i payload di questa API omettono i campi nulli invece di riportarli vuoti.
+    #>
+    param($Object, [string] $Name, $Default = '')
+    if ($null -eq $Object) { return $Default }
+    if ($Object.PSObject.Properties.Name -contains $Name) {
+        $value = $Object.$Name
+        if ($null -eq $value) { return $Default }
+        return $value
+    }
+    return $Default
+}
+
+function Get-RowSet {
+    <#
+        Le interrogazioni diagnostiche (/v2/queries/*) non ritornano un array ma un
+        oggetto con 'results' e un cursore di paginazione: senza questo unwrap il
+        conteggio risulta sempre 1.
+    #>
+    param($Data)
+    # PowerShell srotola gli array restituiti da una funzione, quindi un risultato di
+    # un solo elemento torna come scalare e la lettura di .Count fallisce con
+    # Set-StrictMode attivo. La protezione sta nei siti di chiamata, che avvolgono
+    # sempre l'esito in @(...): qui NON si usa l'operatore virgola, perche'
+    # produrrebbe un array annidato e i conteggi risulterebbero tutti pari a uno.
+    if ($null -eq $Data) { return @() }
+    if ($Data.PSObject.Properties.Name -contains 'results') { return @($Data.results) }
+    return @($Data)
+}
+
 function Invoke-NinjaGet {
     <#
         Best-effort: ritorna un oggetto con Path, Ok, Status e Data. Non lancia
@@ -146,7 +196,7 @@ function Invoke-NinjaGet {
         $result.status = 200
         $result.data = $data
         if ($null -ne $data) {
-            if ($data -is [System.Array]) { $result.count = $data.Count } else { $result.count = 1 }
+            $result.count = @(Get-RowSet -Data $data).Count
         }
         Write-Host ("  OK   {0}  ({1} elementi)" -f $Path, $result.count)
     } catch {
@@ -236,6 +286,60 @@ foreach ($p in $paths) {
     $results += Invoke-NinjaGet -BaseUrl $baseUrl -Token $token -Path $p
 }
 
+# --- Filtro sull'organizzazione ----------------------------------------------------
+# L'istanza e' multi-tenant (provider MSP): senza filtro lo snapshot conserverebbe
+# l'inventario di aziende terze, che questo progetto non ha motivo di detenere.
+
+$targetOrgIds = @()
+$orgEntry = $results | Where-Object { $_.path -eq '/v2/organizations' -and $_.ok }
+if ($AllOrganizations) {
+    Write-Warning 'Filtro organizzazione DISATTIVATO: lo snapshot conservera'' dati di tutte le organizzazioni dell''istanza, comprese aziende terze.'
+} elseif ($orgEntry) {
+    $allOrgs = @(Get-RowSet -Data $orgEntry.data)
+    if ($OrganizationId -gt 0) {
+        $targetOrgIds = @($allOrgs | Where-Object { (Get-Prop $_ 'id' 0) -eq $OrganizationId } | ForEach-Object { Get-Prop $_ 'id' 0 })
+    } else {
+        $targetOrgIds = @($allOrgs | Where-Object { (Get-Prop $_ 'name' '') -like ('*' + $OrganizationName + '*') } | ForEach-Object { Get-Prop $_ 'id' 0 })
+    }
+    if ($targetOrgIds.Count -eq 0) {
+        throw ("Nessuna organizzazione corrisponde al filtro (nome '{0}', id {1}). Usare -OrganizationName/-OrganizationId corretti, oppure -AllOrganizations con una ragione dichiarata." -f $OrganizationName, $OrganizationId)
+    }
+    Write-Host ''
+    Write-Host ('Filtro organizzazione attivo: id {0} su {1} organizzazioni presenti nell''istanza.' -f ($targetOrgIds -join ', '), @(Get-RowSet -Data $orgEntry.data).Count)
+
+    $keptDeviceIds = @{}
+    foreach ($r in $results) {
+        if (-not $r.ok) { continue }
+        $rows = @(Get-RowSet -Data $r.data)
+        if ($rows.Count -eq 0) { continue }
+        $sample = $rows[0]
+        if ($sample.PSObject.Properties.Name -contains 'organizationId') {
+            $filtered = @($rows | Where-Object { $targetOrgIds -contains (Get-Prop -Object $_ -Name 'organizationId' -Default -1) })
+            foreach ($x in $filtered) { $keptDeviceIds[[string](Get-Prop $x 'id' '')] = $true }
+            $r.data = $filtered
+            $r.count = $filtered.Count
+        } elseif ($r.path -eq '/v2/organizations') {
+            $filtered = @($rows | Where-Object { $targetOrgIds -contains (Get-Prop -Object $_ -Name 'id' -Default -1) })
+            $r.data = $filtered
+            $r.count = $filtered.Count
+        }
+    }
+    # Secondo giro: le interrogazioni diagnostiche non portano organizationId ma deviceId.
+    foreach ($r in $results) {
+        if (-not $r.ok) { continue }
+        $rows = @(Get-RowSet -Data $r.data)
+        if ($rows.Count -eq 0) { continue }
+        $sample = $rows[0]
+        if ($sample.PSObject.Properties.Name -contains 'deviceId') {
+            $filtered = @($rows | Where-Object { $keptDeviceIds.ContainsKey([string](Get-Prop $_ 'deviceId' '')) })
+            $r.data = $filtered
+            $r.count = $filtered.Count
+        }
+    }
+    Write-Host ('Dopo il filtro: {0} dispositivi conservati.' -f $keptDeviceIds.Count)
+    Write-Host ''
+}
+
 # --- Scrittura dello snapshot JSON -------------------------------------------------
 
 $snapshot = [ordered]@{
@@ -243,6 +347,7 @@ $snapshot = [ordered]@{
     instance       = $baseUrl
     scope          = $Scope
     include_heavy  = [bool] $IncludeHeavy
+    organization_filter = @{ name = $OrganizationName; id = $OrganizationId; all = [bool] $AllOrganizations; kept_ids = $targetOrgIds }
     endpoints      = @{}
     endpoint_status = @()
 }
@@ -295,9 +400,7 @@ Add-Section -Title 'Organizzazioni' -Path '/v2/organizations' -Renderer {
     $md.Add('| id | nome | dispositivi |')
     $md.Add('|---|---|---|')
     foreach ($o in $data) {
-        $n = ''
-        if ($o.PSObject.Properties.Name -contains 'nodeApprovalMode') { $n = $o.nodeApprovalMode }
-        $md.Add(('| {0} | {1} | {2} |' -f $o.id, $o.name, $n))
+        $md.Add(('| {0} | {1} | {2} |' -f (Get-Prop $o 'id'), (Get-Prop $o 'name'), (Get-Prop $o 'nodeApprovalMode' '-')))
     }
 }
 
@@ -306,28 +409,25 @@ Add-Section -Title 'Policy' -Path '/v2/policies' -Renderer {
     $md.Add('| id | nome | tipo nodo | eredita da |')
     $md.Add('|---|---|---|---|')
     foreach ($p in $data) {
-        $md.Add(('| {0} | {1} | {2} | {3} |' -f $p.id, $p.name, $p.nodeClass, $p.parentPolicyId))
+        $md.Add(('| {0} | {1} | {2} | {3} |' -f (Get-Prop $p 'id'), (Get-Prop $p 'name'), (Get-Prop $p 'nodeClass'), (Get-Prop $p 'parentPolicyId' '-')))
     }
 }
 
-Add-Section -Title 'Script e automazioni' -Path '/v2/scripting/scripts' -Renderer {
+Add-Section -Title 'Script e automazioni' -Path '/v2/automation/scripts' -Renderer {
     param($data)
     $md.Add('| id | nome | linguaggio | sistema operativo |')
     $md.Add('|---|---|---|---|')
     foreach ($s in $data) {
-        $lang = ''
-        if ($s.PSObject.Properties.Name -contains 'language') { $lang = $s.language }
-        $os = ''
-        if ($s.PSObject.Properties.Name -contains 'operatingSystems') { $os = ($s.operatingSystems -join ' ') }
-        $md.Add(('| {0} | {1} | {2} | {3} |' -f $s.id, $s.name, $lang, $os))
+        $os = Get-Prop $s 'operatingSystems' @()
+        $md.Add(('| {0} | {1} | {2} | {3} |' -f (Get-Prop $s 'id'), (Get-Prop $s 'name'), (Get-Prop $s 'language' '-'), (@($os) -join ' ')))
     }
 }
 
 Add-Section -Title 'Dispositivi (sintesi)' -Path '/v2/devices' -Renderer {
     param($data)
-    $md.Add(('Dispositivi censiti: **{0}**.' -f @($data).Count))
+    $md.Add(('Dispositivi censiti: **{0}**.' -f @(Get-RowSet -Data $data).Count))
     $md.Add('')
-    $byClass = @($data) | Group-Object -Property nodeClass | Sort-Object -Property Count -Descending
+    $byClass = @($data) | Group-Object -Property { Get-Prop -Object $_ -Name 'nodeClass' -Default 'ignoto' } | Sort-Object -Property Count -Descending
     $md.Add('| classe nodo | numero |')
     $md.Add('|---|---|')
     foreach ($g in $byClass) { $md.Add(('| {0} | {1} |' -f $g.Name, $g.Count)) }
@@ -335,9 +435,8 @@ Add-Section -Title 'Dispositivi (sintesi)' -Path '/v2/devices' -Renderer {
 
 Add-Section -Title 'Interfacce di rete per dispositivo' -Path '/v2/queries/network-interfaces' -Renderer {
     param($data)
-    $rows = $data
-    if ($data.PSObject.Properties.Name -contains 'results') { $rows = $data.results }
-    $md.Add(('Righe: **{0}**. E'' la fonte piu'' rapida per il censimento indirizzi di M22a:' -f @($rows).Count))
+    $rows = @(Get-RowSet -Data $data)
+    $md.Add(('Righe: **{0}**. E'' la fonte piu'' rapida per il censimento indirizzi di M22a:' -f $rows.Count))
     $md.Add('incrocia MAC e indirizzo per dispositivo gestito.')
 }
 

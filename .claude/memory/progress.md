@@ -114,6 +114,80 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-30 (quarta parte) — Due trappole PowerShell sullo script NinjaOne, corrette e testate
+
+Commit: PENDING (da fare manualmente)
+File toccati: `scripts/Get-NinjaSnapshot.ps1` (correzioni), `.claude/context/dev-testing.md`
+(nuova sezione con le due trappole e il test di regressione a quattro forme).
+
+Il secondo lancio dello script e' fallito dopo il filtro con `PropertyNotFoundStrict` su
+`Count`. Causa: PowerShell srotola gli array restituiti da una funzione, quindi
+`Get-RowSet` su un risultato di un solo elemento consegnava uno scalare e `.Count`
+non esisteva piu' sotto modalita' rigorosa. Primo tentativo di rimedio: operatore
+virgola nel `return`. **Sbagliato, e scoperto solo grazie al test**: produce un array
+annidato e tutti i conteggi diventano uno, difetto peggiore del precedente perche' non
+solleva errori e falsifica i numeri in silenzio. Rimedio corretto adottato: nessuna
+virgola nella funzione e avvolgimento `@(...)` in tutti i siti di chiamata. Rese
+esplicite anche le chiamate con valore predefinito negativo (`-Default -1`), che il
+parser potrebbe interpretare come nome di parametro.
+
+Scritto in `dev-testing.md` il test di regressione che ha smascherato il rimedio
+sbagliato: quattro forme di dato (array multiplo, array di un elemento, oggetto
+paginato, `$null`) con i conteggi attesi. Vale per qualunque script del progetto che
+normalizzi payload di un'API, non solo per questo.
+
+Nota di stato: il secondo lancio e' fallito **prima** della scrittura dello snapshot,
+quindi in `output/` resta la raccolta non filtrata del primo tentativo, quella che
+contiene anche dati di aziende terze (SEC-022). Va rilanciato lo script corretto e
+cancellata la copia precedente.
+
+## 2026-07-30 (terza parte) — Primo snapshot RMM eseguito: nessun dominio (SEC-021), snapshot multi-tenant (SEC-022), censimento M22a quasi chiuso
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `scripts/Get-NinjaSnapshot.ps1` (due correzioni e una
+funzione nuova: lettura difensiva delle proprieta' per la modalita' rigorosa, unwrap
+delle interrogazioni paginate, filtro per organizzazione attivo per default con
+interruttore esplicito `-AllOrganizations`); `GAP-TBC.md` (#128 SEC-021, #129 SEC-022,
+riepilogo a 129); `.claude/context/design-and-security.md` (assenza di directory e
+effetto multi-tenant nella sezione sul contesto endpoint);
+`docs/interventi-robustezza.md` (sezione su come si diventa immuni alla rotazione, con
+il limite di cio' che oggi non e' possibile); `docs/segmentazione-lan-m22.md`
+(censimento indirizzi dallo snapshot RMM e limite metodologico statico/dinamico);
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (tre esiti dello snapshot e
+disegno immune alla rotazione).
+File privati: `_notes/.anonymization-map.md` (id e nome dell'organizzazione, ruolo di
+dominio dei 26 dispositivi, censimento indirizzi reali per classe, nota metodologica).
+
+Tre esiti. Primo, un difetto mio nello script: con la modalita' rigorosa attiva la
+lettura di una proprieta' assente solleva un'eccezione e l'API omette i campi nulli;
+il JSON era gia' scritto, il Markdown no. Corretto con lettura difensiva e unwrap
+delle query paginate, che spiegava anche i conteggi tutti a "1 elemento".
+
+Secondo, un problema creato dal lancio stesso: l'istanza e' multi-tenant e senza filtro
+la raccolta ha restituito 99 dispositivi su 26 organizzazioni, cioe' l'inventario di
+venticinque aziende terze clienti dello stesso provider MSP. Problema di
+minimizzazione, non difetto dell'istanza: aggiunto il filtro per organizzazione attivo
+per default, snapshot non filtrato da rigenerare e cancellare (SEC-022, #129).
+
+Terzo, i risultati utili. Censimento M22a: per la sola organizzazione, 1381 righe di
+interfacce su 26 dispositivi, 75 indirizzi IPv4 distinti — 26 nella classe postazioni
+con maschera /19, 4 su altri segmenti aziendali (2 server, 2 sulla VLAN 40, conferma
+indipendente), 11 su reti domestiche di portatili fuori sede da escludere, il resto
+adattatori virtuali e VPN. Manca solo la distinzione statico/dinamico, che l'API non
+riporta e che si chiude leggendo le riserve DHCP dal firewall. E il dato strutturale:
+i 26 dispositivi sono **tutti standalone in workgroup, nessun dominio** (SEC-021,
+#128), che e' la causa comune di credenziali memorizzate ovunque, della loro scadenza a
+trenta giorni, dell'assenza di DNS interno e della dipendenza dal broadcast.
+
+Risposta alla richiesta dell'IT Manager (soluzione totalmente indipendente dal cambio
+password): poiche' la rotazione agisce sulle utenze locali di Windows e non sugli altri
+sistemi, il disegno immune usa **utenze locali del NAS su entrambe le gambe** — account
+di servizio per le multifunzione, utenza NAS per ciascuna persona — con verifica che sul
+NAS non sia attiva una politica di scadenza. La soluzione strutturalmente superiore
+(autenticazione integrata, nessun segreto memorizzato) richiede un servizio di directory
+che oggi non esiste: registrata come opzione strategica che chiuderebbe quattro fronti
+insieme, ma e' un progetto a se' con impatto organizzativo.
+
 ## 2026-07-30 (seconda parte) — SMB provato su entrambi gli apparati, vincolo RMM e snapshot NinjaOne (ADR-017)
 
 Commit: PENDING (da fare manualmente)

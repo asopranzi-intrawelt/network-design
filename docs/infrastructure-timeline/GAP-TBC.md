@@ -399,6 +399,15 @@ loro sviluppo.
 
 ---
 
+## Assenza di un servizio di directory e conseguenze sulle credenziali (30/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 128 | SEC-021 | Lo snapshot NinjaOne dell'organizzazione Intrawelt censisce 26 dispositivi gestiti e riporta per ognuno il ruolo di dominio: **tutti risultano "Standalone Workstation" o "Standalone Server"**, quattordici con un nome di workgroup aziendale e dieci con il workgroup predefinito di Windows, piu' una postazione Linux. Non esiste quindi alcun servizio di directory: nessun dominio, nessuna autenticazione centralizzata, nessun single sign-on. Non e' una curiosita' architetturale, e' la causa comune di almeno quattro fatti gia' tracciati separatamente in questo progetto. Primo, ogni accesso tra macchine avviene con **credenziali locali memorizzate** — e' cosi' che le due multifunzione conservano utenza e password delle condivisioni degli utenti (SEC-020), ed e' cosi' che una postazione accede al disco di un'altra. Secondo, poiche' l'RMM ruota le password locali ogni trenta giorni, ogni credenziale memorizzata ha vita massima trenta giorni: il difetto non e' solo di sicurezza ma di manutenzione ricorrente. Terzo, senza directory non esiste un servizio di risoluzione nomi interno, quindi la risoluzione e' affidata al broadcast (NetBIOS, mDNS) e ai file `hosts` distribuiti a mano, che e' esattamente cio' che SEC-016 registra e che rende fragile qualunque segmentazione, perche' il broadcast non attraversa un confine di livello 3. Quarto, non e' possibile una separazione degli accessi basata su identita': tutto si costruisce su permessi per condivisione e credenziali locali. L'introduzione di un servizio di directory con DNS interno chiuderebbe insieme SEC-016, la dipendenza dal broadcast e la dipendenza dalle credenziali memorizzate, ma cambia il modello di gestione degli endpoint e va valutata come progetto a se', non come intervento di rete | `output/ninjaone-snapshot.json` del 30/07/2026, campi `system.domain` e `system.domainRole` dei 26 dispositivi dell'organizzazione |
+| 129 | SEC-022 | Lo snapshot dell'RMM eseguito il 30/07/2026 con le credenziali API del provider MSP ha restituito, prima di qualunque filtro, **99 dispositivi appartenenti a 26 organizzazioni**: cioe' l'inventario di venticinque aziende terze, clienti dello stesso provider, oltre a quello di Intrawelt. Non e' un difetto dell'istanza, e' la conseguenza naturale di una chiave API multi-tenant usata senza restringere l'ambito, ed e' un problema di minimizzazione: questo progetto non ha alcuna necessita' di detenere l'inventario di altre aziende, e conservarlo su disco significherebbe custodire dati di terzi senza titolo. Rimedio applicato nella stessa sessione: lo script `Get-NinjaSnapshot.ps1` filtra ora per organizzazione (default sul nome dell'azienda) e conserva solo dispositivi, interfacce e interrogazioni di quella, con un interruttore esplicito `-AllOrganizations` che va usato solo con una ragione dichiarata. Azione residua: rigenerare lo snapshot con il filtro attivo e cancellare quello non filtrato. Rilevante per A.5.34 e per il rapporto con il fornitore (A.5.19-A.5.22) | Esito del primo snapshot, 30/07/2026; correzione nello stesso script |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -439,5 +448,6 @@ loro sviluppo.
 | Multifunzione con credenziali di fabbrica (28/07/2026) | 125 |
 | Destinazioni di scansione verso postazioni (29/07/2026) | 126 |
 | NAS-INTRA2, cartella backup ufficio da 14 TB (29/07/2026) | 127 |
-| **Totale identificati** | **127** |
+| Assenza di directory e snapshot multi-tenant (30/07/2026) | 128-129 |
+| **Totale identificati** | **129** |
 | **Di cui risolti** | **8** (14, 54, 55, 61, 63, 106, 111, 116 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |

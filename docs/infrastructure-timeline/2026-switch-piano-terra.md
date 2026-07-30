@@ -1813,3 +1813,73 @@ alcun valore — il segreto si risolve da variabile d'ambiente o da prompt a run
 per Proxmox e per Nebula. Fra gli endpoint interrogati ce n'e' uno che serve subito a un altro
 fronte: l'interrogazione delle interfacce di rete per dispositivo, che dove risponde sostituisce
 il censimento manuale degli indirizzi statici richiesto da M22a.
+
+### Primo snapshot RMM: tre esiti, uno dei quali e' un problema che ci siamo creati
+
+Lo snapshot e' stato eseguito subito e ha prodotto tre risultati di natura diversa.
+
+Il primo e' un difetto dello script, corretto in giornata: con la modalita' rigorosa attiva,
+la lettura di una proprieta' assente su un oggetto JSON solleva un'eccezione, e l'API omette i
+campi nulli invece di riportarli vuoti. Lo snapshot JSON era gia' stato scritto, il riepilogo
+Markdown no. Sistemato con una lettura difensiva delle proprieta' e con l'unwrap delle
+interrogazioni diagnostiche, che non ritornano un array ma un oggetto con i risultati e un
+cursore di paginazione — motivo per cui i conteggi mostravano tutti "1 elemento".
+
+Il secondo e' il problema che ci siamo creati lanciandolo: l'istanza dell'RMM e' quella
+multi-tenant del provider MSP, e senza filtro la raccolta ha restituito **99 dispositivi
+appartenenti a 26 organizzazioni**, cioe' l'inventario di venticinque aziende terze clienti
+dello stesso provider. Non e' un difetto dell'istanza ma una conseguenza naturale di una chiave
+multi-tenant usata senza restringere l'ambito, ed e' un problema di minimizzazione: questo
+progetto non ha titolo per detenere quei dati. Aggiunto allo script un filtro per
+organizzazione attivo per default, con un interruttore esplicito per disattivarlo che va usato
+solo con una ragione dichiarata; lo snapshot non filtrato va rigenerato e cancellato.
+Registrato come SEC-022 (`GAP-TBC.md` #129).
+
+Il terzo e' il risultato che serviva, ed e' doppio. Sul fronte del censimento, per la sola
+organizzazione Intrawelt l'interrogazione delle interfacce ha dato 1381 righe di adattatori su
+26 dispositivi, riducibili a 75 indirizzi IPv4 distinti: ventisei nella classe delle postazioni
+con maschera `/19` e gateway della classe stessa, quattro su altri segmenti aziendali (due
+server, due sulla VLAN 40 della Wi-Fi staff, conferma indipendente che quel segmento e' in
+uso), undici in una classe domestica con gateway `.1.1` che sono le reti di casa dei portatili
+fuori sede e non vanno confuse con indirizzi interni, e il resto adattatori virtuali e di VPN.
+Manca solo la distinzione statico/dinamico, che l'interrogazione non riporta e che si chiude
+leggendo le riserve DHCP dal firewall.
+
+Sul fronte identita', il dato piu' importante della giornata: i 26 dispositivi gestiti sono
+**tutti standalone**, in workgroup, **senza alcun dominio**. Quattordici workstation con un
+workgroup aziendale, dieci con quello predefinito di Windows, un server in workgroup, una
+postazione Linux. Non e' una curiosita': e' la causa comune di quattro fatti che il progetto
+aveva tracciato separatamente. Ogni accesso tra sistemi usa credenziali locali memorizzate, ed
+e' il meccanismo con cui le multifunzione conservano le password delle condivisioni degli
+utenti. Quelle credenziali, essendo utenze locali di Windows, hanno vita massima trenta giorni
+per la policy dell'RMM. Non esiste risoluzione nomi interna, quindi si dipende dal broadcast e
+dai file `hosts` distribuiti a mano, che e' precisamente cio' che rende fragile ogni
+segmentazione. E non e' possibile alcuna separazione degli accessi basata su identita'.
+Registrato come SEC-021 (`GAP-TBC.md` #128).
+
+### Rendere la scansione immune alla rotazione, non solo meno esposta
+
+Alla luce di quel dato, la richiesta dell'IT Manager — una soluzione totalmente indipendente dal
+cambio password, non una che riduca il problema — ha una risposta precisa e una che non e'
+disponibile oggi.
+
+La risposta disponibile parte da cosa ruota davvero: la policy dell'RMM agisce sulle utenze
+**locali di Windows**, non sugli altri sistemi. Quindi ogni credenziale memorizzata che sia
+un'utenza di postazione scade, e ogni credenziale che appartenga a un sistema fuori da quel
+perimetro no. Il disegno immune ha due gambe e vanno rese immuni entrambe: l'account di servizio
+della multifunzione deve essere un'**utenza locale del NAS**, verificando che sul NAS non sia
+attiva una politica di scadenza che lo riporti dentro il problema da un'altra porta; e l'accesso
+di ciascuna persona alla propria cartella deve usare anch'esso un'**utenza locale del NAS**,
+salvata una volta nelle credenziali di Windows, che sopravvive a tutte le rotazioni perche' e'
+gestita da chi amministra il NAS e non dall'RMM. Il costo e' una seconda password per persona,
+digitata una volta.
+
+La risposta strutturalmente superiore sarebbe non memorizzare alcuna credenziale, lasciando che
+l'autenticazione integrata di un servizio di directory dia l'accesso con il ticket della
+sessione di lavoro: il cambio password diventerebbe un non-evento perche' non ci sarebbe nessun
+segreto salvato da aggiornare. Oggi non e' percorribile, perche' quel servizio non esiste
+(SEC-021). Vale registrare che introdurlo chiuderebbe in un colpo quattro fronti aperti — le
+credenziali memorizzate, l'assenza di DNS interno, la dipendenza dal broadcast per NetBIOS e
+mDNS, la distribuzione a mano dei file `hosts` — ma e' un progetto con impatto organizzativo e
+non un intervento di rete, e nel frattempo la coppia di utenze locali del NAS rende la scansione
+immune senza dipendere da esso.

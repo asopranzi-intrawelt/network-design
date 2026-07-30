@@ -168,6 +168,56 @@ toccare nessuna VLAN**, e produce da subito il beneficio di governo dei dati. Qu
 arrivera' la segmentazione, le destinazioni saranno gia' dove devono essere e il passo si
 riduce a una regola sul firewall.
 
+#### Come si diventa immuni alla rotazione delle password, e non solo meno esposti
+
+Obiettivo posto dall'IT Manager il 30/07/2026, e va preso alla lettera: non ridurre il
+problema, **eliminarlo**. La soluzione deve essere tale che il cambio password degli
+endpoint non tocchi mai la scansione.
+
+Il ragionamento parte da cosa ruota davvero. La rotazione a trenta giorni e' una policy
+dell'RMM sulle **utenze locali di Windows**: agisce sugli endpoint, non sugli altri
+apparati della rete. Ne segue che qualunque credenziale memorizzata che *sia* un'utenza
+locale di Windows scade, e qualunque credenziale che appartenga a un sistema fuori da quel
+perimetro no. Il problema quindi non e' la rotazione: e' il fatto che oggi le destinazioni
+di scansione usano identita' delle postazioni. Spostare la destinazione sul NAS non e' solo
+una scelta di governo dei dati, e' la condizione per l'immunita'.
+
+Il disegno immune ha due gambe, e vanno rese immuni entrambe, altrimenti il problema si
+sposta invece di sparire.
+
+La gamba macchina-verso-storage e' l'account di servizio della multifunzione: **utenza
+locale del NAS**, non di Windows, quindi fuori dalla policy dell'RMM per costruzione. Va
+verificato che sul NAS non sia attiva una politica di scadenza password che la riporterebbe
+dentro il problema da un'altra porta: se lo e', quell'account va escluso o configurato senza
+scadenza. E' l'unica credenziale memorizzata negli apparati, quindi l'unica che potrebbe
+scadere: risolta questa, la scansione non si rompe piu' da sola.
+
+La gamba utente-verso-storage e' l'accesso di ciascuna persona alla propria cartella. Anche
+qui l'identita' da usare e' **un'utenza locale del NAS**, non quella di Windows: si salva
+una volta nelle credenziali di Windows e sopravvive a tutte le rotazioni successive, perche'
+e' una credenziale diversa e gestita da chi amministra il NAS, non dall'RMM. Il costo e' che
+la persona ha una seconda password, che pero' digita una sola volta.
+
+##### Perche' non si puo' fare di meglio oggi, e cosa lo renderebbe possibile
+
+La soluzione strutturalmente superiore sarebbe non memorizzare nessuna credenziale: con un
+servizio di directory e l'autenticazione integrata, l'utente ottiene l'accesso alla propria
+cartella con il *ticket* della sessione di lavoro e il cambio password diventa un non-evento,
+perche' non c'e' nessun segreto salvato da aggiornare. Lo snapshot dell'RMM del 30/07/2026 dice
+pero' che quella strada oggi non esiste: i ventisei dispositivi gestiti dell'organizzazione
+sono **tutti standalone**, in workgroup, senza alcun dominio (gap SEC-021,
+`GAP-TBC.md` #128). Senza directory non c'e' autenticazione integrata, e ogni accesso tra
+sistemi resta necessariamente basato su una credenziale memorizzata.
+
+Vale la pena registrare che l'introduzione di un servizio di directory con DNS interno
+chiuderebbe in un colpo quattro cose che questo progetto sta affrontando separatamente: la
+dipendenza dalle credenziali memorizzate, l'assenza di risoluzione nomi interna (SEC-016), la
+dipendenza dal broadcast per NetBIOS e mDNS che rende fragile ogni segmentazione, e la
+distribuzione a mano dei file `hosts`. Non e' un intervento di rete e non appartiene a questo
+registro: e' un progetto con impatto organizzativo, che cambia anche il modo in cui l'RMM
+gestisce le utenze. Va valutato come tale, e nel frattempo la coppia di utenze locali del NAS
+descritta sopra rende la scansione immune alla rotazione senza dipendere da quel progetto.
+
 #### Un argomento in piu', che da solo giustificherebbe l'intervento
 
 Registrato il 30/07/2026: gli endpoint sono gestiti da un RMM distribuito che **impone la
