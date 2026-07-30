@@ -1612,3 +1612,103 @@ NAS-003 in `runbook-anomalie.md`, con la mole di oggetti come ipotesi principale
 hardware come seconda e un job in corso come terza, da escludere per prima perche' e' la piu'
 facile da verificare. Conta perche' R8 richiede diversi passaggi in quella interfaccia e la
 stima dei tempi passa da minuti a decine di minuti.
+
+### La spunta che non era una spunta: raccomandazione capovolta
+
+Spuntando la casella delle autorizzazioni avanzate, prima di applicare, l'apparato ha
+mostrato un dialogo di conferma che ha cambiato la decisione: all'attivazione **tutte le
+autorizzazioni delle sottocartelle vengono impostate come quelle delle cartelle principali**,
+con un'operazione che puo' richiedere diversi minuti in funzione del numero di file e cartelle
+da elaborare. Non e' quindi un interruttore di configurazione, e' una riscrittura massiva di
+permessi su tutto il volume — e la nota scritta poche ore prima in questo stesso progetto,
+secondo cui l'attivazione non avrebbe modificato nulla, era sbagliata. Corretta nel documento
+di design con la ragione, perche' un errore corretto senza spiegazione torna alla sessione
+successiva.
+
+Con i numeri veri il confronto tra le due strade si capovolge. Su questo apparato
+l'inizializzazione attraverserebbe un albero da circa cinque milioni di oggetti, su hardware
+con 4 GB di RAM e CPU ARM, mentre serve le condivisioni di lavoro e con il pannello di
+amministrazione gia' lento: durata imprevedibile, da misurare e non da stimare, e comunque da
+eseguire fuori orario. C'e' anche una conseguenza di lungo periodo meno visibile: dopo
+l'inizializzazione ogni sottocartella porta permessi espliciti propri, quindi la gestione
+diventa granulare **e** manuale, e modificare il permesso di una condivisione non si propaga
+piu' implicitamente al suo contenuto. Molto piu' potente e molto piu' facile da sbagliare.
+
+Decisione presa: per quattro destinatari si creano **quattro cartelle condivise**, una per
+ciascuno, con i permessi assegnati dove esistono nativamente. Quattro righe in piu' in una
+lista che ne conta dodici, nessuna impostazione globale toccata, nessuna riscrittura su
+milioni di oggetti, intervento eseguibile subito e in orario di lavoro — cioe' dentro la
+regola di ammissione del registro dei micro-interventi, che la strada delle autorizzazioni
+avanzate non rispetta piu'. Quella strada resta corretta se e quando i destinatari
+diventeranno molti o se si adottera' il modello per sottocartella come standard del NAS, e in
+quel caso sara' un intervento a se', pianificato fuori orario e con la durata misurata su una
+prova. La differenza non e' tecnica ma di ordine di grandezza: quattro utenti non
+giustificano una riscrittura di permessi su cinque milioni di oggetti.
+
+Registrato infine il metodo di verifica, perche' l'IT Manager ha fatto notare che tutte le
+prove si possono eseguire dalla propria postazione: e' vero, e la ragione e' che quello che
+conta e' l'identita' con cui si apre la connessione, non il computer da cui si parte. La prova
+positiva e' montare la propria condivisione con le credenziali del destinatario e scrivere un
+file; la prova negativa, che e' quella che dimostra il requisito, e' tentare la condivisione
+di un altro destinatario con le stesse credenziali e ricevere un rifiuto. Con un dettaglio di
+Windows che fa perdere tempo se non lo si sa: verso lo stesso server non si possono tenere
+aperte contemporaneamente connessioni con identita' diverse, e il tentativo restituisce un
+errore di conflitto di sessione che sembra un problema di permessi e non lo e', quindi prima
+di ogni prova con un'altra utenza va chiusa la sessione precedente.
+
+---
+
+## 30/07/2026 - Censimento chiuso su entrambe le multifunzione: sette destinatari, e una deviazione dichiarata
+
+Letta anche la rubrica della seconda multifunzione, la Canon del Piano 1, su richiesta dell'IT
+Manager di fare la stima globale prima di committare qualunque decisione. La richiesta era
+giusta nel merito e non solo nel metodo: il disegno dimensionato su quattro destinatari e' una
+cosa, lo stesso disegno su sette e' un'altra, e la scelta della strategia dipendeva esattamente
+da quel numero.
+
+Prima cosa, una particolarita' del modello che a colpo d'occhio fa sembrare il censimento un
+lavoro enorme quando non lo e'. La rubrica di quell'apparato espone un elenco personale,
+cinquanta elenchi per gruppi di utenti, dieci elenchi indirizzi e un elenco per
+amministratori: sessantadue contenitori, tutti creati a vuoto dal firmware. La colonna dei
+conteggi lo dice a chiare lettere, perche' riportano tutti zero destinazioni tranne l'elenco a
+selezione veloce, che ne contiene sette. Tutta la rubrica utile della macchina sta in un solo
+elenco.
+
+Le sette voci sono **sette su sette cartelle di rete SMB verso condivisioni di postazioni**,
+nessuna e-mail e nessun FTP, con il campo del percorso vuoto perche' la condivisione e' gia'
+nel campo host. Il totale sui due apparati e' quindi undici destinazioni, che si riducono a
+**sette destinatari distinti**: le quattro voci della Kyocera sono un sottoinsieme delle sette
+della Canon, che aggiunge tre persone non censite al Piano Terra. Il fronte scan-to-folder e'
+percio' totale su entrambe le macchine, non una particolarita' di una delle due.
+
+Tre fatti nuovi che il primo censimento non poteva mostrare. Due destinazioni su sette
+puntano alla postazione per **nome NetBIOS** invece che per indirizzo: funzionano perche' la
+risoluzione NetBIOS avviene in broadcast dentro il dominio di livello 2, e sono le prime due
+che si romperebbero attraversando un confine instradato — terza forma della stessa trappola
+dopo mDNS sulle stampanti e l'assenza di un DNS interno, e conferma che su questa rete la
+risoluzione dei nomi e' interamente affidata al broadcast. Le utenze nominali memorizzate
+sono **due**, una per apparato, quindi la sostituzione con un account di servizio non
+affronta un caso isolato. E su tutte e sette le voci la **conferma della destinazione prima
+dell'invio e' disattivata**, cioe' oggi una selezione sbagliata dal display deposita
+documenti nella cartella di un'altra persona senza alcun passaggio che permetta di
+accorgersene: difetto indipendente dalla rete, tracciato come intervento R11.
+
+### La deviazione dalla regola, dichiarata invece che nascosta
+
+Sette destinatari sono uno oltre la soglia di sei che era stata fissata *prima* di conoscere
+il numero, proprio per non piegare il numero alla soluzione preferita. Applicando la regola
+alla lettera si dovrebbe passare alle autorizzazioni per sottocartella e rimandare tutto a un
+intervento fuori orario. La regola aveva pero' una ragione dichiarata e non era un numero
+magico: il costo delle cartelle condivise separate e' che la lista delle condivisioni diventa
+illeggibile. Su questo apparato quel costo e' eliminabile, perche' ogni cartella condivisa ha
+l'opzione che la nasconde dalla navigazione di rete restando raggiungibile per percorso
+diretto.
+
+Decisione: **sette cartelle condivise nascoste**, una per destinatario. Nessuna impostazione
+globale toccata, nessuna riscrittura di permessi su cinque milioni di oggetti, intervento che
+resta dentro la regola di ammissione del registro dei micro-interventi. Il costo accettato e'
+che il modello non scala elegantemente: alla decina di destinatari, o quando si voglia
+adottare i permessi per sottocartella come standard del NAS, si passera' all'altra strada come
+intervento pianificato. La soglia della regola resta a sei per il caso generale: qui e' stata
+superata di uno con una mitigazione specifica e verificabile, e la deviazione e' scritta nel
+registro invece di essere coperta riscrivendo la soglia a posteriori.
