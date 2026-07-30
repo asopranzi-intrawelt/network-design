@@ -44,6 +44,7 @@ documentazione ISO27001, non un'intenzione.
 | R8 | Spostare le destinazioni di scansione dalle cartelle condivise delle postazioni a una share dedicata sul NAS | NET-009 (#114) lato flussi dato, SEC-020 (#126), A.8.3 e A.5.14 | Nessuno sulla rete: si riconfigurano le destinazioni sull'apparato. Cambia dove gli utenti trovano le scansioni, quindi richiede comunicazione | Da fare |
 | R9 | Sostituire negli account di scansione i nomi di persona con un account di servizio dedicato alla share di scansione | SEC-020 (#126), A.9.2: un account nominale usato da un apparato non e' attribuibile a una persona ed e' impossibile da dismettere all'uscita di quella persona | Nessuno se eseguito insieme a R8 | Da fare |
 | R11 | Attivare la conferma della destinazione prima dell'invio sulle destinazioni di scansione di entrambe le multifunzione | SEC-020 (#126): su tutte le voci censite l'opzione e' disattivata, quindi una selezione sbagliata dal display invia documenti nella cartella di un'altra persona senza alcun passaggio che permetta di accorgersene | Nessuno sulla rete; aggiunge un tocco in piu' all'utente che scansiona, ed e' il compromesso da spiegare | Da fare |
+| R12 | Pubblicare i nomi interni come record di indirizzo sul DNS del firewall, che i client ricevono gia' via DHCP come primo server DNS | Chiude in gran parte SEC-016 e la dipendenza dal broadcast (mDNS, NetBIOS) senza introdurre un dominio; abilita il ri-puntamento delle code di stampa a un nome, quindi rende gratuiti gli spostamenti futuri | Nessuno: si aggiungono record, non si cambia nulla lato client, che gia' interroga il firewall | Da fare |
 | R10 | Definire una regola di conservazione sulla cartella delle scansioni (cancellazione automatica oltre una soglia di giorni concordata) | Minimizzazione e limitazione della conservazione: una cartella di scansioni diventa in pochi mesi un archivio documentale parallelo, non censito e pieno di dati personali. Rilevante per A.5.33 e per il principio di limitazione della conservazione | Nessuno sulla rete; va concordata la soglia con chi usa il servizio | Da fare, dipende da R8 |
 
 ## Dettaglio degli interventi
@@ -726,6 +727,41 @@ memorizzata in un dispositivo che quella persona non controlla, e alla sua uscit
 dall'azienda la disattivazione dell'account rompe silenziosamente la scansione. Un account
 di servizio dedicato, con permesso di scrittura solo sulla share di scansione, risolve
 tutti e tre. Va eseguito insieme a R8, perche' e' la stessa configurazione.
+
+### R12 — I nomi interni sul DNS del firewall
+
+E' l'intervento con il miglior rapporto tra beneficio e rischio emerso finora, ed e' nato da
+una lettura che smentisce un'affermazione ripetuta piu' volte in questo progetto. Si era
+scritto che sulla LAN non esiste risoluzione nomi interna: **non e' vero**. La verifica del
+30/07/2026 sull'ambito DHCP di `lan1` mostra che il primo server DNS distribuito ai client e'
+il firewall stesso, mentre secondo e terzo sono assenti e i campi WINS sono vuoti. Esiste
+quindi un resolver, ed e' un apparato che governiamo: quello che manca non e' il servizio, sono
+i **record**.
+
+Il firewall ZLD puo' ospitare record di indirizzo propri, quindi i nomi dei sistemi interni —
+NAS, multifunzione, servizi applicativi interni — si possono pubblicare li'. Non serve
+introdurre un dominio, non serve toccare gli endpoint, non serve distribuire file `hosts`:
+i client interrogano gia' quel resolver per ogni nome che non risolvono da soli.
+
+Le conseguenze sugli altri fronti aperti sono tre, e sono la ragione per cui questo intervento
+va prima e non dopo. Chiude in gran parte SEC-016, perche' la risoluzione nomi smette di
+dipendere da file distribuiti a mano. Rimuove la dipendenza dal broadcast, cioe' da mDNS e
+NetBIOS, che e' la trappola incontrata tre volte in questo progetto e che si rompe
+inevitabilmente appena si segmenta. E rende sensato il ri-puntamento delle code di stampa a un
+**nome** invece che a un indirizzo, che e' esattamente il passo che rende gratuiti tutti gli
+spostamenti futuri delle stampanti: senza un DNS interno quel passo richiedeva una voce `hosts`
+per postazione, con il DNS interno e' un record unico.
+
+Procedura: identificare i nomi da pubblicare partendo da quelli che servono davvero (NAS di
+destinazione delle scansioni, le due multifunzione, il portale interno della VM208), creare i
+record corrispondenti sul firewall, verificare la risoluzione da una postazione con una query
+diretta, e solo dopo usare quei nomi nelle configurazioni. Verifica: la risoluzione del nome da
+una postazione risponde con l'indirizzo atteso e, dopo la segmentazione, continua a rispondere —
+che e' precisamente cio' che mDNS non farebbe. Rollback: rimuovere il record, dato che nessuna
+configurazione dipende dal nome finche' non la si cambia.
+
+Nota di sequenza: conviene creare i record **prima** di M22b, cosi' il ri-puntamento delle code
+avviene una volta sola e verso un nome. Farlo dopo significherebbe ri-puntare due volte.
 
 ### R10 — Regola di conservazione sulla cartella delle scansioni
 

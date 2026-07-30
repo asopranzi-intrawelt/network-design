@@ -408,6 +408,14 @@ loro sviluppo.
 
 ---
 
+## Interfacce residue sul firewall (30/07/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 130 | FW-013 | L'elenco completo delle interfacce dello USG FLEX 500 conta 14 voci, e accanto a quelle in servizio ne convivono alcune **residue di configurazioni superate**: un'interfaccia denominata `guest` su una subnet `/24` che appartiene a un blocco RFC1918 estraneo al piano di indirizzamento documentale (valore reale nella mappa privata), residuo dell'epoca in cui la rete ospiti era una porta fisica e non la `vlan90` agganciata a `lan1` che funziona dal 22/07/2026; `lan2` su una `/24` dedicata, gia' documentata come da dismettere perche' raggiungibile solo attraverso una rotta statica verso un router downstream che non esiste piu'; piu' `sfp` e `reserved`, entrambe senza indirizzo. Nessuna di queste produce un danno in atto, ma insieme creano il rischio documentale che il progetto ha appena sperimentato: leggendo l'elenco senza sapere quale interfaccia sia viva si attribuisce alla rete ospiti una subnet che non usa piu'. Bonifica da pianificare con la stessa cautela di ogni modifica sul firewall: prima verificare che nessuna regola, rotta o oggetto indirizzo le referenzi, usando il pulsante `References` della stessa pagina | Elenco interfacce del firewall, letto il 30/07/2026 |
+
+---
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -449,5 +457,6 @@ loro sviluppo.
 | Destinazioni di scansione verso postazioni (29/07/2026) | 126 |
 | NAS-INTRA2, cartella backup ufficio da 14 TB (29/07/2026) | 127 |
 | Assenza di directory e snapshot multi-tenant (30/07/2026) | 128-129 |
-| **Totale identificati** | **129** |
+| Interfacce residue sul firewall (30/07/2026) | 130 |
+| **Totale identificati** | **130** |
 | **Di cui risolti** | **8** (14, 54, 55, 61, 63, 106, 111, 116 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |

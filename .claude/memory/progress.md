@@ -114,6 +114,41 @@ porte telefono, e la porta 19 che risultava ripristinata e invece e' ancora su P
 riserve DHCP dalla GUI, oggetti indirizzo (pagina 2 compresa), censimento degli host
 statici.
 
+## 2026-07-30 (ottava parte) — Censimento M22a chiuso, DNS del firewall scoperto (R12), interfacce residue (FW-013)
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/firewall-zyxel-usg-flex-500.md` (§LAN: verifica diretta
+dell'ambito DHCP, primo DNS = firewall, inventario a 14 interfacce e residui),
+`docs/segmentazione-lan-m22.md` (censimento chiuso con la ripartizione 22 statici / 4
+dinamici e la correzione dell'intervallo documentato), `docs/interventi-robustezza.md`
+(nuovo intervento **R12**, nomi interni sul DNS del firewall),
+`docs/infrastructure-timeline/GAP-TBC.md` (**#130 FW-013** interfacce residue, riepilogo
+a 130), `docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce estesa).
+File privati: `_notes/.anonymization-map.md` (elenco reale delle 14 interfacce con i
+placeholder, ripartizione statici/dinamici con gli ultimi ottetti, nota sulla guest
+residua il cui valore reale e' un indirizzo 10.x e per questo non va scritto nei file
+tracciati).
+
+Tre esiti. **Censimento M22a chiuso**: ambito DHCP di lan1 da `.200` con dimensione 55,
+quindi `.200-.254`; incrociato con i 26 indirizzi della classe postazioni censiti
+dall'RMM da' 22 statici o riservati (da `.17` a `.95`) e 4 dinamici. Il 22 coincide
+esattamente con i 22 PC dichiarati come oggetto indirizzo nella configurazione del
+firewall, contati da una fonte indipendente; corretto invece l'intervallo documentato,
+`.18-.84` sulla scheda contro `.17-.95` misurato.
+
+**Scoperta che smentisce un'affermazione ripetuta del progetto**: la LAN *ha* un resolver
+interno, ed e' il firewall, distribuito via DHCP come primo DNS (secondo e terzo assenti,
+WINS vuoti). Manca il contenuto, non il servizio: il firewall ZLD puo' ospitare record di
+indirizzo, quindi i nomi interni si pubblicano li' senza dominio e senza toccare gli
+endpoint. Tracciato come R12, da fare **prima** di M22b per non ri-puntare due volte le
+code di stampa. Chiude in gran parte SEC-016 e la dipendenza dal broadcast.
+
+**Interfacce residue** (FW-013, #130): delle 14 interfacce del firewall alcune sono
+residui, fra cui una denominata `guest` su una `/24` estranea al piano documentale, che
+non e' la rete ospiti funzionante (`vlan90` su `lan1` dal 22/07) ma il residuo dell'epoca
+della porta fisica. Rischio interpretativo piu' che operativo, e il progetto lo ha appena
+sperimentato leggendo quell'elenco.
+
 ## 2026-07-30 (settima parte) — Snapshot filtrato riuscito e verificato: 26 dispositivi, una policy, zero dati di terzi
 
 Commit: PENDING (da fare manualmente)
