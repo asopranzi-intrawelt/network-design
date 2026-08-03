@@ -34,6 +34,21 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
+**Audit di allineamento del 03/08/2026 — leggere prima di riprendere.** Il delta OneDrive
+era arretrato di diciannove giorni ed e' stato triagiato: dentro c'erano **due asset di rete
+mai censiti**, un access point da esterno **Zyxel WBE530-EU0101F** (l'hardware di M13c) e un
+**UPS rack Addpower TP130N-1500** con scheda SNMP opzionale, entrambi da preventivo del
+31/07, ordine non confermato. Due decisioni sono ora davanti all'acquisto e non dopo:
+verificare la tratta della porta 4 prima di ordinare un apparato con porte da 2,5 Gbps
+(M13c-5 promosso ad ALTA), e decidere se prendere la scheda SNMP dell'UPS, perche' se si
+prende quell'apparato va fatto nascere nel segmento IoT/OT di M22c. Baseline dei manifest
+**non ancora riallineata**: lanciare `Check-OneDriveDelta.ps1 -UpdateBaseline` dopo la
+conferma. Buchi locali dichiarati: `_notes/RESOCONTO.md` fermo al 22/06 (livello 3 della
+direttiva mai prodotto per gli interventi di luglio), `TEST-CHECKLIST.md` che conosce solo
+Proxmox, due file RESUME quasi omonimi di cui solo `RESUME_PROMPT.md` e' quello valido,
+`DIARIO.md` completo ma con la cronologia rotta dal 22/07 in poi. Snapshot Nebula fermo al
+27/07 con la tabella MAC del 54HP mancante: **e' il rilancio che sblocca M22a**.
+
 **Aggiunta della seconda sessione del 03/08/2026 — due fatti nuovi da tenere presenti.**
 La dorsale fra i due switch e' la **porta 51** del 54HP e il ramo QNAP la **52**:
 `network-diagram.md` portava ancora l'assegnazione invertita nel diagramma ASCII, ora

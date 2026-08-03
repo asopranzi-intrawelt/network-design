@@ -529,6 +529,48 @@ gia' documentata, non ancora verificata contenuto per contenuto.
 - [x] file sciolti root (`Certificato_Intrawelt_carichi_pendenti_18.10.17.pdf`, `Convenzione_Università_Trieste_12.03.18.pdf`, `Liberatoria_Tods_Interpreti.pdf`, `README - Microsoft utili.png`, `README.txt`, `ticket cassetto fiscale.7z`) — non aperti singolarmente, nomi indicano contenuto legale/fiscale fuori scope IT rete; priorita' bassa confermata per esclusione (09/07/2026)
 - [x] `Foto sistemazione sala server e RIP catafalco/` — 37 file → verificato 09/07/2026: tutte immagini (34 jpg + 3 png, febbraio 2025), nessun testo estraibile. "RIP catafalco" presumibilmente le foto di smaltimento hardware dismesso, concettualmente gia' coperto dalle voci di decommissioning VM/hardware esistenti
 
+## Triage del delta 15/07 → 03/08/2026 (arretrato di diciannove giorni, chiuso il 03/08)
+
+La baseline dei due manifest era ferma al 15/07/2026 e l'hook di avvio segnalava da giorni
+**398 nuovi, 2 modificati e 86 eliminati** su "Documenti - IT" piu' **12 nuovi** su "IT +
+Administration", senza che nessuno li avesse smistati. Triage eseguito il 03/08/2026 sulla
+lista completa (`-MaxList 600`), raggruppata per cartella di primo livello. La lezione di
+metodo e' che un numero grande spaventa e viene rimandato: smistato per cartella, il
+novantacinque per cento del delta si e' rivelato estraneo alla rete in tre minuti, e cio'
+che contava erano **due file**.
+
+- [x] `SCENIA/` — 379 voci → progetto SaaS separato (dataset di tirocinio, analisi
+  knowledgebase, logica crediti). Nessun contenuto di rete o infrastruttura. Non ingerito,
+  coerentemente con il perimetro di ADR-015
+- [x] `TOOL AI coding assistance/` — 85 voci, in gran parte **eliminazioni** (screenshot e
+  note della configurazione di una estensione VS Code). Nessun impatto: nessuna di quelle
+  fonti era mai stata ingerita
+- [x] `Cybersec & IT Governance/` — 21 voci → due filoni, entrambi di governance e non di
+  rete. Il round 4 del questionario WindTre (revisioni fino al 28/07, un file di
+  contraddizioni fra comunicazioni del fornitore) e un filone **AI-ACT interamente nuovo**
+  (indice, dossier consulente, assessment, verifica del diritto italiano L.132/2025,
+  questionario al sub-processor, relazione in .docx). Materiale di Fase 5 e di conformita'
+  AI, non di network design: **non ingerito qui**, segnalato perche' e' un workstream nuovo
+  che nessun artefatto di questo progetto conosce. Modificata anche la checklist ISO27001
+  rev4, sempre Fase 5
+- [x] `Miscellaneous procedure e utilities/` — 1 voce, procedura HR per i permessi sui
+  turni. Fuori scope
+- [x] `Proforma/` — 6 voci, contabilita'. Fuori scope
+- [x] `MyOffice/Transizione centralino cloud 2026/` — 4 voci → il documento di trasporto del
+  gateway FXS **ingerito** (vedi deroga puntuale sopra e voce timeline 31/07/2026); restano
+  non aperti l'omonimo `.eml`, una fattura elettronica e un archivio di fatture, tutti
+  amministrativi
+- [x] `Daniele Colò - Punto informatica/2026/Preventivi/` — 2 voci, ed e' **il ritrovamento
+  del triage**. Il primo preventivo, del 17/07, e' quello di Fase B per i tre access point
+  NWA130BE gia' documentato in ADR-012: conferma modello e quantita', nessun fatto nuovo. Il
+  secondo, del 31/07, contiene **due apparati di rete mai censiti**: un access point da
+  esterno Zyxel WBE530-EU0101F, che e' l'hardware di M13c, e un UPS rack Addpower
+  TP130N-1500 con scheda SNMP opzionale. Ingeriti in `runbook-anomalie.md` §AP-001 e
+  §UPS-001, in `roadmap.md` M13c-5/M13c-6 e nella voce timeline 31/07/2026
+
+Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` va
+lanciato dopo la conferma dell'utente, cosi' che il prossimo avvio di sessione parta pulito.
+
 ## Riepilogo priorità (rigenerato 09/07/2026 dallo stato reale delle spunte)
 
 | Priorità | Da fare |
