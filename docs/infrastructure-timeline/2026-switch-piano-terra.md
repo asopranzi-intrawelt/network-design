@@ -1999,3 +1999,58 @@ arrestare la proliferazione non inventariata delle voci `hosts`, e aprire la str
 certificato pubblico per il portale interno grazie alla convenzione di ADR-018. La sequenza
 corretta mette percio' al primo posto R8 con R9 e R10, cioe' le scansioni sul NAS, che sono il
 problema da cui tutto e' partito e non dipendono da nulla.
+
+---
+
+## 31/07-03/08/2026 - Scansioni sul NAS: intervento eseguito su tutte e sette le postazioni
+
+Esecuzione manuale, una persona alla volta, del primo intervento del registro di robustezza:
+le destinazioni di scansione delle due multifunzione passano dalle cartelle condivise delle
+postazioni a sette condivisioni nascoste sul NAS-INTRA2, ciascuna permessa al solo destinatario
+e all'account di servizio.
+
+Lato NAS l'impianto e' stato costruito e verificato prima di toccare gli apparati. L'account di
+servizio ha il **solo** privilegio di condivisione file Microsoft, con applicazioni e altri
+protocolli negati: il dialogo di creazione lo proponeva con accesso illimitato alle
+applicazioni e con lettura e scrittura su due cartelle estranee, e togliere quei valori
+predefiniti e' stato il primo lavoro. Il criterio password del NAS non prevede scadenza
+periodica, e questo e' il fatto che rende l'account **immune alla rotazione a trenta giorni**
+imposta dall'RMM sulle utenze locali di Windows: era la condizione su cui poggiava tutto il
+disegno, e ora e' verificata e non assunta. Le sette condivisioni sono nascoste dalla
+navigazione — accorgimento di ordine e non di sicurezza, dichiarato come tale — con accesso
+ospite negato. L'isolamento e' stato provato in campo, con l'utenza di un destinatario respinta
+sulla cartella di un altro, e la scrittura dell'account di servizio provata su tutte e sette.
+
+Lato apparati sono state riconfigurate quattordici voci di rubrica, sette per macchina, di cui
+tre create da zero sul Piano Terra perche' quella rubrica conosceva solo quattro destinatari
+contro i sette dell'altra. Tutte usano la stessa credenziale di servizio e mai quella
+dell'utente: ne segue che l'isolamento tra persone lo garantiscono i permessi del NAS e non la
+stampante, con il rischio residuo dichiarato che chi sta al pannello puo' scegliere la
+destinazione di un altro — mitigato dalla conferma prima dell'invio, che si trova nello stesso
+dialogo e va spuntata nel passaggio.
+
+Lato postazioni ogni utente ha un collegamento sul desktop verso la propria cartella, non
+un'unita' di rete mappata: le lettere su queste macchine sono scarse e gia' occupate, e un
+collegamento non si riconnette all'accesso ne' produce attese quando il NAS non risponde. La
+distribuzione avviene con uno script versionato che sceglie da se' se scrivere il percorso per
+indirizzo o per nome, perche' le credenziali di Windows sono memorizzate per forma della
+destinazione e su queste postazioni la pratica e' mista; e che rifiuta di creare il
+collegamento se l'utente connesso non accede davvero alla cartella, usando come controllo di
+correttezza la stessa asimmetria dei permessi che protegge i documenti.
+
+Tre inciampi hanno insegnato piu' del percorso liscio. Il primo: lo script, lanciato con la
+condivisione di un'altra persona, creava obbediente il collegamento sbagliato — da cui la
+verifica di accesso preventiva. Il secondo: su una postazione l'accesso falliva nonostante i
+permessi corretti, e la causa non era ne' l'elevazione della sessione, prima ipotesi, ne' i
+permessi, verificati: la cassaforte credenziali di quell'utente era **vuota**, quindi Windows
+tentava l'accesso con l'utenza locale della macchina, che sul NAS non esiste. Il terzo, scoperto
+subito dopo: la memorizzazione da riga di comando vale **solo per la sessione corrente**, e lo
+dichiara lei stessa nell'elenco — un intervento che sembra riuscito il giorno in cui si fa e si
+rompe al primo riavvio, che e' il modo peggiore di sbagliare. La credenziale permanente si crea
+dall'interfaccia.
+
+Stato: sette postazioni funzionanti. Restano due code, entrambe registrate: verificare che su
+ogni macchina la credenziale sia permanente e non di sessione, e **rimuovere le vecchie
+condivisioni di scansione dalle postazioni con le credenziali che le servivano** — ed e'
+quest'ultima che chiude SEC-020, non la creazione delle cartelle nuove, perche' finche' quelle
+condivisioni esistono il percorso e i segreti sono ancora li'.

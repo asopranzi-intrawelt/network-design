@@ -28,6 +28,31 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
+**Ripresa 03/08/2026 — leggere questo blocco per primo.** L'intervento **R8 e' eseguito e
+verificato su tutte e sette le postazioni**: le scansioni delle due multifunzione non finiscono
+piu' nelle cartelle condivise dei PC ma in sette condivisioni nascoste di NAS-INTRA2, una per
+destinatario, con un solo account di servizio locale del NAS come unica credenziale memorizzata
+negli apparati e con l'isolamento fra utenti provato in campo. Ogni utente raggiunge la propria
+cartella da un collegamento sul desktop, distribuito con `scripts/New-ScanFolderShortcut.ps1`.
+
+**Due code di R8 da chiudere per prime**: verificare su ciascuna postazione che la credenziale
+del NAS sia **permanente** e non di sessione (`cmdkey /list` non deve dire "solo per questo
+accesso": la memorizzazione da riga di comando non sopravvive al riavvio, quella
+dall'interfaccia si'), e **rimuovere le vecchie condivisioni di scansione dalle postazioni con
+le credenziali che le servivano** — e' quel passo che chiude SEC-020, non la creazione delle
+cartelle nuove.
+
+**Da decidere, in attesa dell'IT Manager**: la soglia di conservazione sulla cartella scansioni
+(R10), che conviene fissare adesso che le cartelle sono quasi vuote. E va confermato se durante
+il giro sulle rubriche e' stata spuntata la conferma prima dell'invio (R11).
+
+**Filone strutturale invariato**: M22 segmentazione, con M22a chiuso (22 statici, 4 dinamici) e
+M22b come prossimo intervento di rete; M25 (risoluzione nomi interna) e' il suo prerequisito
+reale, perche' oggi unita' mappate, destinazioni e servizi interni dipendono da nomi risolti per
+broadcast o per file `hosts`.
+
+
+
 **Ripresa 27/07/2026 — leggere questo blocco per primo.** La sessione del 27/07 ha
 chiuso tutti gli arretrati documentali della sessione Wi-Fi/telefoni (correzione
 della dorsale a porta 51, TEL-002 parte di rete risolta, postura Wi-Fi staff come
