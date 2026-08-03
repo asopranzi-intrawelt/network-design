@@ -2054,3 +2054,39 @@ ogni macchina la credenziale sia permanente e non di sessione, e **rimuovere le 
 condivisioni di scansione dalle postazioni con le credenziali che le servivano** — ed e'
 quest'ultima che chiude SEC-020, non la creazione delle cartelle nuove, perche' finche' quelle
 condivisioni esistono il percorso e i segreti sono ancora li'.
+
+---
+
+## 31/07/2026 - Consegnato un gateway FXS per la fonia analogica dell'ascensore
+
+Fatto rilevato il 03/08/2026 dal delta OneDrive, non da una comunicazione in sessione, e
+verificato leggendo il documento di trasporto in
+`IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\DDT del gateway
+FXS (ascensore)`.
+
+myOffice ha consegnato un **Grandstream HT-812 v2**, adattatore telefonico analogico con due
+porte FXS e router NAT Gigabit, in un'unita' sola: trasporto datato 01/07/2026, ricevuta
+controfirmata il 31/07/2026. Importi e riferimenti dei documenti amministrativi restano fuori
+dai file tracciati.
+
+L'apparato colma un vuoto tipico di questo genere di migrazione, e vale la pena nominarlo
+perche' e' il genere di dettaglio che si scopre a lavori iniziati: un centralino cloud parla
+SIP e non ha porte analogiche, mentre il telefono di emergenza di un ascensore e' un
+apparecchio analogico e un obbligo di sicurezza, non un interno negoziabile. Un adattatore che
+presenti una porta FXS al telefono e parli SIP verso il cloud e' quindi l'unico modo di
+portarlo sul nuovo impianto. **L'attribuzione all'ascensore viene dal nome della cartella e
+non da una fonte tecnica**: e' coerente ma va confermata con il fornitore, perche' nessun
+documento del progetto descrive finora il telefono dell'ascensore come endpoint di rete e la
+funzione dell'apparato potrebbe essere piu' ampia.
+
+Tre questioni di rete restano aperte prima dell'installazione e sono registrate nella scheda
+di telefonia: su quale segmento si attesta l'apparato, se la sua funzione di router NAT va
+disabilitata — un secondo NAT interno e' causa classica di audio unidirezionale e, su una LAN
+piatta, un apparato che distribuisce indirizzi per conto proprio e' anche un rischio di
+conflitto DHCP — e come si colloca fisicamente rispetto al vano ascensore, che e' lo stesso
+tratto a cui era stato attribuito il primo sintomo di TEL-002. Va inoltre chiarito il rapporto
+con il Patton SmartNode 5551, che e' l'attuale gateway con porte FXS e FXO: se l'HT-812 ne
+assorbe una funzione, se lo sostituisce, o se convivono durante la transizione.
+
+Dettaglio in `docs/telefono-pbx-voip.md` §Gateway FXS consegnato per il telefono
+dell'ascensore.

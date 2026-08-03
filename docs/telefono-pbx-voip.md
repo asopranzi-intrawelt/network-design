@@ -186,6 +186,51 @@ interno prima del messaggio.
 a myOffice su quale modalita' adottare per il messaggio giorno (semplice
 attesa o IVR con instradamento reparti) ne' sui dettagli del messaggio notte.
 
+### Gateway FXS consegnato per il telefono dell'ascensore (31/07/2026)
+
+Rilevato il 03/08/2026 dal delta OneDrive e verificato leggendo il documento di
+trasporto, in cartella `IT + Administration - Documenti\MyOffice\Transizione
+centralino cloud 2026\DDT del gateway FXS (ascensore)`.
+
+myOffice ha consegnato un **Grandstream HT-812 v2**, ATA[^ata] con due porte
+FXS[^fxs] e router NAT Gigabit, in un'unita': documento di trasporto di vendita
+datato 01/07/2026, ricevuta controfirmata il 31/07/2026, riferimento interno a
+un preventivo di marzo 2026 (importi e numeri di documento esclusi dai file
+tracciati per policy di anonimizzazione).
+
+Il nome della cartella attribuisce l'apparato al telefono dell'ascensore, e
+l'interpretazione coerente e' che quell'apparecchio sia analogico mentre il
+centralino cloud e' SIP: serve quindi un adattatore che presenti una porta FXS
+al telefono e parli SIP verso il cloud. **Interpretazione da confermare con il
+fornitore prima di trattarla come fatto**: nessuna fonte del progetto descrive
+oggi il telefono dell'ascensore come endpoint di rete, e la funzione
+dell'apparato potrebbe essere piu' ampia (per esempio la sopravvivenza di altri
+apparecchi analogici oggi attestati sul Patton).
+
+Tre questioni di rete da chiarire prima dell'installazione, tutte aperte:
+
+Dove si attesta l'apparato, se sulla LAN telefonica Vianova della porta 8 del
+54HP come gli altri terminali voce oppure altrove. Se la funzione di router NAT
+vada disabilitata, perche' un secondo NAT interno e' causa classica di audio
+unidirezionale e registrazioni che cadono, e su una LAN piatta un apparato che
+fa NAT e distribuisce indirizzi per conto proprio e' anche un rischio di
+conflitto DHCP. E come si alimenta e dove si colloca fisicamente rispetto al
+vano ascensore, che e' lo stesso tratto a cui era stato inizialmente attribuito
+il sintomo di TEL-002.
+
+Va inoltre chiarito il rapporto con il **Patton SmartNode 5551**, che e'
+l'attuale gateway con porte FXS e FXO: se l'HT-812 ne assorbe una funzione, se
+lo sostituisce, o se il Patton resta in servizio durante la transizione. E' la
+voce che il piano di migrazione elenca come ancora non formalizzata.
+
+[^ata]: *ATA*, Analog Telephone Adapter - apparato che collega un telefono
+analogico a una rete VoIP, presentando al telefono una porta telefonica
+tradizionale e parlando SIP verso la rete.
+
+[^fxs]: *FXS*, Foreign Exchange Station - porta che eroga alimentazione, tono di
+libero e squillo a un apparecchio telefonico analogico; l'opposto e' la FXO, che
+si collega a una linea telefonica esterna.
+
 ### Prerequisiti verificati
 
 - Linee Vianova attive da aprile 2025.
