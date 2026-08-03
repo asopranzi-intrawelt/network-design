@@ -32,9 +32,24 @@ param(
     [int]$MaxList = 25
 )
 
+# Le radici sorvegliate. La libreria aziendale OneDrive ne contiene diciannove al
+# 03/08/2026; queste sono quelle che possono contenere informazione sulla rete.
+#
+# Le prime due sono le librerie documentali: la tecnica, dove vivono analisi, handoff e
+# note di intervento, e l'amministrativa, molto piu' piccola ma dove vivono preventivi,
+# documenti di trasporto e contratti firmati — cioe' l'unico posto dove un apparato nuovo
+# compare prima di entrare in rete.
+#
+# La terza e' stata aggiunta il 03/08/2026 ed e' il canale di scambio: quando un handoff
+# prodotto in un'altra sessione di lavoro viene condiviso in chat, il file atterra li' e in
+# nessun'altra delle radici sorvegliate. Al momento dell'aggiunta conteneva tre handoff, di
+# cui uno sul dimensionamento di una VM che questo progetto documenta come asset di rete.
+# La cartella e' rumorosa e in gran parte estranea alla rete: e' il filtro delle voci
+# rilevanti a renderla utilizzabile, non la lettura integrale del suo delta.
 $defaultTargets = @(
     @{ Label = "Documenti - IT"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest.json" },
-    @{ Label = "IT + Administration - Documenti"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\IT + Administration - Documenti"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest-admin.json" }
+    @{ Label = "IT + Administration - Documenti"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\IT + Administration - Documenti"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest-admin.json" },
+    @{ Label = "File di chat di Microsoft Teams"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\File di chat di Microsoft Teams"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest-teams.json" }
 )
 
 if ($Folder) {
@@ -58,7 +73,22 @@ $excludePatterns = @(
     '*\VIDEOs\*',
     '*\TEST\*'
 )
+# Contro-eccezioni all'esclusione: file che vanno sorvegliati SEMPRE, anche quando si
+# trovano dentro una cartella esclusa. Nascono da un caso reale scoperto il 03/08/2026:
+# la cartella "Web scraping - Downloaded Web sites" era stata esclusa nel luglio 2026 come
+# "mirror di siti esterni", e da allora una sessione di lavoro diversa da questa vi ha
+# depositato due documenti di handoff sul dimensionamento della VM207 -- che questo progetto
+# documenta come asset di rete -- piu' un CLAUDE.md di progetto. Erano invisibili al delta
+# per costruzione, non per distrazione. Un handoff e un CLAUDE.md sono la traccia scritta di
+# una sessione che ha cambiato qualcosa: non si escludono mai in base alla cartella in cui
+# stanno, perche' e' proprio dove non li aspetti che contano.
+$neverExcludePatterns = @(
+    '*handoff*.md',
+    '*HANDOFF*.md',
+    '*\CLAUDE.md'
+)
 function Test-Excluded([string]$fullName) {
+    foreach ($p in $neverExcludePatterns) { if ($fullName -like $p) { return $false } }
     foreach ($p in $excludePatterns) { if ($fullName -like $p) { return $true } }
     return $false
 }
@@ -72,6 +102,7 @@ function Test-Excluded([string]$fullName) {
 # Le voci che corrispondono a questi pattern vengono quindi elencate PER INTERO e a parte,
 # mai troncate. Estendere la lista quando entra in scope un fornitore o un ambito nuovo.
 $relevantPatterns = @(
+    'handoff', '\bclaude\.md\b',
     'punto informatica', 'preventiv', '\bddt\b',
     'myoffice', 'vianova', 'centralino', 'fonia', 'telefon', 'interni intrawelt',
     'zyxel', 'nebula', 'firewall', 'switch', '\bvpn\b', '\bvlan\b',

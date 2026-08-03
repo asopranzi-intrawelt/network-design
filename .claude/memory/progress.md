@@ -1,5 +1,102 @@
 # Work-log
 
+## 2026-08-03 (sesta sessione) — Mappatura delle fonti completata, ADR-020, pulizia di _notes
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `.claude/memory/decisions.md` (**ADR-020**, le cinque classi di fonti
+e il protocollo di riallineamento); `scripts/Check-OneDriveDelta.ps1` (**terza radice
+sorvegliata**, la cartella dei file di chat, con il razionale in commento);
+`docs/segmentazione-lan-m22.md` (il prerequisito della porta 33 portato **nel documento di
+design**, dove mancava, e nota di metodo sulla rilettura delle liste prima di ogni sotto-step);
+`docs/infrastructure-timeline/timeline.svg` (rigenerata: da 143 a **147 eventi**, 3882 px).
+File locali: `_notes/` riordinata, nuovo `_notes/.archive-estrazioni-luglio-2026/` con
+`LEGGIMI.md`, nuova baseline `_notes/.onedrive-manifest-teams.json`.
+
+**Perimetro delle fonti, misurato e non stimato.** La libreria aziendale OneDrive contiene
+**diciannove radici** di primo livello; il progetto ne sorvegliava due. Aggiunta la terza,
+`File di chat di Microsoft Teams`, perche' contiene copia di tre handoff — fra cui quello sul
+dimensionamento della VM207 — e non compariva in nessuna delle altre due: e' il posto dove
+atterra un handoff quando viene condiviso in chat. Baseline creata, 220 file. Le altre sedici
+radici restano fuori perimetro per scelta dichiarata. Registrato anche che due esclusioni
+(`graphify-out`, `TEST`) sono nomi generici riusabili e restano rischiose per la stessa ragione
+che ha prodotto il caso della VM207: e' stato corretto il caso dimostrato, non la categoria.
+
+**Verifica di freschezza dei layer di ragionamento**, richiesta dall'IT Manager perche'
+temeva la perdita di un mese di lavoro. Nessuna perdita: 71 commit dal 29/06, 72 voci di
+work-log su diciassette giornate distinte fra luglio e agosto, 20 ADR, 36 gap da #100 a #135,
+21 voci di timeline. Undici dei quattordici file portanti hanno contenuto datato 03/08; i due
+senza — `decisions.md` e `segmentazione-lan-m22.md` — sono stati chiusi in questa sessione con
+ADR-020 e con il prerequisito della porta 33.
+
+**Lacuna reale trovata durante la verifica**: il prerequisito della porta 33 era scritto in
+roadmap e in timeline ma **non nel documento di design**, che e' il file da cui si esegue
+l'intervento. Era il posto che conta. Aggiunto con la spiegazione del modo in cui l'intervento
+sarebbe fallito senza quel passo — segmento morto invece di isolato, con ogni verifica lato
+switch che lo dichiara riuscito — piu' una nota di metodo: la lista delle porte da estendere si
+rilegge dallo snapshot prima di ogni sotto-step, perche' fra il 15/07 e il 03/08 quel numero e'
+passato da zero a una a quattro senza che nessuno cambiasse deliberatamente una lista.
+
+**Pulizia di `_notes/`, con una distinzione che ha cambiato il piano.** Il livello principale
+conteneva trentasei residui di estrazione di luglio, circa dieci megabyte. Il controllo prima di
+toccarli ha mostrato che **quattro cartelle sono citate come provenienza dentro schede
+versionate** (`.tmp-docx-abbyy`, `-odoo-restore`, `-CYBERSEC`, `-HELPDESK`), con frasi del tipo
+"estratto in `_notes/.tmp-docx-...`": spostarle avrebbe rotto un percorso documentato in un file
+pubblico. Quelle sono rimaste dove erano; i restanti trentadue elementi, nessuno citato, sono
+stati **archiviati e non cancellati** in una sottocartella con un `LEGGIMI.md` che spiega cosa
+sono, perche' sono riproducibili dagli originali OneDrive, e quale controllo ripetere prima di
+eliminarli davvero. Il livello principale di `_notes/` passa da quarantacinque voci a
+ventitre. La lezione registrata: una cartella temporanea smette di essere temporanea nel momento
+in cui una scheda la nomina.
+
+## 2026-08-03 (quinta sessione) — Le fonti mappate, e trovata la ragione strutturale dei ritardi
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): **nuovo** `.claude/rules/fonti-e-riallineamento.md` (le cinque classi
+di fonti, il protocollo di riallineamento a inizio sessione, le cadenze da confermare, i punti
+ciechi dichiarati); `CLAUDE.md` (indice della regola nuova e procedura di ripresa che vi
+rimanda); `docs/runbook-anomalie.md` (**nuova sezione TEL-002**, che non esisteva nonostante
+fosse referenziata); `docs/telefono-pbx-voip.md` (stato reale dei cinque telefoni);
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (chiusura della parte di rete di
+TEL-002 e nuova voce 13/07/2026 sulla VM207);
+`docs/infrastructure-timeline/ingestion-checklist.md` (cartella riclassificata da SKIP);
+`scripts/Check-OneDriveDelta.ps1` (contro-eccezioni all'esclusione). Baseline riallineata.
+
+**Correzione dell'IT Manager, e il tipo di errore che rappresenta.** Tutti e cinque i Yealink
+sono collegati e ciascuno sta su una porta che prende correttamente la VLAN della fonia: lavoro
+concluso in sessioni precedenti. La descrizione che il progetto portava — due apparecchi del
+Piano Terra senza lease DHCP — era una fotografia corretta al 23/07 che aveva smesso di esserlo
+**senza che nulla la contraddicesse**. Non un errore: obsolescenza silenziosa, che e' il modo in
+cui una documentazione tecnica si degrada davvero. La misura del giorno l'ha corroborata a
+posteriori (cinque MAC sulla VLAN 2), ma nessuna interrogazione automatica avrebbe prodotto la
+correzione, perche' la tabella MAC dice dove sta un apparecchio e non che il lavoro e' finito.
+Creata la sezione TEL-002 nel runbook, che era referenziata da piu' file e non esisteva.
+
+**La ragione strutturale dei ritardi, dimostrata e non ipotizzata.** Su questa macchina
+convivono piu' installazioni dell'assistente con ventidue, venti e quindici progetti, e almeno
+sei di quei progetti toccano la rete che questo repository documenta. Il canale verso qui e' il
+file di handoff, e funziona solo se il handoff sta dove il delta lo vede. Trovati cinque
+documenti — fra cui due handoff del 13/07/2026 con i valori reali di memoria, processori e
+dischi della VM207, che questo progetto censisce come asset di rete — dentro una cartella che la
+lista di esclusione del delta scartava come mirror di siti esterni. L'esclusione era corretta
+quando fu scritta e ha smesso di esserlo quando un'altra sessione ha riusato quella cartella:
+erano invisibili **per costruzione**, non per distrazione.
+
+Corretto lo script con una lista di contro-eccezioni: i nomi che contengono `handoff` e i
+`CLAUDE.md` non si escludono mai in base alla cartella, e finiscono nel blocco delle voci
+rilevanti. Verificato: le cinque voci compaiono, prima non comparivano.
+
+**Guadagno collaterale**: il handoff spiega un enigma che la ricognizione del 27/07 aveva
+lasciato aperto. La VM207 risultava documentata come nuova al 13/07 mentre il metadato di
+creazione la datava all'08/02/2025, e la conclusione provvisoria era "nuova alla documentazione,
+non all'infrastruttura". La VM e' un **clone di un template**, quindi porta la data del
+progenitore: non c'era nessuna incoerenza. Registrato anche il ridimensionamento (16 GiB con
+ballooning disattivato, 6 core, secondo disco da 96 GB per i dati), che conta per la capacita'
+residua del nodo.
+
+Resta da confermare dall'IT Manager la tabella delle cadenze in coda alla regola nuova: e' il
+punto in cui una fonte che non notifica passa da "riletta quando qualcuno si ricorda" a "riletta
+sempre".
+
 ## 2026-08-03 (quarta sessione) — Allineamento eseguito: riserve sciolte, M22a chiuso, la fonia cambia scala
 
 Commit: PENDING (da fare manualmente)

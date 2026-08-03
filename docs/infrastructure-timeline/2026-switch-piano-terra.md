@@ -2245,3 +2245,53 @@ ricerca sui prefissi e non a memoria: qui si registra il fatto misurato, non il 
 Tutti i MAC e gli indirizzi reali di questa ricognizione restano fuori da questo file per
 policy di anonimizzazione: vivono nello snapshot in `output/`, ignorato da git, e la mappatura
 in `_notes/.anonymization-map.md`.
+
+### Telefoni: la parte di rete e' chiusa su tutti e cinque
+
+Correzione arrivata dall'IT Manager nella stessa giornata e poi corroborata dalla misura. Tutti
+e cinque i Yealink sono collegati e **ciascuno sta su una porta che prende correttamente la VLAN
+della fonia**; il lavoro e' stato completato in sessioni di lavoro precedenti, non tutte
+tracciate in questo repository. La tabella MAC concorda, perche' i cinque indirizzi compaiono
+tutti sulla VLAN 2.
+
+La descrizione che questo progetto portava — "i due apparecchi del Piano Terra hanno la parte di
+rete risolta ma non ottengono un lease dal DHCP" — era una fotografia corretta al 23/07 che ha
+smesso di esserlo senza che nulla la contraddicesse. E' il tipo di obsolescenza silenziosa che
+il protocollo delle fonti (`.claude/rules/fonti-e-riallineamento.md`) esiste per intercettare:
+non un errore, un'affermazione giusta che nessuno aveva piu' verificato. Resta da confermare il
+solo livello applicativo, cioe' che ogni apparecchio si registri e chiami, verificabile dal
+display che mostra l'interno. Dettaglio in `runbook-anomalie.md` §TEL-002.
+
+---
+
+## 13/07/2026 - VM207: dimensionamento corretto, e l'enigma anagrafico si spiega
+
+Voce ricostruita il 03/08/2026 da due documenti di handoff prodotti in una sessione di lavoro
+diversa da questa e datati 13/07/2026. Erano invisibili al controllo del delta perche' si
+trovano dentro una cartella che la lista di esclusione scartava come mirror di siti esterni:
+l'esclusione era corretta quando fu scritta e ha smesso di esserlo quando quella cartella e'
+stata riusata per altro. Il difetto e' stato corretto nello script, non aggirato a mano.
+
+La VM207, che questo progetto documenta come asset di rete per il servizio di estrazione di
+contenuti che espone sulla LAN, e' stata **ridimensionata** prima del primo avvio: memoria da 8
+a 16 GiB con ballooning disattivato per garantirla, processori da 4 a 6 core con tipo CPU
+portato a `host`, controller da LSI a VirtIO SCSI single, e soprattutto l'aggiunta di un
+**secondo disco da 96 GB dedicato ai dati**, separato dai 32 GB di sistema, per isolare
+l'archivio crescente delle estrazioni. Rete su bridge `vmbr3`, storage `SERVIZI` confermato
+LVM-thin, discard attivo su entrambi i dischi. Primo avvio eseguito e riuscito il 13/07/2026.
+
+Il fatto che interessa la rete non e' il dimensionamento in se' ma la sua somma: sedici GiB
+garantiti senza ballooning e sei core sono capacita' sottratta in modo permanente al nodo, e
+vanno tenuti presenti quando si valuta se il nodo regge i carichi futuri. Il resto e' progetto
+applicativo e resta nel suo repository, secondo il perimetro di ADR-015.
+
+**L'enigma anagrafico si chiude.** La ricognizione del 27/07 aveva registrato una contraddizione
+non spiegata: la VM207 era documentata come nuova al 13/07/2026 mentre il metadato di creazione
+della sua configurazione la datava all'08/02/2025, e la conclusione provvisoria era "nuova alla
+documentazione, non all'infrastruttura". La spiegazione e' nel handoff: la VM e' un **clone di un
+template** con il sistema operativo gia' installato, quindi porta con se' la data del proprio
+progenitore. Non c'era nessuna incoerenza da sanare.
+
+Restano due voci hardware che al 13/07 erano dichiarate da applicare e il cui stato non e' noto:
+`cache = No cache` e `IO thread` su entrambi i dischi. Vanno verificate alla prossima lettura
+del nodo, perche' incidono su prestazioni e integrita' e non sull'esposizione di rete.

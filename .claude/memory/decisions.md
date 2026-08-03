@@ -547,6 +547,59 @@ rivalutata quando M22 sara' pianificato: a segmentazione fatta, "accesso come un
 postazione cablata" significhera' accesso a un segmento delimitato, non a tutta
 la rete.
 
+## ADR-020 — Le fonti del progetto sono cinque classi, e quattro non notificano: protocollo di riallineamento
+
+Data: 2026-08-03
+Stato: attiva
+
+Contesto: il 03/08/2026 l'IT Manager ha chiesto un allineamento reale e non a memoria, e
+l'audit ha trovato tre affermazioni obsolete che nessuna contraddizione interna segnalava — la
+distribuzione dei telefoni IP, il parco telefonico stimato un quinto del reale, e due apparati
+di rete acquistati e mai censiti. Nessuna delle tre era un errore di scrittura: erano
+fotografie corrette che avevano smesso di esserlo. Il controllo automatico del delta
+documentale era arretrato di diciannove giorni, e il suo output elencava le prime venticinque
+variazioni in ordine alfabetico, quindi con 398 voci dominate da un altro progetto le due che
+contavano erano invisibili. In parallelo si e' accertato che su questa macchina convivono piu'
+installazioni dell'assistente con ventidue, venti e quindici progetti, almeno sei dei quali
+toccano la rete che questo repository documenta, e che due documenti di handoff con i valori
+reali di una VM censita come asset di rete si trovavano dentro una cartella esclusa dal delta.
+
+Il problema non era la disciplina di chi scrive ma un errore di modello: il progetto trattava
+implicitamente il repository come la fonte del proprio stato, mentre il repository e' il
+*registro* dello stato e la rete cambia altrove.
+
+Decisione: dichiarare esplicitamente **cinque classi di fonti** e il protocollo con cui si
+riallineano, in `.claude/rules/fonti-e-riallineamento.md`, caricata a ogni sessione e
+indicizzata in `CLAUDE.md`. Le classi sono il repository, che e' autorevole su cosa il progetto
+sa e non su com'e' la rete; le fonti vive interrogabili via script e MCP, autorevoli sullo
+stato reale; le librerie documentali esterne, autorevoli su decisioni, contratti e acquisti; le
+altre sessioni di lavoro, il cui unico canale verso qui e' un file di handoff; e l'IT Manager,
+unica autorita' sulle decisioni e unica fonte per cio' che e' stato fatto a mano.
+
+Il principio operativo che ne deriva, e che vale piu' dell'elenco: **una misura batte una
+memoria**, e quattro classi su cinque non notificano, quindi vanno interrogate secondo una
+cadenza dichiarata. Senza una cadenza scritta una fonte che non notifica viene riletta quando
+qualcuno si ricorda, cioe' mai. Due passi restano non automatizzabili e vanno fatti a mano in
+apertura di sessione: leggere per intero il blocco delle voci rilevanti del delta, e chiedere
+all'IT Manager cosa e' cambiato fuori da qui.
+
+Conseguenze tecniche applicate nella stessa giornata. Lo script del delta produce un riepilogo
+per cartella e un blocco `RILEVANTI PER LA RETE` integrale e non troncato, perche' un elenco
+troncato di un insieme dominato dal rumore non e' un avviso ma un avviso che verra' ignorato. I
+file il cui nome contiene `handoff` e i `CLAUDE.md` non si escludono mai in base alla cartella,
+perche' sono la traccia scritta di una sessione che ha cambiato qualcosa ed e' proprio dove non
+li aspetti che contano. E' stata aggiunta una **terza radice sorvegliata**, la cartella dei file
+di chat, perche' e' dove atterra un handoff quando viene condiviso e non compariva in nessuna
+delle altre due.
+
+Limiti dichiarati. Delle diciannove radici della libreria aziendale se ne sorvegliano tre: le
+altre sedici sono fuori perimetro per scelta, e la scelta va rivista se un ambito nuovo entra
+in scope. Due esclusioni restano rischiose per la stessa ragione che ha prodotto il caso della
+VM207, cioe' `graphify-out` e `TEST` sono nomi generici che una sessione futura potrebbe
+riusare: e' stato corretto il caso dimostrato, non la categoria. E resta scoperto per
+costruzione l'intervento manuale su un apparato di cui nessuno scriva nulla: si scopre solo
+rileggendo l'apparato, che e' l'argomento a favore della cadenza fissa sugli snapshot.
+
 ## ADR-019 — Scansioni su NAS in SMB con un account di servizio; scartato il server FTP sulle postazioni
 
 Data: 2026-07-30
