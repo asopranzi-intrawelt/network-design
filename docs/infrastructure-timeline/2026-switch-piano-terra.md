@@ -2137,3 +2137,111 @@ server, NAS e centralino.
 
 Dettaglio in `docs/runbook-anomalie.md` §AP-001 (aggiornamento 03/08/2026) e §UPS-001
 (aggiornamento 03/08/2026); sotto-passi in `.claude/context/roadmap.md` M13c-5 e M13c-6.
+
+---
+
+## 03/08/2026 - Il 54HP e' rientrato: censimento M22a chiuso, e quattro correzioni
+
+Rieseguito lo snapshot Nebula, fermo al 27/07 da quando il 54HP aveva risposto
+`422 DEVICE_IS_OFFLINE` sulla tabella MAC lasciando il censimento a meta'. Questa volta
+**entrambi gli switch hanno risposto su tutto**: configurazione delle porte e tabella MAC di
+livello 2, per un totale di sessantanove voci sul 54HP e sessantatre sul 30HP. Il censimento
+di M22a si chiude quindi con la seconda meta' che mancava, e la lezione operativa e' quella
+gia' scritta il 27/07 e ora confermata: non serviva forzare nulla sull'apparato, e' rientrato
+da solo.
+
+Un guasto nuovo, di natura diversa e da non confondere con NEB-001: l'endpoint best-effort
+della lista client (`sw-clients`) risponde ora `404 Not Found` su **entrambi** gli switch,
+mentre la tabella MAC di livello 2 arriva correttamente. NEB-001 e' un apparato fuori dal
+piano di gestione; questo e' uno schema di richiesta che l'API non accetta piu', quindi va
+trattato come manutenzione dello script e non come anomalia di rete. Non ha impatto sul
+censimento, perche' il dato che serviva viene dall'altro endpoint.
+
+### La configurazione reale delle porte, e le liste che il design dava per aperte
+
+Questo e' il risultato che cambia il piano di M22b. Il design partiva dalla convinzione,
+fondata sullo snapshot del 15/07, che ogni porta avesse `allowedVLAN: all` e che quindi una
+VLAN nuova attraversasse gia' tutti i collegamenti; il 23/07 quella nota era stata corretta
+per **una** porta, il trunk lato Piano Terra. La misura di oggi dice che le porte con lista
+esplicita sono **quattro**, e fra queste c'e' quella che conta piu' di tutte.
+
+| Apparato e porta | Ruolo | PVID | VLAN ammesse |
+|---|---|---|---|
+| 54HP porta 33 | uplink verso il firewall | 1 | `1, 40, 90` |
+| 54HP porta 41 | access point Piano 1 | 1 | `1, 40, 90` |
+| 54HP porta 45 | access point Piano 2 | 1 | `1, 40, 90` |
+| 54HP porta 51 | dorsale verso il Piano Terra | 1 | `all` |
+| 30HP porta 1 | access point Piano Terra | 1 | `1, 40, 90` |
+| 30HP porta 29 | dorsale verso il Piano 2 | 1 | `1, 2, 40, 90` |
+
+La porta 33 e' l'uplink a 1 Gbps verso il firewall, e ammette `1, 40, 90` ma **non la VLAN
+2**: e' architetturalmente corretto, perche' la fonia non passa dal firewall per progetto, ed
+e' la prima volta che quel fatto viene misurato invece che dedotto. Ma ne segue un
+prerequisito di M22b che il documento di design non elencava: **la VLAN 30 delle stampanti va
+aggiunta anche alla porta 33**, altrimenti il segmento nuovo esiste sullo switch, i pacchetti
+arrivano fino al 54HP e poi non raggiungono mai il gateway sul firewall. Un segmento senza
+gateway non e' un segmento isolato, e' un segmento morto, e il sintomo si presenterebbe come
+"le stampanti non rispondono piu'" a intervento apparentemente riuscito. Le porte da toccare
+per M22b sono quindi due: la 29 del 30HP e la **33** del 54HP.
+
+### Quattro correzioni alla documentazione
+
+La prima riguarda la porta 1 del 30HP, quella dell'access point del Piano Terra: la voce del
+27/07 la descriveva come trunk con VLAN 1 e 40. Porta invece **1, 40 e 90**, e non e' un
+dettaglio, perche' la 90 e' esattamente cio' che serve all'SSID ospiti del multi-SSID. La
+descrizione precedente era incompleta, non sbagliata, ma incompleta in un modo che avrebbe
+fatto sospettare un difetto dove non c'e'.
+
+La seconda e' che le tre porte dei tre access point nuovi — la 1 del 30HP e la 41 e 45 del
+54HP — hanno **configurazione identica**, trunk con `1, 40, 90`. Il progetto non lo aveva mai
+scritto: e' la conferma che la sostituzione di Fase B e' stata fatta in modo uniforme e che
+la postura di ADR-014 e' applicata allo stesso modo sui tre punti radio.
+
+La terza chiude una contraddizione aperta dal 01/07/2026 (M10, GAP-TBC #67 e #99). Le
+posizioni dei cinque telefoni IP risultano, dalla tabella MAC, **tre sul Piano 2** alle porte
+3, 5 e 44 e **due sul Piano Terra** alle porte 13 e 23, tutte e cinque sulla VLAN 2. La
+documentazione sosteneva il contrario, tre apparecchi al Piano Terra e due al Piano 2, e
+trattava l'etichetta "SIP-T34W" sulla porta 3 del 54HP come probabile errore di
+etichettatura. **Non era un errore**: sul Piano 2 c'e' davvero un terzo apparecchio, ed e' la
+distribuzione documentata a essere sbagliata. Corroborato in modo indipendente dal piano di
+numerazione ingerito oggi, che conta esattamente cinque interni di tipo IP. M10 si chiude.
+
+La quarta e' un dettaglio che vale per la fonia: la porta 8 del 54HP mostra tre indirizzi
+sulla VLAN 2, uno dei quali e' un **MAC virtuale VRRP**. Conferma diretta di quanto ipotizzato
+il 23/07, cioe' che il gateway della fonia di Vianova lavora in ridondanza, e spiega perche'
+nella tabella del Piano Terra quel MAC compaia attraverso la dorsale.
+
+### Due difetti nuovi e una osservazione fisica
+
+Il primo difetto e' una porta in uno stato incoerente: la **porta 21 del 30HP** ha PVID 1 e
+`allowedVLAN` uguale a `2`, cioe' ammette solo la VLAN 2 taggata mentre consegna il traffico
+non taggato sulla VLAN 1, che nella lista non c'e'. E' il residuo della configurazione Voice
+VLAN del 29/05, quando quella porta ospitava un telefono. Oggi e' senza link, quindi non c'e'
+impatto in atto, ma chi vi collegasse un portatile non avrebbe rete e la causa sarebbe
+tutt'altro che evidente dal sintomo. E' la stessa famiglia della porta 19 rimasta su PVID 90
+(intervento R5): prese a muro in uno stato che nessuno ha voluto. Tracciato come **NET-015**,
+da chiudere insieme a R5 con lo stesso giro.
+
+Il secondo e' minore ma della stessa natura: la **porta 30 del 30HP**, il secondo slot SFP+
+oggi non usato, ammette la sola VLAN 1. Se un giorno vi si attestasse un secondo collegamento
+fra i piani, scarterebbe tutte le VLAN taggate e il guasto somiglierebbe a quello di
+TEL-002. Non e' un difetto in atto, e' una trappola per il futuro, e costa una riga
+sistemarla quando si tocchera' la porta 29.
+
+L'osservazione fisica riguarda tre porte che negoziano a **10 Mbps** su switch gigabit: la 5 e
+la 22 del 30HP e la 25 del 54HP. Su hardware di questa classe un collegamento a 10 Mbps e'
+quasi sempre un cavo danneggiato, una coppia interrotta o un apparato molto vecchio, non una
+scelta. Va identificato cosa c'e' collegato prima di attribuirlo all'eta' dell'apparato,
+perche' se sono cavi vale la pena sistemarli mentre si mette mano al cablaggio per M22.
+Registrato come **NET-016**.
+
+Sulla porta 4 del 30HP, quella dell'ultimo access point Ubiquiti, la misura conferma il link a
+100 Mbps e mostra **quattro indirizzi appresi**, uno dei quali e' un MAC di tipo localmente
+amministrato, cioe' la forma tipica di un client Wi-Fi con indirizzo randomizzato. Il quadro e'
+coerente con un access point ancora in servizio e con client agganciati, che e' quanto M13c
+presuppone, ma l'attribuzione del produttore va fatta con la vista client di Nebula o con una
+ricerca sui prefissi e non a memoria: qui si registra il fatto misurato, non il vendor.
+
+Tutti i MAC e gli indirizzi reali di questa ricognizione restano fuori da questo file per
+policy di anonimizzazione: vivono nello snapshot in `output/`, ignorato da git, e la mappatura
+in `_notes/.anonymization-map.md`.

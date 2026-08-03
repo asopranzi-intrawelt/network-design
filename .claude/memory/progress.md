@@ -1,5 +1,72 @@
 # Work-log
 
+## 2026-08-03 (quarta sessione) — Allineamento eseguito: riserve sciolte, M22a chiuso, la fonia cambia scala
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/telefono-pbx-voip.md` (piano di numerazione, contratto UCC
+firmato, gateway FXS con la discrepanza fra ordinato e consegnato, distribuzione reale dei
+cinque telefoni, DSCP e Vendor ID based VLAN); `docs/infrastructure-timeline/2026-switch-piano-terra.md`
+(voce 03/08 sul censimento chiuso); `.claude/context/roadmap.md` (M22a chiuso, M10 chiuso,
+M22b con il prerequisito della porta 33); `docs/infrastructure-timeline/ingestion-checklist.md`
+(nota PORT-TAGGING chiusa); `.claude/context/current-work.md` (idem);
+`scripts/Check-OneDriveDelta.ps1` (riepilogo per cartella e blocco delle voci rilevanti non
+troncato). File locali: `_notes/RESOCONTO.md` (arretrato di sei settimane colmato),
+`_notes/TEST-CHECKLIST.md` (checklist Nebula, NinjaOne, delta, modello R8),
+`_notes/DIARIO.md` (indice cronologico e intestazioni promosse),
+`_notes/RESUME-PROMPT.md` rinominato in `RESUME-PROMPT_superato-17072026.md`. Baseline dei
+due manifest riallineata.
+
+**Il risultato che conta piu' di tutti** viene dal piano di numerazione, che era dentro la
+sottocartella riservata e che l'utente ha autorizzato ad aprire: trentasei interni, di cui
+cinque IP che coincidono con i cinque Yealink noti, quattro analogici e **ventisette
+apparecchi digitali del Panasonic**. Quei ventisette non parlano SIP e un centralino cloud non
+puo' registrarli: la migrazione richiede per ciascuno un telefono nuovo, una licenza software o
+un gateway. Il progetto stimava il parco in cinque apparecchi e trattava TEL-002 come il
+problema residuo della fonia; il problema residuo e' che l'ottanta per cento del parco non e'
+migrabile cosi' com'e'. Tracciato come TEL-003. Nella stessa cartella: il contratto del
+centralino virtuale risulta **firmato il 23/03/2026** con la quantita' di interni e licenze
+lasciata in bianco, e il modello di conteggio e' per apparato, dove anche il citofono e il
+posto operatore valgono un interno.
+
+**Censimento M22a chiuso.** Snapshot Nebula rieseguito: il 54HP e' rientrato da solo nel piano
+di gestione, come previsto il 27/07, e la tabella MAC e' arrivata per entrambi gli switch.
+Quattro esiti. Le porte con lista VLAN esplicita sono quattro e non una, e fra queste c'e'
+l'uplink verso il firewall, che ammette `1, 40, 90`: ne segue un prerequisito che il design non
+elencava, cioe' che la VLAN 30 va aggiunta anche alla porta 33 o il segmento delle stampanti
+non raggiunge il proprio gateway. La posizione reale dei telefoni e' tre al Piano 2 e due al
+Piano Terra, quindi l'etichetta sospettata di errore era corretta e la documentazione
+sbagliata: M10 si chiude. Due difetti nuovi, NET-015 (porta 21 con PVID 1 e sola VLAN 2
+ammessa) e NET-016 (tre porte a 10 Mbps su switch gigabit). Guasto nuovo di natura diversa
+da NEB-001: l'endpoint `sw-clients` risponde 404 su entrambi gli switch, manutenzione dello
+script e non anomalia di rete.
+
+**Riserva PORT-TAGGING sciolta.** Gli screenshot del 07/07 chiudono il TBC sul DSCP, che e'
+46 e non il default 44; correggono l'affermazione secondo cui si fosse scelto LLDP-MED invece
+dell'OUI, perche' e' attiva **anche** la Vendor ID based VLAN sul prefisso dei telefoni, con la
+conseguenza pratica che apparecchi di altri produttori non vengono catturati; confermano
+visivamente il DHCP Server Guard disattivato a livello di sito; e mostrano che al 07/07 il
+centralino cloud era gia' parzialmente in servizio, con la rubrica degli interni e la presenza
+di un collega nell'app di comunicazione unificata.
+
+**Causa del ritardo corretta, non solo l'effetto.** Il controllo del delta elencava le prime
+venticinque variazioni in ordine alfabetico: con 398 voci dominate da un altro progetto, le due
+che contavano erano invisibili. Un elenco troncato di un insieme dominato dal rumore non e' un
+avviso, e' un avviso che verra' ignorato. Aggiunti un riepilogo per cartella e un blocco delle
+voci che riguardano rete e fornitori, elencate per intero e mai troncate; la lista dei pattern
+va estesa quando entra in scope un fornitore nuovo.
+
+Due cose deliberatamente non fatte, per non confondere pulizia con perdita. I circa
+quarantasei file `.tmp-*` e le sedici cartelle `.tmp-docx-*` di luglio in `_notes/` non sono
+stati cancellati: sono residui di estrazione, nessuno e' referenziato, ma la cancellazione e'
+irreversibile e non era chiesta. E il blocco narrativo in coda a `DIARIO.md` non e' stato
+spostato fisicamente in testa: e' stato indicizzato e le intestazioni promosse, perche'
+muovere seicento righe di narrazione per un beneficio cosmetico non vale il rischio.
+
+Igiene rimasta aperta e segnalata: la chiave API Nebula vive in chiaro in un file sul desktop.
+E' stata usata in questa sessione leggendola senza mai stamparla ne' passarla su riga di
+comando, ma la sistemazione corretta e' impostarla come variabile d'ambiente utente
+`NEBULA_API_KEY` e cancellare il file, coerentemente con ADR-009 e ADR-010.
+
 ## 2026-08-03 (terza sessione) — Audit di allineamento: delta arretrato triagiato, due asset di rete nuovi, buchi locali dichiarati
 
 Commit: PENDING (da fare manualmente)
