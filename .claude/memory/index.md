@@ -20,6 +20,17 @@ Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
 dal 2026-06-22 nonostante piu' commit successivi. Il riferimento va aggiornato
 a ogni sessione che tocca schede o memoria, non solo alla prima.
 
+## Nota sul frontmatter delle schede (03/08/2026)
+
+Tutte le schede di `.claude/context/` portano ancora `last-verified: 347f79c`, che e' il
+commit di riferimento di luglio: il valore e' stale su tutte, comprese quelle il cui
+contenuto e' allineato. Non e' stato bumpato perche' i commit sono manuali dell'utente e il
+valore corretto e' l'hash del commit che include le modifiche, che non esiste finche' il
+commit non e' fatto. Subito dopo il commit, il bump si fa con una riga per scheda
+sostituendo `347f79c` con l'hash nuovo, e va fatto in quel momento e non rimandato: e'
+esattamente il passo che si e' perso a luglio, con il risultato che questo file dichiarava un
+drift che nessuno chiudeva.
+
 ## Stato di verifica delle schede
 
 | Scheda | last-verified | Stato |
@@ -34,7 +45,23 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
-**Audit di allineamento del 03/08/2026 — leggere prima di riprendere.** Il delta OneDrive
+**Allineamento eseguito il 03/08/2026 — leggere questo blocco per primo.** Tre fatti nuovi
+cambiano le priorita'. Il primo: il piano di numerazione dice che **ventisette dei trentasei
+interni sono apparecchi digitali del Panasonic**, che non parlano SIP e che un centralino cloud
+non puo' registrare — la migrazione della fonia e' cinque volte piu' grande di come il progetto
+la descriveva, e il contratto del centralino virtuale risulta **firmato dal 23/03/2026** con la
+quantita' di interni lasciata in bianco (gap TEL-003, scheda `telefono-pbx-voip.md`). Il
+secondo: **M22a e' chiuso**, il 54HP e' rientrato e la tabella MAC c'e' per entrambi gli
+switch; da qui un prerequisito che il design non aveva, cioe' che la VLAN 30 va aggiunta anche
+alla **porta 33 del 54HP**, l'uplink verso il firewall, altrimenti il segmento delle stampanti
+non raggiunge il proprio gateway. Il terzo: **M10 e' chiuso**, i telefoni sono tre al Piano 2 e
+due al Piano Terra, non il contrario. Nuovi difetti NET-015 e NET-016. Baseline del delta
+riallineata e script corretto perche' l'arretrato non si riformi. Riserva PORT-TAGGING sciolta
+e chiusa. Frontmatter delle schede: vedi la nota qui sopra, va bumpato subito dopo il commit.
+Igiene aperta: la chiave API Nebula e' in chiaro in un file sul desktop, va spostata in
+`NEBULA_API_KEY` e il file cancellato.
+
+**Audit di allineamento del 03/08/2026 — antefatto.** Il delta OneDrive
 era arretrato di diciannove giorni ed e' stato triagiato: dentro c'erano **due asset di rete
 mai censiti**, un access point da esterno **Zyxel WBE530-EU0101F** (l'hardware di M13c) e un
 **UPS rack Addpower TP130N-1500** con scheda SNMP opzionale, entrambi da preventivo del

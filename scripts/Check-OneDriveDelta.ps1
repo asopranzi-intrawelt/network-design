@@ -63,6 +63,27 @@ function Test-Excluded([string]$fullName) {
     return $false
 }
 
+# Percorsi che riguardano la rete e l'infrastruttura documentata da questo progetto.
+# Servono a risolvere un problema osservato il 03/08/2026: il delta era arretrato di
+# diciannove giorni con 398 voci nuove, l'elenco veniva troncato alle prime 25 in ordine
+# alfabetico, e le voci che contavano davvero -- due preventivi di hardware di rete --
+# erano invisibili sotto centinaia di file di un altro progetto. Un elenco troncato di un
+# insieme dominato dal rumore non e' un avviso: e' un avviso che verra' ignorato.
+# Le voci che corrispondono a questi pattern vengono quindi elencate PER INTERO e a parte,
+# mai troncate. Estendere la lista quando entra in scope un fornitore o un ambito nuovo.
+$relevantPatterns = @(
+    'punto informatica', 'preventiv', '\bddt\b',
+    'myoffice', 'vianova', 'centralino', 'fonia', 'telefon', 'interni intrawelt',
+    'zyxel', 'nebula', 'firewall', 'switch', '\bvpn\b', '\bvlan\b',
+    'qnap', '\bnas\b', 'proxmox', '\bilo\b', 'seeweb', 'groupshare',
+    'mappatura porte', 'architettura server', 'network', 'diagramma di rete',
+    '\bups\b', 'access point', 'stampant', 'printer', 'scanner', 'ninja'
+)
+function Test-Relevant([string]$relPath) {
+    foreach ($p in $relevantPatterns) { if ($relPath -imatch $p) { return $true } }
+    return $false
+}
+
 function Invoke-DeltaCheck($target, $maxList, $updateBaseline) {
     $folder = $target.Folder
     $baselinePath = $target.BaselinePath
@@ -110,13 +131,40 @@ function Invoke-DeltaCheck($target, $maxList, $updateBaseline) {
 
     Write-Output "Delta vs baseline del $($baselineRaw.created)"
     Write-Output "Nuovi: $($new.Count) | Modificati: $($modified.Count) | Eliminati: $($deleted.Count) | Censiti: $($current.Count)"
+    # Indice unico delle variazioni, usato per il riepilogo per cartella e per il blocco
+    # delle voci rilevanti: entrambi servono a rendere leggibile un delta grande.
+    $all = @()
+    foreach ($pair in @(@('N', $new), @('M', $modified), @('E', $deleted))) {
+        foreach ($f in $pair[1]) { $all += [pscustomobject]@{ Kind = $pair[0]; Path = $f } }
+    }
+
+    if ($all.Count -gt 0) {
+        Write-Output ""
+        Write-Output "--- RIEPILOGO PER CARTELLA (N=nuovi M=modificati E=eliminati) ---"
+        $all | Group-Object -Property { ($_.Path -split '\\')[0] } | Sort-Object Count -Descending |
+            ForEach-Object {
+                $g = $_.Group
+                $n = @($g | Where-Object { $_.Kind -eq 'N' }).Count
+                $m = @($g | Where-Object { $_.Kind -eq 'M' }).Count
+                $e = @($g | Where-Object { $_.Kind -eq 'E' }).Count
+                Write-Output ("  {0,5} totali  (N {1,4}  M {2,3}  E {3,4})  {4}" -f $_.Count, $n, $m, $e, $_.Name)
+            }
+    }
+
+    $relevant = @($all | Where-Object { Test-Relevant $_.Path })
+    if ($relevant.Count -gt 0) {
+        Write-Output ""
+        Write-Output "*** RILEVANTI PER LA RETE: $($relevant.Count) voci - elenco integrale, NON troncato ***"
+        $relevant | Sort-Object Path | ForEach-Object { Write-Output ("  [{0}] {1}" -f $_.Kind, $_.Path) }
+    }
+
     foreach ($pair in @(@('NUOVI', $new), @('MODIFICATI', $modified), @('ELIMINATI', $deleted))) {
         $itemLabel = $pair[0]; $list = $pair[1]
         if ($list.Count -gt 0) {
             Write-Output ""
-            Write-Output "--- $itemLabel ---"
+            Write-Output "--- $itemLabel (primi $maxList in ordine alfabetico) ---"
             $list | Sort-Object | Select-Object -First $maxList | ForEach-Object { Write-Output "  $_" }
-            if ($list.Count -gt $maxList) { Write-Output "  ... e altri $($list.Count - $maxList)" }
+            if ($list.Count -gt $maxList) { Write-Output "  ... e altri $($list.Count - $maxList) (usare -MaxList per vederli)" }
         }
     }
     if ($new.Count -eq 0 -and $modified.Count -eq 0 -and $deleted.Count -eq 0) {
