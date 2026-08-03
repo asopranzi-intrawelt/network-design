@@ -31,8 +31,18 @@ Corroborazione indipendente: il piano di numerazione conta esattamente cinque in
 IP e IP+, compresa la sala riunioni. L'associazione fra porta, interno e persona vive in
 `_notes/.anonymization-map.md`, non qui.
 
-I due apparecchi del Piano Terra sono quelli di TEL-002, cioe' quelli che hanno la parte di
-rete risolta ma non ottengono un lease dal DHCP della fonia.
+**Stato dichiarato dall'utente il 03/08/2026, e corroborato dalla misura.** Tutti e cinque gli
+apparecchi sono collegati alla rete e **ciascuno sta su una porta che prende correttamente la
+VLAN della fonia**: il lavoro e' stato completato in sessioni di lavoro precedenti a questa. La
+misura indipendente dello stesso giorno concorda, perche' i cinque indirizzi compaiono nella
+tabella MAC dei due switch tutti e cinque sulla VLAN 2 e non sulla VLAN dati.
+
+Ne segue che la parte di rete di TEL-002 non riguarda piu' due apparecchi con la fonia
+mancante: e' chiusa su tutti e cinque. La documentazione precedente descriveva i due del Piano
+Terra come "parte di rete risolta ma nessun lease DHCP" sulla base dello stato del 23/07, ed e'
+quella descrizione a essere superata. Vedi la nota di chiusura in `runbook-anomalie.md`
+§TEL-002 per il residuo da confermare, che riguarda la registrazione verso il centralino e non
+la rete.
 
 [TBC: modello esatto per porta. Il rilievo di maggio 2026 attribuiva i T34W al Piano Terra e i
 T31G al Piano 2, ma quell'attribuzione poggiava sulla distribuzione ora smentita, quindi va

@@ -760,6 +760,56 @@ tempo di ripristino dichiarato in `business-continuity-disaster-recovery.md`.
 
 ---
 
+## TEL-002: telefoni IP e VLAN della fonia — parte di rete CHIUSA
+
+**Severity**: era ALTA, oggi residuo BASSO
+**Origine**: osservazione del 07/07/2026 ("i telefoni del piano inferiore non passano le VLAN"),
+GAP-TBC #103 e #116
+**Stato**: **parte di rete chiusa il 03/08/2026**; residuo solo sul livello applicativo
+
+### Storia breve, perche' la diagnosi e' istruttiva
+
+Il sintomo iniziale del 07/07 era formulato come un problema del tratto che attraversa il vano
+ascensore. Non lo era: riguardava telefoni collegati direttamente a porte dello switch. Il
+23/07 la diagnosi e' partita dall'apparato funzionante invece che da quello rotto, per ricavarne
+la specifica corretta, e ha trovato una causa doppia — il trunk lato Piano Terra non ammetteva
+la VLAN 2, quindi la fonia arrivava al piano e li' si fermava, e le porte dei telefoni erano
+in access sulla VLAN dati. Corretti entrambi i difetti, gli apparecchi sono comparsi sulla
+VLAN 2.
+
+### Stato al 03/08/2026: chiuso sulla rete, su tutti e cinque
+
+Dichiarato dall'utente e corroborato da una misura indipendente lo stesso giorno. Tutti e
+cinque i telefoni Yealink sono collegati e **ciascuno sta su una porta che prende correttamente
+la VLAN della fonia**; il lavoro e' stato completato in sessioni di lavoro precedenti, non
+tutte tracciate in questo repository. La conferma tecnica: la tabella MAC dei due switch mostra
+i cinque indirizzi tutti sulla VLAN 2 — porte 3, 5 e 44 del XGS2220-54HP e porte 13 e 23 del
+XGS2220-30HP — e non sulla VLAN dati.
+
+La formulazione precedente di questa anomalia, cioe' "i due apparecchi del Piano Terra hanno la
+parte di rete risolta ma non ottengono un lease dal DHCP della fonia", fotografava lo stato del
+23/07 ed e' **superata**. Va letta come storia, non come stato.
+
+### Residuo da confermare, e come si conferma
+
+Resta un solo punto, e non e' di rete: che ciascun apparecchio **si registri** verso il
+centralino e faccia una chiamata. E' una distinzione che vale la pena tenere netta, perche' un
+telefono correttamente attestato sulla VLAN della fonia puo' ancora non funzionare per ragioni
+che stanno interamente sopra il livello 2 — provisioning per MAC lato fornitore, credenziali
+SIP, raggiungibilita' della piattaforma.
+
+La verifica non richiede strumenti: il display dell'apparecchio mostra il proprio interno
+quando la registrazione e' andata a buon fine, e una chiamata interna piu' una verso l'esterno
+chiudono la questione. Se il display mostra l'interno su tutti e cinque, questa anomalia si
+chiude del tutto e i gap #103 e #116 si possono marcare risolti.
+
+Nota di contesto per non confondere due cose diverse: la migrazione della fonia **non** e'
+completa quando i cinque Yealink funzionano. Restano ventisette interni digitali del Panasonic
+che non parlano SIP, che e' un problema di scala e non di rete, tracciato a parte come TEL-003
+(GAP-TBC #133) e progettato in M17.
+
+---
+
 ## NET-005: Wi-Fi "intrawelt" senza isolamento, nessuna rete ospiti
 
 **Severity**: ALTA
