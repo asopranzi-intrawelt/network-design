@@ -53,7 +53,18 @@ sezione Crittografia dati a riposo piu' gap #104/SEC-010 (commit 552d96c);
 delta SCENIA (Allegati A-L, DPIA compilata, Risposte Tecniche AIDAPT) ->
 `scenia-project.md` (commit 594ec07).
 
-## Nota PORT-TAGGING (racconto rimandato a lavori conclusi)
+## Nota PORT-TAGGING: CHIUSA il 03/08/2026
+
+La riserva sul racconto "a lavori conclusi" e' stata sciolta su indicazione dell'utente. Gli
+screenshot sono stati letti e hanno chiuso il TBC sul DSCP (e' 46, non il default 44), corretto
+l'affermazione secondo cui si fosse scelto LLDP-MED invece dell'OUI (convivono: e' attiva anche
+la Vendor ID based VLAN sul prefisso dei telefoni), confermato visivamente che il DHCP Server
+Guard e' disattivato a livello di sito, e rivelato che al 07/07 il centralino cloud era gia'
+parzialmente in servizio con utenti registrati sull'app di comunicazione unificata. Dettaglio in
+`docs/infrastructure-timeline/ingestion-checklist.md` §Nota PORT-TAGGING e in
+`docs/telefono-pbx-voip.md`. Il testo che segue e' lo stato storico della riserva.
+
+## Nota PORT-TAGGING (stato storico: racconto rimandato a lavori conclusi)
 
 Il tagging dei due switch Nebula (XGS2220-54HP e XGS2220-30HP) per la
 migrazione al centralino cloud e' **in corso**: interventi eseguiti

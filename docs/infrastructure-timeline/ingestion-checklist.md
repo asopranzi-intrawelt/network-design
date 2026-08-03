@@ -480,7 +480,36 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 - [x] `Sviluppo_interno/Qdrant + Ollama + Ubuntu + n8n/_File Benchmark e implement/` → 2026-switch-piano-terra.md §Benchmark DoE IntraLino + GAP-TBC #107/SRV-002 (07/07/2026; fonti lette: CLAUDE_STATO_PROGETTO.md, GUIDA_test_C4_qwen.md, conclusioni dei due report differenziali; file credenziali della cartella MAI letti ne' riportati). Restano non ingerite le guide Parte_1-3 e Implementazione.docx (17 MB): dettaglio implementativo n8n/Docker, riclassificato BASSA
 - [-] `Miscellaneous/Web scraping - Downloaded Web sites/` — SKIP (mirror di un sito esterno, non IT ops)
 
-## Nota PORT-TAGGING (in attesa di input utente, aggiornata 07/07/2026 pomeriggio)
+## Nota PORT-TAGGING — CHIUSA il 03/08/2026
+
+La riserva e' stata sciolta su indicazione esplicita dell'utente. Le evidenze in
+`_notes/[TBC] screenshot e note myoffice/` sono state lette come immagini e hanno prodotto tre
+esiti, tutti riportati nei file tracciati.
+
+Il primo chiude un TBC che questa documentazione portava aperto da luglio: la pagina Voice VLAN
+di Nebula mostra **Voice VLAN ID 2, Priority 5, Assign VLAN by LLDP-MED, DSCP 46**, quindi il
+DSCP non era rimasto sul default 44 (`telefono-pbx-voip.md` §Priorita' e QoS).
+
+Il secondo e' una correzione: sul dispositivo e' attiva **anche** la sezione "Vendor ID based
+VLAN", con il prefisso del produttore dei telefoni mappato sulla VLAN 2. La scheda affermava che
+si fosse scelto LLDP-MED *invece* dell'OUI; in realta' convivono, e la conseguenza pratica —
+apparecchi di altri produttori non catturati dalla voce per prefisso — e' ora scritta.
+
+Il terzo e' la conferma visiva che il **DHCP Server Guard e' disattivato** a livello di
+impostazioni di sito, non solo sul singolo switch: rafforza NET-012, che era stato rilevato via
+API.
+
+Un quarto fatto arriva dagli screenshot dell'applicazione di comunicazione unificata: alla data
+del 07/07/2026 il client mostra la rubrica degli interni con l'indicatore di presenza di un
+collega, quindi il centralino cloud non era soltanto contrattualizzato, era **parzialmente in
+servizio** con utenti registrati. Non era scritto in nessun file di questo progetto.
+
+Restano non analizzate le due fotografie del rack e alcuni screenshot intermedi della stessa
+giornata, che documentano passaggi di GUI gia' coperti dai fatti sopra: non aggiungono
+informazione oltre a quanto la lettura diretta degli apparati ha poi misurato in modo
+autorevole il 03/08/2026.
+
+## Nota storica PORT-TAGGING (stato precedente, aggiornata 07/07/2026 pomeriggio)
 
 Il tagging delle porte dei due switch (XGS2220-54HP Piano 2, XGS2220-30HP
 Piano Terra) per la migrazione al centralino cloud Vianova e' **in corso**:

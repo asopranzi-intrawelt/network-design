@@ -13,14 +13,30 @@ centralino cloud previsto).
 
 ### Terminali VoIP installati
 
-Telefoni Yealink connessi alla rete:
-- Persona-A: SIP-T34W (Piano Terra, switch XGS2220-30HP)
-- Persona-B: SIP-T34W (Piano Terra)
-- Persona-C: SIP-T34W (Piano Terra)
-- Persona-D: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 3 o 5 PoE)
-- Sala-1: SIP-T31G (Piano 2, switch XGS2220-54HP, porta 44 PoE)
+**Distribuzione corretta il 03/08/2026 sulla tabella MAC di entrambi gli switch, a 54HP
+rientrato nel piano di gestione.** La versione precedente di questa sezione collocava tre
+apparecchi al Piano Terra e due al Piano 2, e trattava l'etichetta della porta 3 del 54HP come
+probabile errore. La misura dice il contrario: cinque apparecchi con prefisso MAC Yealink
+appresi sulla VLAN 2, **tre sul Piano 2 e due sul Piano Terra**. Chiude M10 e i gap #67/#99.
 
-[TBC: modello esatto, IP e MAC dei telefoni. Numero totale terminali da aggiornare.]
+| Porta | Switch | Piano |
+|---|---|---|
+| 3 | XGS2220-54HP | Piano 2 |
+| 5 | XGS2220-54HP | Piano 2 |
+| 44 | XGS2220-54HP | Piano 2 |
+| 13 | XGS2220-30HP | Piano Terra |
+| 23 | XGS2220-30HP | Piano Terra |
+
+Corroborazione indipendente: il piano di numerazione conta esattamente cinque interni di tipo
+IP e IP+, compresa la sala riunioni. L'associazione fra porta, interno e persona vive in
+`_notes/.anonymization-map.md`, non qui.
+
+I due apparecchi del Piano Terra sono quelli di TEL-002, cioe' quelli che hanno la parte di
+rete risolta ma non ottengono un lease dal DHCP della fonia.
+
+[TBC: modello esatto per porta. Il rilievo di maggio 2026 attribuiva i T34W al Piano Terra e i
+T31G al Piano 2, ma quell'attribuzione poggiava sulla distribuzione ora smentita, quindi va
+riletta dal display degli apparecchi e non dedotta.]
 
 ---
 
@@ -30,9 +46,31 @@ Telefoni Yealink connessi alla rete:
 
 Voice VLAN ID: **2**.
 Metodo di assegnazione: **LLDP-MED** (Link Layer Discovery Protocol - Media Endpoint
-Discovery, TIA-1057). Entrambi i modelli Yealink T31G e T34W supportano LLDP-MED.
+Discovery, TIA-1057) **piu' Vendor ID based VLAN**, cioe' entrambi i meccanismi
+contemporaneamente. Entrambi i modelli Yealink T31G e T34W supportano LLDP-MED.
 
-LLDP-MED e' preferito a OUI perche':
+**Correzione del 03/08/2026, dalla lettura degli screenshot della sessione del 07/07/2026.**
+Questa scheda affermava che LLDP-MED fosse stato preferito all'OUI e che la lista OUI non
+richiedesse manutenzione perche' non era in uso. Sul dispositivo sono attivi **entrambi**: la
+sezione "Vendor ID based VLAN" e' abilitata e contiene una voce, il prefisso `C4:FC:22` mappato
+sulla VLAN 2 con priorita' 1 e descrizione "Telefonia Yealink". Il prefisso e' riportato
+verbatim come eccezione dichiarata alla regola di anonimizzazione, perche' e' il nome di un
+oggetto di configurazione presente sull'apparato e serve a ritrovare quella voce nella GUI: non
+e' il MAC di un dispositivo, e' un prefisso di produttore.
+
+Il fatto ha una conseguenza pratica utile e non e' una svista da correggere. I due meccanismi
+si coprono a vicenda: LLDP-MED negozia con l'apparecchio che lo supporta, l'OUI cattura per
+prefisso qualunque telefono dello stesso produttore anche dove la negoziazione non si completi.
+Corroborazione incrociata: i cinque indirizzi appresi sulla VLAN 2 nello snapshot del
+03/08/2026 hanno tutti esattamente quel prefisso.
+
+Il rovescio della medaglia va detto, perche' e' il motivo per cui la scheda preferiva LLDP-MED:
+la lista per prefisso e' manutenzione manuale, e un telefono di un altro produttore — per
+esempio il dispositivo voce Grandstream sulla porta 6 del 54HP, o l'adattatore analogico
+dell'ascensore in arrivo — non viene catturato da quella voce e va gestito con LLDP-MED o con
+un PVID esplicito sulla porta.
+
+Motivi per cui LLDP-MED resta il meccanismo preferito dove funziona:
 - Bidirezionale: lo switch comunica attivamente al telefono la VLAN da usare.
 - Non richiede manutenzione manuale della lista OUI.
 - La negoziazione e' verificabile nei log dello switch.
@@ -41,7 +79,10 @@ LLDP-MED e' preferito a OUI perche':
 
 802.1p CoS (Class of Service): **5** (valore standard IEEE per voce RTP).
 DSCP: **46** (EF - Expedited Forwarding, RFC 3246, standard voce).
-[TBC: il default Nebula mostra DSCP 44 - verificare se e' stato modificato a 46.]
+**TBC chiuso il 03/08/2026**: il dubbio era se il valore fosse rimasto sul default Nebula di
+44. Lo screenshot della pagina Voice VLAN del 07/07/2026 mostra il campo DSCP impostato a
+**46**, con Voice VLAN ID 2 e Priority 5. Il valore e' quindi quello corretto per la voce e non
+il default.
 
 ### Configurazione porte
 
@@ -186,6 +227,71 @@ interno prima del messaggio.
 a myOffice su quale modalita' adottare per il messaggio giorno (semplice
 attesa o IVR con instradamento reparti) ne' sui dettagli del messaggio notte.
 
+### Il piano di numerazione, e la scala reale della migrazione (ingerito 03/08/2026)
+
+Fonte: `IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\Interni
+Intrawelt_V3.xlsx`, piu' un foglio di riscontro con sette contatti e relativo interno. E' il
+documento che questa scheda elencava come `[TBC: piano di numerazione definitivo]` dal
+01/07/2026: era sempre stato dentro la sottocartella riservata al racconto a lavori conclusi.
+
+Il piano conta **trentasei interni**, e la colonna del tipo di terminale e' il dato che
+cambia la dimensione del progetto. I nomi delle persone associate a ciascun interno non
+vengono riportati qui per policy di anonimizzazione: la corrispondenza vive in
+`_notes/.anonymization-map.md`.
+
+| Tipo di terminale | Interni | Note |
+|---|---|---|
+| IP+ | 3 | reception, rappresentante legale, amministrazione |
+| IP | 2 | una postazione e la sala riunioni |
+| Digitale | 27 | apparecchi digitali sul Panasonic |
+| Bca (analogico) | 4 | uno non connesso, piu' citofono, fax e ascensore |
+
+Sette interni risultano marcati come non connessi, quindi gli interni realmente attivi sono
+ventinove.
+
+I cinque interni di tipo IP e IP+ coincidono con i cinque Yealink censiti in questa scheda,
+compresa la sala riunioni, e questo chiude per corroborazione indipendente la mappatura fra
+interno e apparecchio. Ma e' il resto della tabella che conta: **ventisette interni sono
+apparecchi digitali del Panasonic**, cioe' terminali proprietari che non parlano SIP e che un
+centralino cloud non puo' registrare in nessun modo. Fino a oggi la documentazione di questo
+progetto descriveva il parco telefonico come cinque Yealink piu' il centralino fisico, e
+trattava TEL-002, i due apparecchi del Piano Terra senza lease, come il problema residuo
+della migrazione. Non lo e': **il problema residuo e' che l'ottanta per cento del parco non e'
+migrabile cosi' com'e'**. Ogni interno digitale richiede una delle tre cose — un telefono SIP
+nuovo, una licenza di *softphone* al posto dell'apparecchio, o un gateway che converta i
+terminali digitali — e la scelta e' per persona, non globale, perche' dipende da chi ha
+bisogno di un apparecchio fisico.
+
+Registrato come gap **TEL-003**, ed e' la ragione per cui il micro-step M17 passa da "rispondere
+sul testo IVR" a un vero piano di migrazione dei terminali.
+
+### Il contratto del centralino virtuale: firmato, con la quantita' lasciata in bianco
+
+Fonte: `_Preventivi\prev Intrawelt_UCC_26.02.26_signed.pdf`, offerta myOffice del 26/02/2026
+per il servizio Vianova Unified Communication & Collaboration, **firmata digitalmente dal
+rappresentante legale il 23/03/2026**. Il fatto che il contratto del centralino cloud sia
+accettato da marzo non era tracciato in nessun file di questo progetto.
+
+Due elementi contano per la progettazione, e nessuno dei due e' un importo (canoni e sconti
+restano fuori dai file tracciati per policy).
+
+Il primo e' il modello di conteggio, dichiarato in maiuscolo nell'offerta: **ogni telefono
+fisso, ogni cordless, ogni citofono e ogni posto operatore corrisponde a un interno del
+centralino virtuale**, e il canone e' per interno. La licenza di collaborazione, quella che
+porta chat, videoconferenza e condivisione dello schermo, e' invece separata e per utente.
+Ne segue che il piano di numerazione non e' solo una tabella tecnica: e' il documento che
+determina il dimensionamento del servizio, e le sette voci non connesse valgono un interno
+ciascuna se restano nel piano.
+
+Il secondo e' una lacuna del documento firmato: sotto la firma c'e' l'istruzione
+"specificare il numero esatto di interni e di licenze", e **il numero non e' compilato**. Il
+contratto e' quindi accettato nel prezzo unitario ma non nella quantita', e la quantita'
+dipende esattamente dalla decisione ancora aperta su cosa fare dei ventisette interni
+digitali. Va chiuso prima dell'attivazione, non durante.
+
+L'installazione del centralino virtuale e' inoltre fatturata a consuntivo sulle ore tecniche
+impiegate, quindi ogni ambiguita' risolta prima riduce tempo fatturato.
+
 ### Gateway FXS consegnato per il telefono dell'ascensore (31/07/2026)
 
 Rilevato il 03/08/2026 dal delta OneDrive e verificato leggendo il documento di
@@ -198,14 +304,36 @@ datato 01/07/2026, ricevuta controfirmata il 31/07/2026, riferimento interno a
 un preventivo di marzo 2026 (importi e numeri di documento esclusi dai file
 tracciati per policy di anonimizzazione).
 
-Il nome della cartella attribuisce l'apparato al telefono dell'ascensore, e
-l'interpretazione coerente e' che quell'apparecchio sia analogico mentre il
-centralino cloud e' SIP: serve quindi un adattatore che presenti una porta FXS
-al telefono e parli SIP verso il cloud. **Interpretazione da confermare con il
-fornitore prima di trattarla come fatto**: nessuna fonte del progetto descrive
-oggi il telefono dell'ascensore come endpoint di rete, e la funzione
-dell'apparato potrebbe essere piu' ampia (per esempio la sopravvivenza di altri
-apparecchi analogici oggi attestati sul Patton).
+**Attribuzione all'ascensore: confermata il 03/08/2026, non piu' un'inferenza.** L'offerta
+corrispondente (`_Preventivi\prev Intrawelt_apparato aggiuntivo_signed.pdf`, codice 052-AL-R0
+del 26/03/2026, lo stesso riferimento riportato sul documento di trasporto) e' intitolata
+esplicitamente "Offerta adattatore telefonico analogico per ascensore" ed e' **firmata
+digitalmente dal rappresentante legale il 26/03/2026**. Il piano di numerazione corrobora in
+modo indipendente: l'interno **124 e' ASCENSORE, di tipo analogico**. L'ipotesi dedotta dal
+nome della cartella diventa quindi un fatto documentato da due fonti.
+
+**Discrepanza fra ordinato e consegnato, da risolvere guardando l'etichetta dell'apparato.**
+L'offerta firmata a marzo e' per un **Grandstream HT802 v2**: due porte FXS e **una** porta
+Ethernet a 10/100 Mbps, nessuna funzione di router. Il documento di trasporto di luglio, con
+lo stesso riferimento di offerta, descrive invece un **HT-812 v2**, due porte FXS con
+**router NAT Gigabit**, che e' il modello superiore. Le due cose non sono equivalenti per chi
+deve collegarlo: l'HT802 ha una sola porta e si comporta da endpoint, l'HT812 ha una coppia
+WAN/LAN e per impostazione predefinita fa NAT e distribuisce indirizzi, quindi va
+esplicitamente messo in modalita' bridge o collegato solo sulla porta corretta. Prima di
+configurare va letta l'etichetta dell'apparato fisico: se e' un HT812, la funzione di router
+va disattivata, perche' un secondo NAT interno e' causa classica di audio unidirezionale e di
+registrazioni che cadono, e su una LAN piatta un apparato che distribuisce indirizzi per
+conto proprio e' anche un rischio di conflitto DHCP.
+
+**Capacita': due porte FXS contro tre apparecchi analogici in servizio.** Il piano di
+numerazione registra quattro interni analogici, di cui uno non connesso e tre in uso:
+citofono, fax e ascensore. L'offerta copre dichiaratamente il solo ascensore, e con due porte
+FXS l'apparato ne serve al massimo due. Restano quindi da decidere il citofono, che l'offerta
+del centralino virtuale conta esplicitamente come un interno a se', e il fax, che e' il caso
+piu' delicato perche' il fax su rete IP richiede un trasporto dedicato e non funziona in modo
+affidabile come una normale chiamata vocale: va deciso se dismetterlo, se sostituirlo con un
+servizio di fax elettronico, o se richiede un apparato proprio. Nessuna delle tre e' scritta
+da nessuna parte oggi.
 
 Tre questioni di rete da chiarire prima dell'installazione, tutte aperte:
 
