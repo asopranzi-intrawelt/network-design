@@ -96,6 +96,35 @@ segue una conseguenza operativa non negoziabile: ogni ID VLAN nuovo va aggiunto
 esplicitamente alla lista della porta 29 del 30HP, altrimenti il segmento funzionera' al
 Piano 2 e sara' invisibile al Piano Terra, con un sintomo identico a quello dei telefoni.
 
+**Estensione del 03/08/2026, ed e' la correzione che pesa piu' di tutte in questa sezione.**
+Il censimento chiuso a 54HP rientrato nel piano di gestione mostra che le porte con lista
+esplicita non sono una ma **quattro**, e la piu' importante non era stata considerata:
+
+| Apparato e porta | Ruolo | VLAN ammesse |
+|---|---|---|
+| 54HP porta 33 | uplink verso il firewall | `1, 40, 90` |
+| 54HP porta 41 | access point Piano 1 | `1, 40, 90` |
+| 54HP porta 45 | access point Piano 2 | `1, 40, 90` |
+| 30HP porta 1 | access point Piano Terra | `1, 40, 90` |
+| 54HP porta 51 | dorsale verso il Piano Terra | `all` |
+| 30HP porta 29 | dorsale verso il Piano 2 | `1, 2, 40, 90` |
+
+La porta 33 e' l'uplink a 1 Gbps verso il firewall, e ammette `1, 40, 90` ma **non la VLAN 2**:
+architetturalmente corretto, perche' la fonia non passa dal firewall per progetto, ed e' la
+prima volta che quel fatto viene misurato invece che dedotto. Ma ne segue che **la VLAN 30 va
+aggiunta anche alla porta 33**, non solo alla 29. Vale la pena capire bene il modo in cui
+questo intervento fallirebbe senza quel passo, perche' e' il piu' ingannevole di tutti: la
+VLAN 30 esisterebbe sugli switch, le stampanti prenderebbero il tag, i frame arriverebbero
+fino al 54HP e verrebbero scartati sull'ultimo salto, quello verso il gateway. Il segmento
+non risulterebbe isolato, risulterebbe **morto**, e il sintomo per gli utenti sarebbe "le
+stampanti non rispondono piu'" dopo un intervento che ogni verifica lato switch dichiarerebbe
+riuscito. La diagnosi partirebbe dal posto sbagliato per almeno mezz'ora.
+
+Ne segue anche una nota di metodo per i segmenti successivi di M22: la lista delle porte da
+estendere si rilegge dallo snapshot **prima** di ogni sotto-step, non si assume dal precedente.
+Fra il 15/07 e il 03/08 quel numero e' passato da zero a una a quattro senza che nessuno
+cambiasse deliberatamente una lista: e' cambiato come effetto collaterale di altri interventi.
+
 ### I tre limiti da dichiarare subito
 
 Il primo limite e' che una VLAN non protegge dentro se stessa: due PC nello stesso
@@ -669,10 +698,15 @@ adottato per il firewall.
    nome invece di indirizzo dove possibile, script NinjaOne come veicolo — e riservare
    l'indirizzo di ogni stampante per MAC nel nuovo ambito DHCP, cosi' che l'indirizzo sia
    stabile e governato dal firewall invece che digitato sul pannello dell'apparato.
-6. **Trunk**: aggiungere l'ID 30 alla lista delle VLAN ammesse della porta 29 del 30HP
-   (passo obbligatorio, vedi la lezione della VLAN 2), verificando a schermo; sul 54HP la
-   porta 51 e' su `All` e non richiede modifiche, e su quel core switch la lista esplicita
-   resta deliberatamente non introdotta perche' il rischio supera il beneficio. Regola non
+6. **Trunk, due porte e non una** (corretto il 03/08/2026): aggiungere l'ID 30 alla lista
+   delle VLAN ammesse della porta 29 del 30HP **e della porta 33 del 54HP**, verificando a
+   schermo entrambe. La 29 e' la dorsale e la sua necessita' era gia' nota dalla lezione
+   della VLAN 2; la 33 e' l'uplink verso il firewall e ammette `1, 40, 90`, quindi senza
+   quel passo il segmento nuovo non raggiunge mai il proprio gateway — il segmento non
+   risulta isolato, risulta morto, e il sintomo e' "le stampanti non rispondono" dopo un
+   intervento che ogni verifica lato switch dichiara riuscito. La porta 51 del 54HP e' su
+   `All` e non richiede modifiche, e su quel core switch la lista esplicita resta
+   deliberatamente non introdotta perche' il rischio supera il beneficio. Regola non
    negoziabile appresa il 23/07 al costo di un blackout del piano di gestione: il PVID e'
    un valore singolo, la lista sta solo in `Allowed VLANS`.
 7. **Una porta stampante per volta** su access con PVID 30: verificare che l'apparato

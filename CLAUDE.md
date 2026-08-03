@@ -17,7 +17,12 @@ per la documentazione della sicurezza di rete.
 
 Leggere per primo `.claude/memory/index.md` (branch, commit di riferimento, stato schede,
 punto di ripresa). Leggere poi `.claude/context/current-work.md` se c'e' una feature
-attiva. Invocare la skill `sync-context` per verificare il drift tra schede e codice.
+attiva. Seguire il protocollo di `.claude/rules/fonti-e-riallineamento.md`: il repository e'
+una sola delle cinque classi di fonti e le altre quattro non notificano, quindi vanno
+interrogate — in particolare va letto per intero il blocco `RILEVANTI PER LA RETE` dell'output
+del delta, e va chiesto all'IT Manager che cosa e' cambiato sulla rete in altre sessioni di
+lavoro o per intervento manuale. Invocare la skill `sync-context` per verificare il drift tra
+schede e codice.
 Leggere solo le schede pertinenti al task, mai tutte insieme. Per documenti Word voluminosi
 usare la skill `docx-ingest` che applica la disclosure progressiva (livello 1: TOC, livello
 2: sezioni chiave, livello 3: sezione completa su richiesta).
@@ -136,6 +141,7 @@ Regole modulari caricate su necessita', sotto `.claude/rules/`.
 .claude/rules/git-identity-and-repo.md profili SSH, identita git, bootstrap del remoto
 .claude/rules/manual-screenshots.md    flusso di cattura screenshot per verifica visiva
 .claude/rules/anonymization.md         anonimizzazione IP/MAC/nomi propri (repo pubblico, caricare sempre)
+.claude/rules/fonti-e-riallineamento.md  le cinque classi di fonti e da dove riallinearsi (caricare sempre)
 ```
 
 Skill richiamabili, sotto `.claude/skills/`.

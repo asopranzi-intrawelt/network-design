@@ -45,6 +45,23 @@ drift che nessuno chiudeva.
 
 ## Punto di ripresa
 
+**Protocollo delle fonti, dal 03/08/2026 — leggere prima di tutto il resto.** Esiste ora
+`.claude/rules/fonti-e-riallineamento.md`, da caricare a ogni sessione: elenca le cinque classi
+di fonti di questo progetto, dice su cosa ciascuna e' autorevole, e fissa il protocollo di
+riallineamento in apertura. Il punto che spiega i ritardi accumulati: il repository e' una sola
+classe, e le altre quattro **non notificano**. In particolare la rete viene cambiata anche da
+altre sessioni di lavoro su questa macchina (ventidue, venti e quindici progetti su tre
+installazioni, almeno sei dei quali toccano questa rete), il cui unico canale verso qui e' un
+file di handoff. Due passi non automatizzabili vanno fatti a mano in apertura: leggere per
+intero il blocco `RILEVANTI PER LA RETE` del delta, e **chiedere all'IT Manager cosa e'
+cambiato fuori da qui**. La tabella delle cadenze in coda a quella regola attende conferma.
+
+Correzione registrata lo stesso giorno: **tutti e cinque i Yealink sono collegati e ciascuno sta
+su una porta che prende correttamente la VLAN della fonia**, lavoro concluso in sessioni
+precedenti. La parte di rete di TEL-002 e' chiusa (nuova sezione in `runbook-anomalie.md`);
+resta da confermare solo che ogni apparecchio si registri e chiami, verificabile dal display.
+Non confondere con TEL-003, che e' la scala del parco digitale.
+
 **Allineamento eseguito il 03/08/2026 — leggere questo blocco per primo.** Tre fatti nuovi
 cambiano le priorita'. Il primo: il piano di numerazione dice che **ventisette dei trentasei
 interni sono apparecchi digitali del Panasonic**, che non parlano SIP e che un centralino cloud
