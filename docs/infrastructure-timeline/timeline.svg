@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3762" viewBox="0 0 1060 3762" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3762" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3786" viewBox="0 0 1060 3786" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3786" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">142 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 30/07/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">143 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 03/08/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -28,7 +28,7 @@
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(11)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
-<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(16)</tspan></text>
+<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(17)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(10)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
@@ -2317,7 +2317,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3746" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-143" class="ev-block has-detail" transform="translate(0,3716)">
+<g class="ev-summary" onclick="toggleEv('ev-143')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#008300"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">31/07-03/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Scansioni sul NAS: intervento eseguito su tutte e sette le postazioni <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">STOR</tspan></text>
+</g>
+<foreignObject id="ev-143-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">31/07-03/08/2026 &#8212; Scansioni sul NAS: intervento eseguito su tutte e sette le postazioni</p>
+<p>Esecuzione manuale, una persona alla volta, del primo intervento del registro di robustezza: le destinazioni di scansione delle due multifunzione passano dalle cartelle condivise delle postazioni a sette condivisioni nascoste sul NAS-INTRA2, ciascuna permessa al solo destinatario e all'account di servizio.</p><p>Lato NAS l'impianto e' stato costruito e verificato prima di toccare gli apparati. L'account di servizio ha il solo privilegio di condivisione file Microsoft, con applicazioni e altri protocolli negati: il dialogo di creazione lo proponeva con accesso illimitato alle applicazioni e con lettura e scrittura su due cartelle estranee, e togliere quei valori predefiniti e' stato il primo lavoro. Il criterio password del NAS non prevede scadenza periodica, e questo e' il fatto che rende l'account immune alla rotazione a trenta giorni imposta dall'RMM sulle utenze locali di Windows: era la condizione su cui poggiava tutto il disegno, e ora e' verificata e non assunta. Le sette condivisioni sono nascoste dalla navigazione — accorgimento di ordine e non di sicurezza, dichiarato come tale — con accesso ospite negato. L'isolamento e' stato provato in campo, con l'utenza di un destinatario respinta sulla cartella di un altro, e la scrittura dell'account di servizio provata su tutte e sette.</p><p>Lato apparati sono state riconfigurate quattordici voci di rubrica, sette per macchina, di cui tre create da zero sul Piano Terra perche' quella rubrica conosceva solo quattro destinatari contro i sette dell'altra. Tutte usano la stessa credenziale di servizio e mai quella dell'utente: ne segue che l'isolamento tra persone lo garantiscono i permessi del NAS e non la stampante, con il rischio residuo dichiarato che chi sta al pannello puo' scegliere la destinazione di un altro — mitigato dalla conferma prima dell'invio, che si trova nello stesso dialogo e va spuntata nel passaggio.</p><p>Lato postazioni ogni utente ha un collegamento sul desktop verso la propria cartella, non un'unita' di rete mappata: le lettere su queste macchine sono scarse e gia' occupate, e un collegamento non si riconnette all'accesso ne' produce attese quando il NAS non risponde. La distribuzione avviene con uno script v… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3770" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2465,7 +2481,8 @@
   {id:'ev-139',type:'event',h:24},
   {id:'ev-140',type:'event',h:24},
   {id:'ev-141',type:'event',h:24},
-  {id:'ev-142',type:'event',h:24}
+  {id:'ev-142',type:'event',h:24},
+  {id:'ev-143',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2506,7 +2523,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3762').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3786').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

@@ -86,6 +86,59 @@ Controllo da fare su ogni script prima di considerarlo pronto: cercare assegnazi
 automatiche. E' una ricerca di dieci secondi che l'analisi sintattica **non** segnala,
 perche' la sintassi e' corretta: l'errore e' semantico e si manifesta solo eseguendo.
 
+## Due trappole ulteriori, dallo script di distribuzione dei collegamenti (31/07/2026)
+
+La quarta trappola PowerShell, e per una volta non e' un errore di sintassi ma di
+architettura: **una funzione restituisce tutto cio' che scrive sul flusso di output**, non solo
+cio' che segue `return`. Una funzione di supporto che stampi un messaggio diagnostico con
+`Write-Output` — o con un helper che lo usa — contamina il proprio valore di ritorno, e il
+chiamante riceve un array invece della stringa attesa. Il sintomo osservato: un nome di
+condivisione diventato `System.Object[]` e finito dentro un percorso di rete. La regola:
+dentro una funzione i messaggi vanno su flussi separati (`Write-Warning`, `Write-Verbose`,
+`Write-Information`), e il flusso di output si riserva al valore di ritorno.
+
+La quinta e' sulla fiducia nell'output altrui: **l'esito di un comando esterno non e' una
+stringa affidabile**. Puo' essere un array, contenere righe di servizio o un messaggio d'uso, e
+se lo si concatena in un percorso si costruisce un percorso senza senso senza che nulla
+protesti. Quando un valore letto da un sistema esterno finisce in un percorso, in un comando o
+in una configurazione, va **normalizzato e validato** contro un'espressione che descriva la
+forma attesa, e in caso di dubbio si scarta invece di indovinare.
+
+Nota utile sullo stesso episodio: sull'agente dell'RMM esiste realmente una funzione
+PowerShell per leggere i campi personalizzati del dispositivo, fornita da un modulo installato
+con l'agente. Fuori dal contesto dell'RMM quella funzione esiste ma fallisce, perche' non
+trova l'eseguibile della sua CLI: e' quindi utilizzabile in produzione e va gestita con un
+fallback pulito quando si prova lo script a mano.
+
+## Una verifica deve poter fallire per la ragione che stai misurando
+
+Tre episodi della stessa settimana, tutti su comandi di diagnosi, hanno mostrato lo stesso
+difetto di metodo: un comando risponde, la risposta sembra confermare la tesi, e in realta'
+arriva da un'altra strada.
+
+Il primo: verificare la raggiungibilita' di una share con un `ping`. Il ping sopravvive a
+difetti a cui SMB non sopravvive, quindi rassicura senza dimostrare — su questa rete esiste il
+precedente di endpoint che pingavano il NAS e non riuscivano a montarlo. La verifica corretta
+e' una lettura **e** una scrittura sulla share.
+
+Il secondo: provare l'isolamento tra due utenze verso lo stesso server aggiungendo `/user` al
+comando di mappatura. Windows rifiuta con un errore di sessione (1219) che sembra un diniego di
+permessi e non lo e'; la prova corretta omette `/user`, riusa la sessione gia' autenticata e
+mette alla prova la sola autorizzazione. Corollario: un rifiuto va sempre letto nel merito, un
+codice di errore diverso e' un test non eseguito.
+
+Il terzo, il piu' insidioso: interrogare un nome indicando esplicitamente il server DNS da
+usare. Il comando di risoluzione di PowerShell consulta per default anche mDNS e NetBIOS,
+quindi **indicare un server non garantisce che la risposta venga da quel server**: una risposta
+con suffisso `.local` e tempo di vita di 120 secondi e' la firma di un annuncio mDNS, non di
+una zona DNS. Da quella lettura si era concluso che il firewall ospitasse record interni,
+mentre la sua tabella dei record e' vuota. Per provare che risponda il DNS serve forzare la
+sola via DNS, oppure interrogare il server con uno strumento che non abbia fallback.
+
+La regola che ne esce, valida oltre questi tre casi: prima di credere a una verifica, chiedersi
+**quale altra strada** potrebbe produrre lo stesso esito. Se ne esiste una, il test non
+distingue le due ipotesi e va cambiato.
+
 ## Provare la logica di filtro fuori linea, invece di rilanciare contro l'API
 
 Tre lanci consecutivi falliti su tre difetti diversi hanno insegnato che rilanciare uno

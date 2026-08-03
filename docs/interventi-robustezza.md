@@ -41,11 +41,12 @@ documentazione ISO27001, non un'intenzione.
 | R5 | Riportare la porta 19 del XGS2220-30HP da PVID 90 a PVID 1 | NET-013 (#123): presa che consegna in rete ospiti, residuo di un test | Nessuno: la porta e' senza link | Da fare |
 | R6 | Rimuovere le porte di stampa orfane sulle postazioni (una porta `IP_<indirizzo>` inutilizzata accanto alla `IP_2_<indirizzo>` in uso) | Igiene: evita di non capire piu' quale porta sia viva al prossimo ri-puntamento | Nessuno se si rimuove la porta non associata a nessuna coda | Da fare |
 | R7 | Convertire l'indirizzamento delle multifunzione da statico su apparato a riserva DHCP sul firewall | Prerequisito di M22b e miglioramento permanente: i cambi di indirizzo futuri diventano modifiche centrali | Breve indisponibilita' dell'apparato al riavvio della rete: unica voce del registro che richiede una finestra, anche se di minuti | Da fare |
-| R8 | Spostare le destinazioni di scansione dalle cartelle condivise delle postazioni a una share dedicata sul NAS | NET-009 (#114) lato flussi dato, SEC-020 (#126), A.8.3 e A.5.14 | Nessuno sulla rete: si riconfigurano le destinazioni sull'apparato. Cambia dove gli utenti trovano le scansioni, quindi richiede comunicazione | Da fare |
+| R8 | Spostare le destinazioni di scansione dalle cartelle condivise delle postazioni a una share dedicata sul NAS | NET-009 (#114) lato flussi dato, SEC-020 (#126), A.8.3 e A.5.14 | Nessuno sulla rete: si riconfigurano le destinazioni sull'apparato. Cambia dove gli utenti trovano le scansioni, quindi richiede comunicazione | **Sostanzialmente completato il 03/08/2026, verificato su tutte e sette le postazioni.** Fatto: account di servizio con il solo privilegio SMB; nessuna scadenza password sul NAS, quindi immunita' alla rotazione verificata; sette condivisioni nascoste con permessi per destinatario, isolamento provato e scrittura dell'account di servizio provata su tutte e sette; quattordici voci di rubrica riconfigurate sulle due multifunzione, di cui tre create ex novo sul Piano Terra; collegamento sul desktop distribuito e funzionante su tutte le postazioni. **Restano due code**: la verifica che su ogni postazione la credenziale del NAS sia **permanente** e non di sessione, e la rimozione delle vecchie condivisioni di scansione dalle postazioni con le credenziali che le servivano — che e' il passo che chiude davvero SEC-020 |
 | R9 | Sostituire negli account di scansione i nomi di persona con un account di servizio dedicato alla share di scansione | SEC-020 (#126), A.9.2: un account nominale usato da un apparato non e' attribuibile a una persona ed e' impossibile da dismettere all'uscita di quella persona | Nessuno se eseguito insieme a R8 | Da fare |
 | R11 | Attivare la conferma della destinazione prima dell'invio sulle destinazioni di scansione di entrambe le multifunzione | SEC-020 (#126): su tutte le voci censite l'opzione e' disattivata, quindi una selezione sbagliata dal display invia documenti nella cartella di un'altra persona senza alcun passaggio che permetta di accorgersene | Nessuno sulla rete; aggiunge un tocco in piu' all'utente che scansiona, ed e' il compromesso da spiegare | Da fare |
 | R12 | Pubblicare i nomi interni come record di indirizzo sul DNS del firewall, che i client ricevono gia' via DHCP come primo server DNS | Chiude in gran parte SEC-016 e la dipendenza dal broadcast (mDNS, NetBIOS) senza introdurre un dominio; abilita il ri-puntamento delle code di stampa a un nome, quindi rende gratuiti gli spostamenti futuri | Nessuno: si aggiungono record, non si cambia nulla lato client, che gia' interroga il firewall | Da fare |
 | R13 | Migrare i due nomi interni che usano il suffisso `.local` al suffisso scelto in R12, aggiornando prima le configurazioni che li referenziano | NET-014 (#131): `.local` e' riservato a mDNS, quindi quei nomi si risolvono via multicast e non sopravvivono a un confine di livello 3 | Nessuno se si crea il nome nuovo prima di rimuovere il vecchio: per un periodo rispondono entrambi | Da fare, dipende da R12 |
+| R14 | Valutare il rafforzamento del criterio password del NAS (oggi lettere e cifre, lunghezza minima otto, nessun carattere speciale obbligatorio, nessun divieto di coincidenza con il nome utente) | Il NAS custodisce l'archivio documentale e le cartelle di scansione, e le sue 29 utenze locali sono l'archivio identita' effettivo in assenza di un dominio: il criterio e' piu' debole di quello applicato agli endpoint | Nessuno sulle credenziali esistenti; incide sui cambi futuri | Da valutare, nessuna urgenza |
 | R10 | Definire una regola di conservazione sulla cartella delle scansioni (cancellazione automatica oltre una soglia di giorni concordata) | Minimizzazione e limitazione della conservazione: una cartella di scansioni diventa in pochi mesi un archivio documentale parallelo, non censito e pieno di dati personali. Rilevante per A.5.33 e per il principio di limitazione della conservazione | Nessuno sulla rete; va concordata la soglia con chi usa il servizio | Da fare, dipende da R8 |
 
 ## Dettaglio degli interventi
@@ -574,7 +575,106 @@ Nell'ordine, e ogni passo verificabile prima del successivo.
    sara' un intervento separato da pianificare fuori orario, non un passaggio di R8.
 2. Creare l'account di servizio della multifunzione, senza scadenza password e senza
    accesso interattivo ad altri servizi del NAS, e assegnargli la sola scrittura sulle
-   sottocartelle.
+   condivisioni di scansione.
+
+   **Attenzione ai valori predefiniti del dialogo di creazione, verificati a schermo il
+   30/07/2026**: il NAS non crea un utente senza privilegi, ne crea uno con privilegi
+   ereditati, e per un account di servizio sono tutti da togliere prima di confermare.
+   Nella sezione delle autorizzazioni sulle cartelle condivise il nuovo utente arriva
+   proposto con **lettura e scrittura su due cartelle di applicazione** e lettura sulla
+   cartella pubblica: nessuna delle tre gli serve, e la seconda gli darebbe scrittura su
+   spazi che non c'entrano nulla con le scansioni. Nella sezione dei privilegi applicativi
+   arriva proposto con **accesso illimitato a tutte le applicazioni** del NAS, cioe' con la
+   possibilita' di autenticarsi ai portali web dell'apparato: un account che deve solo
+   scrivere file via SMB non ha alcun motivo di poterlo fare, ed e' il tipo di privilegio
+   che trasforma una credenziale memorizzata in una stampante in una via d'accesso al NAS.
+
+   **Correzione importante su quest'ultimo punto, appresa sbagliando il 30/07/2026**:
+   "negare tutti i privilegi applicativi" e' un'istruzione troppo larga e rompe
+   l'intervento. In quell'elenco convivono due categorie diverse: i **servizi di rete**
+   (condivisione file Microsoft, AFP, FTP, WebDAV) e le **applicazioni** dell'apparato
+   (File Station e simili). L'account di servizio ha bisogno di **esattamente uno** di quei
+   permessi, la condivisione file Microsoft, perche' e' il protocollo con cui scrive; tutto
+   il resto va negato, applicazioni comprese. Toglierli tutti, come una lettura affrettata
+   dell'istruzione suggerirebbe, produce un account che si autentica ma non puo' scrivere
+   nulla, e la multifunzione riporta un errore d'invio che non dice quale permesso manchi.
+   E' il principio del minimo privilegio applicato bene: non "zero permessi", ma **solo
+   quello che serve**.
+
+   Va inoltre lasciata **disattivata** la richiesta di cambiare la password al primo
+   accesso: un apparato non puo' eseguire un cambio interattivo, e attivarla farebbe
+   fallire l'autenticazione senza un messaggio comprensibile.
+
+   **Esito della creazione, verificato a schermo il 30/07/2026.** L'account di servizio
+   esiste con la configurazione corretta: fra i privilegi e' concessa **soltanto** la
+   condivisione file Microsoft, mentre AFP, FTP, WebDAV, le applicazioni dell'apparato e
+   File Station sono negate; sulle cartelle condivise e' impostato il diniego esplicito
+   dove esisteva un accesso ereditato, e l'anteprima riporta "nega accesso" su tutte quelle
+   visibili. Resta da controllare la seconda pagina dell'elenco cartelle, che ne contiene
+   altre due.
+
+   Due note che il dialogo dei permessi dichiara e che servono al passo successivo. La
+   prima e' l'ordine di precedenza: **diniego batte lettura/scrittura, che batte sola
+   lettura**. Ne segue che sulle sette condivisioni di scansione l'account di servizio
+   dovra' avere lettura/scrittura e **non** dovra' avere alcun diniego, altrimenti il
+   diniego vince e la scansione fallisce. La seconda e' che le autorizzazioni del gruppo
+   concorrono a quelle dell'utente nel determinare il risultato effettivo, quindi
+   l'anteprima e' l'unico posto dove si legge cosa accade davvero: e' li' che si verifica,
+   non nell'elenco delle spunte.
+
+   **Immunita' alla rotazione: confermata.** Il criterio password del NAS
+   (`Pannello di controllo > Sistema > Sicurezza > Politica sulla password`) ha la voce
+   "richiedi agli utenti di cambiare periodicamente le password" **disattivata**, quindi
+   nessuna scadenza si applica agli utenti locali dell'apparato. L'account di servizio e
+   le utenze con cui gli utenti raggiungeranno le proprie cartelle vivono percio' fuori dal
+   perimetro di rotazione dell'RMM, che agisce sulle utenze locali di Windows: e' la
+   condizione che rende il disegno di R8 immune al cambio password, ed e' ora verificata e
+   non assunta.
+
+   Osservazione registrata nella stessa verifica, non un passo di questo intervento: il
+   criterio di robustezza delle password del NAS richiede lettere e cifre con lunghezza
+   minima di otto caratteri, senza caratteri speciali obbligatori e senza il divieto di
+   coincidenza con il nome utente. E' un criterio debole rispetto a quello applicato agli
+   endpoint, e vale una valutazione a se' (voce R14).
+
+   Da verificare subito dopo la creazione, perche' e' la condizione che rende l'account
+   davvero immune alla rotazione: che non esista una politica di scadenza delle password
+   applicata agli utenti locali del NAS, o che quell'account ne sia escluso. Da verificare
+   anche cosa concede il gruppo predefinito a cui ogni utente appartiene per costruzione:
+   se quel gruppo ha permessi su qualche condivisione, l'account di servizio li eredita
+   senza che nessuno glieli abbia assegnati.
+2-bis. **Cifratura della cartella: valutata e deliberatamente non attivata (30/07/2026).**
+   Il dialogo di creazione della condivisione offre la cifratura della cartella con una
+   password e l'opzione di salvare la chiave sull'apparato. La domanda e' legittima e la
+   risposta e' no, per tre ragioni che vanno registrate perche' la stessa domanda tornera'
+   a ogni cartella nuova.
+
+   La prima e' che quella cifratura protegge da un solo scenario, l'asportazione fisica dei
+   dischi, mentre i dischi stanno in un CED con accesso a badge; non protegge in alcun modo
+   dagli scenari che questo intervento affronta, che sono documenti depositati sugli
+   endpoint, credenziali memorizzate negli apparati e utenti che vedono le cartelle degli
+   altri — quelli si risolvono con destinazione e permessi, non con la cifratura.
+
+   La seconda e' il compromesso che rende la scelta poco sensata proprio qui: una cartella
+   cifrata resta **bloccata dopo ogni riavvio** dell'apparato finche' qualcuno non la sblocca
+   con la password. Su una destinazione di scansione, che deve funzionare senza presidio, si
+   tradurrebbe in scansioni che smettono di arrivare dopo un blackout — e questo ambiente ha
+   gia' avuto un blackout con impatto documentato. L'alternativa e' spuntare il salvataggio
+   della chiave sull'apparato, che la sblocca da sola all'avvio: ma cosi' la chiave vive sul
+   NAS, e chi porta via il NAS intero, che e' il furto realistico, si porta via anche la
+   chiave. L'opzione che rende la cifratura utilizzabile e' quindi la stessa che ne annulla
+   quasi il beneficio.
+
+   La terza e' la custodia della chiave: questo ambiente non ha ancora una pratica
+   consolidata per i segreti — e' documentato il contrario nei gap SEC-007, SEC-010 e
+   SEC-011 — e una chiave persa significa dati irrecuperabili.
+
+   La conclusione non e' "la cifratura a riposo non serve", e' che **non e' questa la leva**.
+   La leva e' una policy di cifratura a riposo decisa come tale, sul volume e sulle copie
+   fuori sede, con la custodia delle chiavi definita: e' il gap A.8.24 gia' aperto
+   (`GAP-TBC.md` #104, SEC-010), e va affrontato li' e non con una spunta su una singola
+   cartella.
+
 3. Assegnare i permessi di ciascuna condivisione secondo la tabella sopra — il destinatario
    in lettura e scrittura, l'account di servizio in sola scrittura, nessun altro — e
    verificare l'isolamento **prima** di toccare la multifunzione, non dopo, perche' scoprire
@@ -598,18 +698,259 @@ Nell'ordine, e ogni passo verificabile prima del successivo.
 
    Un dettaglio di Windows che fa perdere tempo se non lo si sa: verso lo stesso server non si
    possono tenere aperte contemporaneamente connessioni con identita' diverse, e il tentativo
-   restituisce un errore di conflitto di sessione che sembra un problema di permessi e non lo
-   e'. Prima di ogni prova con un'altra utenza va quindi chiusa la sessione precedente con
-   `net use * /delete`, altrimenti si finisce per interpretare come "negato" un rifiuto che
-   Windows produce da solo. Lo stesso vale per l'account di servizio, che va provato con la
+   restituisce un errore di conflitto di sessione (**1219**) che sembra un problema di permessi
+   e non lo e'.
+
+   **Precisazione appresa provandolo il 30/07/2026**, piu' utile della regola generale: il
+   conflitto scatta anche indicando la **stessa** utenza, perche' e' l'opzione `/user` a
+   chiedere una sessione nuova mentre una verso quel server esiste gia'. La soluzione non e'
+   chiudere la connessione buona, e' **omettere `/user`**: senza quell'opzione Windows riusa
+   la sessione autenticata gia' aperta e mette alla prova soltanto l'autorizzazione sulla
+   condivisione, che e' precisamente cio' che il test deve misurare. Il rifiuto atteso in quel
+   caso e' un accesso negato vero e proprio, non un errore di sessione — ed e' cosi' che si
+   distingue una prova riuscita da un falso negativo. Lo stesso vale per l'account di servizio, che va provato con la
    sua credenziale: deve riuscire a **scrivere** in ciascuna condivisione e, se il NAS lo
    consente, non riuscire a **leggerne** il contenuto.
+3-bis. **Due opzioni della terza fase del dialogo, viste il 30/07/2026, che valgono una
+   decisione consapevole.**
+
+   La prima e' la **cifratura SMB**, che va tenuta distinta dalla cifratura della cartella
+   scartata al passo precedente: quella riguardava i dati a riposo, questa riguarda il
+   **trasporto**, cioe' cifra il traffico verso la condivisione. E' un guadagno reale, perche'
+   oggi i documenti scansionati e la credenziale dell'account di servizio viaggiano sulla LAN
+   senza cifratura e senza che la firma SMB sia richiesta. Ha pero' un prerequisito: la
+   cifratura SMB esiste solo dalla versione 3 del protocollo, e delle due multifunzione
+   sappiamo che parlano "almeno la versione 2" — non se arrivino alla 3. Attivarla adesso
+   rischierebbe di rompere la scansione prima di averla vista funzionare, con un errore
+   dell'apparato che non direbbe quale sia la causa. Scelta: si lascia **disattivata per
+   ottenere il funzionamento di base**, e la si attiva subito dopo come prova a se' stante,
+   ripetendo una scansione da ciascun apparato; se regge, resta accesa ed e' un miglioramento
+   di trasporto ottenuto gratis, se non regge si spegne sapendo esattamente perche'.
+
+   La seconda e' l'**enumerazione basata sull'accesso**, nelle due varianti che il dialogo
+   offre per le condivisioni e per il contenuto. Fa la stessa cosa che si e' ottenuta
+   spuntando "nascondi unita' di rete", ma su un principio diverso e migliore: nasconde in
+   base ai **permessi** invece che in base al nome, quindi ogni utente non vede cio' a cui non
+   ha accesso, senza che nessuno debba decidere caso per caso cosa nascondere. Non si attiva
+   ora perche' cambierebbe il modo in cui tutti navigano il NAS e non e' questo il momento di
+   introdurre una variabile del genere; resta la strada corretta se un giorno si volesse
+   sostituire l'accorgimento per oscurita' con un meccanismo basato sui permessi.
+
 4. Sulla multifunzione, riconfigurare ciascuna voce della rubrica: host di destinazione
    l'indirizzo del NAS — un indirizzo e non un nome, perche' l'apparato non ha alcun server
    DNS configurato — percorso la sottocartella del destinatario, utenza quella dell'account
    di servizio. Annotare prima i valori attuali di ciascuna voce, perche' sono il rollback.
 5. Provare ciascuna voce con il pulsante di prova connessione dell'apparato, poi con una
    scansione reale dal display, verificando che il file compaia nella cartella attesa.
+5-bis. **Convenzione della lettera di unita', decisa il 30/07/2026 dopo un inciampo.** Le
+   lettere di unita' sulle postazioni non sono libere: la prima prova di mappatura ha
+   incontrato una lettera gia' assegnata in modo persistente a una condivisione del cloud
+   raggiunta via tunnel, e la richiesta di sovrascriverla e' stata correttamente rifiutata
+   dall'IT Manager. Nota tecnica utile: una mappatura **memorizzata** ma non connessa puo'
+   non comparire nell'elenco delle connessioni attive, quindi "l'elenco e' vuoto" non
+   significa "la lettera e' libera".
+
+   Ne segue una regola per questo intervento: la cartella di scansione si mappa su una
+   lettera **scelta e dichiarata**, la stessa su tutte le postazioni per non dover ricordare
+   eccezioni, e prima di assegnarla si verifica che sia libera su ciascuna macchina. La
+   verifica si fa leggendo sia le connessioni attive sia le mappature memorizzate nel
+   registro dell'utente, perche' le seconde sopravvivono al riavvio e sono quelle che
+   generano il conflitto.
+
+   ```powershell
+   # Connessioni attive
+   net use
+   # Mappature memorizzate, comprese quelle non connesse in questo momento
+   Get-ChildItem 'HKCU:\Network' | Select-Object PSChildName, @{n='RemotePath';e={ (Get-ItemProperty $_.PSPath).RemotePath }}
+   ```
+
+5-ter. **Esito della prima prova, 30/07/2026: positiva superata.** Creata la prima
+   condivisione con i permessi decisi, l'utenza NAS dell'IT Manager si e' connessa e ha
+   scritto un file nella propria cartella. La prova negativa e' stata rinviata di un minuto
+   perche' la lettera scelta era occupata da una mappatura persistente: ripetuta su una
+   lettera libera.
+
+   **Osservazione dallo stesso elenco, piu' importante della prova.** Le mappature
+   persistenti di quella postazione puntano a due condivisioni di NAS **per nome** e non per
+   indirizzo, mentre una terza punta per indirizzo a una condivisione raggiunta attraverso il
+   tunnel verso il cloud. Le prime due sono quindi un'altra dipendenza dalla risoluzione nomi
+   senza DNS interno: se quei nomi si risolvono per broadcast, quelle mappature si rompono
+   attraversando un confine di livello 3, cioe' quando si segmentera'. E' la quarta forma
+   della stessa trappola dopo mDNS delle stampanti, i nomi NetBIOS nelle rubriche di scansione
+   e i nomi `.local` dei servizi interni — con la differenza che qui l'impatto e' su unita' di
+   rete che le persone usano ogni giorno.
+
+   Da verificare, ed e' una verifica di trenta secondi che cambia la stima di M22e: come si
+   risolvono davvero quei nomi. Se per broadcast, ogni postazione con mappature per nome va
+   toccata alla migrazione, oppure quei nomi vanno pubblicati sul DNS del firewall — che e'
+   il caso in cui R12 diventa non piu' un miglioramento facoltativo ma il modo di non
+   toccare le postazioni.
+
+   ```powershell
+   Resolve-DnsName -Name <nome-nas> -ErrorAction SilentlyContinue   # risponde il DNS?
+   nbtstat -a <nome-nas>                                            # risponde NetBIOS?
+   ```
+
+5-quater. **Sette condivisioni create il 31/07/2026, e la verifica che precede le rubriche.**
+   Con le sette cartelle in piedi, la prova che conta non e' piu' quella degli utenti ma
+   quella dell'**account di servizio**: e' la credenziale che le multifunfioni useranno, e se
+   manca un permesso su una sola cartella il sintomo arrivera' dal display di un apparato
+   che non dice quale sia il problema. Va quindi provata da postazione, prima di configurare
+   quattordici voci di rubrica.
+
+   Il modo di farlo aggira il limite di Windows sulle sessioni multiple verso lo stesso
+   server, che era stato incontrato con l'errore 1219: **una connessione per indirizzo e una
+   per nome contano come due server distinti**. Poiche' la postazione ha gia' una sessione
+   verso il NAS per indirizzo con l'utenza personale, la sessione dell'account di servizio si
+   apre verso lo **stesso NAS chiamato per nome**, e le due convivono. E' un trucco, ma e'
+   anche l'unico modo di provare due identita' contemporaneamente senza chiudere la
+   connessione buona.
+
+   La prova scrive un file di controllo in ciascuna delle sette cartelle e lo rimuove subito:
+   scrivere e' l'unica verifica valida, perche' il permesso di scrittura non si deduce dalla
+   possibilita' di elencare. Esito atteso: sette riuscite su sette. Se una fallisce, si
+   corregge il permesso di quella cartella e si ripete solo quella, senza toccare le altre.
+
+5-quinquies. **Distribuzione del collegamento sul desktop, via RMM.** Ogni destinatario deve
+   raggiungere la propria cartella in un clic. La scelta e' un **collegamento** a percorso UNC
+   e non un'unita' di rete mappata, per tre ragioni concrete: non consuma una lettera, e su
+   queste postazioni le lettere sono scarse e gia' occupate da mappature persistenti (tre su
+   una sola macchina, verificato il 30/07/2026); non si riconnette all'accesso, quindi non
+   produce attese ne' icone in errore quando il NAS non risponde; e non compare come disco,
+   il che evita che qualcuno la confonda con uno spazio locale. Un'unita' mappata resta
+   preferibile solo quando un'applicazione pretende una lettera, che qui non e' il caso.
+
+   La distribuzione avviene con `scripts/New-ScanFolderShortcut.ps1`, versionato in questo
+   repository e pensato per essere eseguito dall'RMM su ciascuna postazione. Tre vincoli sono
+   incorporati nello script e vanno rispettati nella configurazione dell'RMM.
+
+   Il primo: va eseguito **nel contesto dell'utente connesso**, non come sistema. Il percorso
+   del desktop si chiede all'ambiente dell'utente perche' su queste postazioni puo' essere
+   reindirizzato su OneDrive, e in quel caso la cartella `Desktop` sotto il profilo non e'
+   quella che l'utente vede; eseguendolo come sistema il collegamento finirebbe nel posto
+   sbagliato. Sulla postazione di prova il desktop risulta non reindirizzato, ma la
+   condizione non e' garantita su tutte.
+
+   Il secondo: indirizzo del NAS e nome della condivisione sono **parametri obbligatori**,
+   passati dalla configurazione dell'RMM e non scritti nello script, sia per la regola di
+   anonimizzazione del repository sia perche' la condivisione cambia per destinatario. Sul
+   lato RMM conviene quindi un parametro per dispositivo, oppure un campo personalizzato per
+   dispositivo che lo script legge: sono sette postazioni e sette valori distinti.
+
+   Il terzo: lo script e' **idempotente**, quindi puo' girare in modo ricorrente. Se il
+   collegamento esiste e punta al bersaglio giusto lo dichiara invariato, se punta altrove lo
+   corregge. Verificato in campo il 31/07/2026 su una postazione reale: prima esecuzione
+   creato, seconda esecuzione invariato.
+
+   **Protezione contro la cartella sbagliata, aggiunta il 31/07/2026 dopo averla vista
+   servire.** Lanciato su una postazione con il nome della condivisione di un'altra persona,
+   lo script creava obbediente un collegamento verso la cartella sbagliata: non poteva sapere
+   a chi appartenesse la macchina. Ora, prima di scrivere, **verifica che l'utente connesso
+   acceda davvero a quella condivisione**, e in caso contrario rifiuta. Il controllo funziona
+   proprio grazie al disegno dei permessi: ogni cartella e' permessa al solo destinatario,
+   quindi una condivisione altrui risulta inaccessibile e l'errore compare prima che il
+   collegamento esista. La stessa asimmetria che protegge i documenti serve percio' come
+   controllo di correttezza della distribuzione. Resta l'interruttore `-Force` per i casi
+   dichiarati, ed e' anche il rimedio a un collegamento gia' creato per errore: rieseguendo
+   lo script con la condivisione giusta, il bersaglio viene corretto.
+
+   Nota di verifica: il collegamento e' un file locale e si crea anche quando il NAS non
+   risponde, percio' la sua creazione **non** dimostra che l'utente possa accedere alla
+   cartella. Lo script lo dichiara esplicitamente con un avviso quando il bersaglio non e'
+   raggiungibile al momento dell'esecuzione, e la prova d'accesso resta quella fatta a mano
+   dall'utente.
+
+5-sexies. **Avanzamento per destinatario (esecuzione manuale, dal 31/07/2026).** Le sette
+   configurazioni si fanno una persona alla volta, e per ciascuna servono quattro cose: la voce
+   di rubrica sulla multifunzione del Piano Terra, quella sulla multifunzione del Piano 1, la
+   credenziale del NAS memorizzata sulla postazione dell'utente, e il collegamento sul desktop.
+   Il criterio di completamento non e' "configurato" ma **verificato**: una scansione reale da
+   ciascuna delle due macchine che arriva nella cartella, e il collegamento che si apre senza
+   richiesta di password.
+
+   | Destinatario | Voce rubrica Piano Terra | Voce rubrica Piano 1 | Credenziale NAS | Collegamento sul desktop | Esito |
+   |---|---|---|---|---|---|
+   | IT Manager | fatta | fatta | presente | creato | funzionante |
+   | Persona-C | fatta | fatta | presente | creato | funzionante |
+   | Persona-D | fatta | fatta | presente | creato | funzionante |
+   | Persona-E | fatta | fatta | presente | creato | funzionante |
+   | Persona-A | creata | fatta | presente | creato | funzionante |
+   | Persona-B | creata | fatta | presente | creato | funzionante |
+   | Persona-J | creata | fatta | **memorizzata il 03/08, da rendere permanente** | creato | funzionante |
+
+   Stato al 03/08/2026: tutte e sette le postazioni funzionanti. Due verifiche residue, entrambe
+   a basso costo e alto valore: che la credenziale del NAS su ciascuna postazione sia permanente
+   e non di sessione (`cmdkey /list` non deve riportare "solo per questo accesso", altrimenti al
+   primo riavvio ricompare la richiesta di password), e che ciascun destinatario abbia visto
+   arrivare una scansione da **entrambe** le macchine e non solo da una.
+
+   Nota sulle tre voci da creare: la rubrica del Piano Terra conta quattro destinatari contro i
+   sette del Piano 1, quindi per tre persone la voce va aggiunta e non modificata. Nota sulla
+   colonna delle credenziali: se la postazione ha gia' una credenziale memorizzata verso il NAS
+   — in una qualunque delle due forme, nome o indirizzo — non serve toccarla, perche' lo script
+   di distribuzione usa la forma che funziona; se non ne ha nessuna, va aperta una volta la
+   condivisione da Esplora risorse e memorizzata, altrimenti la verifica di accesso fallisce e
+   il collegamento non viene creato.
+
+5-septies. **Verificare ogni voce di rubrica sul posto, non dopo.** Entrambe le
+   multifunzione hanno nel dialogo della voce un pulsante di **controllo della connessione**
+   che tenta subito l'autenticazione e la scrittura verso il percorso indicato. Va premuto
+   prima di confermare la voce: distingue immediatamente un errore di percorso da uno di
+   credenziale, mentre una scansione di prova fatta dopo dice solo che qualcosa non ha
+   funzionato. Costa cinque secondi per voce e trasforma quattordici configurazioni in
+   quattordici verifiche.
+
+   **Nota di disegno confermata il 03/08/2026**: tutte le voci di entrambe le macchine usano
+   la **stessa credenziale di servizio**, mai quella dell'utente. Ne segue che l'isolamento tra
+   destinatari non e' garantito dall'apparato ma dai permessi del NAS, ed e' una conseguenza
+   voluta e gia' dichiarata in ADR-019: l'account di servizio puo' scrivere in tutte e sette le
+   cartelle, quindi chi sta davanti al pannello puo' selezionare la destinazione di un'altra
+   persona e la scansione vi finisce. Non puo' invece **leggere** le scansioni altrui, ed e'
+   questa l'asimmetria che rende il disegno accettabile. La mitigazione dell'errore umano e'
+   l'intervento R11, la conferma della destinazione prima dell'invio, la cui casella si trova
+   **nello stesso dialogo** che si sta modificando: spuntarla mentre si passa voce per voce
+   chiude R11 senza una seconda passata su quattordici schermate.
+
+5-octies. **La credenziale del NAS va memorizzata, e non e' un'eccezione: e' un passo della
+   procedura.** Su sei postazioni su sette il collegamento e' stato creato senza intoppi perche'
+   una credenziale verso il NAS era gia' salvata da tempo. Sulla settima non c'era nulla — la
+   cassaforte credenziali dell'utente era **vuota** — e il collegamento veniva rifiutato dalla
+   verifica di accesso. Il meccanismo, verificato il 03/08/2026: in assenza di credenziale
+   memorizzata Windows tenta l'accesso SMB con l'utenza corrente della macchina, che su queste
+   postazioni e' un'utenza **locale** e sul NAS non esiste, quindi l'accesso e' negato. Non
+   c'entrano ne' i permessi della condivisione, verificati corretti, ne' l'elevazione della
+   sessione, che era la prima ipotesi.
+
+   Il passo va quindi eseguito su ogni postazione prima del collegamento, e per **entrambe le
+   forme** della destinazione, dato che Windows le tratta come server distinti.
+
+   **Attenzione alla persistenza, correzione del 03/08/2026 dopo averla vista fallire.** Il
+   comando da riga di comando (`cmdkey /add`) salva la credenziale **per la sola sessione
+   corrente**: lo dichiara lui stesso nell'elenco, con la dicitura che il salvataggio vale solo
+   per quell'accesso. Al riavvio della postazione la credenziale sparisce e il collegamento
+   ricomincia a chiedere la password, con l'effetto peggiore possibile — l'intervento sembra
+   riuscito il giorno in cui si fa e si rompe il giorno dopo, quando nessuno collega piu' le
+   due cose. Da riga di comando non esiste un'opzione per renderla persistente.
+
+   La via che produce una credenziale **permanente** e' l'interfaccia: si apre la condivisione
+   da Esplora risorse digitando il percorso, si inseriscono le credenziali del NAS e si spunta
+   la casella che le memorizza; in alternativa si aggiunge una credenziale di Windows dal
+   pannello di gestione delle credenziali, indicando come destinazione l'indirizzo e poi il
+   nome del NAS. Il comando da riga di comando resta utile per una **prova rapida**, non per la
+   configurazione definitiva.
+
+   ```powershell
+   cmdkey /list   # verifica: le due voci non devono riportare "solo per questo accesso"
+   ```
+
+   Due note che evitano diagnosi sbagliate. La cassaforte credenziali e' **per utente** e
+   condivisa fra sessione normale ed elevata, mentre le sessioni di rete sono separate: quindi
+   memorizzare la credenziale risolve anche il caso dell'esecuzione elevata, e non serve
+   inseguire quella pista. E un `net use` riuscito **non** memorizza nulla: apre una sessione
+   che vive fino al riavvio, quindi se si prova l'accesso in quel modo e poi si crea il
+   collegamento, tutto funziona oggi e si rompe domani. La prova che la cosa e' fatta bene e'
+   `cmdkey /list` che elenca le due voci, non un accesso riuscito.
+
 6. Comunicare agli utenti dove trovano da ora le scansioni, prima che se ne accorgano da
    soli. E' l'unico intervento del registro che cambia un'abitudine, quindi la
    comunicazione fa parte della procedura e non e' un extra.
@@ -837,6 +1178,42 @@ mancante di SEC-016. Si esegue quando conviene, non prima di R8.
 **Sequenza corretta**: prima R8 con R9 e R10, che risolvono il problema da cui tutto e'
 partito e non dipendono da nulla; poi gli interventi brevi R1, R2, R3, R5, R6; poi M22b, il
 segmento stampanti; R12 e R13 quando si vuole, come miglioramento a se'.
+
+#### Riformulazione del 30/07/2026: R12 non e' creare, e' consolidare
+
+**Attenzione all'ordine delle correzioni, perche' qui ce ne sono due e la seconda annulla la
+prima.** Interrogando il resolver del firewall per il nome di un NAS e' arrivata una risposta,
+e da quella si era concluso che l'apparato ospitasse gia' record di indirizzo interni. La
+lettura della pagina DNS del firewall, poche ore dopo, dice il contrario: la tabella dei
+record di indirizzo e' **vuota**, come quella degli alias, e l'unica configurazione presente
+inoltra qualunque zona verso due resolver pubblici. Il firewall e' percio' un **puro
+inoltratore**: nessun nome interno vive su di lui.
+
+Da dove veniva allora la risposta. Dallo stack di risoluzione di Windows, non dal server
+interrogato: il comando usato consulta anche i meccanismi locali di scoperta — mDNS e NetBIOS
+— e il nome ottenuto finiva in `.local` con un tempo di vita di 120 secondi, che sono la firma
+tipica di una risposta mDNS annunciata dall'apparato stesso. La lezione di metodo, registrata
+anche in `dev-testing.md`, e' che indicare un server nel comando **non garantisce** che la
+risposta arrivi da quel server: per provarlo serve forzare la sola via DNS, altrimenti si
+attribuisce a un'infrastruttura una risposta prodotta da un broadcast.
+
+Resta invece vero, ed e' il punto che conta, che sul suffisso `.local` esiste un'intera
+pratica: i servizi si annunciano, i nomi si risolvono per broadcast e i file `hosts` completano
+il resto. E' NET-014, su scala piu' ampia di quanto si pensasse.
+
+La seconda: in parallelo ogni postazione mantiene il proprio file `hosts`, e quello ispezionato
+contiene **sedici voci** che rimappano a mano gli stessi nomi e altri ancora, compreso un nome
+del dominio pubblico aziendale dirottato verso un indirizzo interno — cioe' un orizzonte
+separato costruito a mano, postazione per postazione. Poiche' il file locale ha precedenza sul
+DNS, oggi convivono due sistemi di risoluzione in concorrenza e nessuno sa quale risponde su
+una data macchina.
+
+Ne segue che R12 non e' un intervento di creazione ma di **consolidamento**, e cambia anche il
+suo valore: non serve a "dare i nomi", serve a far coincidere i nomi. La sequenza corretta
+diventa pubblicare i record sul suffisso deciso in ADR-018, verificare che rispondano, e solo
+allora **rimuovere le voci `hosts` corrispondenti** su ogni postazione — passo che va
+inventariato prima, perche' finche' quelle voci esistono i record nuovi restano invisibili.
+Resta, come prima, un intervento indipendente dalle stampanti e non urgente.
 
 #### Passo R12-1: la convenzione dei nomi, e un difetto nei nomi gia' in uso
 
