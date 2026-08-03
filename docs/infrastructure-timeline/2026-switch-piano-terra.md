@@ -2090,3 +2090,50 @@ assorbe una funzione, se lo sostituisce, o se convivono durante la transizione.
 
 Dettaglio in `docs/telefono-pbx-voip.md` §Gateway FXS consegnato per il telefono
 dell'ascensore.
+
+## 31/07/2026 - Preventivo per l'access point da esterno di M13c e per un UPS nuovo
+
+Secondo fatto rilevato il 03/08/2026 dal triage del delta OneDrive rimasto arretrato dal
+15/07, e non da una comunicazione in sessione: un preventivo di Punto Informatica datato
+31/07/2026 propone due apparati, entrambi rilevanti per la rete e nessuno dei due finora
+censito. Ordine e consegna non confermati per nessuno dei due; importi e riferimenti dei
+documenti restano fuori dai file tracciati.
+
+Il primo e' un **Zyxel WBE530-EU0101F**, access point da esterno Wi-Fi 7 tri-radio con PoE
+802.3at, due porte LAN da 1/2,5 Gbps e gestione NebulaFlex Pro sulla stessa organizzazione
+Nebula degli switch. E' l'hardware che M13c cercava per sostituire l'ultimo access point
+Ubiquiti fuori supporto, quello che serve la centrale di irrigazione sul tetto. La sua
+comparsa dice pero' anche qualcosa che il progetto non aveva ancora scritto: la scelta fra
+sostituire l'apparato e eliminarlo cablando la centrale, che ADR-016 lasciava
+esplicitamente aperta con l'eliminazione come prima opzione da valutare, sta di fatto
+andando verso la sostituzione. Va formalizzata come decisione, con la sua ragione, invece
+di essere dedotta a posteriori da un documento commerciale.
+
+Ne segue anche una promozione di priorita' che vale la pena spiegare, perche' e' un caso
+in cui l'ordine dei passi decide se si spendono bene dei soldi. La porta 4 del 30HP, quella
+del vecchio apparato, negozia a 100 Mbps mentre le porte delle postazioni dello stesso
+switch vanno a 1 Gbps, e il sotto-passo M13c-5 esisteva per chiarire se il limite fosse
+l'eta' dell'apparato o la tratta cablata verso il tetto. Finche' l'apparato candidato era
+ignoto la domanda era di igiene; ora che il candidato ha due porte da 2,5 Gbps, se il
+limite e' il cavo si acquista una capacita' che il collegamento non potra' mai portare. La
+verifica costa un portatile al posto del terminale e cinque minuti, e va fatta prima
+dell'ordine: M13c-5 e' stato quindi promosso ad ALTA. Da chiarire prima dell'ordine anche
+il grado di protezione contro acqua e polvere, che il preventivo non dichiara e che per un
+montaggio sul tetto e' il parametro che decide la durata.
+
+Il secondo apparato e' un **UPS rack Addpower TP130N-1500**, line interactive da 1500 VA e
+1350 W, convertibile tower/rack 19", otto prese IEC. Il documento non dice se sostituisca
+l'Emerson Liebert attuale o se lo affianchi. Il punto rilevante per la rete e' che la
+comunicazione di serie e' USB e seriale RS232, mentre la scheda SNMP Ethernet e' opzionale:
+prenderla significa avere un nuovo host di rete, da collocare direttamente nel segmento
+IoT/OT di M22c con la gestione restretta alle postazioni IT — cioe' l'occasione di non
+ripetere l'errore che UPS-001 documenta, un apparato di infrastruttura finito nella rete
+ospiti e rimasto li' per anni. Non prenderla significa rinunciare al monitoraggio in rete
+dell'alimentazione, che e' una perdita di capacita' e non un risparmio neutro, e va detto
+come tale perche' il piano di continuita' presuppone di sapere in che stato sia l'UPS.
+Da rifare in ogni caso il conto dell'autonomia sul carico reale, dato che i 116 minuti
+dichiarati dal produttore valgono su un carico da PC e monitor mentre il carico vero e'
+server, NAS e centralino.
+
+Dettaglio in `docs/runbook-anomalie.md` §AP-001 (aggiornamento 03/08/2026) e §UPS-001
+(aggiornamento 03/08/2026); sotto-passi in `.claude/context/roadmap.md` M13c-5 e M13c-6.

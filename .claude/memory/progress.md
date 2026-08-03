@@ -1,5 +1,65 @@
 # Work-log
 
+## 2026-08-03 (terza sessione) — Audit di allineamento: delta arretrato triagiato, due asset di rete nuovi, buchi locali dichiarati
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/runbook-anomalie.md` (§AP-001 e §UPS-001, aggiornamenti
+03/08 con l'hardware dei due preventivi); `.claude/context/roadmap.md` (M13c-5 promosso ad
+ALTA con la ragione, M13c-6 con il preventivo ricevuto);
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce 31/07/2026 sui due
+apparati); `docs/infrastructure-timeline/ingestion-checklist.md` (sezione di triage del
+delta 15/07-03/08).
+
+Motivo: l'utente ha chiesto un allineamento reale, non a memoria — quali path non erano
+stati esplorati e se gli artefatti locali fossero aggiornati. L'audit ha prodotto quattro
+categorie di risultato.
+
+**Il delta OneDrive era arretrato di diciannove giorni** (398 nuovi, 2 modificati, 86
+eliminati piu' 12 sull'altra libreria) e nessuno lo aveva smistato. Triagiato per cartella
+di primo livello: 379 voci SCENIA e 85 di una cartella di strumenti AI sono estranee alla
+rete, 21 sono governance (round 4 WindTre e un filone AI-ACT interamente nuovo che nessun
+artefatto di questo progetto conosce), e cio' che contava erano **due file**. Da qui una
+lezione di metodo registrata nella checklist: un numero grande spaventa e viene rimandato,
+mentre raggruppato per cartella si smaltisce in minuti.
+
+**Due asset di rete non censiti**, dal preventivo del 31/07/2026: un access point da esterno
+Zyxel WBE530-EU0101F, che e' l'hardware che M13c cercava, e un UPS rack Addpower TP130N-1500
+con scheda SNMP Ethernet opzionale. Il primo porta con se' due conseguenze: la decisione di
+M13c-3 fra sostituire l'apparato e eliminarlo cablando la centrale risulta di fatto presa
+verso la sostituzione e va formalizzata invece di essere dedotta da un documento
+commerciale; e M13c-5 e' stato promosso ad ALTA perche' la porta 4 negozia a 100 Mbps e
+l'apparato candidato ha due porte da 2,5 Gbps, quindi la verifica della tratta va fatta
+prima dell'ordine o si compra capacita' inutilizzabile. Il secondo pone una scelta di rete
+prima dell'acquisto: con la scheda SNMP l'UPS torna a essere un host, e va fatto nascere nel
+segmento IoT/OT di M22c invece di ripetere l'errore di UPS-001; senza, si rinuncia al
+monitoraggio dell'alimentazione, che e' una perdita di capacita' e non un risparmio neutro.
+
+**Artefatti locali: uno solo e' davvero fermo.** `_notes/DIARIO.md` risulta aggiornato al
+03/08 con tutti i livelli didattici (una lettura superficiale lo dava per fermo al 20/07
+perche' le voci dal 22/07 in poi sono annidate come H3 sotto un H2 del 22/07, quindi non
+compaiono nell'indice e l'ordine cronologico e' rotto: da ristrutturare, non da riscrivere).
+`_notes/RESOCONTO.md` e' invece fermo al 22/06/2026, cioe' il livello 3 della direttiva
+permanente — comunicazione stakeholder — non e' mai stato prodotto per nessuno degli
+interventi di luglio. `_notes/TEST-CHECKLIST.md` copre solo lo snapshot Proxmox e non
+conosce Nebula, NinjaOne ne' R8. Esistono due file quasi omonimi, `RESUME-PROMPT.md` del
+17/07 e `RESUME_PROMPT.md` del 03/08, e solo il secondo e' quello citato da `CLAUDE.md`:
+trappola da rimuovere. In `_notes/` restano circa quarantasei file `.tmp-*` e sedici
+cartelle `.tmp-docx-*` di luglio, nessuna referenziata.
+
+**Output degli script: due stantii e uno che sblocca un micro-step.** `nebula-snapshot.json`
+e' del 27/07, cioe' quello in cui il 54HP rispose `DEVICE_IS_OFFLINE`: e' il singolo
+rilancio piu' utile disponibile, perche' senza la tabella MAC del 54HP M22a non si chiude e
+M22b dipende da M22a. `proxmox-snapshot.json` e' la v4 dell'08/07 e non conosce la VM208
+(M18). `ninjaone-snapshot.json` del 30/07 risulta invece **filtrato a una sola
+organizzazione e 26 dispositivi**, quindi la rimediazione di SEC-022 e' avvenuta in pratica
+e il gap va aggiornato: dice ancora che lo snapshot non filtrato va rigenerato e cancellato,
+e lo e' stato.
+
+Segnalato inoltre, senza aprirlo, un file `Nebula API key.txt` in chiaro sul desktop
+dell'utente: e' la chiave che scrive sulla configurazione degli switch, e ADR-009/ADR-010
+prevedono che quel segreto si risolva da variabile d'ambiente. Si somma a SEC-007, il
+password manager mai adottato.
+
 ## 2026-08-03 (seconda sessione) — Estratto tematico fuori repository, correzione della dorsale, gateway FXS censito
 
 Commit: PENDING (da fare manualmente)

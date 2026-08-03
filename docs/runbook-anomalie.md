@@ -446,6 +446,37 @@ la centrale espone una porta Ethernet raggiungibile dal cavo che arriva al tetto
 collegamento diventa cablato e l'apparato fuori supporto sparisce invece di essere
 sostituito.
 
+**Aggiornamento 03/08/2026: individuato l'hardware candidato per M13c.** Rilevato dal
+delta OneDrive e non da comunicazione in sessione, il preventivo di Punto Informatica
+del 31/07/2026 propone un **Zyxel WBE530-EU0101F**, access point da esterno Wi-Fi 7
+(802.11be/ax/ac/n/g/b/a) tri-radio a 2,4, 5 e 6 GHz, sei stream spaziali, throughput
+aggregato dichiarato fino a 11 Gbps, due porte LAN da 1/2,5 Gbps, alimentazione PoE
+802.3at da 24 W con ingresso DC alternativo, gestione NebulaFlex Pro dalla stessa
+organizzazione Nebula gia' in uso, WPA3 con 802.1X e RADIUS, isolamento di livello 2,
+MAC filtering, rilevamento di access point non autorizzati, band steering e fast
+roaming, temperatura operativa 0-50 °C, staffa di montaggio e viti incluse. Ordine e
+consegna **non confermati**; importo e riferimento del preventivo esclusi dai file
+tracciati per policy.
+
+Tre cose da chiarire prima di trasformare il preventivo in un ordine, tutte gia'
+previste dai sotto-passi di M13c e nessuna risolta dal documento.
+
+La decisione di M13c-3 non e' formalizzata: l'esistenza di un preventivo per un
+access point orienta verso la sostituzione, ma la prima opzione da valutare era
+l'eliminazione dell'apparato cablando la centrale di irrigazione. Va scritto quale
+delle due si e' scelta e perche', invece di dedurlo da un documento commerciale.
+
+Il grado di protezione contro acqua e polvere non e' dichiarato nel preventivo. Per
+un apparato "da esterno" destinato a un tetto e' il parametro che decide se
+sopravvive, e la temperatura operativa da 0 °C in su va confrontata con le minime
+invernali del sito.
+
+La tratta e' il vincolo che pesa piu' di tutti, ed e' la ragione per cui M13c-5 e'
+stato promosso ad ALTA: la porta 4 del 30HP negozia oggi a 100 Mbps. Se il limite e'
+il cavo verso il tetto e non l'apparato vecchio, un access point con due porte da
+2,5 Gbps resta strozzato a un ventesimo della sua capacita', e la verifica costa un
+portatile collegato al posto del terminale.
+
 Resta aperta l'ambiguita' gia' segnalata su PianoSecondo (porta 45 del
 54HP): il rilievo fisico conosce cinque ubicazioni AP, ma solo quattro
 dispositivi Ubiquiti risultano oggi effettivamente in rete, e PianoSecondo
@@ -685,6 +716,47 @@ L'UPS (Emerson Liebert IntelliSlot, IP 10.61.90.33, porta gestione 6004) è sull
 2. Assegnare IP in 10.61.10.0/24 (es. 10.61.10.20)
 3. Aggiornare regole firewall: solo VLAN 10 può raggiungere l'UPS
 4. Testare notifiche SNMP/mail dell'UPS dopo la modifica
+
+Nota del 03/08/2026 sulla scansione live del 14/07: l'UPS non risponde piu' a
+`10.61.90.33`, come tutta l'infrastruttura che occupava la VLAN 90 e che dal
+22-23/07 risulta ripulita. Non e' verificato se sia stato spostato o solo spento
+al momento della scansione: la procedura sopra resta valida ma il primo passo e'
+ritrovare l'apparato, non spostarlo.
+
+### Aggiornamento 03/08/2026: preventivo per un UPS nuovo, e la decisione di rete che porta con se'
+
+Rilevato dal delta OneDrive, non da comunicazione in sessione: il preventivo di
+Punto Informatica del 31/07/2026 include, insieme all'access point da esterno di
+M13c, un **UPS rack Addpower TP130N-1500** in un'unita' — line interactive
+monofase, 1500 VA / 1350 W, convertibile tower/rack 19", otto prese IEC, onda
+sinusoidale pura, quattro batterie 12 V/7 Ah. Ordine e consegna non confermati,
+e non e' dichiarato nel documento se sostituisca l'Emerson Liebert o si affianchi.
+
+Il dato che conta per questo progetto e' uno solo, e va deciso **prima**
+dell'ordine e non dopo: la comunicazione di serie di quell'apparato e' USB e
+RS232, mentre la **scheda relè e la scheda SNMP Ethernet sono opzionali**. Ne
+seguono due strade con conseguenze opposte.
+
+Se si prende la scheda SNMP, l'UPS torna a essere un host di rete, e va
+collocato direttamente nel segmento IoT/OT di M22c con una regola che ne
+restringa la gestione alle sole postazioni IT. E' l'occasione per non ripetere
+l'errore che UPS-001 registra: l'apparato attuale e' finito nella rete ospiti e
+c'e' rimasto per anni, ed e' molto piu' economico nascere nel segmento giusto
+che esserci spostato dopo.
+
+Se non si prende, l'UPS non e' monitorabile in rete: nessuna notifica di
+mancanza rete, nessuna soglia di batteria, nessuno spegnimento ordinato
+coordinato con i server. Va detto esplicitamente perche' e' una perdita di
+capacita' rispetto a oggi, non un risparmio neutro, e il piano di continuita'
+dichiara procedure che presuppongono di sapere in che stato e' l'UPS.
+
+Da verificare in ogni caso, e non da stimare: l'autonomia. Il documento dichiara
+116 minuti su un carico da PC e monitor, mentre il piano di continuita' di questo
+progetto dichiara quindici minuti sul carico reale, che e' server, NAS e
+centralino. I due numeri non sono confrontabili e il secondo non e' mai stato
+misurato: va rifatto il conto sul carico effettivo prima di attribuire al nuovo
+apparato un miglioramento che potrebbe non esserci. Rilevante per A.11.2 e per il
+tempo di ripristino dichiarato in `business-continuity-disaster-recovery.md`.
 
 ---
 
