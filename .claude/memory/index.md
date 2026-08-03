@@ -7,9 +7,14 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 92a3472 (27/07/2026, formalizzazione arretrati + ricognizione VM)
-Data snapshot:         2026-07-27
+Commit di riferimento: e9ce5d7 (03/08/2026, ADR-019 e sette condivisioni di scansione)
+Data snapshot:         2026-08-03
 ```
+
+Nota di stato al momento della chiusura: il lavoro documentale del 03/08 (chiusura di R8,
+allineamento schede, resume prompt) e' **su disco ma non ancora committato** — commit e push
+restano manuali dell'utente secondo i vincoli di team. Alla ripresa, se `git status` mostra
+modifiche non committate, sono quelle.
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT`
 dal 2026-06-22 nonostante piu' commit successivi. Il riferimento va aggiornato
@@ -19,12 +24,13 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | 347f79c | da riverificare (drift accumulato, non toccata il 27/07) |
-| design-and-security.md | 347f79c (frontmatter) | contenuto aggiornato il 27/07 per inventario VM (dieci VM, VM208 nuova), gap A.8.22/A.8.24/A.8.4-A.8.31; il resto resta ancorato allo snapshot v4 |
-| deployment.md | 347f79c | da riverificare (drift accumulato, non toccata il 27/07) |
-| dev-testing.md | 347f79c (frontmatter) | contenuto aggiornato il 27/07 (conteggio VM a dieci, VM208) |
-| current-work.md | 347f79c (frontmatter) | contenuto allineato al 27/07: arretrati chiusi, filone attivo = design di rete (M22) |
-| roadmap.md | 347f79c (frontmatter) | contenuto allineato al 27/07 (M12/M13a/M13b/M22 aggiornati con l'esito di luglio) |
+| STACK.md | 347f79c | **da riverificare**: drift accumulato, non toccata da luglio. Non conosce i tre script aggiunti da allora (`Get-NinjaSnapshot.ps1`, `New-ScanFolderShortcut.ps1`, e il ruolo di `Get-NebulaSnapshot.ps1` nel censimento) |
+| design-and-security.md | 347f79c (frontmatter) | contenuto allineato al 03/08: inventario a dieci VM, contesto di gestione endpoint (rotazione a trenta giorni, RMM), assenza di servizio di directory, snapshot multi-tenant, gap A.8.20/A.8.22/A.8.24/A.5.14-A.8.3/A.8.4-A.8.31. Frontmatter da bumpare al prossimo commit |
+| deployment.md | 347f79c | **da riverificare**: non conosce l'esecuzione degli script nuovi ne' i vincoli sulle credenziali dell'RMM (ADR-017) |
+| dev-testing.md | 347f79c (frontmatter) | contenuto allineato al 03/08: conteggio VM a dieci, cinque trappole PowerShell, regola sulle verifiche che possono fallire per la ragione giusta, banco di prova fuori linea |
+| current-work.md | 347f79c (frontmatter) | contenuto allineato al 03/08: §Stato al 03/08/2026 con R8 eseguito, code aperte e filone strutturale |
+| roadmap.md | 347f79c (frontmatter) | contenuto allineato al 03/08: M13c (quarto AP), M22a-M22e, M23, M24, **M25** (risoluzione nomi interna), registro parallelo dei micro-interventi |
+| interventi-robustezza.md (docs/) | non applicabile | registro operativo, allineato al 03/08: R1-R14, R8 completato con tabella per destinatario |
 
 ## Punto di ripresa
 
