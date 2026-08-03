@@ -41,16 +41,17 @@ INTERNET
    │  Switch Piano 2 – Zyxel XGS2220-54HP  (Nebula managed)        │
    │  10.61.20.x/24 management, VLAN trunk: tutte le VLAN ammesse  │
    │  Porta 33 = uplink firewall (1G copper)                       │
-   │  Porta 52 = SFP+ 10G, dorsale diretta -> Switch Piano Terra   │
-   │  Porta 51 = SFP+ 10G, verso QNAP QSW-1208-8c (ramo separato)  │
+   │  Porta 51 = SFP+ 10G, dorsale diretta -> Switch Piano Terra   │
+   │  Porta 52 = SFP+ 10G, verso QNAP QSW-1208-8c (ramo separato)  │
    │  Porta 8  = Vianova DHCP+gateway fonia, PVID 2 (FW-012)       │
    │  Porta 6  = PVID 2 come porta 8, ruolo da chiarire (aperto)   │
    └──────────────────────────────────────────────────────────────┘
           │                                    │
-          │ Porta 52: dorsale diretta,          │ Porta 51: ramo separato,
+          │ Porta 51: dorsale diretta,          │ Porta 52: ramo separato,
           │ trunk VLAN dati PT untagged         │ non piu' inline sulla dorsale
           │ + VLAN 2 fonia tagged               │
-          │ (confermato 17/07/2026)             │
+          │ (confermato 17/07, porte corrette   │
+          │  il 23/07/2026)                     │
           ▼                                    ▼
    ┌─────────────────────────┐        ┌───────────────────────────┐
    │ Switch Piano Terra       │        │  QNAP QSW-1208-8c          │
@@ -153,8 +154,20 @@ e' quello implementato e resta storico. La topologia corrente e' in
 `rete_stato_attuale_17072026.drawio` (`.claude/context/diagrams/firewall-dmz-2026/`),
 che supera sia quel diagramma sia `rete_stato_target_08072026.drawio` per la
 parte di dorsale/QNAP. Il QNAP QSW-1208-8c non e' un hop intermedio sulla
-dorsale: resta un ramo a parte, sulla porta 51 del 54HP, verso NAS fleet e le
+dorsale: resta un ramo a parte, sulla porta 52 del 54HP, verso NAS fleet e le
 postazioni a 10 Gbps, invariato rispetto a prima.
+
+Nota di riconciliazione del 03/08/2026: questa scheda portava ancora, nel
+diagramma ASCII e in questa stessa nota, l'assegnazione delle due fibre
+anteriore alla correzione del 23/07/2026 (dorsale sulla 52, QNAP sulla 51),
+in contraddizione con il paragrafo di correzione poco sopra. Allineata alla
+misura autorevole, che e' il vicino LLDP dichiarato nella vista di dettaglio
+della porta in Nebula: **dorsale sulla porta 51, QNAP sulla porta 52**. La
+contraddizione era interna a un solo file e non ha prodotto errori di
+configurazione, ma valeva la pena chiuderla adesso: il numero di porta e' il
+dato che si usa quando si mette mano a un trunk, ed e' proprio su un trunk di
+questo switch che il 23/07 un campo sbagliato ha portato il core switch fuori
+dal piano di gestione.
 
 Restano aperti NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere il
 NAS-HERO; l'ipotesi del native VLAN mismatch causato dal QNAP inline decade

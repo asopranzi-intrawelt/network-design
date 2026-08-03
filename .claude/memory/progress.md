@@ -1,5 +1,46 @@
 # Work-log
 
+## 2026-08-03 (seconda sessione) — Estratto tematico fuori repository, correzione della dorsale, gateway FXS censito
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/network-diagram.md` (assegnazione delle due fibre SFP+
+allineata alla correzione del 23/07 anche nel diagramma ASCII e nella nota di chiusura, con
+nota di riconciliazione); `docs/telefono-pbx-voip.md` (nuova sezione §Gateway FXS consegnato
+per il telefono dell'ascensore); `docs/infrastructure-timeline/2026-switch-piano-terra.md`
+(nuova voce 31/07/2026 sul gateway FXS); `docs/infrastructure-timeline/ingestion-checklist.md`
+(deroga puntuale dichiarata sulla sottocartella riservata `Transizione centralino cloud 2026/`).
+Prodotto fuori repository, su richiesta dell'utente e per esplicita natura temporanea:
+`C:\Users\Utente\Desktop\intrawelt-rete_AP-stampanti-VLAN-fonia_2026-08-03.md`, estratto
+tematico su access point, stampanti, tagging VLAN, telefoni e centralino, ricomposto dai
+file tracciati con la stessa convenzione di segnaposto del repository. Non versionato per
+scelta: e' una vista, non una fonte.
+
+Tre risultati sostanziali. Primo, una contraddizione interna a `network-diagram.md`: il
+diagramma ASCII e la nota di chiusura portavano ancora dorsale sulla porta 52 e QNAP sulla
+51, mentre il paragrafo di correzione dello stesso file, autorevole perche' fondato sul
+vicino LLDP letto in Nebula, dice l'opposto. Nessun errore di configurazione ne' e'
+derivato, ma il numero di porta e' esattamente il dato che si usa quando si mette mano a un
+trunk, ed e' su un trunk di quello switch che il 23/07 un campo sbagliato ha portato il core
+switch fuori dal piano di gestione. Allineata.
+
+Secondo, un asset di rete nuovo rilevato dal delta OneDrive e non da una comunicazione in
+sessione: myOffice ha consegnato il 31/07 un Grandstream HT-812 v2, adattatore analogico con
+due porte FXS e router NAT Gigabit, attribuito dal nome della cartella al telefono
+dell'ascensore. L'attribuzione e' coerente — un centralino cloud parla SIP e non ha porte
+analogiche, mentre il telefono di emergenza di un ascensore e' analogico e obbligatorio — ma
+resta un'inferenza dal nome della cartella e va confermata con il fornitore. Tre questioni di
+rete aperte prima dell'installazione: su quale segmento si attesta, se disabilitare la sua
+funzione di router NAT (secondo NAT interno, e su LAN piatta anche rischio di conflitto
+DHCP), e il rapporto con il Patton SmartNode 5551 che oggi porta le porte FXS/FXO.
+
+Terzo, una deroga dichiarata: leggere quel documento significa entrare nella sottocartella
+`Transizione centralino cloud 2026/`, che la checklist riservava al racconto "a lavori
+conclusi". La richiesta dell'utente di documentare in dettaglio la migrazione del centralino
+e' l'indicazione esplicita che quella riserva prevedeva; e' stato letto **un solo file**, il
+documento di trasporto, perche' segnala un apparato da censire e non un elemento del racconto
+narrativo. La riserva sul resto della sottocartella resta invariata, ed e' scritta cosi' nella
+checklist invece di essere superata in silenzio.
+
 ## 2026-08-03 — R8 eseguito su tutte e sette le postazioni: scansioni sul NAS
 
 Commit: PENDING (da fare manualmente)

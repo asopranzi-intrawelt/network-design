@@ -34,6 +34,18 @@ a ogni sessione che tocca schede o memoria, non solo alla prima.
 
 ## Punto di ripresa
 
+**Aggiunta della seconda sessione del 03/08/2026 — due fatti nuovi da tenere presenti.**
+La dorsale fra i due switch e' la **porta 51** del 54HP e il ramo QNAP la **52**:
+`network-diagram.md` portava ancora l'assegnazione invertita nel diagramma ASCII, ora
+allineata. Ed e' comparso un asset di rete non censito: un **Grandstream HT-812 v2**
+(adattatore analogico, due porte FXS, router NAT Gigabit) consegnato da myOffice il 31/07,
+attribuito al telefono dell'ascensore — attribuzione da confermare col fornitore, e tre
+questioni di rete aperte prima dell'installazione (segmento di attestazione, se disabilitare
+il NAT interno, rapporto con il Patton SmartNode 5551). Vedi `docs/telefono-pbx-voip.md`
+§Gateway FXS. Prodotto anche un estratto tematico temporaneo sul desktop dell'utente (access
+point, stampanti, VLAN, telefoni, centralino), fuori repository per scelta: e' una vista, non
+una fonte.
+
 **Ripresa 03/08/2026 — leggere questo blocco per primo.** L'intervento **R8 e' eseguito e
 verificato su tutte e sette le postazioni**: le scansioni delle due multifunzione non finiscono
 piu' nelle cartelle condivise dei PC ma in sette condivisioni nascoste di NAS-INTRA2, una per
