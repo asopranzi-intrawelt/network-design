@@ -1,5 +1,60 @@
 # Work-log
 
+## 2026-08-03 — R8 eseguito su tutte e sette le postazioni: scansioni sul NAS
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): **nuovi** `scripts/New-ScanFolderShortcut.ps1` (distribuzione del
+collegamento, con scelta automatica fra percorso per indirizzo e per nome, verifica di
+accesso preventiva, rilevamento di sessione elevata, lettura della condivisione da campo
+personalizzato dell'RMM) e `docs/collegamento-vs-unita-di-rete.md` (nota tecnica sulla
+differenza fra collegamento e unita' mappata, con la sezione sulle credenziali legate alla
+forma del nome); `docs/interventi-robustezza.md` (R8 completato con la tabella di
+avanzamento per destinatario, i passi su credenziali, verifica per voce di rubrica,
+protezione contro la cartella sbagliata, decisione motivata di non cifrare la cartella;
+nuovi R11-R14); `docs/infrastructure-timeline/GAP-TBC.md` (SEC-020 con lo stato reale,
+nuovi #130 FW-013, #131 NET-014, #132 FW-014); `docs/runbook-anomalie.md` (**PRN-001**,
+stampa a colori bloccata sulla multifunfione del Piano 1; NEB-001 nuova occorrenza; NAS-003);
+`docs/firewall-zyxel-usg-flex-500.md` (ambito DHCP verificato, primo DNS = firewall,
+interfacce residue); `docs/segmentazione-lan-m22.md` (censimento chiuso);
+`.claude/context/roadmap.md` (**M25** risoluzione nomi interna; M22a-M22e; M13c);
+`.claude/context/dev-testing.md` (cinque trappole PowerShell e il metodo del banco di prova);
+`.claude/context/design-and-security.md` (contesto RMM, assenza di directory, A.5.14/A.8.3);
+`.claude/memory/decisions.md` (**ADR-016, ADR-017, ADR-018, ADR-019**);
+`.claude/context/current-work.md` e `.claude/memory/index.md` (stato e punto di ripresa).
+File privati: `_notes/.anonymization-map.md` (interfacce del firewall, censimento indirizzi,
+rubriche delle due multifunzione, disambiguazione della destinataria omonima),
+`_notes/DIARIO.md`, `_notes/RESUME_PROMPT.md`, e la copia sul desktop della nota tecnica.
+
+Esito dell'intervento. Le destinazioni di scansione delle due multifunzione, undici su undici
+verso cartelle condivise di postazioni, sono state spostate su **sette condivisioni nascoste**
+di NAS-INTRA2, una per destinatario, permesse al solo destinatario e a un **unico account di
+servizio locale del NAS** — che e' ora la sola credenziale memorizzata negli apparati. Le
+quattordici voci di rubrica sono state riconfigurate, tre create ex novo sul Piano Terra. Ogni
+utente ha un collegamento sul desktop verso la propria cartella, distribuito con lo script
+versionato. Tutte e sette le postazioni risultano funzionanti.
+
+Verifiche eseguite, non assunte: assenza di scadenza password sul NAS (e' cio' che rende
+l'account di servizio immune alla rotazione a trenta giorni dell'RMM); isolamento fra utenti
+provato con l'utenza di un destinatario respinta sulla cartella di un altro; scrittura
+dell'account di servizio provata su tutte e sette le cartelle; dialetto SMB degli apparati
+provato con due scansioni reali verso una postazione dove il protocollo legacy e' disattivato,
+che ha archiviato la proposta di passare a FTP.
+
+Tre inciampi che hanno prodotto altrettante protezioni permanenti. Lo script, lanciato con la
+condivisione di un'altra persona, creava il collegamento sbagliato: ora verifica l'accesso
+prima di scrivere e usa come controllo di correttezza la stessa asimmetria dei permessi che
+protegge i documenti. Su una postazione l'accesso falliva con permessi corretti: la cassaforte
+credenziali dell'utente era vuota, quindi Windows tentava l'accesso con l'utenza locale della
+macchina, inesistente sul NAS — e la memorizzazione da riga di comando vale solo per la
+sessione corrente, quindi la credenziale permanente si crea dall'interfaccia. Entrambe le cose
+sono ora passi della procedura e non note a margine.
+
+Code aperte: verificare su ciascuna postazione che la credenziale sia permanente e non di
+sessione; **rimuovere le vecchie condivisioni di scansione dalle postazioni con le credenziali
+che le servivano**, che e' il passo che chiude SEC-020; decidere la soglia di conservazione
+(R10); confermare se la conferma prima dell'invio e' stata attivata (R11).
+
+
 ## 2026-07-27 — Formalizzazione arretrati Wi-Fi/telefoni e ricognizione VM applicative (VM207, VM208)
 
 Commit: PENDING (da fare manualmente)

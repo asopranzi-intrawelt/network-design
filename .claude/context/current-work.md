@@ -445,3 +445,32 @@ all'utente **una per volta**, con l'indicazione precisa di dove prenderle: tipo 
 configurazione delle code di stampa, tabella MAC del 54HP a switch rientrato, ambiti e
 riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa, censimento degli
 host con indirizzo statico.
+
+## Stato al 03/08/2026: R8 eseguito, filone segmentazione in attesa
+
+**Eseguito e verificato**: R8, le scansioni sul NAS. Sette condivisioni nascoste su NAS-INTRA2
+con permessi per destinatario, un solo account di servizio locale del NAS come unica credenziale
+memorizzata negli apparati, quattordici voci di rubrica riconfigurate sulle due multifunzione
+(tre create ex novo sul Piano Terra), collegamento sul desktop distribuito su tutte e sette le
+postazioni con lo script versionato `scripts/New-ScanFolderShortcut.ps1`. Immunita' alla
+rotazione password verificata sul NAS, non assunta. Dettaglio completo, inciampi compresi, in
+`docs/interventi-robustezza.md` §R8 e nella voce di timeline del 31/07-03/08.
+
+**Code aperte di R8**, entrambe piccole e da chiudere per prime alla ripresa: verificare che su
+ogni postazione la credenziale del NAS sia **permanente** e non di sessione (`cmdkey /list` non
+deve riportare "solo per questo accesso"), e **rimuovere le vecchie condivisioni di scansione
+dalle postazioni con le credenziali che le servivano**, che e' il passo che chiude SEC-020.
+
+**Interventi del registro ancora aperti**: R1 e R2 (credenziali di fabbrica della multifunzione
+e filtro IP come controllo compensativo), R3 (Bonjour), R4 (campo Posizione), R5 (porta 19 del
+30HP da PVID 90 a PVID 1, chiude NET-013), R6 (porte di stampa orfane), R7 (stampanti da
+indirizzo statico a riserva DHCP), R10 (soglia di conservazione sulla cartella scansioni: **da
+decidere**, e conviene ora che le cartelle sono quasi vuote), R11 (conferma prima dell'invio: da
+confermare se e' stata spuntata durante il giro sulle rubriche), R12 e R13 (nomi interni), R14
+(criterio password del NAS).
+
+**Filone strutturale**: M22 resta il progetto di rete, con il censimento M22a chiuso (22
+indirizzi statici e 4 dinamici sulle postazioni) e M22b, il segmento stampanti, come prossimo
+intervento sulla rete. Prerequisito da non dimenticare: **M25**, la risoluzione nomi interna,
+perche' e' cio' che oggi tiene in piedi i riferimenti per nome — unita' mappate, destinazioni,
+servizi annunciati in `.local` — e la segmentazione li rompe tutti.

@@ -812,6 +812,42 @@ e' documentata nella fonte.
 
 ---
 
+## PRN-001: la multifunzione del Piano 1 non stampa a colori
+
+**Severity**: MEDIA (funzione mancante, nessun impatto su rete o dati)
+**Origine**: barra di stato dell'apparato, rilevata il 03/08/2026 durante la configurazione
+delle destinazioni di scansione
+**Stato**: aperto, in attesa di verifica
+
+### Contesto
+
+La multifunzione Canon del Piano 1 riporta nella propria barra di stato che la stampa a
+colori non puo' essere effettuata, con l'invito a contattare il responsabile
+dell'assistenza. Il messaggio e' comparso mentre si lavorava sulla rubrica delle
+destinazioni di scansione, quindi non e' stato causato da quell'intervento: scansione e
+stampa in bianco e nero non risultano interessate, e le voci di rubrica configurate
+funzionano.
+
+### Cosa verificare, in ordine
+
+Il livello dei consumabili di colore e lo stato delle unita' tamburo, perche' un toner
+esaurito o un'unita' a fine vita producono esattamente questo blocco selettivo. Poi
+eventuali codici di errore nel registro dell'apparato, che dicono se si tratta di un
+consumabile o di un guasto meccanico. Infine, se nessuna delle due cose spiega il
+messaggio, il contratto di assistenza del fornitore: su questi apparati la parte colore e'
+tipicamente coperta dal canone, quindi la chiamata e' il percorso normale e non
+un'escalation.
+
+### Perche' e' tracciata qui
+
+Non e' un'anomalia di rete e non appartiene ai filoni di questo progetto, ma e' un guasto
+attivo su un apparato che il progetto documenta come asset: registrarlo evita che la
+prossima persona che apre la scheda della multifunzione lo scopra come sorpresa, e permette
+di distinguere questo blocco da un eventuale problema futuro sulla scansione, che ha causa
+del tutto diversa.
+
+---
+
 ## NAS-003: interfaccia di amministrazione di NAS-INTRA2 molto lenta
 
 **Severity**: BASSA (nessun impatto sul servizio file, impatto sul lavoro amministrativo)
