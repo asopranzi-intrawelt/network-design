@@ -5,7 +5,11 @@ _notes/
 
 # Override personali e permessi personali
 CLAUDE.local.md
-.claude/settings.local.json
+# Impostazioni locali di macchina. Dal 05/08/2026 questo file contiene anche il
+# blocco env con i segreti operativi (ADR-021), quindi il pattern copre anche i
+# backup: un file .bak sfuggirebbe alla regola nuda e git lo committerebbe
+# volentieri. Trovato in campo il 05/08/2026 subito dopo il primo backup.
+.claude/settings.local.json*
 
 # Estratti temporanei dei .docx (cartelle scratch)
 _notes/.tmp-docx-*/
@@ -32,3 +36,8 @@ output/
 # script e le regole deny della sessione ne bloccano la lettura all'agente.
 .env
 .env.*
+# Eccezione: il contratto delle credenziali, SENZA valori, si versiona di
+# proposito. Documenta quali variabili servono, da dove vengono e come si
+# rigenerano, e questa e' informazione che deve sopravvivere alla macchina.
+# Non contiene segreti: i nomi delle variabili non sono segreti.
+!.env.example

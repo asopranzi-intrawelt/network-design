@@ -547,6 +547,98 @@ rivalutata quando M22 sara' pianificato: a segmentazione fatta, "accesso come un
 postazione cablata" significhera' accesso a un segmento delimitato, non a tutta
 la rete.
 
+## ADR-021 — Custodia dei segreti: un segreto sta in un posto solo, e i token rigenerabili non si copiano
+
+Data: 2026-08-05
+Stato: attiva
+
+Contesto: l'IT Manager ha chiesto una configurazione univoca, semplice e sicura, dopo che una
+verifica aveva mostrato che i segreti di questo progetto vivevano in **quattro posti diversi**:
+le variabili d'ambiente utente per i token letti dagli script, un file `.env` che duplicava i
+soli token Proxmox come backup umano, un prompt a runtime per il segreto NinjaOne del provider
+MSP, e una cartella con un foglio di calcolo sul NAS per le password degli apparati. Nella stessa
+sessione una chiave API era stata trovata in chiaro in un file sul desktop e spostata in una
+variabile d'ambiente.
+
+Due accertamenti hanno guidato la decisione. Il primo: le regole `deny` della sessione
+proteggono il `.env`, che nessuno script legge, e **non** proteggono le variabili d'ambiente, che
+sono la copia viva — la protezione era sulla copia inerte (SEC-024). Il secondo, che e' quello
+decisivo: **tutti i segreti letti dagli script sono token di API rigenerabili in un minuto** dal
+pannello del rispettivo sistema, mentre le password degli apparati non lo sono.
+
+Decisione, in una regola e tre conseguenze. La regola e' che **un segreto sta in un posto solo**.
+
+Prima conseguenza, **rivista il 05/08/2026 su obiezione dell'IT Manager**: i token vivono in un
+file **di progetto** e non nel registro di Windows. L'obiezione era legittima e la prima stesura di
+questo ADR aveva scelto il registro senza verificare le alternative — il registro e' stato
+scelto in ADR-007 e da allora nessuno lo aveva messo in discussione.
+
+Il vincolo che decide, verificato sulla documentazione ufficiale e non per memoria: l'espansione
+`${VAR}` di `.mcp.json` legge **soltanto le variabili d'ambiente del processo**, e se una variabile
+manca la configurazione si carica comunque lasciando il testo `${VAR}` non espanso, con un avviso in
+`claude mcp list`. Un file `.env` non entra in quel percorso per nessuna configurazione, quindi
+**non puo' alimentare il server MCP**, mai. Ne segue il principio generale, che vale oltre questo
+progetto: **il `.env` e' possibile quando il codice che consuma la configurazione e' tuo**, perche'
+il `.env` non e' una funzione del sistema operativo ma una convenzione che il consumatore deve
+implementare. Nel progetto `telegram-notifications` sulla stessa macchina il `.env` e' infatti la
+scelta corretta, perche' li' il consumatore e' `relay/config.py`, codice proprio, con una funzione
+`load_dotenv()` scritta a mano. Qui uno dei due consumatori e' Claude Code e non e' modificabile.
+
+La soluzione adottata e' il blocco **`env` di `.claude/settings.local.json`**, che la
+documentazione descrive come applicato "a ogni sessione e ai sottoprocessi che Claude Code avvia":
+copre quindi **sia il server MCP sia gli script PowerShell** senza modificare una riga di codice.
+E' un file di progetto, ignorato da git, e fa esattamente il lavoro che si voleva dare al `.env`.
+
+**Tentativo scartato nella stessa sessione, e vale registrarlo perche' il ragionamento sbagliato e'
+istruttivo.** Poiche' quel file contiene anche hook e permessi, ed e' un file che l'agente legge per
+ragioni legittime, era stata aggiunta una regola `deny` su `Read(.claude/settings.local.json)` per
+impedire all'agente di vedere i segreti. **Rimossa dopo pochi minuti**, perche' e' costo senza
+beneficio: il blocco `env` funziona proprio iniettando i valori nell'ambiente dei **sottoprocessi**
+che Claude Code avvia, e le chiamate Bash dell'agente sono sottoprocessi. L'agente puo' quindi
+leggere quei valori con un comando qualunque, **per costruzione**. Bloccare il file gli impediva di
+vedere hook e permessi e non gli impediva di vedere i segreti.
+
+La lezione generale, che vale oltre questo caso: non si mette un lucchetto su un file quando il
+contenuto e' disponibile per progetto attraverso un altro canale. Si ottiene solo di perdere una
+capacita' utile e di credersi protetti. La conclusione onesta e' quella di SEC-024 — l'agente che
+esegue uno script ha accesso ai segreti che quello script usa, e nessuna variante dello schema lo
+evita.
+
+Il `.env` con i valori viene eliminato, perche' nessuno lo legge e non potrebbe alimentare il MCP.
+Le variabili nel registro si rimuovono **solo dopo** la verifica al riavvio, non prima: togliere la
+fonte funzionante prima di aver provato quella nuova lascerebbe il server MCP senza credenziali.
+
+Seconda conseguenza, ed e' la parte non ovvia: il valore vero del `.env` non erano i valori, erano
+i **commenti** — quali variabili servono, da dove vengono, come si rigenerano, quale ADR le
+vincola. Quella parte diventa `.env.example`, **senza valori e versionata**, con un'eccezione
+esplicita nel `.gitignore`. Cosi' la procedura di rigenerazione sopravvive alla macchina, che e'
+esattamente cio' che un backup di valori non garantiva. I nomi delle variabili non sono segreti.
+
+Terza conseguenza: il segreto del provider MSP resta digitato a runtime e non si replica altrove.
+E' il canale gestito meglio fra tutti e non va toccato.
+
+Sulle password degli apparati, che sono l'unico gruppo non rigenerabile e non letto da script,
+**si adotta un interim invece di attendere Vaultwarden**: un unico archivio KeePassXC `.kdbx` sul
+NAS, che eredita il backup gia' esistente, in sostituzione del foglio di calcolo in chiaro
+`accesso_server_accounts_vari.xls`. Lo studio di SEC-007 aveva scartato KeePass per un solo
+motivo, i conflitti di scrittura concorrente, e quel motivo **non si applica** finche' l'unica
+persona che accede e' l'IT Manager. Il formato importa direttamente in Vaultwarden, quindi
+l'interim non e' un vicolo cieco ma il primo passo dello stesso percorso.
+
+Limiti dichiarati dell'interim, perche' un interim di cui si tacciono i limiti diventa
+definitivo: un solo archivio con una sola password principale e' un unico punto di rottura, non
+offre accesso condiviso, non registra chi ha letto cosa e non permette di revocare l'accesso a una
+singola persona. Sono esattamente le tre cose che Vaultwarden aggiunge, e restano la ragione per
+cui SEC-007 non si chiude con questo passo. Cio' che l'interim ottiene subito e' che il gruppo di
+segreti piu' numeroso e piu' pregiato smette di stare in chiaro in un foglio di calcolo.
+
+Conseguenza sulla lettura dello spostamento della chiave Nebula fatto lo stesso giorno, da tenere
+insieme a SEC-024: quello spostamento non ha protetto il segreto dall'agente ne' da un processo in
+esecuzione come quell'utente, ha eliminato quattro esposizioni accidentali diverse. Nessuna delle
+decisioni qui sopra e' un confine di sicurezza: sono igiene contro il vettore piu' probabile, che
+in questo contesto e' l'esposizione accidentale, piu' la riduzione del numero di posti da
+presidiare da quattro a tre.
+
 ## ADR-020 — Le fonti del progetto sono cinque classi, e quattro non notificano: protocollo di riallineamento
 
 Data: 2026-08-03
