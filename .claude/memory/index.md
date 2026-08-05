@@ -45,6 +45,50 @@ drift che nessuno chiudeva.
 
 ## Punto di ripresa
 
+**Chiusura sessione 05/08/2026 — le prossime tre sessioni sono pianificate.** Leggere
+`_notes/RESUME_PROMPT.md`, riscritto per questo scopo. In sintesi: **sessione 1** il 06/08 mattina,
+montaggio di un access point esterno nuovo che servira' la centrale di irrigazione e l'inverter
+del fotovoltaico (esecuzione di M13c; verificare la tratta a 100 Mbps e l'alimentazione **prima**
+di salire, e il collaudo e' un ciclo di irrigazione reale, non un ping); **sessione 2** dedicata
+interamente allo snapshot della rete a ogni livello — fisico, elettrico, L2, L3, configurazione del
+firewall — con i diagrammi ricomposti e i due armadi rack finalmente descritti; **dalla sessione 3**
+si riprende la roadmap, con l'ordine raccomandato R8+R5+R15 in un giro, poi M22b previa M3, poi M17.
+L'IT Manager rimandera' inoltre **due documenti modificati a mano**, entrambi sul desktop:
+`intrawelt_telefoni-e-AP_scheda-da-completare.md` (valori reali, scheda operativa) e
+`intrawelt-rete_AP-stampanti-VLAN-fonia_2026-08-03.md` (segnaposto, cinque filoni tematici).
+Hanno **convenzioni diverse sugli indirizzi**: prima di riportare qualunque valore in un file
+tracciato va stabilito se e' segnaposto o dato reale, perche' un indirizzo vero scritto per
+distrazione in un repository pubblico non si toglie piu' senza riscrivere la storia. Cosa farne,
+punto per punto, e' nel prompt di ripresa.
+
+**Catena WAN ricostruita il 03-04/08/2026 — leggere prima di toccare il firewall.** Antenna sul
+tetto, iniettore PoE (sotto gruppo di continuita', confermato), **Mikrotik RB2011UiAS-RM**, due
+**Vianova R-1000** in cascata di cui il secondo con una **linea VDSL** sulla xDSL, entrambi sullo
+**Vianova S-1000**, che sdoppia: porta 4 alla P2 del firewall per i dati, porta 1 alla porta 8 del
+54HP per la voce. Tre conseguenze: i percorsi Internet sono **tre**; il ponte radio **non tocca il
+firewall** perche' il failover e' dentro gli apparati del fornitore; e `wan2` sulla P3 e' il
+**residuo della linea TIM dismessa**, ancora attiva, da spegnere in M7. Fonte: `startup-config.conf`
+del 03/08 in `_notes/`, mai versionato. Dal file anche: quattro indirizzi pubblici spenti su `wan1`
+(M9 riattiva un alias invece di chiederne uno nuovo), tabelle DNS **vuote** (corregge NET-014: la
+risposta `.local` veniva dal client in multicast, non dal firewall), e un ambito DHCP in DMZ che il
+piano non prevedeva. Nuovo gap **NET-018 (#137)**: Mikrotik e iniettore non censiti. Nuovi
+interventi **R15-R18**. In attesa di un diagramma aggiornato al livello 2 dall'IT Manager; quello
+nel repository e' superato.
+
+**NET-017 (#136), aperto e risolto il 03/08/2026 — e ribalta M13c.** Sulla tratta del tetto c'e'
+uno **Zyxel GS-105B v5**, cinque porte non gestite e non PoE, interposto **dagli elettricisti**
+durante il montaggio dell'inverter fotovoltaico. Catena: porta 4 del 30HP, presa `0-8-1` in
+locale caldaia, ponte a `0-9-1`, GS-105B, e da li' tre rami — cavo cat. 6 alla **centrale di
+irrigazione**, l'**access point esterno** EOL, e l'**inverter del fotovoltaico**. Tre assunzioni
+del progetto cadono: la centrale **e' cablata** e non servita via radio, quindi la prima opzione
+di M13c-3 non e' un'opzione ma lo stato dei fatti e la domanda diventa a cosa serva oggi quell'AP;
+i **100 Mbps sono quasi certamente il cavo** `0-8-1`-`0-9-1` e non l'apparato, perche' il GS-105B
+e' gigabit, quindi sostituire l'AP non porterebbe un Mbps in piu' (da verificare leggendo la
+velocita' sul GS-105B, e va fatto **prima dell'ordine** del WBE530); e l'**inverter e' un asset di
+rete mai censito**, IoT/OT sulla LAN piatta, aggiunto a M22c insieme alla centrale. Aperto:
+alimentazione dell'AP (il GS-105B taglia il PoE, un WBE530 lo richiede) e anagrafica
+dell'inverter. Dettaglio in `docs/mappatura-porte-fisiche.md` §La catena del tetto.
+
 **Protocollo delle fonti, dal 03/08/2026 — leggere prima di tutto il resto.** Esiste ora
 `.claude/rules/fonti-e-riallineamento.md`, da caricare a ogni sessione: elenca le cinque classi
 di fonti di questo progetto, dice su cosa ciascuna e' autorevole, e fissa il protocollo di

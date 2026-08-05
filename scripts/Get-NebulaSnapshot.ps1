@@ -204,9 +204,38 @@ $snapshot = [PSCustomObject]@{
     generated_at = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
     organizations = $orgsData
 }
+# Copia datata prima di sovrascrivere il file corrente. Nasce da un danno reale del
+# 05/08/2026: un rilancio ha sostituito uno snapshot completo con uno in cui la tabella
+# MAC del core switch mancava, perche' quell'apparato aveva rifiutato la lettura
+# (NEB-001). Con un nome di file fisso una raccolta parziale distrugge una raccolta
+# migliore, e il momento in cui te ne accorgi e' quello in cui ti serviva il dato.
+# Il file corrente resta al suo posto per gli script che lo leggono; le copie datate
+# rendono il danno impossibile invece che improbabile.
+$stamp    = Get-Date -Format "yyyyMMdd-HHmmss"
 $jsonPath = Join-Path $OutputDir "nebula-snapshot.json"
+$histPath = Join-Path $OutputDir "nebula-snapshot-$stamp.json"
+$snapshot | ConvertTo-Json -Depth 20 | Out-File -FilePath $histPath -Encoding utf8
 $snapshot | ConvertTo-Json -Depth 20 | Out-File -FilePath $jsonPath -Encoding utf8
 Write-Host "`nJSON:     $jsonPath" -ForegroundColor Green
+Write-Host "Storico:  $histPath" -ForegroundColor DarkGray
+
+# Avviso di completezza: se una tabella MAC e' assente, dirlo qui e non lasciarlo
+# scoprire a chi legge il Markdown.
+$missing = @()
+foreach ($o in $snapshot.organizations) {
+    foreach ($s in $o.sites) {
+        foreach ($sw in $s.switches) {
+            $t = $sw.l2_mac_table
+            $rows = if ($t -and $t.value) { $t.value } else { $null }
+            if (-not $rows) { $missing += $sw.name }
+        }
+    }
+}
+if ($missing.Count -gt 0) {
+    Write-Host "ATTENZIONE: tabella MAC assente per: $($missing -join ', ')" -ForegroundColor Yellow
+    Write-Host "  Raccolta PARZIALE (NEB-001). Non usare questo snapshot per chiudere un censimento:" -ForegroundColor Yellow
+    Write-Host "  confrontarlo con una copia datata piu' completa in $OutputDir." -ForegroundColor Yellow
+}
 
 # ---------------------------------------------------------------------------
 # 5. Output Markdown
