@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3882" viewBox="0 0 1060 3882" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3882" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3906" viewBox="0 0 1060 3906" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3906" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,14 +15,14 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">147 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 03/08/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">148 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 05/08/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
 <text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
-<text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(35)</tspan></text>
+<text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(36)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
 <text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(14)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
@@ -2397,7 +2397,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3866" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-148" class="ev-block has-detail" transform="translate(0,3836)">
+<g class="ev-summary" onclick="toggleEv('ev-148')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">03-04/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">La catena WAN ricostruita: tre percorsi Internet, e il ponte radio non tocca il firewall <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">TEL</tspan></text>
+</g>
+<foreignObject id="ev-148-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">03-04/08/2026 &#8212; La catena WAN ricostruita: tre percorsi Internet, e il ponte radio non tocca il firewall</p>
+<p>L'IT Manager ha scaricato il startup-config.conf del firewall e descritto la catena fisica del rack di sinistra del Piano 2. Le due fonti insieme chiudono una domanda che questo progetto portava aperta da luglio e ne correggono una risposta che era sbagliata.</p><p>Il file di configurazione resta in _notes/, non versionato: contiene utenze VPN nominative, chiavi pre-condivise dei tunnel IPsec e community SNMP. Da qui si riportano solo fatti di topologia, con gli indirizzi nel modello documentale.</p><p class="sub">La catena, dall'antenna al firewall</p><p>Dall'antenna sul tetto un cavo scende a un iniettore PoE, che entra nella porta ETH10 di una router board Mikrotik RB2011UiAS-RM; dalla ETH1, che e' PoE, si va alla porta 1 del primo router Vianova R-1000, la cui porta 2 raggiunge la porta 1 di un secondo R-1000, che sulla propria porta xDSL porta una linea VDSL. Entrambi i router sono attestati sulle porte 7 e 8 dello switch Vianova S-1000, che sdoppia la consegna: la porta 4 va alla P2 del firewall, che e' wan1, e la porta 1 va alla porta 8 dello switch XGS2220-54HP.</p><p class="sub">Tre fatti nuovi, di cui uno corregge una nostra affermazione ripetuta</p><p>I percorsi verso Internet sono tre e non due. Fibra come primario, ponte radio come primo backup, linea VDSL come secondo. La VDSL non compariva in nessun documento del progetto.</p><p>Il ponte radio non tocca il firewall, e wan2 non e' il ponte radio. Il failover vive interamente dentro gli apparati del fornitore, che consegnano al firewall una sola porta dati. L'interfaccia wan2 sulla P3 ha indirizzo e gateway configurati verso la linea TIM dismessa e non ha alcuno shutdown: e' un residuo, non un backup. Questa scheda e il diagramma di rete sostenevano il contrario da settimane, e l'errore era nostro e non del dispositivo — la scheda del firewall riportava correttamente P3 = wan2 mentre il diagramma ASCII diceva P2 = wan2, e nessuno aveva riconciliato le due.</p><p>La porta 8 del 54HP si spiega, ed e' la fonia. Lo S-1000 manda i dati al firewall e la voce alla porta 8 dello switch, che la smista sulla VLAN 2. E' la ragione del PVID 2 su quella porta, del MAC virtuale VRRP dei router del fornitore che vi compare nella tabella MAC, e del fatto che la LAN telefonica non passi… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3890" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2550,7 +2566,8 @@
   {id:'ev-144',type:'event',h:24},
   {id:'ev-145',type:'event',h:24},
   {id:'ev-146',type:'event',h:24},
-  {id:'ev-147',type:'event',h:24}
+  {id:'ev-147',type:'event',h:24},
+  {id:'ev-148',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2591,7 +2608,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3882').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3906').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

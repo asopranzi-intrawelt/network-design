@@ -2235,12 +2235,28 @@ scelta. Va identificato cosa c'e' collegato prima di attribuirlo all'eta' dell'a
 perche' se sono cavi vale la pena sistemarli mentre si mette mano al cablaggio per M22.
 Registrato come **NET-016**.
 
-Sulla porta 4 del 30HP, quella dell'ultimo access point Ubiquiti, la misura conferma il link a
-100 Mbps e mostra **quattro indirizzi appresi**, uno dei quali e' un MAC di tipo localmente
-amministrato, cioe' la forma tipica di un client Wi-Fi con indirizzo randomizzato. Il quadro e'
-coerente con un access point ancora in servizio e con client agganciati, che e' quanto M13c
-presuppone, ma l'attribuzione del produttore va fatta con la vista client di Nebula o con una
-ricerca sui prefissi e non a memoria: qui si registra il fatto misurato, non il vendor.
+Sulla porta 4 del 30HP, quella che porta al tetto, la misura conferma il link a 100 Mbps e
+mostra **quattro indirizzi appresi**, uno dei quali e' un MAC di tipo localmente amministrato,
+cioe' la forma tipica di un indirizzo randomizzato.
+
+**Correzione dello stesso giorno, e vale la pena spiegare l'errore invece di limarlo.** La prima
+lettura di questo dato, scritta poche ore prima, diceva che il quadro era "coerente con un
+access point ancora in servizio e con client agganciati". E' una spiegazione che regge, ma non
+era l'unica e nemmeno la piu' probabile: **quattro indirizzi dietro una sola porta sono la firma
+di uno switch**, non necessariamente di un access point con clienti. L'IT Manager ha poi
+dichiarato che dietro quella porta, prima della centrale di irrigazione, esiste effettivamente
+**un apparato di commutazione**, installato in una sessione di lavoro precedente e mai
+documentato in questo repository. La misura conteneva quindi l'impronta di un dispositivo che il
+progetto non conosceva, e l'ipotesi scelta era quella che confermava il modello esistente
+invece di metterlo in dubbio. Registrato come NET-017.
+
+Il fatto ha una conseguenza diretta e sfavorevole su M13c, ed e' meglio saperla adesso: se la
+porta 4 alimenta uno switch e non direttamente l'access point, la negoziazione a 100 Mbps
+potrebbe essere l'uplink di quello switch, e in quel caso **sostituire l'access point non
+rimuove il collo di bottiglia**, perche' il limite vive un salto prima. Il sotto-passo M13c-5,
+promosso ad ALTA il 03/08 proprio per misurare quella tratta, cambia quindi domanda: non "e' il
+cavo o l'apparato vecchio" ma "che cosa c'e' fra la porta 4 e la centrale, e quale dei tre
+elementi impone i 100 Mbps".
 
 Tutti i MAC e gli indirizzi reali di questa ricognizione restano fuori da questo file per
 policy di anonimizzazione: vivono nello snapshot in `output/`, ignorato da git, e la mappatura
@@ -2263,6 +2279,92 @@ solo livello applicativo, cioe' che ogni apparecchio si registri e chiami, verif
 display che mostra l'interno. Dettaglio in `runbook-anomalie.md` §TEL-002.
 
 ---
+
+## 03-04/08/2026 - La catena WAN ricostruita: tre percorsi Internet, e il ponte radio non tocca il firewall
+
+L'IT Manager ha scaricato il `startup-config.conf` del firewall e descritto la catena fisica del
+rack di sinistra del Piano 2. Le due fonti insieme chiudono una domanda che questo progetto
+portava aperta da luglio e ne correggono una risposta che era sbagliata.
+
+Il file di configurazione resta in `_notes/`, non versionato: contiene utenze VPN nominative,
+chiavi pre-condivise dei tunnel IPsec e community SNMP. Da qui si riportano solo fatti di
+topologia, con gli indirizzi nel modello documentale.
+
+### La catena, dall'antenna al firewall
+
+Dall'antenna sul tetto un cavo scende a un iniettore PoE, che entra nella porta ETH10 di una
+router board **Mikrotik RB2011UiAS-RM**; dalla ETH1, che e' PoE, si va alla porta 1 del primo
+router **Vianova R-1000**, la cui porta 2 raggiunge la porta 1 di un **secondo R-1000**, che sulla
+propria porta xDSL porta una **linea VDSL**. Entrambi i router sono attestati sulle porte 7 e 8
+dello switch **Vianova S-1000**, che sdoppia la consegna: la porta 4 va alla P2 del firewall, che
+e' `wan1`, e la porta 1 va alla porta 8 dello switch XGS2220-54HP.
+
+### Tre fatti nuovi, di cui uno corregge una nostra affermazione ripetuta
+
+**I percorsi verso Internet sono tre e non due.** Fibra come primario, ponte radio come primo
+backup, linea VDSL come secondo. La VDSL non compariva in nessun documento del progetto.
+
+**Il ponte radio non tocca il firewall, e `wan2` non e' il ponte radio.** Il failover vive
+interamente dentro gli apparati del fornitore, che consegnano al firewall una sola porta dati.
+L'interfaccia `wan2` sulla P3 ha indirizzo e gateway configurati verso la **linea TIM dismessa** e
+non ha alcuno `shutdown`: e' un residuo, non un backup. Questa scheda e il diagramma di rete
+sostenevano il contrario da settimane, e l'errore era nostro e non del dispositivo — la scheda
+del firewall riportava correttamente `P3 = wan2` mentre il diagramma ASCII diceva `P2 = wan2`, e
+nessuno aveva riconciliato le due.
+
+**La porta 8 del 54HP si spiega, ed e' la fonia.** Lo S-1000 manda i dati al firewall e la voce
+alla porta 8 dello switch, che la smista sulla VLAN 2. E' la ragione del PVID 2 su quella porta,
+del MAC virtuale VRRP dei router del fornitore che vi compare nella tabella MAC, e del fatto che
+la LAN telefonica non passi dal firewall per progetto (FW-012). Il traffico dati rientra invece
+come LAN e raggiunge il firewall dalla porta 33.
+
+### Cosa il file di configurazione ha aggiunto per conto proprio
+
+Quattro **indirizzi pubblici aggiuntivi** sono definiti sull'interfaccia `wan1` e sono tutti
+spenti. Non e' un difetto ma una risorsa: il micro-step M9 prevede di pubblicare la prima
+macchina in DMZ su un indirizzo pubblico, e quell'indirizzo esiste gia' configurato, quindi
+l'intervento e' riattivarne uno invece di richiederlo al fornitore.
+
+Le **tabelle dei record DNS sono vuote**, con due soli inoltri verso resolver pubblici. Corregge
+quanto scritto il 30/07, cioe' che il firewall ospitasse gia' record interni: quella deduzione
+nasceva da una risposta con suffisso `.local` ottenuta interrogando il resolver, e la
+configurazione dimostra che la risposta non veniva dal firewall ma dal client, che risolve
+`.local` in multicast per conto proprio. L'intervento R12 crea quindi i primi record e non si
+innesta su una zona esistente, e il difetto di NET-014 e' piu' netto di come era descritto: i due
+nomi `.local` non sono pubblicati da nessuna parte, esistono solo come annuncio multicast.
+
+La zona **DMZ ha un proprio ambito DHCP** da duecento indirizzi, mentre il piano del 05/06
+prevedeva la DMZ senza pool. Da decidere prima di M4-M9 e non dopo, perche' in una DMZ gli host
+pubblicati vogliono indirizzi statici o riservati: le regole di NAT e le policy li referenziano, e
+un pool dinamico le rende fragili.
+
+Confermata infine la corrispondenza fisica del port-grouping riga per riga, con una differenza
+rispetto a quanto la scheda riportava: la porta 8 del firewall appartiene al gruppo `reserved` e
+non a `guest`, e il gruppo `guest` non ha **alcuna** porta assegnata. L'interfaccia `guest`
+residua di FW-013 e' quindi configurazione viva e inerte insieme — ha un ambito DHCP attivo su una
+`/24` di blocco estraneo, ma nessuno puo' raggiungerla perche' non ha porte. Il rischio resta
+interpretativo, con l'aggravante che un cavo collegato un giorno la riattiverebbe.
+
+### Due apparati non censiti, e la lezione che si ripete
+
+Il Mikrotik e l'iniettore PoE non erano in nessun documento (NET-018, #137). Dell'iniettore
+l'IT Manager ha confermato il 04/08 che e' sotto il gruppo di continuita', quindi un'assenza di
+rete elettrica non spegne il backup radio: la domanda si chiude in positivo. Del Mikrotik non si
+conosce proprieta', amministratore ne' credenziali, e sta sul percorso del backup di linea — un
+apparato in cui nessuno riesce a entrare, posizionato li', si scopre inaccessibile nel momento in
+cui la linea primaria e' giu'. E' esattamente lo schema di AP-001, dove quattro access point sono
+rimasti inaccessibili per anni finche' non e' servito toccarli. Tracciato come intervento R17, con
+il vincolo di chiedere al fornitore e **non** tentare accessi a tentativi su un apparato in
+produzione sul backup.
+
+### Interventi resi tracciabili nella stessa giornata
+
+Su indicazione dell'IT Manager, che ha chiesto che ogni intervento identificato risulti tracciato
+e non resti un dettaglio dentro un gap, sono state aggiunte quattro voci al registro dei
+micro-interventi — R15 la porta 21 incoerente, R16 la ricognizione delle tre porte a 10 Mbps, R17
+il Mikrotik, R18 il censimento dell'inverter fotovoltaico — ed e' stato esplicitato il contenuto
+di M7, che ora nomina una per una le rimozioni previste sul firewall, compreso lo **spegnimento di
+`wan2`**, invece di riassumerle in una parentesi.
 
 ## 13/07/2026 - VM207: dimensionamento corretto, e l'enigma anagrafico si spiega
 

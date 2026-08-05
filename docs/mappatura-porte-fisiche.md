@@ -74,8 +74,8 @@ nominative (i nomi propri restano nel file sorgente, non qui). Nel rilievo
 | Porta | Tipo | Note |
 |-------|------|------|
 | 0-7-1 | Access Point | AP Piano Terra, adattatore PoE (rimosso con XGS2220-30HP) |
-| 0-8-1 | Locale Caldaia | Patch panel -> patch verso 0-9-1. Qui stava il Cisco switch (rimosso: sostituito da XGS2220-30HP) |
-| 0-9-1 | Access Point | AP tetto per centrale irrigazione (raggiunto via ponte 0-8-1 -> 0-9-1) |
+| 0-8-1 | Locale Caldaia | Patch panel -> patch verso 0-9-1. Qui stava il Cisco switch (rimosso: sostituito da XGS2220-30HP). Da parete arriva alla **porta 4 del XGS2220-30HP** |
+| 0-9-1 | Derivazione tetto | Fa ponte con 0-8-1. **Non e' un access point**: da qui parte un cavo di categoria 6 verso la centrale di irrigazione, e in mezzo gli elettricisti hanno inserito uno **Zyxel GS-105B v5** per diramare l'access point esterno e l'inverter del fotovoltaico. Correzione del 03/08/2026, vedi sotto |
 | 0-10-1 | Lettore impronte | BioStar (IP 10.61.20.199). Cavo rete al lettore esterno; RS485 tra connettore interno ed esterno; la rete lo vede come dispositivo unico. Problemi dal 07/02/2025. |
 | 0-R-18 | Router/Switch | Cisco (rimosso). Collegava direttamente il firewall Zyxel al Piano 2. Con la dorsale SFP+ il Piano Terra e' collegato allo switch Piano 2 (XGS2220-54HP) via fibra. |
 | 0-R-4 | Postazione | Persona-D, dal 10/07/2026 (ex 0-3-3, vedi Ufficio 3). Patch diretta al rack a seguito di un aggiornamento dell'indirizzo IP della postazione. |
@@ -253,3 +253,92 @@ solo sugli switch (vedi nota PORT-TAGGING in
 panel corrispondenti alle porte switch. Mappatura completa patch panel ->
 switch Piano 2 -> dispositivi. Relabeling fisico delle etichette permutate
 mai completato dal 2020.]
+
+---
+
+## La catena verso l'esterno dallo switch del Piano Terra (NET-017)
+
+> **Sezione in revisione al 03/08/2026, non usare per operare.** La prima stesura di questa
+> sezione, di poche ore prima, si chiamava "la catena del tetto" e conteneva due errori di
+> attribuzione che l'IT Manager ha corretto. Primo: questa non e' la catena del tetto, e' la
+> catena che parte dallo switch del Piano Terra e va **verso l'esterno**; la connessione radio
+> del tetto e' una cosa distinta. Secondo: l'apparato sulla porta 4 non e' un access point che
+> serve la centrale di irrigazione via Wi-Fi, ma una **connessione radio di backup verso
+> l'esterno** — cioe' l'ipotesi "ponte radio" che M13c-1 aveva classificato come improbabile
+> era quella giusta. Esiste inoltre una seconda catena, che parte dallo switch del Piano 2 e
+> comprende un media converter, un cavo che esce verso un'antenna e un gruppo di continuita'
+> dedicato, e che questa sezione non descrive affatto.
+>
+> Cio' che resta valido e verificato: l'esistenza dello **Zyxel GS-105B v5** sulla tratta,
+> interposto dagli elettricisti, e le tre utenze che ne derivano fra cui l'inverter del
+> fotovoltaico mai censito. Cio' che e' contestato e da riscrivere: il ruolo dell'apparato
+> radio, il fatto che la centrale sia raggiunta via cavo o via radio, e la relazione fra questa
+> catena e quella del Piano 2. Riscrittura in attesa dei dati dell'IT Manager.
+
+Fonte: dichiarazione dell'IT Manager, sollecitata da una verifica di copertura documentale.
+Nessuna fonte automatica poteva produrre questa informazione, perche' l'apparato intermedio non
+e' gestito e non compare nell'inventario Nebula.
+
+```
+XGS2220-30HP porta 4  (PoE, negozia 100 Mbps)
+        |
+    0-8-1  presa a parete, locale caldaia
+        |  ponte / patch
+    0-9-1  derivazione sul tetto
+        |
+   Zyxel GS-105B v5   <-- inserito dagli elettricisti, non da IT
+    5 porte, non gestito, non PoE
+        |
+        +--- cavo cat. 6 --> centrale di irrigazione
+        +--------------------> access point esterno (Ubiquiti EOL, "EsternoIrrigazione")
+        +--------------------> inverter del fotovoltaico (montato nuovo)
+```
+
+Prima dell'inserimento dello switch, dal punto 0-9-1 partiva un solo cavo di categoria 6 diretto
+alla centrale di irrigazione. Gli elettricisti hanno interposto il GS-105B v5 per diramare due
+utenze nuove, l'access point esterno e l'inverter del fotovoltaico appena installato.
+
+### Quattro conseguenze, e tre ribaltano quanto il progetto dava per assodato
+
+**La centrale di irrigazione e' cablata, non servita via radio.** Tutta la documentazione
+precedente, a partire dall'etichetta "AP tetto per centrale irrigazione" del rilievo 2020,
+descriveva l'access point come il mezzo con cui la centrale veniva raggiunta. Non e' cosi': la
+centrale ha un cavo di categoria 6 dedicato. Ne segue che la prima opzione di M13c-3, quella
+formulata come "se la centrale espone una porta Ethernet il collegamento diventa cablato e
+l'access point sparisce", non e' un'opzione da valutare: **e' gia' lo stato dei fatti**. La
+domanda si sposta e diventa piu' semplice, cioe' a cosa serva oggi quell'access point, dato che
+non serve la centrale. Se la risposta e' "a niente di necessario", si rimuove senza sostituirlo e
+il preventivo del WBE530 non serve.
+
+**I 100 Mbps sono quasi certamente il cavo e non l'apparato.** Il GS-105B v5 e' uno switch
+gigabit: se il collegamento fra la porta 4 e quello switch negozia 100 Mbps, il limite non puo'
+essere ne' il 30HP ne' il GS-105B, quindi resta la tratta fisica fra 0-8-1 e 0-9-1 — cavo di
+categoria vecchia oppure coppie interrotte. Questa e' un'inferenza forte, non ancora una misura,
+e la verifica costa poco: si legge la velocita' negoziata sulle porte del GS-105B. Se confermata,
+**sostituire l'access point non porta un solo Mbps in piu'**, ed e' esattamente la ragione per cui
+M13c-5 e' stato promosso ad ALTA prima dell'ordine.
+
+**L'alimentazione dell'access point e' una domanda aperta.** La porta 4 erogava PoE
+all'apparato, ma il GS-105B v5 non e' PoE e non ne fa passare: interposto sulla tratta, taglia
+l'alimentazione. Ne segue che l'access point ha oggi un'alimentazione propria, oppure esiste un
+iniettore non censito, oppure il GS-105B stesso e' alimentato dalla porta 4 tramite un
+adattatore. Va guardato, perche' cambia il piano di sostituzione: un WBE530 si alimenta in PoE
+802.3at, e su quella tratta il PoE oggi non arriva.
+
+**L'inverter del fotovoltaico e' un asset di rete nuovo e mai censito.** Un inverter moderno
+espone tipicamente un'interfaccia web e contatta il cloud del produttore, quindi e' un
+dispositivo IoT/OT collegato senza filtri alla LAN piatta, esattamente come gli altri residui
+che M22c deve raccogliere. Va inventariato con marca, modello, indirizzo e porte esposte, e
+collocato nel segmento IoT/OT insieme alla centrale di irrigazione quando quel segmento
+esistera'. Fino a quel momento e' raggiungibile da tutta la `/19`.
+
+### Il fatto organizzativo, che vale oltre questo caso
+
+Due dispositivi sono entrati in rete per mano di **elettricisti**, durante un lavoro di
+impianto fotovoltaico, senza che l'IT lo registrasse. Non e' una critica agli elettricisti: e'
+la dimostrazione che il perimetro di rete si allarga anche quando nessuno in IT sta lavorando
+sulla rete, e che l'inventario degli asset non puo' dipendere dal fatto che chi installa
+avverta. Un controllo periodico della tabella MAC porta per porta e' l'unico modo di
+accorgersene dal lato IT: quattro indirizzi appresi su una porta che dovrebbe averne uno erano
+l'indizio, ed era disponibile da mesi in ogni snapshot. Rilevante per A.8.1 sull'inventario e
+per A.5.19-A.5.22 sui rapporti con i fornitori.

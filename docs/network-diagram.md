@@ -11,19 +11,23 @@ Aggiornato: maggio 2026. Stato: post installazione XGS2220-30HP (08/05/2026).
 ```
 INTERNET
    |
-   +-- Vianova FTTO 1 Gbps (WAN1) ─ media converter TIM ─ Router Vianova R-1000 x2 (HSRP)
-   |   IP pubblico pool: 203.0.113.x/28 (14 IP utilizzabili)
-   |
-   +-- Ponte Radio 100/20 Mbps (WAN2) ─ backup automatico
-       [TIM ADSL dismessa fisicamente mag 2025, contratto cessato lug 2025]
+   +-- Vianova FTTO 1 Gbps, servizio primario
+   +-- Ponte radio, primo backup   ─┐
+   +-- Linea VDSL, secondo backup  ─┤  tutti e tre terminati su apparati
+                                    │  Vianova nel rack SX del Piano 2
+                                    ▼
+   [Catena WAN completa nella sezione dedicata piu' sotto: antenna sul
+    tetto, iniettore PoE, router board Mikrotik, due router Vianova
+    R-1000 in cascata, switch Vianova S-1000. Il failover avviene dentro
+    gli apparati del fornitore: il firewall vede una sola WAN.]
 
-               │ wan1 (primary) + wan2 (backup)
+               │ una sola consegna dati verso il firewall
                ▼
    ┌──────────────────────────────────────────────────────────────────┐
    │  Zyxel USG FLEX 500                                              │
-   │  P1  = wan1 (Vianova FTTO)                                       │
-   │  P2  = wan2 (ponte radio)                                        │
-   │  P3  = opt (non usata)                                           │
+   │  P1  = ge1, slot SFP fibra, non in uso                           │
+   │  P2  = wan1  <- consegna dati da S-1000 porta 4                  │
+   │  P3  = wan2, linea TIM dismessa, interfaccia ancora attiva        │
    │  P4+P5+P6 = bridge L2 → lan1 → Switch Piano 2 (P4 attiva)       │
    │                                                                  │
    │  VPN attive:                                                     │
@@ -113,6 +117,90 @@ esposto in questo modo e non ha nessun filtro interposto, il che rende concreta 
 mancata segmentazione della LAN piatta (NET-009/NET-011, micro-step M22).
 
 ---
+
+## Catena WAN e rack SX del Piano 2 (ricostruita il 03/08/2026)
+
+Fonte: descrizione dell'IT Manager del 03/08/2026, corroborata dal `startup-config.conf`
+scaricato dal firewall lo stesso giorno (non versionato, resta in `_notes/`). Sostituisce la
+rappresentazione precedente, che riduceva tutto a un box "ROUTER VIANOVA" e attribuiva il ponte
+radio a un'interfaccia WAN del firewall: **il ponte radio non tocca il firewall**.
+
+```
+        antenna sul tetto
+              |  cavo
+        iniettore PoE
+              |
+        ETH10 ──┬─ Mikrotik RB2011UiAS-RM (router board, rack SX)
+                └─ ETH1 (PoE)
+                     |
+                 porta 1
+              Vianova R-1000  (A)
+                 porta 2
+                     |
+                 porta 1
+              Vianova R-1000  (B) ── porta xDSL ── linea VDSL (terzo backup)
+                     |
+      ┌──────────────┴──────────────┐
+   porta 7                       porta 8      <- entrambi i router
+      └────────── Vianova S-1000 ──┘
+                   |         |
+              porta 4     porta 1
+                   |         |
+                   |         └──> porta 8 del XGS2220-54HP   (fonia, PVID 2)
+                   |                   |
+                   |              il 54HP smista la fonia sulla VLAN 2
+                   |              e porta la LAN alla porta 33 -> firewall
+                   |
+                   └──> P2 del USG FLEX 500 = wan1   (dati)
+```
+
+Tre fatti che questa catena stabilisce e che il progetto non aveva.
+
+**Esistono tre percorsi verso Internet, non due.** Fibra FTTO come primario, ponte radio come
+primo backup, e una **linea VDSL sulla porta xDSL del secondo R-1000** come terzo livello. La
+VDSL non era documentata da nessuna parte.
+
+**Il failover vive interamente dentro gli apparati del fornitore.** I due R-1000 sono in
+cascata e attestati entrambi sullo S-1000, che consegna al firewall una sola porta dati. Ne
+segue che il firewall non ha e non deve avere una seconda WAN per il backup, e che
+`wan2` sulla P3 — indirizzo del blocco `198.51.100.x/29` nel modello documentale — e' il
+residuo della linea TIM dismessa, non il ponte radio come questa scheda ha sostenuto per
+settimane. L'interfaccia risulta ancora amministrativamente attiva con indirizzo e gateway
+configurati: e' lo stesso residuo che FW-008 segnala sul gruppo WAN_TRUNK, e va spenta insieme
+a quello.
+
+**La porta 8 del 54HP si spiega, ed e' la fonia.** Lo S-1000 sdoppia la consegna: la porta 4
+verso la WAN del firewall per i dati, la porta 1 verso la porta 8 del 54HP per la voce. E'
+per questo che quella porta ha PVID 2, che vi compare un MAC virtuale VRRP dei router del
+fornitore, e che la LAN telefonica non passa dal firewall per progetto (FW-012). Il traffico
+dati rientra invece come LAN e raggiunge il firewall dalla porta 33.
+
+### Apparati del rack SX mai censiti prima
+
+Due elementi di questa catena non comparivano in nessun documento del progetto.
+
+Il **Mikrotik RB2011UiAS-RM** e' un apparato di routing con dieci porte in formato rack, e sta
+fra l'iniettore PoE dell'antenna e il primo R-1000: il segnale radio entra sulla ETH10 ed esce
+dalla ETH1, che e' una porta PoE. Non e' noto se sia di proprieta' Intrawelt o del fornitore,
+ne' chi lo amministri, ne' se abbia una configurazione documentata da qualche parte. Poiche' sta
+sul percorso di un servizio di continuita', va chiarito: un apparato di cui nessuno conosce le
+credenziali sul percorso del backup di linea e' un rischio di indisponibilita', non solo un
+buco di inventario. Tracciato come NET-018.
+
+L'**iniettore PoE** dell'antenna e' l'altro: alimenta il radio e non era censito.
+**Confermato dall'IT Manager il 04/08/2026: e' sotto il gruppo di continuita'.** La domanda
+aperta si chiude quindi nel modo giusto, ed e' un fatto di continuita' operativa che vale
+registrare in positivo: un'assenza di rete elettrica non spegne il backup radio, perche' sia
+l'iniettore sia gli apparati del fornitore a valle sono protetti. Il perimetro esatto di cosa
+alimenta quel gruppo resta da definire, ma la catena del backup di linea vi e' dentro.
+
+### Cosa resta aperto su questa parte
+
+Quale gruppo di continuita' alimenta quali apparati del rack SX, dato che l'IT Manager ha
+indicato la catena come ridondata ma il perimetro dell'alimentazione non e' definito. Se i due
+R-1000 siano entrambi del fornitore e in che modo si coordinino, dato che sono in cascata e non
+in parallelo. E la relazione fra questa antenna e l'apparato Ubiquiti sulla porta 4 dello switch
+del Piano Terra, che resta un secondo impianto radio non chiarito (NET-017).
 
 ## Segmentazione VLAN
 

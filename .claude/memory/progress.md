@@ -1,5 +1,190 @@
 # Work-log
 
+## 2026-08-05 — Scheda operativa telefoni e AP, snapshot rilanciato, chiusura di sessione
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `scripts/Get-NebulaSnapshot.ps1` (copie datate dello snapshot e avviso
+di raccolta parziale); `.claude/memory/index.md`. File locali: `_notes/RESUME_PROMPT.md` riscritto
+per le tre sessioni pianificate; prodotto fuori repository
+`Desktop\intrawelt_telefoni-e-AP_scheda-da-completare.md`, scheda stampabile con i dati di
+telefoni e access point e le tabelle da compilare.
+
+**Snapshot Nebula rilanciato seguendo la cadenza appena confermata** (task su porte e access
+point). Confermati oggi i cinque MAC dei telefoni tutti in VLAN 2, i tre access point con MAC e
+numero di serie, e la configurazione delle porte di entrambi gli switch. Il 54HP ha rifiutato la
+tabella MAC per la **terza volta**: NEB-001 resta specifico di quell'apparato.
+
+**Danno reale e correzione.** Il file di output aveva nome fisso, quindi la raccolta parziale ha
+**sovrascritto** quella completa del 03/08 e la tabella MAC del 54HP non e' piu' su disco. Le
+conclusioni tratte da quella lettura erano gia' nelle schede, quindi la perdita e' contenuta alle
+righe grezze, ma la lezione e' generale: rilanciare uno snapshot non e' neutro quando l'output ha
+nome fisso e la fonte e' intermittente — **rileggere un apparato puo' renderti piu' ignorante di
+prima**. Corretto lo script, che ora scrive anche una copia datata a ogni esecuzione e stampa un
+avviso esplicito quando una tabella MAC manca, dicendo che la raccolta e' parziale e non va usata
+per chiudere un censimento. Vale dalla prossima esecuzione.
+
+Osservazione collaterale: sulla porta 4 del 30HP oggi risultano **due** MAC contro i quattro del
+03/08, coerente con dispositivi che invecchiano dietro uno switch non gestito. Ne segue che per
+censire cosa c'e' dietro il `GS-105B` uno snapshot non basta: serve guardare le porte
+dell'apparato.
+
+**Chiusura di sessione con tre sessioni pianificate**, su decisione dell'IT Manager: il 06/08
+mattina il montaggio dell'access point esterno che servira' centrale di irrigazione e inverter
+fotovoltaico (esecuzione di M13c); poi una sessione dedicata interamente allo snapshot della rete a
+ogni livello, fisico ed elettrico compresi, con i diagrammi ricomposti e i due armadi rack
+descritti; da li' si riprende la roadmap. `RESUME_PROMPT.md` riscritto di conseguenza, con gli
+obiettivi di ciascuna sessione, il materiale atteso, le trappole pagate e l'igiene rimasta aperta.
+
+Attesi al rientro **due documenti modificati a mano** con convenzioni diverse sugli indirizzi —
+uno con valori reali, uno con segnaposto. Il prompt di ripresa avvisa esplicitamente del rischio:
+una correzione scritta con valori reali dentro il documento che parla per segnaposto, trasferita
+senza tradurre, finirebbe nella storia git di un repository pubblico.
+
+## 2026-08-04 — Catena WAN dal `.conf` e dalla descrizione dell'IT Manager; interventi resi tracciabili
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/network-diagram.md` (diagramma ASCII corretto su P1/P2/P3, nuova
+§Catena WAN e rack SX del Piano 2); `docs/firewall-zyxel-usg-flex-500.md` (P3 chiarita, verifica
+del port-grouping, tre fatti nuovi dal `.conf`); `docs/infrastructure-timeline/2026-switch-piano-terra.md`
+(voce 03-04/08/2026); `docs/infrastructure-timeline/GAP-TBC.md` (**NET-018 #137**, iniettore
+chiuso in positivo); `docs/interventi-robustezza.md` (**R15-R18**);
+`.claude/context/roadmap.md` (M7 esplicitato, M9 con la nota sugli alias pubblici);
+`docs/infrastructure-timeline/timeline.svg` (148 eventi). Il `startup-config.conf` resta fuori dal
+repository.
+
+**Fonte nuova, e la piu' autorevole finora sul firewall.** L'IT Manager ha scaricato il
+`startup-config.conf` (2218 righe) e descritto la catena fisica del rack di sinistra. Il file non
+e' versionato e non lo sara': contiene utenze VPN nominative, chiavi pre-condivise IPsec e
+community SNMP. Da chiarire per il futuro che questo e' il modo in cui il firewall si legge
+**finche' non sara' su Nebula**, come annotato nella regola delle fonti.
+
+**Catena WAN**: antenna sul tetto, iniettore PoE, **Mikrotik RB2011UiAS-RM** (ETH10 in, ETH1 PoE
+out), primo **Vianova R-1000**, secondo R-1000 con una **linea VDSL** sulla porta xDSL, entrambi
+sulle porte 7 e 8 del **Vianova S-1000**, che sdoppia: porta 4 alla P2 del firewall per i dati,
+porta 1 alla porta 8 del 54HP per la voce.
+
+**Tre acquisizioni, di cui una e' una nostra correzione.** I percorsi Internet sono tre e non due,
+perche' la VDSL non era documentata. Il ponte radio **non tocca il firewall**: il failover vive
+dentro gli apparati del fornitore, e `wan2` sulla P3 e' il residuo della linea TIM dismessa, con
+indirizzo e gateway ancora configurati e nessuno `shutdown`. E la porta 8 del 54HP si spiega
+finalmente: e' la consegna della fonia dallo S-1000, il che rende conto del PVID 2, del MAC VRRP
+del fornitore e dell'isolamento per progetto della LAN telefonica.
+
+L'errore su `wan2` merita una nota di metodo, perche' non era mancanza di dati. La scheda del
+firewall riportava correttamente `P3 = wan2` **e** il diagramma di rete diceva `P2 = wan2`: due
+file tracciati in contraddizione fra loro da settimane, e nessuno li aveva riconciliati. Non
+serviva una fonte nuova per accorgersene, serviva leggere due file insieme.
+
+**Tre fatti che il `.conf` ha aggiunto da solo.** Quattro indirizzi pubblici aggiuntivi esistono
+su `wan1` e sono tutti spenti, quindi M9 riattiva un alias invece di chiedere un indirizzo nuovo.
+Le tabelle DNS sono davvero vuote, cosa che **corregge NET-014**: la risposta `.local` che il
+30/07 avevamo attribuito a record ospitati sul firewall veniva dal client, che risolve in
+multicast da se'. E la DMZ ha un ambito DHCP da duecento indirizzi che il piano del 05/06 non
+prevedeva, da decidere prima di M4-M9.
+
+**Richiesta di processo dell'IT Manager, applicata.** Ha ripetuto che ogni intervento identificato
+deve risultare tracciato e non restare un dettaglio dentro un gap. Verificato che era una critica
+fondata: quattro difetti trovati fra ieri e oggi avevano il gap ma non l'intervento. Aggiunte le
+voci **R15** (porta 21 incoerente, gemella di R5), **R16** (ricognizione delle tre porte a 10
+Mbps), **R17** (proprieta' e credenziali del Mikrotik, con il vincolo di chiedere al fornitore e
+non tentare accessi su un apparato in produzione sul backup) e **R18** (censimento dell'inverter
+fotovoltaico). Esplicitato inoltre il contenuto di **M7**, che ora nomina una per una le rimozioni
+sul firewall compreso lo spegnimento di `wan2`, invece di riassumerle in una parentesi.
+
+Chiuso in positivo un punto aperto ieri: l'iniettore PoE dell'antenna **e' sotto il gruppo di
+continuita'**, quindi un'assenza di rete elettrica non spegne il backup radio.
+
+In attesa: un diagramma aggiornato dall'IT Manager, completo almeno al livello 2. Il
+`rete_stato_attuale_17072026.drawio` presente nel repository e' materialmente superato — un solo
+box "ROUTER VIANOVA" al posto dell'intera catena, la dorsale sulla 52, i telefoni descritti come
+non visibili sulle porte 21/23.
+
+## 2026-08-03 (ottava sessione) — NET-017 risolto: la catena del tetto, e M13c si ribalta
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/mappatura-porte-fisiche.md` (voci `0-8-1` e `0-9-1` corrette,
+nuova sezione §La catena del tetto con lo schema e le quattro conseguenze);
+`docs/infrastructure-timeline/GAP-TBC.md` (NET-017 risolto, riga #136b);
+`.claude/context/roadmap.md` (M13c-3 con la domanda ribaltata, M22c con due utenze nuove);
+`.claude/memory/index.md`. File locali: nuovo `_notes/LEGGIMI.md`, indice di cosa c'e' e cosa
+non si puo' spostare.
+
+L'IT Manager ha descritto la catena fisica, e nessuna fonte automatica avrebbe potuto produrla
+perche' l'apparato non e' gestito. Dalla porta 4 del 30HP si va alla presa `0-8-1` nel locale
+caldaia, da li' in ponte a `0-9-1` sul tetto, e li' c'e' uno **Zyxel GS-105B v5**, cinque porte
+non gestite e non PoE, che gli **elettricisti** hanno interposto durante il montaggio
+dell'inverter fotovoltaico per diramare tre utenze da un cavo che prima era unico: la centrale di
+irrigazione via cavo di categoria 6, l'access point esterno, e l'inverter. I quattro MAC misurati
+la mattina sono esattamente questi tre piu' un client radio.
+
+**Tre assunzioni del progetto cadono, e sono tutte in direzione favorevole.** La centrale di
+irrigazione e' cablata e non servita via radio, quindi la prima opzione di M13c-3 — eliminare
+l'access point cablando la centrale — non e' un'opzione da valutare ma lo stato dei fatti, e la
+domanda diventa a cosa serva oggi quell'apparato: se copre un'area che nessuno usa si rimuove
+senza sostituirlo, SEC-018 si chiude per eliminazione e il preventivo del WBE530 non serve. I 100
+Mbps sono quasi certamente la tratta `0-8-1`-`0-9-1`, perche' il GS-105B e' gigabit e quindi il
+limite non puo' stare ne' nel 30HP ne' in lui: se confermato, sostituire l'access point non
+porterebbe un solo Mbps in piu'. Ed e' comparsa una domanda che non c'era: il GS-105B non e' PoE e
+interposto taglia l'alimentazione dalla porta 4, mentre un WBE530 si alimenta in PoE 802.3at.
+
+**Un asset di rete nuovo**: l'inverter del fotovoltaico, che tipicamente espone un'interfaccia web
+e contatta il cloud del produttore, e' un dispositivo IoT/OT collegato senza filtri alla LAN
+piatta. Aggiunto a M22c insieme alla centrale, con la nota che tutto quel ramo si sposta in un
+colpo ma senza granularita' per dispositivo, perche' uno switch non gestito non separa nulla.
+
+**Il fatto organizzativo, che vale oltre il caso.** Due dispositivi sono entrati in rete per mano
+di un fornitore durante un lavoro di impianto, senza registrazione IT. L'unico indizio disponibile
+dal lato IT era la tabella MAC — quattro indirizzi su una porta che doveva averne uno — e quel
+dato era presente in ogni snapshot da mesi. L'inventario degli asset non puo' dipendere dal fatto
+che chi installa avverta: serve un controllo periodico porta per porta. Rilevante per A.8.1 e per
+A.5.19-A.5.22.
+
+Riordino di `_notes/` fermato all'indicizzazione, e la ragione e' verificata: quasi ogni file di
+quella cartella e' referenziato per percorso da uno script o da una scheda versionata, quindi
+spostarlo romperebbe qualcosa. Scritto `LEGGIMI.md` con la tabella di cosa e' vincolato e da chi,
+piu' il comando di controllo da eseguire prima di toccare qualunque cosa. La rimozione ricorsiva
+dell'archivio delle estrazioni e' stata **rifiutata dalle regole `deny` del progetto**, che hanno
+funzionato come previsto: il comando resta all'utente.
+
+## 2026-08-03 (settima sessione) — Verifica di copertura: due filoni tracciati, uno scoperto mancante
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/infrastructure-timeline/GAP-TBC.md` (**NET-017**, #136);
+`docs/infrastructure-timeline/2026-switch-piano-terra.md` (correzione della lettura della porta
+4); `.claude/context/roadmap.md` (M13c-1 riscritto, M13c-5 con la domanda riformulata);
+`.claude/memory/index.md`.
+
+Motivo: l'IT Manager ha chiesto se i ragionamenti delle sessioni precedenti fossero davvero
+tracciati, nominando tre casi concreti — il tagging delle porte, gli snapshot, e "l'inserimento
+dello switch di fuori prima della centralina di irrigazione". Verificati uno per uno invece di
+rispondere a memoria.
+
+Il tagging delle porte risulta tracciato su cinque livelli e in ventotto file, con la catena
+completa: sintomo, diagnosi condotta dall'apparato funzionante, causa doppia trovata, regola
+operativa nata dall'incidente del PVID, e la correzione di topologia che ne e' derivata. Gli
+snapshot risultano tracciati con cinque ADR dedicati (005, 008, 009, 010, 017), gli script, gli
+output ignorati da git, le checklist di verifica, e i vincoli sulle credenziali.
+
+**Il terzo caso non era tracciato da nessuna parte, ed e' un apparato di rete reale.** Fra la
+porta 4 del 30HP e la centrale di irrigazione esiste un apparato di commutazione, installato in
+una sessione di lavoro precedente e mai documentato: il rilievo fisico conosce solo il patch nel
+locale caldaia e l'access point sul tetto. Non compare nell'inventario Nebula, quindi e' non
+gestito e nessuna interrogazione automatica lo avrebbe mai rivelato.
+
+Il dato che rende l'episodio istruttivo e' che **l'impronta c'era nella misura di poche ore
+prima**: la tabella MAC mostra quattro indirizzi appresi sulla porta 4, e quattro MAC dietro una
+sola porta sono la firma di uno switch. La prima lettura li aveva attribuiti a un access point
+con client Wi-Fi randomizzati — spiegazione che regge, ma che era stata scelta perche'
+confermava il modello documentato invece di metterlo in dubbio. E' l'errore opposto a quello di
+non avere il dato: avere il dato e leggerlo dentro il modello che si ha gia'.
+
+Conseguenza economica immediata, ed e' la ragione per cui questa scoperta vale piu' del gap che
+la registra: se i 100 Mbps della porta 4 sono l'uplink di quell'apparato, sostituire l'access
+point **non rimuove il collo di bottiglia**, e l'apparato Wi-Fi 7 con porte da 2,5 Gbps del
+preventivo del 31/07 resterebbe strozzato comunque. M13c-1 e' stato riscritto per ricostruire la
+catena fisica completa e M13c-5 ha cambiato domanda: non "e' il cavo o l'apparato vecchio" ma
+"quale dei tre elementi impone i 100 Mbps". Serve un sopralluogo, e nessuno script lo sostituisce.
+
 ## 2026-08-03 (sesta sessione) — Mappatura delle fonti completata, ADR-020, pulizia di _notes
 
 Commit: PENDING (da fare manualmente)

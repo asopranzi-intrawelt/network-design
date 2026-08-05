@@ -55,6 +55,34 @@ notifica quando qualcosa cambia.
 | GUI firewall Zyxel | solo tramite l'IT Manager, con screenshot | interfacce, DHCP, policy, DNS, NAT | su necessita' |
 | Pannelli degli apparati | solo tramite l'IT Manager | multifunzione, NAS, telefoni, UPS | su necessita' |
 
+### Fonte automatica pianificata: lo USG FLEX 500 su Nebula
+
+Annotato il 03/08/2026 su indicazione dell'IT Manager. Il firewall **verra' portato
+sull'organizzazione Nebula** che gia' gestisce i due switch e i tre access point. Non e' ancora
+possibile e la data non e' fissata, ma quando avverra' cambia la classe di appartenenza della
+fonte piu' importante che oggi non e' interrogabile.
+
+Perche' conta piu' di un comodo in piu'. Oggi il firewall e' l'unico apparato centrale che vive
+in classe E e non in classe B: interfacce, ambiti DHCP, riserve, policy, oggetti indirizzo, DNS
+e NAT si leggono solo se l'IT Manager apre la GUI e produce uno screenshot. Ne segue che ogni
+affermazione di questo progetto sul firewall ha la freschezza dell'ultima volta che qualcuno ha
+guardato, e piu' di una correzione del luglio 2026 nasce esattamente da li' — l'intervallo degli
+indirizzi statici documentato come `.18-.84` invece di `.17-.95`, le interfacce residue di
+FW-013, le tabelle DNS credute assenti e poi trovate popolate su un suffisso sbagliato, la VLAN
+di gestione attribuita al segmento sbagliato in FW-002.
+
+Con il firewall su Nebula quelle letture diventano interrogabili con lo stesso script e la
+stessa chiave gia' in uso, e la conseguenza pratica e' che **la verifica del firewall entra
+nella cadenza automatica** invece di dipendere da una richiesta. Da fare quando succede:
+estendere `Get-NebulaSnapshot.ps1` agli endpoint del firewall, spostare la riga corrispondente
+da classe E a classe B in questo documento, fissarne la cadenza, e aggiungere la checklist di
+verifica in `_notes/TEST-CHECKLIST.md` sul modello di quella degli switch.
+
+Vincolo da non perdere quando arrivera': la chiave Nebula in uso e' di sola lettura per scelta
+(ADR-009), e il canale di scrittura verso gli switch si e' dimostrato inaffidabile (ADR-010,
+NEB-001). Portare il firewall su Nebula non deve trasformarsi nell'occasione per scrivere
+configurazioni di sicurezza da un canale che ha gia' perso silenziosamente delle scritture.
+
 Il principio che governa questa classe e' che una misura batte una memoria. Tre delle
 correzioni del 03/08/2026 sono venute da qui e non da un documento.
 

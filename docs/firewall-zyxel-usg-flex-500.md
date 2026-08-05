@@ -29,7 +29,7 @@ le restanti sono Ethernet RJ45 GbE.
 |-------|--------------------|--------------|---------------|
 | P1    | ge1                | sfp          | non in uso    |
 | P2    | ge2                | wan1         | attiva        |
-| P3    | ge3                | wan2         | attiva (TBC shutdown) |
+| P3    | ge3                | wan2         | attiva — **verificato 03/08/2026**: indirizzo e gateway configurati, nessuno `shutdown`. E' la linea TIM dismessa, non il ponte radio (vedi §Catena WAN in `network-diagram.md`): il backup di linea vive interamente sugli apparati del fornitore e non tocca il firewall. Da spegnere insieme al gruppo WAN_TRUNK di FW-008 |
 | P4    | ge4                | lan1         | attiva        |
 | P5    | ge5                | lan2         | bridge con lan1 (vedi port-grouping) |
 | P6    | ge6                | dmz          | bridge con lan1 (vedi port-grouping) |
@@ -48,9 +48,44 @@ port-grouping lan2    (nessuna porta assegnata - routed only)
 port-grouping reserved (nessuna porta assegnata)
 ```
 
+**Verificato sul `startup-config.conf` del 03/08/2026** (scaricato dall'IT Manager, non
+versionato, resta in `_notes/`). Il port-grouping reale e' confermato riga per riga con una sola
+differenza rispetto a quanto scritto sopra: la **porta 8 appartiene al gruppo `reserved`** e non
+al gruppo `guest`, che risulta invece **senza alcuna porta assegnata**. La differenza conta per
+FW-013: l'interfaccia `guest` residua, su una `/24` di un blocco estraneo al piano documentale, ha
+un proprio ambito DHCP attivo con resolver pubblici, ma **non ha porte fisiche**, quindi non puo'
+servire nessuno. E' configurazione viva e inerte allo stesso tempo: il rischio non e' operativo
+ma interpretativo, come gia' registrato, e la bonifica resta consigliata perche' un ambito DHCP
+attivo su un'interfaccia senza porte e' esattamente il genere di cosa che qualcuno un giorno
+"riattiva" collegandovi un cavo.
+
 Conseguenza: P4, P5, P6 sono in bridge L2 sotto lan1. Le etichette "lan2" e "dmz"
 su ge5/ge6 non corrispondono al traffico che trasportano fisicamente: entrambe
 contribuiscono al bridge della LAN principale.
+
+### Altri tre fatti dal `startup-config.conf` del 03/08/2026
+
+**Quattro indirizzi pubblici aggiuntivi esistono e sono tutti spenti.** Sull'interfaccia `wan1`
+sono definiti quattro alias, che nel modello documentale cadono nel blocco `203.0.113.x/28`, e
+ciascuno porta uno `shutdown`. E' un fatto utile e non un difetto: il micro-step M9 prevede di
+pubblicare la prima VM in DMZ su un indirizzo pubblico, e quell'indirizzo **esiste gia'
+configurato** e va soltanto riattivato, invece di richiederne uno nuovo al fornitore.
+
+**Le tabelle dei record DNS sono davvero vuote, e questo corregge NET-014.** La sezione `ip dns`
+contiene esclusivamente due inoltri di zona verso resolver pubblici e **nessun `address-record`**.
+Il progetto aveva scritto il 30/07 che il firewall "ospita gia' record di indirizzo interni",
+dedotto dal fatto che interrogandolo per il nome di un NAS arrivava una risposta con suffisso
+`.local`. La configurazione dimostra che quella risposta non veniva dal firewall: veniva dal
+client, che risolve `.local` in multicast per conto proprio. Il firewall e' un puro inoltratore,
+quindi l'intervento R12 crea i primi record e non si innesta su una zona esistente — e il
+tranello di NET-014 e' ancora piu' netto di come era stato descritto, perche' i due nomi `.local`
+non sono pubblicati da nessuna parte, esistono solo come annuncio multicast.
+
+**La zona DMZ ha un proprio ambito DHCP attivo.** Il piano del 05/06/2026 prevedeva
+"attivazione della zona DMZ senza pool DHCP", e invece un pool esiste, con duecento indirizzi
+disponibili. Va deciso se lasciarlo: in una DMZ gli indirizzi degli host pubblicati sono
+tipicamente statici o riservati, perche' le regole di NAT e le policy li referenziano, e un pool
+dinamico rende quelle regole fragili. Da valutare prima di M4-M9, non dopo.
 
 ---
 
