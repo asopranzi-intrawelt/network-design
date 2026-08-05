@@ -1,5 +1,204 @@
 # Work-log
 
+## 2026-08-05 (chiusura, 4) — ADR-021 rivisto su obiezione: i segreti nel progetto, non nel registro
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `.claude/settings.json` (nuova regola `deny` su
+`Read(.claude/settings.local.json)`); `.claude/memory/decisions.md` (ADR-021 riscritto nella prima
+conseguenza); `docs/design-and-security.md` (§Dove vivono i segreti aggiornata, piu' la sottosezione
+sul perche' non un `.env` e quando invece il `.env` e' giusto). File locali:
+`.claude/settings.local.json` con il nuovo blocco `env` e backup `.bak-20260805`.
+
+**Obiezione dell'IT Manager, fondata.** Alla prima stesura di ADR-021 aveva chiesto perche' i
+segreti finissero nel registro di Windows invece che in un `.env` di progetto, "come un qualsiasi
+progetto versionabile". Aveva ragione a chiederlo: il registro era stato scelto in ADR-007 nel luglio
+2026 e da allora nessuno lo aveva messo in discussione, e io stesso avevo proposto di consolidarlo
+senza verificare le alternative.
+
+**Verifica sulla documentazione ufficiale, non a memoria.** L'espansione `${VAR}` di `.mcp.json`
+legge soltanto le variabili d'ambiente del processo, e se una variabile manca la configurazione si
+carica lasciando il testo `${VAR}` non espanso con un avviso in `claude mcp list`. Di file `.env`
+non c'e' menzione. Ne segue che un `.env` **non puo' alimentare il server MCP**, per nessuna
+configurazione.
+
+**Il principio generale che ne e' uscito**, e vale oltre questo progetto: il `.env` e' possibile
+quando il codice che consuma la configurazione e' tuo, perche' il `.env` non e' una funzione del
+sistema operativo ma una convenzione che il consumatore deve implementare. Verificato sul campo il
+contrasto con l'altro progetto della macchina, `telegram-notifications`, dove il `.env` **e' la
+scelta corretta** perche' il consumatore e' `relay/config.py`, codice proprio, con una funzione
+`load_dotenv()` scritta a mano alla riga 18. Stessa regola, risposta diversa: la regola segue il
+consumatore e non il gusto. Questo chiude la domanda "perche' solo in questo progetto", che era la
+parte legittima dell'obiezione.
+
+**Soluzione applicata**: il blocco `env` di `.claude/settings.local.json`, che la documentazione
+descrive come applicato a ogni sessione e ai sottoprocessi, quindi copre **sia il server MCP sia gli
+script PowerShell** senza modificare codice. Quattro variabili spostate dal registro al file leggendo
+e scrivendo **senza mai stamparne i valori**, con backup del file prima di toccarlo e verifica dopo:
+JSON valido, quattro variabili presenti con la lunghezza attesa, hook e permessi intatti.
+
+**Un lucchetto aggiunto e rimosso nella stessa sessione, ed e' un mio errore da registrare.** Poiche'
+quel file contiene anche hook e permessi, avevo aggiunto una regola `deny` su
+`Read(.claude/settings.local.json)` per impedirmi di leggervi i segreti, dichiarando come costo
+accettabile la perdita di visibilita' su hook e permessi. L'IT Manager ha obiettato che non si
+capiva cosa c'entrasse con le variabili, e aveva ragione su tutta la linea.
+
+Il ragionamento era sbagliato alla radice: il blocco `env` funziona **iniettando i valori
+nell'ambiente dei sottoprocessi** che Claude Code avvia, e le mie chiamate Bash sono sottoprocessi.
+Quei valori mi sono quindi leggibili con un comando qualunque, **per costruzione**. Il lucchetto mi
+togliesse la vista su hook e permessi e non mi togliesse la vista sui segreti: costo reale,
+beneficio zero. Rimosso.
+
+La lezione, generalizzabile e messa nell'ADR: non si mette un lucchetto su un file quando lo stesso
+contenuto e' disponibile per progetto attraverso un altro canale — si perde una capacita' utile e si
+resta convinti di essere protetti. Coerente con SEC-024, che dice la stessa cosa in astratto: un
+agente che esegue uno script ha accesso ai segreti che quello script usa, e nessuna variante dello
+schema lo evita. Avevo scritto quel gap poche ore prima e poi ho tentato esattamente la cosa che
+quel gap dichiara impossibile.
+
+**Ordine deliberatamente incompleto**: le quattro variabili restano **anche** nel registro finche'
+non si verifica al riavvio che il server MCP proxmox funzioni dal nuovo percorso. Togliere la fonte
+funzionante prima di aver provato quella nuova lascerebbe il MCP senza credenziali, e la
+documentazione avverte che in quel caso il server si carica comunque, quindi il guasto si
+presenterebbe come uno strumento che risponde male invece che come un errore netto.
+
+Rifiutata inoltre la proposta dell'IT Manager di passare i valori dei segreti in chat: finirebbero
+nella trascrizione della sessione scritta su disco, che e' l'opposto dell'obiettivo, e non servono
+perche' quattro dei cinque erano gia' leggibili dal registro e spostabili senza mostrarli. Sul
+quinto, `NINJA_CLIENT_SECRET`, e' stato consigliato di **non** salvarlo: oggi e' il canale gestito
+meglio di tutti proprio perche' vive solo come prompt a runtime (ADR-017), e metterlo in un file
+sarebbe un passo indietro. Decisione lasciata all'IT Manager.
+
+## 2026-08-05 (chiusura, 3) — ADR-021: un segreto sta in un posto solo, e i token rigenerabili non si copiano
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): **nuovo** `.env.example` (contratto delle credenziali senza valori,
+versionato di proposito); `.gitignore` (eccezione `!.env.example` con il razionale);
+`.claude/memory/decisions.md` (**ADR-021**); `docs/design-and-security.md` (§Dove vivono i segreti
+riscritta con i tre posti e l'interim); `docs/cybersecurity-governance.md` (interim KeePassXC dentro
+lo studio di SEC-007).
+
+Motivo: l'IT Manager ha chiesto una configurazione univoca, semplice e sicura, indipendente da
+Vaultwarden, dopo che l'analisi aveva mostrato quattro posti diversi per i segreti e prodotto molta
+prosa e nessuna decisione. Richiesta legittima: il difetto era mio.
+
+**Il fatto che ha reso la decisione semplice**, e non era emerso in tutta l'analisi precedente:
+tutti i segreti che gli script leggono sono **token di API rigenerabili in un minuto**, mentre le
+password degli apparati non lo sono. Sono due categorie con esigenze opposte, e trattarle come un
+unico problema e' cio' che rendeva la risposta complicata. Da qui la regola — **un segreto sta in un
+posto solo** — e tre posti invece di quattro.
+
+Prima conseguenza: i token vivono soltanto in variabili d'ambiente utente e il `.env` con i valori
+si elimina. Un backup di un segreto rigenerabile non compra nulla e costa un secondo posto in chiaro
+da ricordarsi di ruotare — il giorno in cui te ne dimentichi contiene una credenziale viva che
+credevi morta.
+
+Seconda conseguenza, la parte non ovvia: **il valore del `.env` non erano i valori, erano i
+commenti**. Quali variabili servono, da dove vengono, come si rigenerano, quale ADR le vincola.
+Quella parte diventa `.env.example`, senza valori e **versionata**, con eccezione esplicita nel
+`.gitignore`: cosi' la procedura di rigenerazione sopravvive alla macchina, che e' esattamente cio'
+che un backup di valori non garantiva. I nomi delle variabili non sono segreti.
+
+Terza: il segreto NinjaOne resta digitato a runtime. E' il canale gestito meglio di tutti.
+
+**Interim sulle password degli apparati, senza aspettare Vaultwarden**: un archivio KeePassXC
+`.kdbx` sul NAS, che eredita il backup esistente, in sostituzione del foglio di calcolo in chiaro
+`accesso_server_accounts_vari.xls`. Verificato che lo studio di SEC-007 aveva scartato KeePass per un
+solo motivo, i conflitti di scrittura concorrente, e che **quel motivo non si applica** con un solo
+utente; il formato importa in Vaultwarden, quindi e' il primo passo dello stesso percorso. Limiti
+dichiarati: un solo punto di rottura, nessun accesso condiviso, nessun registro degli accessi,
+nessuna revoca per persona — sono le funzioni che Vaultwarden aggiunge, e per questo **SEC-007 si
+riduce ma non si chiude**. Scritti i cinque passi dell'interim, di cui il quarto e' quello che conta:
+**distruggere il foglio di calcolo**, senza il quale il resto e' inutile.
+
+Correzione registrata nel merito: avevo scritto poche ore prima "il password manager sulla VM202 mai
+adottato", dando per esistente un servizio che non c'e'. SEC-007 dice che lo studio e' completo e
+Vaultwarden **non e' mai stato messo in produzione**, e che oggi le credenziali stanno in una
+cartella accessibile al solo IT Manager. La frase e' stata corretta: non si puo' raccomandare di
+mettere qualcosa in un sistema che va ancora costruito.
+
+## 2026-08-05 (chiusura, 2) — Il `.env` esiste: correzione di una mia affermazione, e l'asimmetria che ne e' emersa
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/design-and-security.md` (nuova §Dove vivono i segreti di questo
+progetto, con la tabella dei quattro canali e l'asimmetria dichiarata);
+`docs/infrastructure-timeline/GAP-TBC.md` (**SEC-024 #139**).
+
+**Correzione.** Avevo affermato che questo progetto non usa un file `.env` e che l'assenza era
+deliberata. Falso: il `.env` esiste nella radice del repository. L'architettura che avevo descritto
+era invece corretta, ed e' il commento del `.gitignore` a dirlo in modo esplicito — il `.env` e' un
+"backup umano dei segreti", **nessuno script lo legge**, e la copia operativa vive nelle variabili
+d'ambiente utente. Verificato che le tre variabili Proxmox e la chiave Nebula sono effettivamente
+impostate a livello utente, e che `.mcp.json` le espande invece di contenere valori.
+
+Il difetto vero non era la mia frase ma il fatto che **la risposta non fosse scritta da nessuna
+parte**: esistevano cinque ADR che spiegano un canale ciascuno (007, 008, 009, 010, 017) e nessun
+documento che li mettesse in fila. Colmato con una sezione in `design-and-security.md` che elenca,
+per ogni sistema, dove sta la copia operativa, dove quella di scorta, chi la usa e quale ADR la
+vincola.
+
+**L'asimmetria emersa dalla verifica, e la sua origine e' istruttiva.** Il tentativo di enumerare le
+sole chiavi del `.env`, senza stamparne i valori, e' stato **rifiutato dalle regole `deny`** della
+sessione. Il guard-rail ha funzionato, e proprio funzionando ha rivelato il punto: le regole `deny`
+proteggono il `.env`, che e' la copia **inerte** che nessuno script legge, e **non** proteggono le
+variabili d'ambiente, che sono la copia **viva** leggibile con un comando qualunque. La protezione
+sta sulla copia sbagliata.
+
+Non e' un errore di progettazione e la scheda lo dice: uno script che usa un segreto deve poterlo
+ottenere, e se l'agente esegue quello script allora l'agente ha accesso al segreto. Nessuna
+variante dello schema lo evita, e aggiungere le variabili alle regole `deny` romperebbe
+l'esecuzione degli script invece di risolvere qualcosa. Va scritto perche' altrimenti la formula
+"il segreto sta in una variabile d'ambiente" si legge come una barriera quando e' igiene.
+
+**Conseguenza sulla lettura di quello che abbiamo fatto un'ora prima.** Spostare la chiave Nebula da
+un file sul desktop a una variabile utente **non** l'ha protetta dall'agente ne' da un processo in
+esecuzione come quell'utente. Ha eliminato quattro esposizioni accidentali diverse: un file visibile
+sfogliando una cartella, un file che finisce in un backup del desktop, un file che compare in una
+condivisione schermo, un file copiabile in una cartella sincronizzata. E' il vettore piu' probabile
+in questo contesto, quindi l'intervento resta giusto — ma va chiamato per quello che e'.
+Registrato come **SEC-024 (#139)**, con il rimando a SEC-007 come confine mancante.
+
+## 2026-08-05 (chiusura) — Sanificazione dell'igiene, e un gap trovato proprio cercando di pulire
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `docs/infrastructure-timeline/GAP-TBC.md` (**SEC-023 #138**). File
+locali: `_notes/RESUME_PROMPT.md` §Igiene aggiornata con l'esito.
+
+**Chiave API Nebula sanata.** Spostata dal file sul desktop alla variabile d'ambiente utente
+`NEBULA_API_KEY` come prevedono ADR-009 e ADR-010, e il file cancellato. Letta e scritta senza mai
+stamparla ne' passarla su riga di comando, con verifica che la variabile fosse impostata **prima**
+di cancellare il file. Due note: la variabile e' ereditata dai processi nuovi, quindi dalla
+prossima sessione gli script la trovano da soli; e va detto che una variabile utente su Windows
+vive in chiaro nel registro — e' meglio di un file sul desktop ma **non e' cifratura**, e il posto
+giusto resta il password manager di SEC-007.
+
+**Verifica che ha cambiato la conclusione.** Prima di sanare ho controllato la redirezione delle
+cartelle utente nel registro, perche' se il Desktop fosse stato sincronizzato su OneDrive la chiave
+sarebbe stata in cloud dal 28/07 e la rotazione sarebbe stata obbligatoria, non opzionale. Desktop,
+Downloads e Documenti puntano a percorsi **locali**: la chiave non e' mai uscita dalla macchina e
+non serve ruotarla. E' un controllo da rifare ogni volta che un segreto compare in una cartella
+utente, perche' la risposta dipende da una configurazione che puo' cambiare.
+
+**Il `.conf` non era piu' dove lo avevo lasciato.** Non e' in `Downloads` ne' altrove: o l'IT
+Manager lo ha spostato, o lo ha rimosso. `Downloads` risulta pulito. Conseguenza registrata nel
+prompt di ripresa: fino alla sessione dedicata allo snapshot il firewall **non ha una fonte
+leggibile su disco**, e i fatti estratti vivono solo nelle schede.
+
+**Il gap trovato pulendo, ed e' il risultato piu' utile della giornata.** Cercando copie del
+`.conf` sono comparsi cinque file di configurazione di firewall **dentro la libreria OneDrive
+`Documenti - IT`**, in cartelle di apparati precedenti datate 2018-2019. Non li ho aperti e la
+scheda lo dichiara. Non sono liquidabili per l'eta': una di quelle cartelle si chiama
+`config. firewall Zyxel per VPN PSE-FM` e porta lo stesso prefisso del tunnel **PSE-SEEWEB oggi in
+produzione**, che questo progetto documenta come IKEv1 con parametri deboli e mai aggiornato
+(FW-006, M14). Se la chiave pre-condivisa non e' stata ruotata dal 2018, quei file contengono un
+segreto **vivo** in una libreria sincronizzata. Ordine di intervento scritto nel gap: verificare se
+il tunnel usi ancora la stessa chiave, in caso affermativo **ruotarla** perche' e' quella l'azione
+che riduce il rischio, e solo dopo decidere cosa fare dei file. Registrato come **SEC-023 (#138)**.
+
+Nota di metodo che vale conservare: il gap non e' emerso da un'analisi di sicurezza ma da
+un'operazione di pulizia. E' la terza volta in tre giorni che un fatto rilevante salta fuori
+mentre si guardava altro — le prime due erano i preventivi dentro il delta arretrato e i handoff
+della VM207 in una cartella esclusa.
+
 ## 2026-08-05 — Scheda operativa telefoni e AP, snapshot rilanciato, chiusura di sessione
 
 Commit: PENDING (da fare manualmente)

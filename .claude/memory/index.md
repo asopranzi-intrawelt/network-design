@@ -45,6 +45,16 @@ drift che nessuno chiudeva.
 
 ## Punto di ripresa
 
+**Igiene sanata il 05/08/2026, e un gap nuovo.** La chiave API Nebula e' ora nella variabile
+d'ambiente utente `NEBULA_API_KEY` e il file sul desktop e' cancellato: dalla prossima sessione gli
+script la trovano da soli, non serve passare nulla. Verificato che il Desktop **non** e'
+sincronizzato su OneDrive, quindi la chiave non e' mai stata in cloud e **non va ruotata**. Nuovo
+gap **SEC-023 (#138)** emerso durante la pulizia: cinque configurazioni di firewall del 2018-2019
+dentro la libreria OneDrive `Documenti - IT`, una in una cartella il cui nome porta lo stesso
+prefisso del tunnel **PSE-SEEWEB in produzione** — se la chiave pre-condivisa non e' stata ruotata
+dal 2018, quei file contengono un segreto vivo in una libreria sincronizzata. Verificare e, se
+confermato, **ruotare la chiave prima** di occuparsi dei file.
+
 **Chiusura sessione 05/08/2026 — le prossime tre sessioni sono pianificate.** Leggere
 `_notes/RESUME_PROMPT.md`, riscritto per questo scopo. In sintesi: **sessione 1** il 06/08 mattina,
 montaggio di un access point esterno nuovo che servira' la centrale di irrigazione e l'inverter
