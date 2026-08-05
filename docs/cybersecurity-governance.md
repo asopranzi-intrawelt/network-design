@@ -552,6 +552,30 @@ Gap: Vaultwarden non supporta SSO/LDAP (solo Bitwarden ufficiale a pagamento).
 Per Intrawelt PMI: sufficiente per fase attuale; SSO da valutare con crescita organizzativa.
 
 Gap attuale: SEC-007 — nessun password manager aziendale in produzione a giugno 2026.
+
+**Interim deciso il 05/08/2026 (ADR-021), indipendente da Vaultwarden.** Su richiesta dell'IT
+Manager di avere una situazione stabile senza attendere il progetto Vaultwarden, si adotta un unico
+archivio **KeePassXC `.kdbx` sul NAS**, che eredita il backup gia' esistente, in sostituzione del
+foglio di calcolo in chiaro `accesso_server_accounts_vari.xls` oggi usato come vault interno.
+
+La scelta e' coerente con lo studio qui sopra e non lo contraddice: KeePass era stato scartato per
+un solo motivo, i conflitti di scrittura concorrente, e quel motivo **non si applica** finche'
+l'unica persona che accede e' l'IT Manager. Il formato `.kdbx` importa direttamente in
+Vaultwarden, quindi l'interim e' il primo passo dello stesso percorso e non un vicolo cieco.
+
+Limiti dell'interim, dichiarati perche' un interim di cui si tacciono i limiti diventa definitivo:
+un solo archivio con una sola password principale e' un unico punto di rottura, non offre accesso
+condiviso, non registra chi ha letto cosa e non permette di revocare l'accesso a una singola
+persona. Sono esattamente le funzioni che Vaultwarden aggiunge, e per questo **SEC-007 non si
+chiude con questo passo**: si riduce. Cio' che si ottiene subito e' che il gruppo di segreti piu'
+numeroso e piu' pregiato dell'infrastruttura smette di stare in chiaro in un foglio di calcolo.
+
+Passi dell'interim, nell'ordine: creare l'archivio con una password principale robusta e diversa da
+ogni altra in uso; migrare le voci dal foglio di calcolo verificandole una per una, perche' e'
+l'occasione per scoprire quali credenziali non sono piu' valide; verificare che il percorso
+dell'archivio sia incluso in un job di backup; **distruggere il foglio di calcolo** e ogni sua
+copia, che e' il passo che chiude l'esposizione e senza il quale il resto e' inutile; annotare dove
+sta l'archivio in un posto che non sia l'archivio stesso.
 Strumento attuale: password salvate in browser locali o file non cifrati.
 
 ---
