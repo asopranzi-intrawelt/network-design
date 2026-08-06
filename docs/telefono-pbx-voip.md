@@ -12,9 +12,25 @@ Linee telefoniche Vianova attive fisicamente dal 17/04/2025, gestite attraverso 
 
 Dichiarazione dell'IT Manager del 06/08/2026, nella scheda dei telefoni restituita compilata. Il centralino Panasonic e i **ventisette apparecchi digitali** che vi erano attestati sono stati **rimossi fisicamente giovedi' 31/07/2026**. Tutto cio' che questa sezione descrive al presente riguarda quindi lo stato fino a quella data, e va letto come storia.
 
-La conseguenza non e' documentale ma operativa, e capovolge TEL-003. Il gap era stato aperto il 03/08 come "ventisette apparecchi digitali che il centralino cloud non puo' registrare, e per ciascuno va scelto fra telefono SIP nuovo, softphone o gateway di conversione". Oggi la scelta non e' piu' davanti a una migrazione ma dietro a una rimozione gia' avvenuta: quei ventisette interni non hanno piu' un terminale, e il centralino cloud che dovrebbe sostituirli non e' attivo, perche' la quantita' di interni del contratto e' ancora in bianco e i messaggi non sono decisi. Che cosa usino oggi quelle ventisette persone per telefonare e' la prima domanda da fare, e non e' deducibile da nessuna fonte di questo progetto. Tracciato come **TEL-004**.
+Il gap **TEL-004**, aperto la mattina stessa nel timore che quelle ventisette persone fossero rimaste senza telefono, e' stato **chiuso poche ore dopo dall'IT Manager** con la risposta che rovescia la preoccupazione: telefonano con il **client Vianova One installato su ogni endpoint Windows 11**, cioe' con un softphone. La rimozione degli apparecchi non ha lasciato un buco, ha completato un passaggio a una modalita' diversa che il progetto non sapeva essere gia' operativa, e la scelta "telefono SIP, softphone o gateway" che TEL-003 poneva per ciascuno dei ventisette e' gia' stata fatta, in modo uniforme, a favore del softphone.
 
-Ne discendono due code che nessuno ha ancora preso: la sorte del Patton SmartNode 5551, che era il gateway SIP verso la linea e la cui presenza in servizio dopo lo smantellamento non e' dichiarata, e lo smaltimento degli apparecchi rimossi, che ricade sul gap RAEE gia' aperto al #109.
+Nella stessa risposta e' chiuso anche il primo dei due strascichi: il **Patton SmartNode 5551 e' stato smantellato**. Non c'e' quindi nessun gateway residuo da documentare ne' da coordinare durante la transizione, e la voce corrispondente esce dal piano di migrazione dove era elencata come non formalizzata. Resta il solo smaltimento degli apparecchi rimossi, centralino, terminali digitali e gateway, che ricade sul gap RAEE gia' aperto al #109.
+
+### La conseguenza che nessuno aveva valutato: la voce ha cambiato rete
+
+E' la parte da capire, perche' e' un cambiamento architetturale avvenuto **fuori** dalla rete e mai riflesso su di essa. Fino al 31/07 la fonia era per costruzione un traffico separato: apparecchi propri, VLAN 2, DHCP e gateway del fornitore attestati untagged sulla porta 8, e nessun attraversamento del firewall. Oggi la grande maggioranza delle chiamate nasce da un'applicazione su una postazione, quindi sulla **LAN dati piatta**, attraversa l'uplink a 1 Gbps in rame della porta 33 verso il firewall ed esce da li' verso il cloud del fornitore. Cinque conseguenze, nessuna delle quali e' un guasto in atto e tutte da tenere presenti.
+
+Il trattamento di qualita' non si applica. `CoS 5` e `DSCP 46` sono configurati sulla Voice VLAN degli switch e valgono per il traffico taggato dei telefoni fisici: il traffico di un softphone e' traffico di postazione, indistinguibile da una copia verso il NAS o da un backup, e condivide con essi lo stesso collo di bottiglia da 1 Gbps.
+
+La VLAN 2 trasporta oggi sei apparati, i cinque Yealink e l'adattatore dell'ascensore. La separazione della fonia esiste ancora ma copre una minoranza delle chiamate, ed e' un dato da avere in testa prima di ragionare su di essa come se proteggesse tutta la voce.
+
+Il DHCP e il gateway del fornitore sulla porta 8 non servono i softphone, che prendono indirizzo dalla LAN e escono dal firewall come qualunque altro traffico. Il ragionamento sull'isolamento della LAN telefonica, corretto e verificato, semplicemente non li riguarda.
+
+Quando **M22e** spostera' le postazioni sulla VLAN 10, la voce si sposta con loro, e le regole verso i range SIP e RTP del fornitore vanno scritte esplicitamente. Oggi funzionano perche' la LAN e' piatta, e la verifica del 23/03/2026 riguardava l'uscita verso la WAN, non l'attraversamento di un confine interno che allora non esisteva.
+
+Ogni postazione diventa un endpoint voce, il che lega la disponibilita' del telefono a quella del PC, dell'audio e della sessione utente, e sposta parte della continuita' telefonica sotto il perimetro della gestione endpoint.
+
+Tracciato come **TEL-005** (#151).
 
 ### Terminali VoIP installati
 
@@ -154,10 +170,7 @@ Messaggio NOTTE, unico: comunica gli orari di apertura ("SIETE IN LINEA CON INTR
 
 ### Il piano di numerazione, e la scala reale della migrazione (ingerito 03/08/2026)
 
-Fonte: `IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\Interni
-Intrawelt_V3.xlsx`, piu' un foglio di riscontro con sette contatti e relativo interno. E' il
-documento che questa scheda elencava come `[TBC: piano di numerazione definitivo]` dal
-01/07/2026: era sempre stato dentro la sottocartella riservata al racconto a lavori conclusi.
+Fonte: `IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\Interni Intrawelt_V3.xlsx`, piu' un foglio di riscontro con sette contatti e relativo interno. E' il documento che questa scheda elencava come `[TBC: piano di numerazione definitivo]` dal 01/07/2026: era sempre stato dentro la sottocartella riservata al racconto a lavori conclusi.
 
 Il piano conta **trentasei interni**, e la colonna del tipo di terminale e' il dato che cambia la dimensione del progetto. I nomi delle persone associate a ciascun interno non vengono riportati qui per policy di anonimizzazione: la corrispondenza vive in `_notes/.anonymization-map.md`.
 
@@ -174,7 +187,7 @@ I cinque interni di tipo IP e IP+ coincidono con i cinque Yealink censiti in que
 
 Registrato come gap **TEL-003**, ed e' la ragione per cui il micro-step M17 passa da "rispondere sul testo IVR" a un vero piano di migrazione dei terminali.
 
-**Aggiornamento del 06/08/2026, che cambia il verso del problema.** I ventisette apparecchi digitali non sono piu' da migrare: sono stati rimossi insieme al centralino il 31/07/2026, come descritto in apertura di questa scheda. La domanda non e' piu' con che cosa sostituirli in una migrazione ordinata, ma che cosa usino oggi quelle persone nell'intervallo fra la rimozione e l'attivazione del centralino cloud, che non e' attiva. TEL-003 resta aperto perche' la decisione per persona non e' stata presa e la quantita' del contratto e' ancora in bianco; accanto nasce **TEL-004** per l'intervallo scoperto.
+**Aggiornamento del 06/08/2026: TEL-003 si chiude nella sostanza tecnica e resta aperto solo sul contratto.** I ventisette apparecchi digitali non sono da migrare, sono stati rimossi insieme al centralino il 31/07/2026, e la scelta che questo gap poneva per ciascuno — telefono SIP, softphone o gateway di conversione — e' gia' stata fatta in modo uniforme: **softphone Vianova One su ogni endpoint Windows 11**. Non serve quindi ne' comprare ventisette telefoni ne' un gateway per terminali digitali. Cio' che resta aperto e' la conseguenza contrattuale, che non e' scomparsa: il canone del centralino virtuale e' **per interno**, ogni terminale vale un interno, e la quantita' nel documento firmato il 23/03/2026 e' ancora in bianco. Il numero da scrivere e' ora determinabile, perche' la composizione del parco e' nota: cinque telefoni fisici, ventisette softphone, l'ascensore sull'adattatore e il citofono, che l'offerta conta esplicitamente. Va scritto prima dell'attivazione, non durante. La conseguenza di rete del passaggio al softphone e' tracciata a parte come **TEL-005**.
 
 ### Il contratto del centralino virtuale: firmato, con la quantita' lasciata in bianco
 
@@ -190,9 +203,7 @@ L'installazione del centralino virtuale e' inoltre fatturata a consuntivo sulle 
 
 ### Gateway FXS consegnato per il telefono dell'ascensore (31/07/2026)
 
-Rilevato il 03/08/2026 dal delta OneDrive e verificato leggendo il documento di
-trasporto, in cartella `IT + Administration - Documenti\MyOffice\Transizione
-centralino cloud 2026\DDT del gateway FXS (ascensore)`.
+Rilevato il 03/08/2026 dal delta OneDrive e verificato leggendo il documento di trasporto, in cartella `IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\DDT del gateway FXS (ascensore)`.
 
 myOffice ha consegnato un **Grandstream HT-812 v2**, ATA[^ata] con due porte FXS[^fxs] e router NAT Gigabit, in un'unita': documento di trasporto di vendita datato 01/07/2026, ricevuta controfirmata il 31/07/2026, riferimento interno a un preventivo di marzo 2026 (importi e numeri di documento esclusi dai file tracciati per policy di anonimizzazione).
 
@@ -227,7 +238,9 @@ Il rapporto con il **Patton SmartNode 5551** resta la voce non formalizzata del 
 
 ### Aperto
 
-Piano di migrazione completo dal centralino fisico Panasonic KX-NCP1000 al centralino cloud: routing interno, piano di numerazione, testo IVR (vedi sopra, decisione pendente), deviazioni di chiamata, configurazione Patton SmartNode durante la transizione. [TBC: nessuna di queste voci risulta ancora formalizzata nei documenti disponibili al 01/07/2026.]
+Piano di migrazione completo dal centralino fisico Panasonic KX-NCP1000 al centralino cloud: routing interno, piano di numerazione, testo IVR (vedi sopra, decisione pendente), deviazioni di chiamata. [TBC: nessuna di queste voci risulta ancora formalizzata nei documenti disponibili al 01/07/2026.]
+
+**Aggiornamento del 06/08/2026.** Due voci escono da questo elenco perche' i fatti le hanno superate. La **configurazione del Patton SmartNode durante la transizione** non esiste piu' come questione: l'apparato e' stato smantellato insieme al centralino il 31/07/2026. E la migrazione dei terminali non e' piu' da progettare, perche' e' avvenuta verso il softphone. Restano aperti il testo dei messaggi, il routing interno con i gruppi di squillo, le deviazioni di chiamata, e la quantita' di interni del contratto, che ora e' calcolabile. Resta inoltre da riscrivere, e non solo da aggiornare, la documentazione utente delle procedure Panasonic elencate in coda a questa scheda: sono codici a stella di un centralino che non c'e' piu', e chi le usava oggi lavora dentro un'applicazione con un'interfaccia diversa.
 
 ---
 

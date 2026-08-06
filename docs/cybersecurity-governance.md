@@ -364,7 +364,7 @@ Tutti i template sono in formato .doc (vecchio Word). Usati per accordi di riser
 
 ### NDA con Collaboratore-Esterno-1 (developer SCENIA, ott 2025)
 
-Documento: `_ 📜 GDPR E ISO27001/_GDPR compliance/Accordi di non riservatezza (NDA)/Collaboratore-Esterno-1/AccordoDiRiservatezza_rev1.docx`
+Documento: `_ 📜 GDPR E ISO27001/_GDPR compliance/Accordi di non riservatezza (NDA)/<Collaboratore-Esterno-1>/AccordoDiRiservatezza_rev1.docx`
 
 NDA reciproco Intrawelt ↔ Collaboratore-Esterno-1 (libero professionista IT). Firmato contestualmente alla proposta di collaborazione del 29/10/2025. Copertura: codice sorgente, architetture, dati clienti SCENIA, API keys, credenziali.
 

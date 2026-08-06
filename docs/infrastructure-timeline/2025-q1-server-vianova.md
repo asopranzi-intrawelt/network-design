@@ -16,7 +16,7 @@ I vecchi dischi liberati dalla migrazione (1x 4 TB, 3x 3 TB, 1x 2 TB nuovo) sono
 
 Mail da info@vianova.it delle 12:54: dall'03/02/2025 l'accesso all'Area Clienti Vianova richiede autenticazione a due fattori (codice SMS). Solo l'utente con profilo Amministratore puo' abilitare la 2FA per tutti. Procedura: Area Clienti, menu Impostazioni, clicca Sicurezza, spunta "autenticazione a due fattori", clicca Conferma. FAQ 2FA: vianova.it/supporto/area-clienti/faq-autenticazione-a-due-fattori/
 
-La 2FA viene abilitata per asopranzi@intrawelt.com. Mail secondaria per il recovery scelta dall'IT manager: <casella-personale-autore>. I successivi accessi richiedono codice a 6 cifre via SMS.
+La 2FA viene abilitata per asopranzi@intrawelt.com. Mail secondaria per il recovery: una casella personale dell'IT Manager, non riportata. I successivi accessi richiedono codice a 6 cifre via SMS.
 
 ## 17/01/2025 - Controllo CrystalDisk sui dischi ex-NAS INTRA2
 
@@ -46,7 +46,7 @@ Referente-Vianova-2 (referente-vianova-2@vianova.it) scrive alle 15:33: consider
 
 ## 28/01/2025 - Conversazione WhatsApp con Persona-H: server Proxmox
 
-Da conversazione WhatsApp privata con Persona-H (referente-puntoinformatica-1@puntoinformatica.com): conferma dell'utilizzo di 48 CPU (2x24 core) sul nuovo server HP ProLiant DL380 Gen10.
+Da conversazione WhatsApp privata con Persona-H (persona-h@puntoinformatica.com): conferma dell'utilizzo di 48 CPU (2x24 core) sul nuovo server HP ProLiant DL380 Gen10.
 
 ## 30/01/2025 - Primo accensione HP ProLiant DL380 Gen10
 

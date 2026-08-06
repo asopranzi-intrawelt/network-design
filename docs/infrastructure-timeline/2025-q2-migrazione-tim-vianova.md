@@ -52,7 +52,7 @@ Vianova chiama il 23/04/2025: la fibra di backup e' up mentre il ponte radio e' 
 
 ## 30/04/2025 - Analisi servizi attivi sull'IP TIM prima dello switch
 
-Documento di analisi prodotto da Alessio Sopranzi (mail tra asopranzi@intrawelt.com, persona-a@intrawelt.com e referente-puntoinformatica-1@puntoinformatica.com del mattino del 30/04/2025).
+Documento di analisi prodotto da Alessio Sopranzi (mail tra asopranzi@intrawelt.com, persona-a@intrawelt.com e persona-h@puntoinformatica.com del mattino del 30/04/2025).
 
 Servizi che alla data del 30/04/2025 usano ancora l'IP TIM 192.0.2.50:
 
@@ -158,7 +158,7 @@ Alessio Sopranzi chiama il numero 145 (supporto Vianova). Confermato: il servizi
 
 Senza VPN Unmanaged, il router R-1000 intercetta e blocca il traffico IKE/NAT-T perche' Vianova offre di default una VPN gestita da loro (verso la propria infrastruttura cloud), non un passthrough verso apparati del cliente.
 
-Stessa data: Alessio Sopranzi scrive a referente-myoffice-4@myofficegroup.it (Referente-MyOffice-4) spiegando la situazione. Referente-MyOffice-4 risponde lo stesso giorno: allega il documento precompilato per la modifica contrattuale da inviare firmato e timbrato a info@vianova.it. Nota esplicita nel documento: "si tratta di una sola VPN Point-To-Point."
+Stessa data: Alessio Sopranzi scrive a Referente-MyOffice-4 (referente-myoffice-4@myofficegroup.it) spiegando la situazione. Referente-MyOffice-4 risponde lo stesso giorno: allega il documento precompilato per la modifica contrattuale da inviare firmato e timbrato a info@vianova.it. Nota esplicita nel documento: "si tratta di una sola VPN Point-To-Point."
 
 Nota di Alessio Sopranzi: "Le porte erano aperte col gestore precedente, avrebbero dovuto esserlo pure con loro. E' una questione di principio, ci siamo stati a sbattere un mese e il problema era il router loro non configurato."
 
