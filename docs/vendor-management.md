@@ -7,12 +7,7 @@ Aggiornato: giugno 2026.
 
 ## Vianova S.p.A. – ISP e telefonia
 
-Due migrazioni distinte verso lo stesso fornitore, in due fasi separate:
-la linea dati (fibra FTTO, sostituzione di TIM) nel 2025, e il centralino
-cloud (PBX, sostituzione del sistema telefonico tradizionale) tra fine 2025
-e il 2026. La prima e' conclusa e ampiamente documentata; la seconda e'
-**in corso** ed e' l'oggetto della nota PORT-TAGGING riservata al racconto
-completo a lavori conclusi (vedi `current-work.md`).
+Due migrazioni distinte verso lo stesso fornitore, in due fasi separate: la linea dati (fibra FTTO, sostituzione di TIM) nel 2025, e il centralino cloud (PBX, sostituzione del sistema telefonico tradizionale) tra fine 2025 e il 2026. La prima e' conclusa e ampiamente documentata; la seconda e' **in corso** ed e' l'oggetto della nota PORT-TAGGING riservata al racconto completo a lavori conclusi (vedi `current-work.md`).
 
 | Campo | Valore |
 |-------|--------|
@@ -59,10 +54,10 @@ completo a lavori conclusi (vedi `current-work.md`).
 | Tipologia | Firewall UTM + Switch managed L2/L3 |
 | Prodotti | USG FLEX 500, XGS2220-54HP (P2), XGS2220-30HP (PT, apr 2026) |
 | Gestione | Zyxel Nebula cloud portal (zero-touch) |
-| Licenze | Nebula Pro Pack (UTM: BPP, CIP, sandbox, SSL inspection, IP reputation) |
+| Licenze | Nebula Professional Pack su **tutti e sei** i dispositivi in inventario (3 access point NWA130BE, 2 switch XGS2220, USG FLEX 500), piu' il Gold Security Pack del solo firewall. Modello License 2.0, per dispositivo: il livello dell'organizzazione e' il **minimo** fra i suoi apparati, e la Nebula OpenAPI risponde **solo** in stato Pro (il Plus non abilita nemmeno la chiave). Vedi ADR-022 |
 | Supporto | Persona-H (Punto Informatica) tramite portale Nebula |
-| Scadenza licenza | [TBC] |
-| Note | XGS2220-30HP installato 08/05/2026. **Gli access point WiFi NON sono Zyxel/Nebula** (verificato il 14/07/2026: nessun AP compare nell'organizzazione Nebula usata per i due switch) — smentisce quanto affermato in precedenza in questa scheda. Vedi `runbook-anomalie.md` §AP-001 per il dettaglio: firmware Debian 7 EOL rilevato dalla VA su almeno tre dei cinque AP noti, MAC vendor Ubiquiti, gestione reale non ancora identificata. |
+| Scadenza licenza | **22/11/2027**, data che vincola l'organizzazione perche' e' la piu' vicina (switch XGS2220-54HP). Le altre, co-terminate: 30HP 27/11/2027, USG FLEX 500 25/11/2027, i tre access point 08/12/2027. **A parte** il Gold Security Pack del firewall, che scade il **19/12/2026**. Presidiare in anticipo: alla scadenza scatta una grazia di quindici giorni e poi l'organizzazione cade a Base Pack, spegnendo la OpenAPI (precedente NEB-002 del 05/08/2026) |
+| Note | XGS2220-30HP installato 08/05/2026. **Correzione del 06/08/2026**: l'affermazione precedente secondo cui gli access point non erano Zyxel/Nebula era vera al 14/07/2026 e non lo e' piu'. I tre Ubiquiti EOL sono stati sostituiti dai tre **NWA130BE** della Fase B, entrati nell'organizzazione Nebula il **21/07/2026** e oggi gestiti insieme ai due switch. Resta fuori il quarto Ubiquiti EOL "EsternoIrrigazione", oggetto di M13c: vedi `runbook-anomalie.md` §AP-001. Vincolo introdotto dallo stesso ingresso: un apparato adottato senza licenza fa cadere tutta l'organizzazione dopo quindici giorni, ed e' esattamente cio' che e' successo il 05/08/2026 |
 
 ---
 
@@ -131,11 +126,7 @@ completo a lavori conclusi (vedi `current-work.md`).
 
 L'accesso alle VM e' policy-limitato agli indirizzi locali via firewall cloud SEEWEB. Un disco di rete aggiuntivo (~150 GB) risulta collegato a WINSRV2019 nella stessa classe di indirizzi SEEWEB e punta alla stessa cartella di WINGROUPSHARE, con una connessione verso il NAS documenti: la fonte stessa non ne chiarisce lo scopo esatto ("da capire che cosa sono questi 150GB di roba").
 
-**Predecessore dismesso.** Prima dell'attuale Foundation Server Pro, il ruolo
-di WINGROUPSHARE era coperto da una singola VM cloud Seeweb di fascia
-inferiore (prodotto "Cloud Server 280SPU"), raggiunta tramite un CNAME
-`groupshare.intrawelt.it` configurato su Fastnet. Risulta dismessa e non
-compare piu' nelle rilevazioni dell'infrastruttura da giugno 2024 in poi.
+**Predecessore dismesso.** Prima dell'attuale Foundation Server Pro, il ruolo di WINGROUPSHARE era coperto da una singola VM cloud Seeweb di fascia inferiore (prodotto "Cloud Server 280SPU"), raggiunta tramite un CNAME `groupshare.intrawelt.it` configurato su Fastnet. Risulta dismessa e non compare piu' nelle rilevazioni dell'infrastruttura da giugno 2024 in poi.
 
 ---
 
@@ -182,22 +173,7 @@ compare piu' nelle rilevazioni dell'infrastruttura da giugno 2024 in poi.
 | Piattaforma | SaaS proprietaria (app.proelium.io): risultati in tempo reale, storico report e vulnerabilita' fixate |
 | Stato | Non ancora ingaggiato. Decisione subordinata a piano budget 2026. |
 
-Dalla call informativa del 19/01/2026 (fonte: `notes (19012026) VA esterno.docx`):
-l'approccio standard per un primo ingaggio parte dalla superficie esterna, con
-enumerazione degli asset e dei servizi esposti a partire dal dominio principale.
-Il VA e' dichiaratamente attivita' light (strumenti di scansione noleggiati da
-terze parti piu' revisione esperta dei falsi positivi, senza sfruttamento delle
-vulnerabilita'); il valore del fornitore sta nel penetration test manuale, che
-sulla rete esterna lavora black-box servizio per servizio (brute force sulle
-autenticazioni, compromissione dei web server) e sulle web app segue una
-metodologia verticale graybox, con credenziali per ogni ruolo applicativo. I
-progetti possono essere annuali, con riapertura del ciclo di test ogni 6-12
-mesi e reportistica scaricabile con storico. Il preventivo copre il
-solo VA: da remoto, previa manleva firmata, con conferma del perimetro e
-preavviso a SOC e provider coinvolti; deliverable un report tecnico
-(sintesi executive piu' dettaglio con evidenze replicabili, impatto,
-probabilita' e rimedio per ogni vulnerabilita'). Fatturazione 40% all'ordine
-e 60% alla consegna del report.
+Dalla call informativa del 19/01/2026 (fonte: `notes (19012026) VA esterno.docx`): l'approccio standard per un primo ingaggio parte dalla superficie esterna, con enumerazione degli asset e dei servizi esposti a partire dal dominio principale. Il VA e' dichiaratamente attivita' light (strumenti di scansione noleggiati da terze parti piu' revisione esperta dei falsi positivi, senza sfruttamento delle vulnerabilita'); il valore del fornitore sta nel penetration test manuale, che sulla rete esterna lavora black-box servizio per servizio (brute force sulle autenticazioni, compromissione dei web server) e sulle web app segue una metodologia verticale graybox, con credenziali per ogni ruolo applicativo. I progetti possono essere annuali, con riapertura del ciclo di test ogni 6-12 mesi e reportistica scaricabile con storico. Il preventivo copre il solo VA: da remoto, previa manleva firmata, con conferma del perimetro e preavviso a SOC e provider coinvolti; deliverable un report tecnico (sintesi executive piu' dettaglio con evidenze replicabili, impatto, probabilita' e rimedio per ogni vulnerabilita'). Fatturazione 40% all'ordine e 60% alla consegna del report.
 
 ---
 
@@ -222,8 +198,7 @@ e 60% alla consegna del report.
 | Storage policy | HERO = archivio principale progetti PM; INTRA/INTRA2 = backup; INTRA3 = dismesso; DOC = documenti/utili |
 | Backup | Vedi tabella sotto per dispositivo; schema completo in business-continuity-disaster-recovery.md |
 
-**Inventario sistematico (consolidato 10/07/2026 dalla timeline; nessuna fonte
-riporta le versioni firmware, resta [TBC] per tutti i dispositivi):**
+**Inventario sistematico (consolidato 10/07/2026 dalla timeline; nessuna fonte riporta le versioni firmware, resta [TBC] per tutti i dispositivi):**
 
 | NAS | Modello | RAID / capacita' | Ruolo e stato | Backup |
 |-----|---------|-------------------|---------------|--------|
@@ -233,11 +208,7 @@ riporta le versioni firmware, resta [TBC] per tutti i dispositivi):**
 | INTRA3 (10.61.20.172 / .173, due schede di rete) | QNAP TS-210 | RAID 1 (mirroring) su 2 dischi meccanici da 2 TB: Toshiba DT01ACA200 e Seagate ST2000DM001-1CH1CC27. Il disco Seagate ha una scansione di bad blocks ferma all'1% (modello soggetto a tasso di guasti elevato nelle revisioni CC26/CC27): sostituzione raccomandata, non risulta ancora eseguita | Dismesso di fatto dal 2022 (proveniva dalla sede precedente di Via Pescolla). Formattato il 21/02/2025 (conteneva solo backup obsoleti di Glossari/Multiterm/TM 2020-2022). Riconnesso il 27/06/2025 per l'analisi dischi: fisicamente presente ma vuoto e non utilizzato in produzione | Nessuno (dismesso) |
 | DOC (10.61.20.170) | HP StorageWorks X1400 G2 (HPX1400), Windows Server 2008, Intel Xeon E5503, alimentatore 500W | Non censita (controller RAID HP, modello esatto non identificato dalla fonte) | Archivio storico cartella `utili` e certificati SSL. Smantellamento in corso da giugno 2025 per fine supporto Windows Server 2008 (rischio sicurezza: nessuna patch da anni): dati spostati su INTRA2, poi su una cartella `utili-new` su INTRA2. Destinazione finale non decisa nella fonte: scartate le opzioni "buttare via" e "Proxmox Backup Server" (compatibilita' hardware incerta), resta aperta la conversione a NAS Linux con OpenMediaVault | Nessuno (in dismissione) |
 
-Cross-riferimenti narrativi per il dettaglio cronologico: `2023-baseline.md`
-(stato di partenza), `2025-q1-server-vianova.md` (migrazione dischi INTRA2,
-riconnessione INTRA3), `2025-q3-q4.md` (crisi di spazio giu-lug 2025),
-`business-continuity-disaster-recovery.md` (procedure di emergenza),
-`runbook-anomalie.md` NAS-001 (HERO irraggiungibile).
+Cross-riferimenti narrativi per il dettaglio cronologico: `2023-baseline.md` (stato di partenza), `2025-q1-server-vianova.md` (migrazione dischi INTRA2, riconnessione INTRA3), `2025-q3-q4.md` (crisi di spazio giu-lug 2025), `business-continuity-disaster-recovery.md` (procedure di emergenza), `runbook-anomalie.md` NAS-001 (HERO irraggiungibile).
 
 ---
 

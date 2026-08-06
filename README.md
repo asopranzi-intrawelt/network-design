@@ -23,5 +23,4 @@ _notes/                     layer narrativo locale (ignorato da git)
 
 ## Documentazione
 
-Vedere `CLAUDE.md` per la procedura di ripresa in sessione e l'indice completo
-dei file di contesto.
+Vedere `CLAUDE.md` per la procedura di ripresa in sessione e l'indice completo dei file di contesto.

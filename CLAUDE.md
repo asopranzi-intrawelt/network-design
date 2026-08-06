@@ -1,109 +1,44 @@
 # network-design
 
-> Istruzioni di team, versionate. Indice del progetto e procedura di ripresa.
-> Le preferenze personali vivono in `CLAUDE.local.md`, ignorato da git, non qui.
+> Istruzioni di team, versionate. Indice del progetto e procedura di ripresa. Le preferenze personali vivono in `CLAUDE.local.md`, ignorato da git, non qui.
 
 ## Cos'e' questo progetto
 
-Progetto di documentazione e progettazione della rete Intrawelt. Raccoglie la storia
-completa degli interventi infrastrutturali di rete, lo snapshot corrente dell'infrastruttura
-Proxmox, la documentazione del firewall e degli altri componenti, e definisce gli step
-di intervento futuri. La documentazione segue un doppio layer: narrativo (locale, in
-`_notes/`) per le spiegazioni dettagliate e la storyline, e tecnico (versionato, in
-`.claude/context/`) per i documenti strutturati. Il progetto adotta un angolo ISO27001
-per la documentazione della sicurezza di rete.
+Progetto di documentazione e progettazione della rete Intrawelt. Raccoglie la storia completa degli interventi infrastrutturali di rete, lo snapshot corrente dell'infrastruttura Proxmox, la documentazione del firewall e degli altri componenti, e definisce gli step di intervento futuri. La documentazione segue un doppio layer: narrativo (locale, in `_notes/`) per le spiegazioni dettagliate e la storyline, e tecnico (versionato, in `.claude/context/`) per i documenti strutturati. Il progetto adotta un angolo ISO27001 per la documentazione della sicurezza di rete.
 
 ## Procedura di ripresa in una sessione nuova
 
-Leggere per primo `.claude/memory/index.md` (branch, commit di riferimento, stato schede,
-punto di ripresa). Leggere poi `.claude/context/current-work.md` se c'e' una feature
-attiva. Seguire il protocollo di `.claude/rules/fonti-e-riallineamento.md`: il repository e'
-una sola delle cinque classi di fonti e le altre quattro non notificano, quindi vanno
-interrogate — in particolare va letto per intero il blocco `RILEVANTI PER LA RETE` dell'output
-del delta, e va chiesto all'IT Manager che cosa e' cambiato sulla rete in altre sessioni di
-lavoro o per intervento manuale. Invocare la skill `sync-context` per verificare il drift tra
-schede e codice.
-Leggere solo le schede pertinenti al task, mai tutte insieme. Per documenti Word voluminosi
-usare la skill `docx-ingest` che applica la disclosure progressiva (livello 1: TOC, livello
-2: sezioni chiave, livello 3: sezione completa su richiesta).
+Leggere per primo `.claude/memory/index.md` (branch, commit di riferimento, stato schede, punto di ripresa). Leggere poi `.claude/context/current-work.md` se c'e' una feature attiva. Seguire il protocollo di `.claude/rules/fonti-e-riallineamento.md`: il repository e' una sola delle cinque classi di fonti e le altre quattro non notificano, quindi vanno interrogate — in particolare va letto per intero il blocco `RILEVANTI PER LA RETE` dell'output del delta, e va chiesto all'IT Manager che cosa e' cambiato sulla rete in altre sessioni di lavoro o per intervento manuale. Invocare la skill `sync-context` per verificare il drift tra schede e codice. Leggere solo le schede pertinenti al task, mai tutte insieme. Per documenti Word voluminosi usare la skill `docx-ingest` che applica la disclosure progressiva (livello 1: TOC, livello 2: sezioni chiave, livello 3: sezione completa su richiesta).
 
 ## Due layer documentali
 
-Il layer narrativo vive in `_notes/`, ignorato da git: contiene spiegazioni dettagliate,
-diario operativo, resoconto esteso, trascrizioni e materiale grezzo. Non va in git perche'
-e' narrativo, personale e spesso voluminoso.
+Il layer narrativo vive in `_notes/`, ignorato da git: contiene spiegazioni dettagliate, diario operativo, resoconto esteso, trascrizioni e materiale grezzo. Non va in git perche' e' narrativo, personale e spesso voluminoso.
 
-Il layer tecnico vive in `.claude/context/` e `docs/`, versionato: contiene le schede
-strutturate con frontmatter di riconciliazione, i diagrammi, la timeline degli interventi
-in formato Markdown, la documentazione ISO27001. E' la fonte di verita' recuperabile da
-un clone.
+Il layer tecnico vive in `.claude/context/` e `docs/`, versionato: contiene le schede strutturate con frontmatter di riconciliazione, i diagrammi, la timeline degli interventi in formato Markdown, la documentazione ISO27001. E' la fonte di verita' recuperabile da un clone.
 
 ## Script Proxmox
 
-`scripts/Get-ProxmoxSnapshot.ps1` interroga l'API REST di Proxmox VE (IP reale in
-`_notes/.anonymization-map.md`, non qui: repo pubblico) e produce lo snapshot completo
-dell'infrastruttura in `output/proxmox-snapshot.json` e `output/proxmox-config.md`.
-L'output e' ignorato da git (dati infrastrutturali sensibili). Eseguire dalla radice
-del progetto passando l'host reale a `-ProxmoxHost` (vedi `.claude/rules/anonymization.md`).
+`scripts/Get-ProxmoxSnapshot.ps1` interroga l'API REST di Proxmox VE (IP reale in `_notes/.anonymization-map.md`, non qui: repo pubblico) e produce lo snapshot completo dell'infrastruttura in `output/proxmox-snapshot.json` e `output/proxmox-config.md`. L'output e' ignorato da git (dati infrastrutturali sensibili). Eseguire dalla radice del progetto passando l'host reale a `-ProxmoxHost` (vedi `.claude/rules/anonymization.md`).
 
 ## Script snapshot NinjaOne (gestione endpoint)
 
-`scripts/Get-NinjaSnapshot.ps1` fotografa in **sola lettura** la gestione endpoint
-su NinjaOne (RMM): organizzazioni, dispositivi, policy, script, automazioni e
-interrogazioni diagnostiche, fra cui le interfacce di rete per dispositivo, che
-sono la fonte piu' rapida per il censimento degli indirizzi statici di M22a.
-Serve a questo progetto perche' gli endpoint non sono gestiti a mano: policy e
-automazioni agiscono su di loro e le password locali ruotano ogni trenta giorni,
-quindi qualunque credenziale di postazione memorizzata in un apparato di rete si
-rompe alla rotazione. Autenticazione OAuth2 client credentials con scope di sola
-lettura; il segreto si risolve da parametro, variabile d'ambiente o prompt a
-runtime e non viene mai scritto su disco. **Le credenziali API appartengono al
-provider MSP che gestisce l'RMM**: nessuno scope di scrittura, nessun valore nel
-repository. L'output va in `output/` (ignorato da git) perche' contiene nomi host,
-utenti e indirizzi reali. Decisione e vincoli in ADR-017
-(`.claude/memory/decisions.md`).
+`scripts/Get-NinjaSnapshot.ps1` fotografa in **sola lettura** la gestione endpoint su NinjaOne (RMM): organizzazioni, dispositivi, policy, script, automazioni e interrogazioni diagnostiche, fra cui le interfacce di rete per dispositivo, che sono la fonte piu' rapida per il censimento degli indirizzi statici di M22a. Serve a questo progetto perche' gli endpoint non sono gestiti a mano: policy e automazioni agiscono su di loro e le password locali ruotano ogni trenta giorni, quindi qualunque credenziale di postazione memorizzata in un apparato di rete si rompe alla rotazione. Autenticazione OAuth2 client credentials con scope di sola lettura; il segreto si risolve da parametro, variabile d'ambiente o prompt a runtime e non viene mai scritto su disco. **Le credenziali API appartengono al provider MSP che gestisce l'RMM**: nessuno scope di scrittura, nessun valore nel repository. L'output va in `output/` (ignorato da git) perche' contiene nomi host, utenti e indirizzi reali. Decisione e vincoli in ADR-017 (`.claude/memory/decisions.md`).
 
 ## Script di controllo delta OneDrive
 
-`scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive "Documenti - IT"
-con una baseline locale (`_notes/.onedrive-manifest.json`, ignorata da git perche'
-contiene nomi di file reali) e riporta file nuovi, modificati ed eliminati rispetto
-all'ultimo triage della checklist di ingestione
-(`docs/infrastructure-timeline/ingestion-checklist.md`). Gira automaticamente a ogni
-avvio di sessione tramite hook SessionStart in `.claude/settings.local.json` (non
-versionato, percorsi di macchina). Dopo aver registrato in checklist le variazioni
-segnalate, rieseguirlo con `-UpdateBaseline`.
+`scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive "Documenti - IT" con una baseline locale (`_notes/.onedrive-manifest.json`, ignorata da git perche' contiene nomi di file reali) e riporta file nuovi, modificati ed eliminati rispetto all'ultimo triage della checklist di ingestione (`docs/infrastructure-timeline/ingestion-checklist.md`). Gira automaticamente a ogni avvio di sessione tramite hook SessionStart in `.claude/settings.local.json` (non versionato, percorsi di macchina). Dopo aver registrato in checklist le variazioni segnalate, rieseguirlo con `-UpdateBaseline`.
 
 ## Script timeline SVG
 
-`scripts/Build-TimelineSvg.ps1` genera `docs/infrastructure-timeline/timeline.svg`
-(versionato, anonimizzato) dai file Markdown della timeline. Gira a ogni avvio
-di sessione tramite hook SessionStart (settings.local.json, non versionato).
-Ogni riga e' un accordion: il paragrafo che segue l'intestazione datata nel
-Markdown sorgente (il dettaglio ricostruito dai .docx ingeriti) diventa un
-pannello espandibile via script SVG nativo incorporato nel file (nessuna
-dipendenza esterna, resta un solo file .svg). L'interattivita' funziona
-quando l'SVG e' navigato direttamente o incluso via `<object>`/`<iframe>`/
-inline nel DOM della pagina ospite; se la pagina esterna lo include con un
-tag `<img>`, il browser disabilita gli script per quel contesto e le righe
-restano leggibili ma non si espandono. I titoli legacy con nomi reali
-vengono anonimizzati a valle tramite `_notes/.svg-name-replacements.txt`
-(privato); un guard-rail avvisa se nei titoli o nei pannelli di dettaglio
-compare un IP non-placeholder. Lo script scrive solo dentro questo
-repository: vedi "Confine con E:\projects" piu' sotto.
+`scripts/Build-TimelineSvg.ps1` genera `docs/infrastructure-timeline/timeline.svg` (versionato, anonimizzato) dai file Markdown della timeline. Gira a ogni avvio di sessione tramite hook SessionStart (settings.local.json, non versionato). Ogni riga e' un accordion: il paragrafo che segue l'intestazione datata nel Markdown sorgente (il dettaglio ricostruito dai .docx ingeriti) diventa un pannello espandibile via script SVG nativo incorporato nel file (nessuna dipendenza esterna, resta un solo file .svg). L'interattivita' funziona quando l'SVG e' navigato direttamente o incluso via `<object>`/`<iframe>`/ inline nel DOM della pagina ospite; se la pagina esterna lo include con un tag `<img>`, il browser disabilita gli script per quel contesto e le righe restano leggibili ma non si espandono. I titoli legacy con nomi reali vengono anonimizzati a valle tramite `_notes/.svg-name-replacements.txt` (privato); un guard-rail avvisa se nei titoli o nei pannelli di dettaglio compare un IP non-placeholder. Lo script scrive solo dentro questo repository: vedi "Confine con E:\projects" piu' sotto.
+
+## Script di scrittura dei segreti
+
+`scripts/Set-ProjectSecret.ps1` scrive o ruota un segreto nel blocco `env` di `.claude/settings.local.json`, che secondo ADR-021 e' l'unico posto dove vivono i token di questo progetto. Il valore si digita a runtime come SecureString e non passa mai per una chat, per la cronologia del terminale o per un file temporaneo. La sostituzione e' mirata sul valore della singola chiave, quindi formattazione, hook e permessi del file restano identici; dopo la scrittura il JSON viene rivalidato e, se non e' valido, il backup viene ripristinato da solo. Il backup viene rimosso a validazione riuscita, perche' un backup di un file di segreti e' una copia in piu' del segreto (SEC-024); `-KeepBackup` lo conserva quando serve. La chiave deve gia' esistere nel blocco `env`: crearne una nuova cambia la configurazione del progetto e si fa a mano. Dopo la scrittura la sessione va **riavviata**, perche' il blocco `env` si legge all'avvio. Lo script e' versionato e non contiene nessun valore; il file che modifica non e' versionato.
 
 ## Confine con E:\projects
 
-Questo repository non scrive mai in `E:\projects` (il sito MkDocs dei
-progetti personali) ne' in nessun altro repository esterno a
-`D:\network-design`. La direzione di lettura e' invertita: se il sito
-`E:\projects` vuole un asset aggiornato di questo progetto, come la timeline
-SVG per la pagina "Progettazione e documentazione della rete aziendale", e'
-quel progetto a leggerlo da qui per conto proprio (con un proprio script o
-hook nella propria configurazione), non questo repository a spingerlo la'
-per copia. Vale per qualunque script o hook futuro definito qui: nessun
-`Copy-Item`, nessuna scrittura, nessuna creazione di cartelle al di fuori
-dell'albero di `D:\network-design`.
+Questo repository non scrive mai in `E:\projects` (il sito MkDocs dei progetti personali) ne' in nessun altro repository esterno a `D:\network-design`. La direzione di lettura e' invertita: se il sito `E:\projects` vuole un asset aggiornato di questo progetto, come la timeline SVG per la pagina "Progettazione e documentazione della rete aziendale", e' quel progetto a leggerlo da qui per conto proprio (con un proprio script o hook nella propria configurazione), non questo repository a spingerlo la' per copia. Vale per qualunque script o hook futuro definito qui: nessun `Copy-Item`, nessuna scrittura, nessuna creazione di cartelle al di fuori dell'albero di `D:\network-design`.
 
 ## Indice dei file satellite tracciati
 
@@ -161,18 +96,8 @@ Agent specializzati, sotto `.claude/agents/`.
 
 ## Vincoli di team
 
-Le operazioni di git add, commit e push restano sempre manuali dell'utente. L'identita'
-git e' impostata a livello locale del repo secondo `.claude/rules/git-identity-and-repo.md`.
-Lo stile di documentazione e' quello di `.claude/rules/interaction-style.md`. Lo standard
-di sistema completo e' in `.claude/PROJECT-SYSTEM.md`.
+Le operazioni di git add, commit e push restano sempre manuali dell'utente. L'identita' git e' impostata a livello locale del repo secondo `.claude/rules/git-identity-and-repo.md`. Lo stile di documentazione e' quello di `.claude/rules/interaction-style.md`. Lo standard di sistema completo e' in `.claude/PROJECT-SYSTEM.md`.
 
 ## Nota MCP
 
-Il server MCP `proxmox` e' configurato in `.mcp.json` (radice, mai sotto
-`.claude/`) sul pacchetto PyPI `proxmox-mcp` via uvx. Autentica solo con
-token API: la decisione, il razionale e la procedura di attivazione (token
-PVEAuditor di sola lettura piu' tre variabili d'ambiente utente) sono in
-ADR-007 (`.claude/memory/decisions.md`). Il file tracciato non contiene
-valori reali: URL e token si espandono da variabili d'ambiente della
-macchina. In alternativa e per lo snapshot completo resta canonico
-`scripts/Get-ProxmoxSnapshot.ps1`.
+Il server MCP `proxmox` e' configurato in `.mcp.json` (radice, mai sotto `.claude/`) sul pacchetto PyPI `proxmox-mcp` via uvx. Autentica solo con token API: la decisione, il razionale e la procedura di attivazione (token PVEAuditor di sola lettura piu' tre variabili d'ambiente utente) sono in ADR-007 (`.claude/memory/decisions.md`). Il file tracciato non contiene valori reali: URL e token si espandono da variabili d'ambiente della macchina. In alternativa e per lo snapshot completo resta canonico `scripts/Get-ProxmoxSnapshot.ps1`.

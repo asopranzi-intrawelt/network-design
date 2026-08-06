@@ -6,10 +6,7 @@ last-verified: 41d0581
 
 ## Paradigma architetturale
 
-La rete Intrawelt usa una segmentazione L2 tramite Linux bridge di Proxmox. Ogni bridge
-corrisponde a una porta fisica del BCM5719 quad-port e definisce un segmento di rete
-logicamente separato. La segmentazione attuale e' fisica (bridge separati) ma non e'
-supportata da firewall attivi o VLAN tagging.
+La rete Intrawelt usa una segmentazione L2 tramite Linux bridge di Proxmox. Ogni bridge corrisponde a una porta fisica del BCM5719 quad-port e definisce un segmento di rete logicamente separato. La segmentazione attuale e' fisica (bridge separati) ma non e' supportata da firewall attivi o VLAN tagging.
 
 ## Nodo pve (snapshot v4, 08/07/2026)
 
@@ -20,9 +17,7 @@ supportata da firewall attivi o VLAN tagging.
 | PVE | 8.3.4, kernel 6.8.12-8-pve |
 | Cluster | "Intrawelt", nodo singolo |
 
-Anomalia da chiarire: lo stato cluster riporta come IP del nodo 10.61.1.71,
-che coincide con l'indirizzo documentato della iLO5, mentre vmbr0 e'
-10.61.20.11/19 (gap #108).
+Anomalia da chiarire: lo stato cluster riporta come IP del nodo 10.61.1.71, che coincide con l'indirizzo documentato della iLO5, mentre vmbr0 e' 10.61.20.11/19 (gap #108).
 
 ## Segmenti di rete documentati (snapshot v4)
 
@@ -33,10 +28,7 @@ che coincide con l'indirizzo documentato della iLO5, mentre vmbr0 e'
 | vmbr2 | eno3 | — | Intrasite (VM206) |
 | vmbr3 | eno4 | — | Servizi separati (VM203/204/205/207/602) |
 
-Nessun bridge e' VLAN-aware (la configurazione target di M5 non e' ancora
-applicata). Lo snapshot v4 conferma che la LAN e' una /19, non una /24: le
-"classi" .10/.20/.30/.90 sono convenzioni di piano di indirizzamento dentro
-un unico dominio L2/L3.
+Nessun bridge e' VLAN-aware (la configurazione target di M5 non e' ancora applicata). Lo snapshot v4 conferma che la LAN e' una /19, non una /24: le "classi" .10/.20/.30/.90 sono convenzioni di piano di indirizzamento dentro un unico dominio L2/L3.
 
 ## Inventario VM (snapshot v4 dell'08/07/2026, riconciliato live il 27/07/2026)
 
@@ -53,95 +45,25 @@ un unico dominio L2/L3.
 | VM602 | Intralino | running | vmbr3 | — | Rinominata (era ITdeveloping); pool Programmazione, disco 200G su storage PROGRAMMAZIONE; no agent |
 | VM810 | TESTNEWEGETRADBOOT | running | vmbr0 | — | 260G; sostituisce la VM809 dei log di febbraio; no agent |
 
-Rimosse rispetto al v3: VM803. Rimosse rispetto ai log vzdump di febbraio
-2026: VM101, 201, 601, 801-803, 809, 900-902 (gap #106 riconciliato). Pool
-risorse: "Servizi" (100, 202-207, 810) e "Programmazione" (602).
+Rimosse rispetto al v3: VM803. Rimosse rispetto ai log vzdump di febbraio 2026: VM101, 201, 601, 801-803, 809, 900-902 (gap #106 riconciliato). Pool risorse: "Servizi" (100, 202-207, 810) e "Programmazione" (602).
 
-Riconciliazione live del 27/07/2026 (interrogazione diretta del nodo via MCP
-Proxmox, non un nuovo snapshot completo): le VM sono **dieci**, nove in esecuzione
-piu' la VM203 template ferma. Il nodo `pve` risulta scarico (48 core al 4%, 96.7
-GiB di RAM occupati su 125.4, uptime di 68 giorni) e nulla e' cambiato su storage,
-job di backup e stato del firewall. Il conteggio a nove VM scritto in
-`dev-testing.md` era quindi superato: aggiornato nella stessa sessione. Il
-prossimo `Get-ProxmoxSnapshot.ps1` (M18) sostituira' questa riconciliazione
-parziale con uno snapshot v5 completo.
+Riconciliazione live del 27/07/2026 (interrogazione diretta del nodo via MCP Proxmox, non un nuovo snapshot completo): le VM sono **dieci**, nove in esecuzione piu' la VM203 template ferma. Il nodo `pve` risulta scarico (48 core al 4%, 96.7 GiB di RAM occupati su 125.4, uptime di 68 giorni) e nulla e' cambiato su storage, job di backup e stato del firewall. Il conteggio a nove VM scritto in `dev-testing.md` era quindi superato: aggiornato nella stessa sessione. Il prossimo `Get-ProxmoxSnapshot.ps1` (M18) sostituira' questa riconciliazione parziale con uno snapshot v5 completo.
 
-Seconda riconciliazione live, 05/08/2026, sempre via MCP e sempre in sola
-lettura. L'inventario qui sopra **regge senza modifiche**: dieci VM, nessun
-container LXC, sei storage, nessuna macchina aggiunta, rimossa, rinominata o
-spostata di bridge dal 27/07. Coincidono uno a uno VMID, nomi, stati (VM203
-template ferma compresa) e assegnazioni dei bridge, e coincidono i dettagli
-dichiarati sulle due VM applicative: la 207 con sei vCPU, sedici GB e dischi 32G
-piu' 96G su SERVIZI, la 208 con quattro core, otto GB con balloon a quattro,
-disco 100G in `cache=writethrough`, `onboot=1` e `firewall=1` sulla NIC di
-`vmbr0`. Il nodo e' scarico come allora, quarantotto core al quattro per cento,
-novantotto GiB occupati su centoventicinque, uptime di settantasette giorni,
-coerente con i sessantotto misurati nove giorni prima. Verificata anche la
-configurazione globale degli storage, identica ai sei dello snapshot v4.
+Seconda riconciliazione live, 05/08/2026, sempre via MCP e sempre in sola lettura. L'inventario qui sopra **regge senza modifiche**: dieci VM, nessun container LXC, sei storage, nessuna macchina aggiunta, rimossa, rinominata o spostata di bridge dal 27/07. Coincidono uno a uno VMID, nomi, stati (VM203 template ferma compresa) e assegnazioni dei bridge, e coincidono i dettagli dichiarati sulle due VM applicative: la 207 con sei vCPU, sedici GB e dischi 32G piu' 96G su SERVIZI, la 208 con quattro core, otto GB con balloon a quattro, disco 100G in `cache=writethrough`, `onboot=1` e `firewall=1` sulla NIC di `vmbr0`. Il nodo e' scarico come allora, quarantotto core al quattro per cento, novantotto GiB occupati su centoventicinque, uptime di settantasette giorni, coerente con i sessantotto misurati nove giorni prima. Verificata anche la configurazione globale degli storage, identica ai sei dello snapshot v4.
 
-Resta fuori dalla portata del MCP, e continua a richiedere lo snapshot v5 di
-M18: job di backup, appartenenza ai pool (compresa quella della VM208, tuttora
-non verificata), regole firewall di cluster e per VM, dischi fisici, dispositivi
-PCI, SDN, HA e snapshot delle VM. La cadenza concordata per lo snapshot completo
-e' mensile e l'ultimo e' dell'08/07, quindi M18 e' scaduto: il MCP ha confermato
-cio' che sa confermare, non lo sostituisce.
+Resta fuori dalla portata del MCP, e continua a richiedere lo snapshot v5 di M18: job di backup, appartenenza ai pool (compresa quella della VM208, tuttora non verificata), regole firewall di cluster e per VM, dischi fisici, dispositivi PCI, SDN, HA e snapshot delle VM. La cadenza concordata per lo snapshot completo e' mensile e l'ultimo e' dell'08/07, quindi M18 e' scaduto: il MCP ha confermato cio' che sa confermare, non lo sostituisce.
 
 ## VM207 e VM208: progetti applicativi ospitati (verificato live il 27/07/2026)
 
-Le due VM piu' recenti ospitano progetti software con repository, documentazione e
-ciclo di vita propri, esterni a questo repository. Qui interessano come *asset di
-rete*: cosa espongono, su quale segmento, con quale postura. Lo stato di
-avanzamento del loro sviluppo resta nei rispettivi progetti, non qui.
+Le due VM piu' recenti ospitano progetti software con repository, documentazione e ciclo di vita propri, esterni a questo repository. Qui interessano come *asset di rete*: cosa espongono, su quale segmento, con quale postura. Lo stato di avanzamento del loro sviluppo resta nei rispettivi progetti, non qui.
 
-La VM207 esegue un servizio di estrazione contenuti da siti web: backend FastAPI
-sotto systemd con utente di servizio dedicato, in ascolto in HTTP non cifrato sulla
-porta 8000 legata all'indirizzo di LAN della VM (non su loopback), piu' un secondo
-servizio HTTP sulla porta 80. Monta in CIFS una condivisione del NAS (10.61.20.177)
-con un account di servizio dedicato, che e' la scelta corretta, e tiene i dati su un
-disco separato montato su `/srv`. La VM e' sul bridge `vmbr3`, quello dei servizi
-separati. Resta aperto come elemento di postura il file di credenziali in chiaro
-nella home dell'utente (gap SRV-005).
+La VM207 esegue un servizio di estrazione contenuti da siti web: backend FastAPI sotto systemd con utente di servizio dedicato, in ascolto in HTTP non cifrato sulla porta 8000 legata all'indirizzo di LAN della VM (non su loopback), piu' un secondo servizio HTTP sulla porta 80. Monta in CIFS una condivisione del NAS (10.61.20.177) con un account di servizio dedicato, che e' la scelta corretta, e tiene i dati su un disco separato montato su `/srv`. La VM e' sul bridge `vmbr3`, quello dei servizi separati. Resta aperto come elemento di postura il file di credenziali in chiaro nella home dell'utente (gap SRV-005).
 
-Correzione del 05/08/2026 sulla seconda meta' di SRV-005, cioe' il parametro VNC.
-La lettura live di tutte e dieci le configurazioni mostra che `-vnc 0.0.0.0:77`
-compare su **sei** VM (202, 203, 204, 205, 206, 207) e in tutte e sei sta nel
-campo `description`, cioe' su una riga commentata che non viene passata al
-processo QEMU. L'unica VM con un argomento davvero applicato e' la **VM602
-Intralino**, con `args: -vnc 0.0.0.0:50`. L'esposizione reale e' quindi una
-console VNC in ascolto su tutte le interfacce dell'host, cioe' sull'indirizzo di
-`vmbr0` che sta sulla LAN piatta `/19`, sulla porta TCP 5950, e riguarda la VM602
-e non la VM207. VNC nudo non e' cifrato e senza password di display non e'
-autenticato. Tracciato come gap **SRV-006**; la conferma a livello di processo
-(`qm showcmd 602` sul nodo) e la verifica dell'eventuale password di display non
-sono ottenibili dal MCP e restano da fare.
+Correzione del 05/08/2026 sulla seconda meta' di SRV-005, cioe' il parametro VNC. La lettura live di tutte e dieci le configurazioni mostra che `-vnc 0.0.0.0:77` compare su **sei** VM (202, 203, 204, 205, 206, 207) e in tutte e sei sta nel campo `description`, cioe' su una riga commentata che non viene passata al processo QEMU. L'unica VM con un argomento davvero applicato e' la **VM602 Intralino**, con `args: -vnc 0.0.0.0:50`. L'esposizione reale e' quindi una console VNC in ascolto su tutte le interfacce dell'host, cioe' sull'indirizzo di `vmbr0` che sta sulla LAN piatta `/19`, sulla porta TCP 5950, e riguarda la VM602 e non la VM207. VNC nudo non e' cifrato e senza password di display non e' autenticato. Tracciato come gap **SRV-006**; la conferma a livello di processo (`qm showcmd 602` sul nodo) e la verifica dell'eventuale password di display non sono ottenibili dal MCP e restano da fare.
 
-La VM208 esegue il pilota interno del portale di supporto ISO27001: uno stack
-container con database PostgreSQL, cache Redis, identity provider Keycloak, API e
-reverse proxy Caddy che pubblica la SPA in HTTPS su 80 e 443. Verificato che
-l'endpoint di prontezza dell'API risponde `ready`. Convivono sulla stessa VM due
-progetti compose distinti, il pilota che pubblica su tutte le interfacce e un
-insieme di soli servizi dati per lo sviluppo, questo invece legato a `127.0.0.1`.
-La differenza sostanziale rispetto alla VM207 e' il segmento: la VM208 e' su
-`vmbr0`, cioe' direttamente sulla LAN piatta `/19` condivisa con postazioni e
-stampanti, e vi pubblica un'applicazione con identity provider senza alcun filtro
-interposto (gap NET-011). Il nome del portale si risolve per file `hosts` su ogni
-client e la fiducia nel certificato dipende da una CA interna importata a mano
-macchina per macchina (gap SEC-016). L'esposizione pubblica del portale e'
-esplicitamente rimandata dal progetto stesso a una fase successiva, dietro la DMZ
-pianificata in M7/M9 di questo progetto: il gancio architetturale esiste, la DMZ no
-(non ancora attivata).
+La VM208 esegue il pilota interno del portale di supporto ISO27001: uno stack container con database PostgreSQL, cache Redis, identity provider Keycloak, API e reverse proxy Caddy che pubblica la SPA in HTTPS su 80 e 443. Verificato che l'endpoint di prontezza dell'API risponde `ready`. Convivono sulla stessa VM due progetti compose distinti, il pilota che pubblica su tutte le interfacce e un insieme di soli servizi dati per lo sviluppo, questo invece legato a `127.0.0.1`. La differenza sostanziale rispetto alla VM207 e' il segmento: la VM208 e' su `vmbr0`, cioe' direttamente sulla LAN piatta `/19` condivisa con postazioni e stampanti, e vi pubblica un'applicazione con identity provider senza alcun filtro interposto (gap NET-011). Il nome del portale si risolve per file `hosts` su ogni client e la fiducia nel certificato dipende da una CA interna importata a mano macchina per macchina (gap SEC-016). L'esposizione pubblica del portale e' esplicitamente rimandata dal progetto stesso a una fase successiva, dietro la DMZ pianificata in M7/M9 di questo progetto: il gancio architetturale esiste, la DMZ no (non ancora attivata).
 
-**VM206 "intrasite" (verificato live il 09/07/2026)**: serve una copia
-interna del sito WordPress pubblico `intrawelt.com`. Le postazioni con
-voci hosts locali che puntano `intrawelt.com`/`www.intrawelt.com` a
-10.61.20.23 raggiungono questa VM invece del sito pubblico ospitato da
-Fastnet — verosimilmente per test/sviluppo locale senza toccare il sito in
-produzione, o per evitare hairpin NAT dalla LAN verso il proprio IP
-pubblico (causale non confermata da una fonte, solo inferita). La VM
-presenta un certificato TLS **auto-firmato** (non pensato per la fiducia
-pubblica, coerente con un uso puramente interno): non e' un problema sul
-sito pubblico reale, che ha un certificato Let's Encrypt valido (vedi
-`scenia-project.md` §Architettura domini).
+**VM206 "intrasite" (verificato live il 09/07/2026)**: serve una copia interna del sito WordPress pubblico `intrawelt.com`. Le postazioni con voci hosts locali che puntano `intrawelt.com`/`www.intrawelt.com` a 10.61.20.23 raggiungono questa VM invece del sito pubblico ospitato da Fastnet — verosimilmente per test/sviluppo locale senza toccare il sito in produzione, o per evitare hairpin NAT dalla LAN verso il proprio IP pubblico (causale non confermata da una fonte, solo inferita). La VM presenta un certificato TLS **auto-firmato** (non pensato per la fiducia pubblica, coerente con un uso puramente interno): non e' un problema sul sito pubblico reale, che ha un certificato Let's Encrypt valido (vedi `scenia-project.md` §Architettura domini).
 
 ## Storage e backup (snapshot v4)
 
@@ -153,9 +75,7 @@ sito pubblico reale, che ha un certificato Let's Encrypt valido (vedi
 | NAS_HERO | cifs | 5.0 TB | 0.2 TB |
 | NAS_INTRA2 | cifs | 22.1 TB | 14.5 TB |
 
-Nove job di backup schedulati (zstd, snapshot mode), scaglionati tra le
-21:00 e le 06:00 verso NAS_INTRA (uno generale "tutte" piu' job per-VM),
-con un secondo job della VM100 verso NAS_HERO alle 00:30.
+Nove job di backup schedulati (zstd, snapshot mode), scaglionati tra le 21:00 e le 06:00 verso NAS_INTRA (uno generale "tutte" piu' job per-VM), con un secondo job della VM100 verso NAS_HERO alle 00:30.
 
 ## Stato firewall (snapshot v4)
 
@@ -165,75 +85,21 @@ con un secondo job della VM100 verso NAS_HERO alle 00:30.
 
 ## Contesto di gestione degli endpoint: vincolo trasversale a ogni intervento di rete
 
-Registrato il 30/07/2026 su indicazione dell'IT Manager, e va tenuto presente in ogni
-intervento di questo progetto, non solo in quelli che toccano le postazioni. Gli endpoint
-non sono gestiti a mano: vivono sotto un RMM distribuito, NinjaOne, che applica policy,
-script e automazioni, e che **impone la rotazione della password locale ogni trenta
-giorni**.
+Registrato il 30/07/2026 su indicazione dell'IT Manager, e va tenuto presente in ogni intervento di questo progetto, non solo in quelli che toccano le postazioni. Gli endpoint non sono gestiti a mano: vivono sotto un RMM distribuito, NinjaOne, che applica policy, script e automazioni, e che **impone la rotazione della password locale ogni trenta giorni**.
 
-Le conseguenze per il design di rete sono tre, e nessuna e' ovvia. La prima e' che
-qualunque credenziale di postazione memorizzata in un apparato di rete ha una vita massima
-di trenta giorni: e' esattamente il caso delle due multifunzione, che conservano utenza e
-password delle condivisioni degli utenti per scrivervi le scansioni (SEC-020), quindi quel
-difetto non e' solo di sicurezza ma di fragilita' strutturale — la scansione si rompe da
-sola alla rotazione successiva, e il rimedio corretto (un account di servizio sul NAS,
-fuori dal perimetro di rotazione degli endpoint) e' anche quello che elimina una
-manutenzione ricorrente. La seconda e' che l'RMM e' il veicolo con cui si distribuiscono
-modifiche massive alle postazioni, quindi ogni intervento che richiede di toccare tutte le
-macchine — il ri-puntamento delle code di stampa di M22b, la distribuzione di una voce
-`hosts` o di una CA interna — si progetta come script distribuito e non come giro fisico.
-La terza e' che le policy e le automazioni dell'RMM agiscono sugli endpoint mentre la rete
-cambia sotto di loro: prima di modificare indirizzamento o segmentazione va saputo cosa
-quelle policy fanno, e per questo esiste lo snapshot in sola lettura
-`scripts/Get-NinjaSnapshot.ps1` (ADR-017).
+Le conseguenze per il design di rete sono tre, e nessuna e' ovvia. La prima e' che qualunque credenziale di postazione memorizzata in un apparato di rete ha una vita massima di trenta giorni: e' esattamente il caso delle due multifunzione, che conservano utenza e password delle condivisioni degli utenti per scrivervi le scansioni (SEC-020), quindi quel difetto non e' solo di sicurezza ma di fragilita' strutturale — la scansione si rompe da sola alla rotazione successiva, e il rimedio corretto (un account di servizio sul NAS, fuori dal perimetro di rotazione degli endpoint) e' anche quello che elimina una manutenzione ricorrente. La seconda e' che l'RMM e' il veicolo con cui si distribuiscono modifiche massive alle postazioni, quindi ogni intervento che richiede di toccare tutte le macchine — il ri-puntamento delle code di stampa di M22b, la distribuzione di una voce `hosts` o di una CA interna — si progetta come script distribuito e non come giro fisico. La terza e' che le policy e le automazioni dell'RMM agiscono sugli endpoint mentre la rete cambia sotto di loro: prima di modificare indirizzamento o segmentazione va saputo cosa quelle policy fanno, e per questo esiste lo snapshot in sola lettura `scripts/Get-NinjaSnapshot.ps1` (ADR-017).
 
-Nota sulle credenziali, perche' e' un vincolo e non un dettaglio: le credenziali API
-dell'RMM appartengono al provider MSP che lo gestisce, lo scope usato da questo progetto e'
-di sola lettura e nel repository non esiste alcun valore.
+Nota sulle credenziali, perche' e' un vincolo e non un dettaglio: le credenziali API dell'RMM appartengono al provider MSP che lo gestisce, lo scope usato da questo progetto e' di sola lettura e nel repository non esiste alcun valore.
 
-**Nessun servizio di directory (misurato il 30/07/2026).** Il primo snapshot ha chiarito un
-fatto strutturale che il progetto aveva solo sfiorato: i 26 dispositivi gestiti
-dell'organizzazione sono **tutti standalone**, in workgroup, senza alcun dominio — quattordici
-workstation Windows con un workgroup aziendale, dieci con il workgroup predefinito, un server
-Windows in workgroup e una postazione Linux. Non e' una curiosita' architetturale, e' la causa
-comune di quattro fatti finora tracciati separatamente: ogni accesso tra sistemi usa
-credenziali locali memorizzate (che e' il meccanismo di SEC-020 sulle multifunzione e
-dell'accesso tra due postazioni); quelle credenziali, essendo utenze locali di Windows, hanno
-vita massima trenta giorni per la policy dell'RMM; non esiste risoluzione nomi interna, quindi
-si dipende dal broadcast e dai file `hosts` distribuiti a mano (SEC-016), che e' cio' che rende
-fragile qualunque segmentazione perche' il broadcast non attraversa un confine di livello 3; e
-non e' possibile alcuna separazione degli accessi basata su identita'. Registrato come
-SEC-021 (`GAP-TBC.md` #128). L'introduzione di un servizio di directory con DNS interno
-chiuderebbe insieme quattro fronti, ma cambia il modello di gestione degli endpoint e va
-valutata come progetto a se'.
+**Nessun servizio di directory (misurato il 30/07/2026).** Il primo snapshot ha chiarito un fatto strutturale che il progetto aveva solo sfiorato: i 26 dispositivi gestiti dell'organizzazione sono **tutti standalone**, in workgroup, senza alcun dominio — quattordici workstation Windows con un workgroup aziendale, dieci con il workgroup predefinito, un server Windows in workgroup e una postazione Linux. Non e' una curiosita' architetturale, e' la causa comune di quattro fatti finora tracciati separatamente: ogni accesso tra sistemi usa credenziali locali memorizzate (che e' il meccanismo di SEC-020 sulle multifunzione e dell'accesso tra due postazioni); quelle credenziali, essendo utenze locali di Windows, hanno vita massima trenta giorni per la policy dell'RMM; non esiste risoluzione nomi interna, quindi si dipende dal broadcast e dai file `hosts` distribuiti a mano (SEC-016), che e' cio' che rende fragile qualunque segmentazione perche' il broadcast non attraversa un confine di livello 3; e non e' possibile alcuna separazione degli accessi basata su identita'. Registrato come SEC-021 (`GAP-TBC.md` #128). L'introduzione di un servizio di directory con DNS interno chiuderebbe insieme quattro fronti, ma cambia il modello di gestione degli endpoint e va valutata come progetto a se'.
 
-**Come sono governati, in concreto (snapshot filtrato del 30/07/2026).** Sui 26 dispositivi
-dell'organizzazione risulta applicata **una sola policy**, e su **25 dei 26** esiste almeno una
-personalizzazione locale che ne scavalca dei parametri. Il dato va interpretato prima di
-giudicarlo, perche' il contenuto delle personalizzazioni non e' stato esaminato, ma il rapporto
-merita attenzione: una policy unica accompagnata da un'eccezione su quasi ogni macchina governa
-molto meno di quanto il numero "una policy" suggerisca, ed e' il tipo di configurazione dove
-un'impostazione che si crede applicata a tutti in realta' non lo e'. Rilevante per A.8.9,
-gestione delle configurazioni, e da approfondire quando si arrivera' a normare il patching e le
-policy endpoint (Fase 4). Le altre letture utili dello stesso snapshot: 26 righe di sistema
-operativo e di utenti connessi coerenti con il numero di dispositivi, 21 campi personalizzati
-definiti, e nessuna interrogazione che riporti dispositivi estranei all'organizzazione dopo la
-correzione del filtro.
+**Come sono governati, in concreto (snapshot filtrato del 30/07/2026).** Sui 26 dispositivi dell'organizzazione risulta applicata **una sola policy**, e su **25 dei 26** esiste almeno una personalizzazione locale che ne scavalca dei parametri. Il dato va interpretato prima di giudicarlo, perche' il contenuto delle personalizzazioni non e' stato esaminato, ma il rapporto merita attenzione: una policy unica accompagnata da un'eccezione su quasi ogni macchina governa molto meno di quanto il numero "una policy" suggerisca, ed e' il tipo di configurazione dove un'impostazione che si crede applicata a tutti in realta' non lo e'. Rilevante per A.8.9, gestione delle configurazioni, e da approfondire quando si arrivera' a normare il patching e le policy endpoint (Fase 4). Le altre letture utili dello stesso snapshot: 26 righe di sistema operativo e di utenti connessi coerenti con il numero di dispositivi, 21 campi personalizzati definiti, e nessuna interrogazione che riporti dispositivi estranei all'organizzazione dopo la correzione del filtro.
 
-**Effetto collaterale del primo snapshot, corretto in giornata.** L'istanza dell'RMM e'
-multi-tenant e la chiave API del provider vede anche altre aziende sue clienti: la prima
-raccolta ha restituito 99 dispositivi su 26 organizzazioni, cioe' l'inventario di venticinque
-terzi che questo progetto non ha titolo di detenere. Lo script filtra ora per organizzazione
-per default e va usato cosi'; lo snapshot non filtrato va rigenerato e cancellato. Registrato
-come SEC-022 (`GAP-TBC.md` #129), rilevante per la minimizzazione e per il rapporto con il
-fornitore.
+**Effetto collaterale del primo snapshot, corretto in giornata.** L'istanza dell'RMM e' multi-tenant e la chiave API del provider vede anche altre aziende sue clienti: la prima raccolta ha restituito 99 dispositivi su 26 organizzazioni, cioe' l'inventario di venticinque terzi che questo progetto non ha titolo di detenere. Lo script filtra ora per organizzazione per default e va usato cosi'; lo snapshot non filtrato va rigenerato e cancellato. Registrato come SEC-022 (`GAP-TBC.md` #129), rilevante per la minimizzazione e per il rapporto con il fornitore.
 
 ## Gap di sicurezza identificati (ISO27001 Annex A)
 
-Gap analysis completata il 10/07/2026 incrociando lo snapshot Proxmox v4, il
-piano firewall a micro-step (Fase 3 di `roadmap.md`) e `GAP-TBC.md`. I
-controlli sotto sono quelli con evidenza concreta raccolta sulla rete
-Intrawelt; non e' una Statement of Applicability formale (vedi Fase 5).
+Gap analysis completata il 10/07/2026 incrociando lo snapshot Proxmox v4, il piano firewall a micro-step (Fase 3 di `roadmap.md`) e `GAP-TBC.md`. I controlli sotto sono quelli con evidenza concreta raccolta sulla rete Intrawelt; non e' una Statement of Applicability formale (vedi Fase 5).
 
 | Controllo | Stato | Gap / evidenza |
 |---|---|---|

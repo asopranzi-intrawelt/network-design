@@ -23,19 +23,14 @@ last-verified: 41d0581
 - Autenticazione: cookie PVEAuthCookie via WebRequestSession (workaround PS5.1)
 - TLS: TrustAllCertsPolicy via Add-Type (certificato self-signed Proxmox)
 - Output: JSON completo + report Markdown in `output/`
-- Dati raccolti: nodi, reti, storage, VM QEMU, LXC, pool, firewall cluster e per-VM,
-  SDN, backup schedules, HA, snapshot VM, dischi fisici, dispositivi PCI
+- Dati raccolti: nodi, reti, storage, VM QEMU, LXC, pool, firewall cluster e per-VM, SDN, backup schedules, HA, snapshot VM, dischi fisici, dispositivi PCI
 
 ## Script Get-NebulaSnapshot.ps1
 
 - Linguaggio: PowerShell 5.1 / 7+
-- Autenticazione: header `X-ZyxelNebula-API-Key`, chiave risolta da
-  parametro -> variabile d'ambiente `NEBULA_API_KEY` -> prompt SecureString
+- Autenticazione: header `X-ZyxelNebula-API-Key`, chiave risolta da parametro -> variabile d'ambiente `NEBULA_API_KEY` -> prompt SecureString
 - Output: JSON completo + report Markdown in `output/`
-- Dati raccolti: organizzazioni, siti, inventario dispositivi (switch,
-  AP, gateway...), stato porte e tabella MAC L2 per switch (nato per
-  localizzare gli AP fisici per porta quando non compaiono come
-  dispositivi Nebula, vedi ADR-009 e `runbook-anomalie.md` §AP-001)
+- Dati raccolti: organizzazioni, siti, inventario dispositivi (switch, AP, gateway...), stato porte e tabella MAC L2 per switch (nato per localizzare gli AP fisici per porta quando non compaiono come dispositivi Nebula, vedi ADR-009 e `runbook-anomalie.md` §AP-001)
 - Nessuna dipendenza esterna: solo `Invoke-RestMethod` nativo
 
 ## Infrastruttura target
@@ -48,5 +43,4 @@ last-verified: 41d0581
 
 ## Dipendenze PowerShell
 
-Nessuna dipendenza esterna. Lo script usa solo classi .NET integrate in PS5.1:
-`System.Net.WebRequestSession`, `System.Net.Cookie`, `System.Net.ServicePointManager`.
+Nessuna dipendenza esterna. Lo script usa solo classi .NET integrate in PS5.1: `System.Net.WebRequestSession`, `System.Net.Cookie`, `System.Net.ServicePointManager`.

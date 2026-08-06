@@ -1,28 +1,12 @@
 # Mappatura porte fisiche - Via Pescolla 2, Porto Sant'Elpidio
 
-Fonti: `porte_fisiche_via_pescolla_2.xlsx` (trascrizione, ultimo aggiornamento
-aprile 2026) e `intrawelt rete dati.pdf` (scansione del rilievo manoscritto
-"Prese dati" di Luciani Impianti, installatore elettrico, datato 20/08/2020),
-entrambe in `ARCHITETTURA SERVER-CLOUD-LINEE/Mappatura porte fisiche/`.
-Ingestione completa del 07/07/2026, in sostituzione dell'estratto parziale
-precedente.
+Fonti: `porte_fisiche_via_pescolla_2.xlsx` (trascrizione, ultimo aggiornamento aprile 2026) e `intrawelt rete dati.pdf` (scansione del rilievo manoscritto "Prese dati" di Luciani Impianti, installatore elettrico, datato 20/08/2020), entrambe in `ARCHITETTURA SERVER-CLOUD-LINEE/Mappatura porte fisiche/`. Ingestione completa del 07/07/2026, in sostituzione dell'estratto parziale precedente.
 
-Convenzione: `<Piano>-<Ufficio>-<Numero>`. R = rack/switch. Per ogni piano il
-numero dell'ufficio decresce in senso orario, partendo dall'ufficio a sinistra.
+Convenzione: `<Piano>-<Ufficio>-<Numero>`. R = rack/switch. Per ogni piano il numero dell'ufficio decresce in senso orario, partendo dall'ufficio a sinistra.
 
 ## Nome progettato e nome attuale
 
-Il rilievo del 2020 e la trascrizione Excel portano due colonne: il nome
-porta di progetto e il "nome porta attuale", cioe' l'etichetta realmente
-presente. Le due colonne NON coincidono per molte prese: al momento del
-rilievo diverse etichette risultavano permutate (esempio Reception: la presa
-di progetto 0-5-1 portava l'etichetta 0-5-7 e viceversa; la coppia stampante
-0-x-13/14 di ogni ufficio del Piano 0 era marcata "da fare" con etichetta
-0-x-1/2). Questa permutazione sistematica di etichette e' la spiegazione
-piu' probabile della contraddizione NET-007 sulla porta del telefono di
-Persona-A (GAP-TBC #67/#99): un errore di etichettatura, non uno spostamento
-fisico. Le tabelle sotto riportano il nome di progetto e, dove differisce,
-l'etichetta attuale rilevata.
+Il rilievo del 2020 e la trascrizione Excel portano due colonne: il nome porta di progetto e il "nome porta attuale", cioe' l'etichetta realmente presente. Le due colonne NON coincidono per molte prese: al momento del rilievo diverse etichette risultavano permutate (esempio Reception: la presa di progetto 0-5-1 portava l'etichetta 0-5-7 e viceversa; la coppia stampante 0-x-13/14 di ogni ufficio del Piano 0 era marcata "da fare" con etichetta 0-x-1/2). Questa permutazione sistematica di etichette e' la spiegazione piu' probabile della contraddizione NET-007 sulla porta del telefono di Persona-A (GAP-TBC #67/#99): un errore di etichettatura, non uno spostamento fisico. Le tabelle sotto riportano il nome di progetto e, dove differisce, l'etichetta attuale rilevata.
 
 ---
 
@@ -41,29 +25,18 @@ l'etichetta attuale rilevata.
 | 0-5-8 | Postazione | 0-5-2 |
 
 ### Ufficio 1 (0-1), 14 porte
-0-1-1 .. 0-1-12 postazioni, 0-1-13 stampante, 0-1-14 postazione. Etichette
-attuali permutate al rilievo 2020 (0-1-1 -> "0-1-7", 0-1-7 -> "0-1-13",
-eccetera); coppia 0-1-13/14 etichettata 0-1-1/2, relabeling "da fare".
+0-1-1 .. 0-1-12 postazioni, 0-1-13 stampante, 0-1-14 postazione. Etichette attuali permutate al rilievo 2020 (0-1-1 -> "0-1-7", 0-1-7 -> "0-1-13", eccetera); coppia 0-1-13/14 etichettata 0-1-1/2, relabeling "da fare".
 
 ### Ufficio 2 (0-2), 13 porte in Excel
-0-2-1 .. 0-2-11 postazioni, 0-2-12 stampante, 0-2-13 postazione. [TBC: il
-rilievo 2020 mostra 14 porte con stampante in 0-2-13 come per l'Ufficio 1;
-la trascrizione Excel ne riporta 13 con stampante in 0-2-12. Verificare sul
-posto quale delle due e' corretta.]
+0-2-1 .. 0-2-11 postazioni, 0-2-12 stampante, 0-2-13 postazione. [TBC: il rilievo 2020 mostra 14 porte con stampante in 0-2-13 come per l'Ufficio 1; la trascrizione Excel ne riporta 13 con stampante in 0-2-12. Verificare sul posto quale delle due e' corretta.]
 
 ### Ufficio 3 (0-3), 14 porte
-0-3-1 .. 0-3-14, tutte postazioni in Excel (nessuna stampante censita).
-Nel rilievo 2020 marcato "OK" (etichette gia' corrette).
+0-3-1 .. 0-3-14, tutte postazioni in Excel (nessuna stampante censita). Nel rilievo 2020 marcato "OK" (etichette gia' corrette).
 
-Aggiornamento 10/07/2026: la postazione di Persona-D, in seguito a un
-cambio di indirizzo IP, e' stata spostata dalla presa 0-3-3 alla presa
-0-R-4 (patch diretta verso il rack, vedi Infrastruttura Piano Terra). La
-0-3-3 risulta libera.
+Aggiornamento 10/07/2026: la postazione di Persona-D, in seguito a un cambio di indirizzo IP, e' stata spostata dalla presa 0-3-3 alla presa 0-R-4 (patch diretta verso il rack, vedi Infrastruttura Piano Terra). La 0-3-3 risulta libera.
 
 ### Ufficio 4 (0-4), 14 porte
-0-4-1 .. 0-4-14, tutte postazioni. Ufficio condiviso da quattro postazioni
-nominative (i nomi propri restano nel file sorgente, non qui). Nel rilievo
-2020 marcato "OK".
+0-4-1 .. 0-4-14, tutte postazioni. Ufficio condiviso da quattro postazioni nominative (i nomi propri restano nel file sorgente, non qui). Nel rilievo 2020 marcato "OK".
 
 ### Relax (0-6)
 | Porta | Tipo | Note |
@@ -80,11 +53,7 @@ nominative (i nomi propri restano nel file sorgente, non qui). Nel rilievo
 | 0-R-18 | Router/Switch | Cisco (rimosso). Collegava direttamente il firewall Zyxel al Piano 2. Con la dorsale SFP+ il Piano Terra e' collegato allo switch Piano 2 (XGS2220-54HP) via fibra. |
 | 0-R-4 | Postazione | Persona-D, dal 10/07/2026 (ex 0-3-3, vedi Ufficio 3). Patch diretta al rack a seguito di un aggiornamento dell'indirizzo IP della postazione. |
 
-**Nota post-installazione XGS2220-30HP (aprile 2026):**
-Il Cisco switch e l'adattatore PoE esterno sono stati rimossi. Il nuovo switch
-Layer 3 Zyxel XGS2220-30HP gestisce tutte le porte del Piano Terra con PoE+
-integrato. L'uplink verso il Piano 2 e' SFP+ 10 Gbps su fibra (operativo
-dall'08/05/2026).
+**Nota post-installazione XGS2220-30HP (aprile 2026):** Il Cisco switch e l'adattatore PoE esterno sono stati rimossi. Il nuovo switch Layer 3 Zyxel XGS2220-30HP gestisce tutte le porte del Piano Terra con PoE+ integrato. L'uplink verso il Piano 2 e' SFP+ 10 Gbps su fibra (operativo dall'08/05/2026).
 
 ---
 
@@ -110,8 +79,7 @@ Nel rilievo 2020 l'ufficio e' marcato "OK" (etichette corrette).
 | 1-2-5 | Postazione | 1-2-1 | Presa muro separatore con Ufficio Persona-A |
 | 1-2-6 | Postazione | 1-2-2 | Presa muro separatore con Ufficio Persona-A |
 
-Nel rilievo 2020 la 1-2-5 di progetto era la stampante; nella trascrizione
-Excel le sei porte risultano tutte postazioni. [TBC: presenza stampante.]
+Nel rilievo 2020 la 1-2-5 di progetto era la stampante; nella trascrizione Excel le sei porte risultano tutte postazioni. [TBC: presenza stampante.]
 
 ### Ufficio 3 - Ufficio IT / Alessio (1-3), 14 porte
 | Porta | Tipo | Etichetta attuale | Posizione |
@@ -176,8 +144,7 @@ Etichette "OK" al rilievo 2020.
 | 2-2-3 | Postazione | 2-2-4 | |
 | 2-2-4 | Postazione | 2-2-1 | TV |
 
-Permutazione ciclica completa delle etichette (rilevata gia' nel 2020,
-confermata nella trascrizione 2026).
+Permutazione ciclica completa delle etichette (rilevata gia' nel 2020, confermata nella trascrizione 2026).
 
 ### Ufficio Piano 2 (2-3), 18 porte
 | Porte | Tipo | Posizione |
@@ -207,31 +174,13 @@ Etichette coerenti ("OK" al rilievo).
 | 2-6-2 | Allarme | = | Centrale allarme intrusione (connessa in rete) |
 | 2-7-1 | Access Point | = | AP esterno tetto |
 
-**Note domotica (da Excel):**
-Il sistema BUS domotica arriva via cavo non Ethernet al quadro elettrico del
-Piano 2. Il MH Server (MyHome server Bticino) al Piano 2 gestisce OFF
-generali, accensioni, spegnimenti, luci allarme (tutte le luci si accendono
-in caso di allarme). La centrale allarme e' connessa in rete sopra il CED.
-I termostati degli uffici lavorano su collettori di zona per piano con
-testine motorizzate (valvole). Il concentratore di rete visualizza solo i
-parametri del riscaldamento; i comandi effettivi vengono dai termostati
-locali e dal MH server.
+**Note domotica (da Excel):** Il sistema BUS domotica arriva via cavo non Ethernet al quadro elettrico del Piano 2. Il MH Server (MyHome server Bticino) al Piano 2 gestisce OFF generali, accensioni, spegnimenti, luci allarme (tutte le luci si accendono in caso di allarme). La centrale allarme e' connessa in rete sopra il CED. I termostati degli uffici lavorano su collettori di zona per piano con testine motorizzate (valvole). Il concentratore di rete visualizza solo i parametri del riscaldamento; i comandi effettivi vengono dai termostati locali e dal MH server.
 
 ---
 
 ## Storia della fonte
 
-Il rilievo originale delle prese dati e' del 20/08/2020 (Luciani Impianti,
-installatore elettrico di Porto Sant'Elpidio, modulo manoscritto "Prese
-dati" in tre pagine, una per piano, scansionato in
-`intrawelt rete dati.pdf`). Gia' in quel rilievo la colonna "attuale"
-censiva le etichette permutate e marcava "da fare" i relabeling delle coppie
-stampante. La trascrizione strutturata in Excel e' stata aggiornata fino ad
-aprile 2026 e riporta le stesse permutazioni: il relabeling fisico non
-risulta mai completato. Nessuna delle due fonti contiene informazioni su
-VLAN o tagging delle porte switch: quella parte della configurazione vive
-solo sugli switch (vedi nota PORT-TAGGING in
-`docs/infrastructure-timeline/ingestion-checklist.md`).
+Il rilievo originale delle prese dati e' del 20/08/2020 (Luciani Impianti, installatore elettrico di Porto Sant'Elpidio, modulo manoscritto "Prese dati" in tre pagine, una per piano, scansionato in `intrawelt rete dati.pdf`). Gia' in quel rilievo la colonna "attuale" censiva le etichette permutate e marcava "da fare" i relabeling delle coppie stampante. La trascrizione strutturata in Excel e' stata aggiornata fino ad aprile 2026 e riporta le stesse permutazioni: il relabeling fisico non risulta mai completato. Nessuna delle due fonti contiene informazioni su VLAN o tagging delle porte switch: quella parte della configurazione vive solo sugli switch (vedi nota PORT-TAGGING in `docs/infrastructure-timeline/ingestion-checklist.md`).
 
 ## Riepilogo dispositivi speciali
 
@@ -249,35 +198,17 @@ solo sugli switch (vedi nota PORT-TAGGING in
 | AP CED | 2-5-1 | [TBC] | |
 | AP Piano 1 | 1-8-1 | [TBC] | |
 
-[TBC: IP di tutti gli AP. Modelli AP (Ubiquiti da VA, Debian 7). Porte patch
-panel corrispondenti alle porte switch. Mappatura completa patch panel ->
-switch Piano 2 -> dispositivi. Relabeling fisico delle etichette permutate
-mai completato dal 2020.]
+[TBC: IP di tutti gli AP. Modelli AP (Ubiquiti da VA, Debian 7). Porte patch panel corrispondenti alle porte switch. Mappatura completa patch panel -> switch Piano 2 -> dispositivi. Relabeling fisico delle etichette permutate mai completato dal 2020.]
 
 ---
 
 ## La catena verso l'esterno dallo switch del Piano Terra (NET-017)
 
-> **Sezione in revisione al 03/08/2026, non usare per operare.** La prima stesura di questa
-> sezione, di poche ore prima, si chiamava "la catena del tetto" e conteneva due errori di
-> attribuzione che l'IT Manager ha corretto. Primo: questa non e' la catena del tetto, e' la
-> catena che parte dallo switch del Piano Terra e va **verso l'esterno**; la connessione radio
-> del tetto e' una cosa distinta. Secondo: l'apparato sulla porta 4 non e' un access point che
-> serve la centrale di irrigazione via Wi-Fi, ma una **connessione radio di backup verso
-> l'esterno** — cioe' l'ipotesi "ponte radio" che M13c-1 aveva classificato come improbabile
-> era quella giusta. Esiste inoltre una seconda catena, che parte dallo switch del Piano 2 e
-> comprende un media converter, un cavo che esce verso un'antenna e un gruppo di continuita'
-> dedicato, e che questa sezione non descrive affatto.
+> **Sezione in revisione al 03/08/2026, non usare per operare.** La prima stesura di questa sezione, di poche ore prima, si chiamava "la catena del tetto" e conteneva due errori di attribuzione che l'IT Manager ha corretto. Primo: questa non e' la catena del tetto, e' la catena che parte dallo switch del Piano Terra e va **verso l'esterno**; la connessione radio del tetto e' una cosa distinta. Secondo: l'apparato sulla porta 4 non e' un access point che serve la centrale di irrigazione via Wi-Fi, ma una **connessione radio di backup verso l'esterno** — cioe' l'ipotesi "ponte radio" che M13c-1 aveva classificato come improbabile era quella giusta. Esiste inoltre una seconda catena, che parte dallo switch del Piano 2 e comprende un media converter, un cavo che esce verso un'antenna e un gruppo di continuita' dedicato, e che questa sezione non descrive affatto.
 >
-> Cio' che resta valido e verificato: l'esistenza dello **Zyxel GS-105B v5** sulla tratta,
-> interposto dagli elettricisti, e le tre utenze che ne derivano fra cui l'inverter del
-> fotovoltaico mai censito. Cio' che e' contestato e da riscrivere: il ruolo dell'apparato
-> radio, il fatto che la centrale sia raggiunta via cavo o via radio, e la relazione fra questa
-> catena e quella del Piano 2. Riscrittura in attesa dei dati dell'IT Manager.
+> Cio' che resta valido e verificato: l'esistenza dello **Zyxel GS-105B v5** sulla tratta, interposto dagli elettricisti, e le tre utenze che ne derivano fra cui l'inverter del fotovoltaico mai censito. Cio' che e' contestato e da riscrivere: il ruolo dell'apparato radio, il fatto che la centrale sia raggiunta via cavo o via radio, e la relazione fra questa catena e quella del Piano 2. Riscrittura in attesa dei dati dell'IT Manager.
 
-Fonte: dichiarazione dell'IT Manager, sollecitata da una verifica di copertura documentale.
-Nessuna fonte automatica poteva produrre questa informazione, perche' l'apparato intermedio non
-e' gestito e non compare nell'inventario Nebula.
+Fonte: dichiarazione dell'IT Manager, sollecitata da una verifica di copertura documentale. Nessuna fonte automatica poteva produrre questa informazione, perche' l'apparato intermedio non e' gestito e non compare nell'inventario Nebula.
 
 ```
 XGS2220-30HP porta 4  (PoE, negozia 100 Mbps)
@@ -294,51 +225,18 @@ XGS2220-30HP porta 4  (PoE, negozia 100 Mbps)
         +--------------------> inverter del fotovoltaico (montato nuovo)
 ```
 
-Prima dell'inserimento dello switch, dal punto 0-9-1 partiva un solo cavo di categoria 6 diretto
-alla centrale di irrigazione. Gli elettricisti hanno interposto il GS-105B v5 per diramare due
-utenze nuove, l'access point esterno e l'inverter del fotovoltaico appena installato.
+Prima dell'inserimento dello switch, dal punto 0-9-1 partiva un solo cavo di categoria 6 diretto alla centrale di irrigazione. Gli elettricisti hanno interposto il GS-105B v5 per diramare due utenze nuove, l'access point esterno e l'inverter del fotovoltaico appena installato.
 
 ### Quattro conseguenze, e tre ribaltano quanto il progetto dava per assodato
 
-**La centrale di irrigazione e' cablata, non servita via radio.** Tutta la documentazione
-precedente, a partire dall'etichetta "AP tetto per centrale irrigazione" del rilievo 2020,
-descriveva l'access point come il mezzo con cui la centrale veniva raggiunta. Non e' cosi': la
-centrale ha un cavo di categoria 6 dedicato. Ne segue che la prima opzione di M13c-3, quella
-formulata come "se la centrale espone una porta Ethernet il collegamento diventa cablato e
-l'access point sparisce", non e' un'opzione da valutare: **e' gia' lo stato dei fatti**. La
-domanda si sposta e diventa piu' semplice, cioe' a cosa serva oggi quell'access point, dato che
-non serve la centrale. Se la risposta e' "a niente di necessario", si rimuove senza sostituirlo e
-il preventivo del WBE530 non serve.
+**La centrale di irrigazione e' cablata, non servita via radio.** Tutta la documentazione precedente, a partire dall'etichetta "AP tetto per centrale irrigazione" del rilievo 2020, descriveva l'access point come il mezzo con cui la centrale veniva raggiunta. Non e' cosi': la centrale ha un cavo di categoria 6 dedicato. Ne segue che la prima opzione di M13c-3, quella formulata come "se la centrale espone una porta Ethernet il collegamento diventa cablato e l'access point sparisce", non e' un'opzione da valutare: **e' gia' lo stato dei fatti**. La domanda si sposta e diventa piu' semplice, cioe' a cosa serva oggi quell'access point, dato che non serve la centrale. Se la risposta e' "a niente di necessario", si rimuove senza sostituirlo e il preventivo del WBE530 non serve.
 
-**I 100 Mbps sono quasi certamente il cavo e non l'apparato.** Il GS-105B v5 e' uno switch
-gigabit: se il collegamento fra la porta 4 e quello switch negozia 100 Mbps, il limite non puo'
-essere ne' il 30HP ne' il GS-105B, quindi resta la tratta fisica fra 0-8-1 e 0-9-1 — cavo di
-categoria vecchia oppure coppie interrotte. Questa e' un'inferenza forte, non ancora una misura,
-e la verifica costa poco: si legge la velocita' negoziata sulle porte del GS-105B. Se confermata,
-**sostituire l'access point non porta un solo Mbps in piu'**, ed e' esattamente la ragione per cui
-M13c-5 e' stato promosso ad ALTA prima dell'ordine.
+**I 100 Mbps sono quasi certamente il cavo e non l'apparato.** Il GS-105B v5 e' uno switch gigabit: se il collegamento fra la porta 4 e quello switch negozia 100 Mbps, il limite non puo' essere ne' il 30HP ne' il GS-105B, quindi resta la tratta fisica fra 0-8-1 e 0-9-1 — cavo di categoria vecchia oppure coppie interrotte. Questa e' un'inferenza forte, non ancora una misura, e la verifica costa poco: si legge la velocita' negoziata sulle porte del GS-105B. Se confermata, **sostituire l'access point non porta un solo Mbps in piu'**, ed e' esattamente la ragione per cui M13c-5 e' stato promosso ad ALTA prima dell'ordine.
 
-**L'alimentazione dell'access point e' una domanda aperta.** La porta 4 erogava PoE
-all'apparato, ma il GS-105B v5 non e' PoE e non ne fa passare: interposto sulla tratta, taglia
-l'alimentazione. Ne segue che l'access point ha oggi un'alimentazione propria, oppure esiste un
-iniettore non censito, oppure il GS-105B stesso e' alimentato dalla porta 4 tramite un
-adattatore. Va guardato, perche' cambia il piano di sostituzione: un WBE530 si alimenta in PoE
-802.3at, e su quella tratta il PoE oggi non arriva.
+**L'alimentazione dell'access point e' una domanda aperta.** La porta 4 erogava PoE all'apparato, ma il GS-105B v5 non e' PoE e non ne fa passare: interposto sulla tratta, taglia l'alimentazione. Ne segue che l'access point ha oggi un'alimentazione propria, oppure esiste un iniettore non censito, oppure il GS-105B stesso e' alimentato dalla porta 4 tramite un adattatore. Va guardato, perche' cambia il piano di sostituzione: un WBE530 si alimenta in PoE 802.3at, e su quella tratta il PoE oggi non arriva.
 
-**L'inverter del fotovoltaico e' un asset di rete nuovo e mai censito.** Un inverter moderno
-espone tipicamente un'interfaccia web e contatta il cloud del produttore, quindi e' un
-dispositivo IoT/OT collegato senza filtri alla LAN piatta, esattamente come gli altri residui
-che M22c deve raccogliere. Va inventariato con marca, modello, indirizzo e porte esposte, e
-collocato nel segmento IoT/OT insieme alla centrale di irrigazione quando quel segmento
-esistera'. Fino a quel momento e' raggiungibile da tutta la `/19`.
+**L'inverter del fotovoltaico e' un asset di rete nuovo e mai censito.** Un inverter moderno espone tipicamente un'interfaccia web e contatta il cloud del produttore, quindi e' un dispositivo IoT/OT collegato senza filtri alla LAN piatta, esattamente come gli altri residui che M22c deve raccogliere. Va inventariato con marca, modello, indirizzo e porte esposte, e collocato nel segmento IoT/OT insieme alla centrale di irrigazione quando quel segmento esistera'. Fino a quel momento e' raggiungibile da tutta la `/19`.
 
 ### Il fatto organizzativo, che vale oltre questo caso
 
-Due dispositivi sono entrati in rete per mano di **elettricisti**, durante un lavoro di
-impianto fotovoltaico, senza che l'IT lo registrasse. Non e' una critica agli elettricisti: e'
-la dimostrazione che il perimetro di rete si allarga anche quando nessuno in IT sta lavorando
-sulla rete, e che l'inventario degli asset non puo' dipendere dal fatto che chi installa
-avverta. Un controllo periodico della tabella MAC porta per porta e' l'unico modo di
-accorgersene dal lato IT: quattro indirizzi appresi su una porta che dovrebbe averne uno erano
-l'indizio, ed era disponibile da mesi in ogni snapshot. Rilevante per A.8.1 sull'inventario e
-per A.5.19-A.5.22 sui rapporti con i fornitori.
+Due dispositivi sono entrati in rete per mano di **elettricisti**, durante un lavoro di impianto fotovoltaico, senza che l'IT lo registrasse. Non e' una critica agli elettricisti: e' la dimostrazione che il perimetro di rete si allarga anche quando nessuno in IT sta lavorando sulla rete, e che l'inventario degli asset non puo' dipendere dal fatto che chi installa avverta. Un controllo periodico della tabella MAC porta per porta e' l'unico modo di accorgersene dal lato IT: quattro indirizzi appresi su una porta che dovrebbe averne uno erano l'indizio, ed era disponibile da mesi in ogni snapshot. Rilevante per A.8.1 sull'inventario e per A.5.19-A.5.22 sui rapporti con i fornitori.
