@@ -7,8 +7,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: e9ce5d7 (03/08/2026, ADR-019 e sette condivisioni di scansione)
-Data snapshot:         2026-08-03
+Commit di riferimento: 24ac874 (05/08/2026, ADR-021 segreti nel blocco env di settings.local)
+Data snapshot:         2026-08-05 (sessione del pomeriggio)
 ```
 
 Nota di stato al momento della chiusura: il lavoro documentale del 03/08 (chiusura di R8,
@@ -44,6 +44,37 @@ drift che nessuno chiudeva.
 | interventi-robustezza.md (docs/) | non applicabile | registro operativo, allineato al 03/08: R1-R14, R8 completato con tabella per destinatario |
 
 ## Punto di ripresa
+
+**Sessione del pomeriggio del 05/08/2026 — leggere questo blocco per primo. Tre esiti.**
+
+Il primo e' lo scopo con cui la sessione e' stata aperta, e si chiude in positivo: il server MCP
+`proxmox` **funziona senza le variabili d'ambiente utente di Windows**, che risultano gia'
+eliminate. La verifica e' in ADR-021 §Verifica del 05/08/2026 con quattro misure indipendenti, fra
+cui la variabile spia `NETDESIGN_ENV_CANARY` che dimostra la provenienza dei valori dal blocco
+`env` di `.claude/settings.local.json`. Limite da ricordare: quelle variabili esistono **solo**
+dentro una sessione di Claude Code aperta su questo progetto, quindi nessuna automazione fuori
+sessione (utilita' di pianificazione, hook di altri progetti) puo' contarci, e una modifica al
+blocco `env` richiede il riavvio della sessione.
+
+Il secondo e' che **l'inventario Proxmox regge**: dieci VM, nessun LXC, sei storage, niente
+aggiunto, rimosso, rinominato o spostato di bridge dal 27/07. Una correzione pero' c'e', ed e'
+**SRV-006**: il `-vnc 0.0.0.0:77` attribuito finora alla VM207 e' commentato su sei VM e non
+applicato, mentre l'unica console VNC davvero in ascolto sulla LAN piatta e' quella della **VM602
+Intralino** (`args: -vnc 0.0.0.0:50`, porta TCP 5950). Aperto anche **SEC-025**: `.mcp.json` ha
+`PROXMOX_ALLOW_DANGER` a `true` e l'unica difesa e' il token di sola lettura. **M18 resta scaduto**:
+il MCP non vede job di backup, pool, regole firewall, dischi fisici, SDN, HA e snapshot, e lo
+snapshot v5 lo deve lanciare l'IT Manager perche' lo script chiede le credenziali a runtime.
+
+Il terzo e' arrivato da fuori e pesa piu' degli altri due. **La licenza Nebula e' scaduta e
+l'organizzazione e' retrocessa a Base Pack**: la OpenAPI risponde `Forbidden` sugli endpoint dei
+siti e dei dispositivi, misurato confrontando la corsa delle 11:48 (snapshot completo, `mode: PRO`)
+con quella delle 16:32 (vuota). Switch e access point **passano da classe B a classe E**, la
+cadenza dello snapshot Nebula e' **sospesa**, M22b perde la verifica prima-e-dopo e il piano di
+portare il FLEX 500 su Nebula e' condizionato al rinnovo (gap **NEB-002**, runbook §NEB-002).
+L'ultima lettura buona e' congelata in
+`_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json`. **Prima domanda da fare
+alla prossima apertura**: il rinnovo del Professional Pack e' una strada aperta o esclusa, perche'
+da li' dipende se la fonte torna o se va scritta la rinuncia dichiarata.
 
 **Igiene sanata il 05/08/2026, e un gap nuovo.** La chiave API Nebula e' ora nella variabile
 d'ambiente utente `NEBULA_API_KEY` e il file sul desktop e' cancellato: dalla prossima sessione gli
