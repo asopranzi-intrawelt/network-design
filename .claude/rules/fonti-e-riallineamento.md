@@ -48,12 +48,38 @@ notifica quando qualcosa cambia.
 
 | Fonte | Come si legge | Autorevole su | Cadenza |
 |---|---|---|---|
-| Nebula OpenAPI | `scripts/Get-NebulaSnapshot.ps1` → `output/nebula-*` | porte, PVID, VLAN ammesse, tabella MAC, access point | da confermare |
+| ~~Nebula OpenAPI~~ | ~~`scripts/Get-NebulaSnapshot.ps1`~~ | ~~porte, PVID, VLAN ammesse, tabella MAC, access point~~ | **sospesa dal 05/08/2026**, vedi §Fonte automatica perduta |
 | Proxmox REST | `scripts/Get-ProxmoxSnapshot.ps1` → `output/proxmox-*` | VM, storage, bridge, job di backup | da confermare |
 | NinjaOne | `scripts/Get-NinjaSnapshot.ps1` → `output/ninjaone-*` | endpoint, interfacce, policy, workgroup | da confermare |
-| MCP `proxmox` | tool MCP, token di sola lettura | stato puntuale di nodi e VM | su necessita' |
+| MCP `proxmox` | tool MCP, token di sola lettura, credenziali dal blocco `env` di `settings.local.json` (ADR-021, verificato il 05/08/2026) | stato puntuale di nodi, VM e configurazione per VM | su necessita'; e' oggi l'unica classe B che risponde subito |
 | GUI firewall Zyxel | solo tramite l'IT Manager, con screenshot | interfacce, DHCP, policy, DNS, NAT | su necessita' |
 | Pannelli degli apparati | solo tramite l'IT Manager | multifunzione, NAS, telefoni, UPS | su necessita' |
+
+### Fonte automatica perduta: la OpenAPI Nebula, dal 05/08/2026
+
+Registrato il 05/08/2026, gap NEB-002. L'organizzazione Nebula e' stata retrocessa a Base Pack per
+scadenza della licenza di un dispositivo, e la chiave NCC OpenAPI richiede il Professional Pack.
+La perdita e' misurata, non temuta: alle 11:48 dello stesso giorno lo snapshot conteneva i cinque
+apparati con stato porte, `port-settings` e tabelle MAC e l'organizzazione dichiarava `mode: PRO`;
+alle 16:32, con la stessa chiave, gli endpoint `/sites` e `/sites/devices` rispondono `Forbidden` e
+lo snapshot esce vuoto.
+
+Ne segue che **i due switch e i tre access point passano dalla classe B alla classe E**: si leggono
+solo aprendo la GUI, cioe' solo tramite l'IT Manager e con uno screenshot. Il piano dati non e'
+toccato e la gestione dalla GUI resta possibile anche in Base Pack, quindi non e' un guasto: e' la
+perdita del canale che rendeva verificabile per misura cio' che adesso torna a essere ricordato.
+
+Conseguenza pratica sulla cadenza, che va letta insieme alla tabella in coda a questo documento: la
+riga dello snapshot Nebula e' sospesa, non rimandata. Finche' resta cosi', ogni affermazione del
+progetto su porte, PVID, VLAN ammesse e tabelle MAC ha la freschezza dell'ultima lettura utile, che
+e' quella delle 11:48 del 05/08/2026, congelata fuori git in
+`_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json`. E' esattamente lo schema
+dell'obsolescenza silenziosa che questo documento descrive nella sua premessa, con la differenza
+che qui la data di scadenza e' nota.
+
+Da fare quando la licenza viene rinnovata: rilanciare lo script, confrontare l'esito con lo
+snapshot congelato per vedere che cosa e' cambiato nel frattempo, e riportare questa riga in classe
+B con la sua cadenza.
 
 ### Fonte automatica pianificata: lo USG FLEX 500 su Nebula
 
@@ -82,6 +108,11 @@ Vincolo da non perdere quando arrivera': la chiave Nebula in uso e' di sola lett
 (ADR-009), e il canale di scrittura verso gli switch si e' dimostrato inaffidabile (ADR-010,
 NEB-001). Portare il firewall su Nebula non deve trasformarsi nell'occasione per scrivere
 configurazioni di sicurezza da un canale che ha gia' perso silenziosamente delle scritture.
+
+Precondizione aggiunta il 05/08/2026: questo piano vale **solo se la licenza torna al Professional
+Pack**. Con il Base Pack la chiave OpenAPI non funziona per nessun apparato, quindi portare il
+firewall su Nebula non lo renderebbe interrogabile da script e resterebbe un vantaggio di sola
+gestione. La domanda "quando succede" e' quindi ora preceduta da "se si rinnova".
 
 Il principio che governa questa classe e' che una misura batte una memoria. Tre delle
 correzioni del 03/08/2026 sono venute da qui e non da un documento.
@@ -212,7 +243,7 @@ diciannove.
 | Fonte | Cadenza | Stato |
 |---|---|---|
 | Delta OneDrive, tre radici | ogni sessione, automatico via hook; triage obbligatorio se arretrato di piu' di qualche giorno; `-UpdateBaseline` solo dopo il triage | confermata |
-| Snapshot Nebula | prima di ogni task che tocca porte, VLAN o access point, e comunque una volta a settimana | confermata |
+| Snapshot Nebula | **sospesa dal 05/08/2026** (NEB-002: licenza retrocessa a Base Pack, OpenAPI non autorizzata). Era: prima di ogni task su porte, VLAN o access point e comunque settimanale. Si riattiva tale e quale al rinnovo del Professional Pack | sospesa |
 | Snapshot Proxmox | quando cambia l'inventario VM, e comunque una volta al mese | confermata |
 | Snapshot NinjaOne | prima di ogni intervento massivo sulle postazioni | confermata |
 | GUI firewall | su necessita', con screenshot | confermata |

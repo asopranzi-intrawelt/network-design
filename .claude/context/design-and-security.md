@@ -66,6 +66,26 @@ job di backup e stato del firewall. Il conteggio a nove VM scritto in
 prossimo `Get-ProxmoxSnapshot.ps1` (M18) sostituira' questa riconciliazione
 parziale con uno snapshot v5 completo.
 
+Seconda riconciliazione live, 05/08/2026, sempre via MCP e sempre in sola
+lettura. L'inventario qui sopra **regge senza modifiche**: dieci VM, nessun
+container LXC, sei storage, nessuna macchina aggiunta, rimossa, rinominata o
+spostata di bridge dal 27/07. Coincidono uno a uno VMID, nomi, stati (VM203
+template ferma compresa) e assegnazioni dei bridge, e coincidono i dettagli
+dichiarati sulle due VM applicative: la 207 con sei vCPU, sedici GB e dischi 32G
+piu' 96G su SERVIZI, la 208 con quattro core, otto GB con balloon a quattro,
+disco 100G in `cache=writethrough`, `onboot=1` e `firewall=1` sulla NIC di
+`vmbr0`. Il nodo e' scarico come allora, quarantotto core al quattro per cento,
+novantotto GiB occupati su centoventicinque, uptime di settantasette giorni,
+coerente con i sessantotto misurati nove giorni prima. Verificata anche la
+configurazione globale degli storage, identica ai sei dello snapshot v4.
+
+Resta fuori dalla portata del MCP, e continua a richiedere lo snapshot v5 di
+M18: job di backup, appartenenza ai pool (compresa quella della VM208, tuttora
+non verificata), regole firewall di cluster e per VM, dischi fisici, dispositivi
+PCI, SDN, HA e snapshot delle VM. La cadenza concordata per lo snapshot completo
+e' mensile e l'ultimo e' dell'08/07, quindi M18 e' scaduto: il MCP ha confermato
+cio' che sa confermare, non lo sostituisce.
+
 ## VM207 e VM208: progetti applicativi ospitati (verificato live il 27/07/2026)
 
 Le due VM piu' recenti ospitano progetti software con repository, documentazione e
@@ -79,9 +99,21 @@ porta 8000 legata all'indirizzo di LAN della VM (non su loopback), piu' un secon
 servizio HTTP sulla porta 80. Monta in CIFS una condivisione del NAS (10.61.20.177)
 con un account di servizio dedicato, che e' la scelta corretta, e tiene i dati su un
 disco separato montato su `/srv`. La VM e' sul bridge `vmbr3`, quello dei servizi
-separati. Due elementi di postura aperti: il parametro `-vnc 0.0.0.0:77` nella
-configurazione QEMU e un file di credenziali in chiaro nella home dell'utente
-(gap SRV-005).
+separati. Resta aperto come elemento di postura il file di credenziali in chiaro
+nella home dell'utente (gap SRV-005).
+
+Correzione del 05/08/2026 sulla seconda meta' di SRV-005, cioe' il parametro VNC.
+La lettura live di tutte e dieci le configurazioni mostra che `-vnc 0.0.0.0:77`
+compare su **sei** VM (202, 203, 204, 205, 206, 207) e in tutte e sei sta nel
+campo `description`, cioe' su una riga commentata che non viene passata al
+processo QEMU. L'unica VM con un argomento davvero applicato e' la **VM602
+Intralino**, con `args: -vnc 0.0.0.0:50`. L'esposizione reale e' quindi una
+console VNC in ascolto su tutte le interfacce dell'host, cioe' sull'indirizzo di
+`vmbr0` che sta sulla LAN piatta `/19`, sulla porta TCP 5950, e riguarda la VM602
+e non la VM207. VNC nudo non e' cifrato e senza password di display non e'
+autenticato. Tracciato come gap **SRV-006**; la conferma a livello di processo
+(`qm showcmd 602` sul nodo) e la verifica dell'eventuale password di display non
+sono ottenibili dal MCP e restano da fare.
 
 La VM208 esegue il pilota interno del portale di supporto ISO27001: uno stack
 container con database PostgreSQL, cache Redis, identity provider Keycloak, API e

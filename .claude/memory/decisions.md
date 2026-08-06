@@ -639,6 +639,53 @@ decisioni qui sopra e' un confine di sicurezza: sono igiene contro il vettore pi
 in questo contesto e' l'esposizione accidentale, piu' la riduzione del numero di posti da
 presidiare da quattro a tre.
 
+### Verifica del 05/08/2026 (sessione del pomeriggio): il MCP funziona senza le variabili di Windows
+
+Questa e' la verifica che l'ADR stesso poneva come condizione — "le variabili nel registro si
+rimuovono solo dopo la verifica al riavvio, non prima" — ed e' lo scopo per cui la sessione e'
+stata aperta. Esito: **positivo su tutti i punti**, e le variabili utente di Windows risultano
+gia' rimosse.
+
+Prima misura, l'ambiente per ambito. A livello **utente** non esiste piu' nessuna variabile che
+corrisponda a `PROXMOX`, `PVE`, `NEBULA` o `NINJA`. A livello **macchina** esiste soltanto
+`NINJARMMCLI`, che non appartiene a questo schema: la installa lo strumento a riga di comando
+dell'agente RMM e non contiene segreti del progetto, quindi non va toccata. A livello di
+**processo**, invece, la sessione vede `PROXMOX_URL`, `PROXMOX_TOKEN_NAME`, `PROXMOX_TOKEN_VALUE`
+e `NEBULA_API_KEY`. Poiche' nessuna di esse esiste nei due ambiti persistenti, l'unica origine
+possibile e' l'iniezione della sessione.
+
+Seconda misura, la prova diretta di quale sia il canale. Nel blocco `env` di
+`.claude/settings.local.json` era stata inserita una variabile spia, `NETDESIGN_ENV_CANARY`, che
+non ha nessun altro uso. Nell'ambiente di processo vale `settings-local-attivo`, nell'ambito
+utente non esiste. La catena e' quindi dimostrata e non inferita: i valori arrivano da quel file
+e da nessun altro posto.
+
+Terza misura, la prova funzionale sul consumatore che conta. Il server MCP `proxmox` ha risposto a
+`list_nodes`, `list_vms`, `list_lxc_containers`, `list_storage` e a dieci `get_instance_config`
+consecutivi, cioe' l'espansione `${PROXMOX_URL}`, `${PROXMOX_TOKEN_NAME}` e `${PROXMOX_TOKEN_VALUE}`
+di `.mcp.json` ha prodotto credenziali valide leggendole dall'ambiente di processo alimentato dal
+file di progetto. Non c'e' stato nessun `${VAR}` non espanso e nessun errore di autenticazione.
+
+Quarta misura, la prova sull'altro consumatore, gli script. `Get-NebulaSnapshot.ps1` lanciato come
+sottoprocesso della sessione ha stampato da se' "Chiave API letta da variabile d'ambiente
+NEBULA_API_KEY", quindi la clausola della documentazione sui sottoprocessi vale in campo e non
+solo sulla carta.
+
+Limite da non perdere, ed e' il prezzo della scelta. Quelle variabili esistono **solo dentro una
+sessione di Claude Code aperta su questo progetto**. Uno script lanciato da una finestra PowerShell
+qualunque, da un'utilita' di pianificazione o da un hook di un altro progetto non le trova piu'.
+Oggi non rompe niente, perche' `Get-ProxmoxSnapshot.ps1` chiede comunque le credenziali a runtime e
+`Get-NebulaSnapshot.ps1` ripiega sul prompt, ma qualunque automazione futura fuori sessione va
+progettata sapendolo, non scoprendolo. Secondo limite operativo: una modifica al blocco `env`
+richiede il riavvio della sessione per avere effetto.
+
+Osservazione di postura emersa nella stessa verifica, registrata come gap **SEC-025**: `.mcp.json`
+porta `PROXMOX_ALLOW_DANGER` a `true`, quindi i tool distruttivi del server MCP (creazione,
+cancellazione, controllo di alimentazione, rollback di snapshot) sono abilitati lato client e
+l'unica cosa che li rende inoffensivi e' il token PVEAuditor di sola lettura. La difesa e' singola
+dove potrebbe essere doppia: portarlo a `false` non toglie nulla al lavoro fatto in questa
+sessione, che e' tutto in lettura.
+
 ## ADR-020 — Le fonti del progetto sono cinque classi, e quattro non notificano: protocollo di riallineamento
 
 Data: 2026-08-03
