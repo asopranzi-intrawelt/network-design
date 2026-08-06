@@ -1,14 +1,12 @@
 # Helpdesk Operations – Intrawelt S.a.s.
 
-Procedure operative helpdesk IT. Owner: Alessio Sopranzi.
-Aggiornato: giugno 2026.
+Procedure operative helpdesk IT. Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ---
 
 ## Onboarding / Offboarding dipendenti e collaboratori
 
-Fonte: `Helpdesk_Onboarding/ONBOARDING_OUTBOARDING.docx` (444 KB)
-Trigger: mail Persona-J a Persona-Z del 09/01/2025 → avvio formalizzazione procedura.
+Fonte: `Helpdesk_Onboarding/ONBOARDING_OUTBOARDING.docx` (444 KB) Trigger: mail Persona-J a Persona-Z del 09/01/2025 → avvio formalizzazione procedura.
 
 **Nota:** le credenziali degli account creati sono registrate in `Cartella_riservata_IT/Email_Usr-Pwd_Office365.xlsx` (MAI ingestire, file riservato locale).
 
@@ -49,9 +47,7 @@ Trigger: mail Persona-J a Persona-Z del 09/01/2025 → avvio formalizzazione pro
 
 Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA CONNESSIONE DA REMOTO ALLA VPN AZIENDALE.docx`
 
-**Client:** ZyWall SecuExtender (Zyxel VPN SSL client)
-**Server VPN:** `203.0.113.5` (IP pubblico Vianova, subnet .x/28)
-**Protocollo:** SSL/TLS (SecuExtender)
+**Client:** ZyWall SecuExtender (Zyxel VPN SSL client) **Server VPN:** `203.0.113.5` (IP pubblico Vianova, subnet .x/28) **Protocollo:** SSL/TLS (SecuExtender)
 
 ### Procedura connessione
 
@@ -64,8 +60,7 @@ Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA 
 7. Aprire **Connessione Desktop Remoto** di Windows
 8. Inserire IP interno del proprio PC aziendale + credenziali Windows
 
-> Nota: se la password non viene riconosciuta, inserirla manualmente senza copia-incolla
-> (il client SecuExtender può avere problemi con il clipboard).
+> Nota: se la password non viene riconosciuta, inserirla manualmente senza copia-incolla (il client SecuExtender può avere problemi con il clipboard).
 
 ---
 
@@ -73,16 +68,13 @@ Fonte: `ARCHITETTURA SERVER-CLOUD-LINEE/ZYXEL FIREWALL e VPN/BREVE GUIDA PER LA 
 
 ### Cos'è T-Rex
 
-T-Rex è il gestionale di project management e workflow traduzioni di Intrawelt,
-basato su **Odoo** e ospitato da **OpenForce** (partner Odoo).
+T-Rex è il gestionale di project management e workflow traduzioni di Intrawelt, basato su **Odoo** e ospitato da **OpenForce** (partner Odoo).
 
 Accesso: via browser (URL produzione gestito da OpenForce).  
 Ambiente di test: disponibile (URL separato).  
 Chat interna: "T-Rex | All PM" su Microsoft Teams.
 
-**Egetrad**: vecchio gestionale precedente (usato fino al 2021). Ora solo archivio statico.
-VM Ubuntu su Proxmox (10.61.20.5), porta 8080 pubblica e privata.
-Regola firewall `EGETRAD_WEB` da disabilitare quando dismessa definitivamente (task_27).
+**Egetrad**: vecchio gestionale precedente (usato fino al 2021). Ora solo archivio statico. VM Ubuntu su Proxmox (10.61.20.5), porta 8080 pubblica e privata. Regola firewall `EGETRAD_WEB` da disabilitare quando dismessa definitivamente (task_27).
 
 ### Apertura ticket con OpenForce
 
@@ -113,25 +105,19 @@ OpenForce è il fornitore di supporto Odoo/T-Rex.
 
 Fonte: `Helpdesk_T-Rex/Mancata Ricezione Mail Gestionale TRex_Odoo.docx`
 
-Il server IMAP di T-Rex perde periodicamente la connessione alle caselle di posta in arrivo.
-Sintomo: mail non ricevute nel gestionale nonostante arrivino nelle caselle Outlook.
+Il server IMAP di T-Rex perde periodicamente la connessione alle caselle di posta in arrivo. Sintomo: mail non ricevute nel gestionale nonostante arrivino nelle caselle Outlook.
 
 **Procedura sblocco (ripetibile manualmente):**
 
 1. Aprire browser in modalità **Incognito**.
 2. Accedere a T-Rex con account admin: `persona-e@intrawelt.com` (o altro admin).
-3. Navigare a: `https://intrawelt.openforce.it/web?debug=1#menu_id=107&action=121`
-   → ri-autenticarsi con le stesse credenziali.
+3. Navigare a: `https://intrawelt.openforce.it/web?debug=1#menu_id=107&action=121` → ri-autenticarsi con le stesse credenziali.
 4. Andare su **Ricezione → Edit Settings**.
-5. Inserire credenziali server IMAP della casella principale (`trex@intrawelt.com` /
-   `[redacted]`) → cliccare **Preleva Ora**.
-6. Aprire nuova finestra incognito con:
-   `https://intrawelt.openforce.it/web?debug=1#id=2&action=121&model=fetchmail.server&view_type=form&menu_id=`
-7. Ri-autenticarsi (persona-e@intrawelt.com) → **Edit Settings** casella opportunità
-   (`opportunita@intrawelt.com` / `[redacted]`) → **Preleva Ora**.
+5. Inserire credenziali server IMAP della casella principale (`trex@intrawelt.com` / `[redacted]`) → cliccare **Preleva Ora**.
+6. Aprire nuova finestra incognito con: `https://intrawelt.openforce.it/web?debug=1#id=2&action=121&model=fetchmail.server&view_type=form&menu_id=`
+7. Ri-autenticarsi (persona-e@intrawelt.com) → **Edit Settings** casella opportunità (`opportunita@intrawelt.com` / `[redacted]`) → **Preleva Ora**.
 
-Entrambe le caselle di posta in arrivo risultano sbloccate. Causa profonda: bug noto
-Odoo/OpenForce; non è stata identificata una soluzione strutturale permanente.
+Entrambe le caselle di posta in arrivo risultano sbloccate. Causa profonda: bug noto Odoo/OpenForce; non è stata identificata una soluzione strutturale permanente.
 
 ### T-Rex – CSRF Token invalido e batch upload fallito (procedura pulizia sessione)
 
@@ -141,26 +127,19 @@ Incidente: **19/02/2026** — Persona-F segnala a Persona-E.
 **Sintomi:**
 - Batch upload file XML analisi bloccato (caricamento infinito)
 - Alert "Session expired (invalid CSRF token)" in vista preventivi
-- Problema limitato a una singola postazione; stampa preventivi fallisce se eseguita
-  subito dopo altra stampa
+- Problema limitato a una singola postazione; stampa preventivi fallisce se eseguita subito dopo altra stampa
 
-**Causa:** sessione utente Odoo corrotta (sessioni duplicate/scadute, service worker
-obsoleto) → CSRF token invalidato → richieste POST batch non autorizzate.
-Il caricamento singolo funziona perché non genera richieste simultanee/sequenziali ravvicinate.
+**Causa:** sessione utente Odoo corrotta (sessioni duplicate/scadute, service worker obsoleto) → CSRF token invalidato → richieste POST batch non autorizzate. Il caricamento singolo funziona perché non genera richieste simultanee/sequenziali ravvicinate.
 
 **Procedura risoluzione:**
 
-1. **Chiudi tutte le tab T-Rex** (Odoo usa sessioni persistenti: tab datate sovrascrivono
-   token recenti). Logout completo (in alto a destra → "Esci").
+1. **Chiudi tutte le tab T-Rex** (Odoo usa sessioni persistenti: tab datate sovrascrivono token recenti). Logout completo (in alto a destra → "Esci").
 2. Chiudi completamente il browser (inclusi processi in background).
-3. **Pulizia cookie/cache sito specifico:** navigare a `https://trex.intrawelt.com/`,
-   click sull'icona lucchetto nella barra → "Impostazioni sito" → "Elimina dati"
-   (rimuove solo cookie/cache di quel dominio).
+3. **Pulizia cookie/cache sito specifico:** navigare a `https://trex.intrawelt.com/`, click sull'icona lucchetto nella barra → "Impostazioni sito" → "Elimina dati" (rimuove solo cookie/cache di quel dominio).
 4. **Pulizia avanzata DevTools:** F12 → scheda "Application" → "Storage" → "Clear site data".
 5. **Flush DNS:** aprire prompt comandi come Amministratore → `ipconfig /flushdns`.
 
-**Risultato:** al primo accesso successivo Odoo ricostruisce sessione, token CSRF validi,
-cache JS e service worker. L'utente deve reinserire le proprie credenziali.
+**Risultato:** al primo accesso successivo Odoo ricostruisce sessione, token CSRF validi, cache JS e service worker. L'utente deve reinserire le proprie credenziali.
 
 ---
 
@@ -182,8 +161,7 @@ Entra ID admin: `https://entra.microsoft.com`
 2. Per Azure: canale separato tramite portale Azure (non l'admin M365)
 3. Cronologia ticket: `admin.cloud.microsoft → Home → Cronologia richiesta di servizio`
 
-**Caso precedente**: ticket #2411131420003269 (nov 2024) – fattura Azure non visibile nel portale M365;
-il caso è passato a Microsoft Azure team dopo chiamata del 14/11/2024.
+**Caso precedente**: ticket #2411131420003269 (nov 2024) – fattura Azure non visibile nel portale M365; il caso è passato a Microsoft Azure team dopo chiamata del 14/11/2024.
 
 ### SharePoint e OneDrive
 
@@ -208,13 +186,9 @@ Percorso locale sincronizzato: `C:\Users\Alessio Sopranzi\OneDrive - Intrawelt S
 
 ### Account utenti dimessi
 
-**Persona-P e Persona-R** (task_34): Mail chiuse da Microsoft in settembre 2025.
-Cleanup dettagliato pendente (molti servizi/account terzi associati alle loro mail).
-File di analisi: `mail_pasquale_giordano_analisi 23042025.xlsx`.
-Esempio da gestire: Heroku richiede pass attraverso le loro mail.
+**Persona-P e Persona-R** (task_34): Mail chiuse da Microsoft in settembre 2025. Cleanup dettagliato pendente (molti servizi/account terzi associati alle loro mail). File di analisi: `mail_pasquale_giordano_analisi 23042025.xlsx`. Esempio da gestire: Heroku richiede pass attraverso le loro mail.
 
-**Francesca**: Cartella OneDrive allineata dopo uscita (task_91, completata entro 08/09/2025).
-Flussi SCENIA/Trados che dipendevano dal suo account: da ripristinare (task_97).
+**Francesca**: Cartella OneDrive allineata dopo uscita (task_91, completata entro 08/09/2025). Flussi SCENIA/Trados che dipendevano dal suo account: da ripristinare (task_97).
 
 ### Azure MFA (task_65)
 
@@ -242,26 +216,9 @@ Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
 - Stima: 20h – PRIORITY 2
 - Operazione "molto impegnativa" secondo nota nel piano attività
 
-**Procedura riavvio servizi GroupShare:** collegarsi con Remote Desktop a
-WINGROUPSHARE, aprire "Trados GroupShare Console", andare sulla lista
-completa dei servizi Windows e usare "Restart Services" sulla colonna di
-destra; verificare che tutti risultino "Running". Se il riavvio dei
-servizi non risolve, riavviare l'intero server prima di escalare oltre.
+**Procedura riavvio servizi GroupShare:** collegarsi con Remote Desktop a WINGROUPSHARE, aprire "Trados GroupShare Console", andare sulla lista completa dei servizi Windows e usare "Restart Services" sulla colonna di destra; verificare che tutti risultino "Running". Se il riavvio dei servizi non risolve, riavviare l'intero server prima di escalare oltre.
 
-**Errore "apertura progetto di un altro utente" su GroupShare:** un utente
-che tenta di aprire un progetto pubblicato da un altro PM riceve un
-errore. Tutti i PM hanno diritti di Power User sulla root e possono aprire
-qualsiasi progetto pubblicato dagli altri: la soluzione e' andare su
-Projects → Home → Open Project (icona server, non l'icona "+" che apre i
-progetti locali), selezionare il progetto dalla lista di quelli pubblicati
-sul server e salvarne una copia locale in una cartella dedicata (struttura
-consigliata: una cartella per progetto con nome standardizzato, per
-ritrovarli facilmente). Il Power User puo' poi operare liberamente sui
-file non gia' in checkout da altri; se necessario puo' forzare un Cancel
-Check-out (da Studio) o un Force Check-in (da browser). Riceve notifiche
-solo per le fasi a cui e' assegnato, ma puo' auto-assegnarsene altre se
-necessario. **Importante**: non bisogna mai accedere con le credenziali di
-un altro PM, solo con le proprie.
+**Errore "apertura progetto di un altro utente" su GroupShare:** un utente che tenta di aprire un progetto pubblicato da un altro PM riceve un errore. Tutti i PM hanno diritti di Power User sulla root e possono aprire qualsiasi progetto pubblicato dagli altri: la soluzione e' andare su Projects → Home → Open Project (icona server, non l'icona "+" che apre i progetti locali), selezionare il progetto dalla lista di quelli pubblicati sul server e salvarne una copia locale in una cartella dedicata (struttura consigliata: una cartella per progetto con nome standardizzato, per ritrovarli facilmente). Il Power User puo' poi operare liberamente sui file non gia' in checkout da altri; se necessario puo' forzare un Cancel Check-out (da Studio) o un Force Check-in (da browser). Riceve notifiche solo per le fasi a cui e' assegnato, ma puo' auto-assegnarsene altre se necessario. **Importante**: non bisogna mai accedere con le credenziali di un altro PM, solo con le proprie.
 
 ### Trados Studio
 
@@ -282,19 +239,7 @@ un altro PM, solo con le proprie.
 | Tempo speso | ~1 mese netto nei 2 anni (task_83) |
 | Tipo attività | Varie problematiche hardware/software, gestione badge |
 
-**Migrazione W2012_bioserver su Proxmox (febbraio 2025)**: il server
-Windows Server 2012 che ospita BioStar 2 e Timewalker e' stato tra le
-macchine legacy migrate dall'host ESXi HP G5 al nuovo Proxmox. Il 19/02/2025
-la migrazione ha incontrato un problema noto per questa generazione di
-Windows Server: **Windows Server 2012 (come Windows 7/8) tollera male un
-cambio di hardware anche solo virtuale** (cambio di virtualizzatore da
-VMware ESXi a Proxmox), causando un boot loop non risolvibile con i normali
-strumenti di ripristino (chkdsk, bootrec, cambio ordine di avvio
-BIOS/UEFI). Il problema non si presenta piu' da Windows Server 2019 in poi.
-La macchina resta quindi sul vecchio virtualizzatore fino a un secondo
-tentativo di migrazione (backup Veeam + ripristino con iniezione driver, o
-migrazione dei soli servizi su una nuova VM Windows Server piu' recente,
-gia' pianificata su VM100).
+**Migrazione W2012_bioserver su Proxmox (febbraio 2025)**: il server Windows Server 2012 che ospita BioStar 2 e Timewalker e' stato tra le macchine legacy migrate dall'host ESXi HP G5 al nuovo Proxmox. Il 19/02/2025 la migrazione ha incontrato un problema noto per questa generazione di Windows Server: **Windows Server 2012 (come Windows 7/8) tollera male un cambio di hardware anche solo virtuale** (cambio di virtualizzatore da VMware ESXi a Proxmox), causando un boot loop non risolvibile con i normali strumenti di ripristino (chkdsk, bootrec, cambio ordine di avvio BIOS/UEFI). Il problema non si presenta piu' da Windows Server 2019 in poi. La macchina resta quindi sul vecchio virtualizzatore fino a un secondo tentativo di migrazione (backup Veeam + ripristino con iniezione driver, o migrazione dei soli servizi su una nuova VM Windows Server piu' recente, gia' pianificata su VM100).
 
 ---
 
@@ -384,16 +329,13 @@ Documento informativo interno per i dipendenti sull'uso di NinjaOne RMM.
 ## Infrastruttura Seeweb e GroupShare – problemi noti
 
 **Ticket Amazon AWS** (task_51): ha impegnato 3 mesi consecutivi a 4h/settimana default.  
-**Ticket Seeweb** (task_9): dopo migrazione TIM → Vianova, GroupShare (10.77.116.3) non raggiungibile.
-Risoluzione: Seeweb ha replicato la configurazione LAN che Alessio aveva già configurato manualmente.
-Documentata in note SYSADMIN del piano attività.
+**Ticket Seeweb** (task_9): dopo migrazione TIM → Vianova, GroupShare (10.77.116.3) non raggiungibile. Risoluzione: Seeweb ha replicato la configurazione LAN che Alessio aveva già configurato manualmente. Documentata in note SYSADMIN del piano attività.
 
 ---
 
 ## IntraLino – Assistente IT Interno (RAG Chatbot)
 
-IntraLino è l'assistente virtuale IT di Intrawelt. È un chatbot RAG addestrato sui documenti
-tecnici IT interni (la stessa `Documenti - IT` folder che stiamo ingestionando).
+IntraLino è l'assistente virtuale IT di Intrawelt. È un chatbot RAG addestrato sui documenti tecnici IT interni (la stessa `Documenti - IT` folder che stiamo ingestionando).
 
 **Caratteristiche:**
 - Nome: IntraLino, "assistente IT personale targato Intrawelt"
@@ -403,9 +345,7 @@ tecnici IT interni (la stessa `Documenti - IT` folder che stiamo ingestionando).
 - Architettura: RAG (Retrieval-Augmented Generation) su Qdrant/Zep (Zep abbandonato mar 2026)
 - Stato: avviato fine 2024 con UNIMC/VRAI Lab; Zep abbandonato 25/03/2026; architettura attuale TBC
 
-**Knowledge base:** profilo addestramento (`IntraLino_profilo_addestramento.docx`):
-IntraLino sa rispondere su: errori Outlook, connessione VPN aziendale, stampante, reset password,
-problemi comuni IT aziendali. Non accede direttamente al PC utente, non modifica configurazioni avanzate.
+**Knowledge base:** profilo addestramento (`IntraLino_profilo_addestramento.docx`): IntraLino sa rispondere su: errori Outlook, connessione VPN aziendale, stampante, reset password, problemi comuni IT aziendali. Non accede direttamente al PC utente, non modifica configurazioni avanzate.
 
 **Gap:** migrazione RAG post-Zep non documentata in dettaglio (stack attuale da confermare).
 
@@ -415,15 +355,11 @@ problemi comuni IT aziendali. Non accede direttamente al PC utente, non modifica
 
 ### Cos'è
 
-ENI Servizi è un ufficio ENI che commissiona traduzioni a Intrawelt. A fine mese invia un
-file `.xls` con il riepilogo degli ordini del periodo → Intrawelt genera il report corretto
-tramite IntraPanel e lo resubmits con eventuali correzioni → poi fattura.
+ENI Servizi è un ufficio ENI che commissiona traduzioni a Intrawelt. A fine mese invia un file `.xls` con il riepilogo degli ordini del periodo → Intrawelt genera il report corretto tramite IntraPanel e lo resubmits con eventuali correzioni → poi fattura.
 
 ### IntraPanel – App React/Flask (PC-Persona-R)
 
-**RISCHIO CRITICO**: L'app è installata su `PC-Persona-R` (account Persona-R, ex-dipendente).
-Persona-R è uscito dall'azienda; l'app non ha mai sido migrata. Stato: presumibilmente ancora
-accessibile ma non presidiata. Backlog: task_27 (manutenzione app). Da migrare urgentemente.
+**RISCHIO CRITICO**: L'app è installata su `PC-Persona-R` (account Persona-R, ex-dipendente). Persona-R è uscito dall'azienda; l'app non ha mai sido migrata. Stato: presumibilmente ancora accessibile ma non presidiata. Backlog: task_27 (manutenzione app). Da migrare urgentemente.
 
 | Componente | Dettaglio |
 |------------|-----------|
@@ -445,10 +381,7 @@ accessibile ma non presidiata. Backlog: task_27 (manutenzione app). Da migrare u
 - Colonna X: check urgenza (discrepanza tra ENI e TREX?)
 - Colonna AG: VERO = importo totale diverso dal nostro in TREX → da sistemare
 
-**Flusso di validazione:**
-Alessia confronta file intermedio vs TREX (export xlsx ordini per ID) → segnala discrepanze
-a ENI → ENI valida → Intrawelt fattura. Attenzione: export TREX mostra solo pagina attiva
-(es. 80/114 invece di 114/114 → usare paginazione o export completo).
+**Flusso di validazione:** Alessia confronta file intermedio vs TREX (export xlsx ordini per ID) → segnala discrepanze a ENI → ENI valida → Intrawelt fattura. Attenzione: export TREX mostra solo pagina attiva (es. 80/114 invece di 114/114 → usare paginazione o export completo).
 
 ### Procedura VIPA – Inserimento richieste in T-Rex (Wizard)
 
@@ -468,8 +401,7 @@ Fonte: `Helpdesk_T-Rex/Storico ticket/2022-11-23_EniVipa/ENI_VIPA_Guida_inserime
     - Task asseverazione/legalizzazione (Doubinina, Mansour): UdM = 1 Documento per listino fornitore
 11. Fine mese: creazione PO per rendicontazione traduttori
 
-**Nota:** se il Richiedente non è in anagrafica, crearlo come nuovo contatto e associarlo a Eniservizi S.p.A.
-Il campo Nome Progetto duplicato per stessa persona in più ruolini → fix in sviluppo (aggiunge tipo documento).
+**Nota:** se il Richiedente non è in anagrafica, crearlo come nuovo contatto e associarlo a Eniservizi S.p.A. Il campo Nome Progetto duplicato per stessa persona in più ruolini → fix in sviluppo (aggiunge tipo documento).
 
 ---
 
@@ -489,41 +421,24 @@ Analisi flussi condotta con Openforce (novembre 2025). Moduli da migrare da Odoo
 | Amministrazione | Validazione anagrafica; fatturazione; pagamenti; solleciti; export Unicredit |
 | Portale Freelancer | Area caricamento file (Intrawelt ↔ fornitore); chiusura progetti |
 
-**Stato:** Analisi flussi completata (scaletta nov 2025). Openforce ha preventivato i costi.
-Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione T-Rex).
+**Stato:** Analisi flussi completata (scaletta nov 2025). Openforce ha preventivato i costi. Migrazione bloccata su task_3 (120h, PRIORITY 1). Dipende da task_1 (formazione T-Rex).
 
-**Preventivo analisi (Openforce):** 27/11/2025, firmato per accettazione
-03/12/2025 (Persona-A). Pacchetto a ore con 2 Account Manager per
-"analisi flussi v12 e soluzioni v18" (OLDMIG); importo non riportato per
-policy amministrativa. Contatto tecnico Openforce cambiato nel frattempo:
-Referente-OpenForce-3 sostituisce Persona-U come referente tecnico dal
-03/12/2025 (Account Manager: Referente-OpenForce-2).
+**Preventivo analisi (Openforce):** 27/11/2025, firmato per accettazione 03/12/2025 (Persona-A). Pacchetto a ore con 2 Account Manager per "analisi flussi v12 e soluzioni v18" (OLDMIG); importo non riportato per policy amministrativa. Contatto tecnico Openforce cambiato nel frattempo: Referente-OpenForce-3 sostituisce Persona-U come referente tecnico dal 03/12/2025 (Account Manager: Referente-OpenForce-2).
 
-**Pressione temporale dal fornitore Odoo:** Odoo ha annunciato il
-28/10/2025 nuovi termini di supporto Enterprise: dal supporto limitato alle
-ultime 3 versioni (max 3 anni) a un supporto estendibile oltre 10 anni, ma
-con una fee aggiuntiva del 25% annuo sulle versioni legacy a partire da
-aprile 2026 per chi resta sulla v16 o precedenti — Intrawelt e' su Odoo 12,
-quindi soggetta a questa fee. Il 12/09/2025 Intrawelt aveva gia' confermato
-a Odoo l'intenzione di migrare alla v18 "prima possibile", frenata dalla
-customizzazione molto alta del proprio ambiente, con un incontro di
-persona previsto a Bruxelles tra Persona-A e il referente Odoo.
+**Pressione temporale dal fornitore Odoo:** Odoo ha annunciato il 28/10/2025 nuovi termini di supporto Enterprise: dal supporto limitato alle ultime 3 versioni (max 3 anni) a un supporto estendibile oltre 10 anni, ma con una fee aggiuntiva del 25% annuo sulle versioni legacy a partire da aprile 2026 per chi resta sulla v16 o precedenti — Intrawelt e' su Odoo 12, quindi soggetta a questa fee. Il 12/09/2025 Intrawelt aveva gia' confermato a Odoo l'intenzione di migrare alla v18 "prima possibile", frenata dalla customizzazione molto alta del proprio ambiente, con un incontro di persona previsto a Bruxelles tra Persona-A e il referente Odoo.
 
 ---
 
 ## Odoo – Integrazione portale SCENIA (04/03/2026)
 
-Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - portale/Notes - Meeting integrazione Odoo - portale 04032026.txt`
-Referente OpenForce: Referente-OpenForce-1.
+Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - portale/Notes - Meeting integrazione Odoo - portale 04032026.txt` Referente OpenForce: Referente-OpenForce-1.
 
-**Esigenza**: il portale SaaS SCENIA (clienti autenticati) deve creare SO in T-Rex/Odoo
-quando un cliente avvia una richiesta di traduzione con servizi aggiuntivi (freelancer).
+**Esigenza**: il portale SaaS SCENIA (clienti autenticati) deve creare SO in T-Rex/Odoo quando un cliente avvia una richiesta di traduzione con servizi aggiuntivi (freelancer).
 
 **Approccio tecnico**:
 - Protocol: Odoo xml-rpc (standard, nessun modulo aggiuntivo)
 - Auth: login con credenziali Odoo obbligatorio per ogni operazione (security layer nativo)
-- Utente servizio: `asopranzi@intrawelt.com` come account dedicato (compromise tra utente
-  per ogni PM vs. account admin anonimo; evita licenze aggiuntive)
+- Utente servizio: `asopranzi@intrawelt.com` come account dedicato (compromise tra utente per ogni PM vs. account admin anonimo; evita licenze aggiuntive)
 - Test env: `intrawelt-test.openforce.it`, db: `test_intrawelt` [credenziali in env var, non qui]
 - Warning migrazione: xml-rpc deprecato da v19, rimosso da v20 → pianificare json-rpc in futuro
 
@@ -531,12 +446,9 @@ quando un cliente avvia una richiesta di traduzione con servizi aggiuntivi (free
 1. Cliente loggato nel portale avvia richiesta
 2. Portale chiama API Odoo → crea SO con dati: cliente, servizio mappato, coppie linguistiche, PM
 3. PM riceve notifica in T-Rex → assegna task interni/freelancer
-4. Fatturazione: tramite Budget Order (BO) concordato offline per clienti enterprise;
-   primo periodo: BO inserito manualmente dal PM assegnato
+4. Fatturazione: tramite Budget Order (BO) concordato offline per clienti enterprise; primo periodo: BO inserito manualmente dal PM assegnato
 
-**CRM website**: stesso approccio xml-rpc per CTA del nuovo sito intrawelt.com (Cappelli Design,
-apr 2026) → crea opportunità Odoo CRM. Redirect area riservata clienti (Odoo) → da mantenere
-nel nuovo sito come semplice link.
+**CRM website**: stesso approccio xml-rpc per CTA del nuovo sito intrawelt.com (Cappelli Design, apr 2026) → crea opportunità Odoo CRM. Redirect area riservata clienti (Odoo) → da mantenere nel nuovo sito come semplice link.
 
 Documenti correlati nel folder:
 - `wrapper per creare SO in Odoo da portale.docx` (231 KB): wrapper tecnico xml-rpc
@@ -550,17 +462,12 @@ Documenti correlati nel folder:
 
 Fonte: `Sviluppo_T-Rex (Odoo)/[TBC] STUDIO - INTEGRAZIONE ODOO NINJAONE (RMM).txt`
 
-Idea esplorata da Alessio Sopranzi (nota interna, nessuna data; indicato "post migrazione
-gestionale" come prerequisito). Obiettivo: integrare NinjaOne RMM con Odoo per
-centralizzare dati IT nel gestionale.
+Idea esplorata da Alessio Sopranzi (nota interna, nessuna data; indicato "post migrazione gestionale" come prerequisito). Obiettivo: integrare NinjaOne RMM con Odoo per centralizzare dati IT nel gestionale.
 
 Possibili flussi:
-- **API + webhook**: NinjaOne API REST → script Python → Odoo JSON-RPC (endpoint, patch,
-  inventario HW/SW, alert → ticket Odoo o moduli custom asset management)
-- **Automazione via middleware**: Python/PowerShell; alert critici NinjaOne → ticket
-  automatici Odoo via script o webhook intermediari
-- **Reporting centralizzato**: aggregare dati NinjaOne in Odoo (SLA compliance, asset
-  lifecycle, performance IT)
+- **API + webhook**: NinjaOne API REST → script Python → Odoo JSON-RPC (endpoint, patch, inventario HW/SW, alert → ticket Odoo o moduli custom asset management)
+- **Automazione via middleware**: Python/PowerShell; alert critici NinjaOne → ticket automatici Odoo via script o webhook intermediari
+- **Reporting centralizzato**: aggregare dati NinjaOne in Odoo (SLA compliance, asset lifecycle, performance IT)
 
 Stato: **TBC** — da studiare con Fabio Giorgini + OpenForce dopo migrazione Odoo 12→18.
 
@@ -570,45 +477,26 @@ Stato: **TBC** — da studiare con Fabio Giorgini + OpenForce dopo migrazione Od
 
 Fonte: `Sviluppo_T-Rex (Odoo)/Integrazione Odoo - centralino cloud vianova/Notes.txt`
 
-**Obiettivo**: aggancio Vianova UCC al CRM Odoo — chiamate inbound/outbound come eventi
-contestualizzati (log, notifiche, recupero contatto in tempo reale).
+**Obiettivo**: aggancio Vianova UCC al CRM Odoo — chiamate inbound/outbound come eventi contestualizzati (log, notifiche, recupero contatto in tempo reale).
 
-**Stato**: nessun connettore nativo ufficiale Odoo-Vianova (verificato 2026).
-Integrazione tecnicamente realizzabile via due modalità:
+**Stato**: nessun connettore nativo ufficiale Odoo-Vianova (verificato 2026). Integrazione tecnicamente realizzabile via due modalità:
 
 | Modalità | Descrizione | Note |
 |----------|-------------|------|
 | IP PBX + SIP Trunk | PBX intermedio (SIP-compatibile) collegato a Vianova via SIP Trunk; Odoo dialoga con il PBX via websocket SIP/WebRTC | Architettura più robusta; Odoo nativo SIP; Vianova fornisce SIP Trunk (IP-based o registrato, SIP/TLS, SRTP) |
 | API REST Vianova | Integrazione eventi chiamata, click-to-call, screen-pop via API REST Vianova (endpoint OpenAPI su help.vianova.io) | Più flessibile ma richiede sviluppo custom; docs su https://help.vianova.io/docs/api-documentation |
 
-Prerequisiti Odoo lato SIP: provider SIP esponga server accessibile via websocket +
-supporto WebRTC (vedi docs.odoo.com/18.0/applications/productivity/voip).
+Prerequisiti Odoo lato SIP: provider SIP esponga server accessibile via websocket + supporto WebRTC (vedi docs.odoo.com/18.0/applications/productivity/voip).
 
-Dipendenza: in attesa di migrazione centralino fisico Panasonic → Vianova UCC (cloud),
-documentata in `telefono-pbx-voip.md` e `2026-switch-piano-terra.md`.
+Dipendenza: in attesa di migrazione centralino fisico Panasonic → Vianova UCC (cloud), documentata in `telefono-pbx-voip.md` e `2026-switch-piano-terra.md`.
 
 ---
 
 ## Odoo 12 – Ambiente di sviluppo locale e restore del dump (28/05/2025)
 
-Fonte: `Sviluppo_T-Rex (Odoo)/Odoo_12/28052025 - Risoluzione problema restore/`
-(estratto in `_notes/.tmp-docx-odoo-restore/`; master password e password di
-reset nel solo sorgente).
+Fonte: `Sviluppo_T-Rex (Odoo)/Odoo_12/28052025 - Risoluzione problema restore/` (estratto in `_notes/.tmp-docx-odoo-restore/`; master password e password di reset nel solo sorgente).
 
-Procedura consolidata per ricostruire l'ambiente di sviluppo Odoo 12 in
-locale (Docker `intrawelt-docker-env`) e ripristinarvi un dump di produzione.
-Dal database manager (`<ip>:8070/web/database/manager`) si cancella
-l'eventuale database precedente e si esegue il restore del `.dump` con la
-master password (nel file di configurazione dell'ambiente), nominando il
-database con prefisso `test_` per distinguerlo dalla produzione. Prima del
-restore si stacca la connessione internet; dal container PostgreSQL
-(`docker exec -it <id> bash`, poi `psql -U odoo -d test_intrawelt`) si
-disattivano tutti i cron con `update ir_cron set active='f'`, cosi'
-l'ambiente di test non scarica ne' invia posta reale (incidente gia'
-accaduto in passato con notifiche ripartite verso clienti). Le query di
-servizio (blocco server di posta, reset password di tutti gli utenti,
-eliminazione attachment `.js/.css/.less/asset` per rigenerare gli asset)
-sono raccolte nel file `dev_database_manager.csv` dentro l'ambiente.
+Procedura consolidata per ricostruire l'ambiente di sviluppo Odoo 12 in locale (Docker `intrawelt-docker-env`) e ripristinarvi un dump di produzione. Dal database manager (`<ip>:8070/web/database/manager`) si cancella l'eventuale database precedente e si esegue il restore del `.dump` con la master password (nel file di configurazione dell'ambiente), nominando il database con prefisso `test_` per distinguerlo dalla produzione. Prima del restore si stacca la connessione internet; dal container PostgreSQL (`docker exec -it <id> bash`, poi `psql -U odoo -d test_intrawelt`) si disattivano tutti i cron con `update ir_cron set active='f'`, cosi' l'ambiente di test non scarica ne' invia posta reale (incidente gia' accaduto in passato con notifiche ripartite verso clienti). Le query di servizio (blocco server di posta, reset password di tutti gli utenti, eliminazione attachment `.js/.css/.less/asset` per rigenerare gli asset) sono raccolte nel file `dev_database_manager.csv` dentro l'ambiente.
 
 Dopo il restore: `docker compose run --rm --service-ports odoo run -d
 test_intrawelt -u all --stop-after-init` per aggiornare tutti i moduli, poi
@@ -624,15 +512,7 @@ demo interne raggiungendolo da altre macchine della LAN su `<ip>:8070`.
 
 Fonte: `Helpdesk_T-Rex/Interrogare attività utente specifico in Odoo (v12).docx`.
 
-Per tracciare le azioni di un utente non serve intervenire sul database di
-produzione in modo operativo: ogni record Odoo porta i metadati standard
-`create_uid`, `create_date`, `write_uid`, `write_date`. L'id utente si ricava
-dalla UI in modalita' sviluppatore aprendo il record in `res_users` (l'id e'
-nel parametro `id=` dell'URL); con quell'id si interrogano in sola lettura le
-tabelle applicative, per esempio `account_invoice` per le fatture filtrando
-`create_uid` e `create_date`, e con la stessa logica `sale_order` e
-`purchase_order`. Limite dichiarato: Odoo traccia chi ha creato o modificato,
-non chi ha soltanto visualizzato.
+Per tracciare le azioni di un utente non serve intervenire sul database di produzione in modo operativo: ogni record Odoo porta i metadati standard `create_uid`, `create_date`, `write_uid`, `write_date`. L'id utente si ricava dalla UI in modalita' sviluppatore aprendo il record in `res_users` (l'id e' nel parametro `id=` dell'URL); con quell'id si interrogano in sola lettura le tabelle applicative, per esempio `account_invoice` per le fatture filtrando `create_uid` e `create_date`, e con la stessa logica `sale_order` e `purchase_order`. Limite dichiarato: Odoo traccia chi ha creato o modificato, non chi ha soltanto visualizzato.
 
 ## Odoo – Studio API per estrazione dati CRM (novembre 2025)
 
@@ -671,36 +551,24 @@ Utenti configurati: asopranzi@intrawelt.com (alesop95), persona-m@intrawelt.com,
 Fonte: `_DA SISTEMARE (Alessio)/Problema DHCP kickout Elisa/` (file di testo vuoti, info nei nomi)
 
 Due note nel folder:
-1. "fare prova con TP LINK ac 600 e capire perchè kickout" — dispositivo TP-Link AC600
-   (adattatore WiFi consumer) ha probabilmente generato un proprio DHCP server in LAN,
-   causando conflitto con il DHCP del firewall Zyxel.
-2. "Elena si è messa in rete pubblica e quindi per questo è andata in DHCP" — utente
-   connessa involontariamente alla rete "pubblica" (VLAN guest) invece che alla LAN
-   aziendale, ricevendo IP dal DHCP di quella rete.
+1. "fare prova con TP LINK ac 600 e capire perchè kickout" — dispositivo TP-Link AC600 (adattatore WiFi consumer) ha probabilmente generato un proprio DHCP server in LAN, causando conflitto con il DHCP del firewall Zyxel.
+2. "Elena si è messa in rete pubblica e quindi per questo è andata in DHCP" — utente connessa involontariamente alla rete "pubblica" (VLAN guest) invece che alla LAN aziendale, ricevendo IP dal DHCP di quella rete.
 
-Nessuna data documentata nel folder. Correlato al gap DHCP ancora aperto (rimozione
-DHCP server classe .90 pendente come da GAP-TBC.md e 2026-switch-piano-terra.md).
+Nessuna data documentata nel folder. Correlato al gap DHCP ancora aperto (rimozione DHCP server classe .90 pendente come da GAP-TBC.md e 2026-switch-piano-terra.md).
 
 ---
 
 ## T-Rex – Matrice permessi Odoo (analisi pre-migrazione)
 
-Fonte: `Helpdesk_T-Rex/2026-01-21_Monitoraggio_app_T-Rex.xlsx` (21/01/2026).
-Sheet "PERMESSI": matrice **46 righe × 13 colonne** — moduli Odoo vs. profili ruolo.
-Sheet "Dati": dati operativi aggiuntivi (non estratti per errore di encoding).
+Fonte: `Helpdesk_T-Rex/2026-01-21_Monitoraggio_app_T-Rex.xlsx` (21/01/2026). Sheet "PERMESSI": matrice **46 righe × 13 colonne** — moduli Odoo vs. profili ruolo. Sheet "Dati": dati operativi aggiuntivi (non estratti per errore di encoding).
 
 Scopo: analisi dei permessi vigenti in Odoo 12 da replicare/revisionare in Odoo 18.
 
-**Ruoli colonna:** PM Standard, PM Senior, Agente esterno, Agente interno,
-Vendor Manager, Power User, Amministrazione, Admin, Portal.
+**Ruoli colonna:** PM Standard, PM Senior, Agente esterno, Agente interno, Vendor Manager, Power User, Amministrazione, Admin, Portal.
 
-**Moduli riga (parziale):** Comunicazioni, Calendario, Contatti, CRM, Vendite,
-Sito Web, Job Queue, Acquisti, Helpdesk, Monitoraggio Link, Magazzino, Fatturazione,
-Contabilità, Progetto, Fogli ore, Marketing via email, Dipendenti,
-Selezione del personale, Permessi (Employee leaves) — e altri fino a 46 righe totali.
+**Moduli riga (parziale):** Comunicazioni, Calendario, Contatti, CRM, Vendite, Sito Web, Job Queue, Acquisti, Helpdesk, Monitoraggio Link, Magazzino, Fatturazione, Contabilità, Progetto, Fogli ore, Marketing via email, Dipendenti, Selezione del personale, Permessi (Employee leaves) — e altri fino a 46 righe totali.
 
-Nota: estrazione completa bloccata da `UnicodeEncodeError` (carattere `​` nel file).
-La matrice completa è disponibile direttamente nel file xlsx sorgente.
+Nota: estrazione completa bloccata da `UnicodeEncodeError` (carattere `​` nel file). La matrice completa è disponibile direttamente nel file xlsx sorgente.
 
 ---
 
@@ -708,8 +576,7 @@ La matrice completa è disponibile direttamente nel file xlsx sorgente.
 
 Fonte: `Helpdesk_INFOCERT/Procedura_firma_digitale.docx` (1.2 MB, con screenshot procedura GoSign)
 
-**Nota sicurezza:** il file sorgente contiene le credenziali di accesso al servizio di firma remota.
-Le credenziali vengono gestite a runtime e NON sono documentate in questo file (public repo).
+**Nota sicurezza:** il file sorgente contiene le credenziali di accesso al servizio di firma remota. Le credenziali vengono gestite a runtime e NON sono documentate in questo file (public repo).
 
 ### Firmare un documento P7M (firma CAdES)
 
@@ -730,15 +597,13 @@ Le credenziali vengono gestite a runtime e NON sono documentate in questo file (
 
 ### Riattivare la firma remota (se necessario)
 
-Procedura di ri-attivazione disponibile in GoSign Pro (accesso con credenziali account servizio).
-Credenziali gestite dall'IT Manager → richiederle a runtime.
+Procedura di ri-attivazione disponibile in GoSign Pro (accesso con credenziali account servizio). Credenziali gestite dall'IT Manager → richiederle a runtime.
 
 ---
 
 ## Automazione export TM GroupShare (GroupShare_TM_Backup)
 
-Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/GroupShare_TM_Backup/`
-Autore: Alessio Sopranzi. Versione 1.1.0 – 2025-11-04.
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Script e Documentazione per Export Giornaliero Automatico TM GROUPSHARE/GroupShare_TM_Backup/` Autore: Alessio Sopranzi. Versione 1.1.0 – 2025-11-04.
 
 Sistema PowerShell + AutoHotKey per l'esportazione giornaliera automatica delle Translation Memories da GroupShare sul NAS aziendale.
 

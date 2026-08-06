@@ -2,14 +2,7 @@
 
 ## Contesto di ingresso
 
-Alessio Sopranzi prende in carico l'IT di Intrawelt S.a.s. nell'ottobre 2024,
-subentrando a Persona-P. Il materiale di riferimento per ricostruire
-la situazione precedente e' il file "Architettura Server Intrawelt-punto-informatica.ppt"
-e i file "PC-server-stampanti-attivi.xlsx" e "Studio Intrawelt bozza.xlsx" allegati
-alla mail inviata da Persona-R a Persona-H (Punto Informatica)
-con in CC Persona-E in data 03/07/2024.
-Lo stesso file di Studio Intrawelt bozza.xlsx viene poi integrato e salvato come
-Studio Intrawelt bozza_ALE.xlsx nell'archivio punti-informatica_ADDED.rar.
+Alessio Sopranzi prende in carico l'IT di Intrawelt S.a.s. nell'ottobre 2024, subentrando a Persona-P. Il materiale di riferimento per ricostruire la situazione precedente e' il file "Architettura Server Intrawelt-punto-informatica.ppt" e i file "PC-server-stampanti-attivi.xlsx" e "Studio Intrawelt bozza.xlsx" allegati alla mail inviata da Persona-R a Persona-H (Punto Informatica) con in CC Persona-E in data 03/07/2024. Lo stesso file di Studio Intrawelt bozza.xlsx viene poi integrato e salvato come Studio Intrawelt bozza_ALE.xlsx nell'archivio punti-informatica_ADDED.rar.
 
 ---
 
@@ -19,24 +12,15 @@ Studio Intrawelt bozza_ALE.xlsx nell'archivio punti-informatica_ADDED.rar.
 
 Due apparati in produzione al Piano Terra:
 
-ZYXEL GS1900-24 (managed, L2, 24 porte GbE). Switch principale del Piano Terra,
-gestisce gli endpoint e gli access point del piano.
+ZYXEL GS1900-24 (managed, L2, 24 porte GbE). Switch principale del Piano Terra, gestisce gli endpoint e gli access point del piano.
 
-Cisco (router fisico) con adattatore PoE esterno dedicato. La connessione fisica
-e' la seguente: il Cisco e' attaccato al patch panel 0.8.1, da 0.8.1 c'e' una
-patch che fa ponte verso 0.9.1, dove sta attaccato un Access Point esterno. Dal
-Cisco esce anche il cavo verso l'adattatore PoE, che a sua volta alimenta l'AP
-sulla porta 0.7.1. La terza porta del Cisco va direttamente verso 0-R-18.
+Cisco (router fisico) con adattatore PoE esterno dedicato. La connessione fisica e' la seguente: il Cisco e' attaccato al patch panel 0.8.1, da 0.8.1 c'e' una patch che fa ponte verso 0.9.1, dove sta attaccato un Access Point esterno. Dal Cisco esce anche il cavo verso l'adattatore PoE, che a sua volta alimenta l'AP sulla porta 0.7.1. La terza porta del Cisco va direttamente verso 0-R-18.
 
 ### Piano 2 Rack SX
 
-Zyxel XGS2220-54HP (L3 managed, 48 porte GbE + 6 porte SFP+ 10Gbps, PoE++).
-Switch principale del Piano 2. Gestito tramite Nebula cloud. Porta 33 connessa al
-firewall Zyxel USG FLEX 500 a 1Gbps rame. Porta SFP+ (poi la 52 configurata come
-trunk uplink) verso Piano Terra.
+Zyxel XGS2220-54HP (L3 managed, 48 porte GbE + 6 porte SFP+ 10Gbps, PoE++). Switch principale del Piano 2. Gestito tramite Nebula cloud. Porta 33 connessa al firewall Zyxel USG FLEX 500 a 1Gbps rame. Porta SFP+ (poi la 52 configurata come trunk uplink) verso Piano Terra.
 
-QNAP QSW-1208-8c (unmanaged L2, 12 porte 10GbE SFP+). Switch non gestito per
-connessioni ad alta velocita' interne tra server e NAS. Presente nello stesso rack.
+QNAP QSW-1208-8c (unmanaged L2, 12 porte 10GbE SFP+). Switch non gestito per connessioni ad alta velocita' interne tra server e NAS. Presente nello stesso rack.
 
 ---
 
@@ -44,33 +28,19 @@ connessioni ad alta velocita' interne tra server e NAS. Presente nello stesso ra
 
 ### TIM (provider principale)
 
-Tre linee dati separate. Velocita' massima per linea: 100 Mbit/s. Le tre linee
-aggregano potenzialmente 300 Mbit/s ma non sono in bonding, ogni linea e' gestita
-separatamente.
+Tre linee dati separate. Velocita' massima per linea: 100 Mbit/s. Le tre linee aggregano potenzialmente 300 Mbit/s ma non sono in bonding, ogni linea e' gestita separatamente.
 
-IP pubblici TIM WAN1: 192.0.2.50 / 192.0.2.51 / 192.0.2.52
-IP pubblico TIM WAN2: 198.51.100.216/29
+IP pubblici TIM WAN1: 192.0.2.50 / 192.0.2.51 / 192.0.2.52 IP pubblico TIM WAN2: 198.51.100.216/29
 
-In fattura TIM erano presenti servizi inutili mai notati:
-Affitto router extra (bimestrale, staccato da almeno ottobre 2024 quando arriva
-Alessio Sopranzi, molto probabilmente staccato da molto prima). Servizio "Nuvola IT
-Sinfonia" (monitoraggio superfluo che Intrawelt paga a TIM). 8 indirizzi IP pubblici
-aggiuntivi mai utilizzati. Taurus Bond firewall in comodato d'uso a TIM (mai connesso,
-trovato fisicamente in sede staccato, va restituito). Costo stimato complessivo dei
-servizi inutili: oltre 1.000 euro bimestrale.
+In fattura TIM erano presenti servizi inutili mai notati: Affitto router extra (bimestrale, staccato da almeno ottobre 2024 quando arriva Alessio Sopranzi, molto probabilmente staccato da molto prima). Servizio "Nuvola IT Sinfonia" (monitoraggio superfluo che Intrawelt paga a TIM). 8 indirizzi IP pubblici aggiuntivi mai utilizzati. Taurus Bond firewall in comodato d'uso a TIM (mai connesso, trovato fisicamente in sede staccato, va restituito). Costo stimato complessivo dei servizi inutili: oltre 1.000 euro bimestrale.
 
-TIM gestisce anche la fonia: linee ISDN con problemi ricorrenti dal febbraio 2024.
-Il centralino fisico e' un Panasonic KX-NCP1000.
+TIM gestisce anche la fonia: linee ISDN con problemi ricorrenti dal febbraio 2024. Il centralino fisico e' un Panasonic KX-NCP1000.
 
 ### Vianova (provider secondario dal 2024)
 
-Al momento dell'ingresso di Alessio Sopranzi Vianova e' gia' attiva per la voce e
-come servizio radio di backup. La prima fattura Vianova per Intrawelt S.a.s. risale
-ad aprile 2024, osservata da Persona-R.
+Al momento dell'ingresso di Alessio Sopranzi Vianova e' gia' attiva per la voce e come servizio radio di backup. La prima fattura Vianova per Intrawelt S.a.s. risale ad aprile 2024, osservata da Persona-R.
 
-Il servizio Vianova attivo nel 2024 comprende:
-Ponte radio (uso come backup e voce). L'offerta successiva prevede 100 Mbps download
-e 20 Mbps upload sul ponte radio come Line Recovery Standard.
+Il servizio Vianova attivo nel 2024 comprende: Ponte radio (uso come backup e voce). L'offerta successiva prevede 100 Mbps download e 20 Mbps upload sul ponte radio come Line Recovery Standard.
 
 ---
 
@@ -78,33 +48,19 @@ e 20 Mbps upload sul ponte radio come Line Recovery Standard.
 
 ZYXEL USG FLEX 500. IP LAN: 10.61.20.1. Configurato originariamente da Persona-P.
 
-Accesso da LAN: https://10.61.20.1
-Accesso da WAN: https://192.0.2.50
-Credenziali: admin / [redacted]
+Accesso da LAN: https://10.61.20.1 Accesso da WAN: https://192.0.2.50 Credenziali: admin / [redacted]
 
-Account Zyxel marketplace: persona-p@intrawelt.com (poi migrato a it@intrawelt.com)
-License Key al momento del rinnovo 20/11/2024: [redacted]
-Device S/N: [redacted], MAC: AA:BB:CC:00:00:20
+Account Zyxel marketplace: persona-p@intrawelt.com (poi migrato a it@intrawelt.com) License Key al momento del rinnovo 20/11/2024: [redacted] Device S/N: [redacted], MAC: AA:BB:CC:00:00:20
 
-Problemi noti alla configurazione Zyxel trovati da Alessio Sopranzi:
-Regola NAT obsoleta DOMV_WEB per Ubuntu-1404-DOMV (vecchi IP pubblici TIM).
-Regola di routing statico obsoleta verso un indirizzo esterno alla subnet
-server, puntata a 10.61.20.114/licserver (cancellata).
-VPN_auth_LAN2 attiva su WAN2 ma non necessaria.
-Certificato SSL VPN in scadenza il 24/10/2024 (primo intervento di Alessio Sopranzi).
+Problemi noti alla configurazione Zyxel trovati da Alessio Sopranzi: Regola NAT obsoleta DOMV_WEB per Ubuntu-1404-DOMV (vecchi IP pubblici TIM). Regola di routing statico obsoleta verso un indirizzo esterno alla subnet server, puntata a 10.61.20.114/licserver (cancellata). VPN_auth_LAN2 attiva su WAN2 ma non necessaria. Certificato SSL VPN in scadenza il 24/10/2024 (primo intervento di Alessio Sopranzi).
 
 ---
 
 ## VPN e tunnel cloud
 
-Tunnel IPsec tra ZYXEL USG FLEX 500 e firewall cloud SEEWEB.
-IP pubblico locale (lato Intrawelt): 192.0.2.50 (TIM WAN1).
-IP pubblico SEEWEB: 192.0.2.121.
-Rete privata SEEWEB: 10.77.116.0/24.
+Tunnel IPsec tra ZYXEL USG FLEX 500 e firewall cloud SEEWEB. IP pubblico locale (lato Intrawelt): 192.0.2.50 (TIM WAN1). IP pubblico SEEWEB: 192.0.2.121. Rete privata SEEWEB: 10.77.116.0/24.
 
-Firewall cloud SEEWEB: OPNsense su 10.77.116.1.
-Credenziali firewall cloud: user1 / [redacted].
-URL accesso: https://10.77.116.1/firewall_rules.php?if=wan
+Firewall cloud SEEWEB: OPNsense su 10.77.116.1. Credenziali firewall cloud: user1 / [redacted]. URL accesso: https://10.77.116.1/firewall_rules.php?if=wan
 
 ---
 
@@ -112,71 +68,32 @@ URL accesso: https://10.77.116.1/firewall_rules.php?if=wan
 
 Tre host di virtualizzazione presenti:
 
-HP G5 (VMware ESXi fisico in sede). 4 VM attive: 2 Linux + 2 Windows. Le restanti
-VM presenti sono: una spenta, tre "azzurre" (VMware standard) non necessarie.
-IP presumibile: 10.61.20.8 (quello noto come IP del vecchio vSphere, da spegnere).
+HP G5 (VMware ESXi fisico in sede). 4 VM attive: 2 Linux + 2 Windows. Le restanti VM presenti sono: una spenta, tre "azzurre" (VMware standard) non necessarie. IP presumibile: 10.61.20.8 (quello noto come IP del vecchio vSphere, da spegnere).
 
-**Inventario dettagliato (analisi completa di Alessio Sopranzi, fine dicembre
-2024)**, con evidenziate le VM configurate per l'avvio automatico al riavvio
-del server:
+**Inventario dettagliato (analisi completa di Alessio Sopranzi, fine dicembre 2024)**, con evidenziate le VM configurate per l'avvio automatico al riavvio del server:
 
-- *Ubu 12.04 LTS – SMT*: sviluppo storico UNIVPM per un progetto di statistical
-  machine translation, non piu' necessario, candidato alla cancellazione
-  (trovato spento da Persona-H il 19/12/2024).
-- *Ubuntu 10.04 LTS eGetrad*: produzione eGetrad (mysql, tomcat). Usata solo
-  internamente per consultare dati storici (fino a meta' 2021).
-- *Ubuntu 10.10 Svn*: eGetrad TEST, server di stampa eGetrad PROD, sorgenti
-  eGetrad su repository SVN, backup VM (MKSBackup) verso NAS INTRA.
-- *Ubuntu 10.10 TestWeb*: PHP/Apache/MySQL con Mantis (ticket interni) e
-  webapp varie obsolete.
-- *Ubuntu-1404-DOMV*: Apache/PHP per domini web di proprieta' Intrawelt
-  (es. traduzionemedica.com e altri simili) con landing page affiancate al
-  sito principale; candidata alla dismissione se i domini non sono piu'
-  rinnovati (vedi `vendor-management.md` §Aruba per il portfolio domini).
-- *W2012_bioserver*: server usato dal sistema timbracartellini e applicazioni
-  collegate.
+- *Ubu 12.04 LTS – SMT*: sviluppo storico UNIVPM per un progetto di statistical machine translation, non piu' necessario, candidato alla cancellazione (trovato spento da Persona-H il 19/12/2024).
+- *Ubuntu 10.04 LTS eGetrad*: produzione eGetrad (mysql, tomcat). Usata solo internamente per consultare dati storici (fino a meta' 2021).
+- *Ubuntu 10.10 Svn*: eGetrad TEST, server di stampa eGetrad PROD, sorgenti eGetrad su repository SVN, backup VM (MKSBackup) verso NAS INTRA.
+- *Ubuntu 10.10 TestWeb*: PHP/Apache/MySQL con Mantis (ticket interni) e webapp varie obsolete.
+- *Ubuntu-1404-DOMV*: Apache/PHP per domini web di proprieta' Intrawelt (es. traduzionemedica.com e altri simili) con landing page affiancate al sito principale; candidata alla dismissione se i domini non sono piu' rinnovati (vedi `vendor-management.md` §Aruba per il portfolio domini).
+- *W2012_bioserver*: server usato dal sistema timbracartellini e applicazioni collegate.
 - *W2012_licserver*: server delle licenze di rete Trados.
-- *Win 2008 Srv*: server Windows 2008 con una sola app di allineamento
-  residua, ex server licenze.
+- *Win 2008 Srv*: server Windows 2008 con una sola app di allineamento residua, ex server licenze.
 
-Le VM Linux (eGetrad, SVN, TestWeb) presentavano problemi di rete dopo
-l'esportazione su Proxmox (scheda di rete non configurata, causa probabile:
-cambio di MAC address con il cambio di virtualizzatore), risolti riassegnando
-manualmente l'IP all'interfaccia corretta.
+Le VM Linux (eGetrad, SVN, TestWeb) presentavano problemi di rete dopo l'esportazione su Proxmox (scheda di rete non configurata, causa probabile: cambio di MAC address con il cambio di virtualizzatore), risolti riassegnando manualmente l'IP all'interfaccia corretta.
 
-HP G9 (VMware ESXi fisico in sede). Spento definitivamente il 19/12/2024 da
-Persona-H (Punto Informatica). Al momento del sopralluogo del 19/12/2024
-Persona-H e' entrato nell'interfaccia NAS INTRA2 da 10.61.20.177:8080.
+HP G9 (VMware ESXi fisico in sede). Spento definitivamente il 19/12/2024 da Persona-H (Punto Informatica). Al momento del sopralluogo del 19/12/2024 Persona-H e' entrato nell'interfaccia NAS INTRA2 da 10.61.20.177:8080.
 
-Un quarto host, HP ProLiant DL370 G6 (gia' spento al momento della
-documentazione), risulta essere stato l'host originario delle VM Linux
-storiche (eGetrad, SVN, TestWeb, DOMV) e di alcune VM Windows minori (server
-di posta interno pre-Exchange Online, DB antivirus, un license server SDL
-2007/2009/2011): la stessa fonte nota che il servizio Mantis, in precedenza
-raggiunto tramite l'IP del G6, risponde ora allo stesso indirizzo sul G5,
-a conferma che queste VM sono state consolidate sull'host G5 prima
-dell'analisi di fine dicembre 2024 riportata sopra.
+Un quarto host, HP ProLiant DL370 G6 (gia' spento al momento della documentazione), risulta essere stato l'host originario delle VM Linux storiche (eGetrad, SVN, TestWeb, DOMV) e di alcune VM Windows minori (server di posta interno pre-Exchange Online, DB antivirus, un license server SDL 2007/2009/2011): la stessa fonte nota che il servizio Mantis, in precedenza raggiunto tramite l'IP del G6, risponde ora allo stesso indirizzo sul G5, a conferma che queste VM sono state consolidate sull'host G5 prima dell'analisi di fine dicembre 2024 riportata sopra.
 
-SEEWEB FoundationServer PRO (cloud IaaS). Tipo: Foundation Server Pro con
-processori Intel Xeon. Storage SAN ad alte prestazioni e scalabile. Banda: 10 Gbps.
-Accesso cloud center: https://cloudcenter.seeweb.it/ con fs20608 / [redacted].
-Accesso ESXi: https://10.77.116.2/ui/#/login con root / [redacted].
-Rete privata: net006287 (VLAN ID 437).
-Due VM attive su SEEWEB:
+SEEWEB FoundationServer PRO (cloud IaaS). Tipo: Foundation Server Pro con processori Intel Xeon. Storage SAN ad alte prestazioni e scalabile. Banda: 10 Gbps. Accesso cloud center: https://cloudcenter.seeweb.it/ con fs20608 / [redacted]. Accesso ESXi: https://10.77.116.2/ui/#/login con root / [redacted]. Rete privata: net006287 (VLAN ID 437). Due VM attive su SEEWEB:
 
-WINGROUPSHARE (10.77.116.3): Windows Server con backup delle TM (translation memory),
-glossari e backup della cartella UTILI. Backup eseguiti via Cobian Backup. Usata da
-freelance e collaboratori esterni che non devono accedere ai server interni Intrawelt.
-Accesso RDP: Administrator / [redacted].
-URL groupshare: http://gs.intrawelt.com/
-Riavvio servizi Trados GroupShare: via Trados GroupShare Console, icone sulla barra,
-colonna "Restart Services".
+WINGROUPSHARE (10.77.116.3): Windows Server con backup delle TM (translation memory), glossari e backup della cartella UTILI. Backup eseguiti via Cobian Backup. Usata da freelance e collaboratori esterni che non devono accedere ai server interni Intrawelt. Accesso RDP: Administrator / [redacted]. URL groupshare: http://gs.intrawelt.com/ Riavvio servizi Trados GroupShare: via Trados GroupShare Console, icone sulla barra, colonna "Restart Services".
 
-WINSRV2019 (10.77.116.4): Windows Server 2019. Desktop remoti per PM e DTP.
-Accesso RDP: utente analisi1.
+WINSRV2019 (10.77.116.4): Windows Server 2019. Desktop remoti per PM e DTP. Accesso RDP: utente analisi1.
 
-L'accesso alle VM SEEWEB e' consentito solo da indirizzi locali (policy firewall
-OPNsense). Modifica policy: accedere a https://10.77.116.1/
+L'accesso alle VM SEEWEB e' consentito solo da indirizzi locali (policy firewall OPNsense). Modifica policy: accedere a https://10.77.116.1/
 
 ---
 
@@ -184,95 +101,54 @@ OPNsense). Modifica policy: accedere a https://10.77.116.1/
 
 Tutti i NAS sono connessi alla rete 10.61.20.0/24.
 
-NAS HERO (.169): QNAP con QuTS hero. Archivio principale dei progetti PM, mappato
-come drive H: sui client. RAID attivo. Usato come storage primario di lavoro.
+NAS HERO (.169): QNAP con QuTS hero. Archivio principale dei progetti PM, mappato come drive H: sui client. RAID attivo. Usato come storage primario di lavoro.
 
-NAS INTRA (.168): QNAP TS-410U. Target primario dei backup Cobian e MKSBackup VM.
-Archivio secondario.
+NAS INTRA (.168): QNAP TS-410U. Target primario dei backup Cobian e MKSBackup VM. Archivio secondario.
 
-NAS INTRA2 (.177): QNAP TS-451U. RAID 5 con 4 dischi da circa 2.73 TB ciascuno
-(capacita' totale raw circa 10.92 TB, disponibile RAID 5 circa 8.19 TB). Usato
-per backup del NAS HERO e della cartella utili. Alla fine del 2024 lo spazio e'
-quasi esaurito, con fail su backup incrementale bloccato all'1%.
+NAS INTRA2 (.177): QNAP TS-451U. RAID 5 con 4 dischi da circa 2.73 TB ciascuno (capacita' totale raw circa 10.92 TB, disponibile RAID 5 circa 8.19 TB). Usato per backup del NAS HERO e della cartella utili. Alla fine del 2024 lo spazio e' quasi esaurito, con fail su backup incrementale bloccato all'1%.
 
-NAS INTRA3 (.172 / .173): QNAP TS-210. Dismesso di fatto dal 2022. Fisicamente
-era nella sede precedente in Via Pescolla. Contiene solo backup di Glossari,
-Multiterm e TM del periodo 2020-2021-2022. Credenziali: admin / [redacted].
-URL: https://10.61.20.172/cgi-bin/
+NAS INTRA3 (.172 / .173): QNAP TS-210. Dismesso di fatto dal 2022. Fisicamente era nella sede precedente in Via Pescolla. Contiene solo backup di Glossari, Multiterm e TM del periodo 2020-2021-2022. Credenziali: admin / [redacted]. URL: https://10.61.20.172/cgi-bin/
 
-NAS documenti (.170): HPX1400. Archivio cartella utili. Target backup generico.
-Archivio certificati SSL: \\10.61.20.170\vpn\Certificati SSL
+NAS documenti (.170): HPX1400. Archivio cartella utili. Target backup generico. Archivio certificati SSL: \\10.61.20.170\vpn\Certificati SSL
 
 ---
 
 ## Domotica e impianti
 
-MH Server (Myhome, Piano 2). Gestisce luci, allarme, termostati. Il bus domotica
-e' separato dall'ethernet e non e' di interesse per la rete dati. La centrale
-allarme e' connessa in rete sopra il CED. Il Myhome server controlla accensioni e
-spegnimenti generali, la centrale allarme, i termostati per ufficio (testine di
-zona su collettori per il riscaldamento con curva climatica impostata dall'idraulico).
+MH Server (Myhome, Piano 2). Gestisce luci, allarme, termostati. Il bus domotica e' separato dall'ethernet e non e' di interesse per la rete dati. La centrale allarme e' connessa in rete sopra il CED. Il Myhome server controlla accensioni e spegnimenti generali, la centrale allarme, i termostati per ufficio (testine di zona su collettori per il riscaldamento con curva climatica impostata dall'idraulico).
 
-Concentratore termoregolazione Piano Terra: dispositivo separato per visualizzare
-i parametri del sistema di riscaldamento. Non e' gestibile tramite l'ethernet.
+Concentratore termoregolazione Piano Terra: dispositivo separato per visualizzare i parametri del sistema di riscaldamento. Non e' gestibile tramite l'ethernet.
 
 ---
 
 ## Credenziali e account (eredita' da Persona-P)
 
-Zyxel USG FLEX 500 locale: admin / [redacted]
-Zyxel marketplace (migrato): it@intrawelt.com / [redacted]
-SSL VPN (ZeroSSL/sslforfree): it@intrawelt.com / [redacted]
-SEEWEB cloud center: fs20608 / [redacted]
-SEEWEB firewall OPNsense: user1 / [redacted]
-SEEWEB ESXi: root / [redacted]
-WINGROUPSHARE RDP: Administrator / [redacted]
-NAS (pattern generico): admin / [redacted]
+Zyxel USG FLEX 500 locale: admin / [redacted] Zyxel marketplace (migrato): it@intrawelt.com / [redacted] SSL VPN (ZeroSSL/sslforfree): it@intrawelt.com / [redacted] SEEWEB cloud center: fs20608 / [redacted] SEEWEB firewall OPNsense: user1 / [redacted] SEEWEB ESXi: root / [redacted] WINGROUPSHARE RDP: Administrator / [redacted] NAS (pattern generico): admin / [redacted]
 
 ---
 
 ## 23/03/2023 - Mail Persona-P su telefonia
 
-Persona-P conferma a Persona-H che il numero fisso storico principale
-resta attivo sul centralino Panasonic KX-NCP1000 collegato alle 2 linee ISDN TIM.
-Numerazione passante interna non ancora definitiva al momento.
-Potenziale: 6 linee VoIP vs 4 ISDN attuali.
+Persona-P conferma a Persona-H che il numero fisso storico principale resta attivo sul centralino Panasonic KX-NCP1000 collegato alle 2 linee ISDN TIM. Numerazione passante interna non ancora definitiva al momento. Potenziale: 6 linee VoIP vs 4 ISDN attuali.
 
 ## 01/02/2024 - Offerta TIM centralino virtuale VoIP (non accettata)
 
-TIM invia a Persona-P due proposte commerciali:
-TIM COMUNICA Centralino Virtuale (voce e telefoni fisici inclusi).
-TIM Trunking Comunica (solo trunking VoIP, senza telefoni).
-Proposta non accettata. Il centralino fisico Panasonic KX-NCP1000 resta in uso.
+TIM invia a Persona-P due proposte commerciali: TIM COMUNICA Centralino Virtuale (voce e telefoni fisici inclusi). TIM Trunking Comunica (solo trunking VoIP, senza telefoni). Proposta non accettata. Il centralino fisico Panasonic KX-NCP1000 resta in uso.
 
 ## 03/07/2024 - Inventario Punto Informatica
 
-Persona-R invia a Persona-H (CC Persona-E) il check infrastruttura
-con tre file allegati: Architettura Server Intrawelt-punto-informatica.ppt,
-PC-server-stampanti-attivi.xlsx, Studio Intrawelt bozza.xlsx.
-File rinominato e archiviato come punti-informatica_ADDED.rar con Studio Intrawelt
-bozza_ALE.xlsx.
+Persona-R invia a Persona-H (CC Persona-E) il check infrastruttura con tre file allegati: Architettura Server Intrawelt-punto-informatica.ppt, PC-server-stampanti-attivi.xlsx, Studio Intrawelt bozza.xlsx. File rinominato e archiviato come punti-informatica_ADDED.rar con Studio Intrawelt bozza_ALE.xlsx.
 
 ## 05/04/2021 – Incidente ransomware Server Axios (pre-Alessio)
 
 Fonte: `Cybersec & IT Governance/Procedura Data Breach + registro data breach + notifica al Garante/Registro_Data_Breach.xlsx` (scheda 001).
 
-Attacco ransomware al portale cloud "Server Axios presso Aruba Enterprise".
-Tutte le banche dati colpite (dati comuni + particolari).
-Conseguenza: temporanea indisponibilità accesso.
-Gestione: comunicazione ricevuta tempestivamente ai sensi di procedura.
-Notifica Garante: **nessuna** — dalle comunicazioni ufficiali non si ravvisano presupposti.
+Attacco ransomware al portale cloud "Server Axios presso Aruba Enterprise". Tutte le banche dati colpite (dati comuni + particolari). Conseguenza: temporanea indisponibilità accesso. Gestione: comunicazione ricevuta tempestivamente ai sensi di procedura. Notifica Garante: **nessuna** — dalle comunicazioni ufficiali non si ravvisano presupposti.
 
-Questo è l'unico data breach registrato nel Registro Data Breach Intrawelt (creato 24/05/2018).
-Evento precedente all'ingresso di Alessio Sopranzi (ottobre 2024).
+Questo è l'unico data breach registrato nel Registro Data Breach Intrawelt (creato 24/05/2018). Evento precedente all'ingresso di Alessio Sopranzi (ottobre 2024).
 
 ## Aprile 2024 - Prima fattura Vianova
 
-Prima fattura Vianova per Intrawelt S.a.s. per servizio voce e ponte radio.
-Osservata da Persona-R.
+Prima fattura Vianova per Intrawelt S.a.s. per servizio voce e ponte radio. Osservata da Persona-R.
 
-Hardware associato all'attivazione della telefonia Vianova, con Documento
-di Trasporto del 29/03/2024: un gruppo di continuita' Vianova UPS-700
-(700VA, 4 prese Bipasso/Schuko + 2 USB) e un Patton SmartNode Trinity
-SN5551 (eSBC 4 BRI/4 FXS/4 FXO, fino a 8 chiamate VoIP simultanee non
-aggiornabili, integra reti ISDN/analogiche legacy in ambiente IP).
+Hardware associato all'attivazione della telefonia Vianova, con Documento di Trasporto del 29/03/2024: un gruppo di continuita' Vianova UPS-700 (700VA, 4 prese Bipasso/Schuko + 2 USB) e un Patton SmartNode Trinity SN5551 (eSBC 4 BRI/4 FXS/4 FXO, fino a 8 chiamate VoIP simultanee non aggiornabili, integra reti ISDN/analogiche legacy in ambiente IP).

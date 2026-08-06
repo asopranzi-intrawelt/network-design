@@ -11,8 +11,7 @@ last-verified: 41d0581
 .\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 10.61.20.11
 ```
 
-Lo script chiede username e password a runtime. Le credenziali non vengono mai salvate
-su disco. La password viene azzerata subito dopo l'autenticazione.
+Lo script chiede username e password a runtime. Le credenziali non vengono mai salvate su disco. La password viene azzerata subito dopo l'autenticazione.
 
 Output prodotto in `output/` (ignorato da git):
 - `output/proxmox-snapshot.json` — dati grezzi completi (JSON)
@@ -34,8 +33,7 @@ Output prodotto in `output/` (ignorato da git):
 
 ## Profilo SSH e identita' git
 
-Configurati a livello locale del repo (non globale). Vedere
-`.claude/rules/git-identity-and-repo.md` per la procedura.
+Configurati a livello locale del repo (non globale). Vedere `.claude/rules/git-identity-and-repo.md` per la procedura.
 
 ```
 user.name  = asopranzi
@@ -45,6 +43,4 @@ remote     = git@github-corp:asopranzi-intrawelt/network-design.git
 
 ## Ingestione documenti Word
 
-Per i documenti Word voluminosi della storia della rete usare la skill `docx-ingest`.
-I file Word restano in `_notes/` (ignorato da git). I mirror Markdown curati vanno in
-`docs/infrastructure-timeline/` (versionato).
+Per i documenti Word voluminosi della storia della rete usare la skill `docx-ingest`. I file Word restano in `_notes/` (ignorato da git). I mirror Markdown curati vanno in `docs/infrastructure-timeline/` (versionato).

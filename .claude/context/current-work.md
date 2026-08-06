@@ -4,484 +4,111 @@ last-verified: 41d0581
 
 ## Direttiva permanente: cinque livelli di tracciamento (dal 16/07/2026)
 
-L'utente ha fissato un obiettivo dichiarato: **certificazione ISO27001
-entro marzo 2027** (vedi `roadmap.md` Fase 5). Da questa data, ogni
-interazione di questa sessione — non solo i micro-step espliciti — va
-tracciata su cinque livelli quando rilevante, non solo uno:
+L'utente ha fissato un obiettivo dichiarato: **certificazione ISO27001 entro marzo 2027** (vedi `roadmap.md` Fase 5). Da questa data, ogni interazione di questa sessione — non solo i micro-step espliciti — va tracciata su cinque livelli quando rilevante, non solo uno:
 
-1. **Didattico** — narrazione estesa in `_notes/DIARIO.md`, stile dei
-   grandi .docx originali ingeriti: spiega il concetto, non solo il fatto.
-2. **Deep-dive tecnico** — la scheda tecnica pertinente in `docs/` o
-   `.claude/context/` (sintassi verificata, dati reali, non inferenze).
-3. **Comunicazione stakeholder** — il taglio riassuntivo/valore-per-CV
-   richiesto per il resoconto finale di ogni intervento concluso.
-4. **Linea cronologica** — `docs/infrastructure-timeline/*.md` e
-   `.claude/memory/progress.md`, ordine temporale esplicito.
-5. **ISO27001** — quando un fatto tocca un controllo Annex A (gap di
-   segmentazione, accesso, flusso dati, patching, backup...), va
-   registrato anche in `design-and-security.md` §Gap di sicurezza, a
-   prescindere da quando la Fase 5 formale comincia.
+1. **Didattico** — narrazione estesa in `_notes/DIARIO.md`, stile dei grandi .docx originali ingeriti: spiega il concetto, non solo il fatto.
+2. **Deep-dive tecnico** — la scheda tecnica pertinente in `docs/` o `.claude/context/` (sintassi verificata, dati reali, non inferenze).
+3. **Comunicazione stakeholder** — il taglio riassuntivo/valore-per-CV richiesto per il resoconto finale di ogni intervento concluso.
+4. **Linea cronologica** — `docs/infrastructure-timeline/*.md` e `.claude/memory/progress.md`, ordine temporale esplicito.
+5. **ISO27001** — quando un fatto tocca un controllo Annex A (gap di segmentazione, accesso, flusso dati, patching, backup...), va registrato anche in `design-and-security.md` §Gap di sicurezza, a prescindere da quando la Fase 5 formale comincia.
 
-Non ogni fatto attiva tutti e cinque i livelli (una correzione di sintassi
-in uno script non è materiale ISO27001), ma il controllo va fatto ad ogni
-passo, non solo a fine intervento.
+Non ogni fatto attiva tutti e cinque i livelli (una correzione di sintassi in uno script non è materiale ISO27001), ma il controllo va fatto ad ogni passo, non solo a fine intervento.
 
 # Lavoro corrente: Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa
 
 ## Stato
 
-**Pivot del 07/07/2026, deciso dall'utente**: prima di proseguire con i
-micro-step operativi della Fase 3 (M2/M20, ora SOSPESI in roadmap), si
-completa l'ingestione della cartella OneDrive "Documenti - IT" per costruire
-la timeline cronologica dei due anni di ristrutturazione dell'infrastruttura
-di rete in massimo dettaglio. La fonte di verita' su cosa e' ingestito e cosa
-no e' `docs/infrastructure-timeline/ingestion-checklist.md`, riallineata il
-07/07/2026 (riepilogo priorita' rigenerato, delta 23/06-07/07 triato).
+**Pivot del 07/07/2026, deciso dall'utente**: prima di proseguire con i micro-step operativi della Fase 3 (M2/M20, ora SOSPESI in roadmap), si completa l'ingestione della cartella OneDrive "Documenti - IT" per costruire la timeline cronologica dei due anni di ristrutturazione dell'infrastruttura di rete in massimo dettaglio. La fonte di verita' su cosa e' ingestito e cosa no e' `docs/infrastructure-timeline/ingestion-checklist.md`, riallineata il 07/07/2026 (riepilogo priorita' rigenerato, delta 23/06-07/07 triato).
 
-**Gestione del delta operativa dal 07/07/2026**: lo script
-`scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive con una
-baseline locale (`_notes/.onedrive-manifest.json`, 44.515 file censiti, non
-versionata) e gira automaticamente a ogni avvio di sessione tramite hook
-SessionStart in `.claude/settings.local.json`. Quando segnala variazioni:
-triage nella checklist, poi rilancio con `-UpdateBaseline`.
+**Gestione del delta operativa dal 07/07/2026**: lo script `scripts/Check-OneDriveDelta.ps1` confronta la cartella OneDrive con una baseline locale (`_notes/.onedrive-manifest.json`, 44.515 file censiti, non versionata) e gira automaticamente a ogni avvio di sessione tramite hook SessionStart in `.claude/settings.local.json`. Quando segnala variazioni: triage nella checklist, poi rilancio con `-UpdateBaseline`.
 
-**Gia' ingestito dal delta**: `groupshare-upgrade-handoff.md` (upgrade
-GroupShare SR1 -> SR2+CU15 bloccato su download RWS) -> voce 06/07/2026 in
-`2026-switch-piano-terra.md`, sorgente con credenziali in chiaro non
-riportate; `AUDIT_INVENTORY.md` -> `cybersecurity-governance.md`
-sezione Crittografia dati a riposo piu' gap #104/SEC-010 (commit 552d96c);
-delta SCENIA (Allegati A-L, DPIA compilata, Risposte Tecniche AIDAPT) ->
-`scenia-project.md` (commit 594ec07).
+**Gia' ingestito dal delta**: `groupshare-upgrade-handoff.md` (upgrade GroupShare SR1 -> SR2+CU15 bloccato su download RWS) -> voce 06/07/2026 in `2026-switch-piano-terra.md`, sorgente con credenziali in chiaro non riportate; `AUDIT_INVENTORY.md` -> `cybersecurity-governance.md` sezione Crittografia dati a riposo piu' gap #104/SEC-010 (commit 552d96c); delta SCENIA (Allegati A-L, DPIA compilata, Risposte Tecniche AIDAPT) -> `scenia-project.md` (commit 594ec07).
 
 ## Nota PORT-TAGGING: CHIUSA il 03/08/2026
 
-La riserva sul racconto "a lavori conclusi" e' stata sciolta su indicazione dell'utente. Gli
-screenshot sono stati letti e hanno chiuso il TBC sul DSCP (e' 46, non il default 44), corretto
-l'affermazione secondo cui si fosse scelto LLDP-MED invece dell'OUI (convivono: e' attiva anche
-la Vendor ID based VLAN sul prefisso dei telefoni), confermato visivamente che il DHCP Server
-Guard e' disattivato a livello di sito, e rivelato che al 07/07 il centralino cloud era gia'
-parzialmente in servizio con utenti registrati sull'app di comunicazione unificata. Dettaglio in
-`docs/infrastructure-timeline/ingestion-checklist.md` §Nota PORT-TAGGING e in
-`docs/telefono-pbx-voip.md`. Il testo che segue e' lo stato storico della riserva.
+La riserva sul racconto "a lavori conclusi" e' stata sciolta su indicazione dell'utente. Gli screenshot sono stati letti e hanno chiuso il TBC sul DSCP (e' 46, non il default 44), corretto l'affermazione secondo cui si fosse scelto LLDP-MED invece dell'OUI (convivono: e' attiva anche la Vendor ID based VLAN sul prefisso dei telefoni), confermato visivamente che il DHCP Server Guard e' disattivato a livello di sito, e rivelato che al 07/07 il centralino cloud era gia' parzialmente in servizio con utenti registrati sull'app di comunicazione unificata. Dettaglio in `docs/infrastructure-timeline/ingestion-checklist.md` §Nota PORT-TAGGING e in `docs/telefono-pbx-voip.md`. Il testo che segue e' lo stato storico della riserva.
 
 ## Nota PORT-TAGGING (stato storico: racconto rimandato a lavori conclusi)
 
-Il tagging dei due switch Nebula (XGS2220-54HP e XGS2220-30HP) per la
-migrazione al centralino cloud e' **in corso**: interventi eseguiti
-dall'utente il 07/07/2026, evidenze in
-`_notes/[TBC] screenshot e note myoffice/` (16 screenshot, 2 foto, note.txt;
-gli screenshot si analizzano al momento del racconto). Il racconto completo
-arrivera' quando tutti gli endpoint (telefoni) funzioneranno. Gia' tracciati:
-voce timeline 07/07/2026 (inclusa l'architettura LAN telefoni dalla nota:
-DHCP+gateway Vianova untagged su porta 8, isolati dal firewall, VPN Vianova
-verso myOffice — chiude la domanda FW-012), gap NET-008 (#102, VLAN 1 non
-taggabile sulla dorsale senza perdere il NAS-HERO) e TEL-002 (#103, telefoni
-via vano ascensore non passano le VLAN).
+Il tagging dei due switch Nebula (XGS2220-54HP e XGS2220-30HP) per la migrazione al centralino cloud e' **in corso**: interventi eseguiti dall'utente il 07/07/2026, evidenze in `_notes/[TBC] screenshot e note myoffice/` (16 screenshot, 2 foto, note.txt; gli screenshot si analizzano al momento del racconto). Il racconto completo arrivera' quando tutti gli endpoint (telefoni) funzioneranno. Gia' tracciati: voce timeline 07/07/2026 (inclusa l'architettura LAN telefoni dalla nota: DHCP+gateway Vianova untagged su porta 8, isolati dal firewall, VPN Vianova verso myOffice — chiude la domanda FW-012), gap NET-008 (#102, VLAN 1 non taggabile sulla dorsale senza perdere il NAS-HERO) e TEL-002 (#103, telefoni via vano ascensore non passano le VLAN).
 
-**Mappatura porte fisiche ingestita per intero il 07/07/2026**
-(`docs/mappatura-porte-fisiche.md` riscritto): xlsx completo (Piano 0 uffici
-1-4, Piano 1 uffici 1-6, Piano 2, colonna "nome porta attuale") piu' il
-rilievo manoscritto originale del 20/08/2020 (Luciani Impianti, scansione
-PDF letta come immagini). Le etichette delle prese risultano permutate in
-modo sistematico gia' dal rilievo 2020 e mai ricorrette: questo rafforza
-l'ipotesi che NET-007 (porta telefono di Persona-A) sia un errore di
-etichettatura, non uno spostamento fisico. Nelle fonti non c'e' alcuna
-informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
+**Mappatura porte fisiche ingestita per intero il 07/07/2026** (`docs/mappatura-porte-fisiche.md` riscritto): xlsx completo (Piano 0 uffici 1-4, Piano 1 uffici 1-6, Piano 2, colonna "nome porta attuale") piu' il rilievo manoscritto originale del 20/08/2020 (Luciani Impianti, scansione PDF letta come immagini). Le etichette delle prese risultano permutate in modo sistematico gia' dal rilievo 2020 e mai ricorrette: questo rafforza l'ipotesi che NET-007 (porta telefono di Persona-A) sia un errore di etichettatura, non uno spostamento fisico. Nelle fonti non c'e' alcuna informazione VLAN/tagging: la nota PORT-TAGGING passa ora all'utente.
 
 ## Prossimi step
 
-1. FATTO: `Mappatura porte fisiche/` ingestita. La nota PORT-TAGGING resta
-   in attesa: racconto a lavori conclusi (endpoint telefonici funzionanti),
-   evidenze gia' raccolte in `_notes/[TBC] screenshot e note myoffice/`.
-2. FATTO (594ec07): voci ALTA della checklist chiuse. Delta SCENIA
-   SECURITY/Allegati + DPIA e Risposte Tecniche AIDAPT ingerite in
-   `scenia-project.md`.
-3. FATTO (07/07, questa sessione): tutte le voci MEDIA del delta ingerite.
-   WindTre revisione luglio -> `cybersecurity-governance.md` (sezione sotto
-   Questionari B2B, timeline Q3 con BitLocker endpoint dal 03/07, raccordo
-   Crittografia); ABBYY.docx -> `2025-q1-server-vianova.md` §Migrazione
-   licenze ABBYY + voce 06/11/2024 in `2024-infra.md` + gap #105-106;
-   Checklist customer e call AIDAPT 06/07 -> `scenia-project.md`; benchmark
-   IntraLino C1-C4 -> `2026-switch-piano-terra.md` §Benchmark DoE IntraLino
+1. FATTO: `Mappatura porte fisiche/` ingestita. La nota PORT-TAGGING resta in attesa: racconto a lavori conclusi (endpoint telefonici funzionanti), evidenze gia' raccolte in `_notes/[TBC] screenshot e note myoffice/`.
+2. FATTO (594ec07): voci ALTA della checklist chiuse. Delta SCENIA SECURITY/Allegati + DPIA e Risposte Tecniche AIDAPT ingerite in `scenia-project.md`.
+3. FATTO (07/07, questa sessione): tutte le voci MEDIA del delta ingerite. WindTre revisione luglio -> `cybersecurity-governance.md` (sezione sotto Questionari B2B, timeline Q3 con BitLocker endpoint dal 03/07, raccordo Crittografia); ABBYY.docx -> `2025-q1-server-vianova.md` §Migrazione licenze ABBYY + voce 06/11/2024 in `2024-infra.md` + gap #105-106; Checklist customer e call AIDAPT 06/07 -> `scenia-project.md`; benchmark IntraLino C1-C4 -> `2026-switch-piano-terra.md` §Benchmark DoE IntraLino
    + gap #107.
-4. FATTO (08/07): tutte le MEDIA preesistenti ingerite (Veeam -> q1 2025 +
-   BCD; Odoo restore 28/05 -> q2 2025 + helpdesk; Interrogare Odoo e API
-   CRM -> helpdesk; Appina e Pi-hole -> q3-q4 2025; Proelium -> vendor
-   management; gap #105 esteso a Veeam/Odoo; bonificati tre residui IP
-   reali in vendor-management, BCD e q3-q4).
-5. FATTO (09/07): tutta la coda BASSA della checklist percorsa e chiusa.
-   Emersi cinque fatti sostanziali: Vademecum urgenze (9 casi guasto + scala
-   reperibilita') in business-continuity-disaster-recovery.md; replica NAS
-   HERO su Azure Blob (QNAP HBS/QuDedup) nello stesso file; gap ambientale
-   RAEE mai risolto (GAP-TBC #109/ENV-001); procedura di audit mailbox via
-   M365 Purview eDiscovery in cybersecurity-governance.md; quattro studi AI
-   mai implementati (Cheshire Cat, Google Antigravity, Obsidian vs IT Glue,
-   Claude Subagents) in sviluppo-interno.md. Confermato che i due PDF da
-   1506+415 pagine in IntraLino_Knowledge sono i report Nessus grezzi alla
-   base del VA Onova nov 2025 gia' sintetizzato, nessuna nuova ingestione.
-   Corretti due IP reali non anonimizzati (uno pre-esistente, due miei
-   propri prima della correzione) in business-continuity-disaster-recovery.md;
-   il resto del repository resta con IP reali non anonimizzati, questione
-   nota e rimandata alla Fase B (roadmap.md), non toccata in questa sessione.
-   La coda checklist e' ora solo le attese esterne (PORT-TAGGING, fonte
-   IntraLino su VM).
-6. FATTO (09/07, questa sessione): tre file sciolti mai apriti nella root di
-   ARCHITETTURA SERVER-CLOUD-LINEE ingeriti. L'html "anni vecchi" ha dato
-   un nuovo file dedicato `2025-storage-anni-vecchi.md` (66 movimenti
-   datati). Il collegamento `.lnk` ha rivelato una libreria OneDrive
-   separata mai censita, `IT + Administration - Documenti` (742 file,
-   fornitori/amministrazione): aggiunta al perimetro di
-   `Check-OneDriveDelta.ps1` (ora multi-target) e censita in una nuova
-   sezione della checklist con priorita' assegnate, NON ancora ingerita.
-   Prossimo blocco: le 4 voci ALTA di quella libreria (VIANOVA, ZYXEL,
-   MyOffice, Analisi Domini Intrawelt).
-7. FATTO (09/07, stessa sessione): le 4 voci ALTA ingerite. Novita' vendor
-   Fastnet (DNS/hosting Plesk), offerta Vianova 07/02/2024, causa radice
-   crisi licenze ZYXEL, incidente UPS 01/07/2025. Deliberatamente NON
-   ingerita `MyOffice/Transizione centralino cloud 2026/` (si sovrappone
-   alla nota PORT-TAGGING riservata a fine lavori). Prossimo blocco: voci
-   MEDIA della stessa libreria (QNAP cloud license, Aruba, Seeweb, Punto
-   Informatica, AWS) su indicazione dell'utente.
-8. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md`
-   (verificare con grep prima di chiudere il passo); i documenti voluminosi
-   si ingeriscono con `docx-ingest` a disclosure progressiva.
-9. Alla chiusura di ogni blocco: spunta in checklist, voce in
-   `memory/progress.md`, commit manuale dell'utente.
+4. FATTO (08/07): tutte le MEDIA preesistenti ingerite (Veeam -> q1 2025 + BCD; Odoo restore 28/05 -> q2 2025 + helpdesk; Interrogare Odoo e API CRM -> helpdesk; Appina e Pi-hole -> q3-q4 2025; Proelium -> vendor management; gap #105 esteso a Veeam/Odoo; bonificati tre residui IP reali in vendor-management, BCD e q3-q4).
+5. FATTO (09/07): tutta la coda BASSA della checklist percorsa e chiusa. Emersi cinque fatti sostanziali: Vademecum urgenze (9 casi guasto + scala reperibilita') in business-continuity-disaster-recovery.md; replica NAS HERO su Azure Blob (QNAP HBS/QuDedup) nello stesso file; gap ambientale RAEE mai risolto (GAP-TBC #109/ENV-001); procedura di audit mailbox via M365 Purview eDiscovery in cybersecurity-governance.md; quattro studi AI mai implementati (Cheshire Cat, Google Antigravity, Obsidian vs IT Glue, Claude Subagents) in sviluppo-interno.md. Confermato che i due PDF da 1506+415 pagine in IntraLino_Knowledge sono i report Nessus grezzi alla base del VA Onova nov 2025 gia' sintetizzato, nessuna nuova ingestione. Corretti due IP reali non anonimizzati (uno pre-esistente, due miei propri prima della correzione) in business-continuity-disaster-recovery.md; il resto del repository resta con IP reali non anonimizzati, questione nota e rimandata alla Fase B (roadmap.md), non toccata in questa sessione. La coda checklist e' ora solo le attese esterne (PORT-TAGGING, fonte IntraLino su VM).
+6. FATTO (09/07, questa sessione): tre file sciolti mai apriti nella root di ARCHITETTURA SERVER-CLOUD-LINEE ingeriti. L'html "anni vecchi" ha dato un nuovo file dedicato `2025-storage-anni-vecchi.md` (66 movimenti datati). Il collegamento `.lnk` ha rivelato una libreria OneDrive separata mai censita, `IT + Administration - Documenti` (742 file, fornitori/amministrazione): aggiunta al perimetro di `Check-OneDriveDelta.ps1` (ora multi-target) e censita in una nuova sezione della checklist con priorita' assegnate, NON ancora ingerita. Prossimo blocco: le 4 voci ALTA di quella libreria (VIANOVA, ZYXEL, MyOffice, Analisi Domini Intrawelt).
+7. FATTO (09/07, stessa sessione): le 4 voci ALTA ingerite. Novita' vendor Fastnet (DNS/hosting Plesk), offerta Vianova 07/02/2024, causa radice crisi licenze ZYXEL, incidente UPS 01/07/2025. Deliberatamente NON ingerita `MyOffice/Transizione centralino cloud 2026/` (si sovrappone alla nota PORT-TAGGING riservata a fine lavori). Prossimo blocco: voci MEDIA della stessa libreria (QNAP cloud license, Aruba, Seeweb, Punto Informatica, AWS) su indicazione dell'utente.
+8. Ogni scrittura in file tracciato segue `.claude/rules/anonymization.md` (verificare con grep prima di chiudere il passo); i documenti voluminosi si ingeriscono con `docx-ingest` a disclosure progressiva.
+9. Alla chiusura di ogni blocco: spunta in checklist, voce in `memory/progress.md`, commit manuale dell'utente.
 
 ## Nota (17/07/2026): topologia dorsale/QNAP chiarita, diagrammi aggiornati
 
-Fuori dal filone Wi-Fi/AP (Fase A/B sotto): chiarita con l'utente, corroborata
-da uno screenshot del pannello porte Nebula del 54HP, la topologia fisica tra
-i due switch Zyxel e il QNAP QSW-1208-8c. Il QNAP non e' un hop intermedio
-sulla dorsale: dal 54HP partono due fibre 10G separate, una verso il 30HP
-(dorsale diretta, trunk VLAN dati + VLAN 2 fonia, oggi attiva) e una verso il
-QNAP (ramo a parte per NAS fleet e postazioni, invariato).
-**Correzione 23/07/2026**: l'assegnazione delle due porte era invertita in
-tutte le schede. La vista di dettaglio in Nebula, con il vicino LLDP
-dichiarato, stabilisce che la dorsale verso il 30HP e' la **porta 51** del
-54HP (lato Piano Terra, porta 29 del 30HP) e che la **porta 52** e' il ramo
-verso il QNAP. Corretto in `network-diagram.md`, `GAP-TBC.md` (#102, #116),
-`firewall-zyxel-usg-flex-500.md` §Diagrammi e nella voce di timeline del
-17/07.
-Dettaglio completo, gap aggiornati (NET-008 #102, TEL-002 #103/#116) e
-diagrammi in `docs/infrastructure-timeline/2026-switch-piano-terra.md`
-(voce 17/07/2026), `GAP-TBC.md` e `.claude/context/diagrams/firewall-dmz-2026/`
-(nuovo `rete_stato_attuale_17072026.drawio`). Restano aperti: ruolo della
-porta 6 del 54HP (PVID 2 come la porta 8, non confermato) e i due telefoni IP
-del Piano Terra non visibili anche dopo il trunk diretto.
+Fuori dal filone Wi-Fi/AP (Fase A/B sotto): chiarita con l'utente, corroborata da uno screenshot del pannello porte Nebula del 54HP, la topologia fisica tra i due switch Zyxel e il QNAP QSW-1208-8c. Il QNAP non e' un hop intermedio sulla dorsale: dal 54HP partono due fibre 10G separate, una verso il 30HP (dorsale diretta, trunk VLAN dati + VLAN 2 fonia, oggi attiva) e una verso il QNAP (ramo a parte per NAS fleet e postazioni, invariato). **Correzione 23/07/2026**: l'assegnazione delle due porte era invertita in tutte le schede. La vista di dettaglio in Nebula, con il vicino LLDP dichiarato, stabilisce che la dorsale verso il 30HP e' la **porta 51** del 54HP (lato Piano Terra, porta 29 del 30HP) e che la **porta 52** e' il ramo verso il QNAP. Corretto in `network-diagram.md`, `GAP-TBC.md` (#102, #116), `firewall-zyxel-usg-flex-500.md` §Diagrammi e nella voce di timeline del 17/07. Dettaglio completo, gap aggiornati (NET-008 #102, TEL-002 #103/#116) e diagrammi in `docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce 17/07/2026), `GAP-TBC.md` e `.claude/context/diagrams/firewall-dmz-2026/` (nuovo `rete_stato_attuale_17072026.drawio`). Restano aperti: ruolo della porta 6 del 54HP (PVID 2 come la porta 8, non confermato) e i due telefoni IP del Piano Terra non visibili anche dopo il trunk diretto.
 
 ## Domande aperte non risolte
 
-- IntraLino: la documentazione Claude del progetto vive su una VM che
-  l'utente fornira' come contesto (nota 08/07/2026, vedi roadmap Fase 1bis);
-  fino ad allora le sezioni IntraLino restano parziali e il gap #107 aperto.
-- PORT-TAGGING: dettagli del tagging dei due switch (input utente atteso).
-  Nota 09/07: la sottocartella `MyOffice/Transizione centralino cloud 2026/`
-  (742 file della libreria Administration) si sovrappone a questo tema e
-  NON e' stata ingerita per lo stesso motivo — resta in attesa della stessa
-  indicazione.
-- Contraddizione porta/switch telefono di Persona-A (NET-007, M10): la
-  mappatura porte 2020-2026 documenta permutazioni sistematiche di etichette
-  mai ricorrette, ipotesi errore di etichettatura rafforzata.
+- IntraLino: la documentazione Claude del progetto vive su una VM che l'utente fornira' come contesto (nota 08/07/2026, vedi roadmap Fase 1bis); fino ad allora le sezioni IntraLino restano parziali e il gap #107 aperto.
+- PORT-TAGGING: dettagli del tagging dei due switch (input utente atteso). Nota 09/07: la sottocartella `MyOffice/Transizione centralino cloud 2026/` (742 file della libreria Administration) si sovrappone a questo tema e NON e' stata ingerita per lo stesso motivo — resta in attesa della stessa indicazione.
+- Contraddizione porta/switch telefono di Persona-A (NET-007, M10): la mappatura porte 2020-2026 documenta permutazioni sistematiche di etichette mai ricorrette, ipotesi errore di etichettatura rafforzata.
 - Testo IVR centralino cloud non ancora comunicato a myOffice (TEL-001, M17).
 - Funzione porta 8 "Vianova DHCP server fonia" (FW-012, M11).
-- GroupShare: download installer SR2 bloccato, email a support@rws.com da
-  inviare (fuori scope progetto rete, tracciato in timeline).
+- GroupShare: download installer SR2 bloccato, email a support@rws.com da inviare (fuori scope progetto rete, tracciato in timeline).
 - Allineamento a `E:\template-claude-developing` rimandato.
-- Intervento pianificato in due fasi (13-15/07/2026, in corso di scripting
-  dal 15/07): Fase A (M13a) isola la Wi-Fi staff esistente via VLAN
-  dedicata sulle tre porte switch gia' localizzate (XGS2220-30HP porta 1,
-  XGS2220-54HP porte 41/45) + ACL firewall verso VLAN 10, senza toccare i
-  tre AP Ubiquiti EOL. Fase B (M13b) pianifica la sostituzione di quei tre
-  AP con AP Zyxel Nebula multi-SSID (staff + guest DPPSK), invece di
-  affiancare un quarto AP guest isolato ai tre legacy — decisione presa il
-  15/07/2026 dopo aver verificato che i tre AP non sono raggiungibili
-  (credenziali perse, nessuna dashboard web mai esistita, reset di
-  fabbrica rimandato perche' disruptivo). Dettaglio completo in
-  `runbook-anomalie.md` §AP-001.
-  **VLAN ID confermata dall'utente il 15/07/2026: 40.**
-  **Lato switch**: script di scrittura `scripts/Set-NebulaWifiVlan.ps1`
-  pronto (dry-run di default, `-Apply` con conferma testuale, ADR-010; un
-  bug di parsing dell'inviluppo OData di `port-settings` scoperto e
-  corretto in giornata). Verificato a schermo che il PVID nella GUI Nebula
-  e' testo libero: nessuna VLAN da pre-creare, corretta l'ipotesi opposta
-  scritta in mattinata. Aggiunto parametro `-Only Trunk\|Access\|All` per
-  applicare prima i trunk (sicuro) e solo dopo le tre porte AP, evitando di
-  scollegare un AP live prima che il firewall abbia il DHCP pronto. Resta
-  da fare: dry-run reale (richiede la chiave API, in mano all'utente).
-  **Lato firewall**: verificato che lo USG FLEX 500 non e' adottato in
-  Nebula (gira in modalita' standalone ZLD) e non espone nessuna API REST
-  nello stato attuale; l'unico canale scriptabile e' SSH con 2FA gia'
-  attivo, che richiede un umano per il secondo fattore ad ogni sessione.
-  Scritto invece un piano passo-passo in `firewall-zyxel-usg-flex-500.md`
-  §Fase A (interfaccia vlan40 10.61.40.0/24 + security policy di deny
-  verso LAN1, sintassi CLI verificata sul dispositivo reale dove
-  disponibile, zona da assegnare via GUI dove non verificabile), da
-  applicare con lo stesso metodo GUI-passo-passo gia' collaudato per M1.
-  L'utente eseguira' l'intervento fisico/di rete; quando fatto, aggiornare
-  timeline, network-diagram.md, firewall-zyxel-usg-flex-500.md e
-  design-and-security.md di conseguenza. **Nota per la stesura finale**:
-  l'utente ha chiesto che l'intero episodio (caccia agli AP, Nebula API,
-  reasoning architetturale) sia raccontato sia con taglio tecnico
-  approfondito sia didattico, con valore esplicito per CV, oltre che
-  nella timeline — da tenere presente quando si scrive il resoconto a
-  intervento concluso. Prima voce scritta il 15/07/2026 in `_notes/DIARIO.md`.
+- Intervento pianificato in due fasi (13-15/07/2026, in corso di scripting dal 15/07): Fase A (M13a) isola la Wi-Fi staff esistente via VLAN dedicata sulle tre porte switch gia' localizzate (XGS2220-30HP porta 1, XGS2220-54HP porte 41/45) + ACL firewall verso VLAN 10, senza toccare i tre AP Ubiquiti EOL. Fase B (M13b) pianifica la sostituzione di quei tre AP con AP Zyxel Nebula multi-SSID (staff + guest DPPSK), invece di affiancare un quarto AP guest isolato ai tre legacy — decisione presa il 15/07/2026 dopo aver verificato che i tre AP non sono raggiungibili (credenziali perse, nessuna dashboard web mai esistita, reset di fabbrica rimandato perche' disruptivo). Dettaglio completo in `runbook-anomalie.md` §AP-001. **VLAN ID confermata dall'utente il 15/07/2026: 40.** **Lato switch**: script di scrittura `scripts/Set-NebulaWifiVlan.ps1` pronto (dry-run di default, `-Apply` con conferma testuale, ADR-010; un bug di parsing dell'inviluppo OData di `port-settings` scoperto e corretto in giornata). Verificato a schermo che il PVID nella GUI Nebula e' testo libero: nessuna VLAN da pre-creare, corretta l'ipotesi opposta scritta in mattinata. Aggiunto parametro `-Only Trunk\|Access\|All` per applicare prima i trunk (sicuro) e solo dopo le tre porte AP, evitando di scollegare un AP live prima che il firewall abbia il DHCP pronto. Resta da fare: dry-run reale (richiede la chiave API, in mano all'utente). **Lato firewall**: verificato che lo USG FLEX 500 non e' adottato in Nebula (gira in modalita' standalone ZLD) e non espone nessuna API REST nello stato attuale; l'unico canale scriptabile e' SSH con 2FA gia' attivo, che richiede un umano per il secondo fattore ad ogni sessione. Scritto invece un piano passo-passo in `firewall-zyxel-usg-flex-500.md` §Fase A (interfaccia vlan40 10.61.40.0/24 + security policy di deny verso LAN1, sintassi CLI verificata sul dispositivo reale dove disponibile, zona da assegnare via GUI dove non verificabile), da applicare con lo stesso metodo GUI-passo-passo gia' collaudato per M1. L'utente eseguira' l'intervento fisico/di rete; quando fatto, aggiornare timeline, network-diagram.md, firewall-zyxel-usg-flex-500.md e design-and-security.md di conseguenza. **Nota per la stesura finale**: l'utente ha chiesto che l'intero episodio (caccia agli AP, Nebula API, reasoning architetturale) sia raccontato sia con taglio tecnico approfondito sia didattico, con valore esplicito per CV, oltre che nella timeline — da tenere presente quando si scrive il resoconto a intervento concluso. Prima voce scritta il 15/07/2026 in `_notes/DIARIO.md`.
 
-  **Fase B (20/07/2026): modello e quantita' scelti.** L'utente ha scelto
-  un preventivo Punto Informatica (17/07/2026) per tre access point Zyxel
-  NWA130BE-EU0101 (Wi-Fi 7, tri-radio, NebulaFlex standalone/cloud-managed):
-  una unita' per ciascuna delle tre ubicazioni AP staff/guest gia' mappate
-  (PianoTerra, PianoPrimo, PianoSecondo), multi-SSID sullo stesso
-  dispositivo invece di un quarto AP guest dedicato. L'AP EsternoIrrigazione
-  (centrale irrigazione tetto) resta fuori scope, decisione separata non
-  ancora presa. Importo/sconto/riferimento preventivo non tracciati per
-  policy di anonimizzazione. Acquisto e consegna non confermati.
-  Documentato in ADR-012, `runbook-anomalie.md` §AP-001,
-  `vendor-management.md`, `2026-switch-piano-terra.md` (voce 20/07/2026) e
-  roadmap M13b. Resta aperta l'ambiguita' di ubicazione fisica di
-  PianoSecondo (CED 2-5-1 vs esterno tetto 2-7-1), irrisolvibile senza
-  sopralluogo. Il retry di Fase A (VLAN 40 su switch) e la diagnosi di
-  NET-010 (porta 46 del 54HP) restano entrambi da fare, indipendenti da
-  questa decisione di hardware.
+  **Fase B (20/07/2026): modello e quantita' scelti.** L'utente ha scelto un preventivo Punto Informatica (17/07/2026) per tre access point Zyxel NWA130BE-EU0101 (Wi-Fi 7, tri-radio, NebulaFlex standalone/cloud-managed): una unita' per ciascuna delle tre ubicazioni AP staff/guest gia' mappate (PianoTerra, PianoPrimo, PianoSecondo), multi-SSID sullo stesso dispositivo invece di un quarto AP guest dedicato. L'AP EsternoIrrigazione (centrale irrigazione tetto) resta fuori scope, decisione separata non ancora presa. Importo/sconto/riferimento preventivo non tracciati per policy di anonimizzazione. Acquisto e consegna non confermati. Documentato in ADR-012, `runbook-anomalie.md` §AP-001, `vendor-management.md`, `2026-switch-piano-terra.md` (voce 20/07/2026) e roadmap M13b. Resta aperta l'ambiguita' di ubicazione fisica di PianoSecondo (CED 2-5-1 vs esterno tetto 2-7-1), irrisolvibile senza sopralluogo. Il retry di Fase A (VLAN 40 su switch) e la diagnosi di NET-010 (porta 46 del 54HP) restano entrambi da fare, indipendenti da questa decisione di hardware.
 
 ### Nuovo (20/07/2026): GroupShare SEC-015, HTTPS non ripristinato
 
-Filone separato dal Wi-Fi/AP, stesso ambiente Seeweb del thread GroupShare
-aperto il 06/07/2026 (upgrade SR1->SR2/CU15, ancora bloccato sul download,
-non toccato oggi). Incidente distinto del 17/07/2026: certificato e binding
-HTTPS di `gs.intrawelt.com` scomparsi, portale irraggiungibile su 443. Per
-sbloccare subito i Project Manager si e' ripristinata solo la connettivita'
-HTTP, non la cifratura — gap aperto **SEC-015** (`GAP-TBC.md` #117,
-ADR-013, `design-and-security.md` §A.13.2, `runbook-anomalie.md` §SEC-015).
-Fix corretto gia' identificato (binding HTTPS con host header + win-acme)
-ma non applicato: da completare come azione separata.
+Filone separato dal Wi-Fi/AP, stesso ambiente Seeweb del thread GroupShare aperto il 06/07/2026 (upgrade SR1->SR2/CU15, ancora bloccato sul download, non toccato oggi). Incidente distinto del 17/07/2026: certificato e binding HTTPS di `gs.intrawelt.com` scomparsi, portale irraggiungibile su 443. Per sbloccare subito i Project Manager si e' ripristinata solo la connettivita' HTTP, non la cifratura — gap aperto **SEC-015** (`GAP-TBC.md` #117, ADR-013, `design-and-security.md` §A.13.2, `runbook-anomalie.md` §SEC-015). Fix corretto gia' identificato (binding HTTPS con host header + win-acme) ma non applicato: da completare come azione separata.
 
 ### Nuovo (09/07/2026): pendenze emerse dall'ingestione della libreria Administration
 
-- RISOLTO (09/07): l'utente ha ricordato che il repository pubblico non deve
-  esporre nessuna informazione aziendale, "neanche di tipo amministrativo".
-  Aggiunta una sezione dedicata a `.claude/rules/anonymization.md` (importi
-  contrattuali, prezzi, numeri di fattura/ordine/preventivo, numeri di
-  linea telefonica, IBAN, P.IVA di terzi non vanno mai in un file
-  tracciato). Bonificato tutto quanto scritto nella libreria Administration
-  oggi, e per bonus anche alcuni casi pre-esistenti trovati durante il
-  controllo: due nomi propri Proelium che una sessione precedente aveva
-  lasciato "per la Fase B" (ora corretti, la decisione e' stata superata),
-  un numero di preventivo Zyxel/Vianova, e un caso serio non collegato
-  all'ingestione di oggi — le ultime 4 cifre reali di una carta di credito
-  aziendale e un MAC address reale, scritti in chiaro in `2024-infra.md`
-  fin da una sessione precedente. Gli IP reali pre-esistenti nel resto del
-  repository restano il workstream separato della Fase B, non toccati.
-- RISOLTO (09/07): la presunta discrepanza di date Vianova non era un
-  errore ma due migrazioni distinte confuse in un'unica tabella — linea
-  dati (2025, TIM→Vianova) e centralino cloud (dic.2025-2026, in corso).
-  `vendor-management.md` §Vianova riscritto con le due evoluzioni separate.
-- **Gap di sicurezza reale non risolto** (GAP-TBC #110/SEC-012): una access
-  key IAM AWS con `AdministratorAccess`, creata nel 2019, **senza MFA**, e'
-  ancora attiva e ha generato una chiamata anomala ad Amazon Translate la
-  cui origine (quale PC/VM/script la usa) non e' mai stata identificata.
-  La mitigazione applicata e' stata solo una Deny Policy sull'azione
-  `translate:*`, non la rotazione della chiave: il rischio di fondo
-  (credenziali admin AWS storiche, non ruotate, di provenienza incerta)
-  resta aperto. Azione operativa suggerita, non eseguita: identificare e
-  ruotare/disattivare quella access key.
-- RISOLTO (10/07): **Certificato SSL VPN ZeroSSL cancellato** (GAP-TBC
-  #111/SEC-013). La connessione TCP/443 verso `vpn.intrawelt.com` non
-  rispondeva (timeout) perche' e' un hostname di una configurazione VPN
-  precedente ormai superata: l'utente ha confermato che l'accesso VPN
-  attuale passa dal firewall Zyxel USG FLEX 500 (SSL VPN / ZyWALL
-  SecuExtender), non piu' da quell'hostname dedicato. La cancellazione del
-  certificato ZeroSSL e' coerente con la dismissione del vecchio servizio.
-- **Restituzione router Huawei a TIM**: TIM ha confermato la cessazione del
-  noleggio il 12/06/2025 ma non ha mai risposto (solleciti 24/06 e
-  25/07/2025) su dove restituire i due router (AR1200, NetEngine AR600).
-  Stato non aggiornato nella fonte consultata.
-- RISOLTO (09/07): **Certificato wildcard `intrawelt.com`**. Verificato live
-  via TLS: `intrawelt.com` ha un certificato Let's Encrypt valido senza
-  wildcard (SAN: intrawelt.com/.it, www.intrawelt.com/.it), coerente con la
-  nota Fastnet dell'11/05/2026. `scenia.intrawelt.com` ha un certificato
-  Let's Encrypt **dedicato** emesso lo stesso giorno: non dipende (piu') dal
-  wildcard ed e' correttamente coperto. Scoperta collaterale: una voce hosts
-  locale su questa macchina reindirizza `intrawelt.com`/`www.intrawelt.com`
-  a VM206 "intrasite" (10.61.20.23) per uso interno/di test, con certificato
-  auto-firmato — non e' un problema sul sito pubblico reale. Aggiunto a
-  `design-and-security.md` §VM206 e `scenia-project.md` §Architettura domini.
-- **Progetto di rebranding** citato in un thread email sul rinnovo di
-  `intrawelt.de` (dic. 2025) come motivo per cui il rinnovo era stato
-  inizialmente disattivato: nessun altro dettaglio nella fonte, non
-  ricollegato a nessun documento esistente.
-- **Fase B anonimizzazione** (roadmap.md): il 10/07 fatta una bonifica
-  meccanica (script Python, sostituzione di prefisso) degli IP reali
-  192.168.x.x, 10.1.116.x, 5.98.88.x, 31.197.194.x, 193.124.241.x,
-  195.96.193.x, 193.30.116.x, 212.35.202.x su tutti i file dove il grep
-  esteso del 09/07 li aveva confermati (helpdesk-operations.md,
-  2023-baseline.md, 2024-infra.md, 2025-q1-server-vianova.md,
-  2025-q2-migrazione-tim-vianova.md, 2025-q3-q4.md, it-backlog.md,
-  runbook-anomalie.md, sviluppo-interno.md, vendor-management.md,
-  vulnerability-assessment-nov2025.md, firewall-zyxel-usg-flex-500.md) piu'
-  due seriali dispositivo reali e un MAC reale residuo. Corretti anche a
-  mano diversi nomi propri reali non ancora in placeholder in
-  2023-baseline.md, 2024-infra.md, 2025-q1/q2/q3-q4.md,
-  business-continuity-disaster-recovery.md, helpdesk-operations.md,
-  it-backlog.md, vendor-management.md (Persona-P/R/H/E/O/F/J/M/K/N).
-  Confermato dall'utente il 10/07 di proseguire il sweep completo: fatto
-  anche per Persona-A e Persona-J su cybersecurity-governance.md,
-  scenia-project.md, helpdesk-operations.md, le timeline 2024/2025-q1/q2/q3-q4,
-  vendor-management.md, business-continuity-disaster-recovery.md, mantenendo
-  reale solo la ragione sociale legale "Intrawelt di Alessandro Potalivo &
-  C. Sas" dove compare letteralmente (e' un dato di registro, non narrativo).
-  **RISOLTO (10/07)**: sweep esteso a tutto l'albero `docs/` e
-  `.claude/context/`, non solo ai file gia' segnalati dal 09/07. Trovati e
-  bonificati un registro firme dipendenti con 21 nomi reali in chiaro
-  (cybersecurity-governance.md, 13 nuovi placeholder Persona-V..AJ
-  aggiunti alla mappa), i referenti di Vianova/myOffice/Fastnet/Novadys/
-  ABBYY/Proelium/BioStar2/Fibercop/RWS mai messi in placeholder nelle
-  timeline 2024/2025 (nuovi Referente-Vianova-5/6, Referente-Fibercop-1,
-  Referente-RWS-1), hostname PC-GIORDANO/PC-Tommaso, e 4 numeri di
-  telefono reali residui (rimossi per policy amministrativa, non solo
-  anonimizzati). Verificato con grep esteso finale: nessun IP 192.168.x.x,
-  nessun MAC reale, nessun nome della mappa privata rimasto in chiaro nei
-  file tracciati, salvo le eccezioni deliberate (ragione sociale legale,
-  nomi di file sorgente citati per tracciabilita'). Fase B non e' chiusa
-  (resta la riscrittura della storia git, pianificata a parte), ma il
-  contenuto attualmente in HEAD e' pulito.
-- RISOLTO (09/07): coda BASSA della libreria Administration chiusa per
-  intero (Google Cloud abortito, Openforce, Eter, TREX, MICROSOFT, ZeroSSL,
-  Rinnovo marchi, Savelli, foto sala server, file sciolti root, contabilita'
-  varia). Trovati: preventivo Openforce migrazione Odoo v18 con nuovo
-  contatto tecnico, pressione fee Odoo +25% dal 2026, razionale difesa a
-  tre livelli (Defender/Bitdefender/Zyxel), nuovo gap #111/SEC-013
-  (certificato SSL VPN ZeroSSL cancellato 10/02/2026, esito non chiaro —
-  aggiunto alla lista qui sopra). L'unica eccezione resta la sottocartella
-  riservata `MyOffice/Transizione centralino cloud 2026/`.
-- **Ambizione originaria della sessione — ARCHITETTURA.docx completato,
-  gli altri tre ridimensionati**: ARCHITETTURA.docx (sec-005/006/008/009)
-  e' stato interamente ri-estratto (10/07). Iniziata poi la stessa
-  ri-estrazione su MICROSOFT 365.docx (1419 paragrafi): dopo un primo
-  passaggio, confermato con l'utente di passare a una modalita' veloce
-  (solo novita' rilevanti) perche' il file e' un quaderno di procedure
-  IT generiche (SharePoint/Exchange/deleghe caselle/gestione turni-ferie
-  HR) con moltissime credenziali in chiaro e forte overlap con
-  helpdesk-operations.md gia' esistente. Unico risultato di valore:
-  GAP-TBC #113 (licenza M365 Business Standard priva di Intune/MDM).
-  Verificato lo skeleton di TREX.docx e STUDIO-RWS-GROUPSHARE.docx: stesso
-  pattern (troubleshooting applicativo Odoo/Trados con credenziali dense,
-  poco valore "network design", gia' in gran parte coperto). Conclusione:
-  la ri-estrazione esaustiva riga-per-riga vale solo per ARCHITETTURA.docx
-  (storia hardware/infrastruttura); per gli altri tre la sintesi gia'
-  scritta resta la fonte di riferimento salvo richiesta esplicita di
-  scavare un punto preciso.
+- RISOLTO (09/07): l'utente ha ricordato che il repository pubblico non deve esporre nessuna informazione aziendale, "neanche di tipo amministrativo". Aggiunta una sezione dedicata a `.claude/rules/anonymization.md` (importi contrattuali, prezzi, numeri di fattura/ordine/preventivo, numeri di linea telefonica, IBAN, P.IVA di terzi non vanno mai in un file tracciato). Bonificato tutto quanto scritto nella libreria Administration oggi, e per bonus anche alcuni casi pre-esistenti trovati durante il controllo: due nomi propri Proelium che una sessione precedente aveva lasciato "per la Fase B" (ora corretti, la decisione e' stata superata), un numero di preventivo Zyxel/Vianova, e un caso serio non collegato all'ingestione di oggi — le ultime 4 cifre reali di una carta di credito aziendale e un MAC address reale, scritti in chiaro in `2024-infra.md` fin da una sessione precedente. Gli IP reali pre-esistenti nel resto del repository restano il workstream separato della Fase B, non toccati.
+- RISOLTO (09/07): la presunta discrepanza di date Vianova non era un errore ma due migrazioni distinte confuse in un'unica tabella — linea dati (2025, TIM→Vianova) e centralino cloud (dic.2025-2026, in corso). `vendor-management.md` §Vianova riscritto con le due evoluzioni separate.
+- **Gap di sicurezza reale non risolto** (GAP-TBC #110/SEC-012): una access key IAM AWS con `AdministratorAccess`, creata nel 2019, **senza MFA**, e' ancora attiva e ha generato una chiamata anomala ad Amazon Translate la cui origine (quale PC/VM/script la usa) non e' mai stata identificata. La mitigazione applicata e' stata solo una Deny Policy sull'azione `translate:*`, non la rotazione della chiave: il rischio di fondo (credenziali admin AWS storiche, non ruotate, di provenienza incerta) resta aperto. Azione operativa suggerita, non eseguita: identificare e ruotare/disattivare quella access key.
+- RISOLTO (10/07): **Certificato SSL VPN ZeroSSL cancellato** (GAP-TBC #111/SEC-013). La connessione TCP/443 verso `vpn.intrawelt.com` non rispondeva (timeout) perche' e' un hostname di una configurazione VPN precedente ormai superata: l'utente ha confermato che l'accesso VPN attuale passa dal firewall Zyxel USG FLEX 500 (SSL VPN / ZyWALL SecuExtender), non piu' da quell'hostname dedicato. La cancellazione del certificato ZeroSSL e' coerente con la dismissione del vecchio servizio.
+- **Restituzione router Huawei a TIM**: TIM ha confermato la cessazione del noleggio il 12/06/2025 ma non ha mai risposto (solleciti 24/06 e 25/07/2025) su dove restituire i due router (AR1200, NetEngine AR600). Stato non aggiornato nella fonte consultata.
+- RISOLTO (09/07): **Certificato wildcard `intrawelt.com`**. Verificato live via TLS: `intrawelt.com` ha un certificato Let's Encrypt valido senza wildcard (SAN: intrawelt.com/.it, www.intrawelt.com/.it), coerente con la nota Fastnet dell'11/05/2026. `scenia.intrawelt.com` ha un certificato Let's Encrypt **dedicato** emesso lo stesso giorno: non dipende (piu') dal wildcard ed e' correttamente coperto. Scoperta collaterale: una voce hosts locale su questa macchina reindirizza `intrawelt.com`/`www.intrawelt.com` a VM206 "intrasite" (10.61.20.23) per uso interno/di test, con certificato auto-firmato — non e' un problema sul sito pubblico reale. Aggiunto a `design-and-security.md` §VM206 e `scenia-project.md` §Architettura domini.
+- **Progetto di rebranding** citato in un thread email sul rinnovo di `intrawelt.de` (dic. 2025) come motivo per cui il rinnovo era stato inizialmente disattivato: nessun altro dettaglio nella fonte, non ricollegato a nessun documento esistente.
+- **Fase B anonimizzazione** (roadmap.md): il 10/07 fatta una bonifica meccanica (script Python, sostituzione di prefisso) degli IP reali 192.168.x.x, 10.1.116.x, 5.98.88.x, 31.197.194.x, 193.124.241.x, 195.96.193.x, 193.30.116.x, 212.35.202.x su tutti i file dove il grep esteso del 09/07 li aveva confermati (helpdesk-operations.md, 2023-baseline.md, 2024-infra.md, 2025-q1-server-vianova.md, 2025-q2-migrazione-tim-vianova.md, 2025-q3-q4.md, it-backlog.md, runbook-anomalie.md, sviluppo-interno.md, vendor-management.md, vulnerability-assessment-nov2025.md, firewall-zyxel-usg-flex-500.md) piu' due seriali dispositivo reali e un MAC reale residuo. Corretti anche a mano diversi nomi propri reali non ancora in placeholder in 2023-baseline.md, 2024-infra.md, 2025-q1/q2/q3-q4.md, business-continuity-disaster-recovery.md, helpdesk-operations.md, it-backlog.md, vendor-management.md (Persona-P/R/H/E/O/F/J/M/K/N). Confermato dall'utente il 10/07 di proseguire il sweep completo: fatto anche per Persona-A e Persona-J su cybersecurity-governance.md, scenia-project.md, helpdesk-operations.md, le timeline 2024/2025-q1/q2/q3-q4, vendor-management.md, business-continuity-disaster-recovery.md, mantenendo reale solo la ragione sociale legale "Intrawelt di Alessandro Potalivo & C. Sas" dove compare letteralmente (e' un dato di registro, non narrativo). **RISOLTO (10/07)**: sweep esteso a tutto l'albero `docs/` e `.claude/context/`, non solo ai file gia' segnalati dal 09/07. Trovati e bonificati un registro firme dipendenti con 21 nomi reali in chiaro (cybersecurity-governance.md, 13 nuovi placeholder Persona-V..AJ aggiunti alla mappa), i referenti di Vianova/myOffice/Fastnet/Novadys/ ABBYY/Proelium/BioStar2/Fibercop/RWS mai messi in placeholder nelle timeline 2024/2025 (nuovi Referente-Vianova-5/6, Referente-Fibercop-1, Referente-RWS-1), hostname PC-GIORDANO/PC-Tommaso, e 4 numeri di telefono reali residui (rimossi per policy amministrativa, non solo anonimizzati). Verificato con grep esteso finale: nessun IP 192.168.x.x, nessun MAC reale, nessun nome della mappa privata rimasto in chiaro nei file tracciati, salvo le eccezioni deliberate (ragione sociale legale, nomi di file sorgente citati per tracciabilita'). Fase B non e' chiusa (resta la riscrittura della storia git, pianificata a parte), ma il contenuto attualmente in HEAD e' pulito.
+- RISOLTO (09/07): coda BASSA della libreria Administration chiusa per intero (Google Cloud abortito, Openforce, Eter, TREX, MICROSOFT, ZeroSSL, Rinnovo marchi, Savelli, foto sala server, file sciolti root, contabilita' varia). Trovati: preventivo Openforce migrazione Odoo v18 con nuovo contatto tecnico, pressione fee Odoo +25% dal 2026, razionale difesa a tre livelli (Defender/Bitdefender/Zyxel), nuovo gap #111/SEC-013 (certificato SSL VPN ZeroSSL cancellato 10/02/2026, esito non chiaro — aggiunto alla lista qui sopra). L'unica eccezione resta la sottocartella riservata `MyOffice/Transizione centralino cloud 2026/`.
+- **Ambizione originaria della sessione — ARCHITETTURA.docx completato, gli altri tre ridimensionati**: ARCHITETTURA.docx (sec-005/006/008/009) e' stato interamente ri-estratto (10/07). Iniziata poi la stessa ri-estrazione su MICROSOFT 365.docx (1419 paragrafi): dopo un primo passaggio, confermato con l'utente di passare a una modalita' veloce (solo novita' rilevanti) perche' il file e' un quaderno di procedure IT generiche (SharePoint/Exchange/deleghe caselle/gestione turni-ferie HR) con moltissime credenziali in chiaro e forte overlap con helpdesk-operations.md gia' esistente. Unico risultato di valore: GAP-TBC #113 (licenza M365 Business Standard priva di Intune/MDM). Verificato lo skeleton di TREX.docx e STUDIO-RWS-GROUPSHARE.docx: stesso pattern (troubleshooting applicativo Odoo/Trados con credenziali dense, poco valore "network design", gia' in gran parte coperto). Conclusione: la ri-estrazione esaustiva riga-per-riga vale solo per ARCHITETTURA.docx (storia hardware/infrastruttura); per gli altri tre la sintesi gia' scritta resta la fonte di riferimento salvo richiesta esplicita di scavare un punto preciso.
 
 ## Stato al 27/07/2026: arretrati documentali chiusi, si torna al design di rete
 
-Sessione di riallineamento, nessuna modifica alla rete. Chiuse tutte le
-formalizzazioni che erano rimaste solo in `_notes/DIARIO.md` e in memoria dopo la
-sessione Wi-Fi/telefoni del 22-23/07, e censito quello che nel frattempo era
-comparso sul nodo Proxmox.
+Sessione di riallineamento, nessuna modifica alla rete. Chiuse tutte le formalizzazioni che erano rimaste solo in `_notes/DIARIO.md` e in memoria dopo la sessione Wi-Fi/telefoni del 22-23/07, e censito quello che nel frattempo era comparso sul nodo Proxmox.
 
-Formalizzato nei file tracciati: la correzione di topologia della dorsale (porta 51
-del 54HP verso il 30HP, porta 52 verso il QNAP) su tutte le schede che la
-riportavano invertita; la risoluzione della parte switch/VLAN di TEL-002 (trunk 29
-del 30HP senza VLAN 2, porte telefono su PVID 1) con il residuo aperto sul solo
-livello DHCP in attesa del fornitore; la nuova postura Wi-Fi (staff con accesso
-completo alla LAN come rischio accettato in ADR-014, guest ristretta a sola WAN); la
-nota che la gestione degli switch viaggia sulla VLAN nativa dei dati `.10` e non
-sulla VLAN 90 come indicava FW-002; l'incidente del PVID non valido sul trunk con la
-regola operativa che ne deriva; una sezione "Riferimenti utili" in
-`runbook-anomalie.md`.
+Formalizzato nei file tracciati: la correzione di topologia della dorsale (porta 51 del 54HP verso il 30HP, porta 52 verso il QNAP) su tutte le schede che la riportavano invertita; la risoluzione della parte switch/VLAN di TEL-002 (trunk 29 del 30HP senza VLAN 2, porte telefono su PVID 1) con il residuo aperto sul solo livello DHCP in attesa del fornitore; la nuova postura Wi-Fi (staff con accesso completo alla LAN come rischio accettato in ADR-014, guest ristretta a sola WAN); la nota che la gestione degli switch viaggia sulla VLAN nativa dei dati `.10` e non sulla VLAN 90 come indicava FW-002; l'incidente del PVID non valido sul trunk con la regola operativa che ne deriva; una sezione "Riferimenti utili" in `runbook-anomalie.md`.
 
-Censito lato Proxmox: l'inventario passa a dieci VM con la nascita della VM208
-`portaleAsset` il 21/07 (pilota interno del portale ISO27001, attestato su `vmbr0`,
-cioe' sulla LAN piatta, con pubblicazione su 80/443 verso tutta la `/19`), la VM207
-`websiteAnalyst` risulta creata l'08/02/2025 e non a luglio 2026, e sono nati quattro
-gap nuovi (#118 NET-011, #119 SEC-016, #120 SRV-005, #121 SEC-017). Il perimetro
-documentale delle VM applicative e' fissato in ADR-015: qui si documenta cosa
-espongono e su quale segmento, non l'avanzamento del loro software.
+Censito lato Proxmox: l'inventario passa a dieci VM con la nascita della VM208 `portaleAsset` il 21/07 (pilota interno del portale ISO27001, attestato su `vmbr0`, cioe' sulla LAN piatta, con pubblicazione su 80/443 verso tutta la `/19`), la VM207 `websiteAnalyst` risulta creata l'08/02/2025 e non a luglio 2026, e sono nati quattro gap nuovi (#118 NET-011, #119 SEC-016, #120 SRV-005, #121 SEC-017). Il perimetro documentale delle VM applicative e' fissato in ADR-015: qui si documenta cosa espongono e su quale segmento, non l'avanzamento del loro software.
 
-**Filone attivo dalla prossima sessione: il design dell'infrastruttura di rete**,
-ripreso dai micro-step di Fase 3 in `roadmap.md`. Il baricentro si e' spostato:
-l'evidenza raccolta in luglio (Wi-Fi staff senza isolamento per scelta, pilota
-applicativo esposto su tutta la LAN, stampanti con scan-to-folder verso cartelle
-utente) converge tutta su M22, cioe' sulla segmentazione reale della `/19`, che era
-nato come micro-step secondario e diventa il progetto strutturale. Da progettare
-prima di toccare la rete: il piano di indirizzamento e di VLAN per PC, server,
-stampanti e servizi applicativi interni, le zone e le ACL corrispondenti sul
-firewall, l'ordine di migrazione porta per porta con la lezione di change management
-del 16 e del 23/07 (una porta alla volta, PVID singolo sui trunk, rollback pronto,
-mai sul core switch a fine giornata), e il rapporto con la DMZ di M4-M9, che oggi e'
-l'unica strada prevista per esporre il pilota della VM208 fuori dalla LAN.
+**Filone attivo dalla prossima sessione: il design dell'infrastruttura di rete**, ripreso dai micro-step di Fase 3 in `roadmap.md`. Il baricentro si e' spostato: l'evidenza raccolta in luglio (Wi-Fi staff senza isolamento per scelta, pilota applicativo esposto su tutta la LAN, stampanti con scan-to-folder verso cartelle utente) converge tutta su M22, cioe' sulla segmentazione reale della `/19`, che era nato come micro-step secondario e diventa il progetto strutturale. Da progettare prima di toccare la rete: il piano di indirizzamento e di VLAN per PC, server, stampanti e servizi applicativi interni, le zone e le ACL corrispondenti sul firewall, l'ordine di migrazione porta per porta con la lezione di change management del 16 e del 23/07 (una porta alla volta, PVID singolo sui trunk, rollback pronto, mai sul core switch a fine giornata), e il rapporto con la DMZ di M4-M9, che oggi e' l'unica strada prevista per esporre il pilota della VM208 fuori dalla LAN.
 
-**Design aperto nella stessa sessione del 27/07/2026**: `docs/segmentazione-lan-m22.md`,
-con i tre livelli richiesti (concettuale, deep-dive tecnico, operativo) e il diagramma
-target versionato in `.claude/context/diagrams/segmentazione-target-m22.mmd`. Il
-documento e' innestato sugli artefatti esistenti invece di ripartire da zero: idioma di
-configurazione verificato della VLAN 40 e della DMZ, convenzione ottetto uguale ID VLAN,
-`Set-NebulaWifiVlan.ps1` come strumento di scrittura sugli switch, snapshot Nebula come
-base del censimento, diagrammi `rete_stato_target_08072026` e
-`rete_stato_attuale_17072026` come punto di partenza grafico. Decisioni dell'IT Manager
-registrate: cinque segmenti con IoT/OT separato, primo intervento sulle stampanti con
-soli switch e firewall, strategia di indirizzamento rimandata al censimento.
+**Design aperto nella stessa sessione del 27/07/2026**: `docs/segmentazione-lan-m22.md`, con i tre livelli richiesti (concettuale, deep-dive tecnico, operativo) e il diagramma target versionato in `.claude/context/diagrams/segmentazione-target-m22.mmd`. Il documento e' innestato sugli artefatti esistenti invece di ripartire da zero: idioma di configurazione verificato della VLAN 40 e della DMZ, convenzione ottetto uguale ID VLAN, `Set-NebulaWifiVlan.ps1` come strumento di scrittura sugli switch, snapshot Nebula come base del censimento, diagrammi `rete_stato_target_08072026` e `rete_stato_attuale_17072026` come punto di partenza grafico. Decisioni dell'IT Manager registrate: cinque segmenti con IoT/OT separato, primo intervento sulle stampanti con soli switch e firewall, strategia di indirizzamento rimandata al censimento.
 
-Tre esiti collaterali del design, tutti corretti in giornata. Primo: era stale la nota
-della scheda firewall secondo cui ogni porta di entrambi gli switch avrebbe
-`allowedVLAN: all` — dal 23/07 il trunk del Piano Terra porta una lista esplicita, quindi
-ogni VLAN nuova va aggiunta a mano alla porta 29 del 30HP, pena un segmento invisibile al
-Piano Terra con lo stesso sintomo dei telefoni. Secondo: due righe della tabella VLAN di
-`network-diagram.md` invertivano il ruolo delle classi `.10` e `.20` rispetto alla
-configurazione reale del firewall (`lan1` = PC, `lan1:1` = server), e una terza dava per
-`[TBC]` la classe stampanti che era gia' documentata. Terzo: e' emerso un sesto segmento
-candidato, la gestione degli apparati, oggi promiscua nella classe delle postazioni con
-la iLO su una classe `.1` che nessun documento descrive come segmento (SRV-003, #108).
+Tre esiti collaterali del design, tutti corretti in giornata. Primo: era stale la nota della scheda firewall secondo cui ogni porta di entrambi gli switch avrebbe `allowedVLAN: all` — dal 23/07 il trunk del Piano Terra porta una lista esplicita, quindi ogni VLAN nuova va aggiunta a mano alla porta 29 del 30HP, pena un segmento invisibile al Piano Terra con lo stesso sintomo dei telefoni. Secondo: due righe della tabella VLAN di `network-diagram.md` invertivano il ruolo delle classi `.10` e `.20` rispetto alla configurazione reale del firewall (`lan1` = PC, `lan1:1` = server), e una terza dava per `[TBC]` la classe stampanti che era gia' documentata. Terzo: e' emerso un sesto segmento candidato, la gestione degli apparati, oggi promiscua nella classe delle postazioni con la iLO su una classe `.1` che nessun documento descrive come segmento (SRV-003, #108).
 
-**M22a avviato il 27/07, prima meta' acquisita**: snapshot Nebula raccolto dall'utente,
-censimento completo per il Piano Terra e mancante per il Piano 2 (54HP fuori dal piano di
-gestione, nuova occorrenza NEB-001). Da quello snapshot: i tre AP Zyxel della Fase B
-risultano installati e in servizio, la porta 1 del 30HP e' ora un trunk con VLAN 1 e 40, e
-sono emersi due residui tracciati (#122 protezioni DHCP di livello 2 disattivate sul 30HP,
-#123 porta 19 ancora su PVID 90).
+**M22a avviato il 27/07, prima meta' acquisita**: snapshot Nebula raccolto dall'utente, censimento completo per il Piano Terra e mancante per il Piano 2 (54HP fuori dal piano di gestione, nuova occorrenza NEB-001). Da quello snapshot: i tre AP Zyxel della Fase B risultano installati e in servizio, la porta 1 del 30HP e' ora un trunk con VLAN 1 e 40, e sono emersi due residui tracciati (#122 protezioni DHCP di livello 2 disattivate sul 30HP, #123 porta 19 ancora su PVID 90).
 
-**Nuovo filone del 28/07: M13c**, sostituzione o eliminazione del quarto AP Ubiquiti EOL
-(EsternoIrrigazione, porta 4 del 30HP, tetto), portata in scope con ADR-016 e gap SEC-018,
-scomposta in otto sotto-passi in `roadmap.md`. Si incontra con M22 al passo M13c-8, quando
-la porta 4 va nel segmento IoT/OT.
+**Nuovo filone del 28/07: M13c**, sostituzione o eliminazione del quarto AP Ubiquiti EOL (EsternoIrrigazione, porta 4 del 30HP, tetto), portata in scope con ADR-016 e gap SEC-018, scomposta in otto sotto-passi in `roadmap.md`. Si incontra con M22 al passo M13c-8, quando la porta 4 va nel segmento IoT/OT.
 
-**Vincolo di progetto posto il 28/07**: la migrazione non deve rompere niente e un PC deve
-continuare a raggiungere stampante e NAS. Formalizzato in `docs/segmentazione-lan-m22.md`
-§Requisito vincolante — si spostano i client e non gli endpoint referenziati, le stampanti
-sono l'eccezione dichiarata perche' ogni coda punta al loro indirizzo, e la verifica di
-ogni passo usa come canary una lettura piu' scrittura su share NAS invece di un ping.
+**Vincolo di progetto posto il 28/07**: la migrazione non deve rompere niente e un PC deve continuare a raggiungere stampante e NAS. Formalizzato in `docs/segmentazione-lan-m22.md` §Requisito vincolante — si spostano i client e non gli endpoint referenziati, le stampanti sono l'eccezione dichiarata perche' ogni coda punta al loro indirizzo, e la verifica di ogni passo usa come canary una lettura piu' scrittura su share NAS invece di un ping.
 
-**Prossimo passo operativo: completare M22a.** Le informazioni mancanti si chiedono
-all'utente **una per volta**, con l'indicazione precisa di dove prenderle: tipo di
-configurazione delle code di stampa, tabella MAC del 54HP a switch rientrato, ambiti e
-riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa, censimento degli
-host con indirizzo statico.
+**Prossimo passo operativo: completare M22a.** Le informazioni mancanti si chiedono all'utente **una per volta**, con l'indicazione precisa di dove prenderle: tipo di configurazione delle code di stampa, tabella MAC del 54HP a switch rientrato, ambiti e riserve DHCP dalla GUI del firewall, oggetti indirizzo pagina 2 compresa, censimento degli host con indirizzo statico.
 
 ## Stato al 03/08/2026: R8 eseguito, filone segmentazione in attesa
 
-**Eseguito e verificato**: R8, le scansioni sul NAS. Sette condivisioni nascoste su NAS-INTRA2
-con permessi per destinatario, un solo account di servizio locale del NAS come unica credenziale
-memorizzata negli apparati, quattordici voci di rubrica riconfigurate sulle due multifunzione
-(tre create ex novo sul Piano Terra), collegamento sul desktop distribuito su tutte e sette le
-postazioni con lo script versionato `scripts/New-ScanFolderShortcut.ps1`. Immunita' alla
-rotazione password verificata sul NAS, non assunta. Dettaglio completo, inciampi compresi, in
-`docs/interventi-robustezza.md` §R8 e nella voce di timeline del 31/07-03/08.
+**Eseguito e verificato**: R8, le scansioni sul NAS. Sette condivisioni nascoste su NAS-INTRA2 con permessi per destinatario, un solo account di servizio locale del NAS come unica credenziale memorizzata negli apparati, quattordici voci di rubrica riconfigurate sulle due multifunzione (tre create ex novo sul Piano Terra), collegamento sul desktop distribuito su tutte e sette le postazioni con lo script versionato `scripts/New-ScanFolderShortcut.ps1`. Immunita' alla rotazione password verificata sul NAS, non assunta. Dettaglio completo, inciampi compresi, in `docs/interventi-robustezza.md` §R8 e nella voce di timeline del 31/07-03/08.
 
-**Code aperte di R8**, entrambe piccole e da chiudere per prime alla ripresa: verificare che su
-ogni postazione la credenziale del NAS sia **permanente** e non di sessione (`cmdkey /list` non
-deve riportare "solo per questo accesso"), e **rimuovere le vecchie condivisioni di scansione
-dalle postazioni con le credenziali che le servivano**, che e' il passo che chiude SEC-020.
+**Code aperte di R8**, entrambe piccole e da chiudere per prime alla ripresa: verificare che su ogni postazione la credenziale del NAS sia **permanente** e non di sessione (`cmdkey /list` non deve riportare "solo per questo accesso"), e **rimuovere le vecchie condivisioni di scansione dalle postazioni con le credenziali che le servivano**, che e' il passo che chiude SEC-020.
 
-**Interventi del registro ancora aperti**: R1 e R2 (credenziali di fabbrica della multifunzione
-e filtro IP come controllo compensativo), R3 (Bonjour), R4 (campo Posizione), R5 (porta 19 del
-30HP da PVID 90 a PVID 1, chiude NET-013), R6 (porte di stampa orfane), R7 (stampanti da
-indirizzo statico a riserva DHCP), R10 (soglia di conservazione sulla cartella scansioni: **da
-decidere**, e conviene ora che le cartelle sono quasi vuote), R11 (conferma prima dell'invio: da
-confermare se e' stata spuntata durante il giro sulle rubriche), R12 e R13 (nomi interni), R14
-(criterio password del NAS).
+**Interventi del registro ancora aperti**: R1 e R2 (credenziali di fabbrica della multifunzione e filtro IP come controllo compensativo), R3 (Bonjour), R4 (campo Posizione), R5 (porta 19 del 30HP da PVID 90 a PVID 1, chiude NET-013), R6 (porte di stampa orfane), R7 (stampanti da indirizzo statico a riserva DHCP), R10 (soglia di conservazione sulla cartella scansioni: **da decidere**, e conviene ora che le cartelle sono quasi vuote), R11 (conferma prima dell'invio: da confermare se e' stata spuntata durante il giro sulle rubriche), R12 e R13 (nomi interni), R14 (criterio password del NAS).
 
-**Filone strutturale**: M22 resta il progetto di rete, con il censimento M22a chiuso (22
-indirizzi statici e 4 dinamici sulle postazioni) e M22b, il segmento stampanti, come prossimo
-intervento sulla rete. Prerequisito da non dimenticare: **M25**, la risoluzione nomi interna,
-perche' e' cio' che oggi tiene in piedi i riferimenti per nome — unita' mappate, destinazioni,
-servizi annunciati in `.local` — e la segmentazione li rompe tutti.
+**Filone strutturale**: M22 resta il progetto di rete, con il censimento M22a chiuso (22 indirizzi statici e 4 dinamici sulle postazioni) e M22b, il segmento stampanti, come prossimo intervento sulla rete. Prerequisito da non dimenticare: **M25**, la risoluzione nomi interna, perche' e' cio' che oggi tiene in piedi i riferimenti per nome — unita' mappate, destinazioni, servizi annunciati in `.local` — e la segmentazione li rompe tutti.

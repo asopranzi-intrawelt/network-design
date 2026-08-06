@@ -1,7 +1,6 @@
 # Design e Sicurezza – Intrawelt S.a.s.
 
-Documento di governance della sicurezza IT. Contiene l'analisi dei principi di design,
-la Statement of Applicability ISO/IEC 27001:2022 e il piano di implementazione.
+Documento di governance della sicurezza IT. Contiene l'analisi dei principi di design, la Statement of Applicability ISO/IEC 27001:2022 e il piano di implementazione.
 
 Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
@@ -24,8 +23,7 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ## Statement of Applicability – ISO/IEC 27001:2022 Annex A
 
-Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applicabili, implementati o esclusi.
-Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025, da aggiornare con Consulente-ISO27001-1).
+Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applicabili, implementati o esclusi. Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025, da aggiornare con Consulente-ISO27001-1).
 
 ### Legenda
 
@@ -202,14 +200,9 @@ Stato: pre-gap analysis (la gap analysis formale è pianificata entro fine 2025,
 
 ## Dove vivono i segreti di questo progetto (05/08/2026)
 
-Sezione scritta perche' la domanda e' stata posta e la risposta non era scritta da nessuna parte:
-esistevano cinque ADR che ciascuno spiega un canale, e nessun documento che li mettesse in fila.
-L'assenza di una vista d'insieme ha prodotto un'affermazione sbagliata in sessione, cioe' che il
-progetto non usasse un file `.env`, quando ne usa uno con un ruolo preciso.
+Sezione scritta perche' la domanda e' stata posta e la risposta non era scritta da nessuna parte: esistevano cinque ADR che ciascuno spiega un canale, e nessun documento che li mettesse in fila. L'assenza di una vista d'insieme ha prodotto un'affermazione sbagliata in sessione, cioe' che il progetto non usasse un file `.env`, quando ne usa uno con un ruolo preciso.
 
-La configurazione e' stata resa univoca il 05/08/2026 con **ADR-021**, su richiesta dell'IT
-Manager. La regola e' una sola: **un segreto sta in un posto solo**. Da cui tre posti in tutto,
-ciascuno con un criterio che si spiega in una frase.
+La configurazione e' stata resa univoca il 05/08/2026 con **ADR-021**, su richiesta dell'IT Manager. La regola e' una sola: **un segreto sta in un posto solo**. Da cui tre posti in tutto, ciascuno con un criterio che si spiega in una frase.
 
 | Tipo di segreto | Dove vive | Perche' li' |
 |---|---|---|
@@ -219,33 +212,15 @@ ciascuno con un criterio che si spiega in una frase.
 
 ### Perche' non un `.env`, e quando invece il `.env` e' giusto
 
-Il principio, che vale oltre questo progetto: **il `.env` e' possibile quando il codice che consuma
-la configurazione e' tuo**. Non e' una funzione del sistema operativo, e' una convenzione che il
-consumatore deve implementare, con una libreria o con venti righe scritte a mano.
+Il principio, che vale oltre questo progetto: **il `.env` e' possibile quando il codice che consuma la configurazione e' tuo**. Non e' una funzione del sistema operativo, e' una convenzione che il consumatore deve implementare, con una libreria o con venti righe scritte a mano.
 
-Qui i consumatori sono due e uno non e' modificabile. Gli script PowerShell potrebbero caricare un
-`.env`; Claude Code no, perche' l'espansione `${VAR}` di `.mcp.json` legge **soltanto le variabili
-d'ambiente del processo** — verificato sulla documentazione ufficiale — e se una variabile manca la
-configurazione si carica lasciando il testo `${VAR}` non espanso, con un avviso in `claude mcp list`.
-Un `.env` non entra in quel percorso per nessuna configurazione.
+Qui i consumatori sono due e uno non e' modificabile. Gli script PowerShell potrebbero caricare un `.env`; Claude Code no, perche' l'espansione `${VAR}` di `.mcp.json` legge **soltanto le variabili d'ambiente del processo** — verificato sulla documentazione ufficiale — e se una variabile manca la configurazione si carica lasciando il testo `${VAR}` non espanso, con un avviso in `claude mcp list`. Un `.env` non entra in quel percorso per nessuna configurazione.
 
-Il contrasto utile e' con un altro progetto sulla stessa macchina, `telegram-notifications`, dove il
-`.env` **e' la scelta corretta**: li' il consumatore e' `relay/config.py`, codice proprio, con una
-funzione `load_dotenv()` scritta a mano. Stessa regola, risposta diversa, perche' la regola segue il
-consumatore e non il gusto.
+Il contrasto utile e' con un altro progetto sulla stessa macchina, `telegram-notifications`, dove il `.env` **e' la scelta corretta**: li' il consumatore e' `relay/config.py`, codice proprio, con una funzione `load_dotenv()` scritta a mano. Stessa regola, risposta diversa, perche' la regola segue il consumatore e non il gusto.
 
-Un lucchetto valutato e scartato, perche' il ragionamento sbagliato e' istruttivo. Poiche'
-`.claude/settings.local.json` contiene anche hook e permessi, si era pensato di aggiungerlo alle
-regole `deny` per impedire all'agente di leggervi i segreti. E' costo senza beneficio: il blocco
-`env` funziona **iniettando i valori nell'ambiente dei sottoprocessi**, e le chiamate Bash
-dell'agente sono sottoprocessi, quindi quei valori sono leggibili con un comando qualunque per
-costruzione. Il lucchetto togliesse all'agente la vista su hook e permessi senza togliergli la vista
-sui segreti. Rimosso.
+Un lucchetto valutato e scartato, perche' il ragionamento sbagliato e' istruttivo. Poiche' `.claude/settings.local.json` contiene anche hook e permessi, si era pensato di aggiungerlo alle regole `deny` per impedire all'agente di leggervi i segreti. E' costo senza beneficio: il blocco `env` funziona **iniettando i valori nell'ambiente dei sottoprocessi**, e le chiamate Bash dell'agente sono sottoprocessi, quindi quei valori sono leggibili con un comando qualunque per costruzione. Il lucchetto togliesse all'agente la vista su hook e permessi senza togliergli la vista sui segreti. Rimosso.
 
-La regola generale: non si mette un lucchetto su un file quando lo stesso contenuto e' disponibile
-per progetto attraverso un altro canale. Si perde una capacita' utile e si resta convinti di essere
-protetti. Vale il principio di SEC-024 — un agente che esegue uno script ha accesso ai segreti che
-quello script usa.
+La regola generale: non si mette un lucchetto su un file quando lo stesso contenuto e' disponibile per progetto attraverso un altro canale. Si perde una capacita' utile e si resta convinti di essere protetti. Vale il principio di SEC-024 — un agente che esegue uno script ha accesso ai segreti che quello script usa.
 
 Nel dettaglio, sistema per sistema:
 
@@ -257,61 +232,25 @@ Nel dettaglio, sistema per sistema:
 | NinjaOne (RMM) | prompt a runtime, nessuna variabile | `Get-NinjaSnapshot.ps1` | ADR-017 |
 | Firewall, NAS, switch, MFP, iLO | archivio `.kdbx` | l'IT Manager | ADR-021, SEC-007 |
 
-I valori vivono in **un solo file**, `.claude/settings.local.json`, ignorato da git e coperto da una
-regola `deny`. Il `.env` con i valori viene eliminato perche' nessuno lo legge; al suo posto c'e'
-**`.env.example`**, senza valori e **versionato di proposito**, perche' il valore di quel file non
-erano mai i valori ma i commenti — quali variabili servono, da dove vengono, come si rigenerano,
-quale ADR le vincola. Versionandolo, la procedura di rigenerazione sopravvive alla macchina, che e'
-precisamente cio' che un backup di valori non garantiva.
+I valori vivono in **un solo file**, `.claude/settings.local.json`, ignorato da git e coperto da una regola `deny`. Il `.env` con i valori viene eliminato perche' nessuno lo legge; al suo posto c'e' **`.env.example`**, senza valori e **versionato di proposito**, perche' il valore di quel file non erano mai i valori ma i commenti — quali variabili servono, da dove vengono, come si rigenerano, quale ADR le vincola. Versionandolo, la procedura di rigenerazione sopravvive alla macchina, che e' precisamente cio' che un backup di valori non garantiva.
 
-Nota operativa su `.env.example`: la regola `Read(.env.*)` lo rende non leggibile dall'agente, quindi
-e' documentazione **per le persone**. Il suo contenuto informativo e' comunque duplicato in questa
-sezione, che l'agente puo' leggere.
+Nota operativa su `.env.example`: la regola `Read(.env.*)` lo rende non leggibile dall'agente, quindi e' documentazione **per le persone**. Il suo contenuto informativo e' comunque duplicato in questa sezione, che l'agente puo' leggere.
 
 ### L'interim sulle password degli apparati, e i suoi limiti
 
-Fino al 05/08/2026 le password di firewall, NAS, switch e multifunzione vivevano in un foglio di
-calcolo sul NAS (`accesso_server_accounts_vari.xls`). L'interim adottato e' un unico archivio
-KeePassXC sul NAS, che eredita il backup gia' esistente. Lo studio di SEC-007 aveva scartato
-KeePass per i conflitti di scrittura concorrente, e quel motivo non si applica finche' l'unica
-persona che accede e' l'IT Manager; il formato importa direttamente in Vaultwarden, quindi non e'
-un vicolo cieco.
+Fino al 05/08/2026 le password di firewall, NAS, switch e multifunzione vivevano in un foglio di calcolo sul NAS (`accesso_server_accounts_vari.xls`). L'interim adottato e' un unico archivio KeePassXC sul NAS, che eredita il backup gia' esistente. Lo studio di SEC-007 aveva scartato KeePass per i conflitti di scrittura concorrente, e quel motivo non si applica finche' l'unica persona che accede e' l'IT Manager; il formato importa direttamente in Vaultwarden, quindi non e' un vicolo cieco.
 
-Cosa l'interim **non** da', e va detto perche' un interim di cui si tacciono i limiti diventa
-definitivo: nessun accesso condiviso, nessun registro di chi ha letto cosa, nessuna revoca per
-singola persona, e una sola password principale come unico punto di rottura. Sono le tre cose che
-Vaultwarden aggiunge, e sono la ragione per cui **SEC-007 resta aperto**. Cio' che si ottiene
-subito e' che il gruppo di segreti piu' numeroso smette di stare in chiaro.
+Cosa l'interim **non** da', e va detto perche' un interim di cui si tacciono i limiti diventa definitivo: nessun accesso condiviso, nessun registro di chi ha letto cosa, nessuna revoca per singola persona, e una sola password principale come unico punto di rottura. Sono le tre cose che Vaultwarden aggiunge, e sono la ragione per cui **SEC-007 resta aperto**. Cio' che si ottiene subito e' che il gruppo di segreti piu' numeroso smette di stare in chiaro.
 
 ### L'asimmetria da dichiarare, perche' non e' quella che si crede
 
-La protezione e' stata messa sulla copia che nessuno script legge, e non su quella che leggono
-tutti. Le regole `deny` bloccano l'agente sul `.env`; **non lo bloccano sulle variabili
-d'ambiente**, che sono leggibili con un comando qualunque da qualunque processo dell'utente,
-agente compreso.
+La protezione e' stata messa sulla copia che nessuno script legge, e non su quella che leggono tutti. Le regole `deny` bloccano l'agente sul `.env`; **non lo bloccano sulle variabili d'ambiente**, che sono leggibili con un comando qualunque da qualunque processo dell'utente, agente compreso.
 
-Non e' un difetto di progettazione ma una conseguenza necessaria: uno script che usa un segreto
-deve poterlo ottenere, e se l'agente esegue quello script allora l'agente ha accesso al segreto.
-Nessuna variante di questo schema lo evita. Va detto perche' altrimenti la riga "il segreto sta in
-una variabile d'ambiente" si legge come una barriera, e non lo e'.
+Non e' un difetto di progettazione ma una conseguenza necessaria: uno script che usa un segreto deve poterlo ottenere, e se l'agente esegue quello script allora l'agente ha accesso al segreto. Nessuna variante di questo schema lo evita. Va detto perche' altrimenti la riga "il segreto sta in una variabile d'ambiente" si legge come una barriera, e non lo e'.
 
-Ne segue la lettura corretta dello spostamento fatto il 05/08/2026, quando la chiave Nebula e'
-passata da un file sul desktop a una variabile utente. Quello spostamento **non** ha protetto il
-segreto dall'agente ne' da un processo malevolo in esecuzione come quell'utente. Ha eliminato
-quattro esposizioni concrete e diverse: un file visibile sfogliando una cartella e apribile per
-sbaglio, un file che finisce in un backup del desktop, un file che compare in una condivisione
-schermo o in uno screenshot, e un file che qualcuno potrebbe copiare in una cartella
-sincronizzata. E' igiene contro l'esposizione accidentale, che e' il vettore piu' probabile in
-questo contesto, non un confine di sicurezza.
+Ne segue la lettura corretta dello spostamento fatto il 05/08/2026, quando la chiave Nebula e' passata da un file sul desktop a una variabile utente. Quello spostamento **non** ha protetto il segreto dall'agente ne' da un processo malevolo in esecuzione come quell'utente. Ha eliminato quattro esposizioni concrete e diverse: un file visibile sfogliando una cartella e apribile per sbaglio, un file che finisce in un backup del desktop, un file che compare in una condivisione schermo o in uno screenshot, e un file che qualcuno potrebbe copiare in una cartella sincronizzata. E' igiene contro l'esposizione accidentale, che e' il vettore piu' probabile in questo contesto, non un confine di sicurezza.
 
-Il confine vero manca ed e' sempre lo stesso: **SEC-007**, il password manager aziendale. Va detto
-con precisione, perche' altrove in questa documentazione e' stato scritto come se esistesse: lo
-studio e' completo e il candidato individuato e' Vaultwarden, ma **non e' mai stato messo in
-produzione**, e oggi le credenziali degli apparati vivono in una cartella accessibile al solo IT
-Manager. Non si puo' quindi raccomandare di "metterle nel password manager": prima va costruito.
-Anche quando esistera' non eliminera' l'asimmetria — un segreto usato da uno script deve essere
-ottenibile dallo script — ma spostera' la custodia in un sistema con controllo di accesso, registro
-degli accessi e rotazione, invece del filesystem e del registro di una postazione.
+Il confine vero manca ed e' sempre lo stesso: **SEC-007**, il password manager aziendale. Va detto con precisione, perche' altrove in questa documentazione e' stato scritto come se esistesse: lo studio e' completo e il candidato individuato e' Vaultwarden, ma **non e' mai stato messo in produzione**, e oggi le credenziali degli apparati vivono in una cartella accessibile al solo IT Manager. Non si puo' quindi raccomandare di "metterle nel password manager": prima va costruito. Anche quando esistera' non eliminera' l'asimmetria — un segreto usato da uno script deve essere ottenibile dallo script — ma spostera' la custodia in un sistema con controllo di accesso, registro degli accessi e rotazione, invece del filesystem e del registro di una postazione.
 
 Registrato come **SEC-024** per non perdere la conclusione.
 

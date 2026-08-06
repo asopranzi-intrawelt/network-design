@@ -1,7 +1,6 @@
 # Cybersecurity Governance – Intrawelt S.a.s.
 
-Cronologia e stato delle attività di sicurezza informatica. Copre il periodo 2024-2026.
-Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
+Cronologia e stato delle attività di sicurezza informatica. Copre il periodo 2024-2026. Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ---
 
@@ -13,10 +12,7 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 |------|--------|-----------|
 | Ago 2024 | Analisi firewall USG FLEX 500 | Prima analisi approfondita configurazione firewall: policy, VPN, UTM. |
 
-Nota di correzione (08/07/2026, confermata dall'utente): l'installazione di
-Bitdefender GravityZone e il primo VA interno erano registrati qui come
-giugno/ottobre 2024 per errore; il deploy e' avvenuto in autunno 2025, dopo
-la sottoscrizione del 15/09/2025 (vedi Q4 2025 e il registro sub-responsabili).
+Nota di correzione (08/07/2026, confermata dall'utente): l'installazione di Bitdefender GravityZone e il primo VA interno erano registrati qui come giugno/ottobre 2024 per errore; il deploy e' avvenuto in autunno 2025, dopo la sottoscrizione del 15/09/2025 (vedi Q4 2025 e il registro sub-responsabili).
 
 ### 2025 – Q1 e Q2
 
@@ -73,8 +69,7 @@ la sottoscrizione del 15/09/2025 (vedi Q4 2025 e il registro sub-responsabili).
 
 ## SGSI – Politica della Sicurezza delle Informazioni (PSGSI)
 
-Fonte: `_ 📜 GDPR E ISO27001/PSGSI POLITICA DELLA SICUREZZA DELLA INFORMAZIONI rev. 1 16.10.2025.docx`
-Riferimento: ISO/IEC 27001:2022. Rev. 1 del 16/10/2025.
+Fonte: `_ 📜 GDPR E ISO27001/PSGSI POLITICA DELLA SICUREZZA DELLA INFORMAZIONI rev. 1 16.10.2025.docx` Riferimento: ISO/IEC 27001:2022. Rev. 1 del 16/10/2025.
 
 ### Scope SGSI
 
@@ -154,20 +149,7 @@ Blocco schermo automatico dopo **5 minuti** di inattività.
 **Protezione LAN documentata in:**  
 `_notes/.tmp-docx-CYBERSEC/bitdefender_protezione_lan.txt` (203 paragrafi)
 
-**Razionale difesa a piu' livelli (nota interna non datata):** i tre
-strumenti di sicurezza attivi coprono superfici distinte, senza sovrapposizione.
-Microsoft Defender per Office 365 P1 protegge il livello cloud/collaboration
-(Exchange Online, SharePoint, OneDrive, Teams) con Safe Links, Safe
-Attachments e anti-phishing, analizzando allegati e link *prima* che
-l'utente li apra — l'unico dei tre a intervenire nel flusso di posta
-Microsoft 365, quindi il principale presidio contro phishing e Business
-Email Compromise, attacchi che tipicamente bypassano firewall e antivirus
-perche' arrivano come email legittime. Bitdefender GravityZone protegge il
-livello endpoint (PC, server, VM): antivirus, EDR, controllo applicazioni,
-blocco locale di exploit e ransomware. Zyxel USG FLEX 500 con Gold Security
-Pack protegge il livello perimetrale di rete (IPS, antivirus gateway,
-sandboxing, reputazione URL), fermando le minacce prima che entrino nella
-rete. Nessuno dei tre sostituisce gli altri due.
+**Razionale difesa a piu' livelli (nota interna non datata):** i tre strumenti di sicurezza attivi coprono superfici distinte, senza sovrapposizione. Microsoft Defender per Office 365 P1 protegge il livello cloud/collaboration (Exchange Online, SharePoint, OneDrive, Teams) con Safe Links, Safe Attachments e anti-phishing, analizzando allegati e link *prima* che l'utente li apra — l'unico dei tre a intervenire nel flusso di posta Microsoft 365, quindi il principale presidio contro phishing e Business Email Compromise, attacchi che tipicamente bypassano firewall e antivirus perche' arrivano come email legittime. Bitdefender GravityZone protegge il livello endpoint (PC, server, VM): antivirus, EDR, controllo applicazioni, blocco locale di exploit e ransomware. Zyxel USG FLEX 500 con Gold Security Pack protegge il livello perimetrale di rete (IPS, antivirus gateway, sandboxing, reputazione URL), fermando le minacce prima che entrino nella rete. Nessuno dei tre sostituisce gli altri due.
 
 ---
 
@@ -238,36 +220,15 @@ Punti chiave emersi dalla riunione Consulente-ISO27001-1 (18/04/2025):
 
 ### Procedura di audit mailbox via eDiscovery (M365 Purview)
 
-Nota interna (Helpdesk_MIcrosoft 365) sul caso concreto di verifica di invii
-sospetti di allegati verso destinatari esterni dall'account di Persona-O:
-l'approccio corretto in Microsoft 365 Business non e' l'accesso diretto alla
-mailbox ne' l'export via PowerShell con permessi delegati, ma Microsoft
-Purview eDiscovery. Si crea un case (contenitore logico che traccia ricerche
-ed export, con audit trail e controllo accessi), dentro il quale si
-definisce una Content Search mirata sulla mailbox interessata con criteri
-precisi: intervallo temporale, presenza di allegati, dominio del
-destinatario (l'unico criterio deterministico per isolare traffico verso
-l'esterno del tenant, dato che gli allegati sono un campo indicizzato in
-Exchange Online). L'export produce un pacchetto forense (tipicamente `.pst`
-per Exchange, formati nativi per SharePoint/OneDrive) senza alterare la
-mailbox originale; sia l'accesso ai contenuti sia l'export restano loggati
-nell'audit log di M365, rendendo l'operazione tracciabile e verificabile.
+Nota interna (Helpdesk_MIcrosoft 365) sul caso concreto di verifica di invii sospetti di allegati verso destinatari esterni dall'account di Persona-O: l'approccio corretto in Microsoft 365 Business non e' l'accesso diretto alla mailbox ne' l'export via PowerShell con permessi delegati, ma Microsoft Purview eDiscovery. Si crea un case (contenitore logico che traccia ricerche ed export, con audit trail e controllo accessi), dentro il quale si definisce una Content Search mirata sulla mailbox interessata con criteri precisi: intervallo temporale, presenza di allegati, dominio del destinatario (l'unico criterio deterministico per isolare traffico verso l'esterno del tenant, dato che gli allegati sono un campo indicizzato in Exchange Online). L'export produce un pacchetto forense (tipicamente `.pst` per Exchange, formati nativi per SharePoint/OneDrive) senza alterare la mailbox originale; sia l'accesso ai contenuti sia l'export restano loggati nell'audit log di M365, rendendo l'operazione tracciabile e verificabile.
 
-Perimetro legale italiano richiamato nella nota: art. 4 dello Statuto dei
-Lavoratori (controllo a distanza vietato in via generale, ammesso per
-esigenze organizzative/produttive/di sicurezza), GDPR (principi di liceita',
-necessita', proporzionalita', trasparenza: la mailbox nominativa e' dato
-personale), provvedimenti del Garante Privacy. Condizione operativa: serve
-un'informativa preventiva che dichiari la possibilita' di controlli sulla
-posta aziendale, policy che regolano l'uso degli strumenti, e un controllo
-mirato non generalizzato.
+Perimetro legale italiano richiamato nella nota: art. 4 dello Statuto dei Lavoratori (controllo a distanza vietato in via generale, ammesso per esigenze organizzative/produttive/di sicurezza), GDPR (principi di liceita', necessita', proporzionalita', trasparenza: la mailbox nominativa e' dato personale), provvedimenti del Garante Privacy. Condizione operativa: serve un'informativa preventiva che dichiari la possibilita' di controlli sulla posta aziendale, policy che regolano l'uso degli strumenti, e un controllo mirato non generalizzato.
 
 ---
 
 ## Registro Sub-Responsabili del Trattamento (GDPR Art. 28)
 
-Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/SubResponsabili Intrawelt/`
-`Elenco SubResponsabili Intrawelt.docx` — documento formale, aggiornato 2025-2026.
+Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/SubResponsabili Intrawelt/` `Elenco SubResponsabili Intrawelt.docx` — documento formale, aggiornato 2025-2026.
 
 | Fornitore | Attività | Dati | Ubicazione | Scadenza DPA |
 |-----------|----------|------|-----------|--------------|
@@ -283,28 +244,20 @@ Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/SubResponsabili Intr
 | Punto Informatica SNC (Porto San Giorgio, IT) | Vendita HW/SW, assistenza tecnica | Dati cliente, ordini, fatture | Server locali/gestionali interni | 2026 (rinnovo annuale; sottoscritto 01/02/2025) |
 | Eter Biometric Technologies Srl (Modena, IT) | Sistemi biometrici, controllo accessi, presenze | Dati biometrici, log presenze, accessi | Server locali o cloud EU | 2027 (rinnovo annuale; sottoscritto 2020) |
 
-Nota: AIDAPT S.r.l. (sub-processor SCENIA) documentato separatamente in `docs/scenia-project.md`
-(DPA SCENIA Art. 28 v1.7 in negoziazione a giugno 2026).
+Nota: AIDAPT S.r.l. (sub-processor SCENIA) documentato separatamente in `docs/scenia-project.md` (DPA SCENIA Art. 28 v1.7 in negoziazione a giugno 2026).
 
 ---
 
 ## Procedura Data Breach
 
-Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Procedura_Data_Breach/`
-Documento principale: `PROCEDURA DATA BREACH INTRAWELT_X.docx` (82 KB)
-Registro: `Registro_Data_Breach.xlsx`; Modello notifica: `Modello notifica Data Breach.pdf`
+Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Procedura_Data_Breach/` Documento principale: `PROCEDURA DATA BREACH INTRAWELT_X.docx` (82 KB) Registro: `Registro_Data_Breach.xlsx`; Modello notifica: `Modello notifica Data Breach.pdf`
 
 ### 4 fasi operative
 
-1. **Identificazione e indagine preliminare**: ricezione segnalazione via Allegato A
-   (Modulo comunicazione interna), valutazione se breach effettivo, registrazione univoca.
-2. **Risk assessment**: valutazione gravità con Allegato B (Modulo rischio), individua:
-   (a) misure correttive immediate; (b) necessità notifica Garante (art. 33); 
-   (c) necessità comunicazione interessati (art. 34).
-3. **Notifica all'Autorità Garante**: entro 72h se probabile rischio per diritti/libertà
-   delle persone fisiche (art. 33 GDPR). Titolare: Persona-A.
-4. **Comunicazione agli interessati**: se rischio elevato (art. 34); comunicazione diretta
-   (no newsletter), chiara e trasparente.
+1. **Identificazione e indagine preliminare**: ricezione segnalazione via Allegato A (Modulo comunicazione interna), valutazione se breach effettivo, registrazione univoca.
+2. **Risk assessment**: valutazione gravità con Allegato B (Modulo rischio), individua: (a) misure correttive immediate; (b) necessità notifica Garante (art. 33); (c) necessità comunicazione interessati (art. 34).
+3. **Notifica all'Autorità Garante**: entro 72h se probabile rischio per diritti/libertà delle persone fisiche (art. 33 GDPR). Titolare: Persona-A.
+4. **Comunicazione agli interessati**: se rischio elevato (art. 34); comunicazione diretta (no newsletter), chiara e trasparente.
 
 ### Soglie di notifica
 - Art. 33 (→ Garante): rischio non trascurabile per i diritti degli interessati.
@@ -315,19 +268,15 @@ Registro: `Registro_Data_Breach.xlsx`; Modello notifica: `Modello notifica Data 
 - Fisico: chiunque rilevi violazione fisic (furto dispositivi, scasso archivi) segnala al Titolare.
 
 ### Documentazione obbligatoria
-Ogni breach (anche sotto soglia notifica) va registrato nel Registro Data Breach con:
-n. scheda, data, luogo, cause, banche dati coinvolte, tipologia dati, conseguenze,
-piano intervento, esito notifiche.
+Ogni breach (anche sotto soglia notifica) va registrato nel Registro Data Breach con: n. scheda, data, luogo, cause, banche dati coinvolte, tipologia dati, conseguenze, piano intervento, esito notifiche.
 
-Gap attuale: procedura non ancora integrata con la catena notifica SCENIA
-(Titolare ScenIA → AIDAPT 48h vs. art. 33 GDPR 72h — vedi scenia-project.md §DRP §6).
+Gap attuale: procedura non ancora integrata con la catena notifica SCENIA (Titolare ScenIA → AIDAPT 48h vs. art. 33 GDPR 72h — vedi scenia-project.md §DRP §6).
 
 ---
 
 ## Questionari sicurezza clienti B2B
 
-Fonte: `Cybersec & IT Governance/_QUESTIONARI FORNITORI/`
-Gestione attiva tramite skill `questionnaire-compiler` (`.claude/skills/questionnaire-compiler/`).
+Fonte: `Cybersec & IT Governance/_QUESTIONARI FORNITORI/` Gestione attiva tramite skill `questionnaire-compiler` (`.claude/skills/questionnaire-compiler/`).
 
 | Cliente | Questionario | Data | Stato |
 |---------|-------------|------|-------|
@@ -340,70 +289,27 @@ Gestione attiva tramite skill `questionnaire-compiler` (`.claude/skills/question
 | Advice Pharma | Link esterno | 2025 | — |
 | Elena (fornitore) | 2 domande (feb 2026): accesso con user/pass; procedura sicurezza dati cliente | Feb 2026 | Completato |
 
-I questionari compilati costituiscono evidenza dell'implementazione ISO 27001 e del
-livello di maturità security dichiarato verso i clienti. Wind Tre (RFQ 10714) è la
-gara piu' significativa per volume e complessita' (busta tecnica + commerciale + legale).
+I questionari compilati costituiscono evidenza dell'implementazione ISO 27001 e del livello di maturità security dichiarato verso i clienti. Wind Tre (RFQ 10714) è la gara piu' significativa per volume e complessita' (busta tecnica + commerciale + legale).
 
 ### Revisione chiarimenti WindTre RFQ 10714 (06-07/07/2026)
 
-Fonte: `_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/_WIP/` (due note interne
-del 06/07 e 07/07/2026 e i file con suffisso `_rev-chiarimenti-WindTre`).
-WindTre ha restituito la Busta Tecnica con osservazioni puntuali e scadenza di
-riconsegna al 08/07/2026; la revisione le ha recepite tutte.
+Fonte: `_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/_WIP/` (due note interne del 06/07 e 07/07/2026 e i file con suffisso `_rev-chiarimenti-WindTre`). WindTre ha restituito la Busta Tecnica con osservazioni puntuali e scadenza di riconsegna al 08/07/2026; la revisione le ha recepite tutte.
 
-Sull'annex (Information Security Annex Part II) il miglioramento sostanziale
-deriva da un cambiamento di postura reale e verificabile, l'attivazione di
-BitLocker su tutti gli endpoint dal 03/07/2026 (vedi timeline Q3): i righi 77
-(cifratura in caso di riutilizzo dei dispositivi), 190 (politica sui controlli
-crittografici), 191 (gestione delle chiavi, in escrow su NinjaOne per gli
-endpoint e sul firewall per VPN e certificati), 210 (separazione
-sviluppo/test/produzione, gia' separati tra Proxmox e infrastruttura OpenForce)
-e 294 (accessi privilegiati) passano a Pienamente Efficace. I righi 84
-(designazione individuale degli incaricati) e 285 (etichettatura delle
-informazioni) passano a Parzialmente Efficace: il controllo esiste in sostanza
-tramite RBAC e classificazione di fatto, manca la formalizzazione in corso con
-l'ISO 27001. I righi 91-94 (cookie e sito web) passano a Non Applicabile
-perche' la fornitura non eroga alcun sito web. Su richiesta di WindTre sono
-stati svuotati i 93 righi degli ambiti CAPS, VDS, TMVS e PROFILING, estranei a
-una fornitura di traduzioni, e i fogli 4.2 e 4.3 (sviluppo e rilascio sicuro)
-portano un'unica nota "Fuori ambito". Nel foglio 3.16 la dichiarazione privacy
-sui righi di trasparenza e consenso passa da Non Applicabile a CONFORME.
+Sull'annex (Information Security Annex Part II) il miglioramento sostanziale deriva da un cambiamento di postura reale e verificabile, l'attivazione di BitLocker su tutti gli endpoint dal 03/07/2026 (vedi timeline Q3): i righi 77 (cifratura in caso di riutilizzo dei dispositivi), 190 (politica sui controlli crittografici), 191 (gestione delle chiavi, in escrow su NinjaOne per gli endpoint e sul firewall per VPN e certificati), 210 (separazione sviluppo/test/produzione, gia' separati tra Proxmox e infrastruttura OpenForce) e 294 (accessi privilegiati) passano a Pienamente Efficace. I righi 84 (designazione individuale degli incaricati) e 285 (etichettatura delle informazioni) passano a Parzialmente Efficace: il controllo esiste in sostanza tramite RBAC e classificazione di fatto, manca la formalizzazione in corso con l'ISO 27001. I righi 91-94 (cookie e sito web) passano a Non Applicabile perche' la fornitura non eroga alcun sito web. Su richiesta di WindTre sono stati svuotati i 93 righi degli ambiti CAPS, VDS, TMVS e PROFILING, estranei a una fornitura di traduzioni, e i fogli 4.2 e 4.3 (sviluppo e rilascio sicuro) portano un'unica nota "Fuori ambito". Nel foglio 3.16 la dichiarazione privacy sui righi di trasparenza e consenso passa da Non Applicabile a CONFORME.
 
-La prima revisione del 06/07 era stata applicata per errore a una copia non
-allineata dell'annex; il 07/07 e' stata rifatta sul file effettivamente
-consegnato a WindTre, con struttura verificata identica. La seconda tornata
-del 07/07 estende la revisione agli allegati: la checklist fornitori dichiara
-la scadenza password a 60 giorni gestita via NinjaOne con blocco dopo 6
-tentativi (ora coerente con l'annex, rigo 31) e marca Non Applicabile la
-sezione sui dati di traffico telefonico e telematico; il DPA completa la
-sezione 5 con i dati comuni trattati e le categorie di interessati; le SCC,
-documento nuovo non incluso nella prima consegna, vengono compilate come atto
-ex art. 46 GDPR con Intrawelt importatore e i quattro sub-responsabili con
-sede extra-SEE (RWS/UK, NinjaOne/USA, QNAP e Zyxel/Taiwan), con validazione
-legale ancora da fare. Restano dichiarati SI ma non ancora formalizzati su
-carta la designazione degli autorizzati e la nomina dell'Amministratore di
-sistema (indicato nominativamente nella checklist con casella
-asopranzi@intrawelt.com): se WindTre chiede gli atti, vanno prodotti.
+La prima revisione del 06/07 era stata applicata per errore a una copia non allineata dell'annex; il 07/07 e' stata rifatta sul file effettivamente consegnato a WindTre, con struttura verificata identica. La seconda tornata del 07/07 estende la revisione agli allegati: la checklist fornitori dichiara la scadenza password a 60 giorni gestita via NinjaOne con blocco dopo 6 tentativi (ora coerente con l'annex, rigo 31) e marca Non Applicabile la sezione sui dati di traffico telefonico e telematico; il DPA completa la sezione 5 con i dati comuni trattati e le categorie di interessati; le SCC, documento nuovo non incluso nella prima consegna, vengono compilate come atto ex art. 46 GDPR con Intrawelt importatore e i quattro sub-responsabili con sede extra-SEE (RWS/UK, NinjaOne/USA, QNAP e Zyxel/Taiwan), con validazione legale ancora da fare. Restano dichiarati SI ma non ancora formalizzati su carta la designazione degli autorizzati e la nomina dell'Amministratore di sistema (indicato nominativamente nella checklist con casella asopranzi@intrawelt.com): se WindTre chiede gli atti, vanno prodotti.
 
 ---
 
 ## Registro utilizzo sistemi informatici – stato firme
 
-Fonte: `Cybersec & IT Governance/Regolamento utilizzo sistemi informatici/Registro_accettazione.docx`
-Documento: lista di 21 dipendenti + 4 righe vuote per nuovi assunti.
-Prima versione inviata: 19/04/2021 come allegato email.
-File disponibile su: `\\10.61.20.170\utili\Privacy\Regolamento utilizzo sistemi informatici\`
+Fonte: `Cybersec & IT Governance/Regolamento utilizzo sistemi informatici/Registro_accettazione.docx` Documento: lista di 21 dipendenti + 4 righe vuote per nuovi assunti. Prima versione inviata: 19/04/2021 come allegato email. File disponibile su: `\\10.61.20.170\utili\Privacy\Regolamento utilizzo sistemi informatici\`
 
 **Stato attuale (verificato giugno 2026): 0 firme su 21 dipendenti elencati.**
 
-Tutti i campi FIRMA e DATA sono vuoti per i 21 dipendenti elencati nel
-documento (nomi sostituiti con placeholder secondo `.claude/rules/anonymization.md`):
-Persona-V, Persona-W, Persona-G, Persona-X, Persona-Y, Persona-Z, Persona-AA,
-Persona-R, Persona-D, Persona-AB, Persona-B, Persona-AC, Persona-I, Persona-J,
-Persona-AD, Persona-AE, Persona-AF, Persona-T, Persona-P, Persona-AG, Persona-AH.
+Tutti i campi FIRMA e DATA sono vuoti per i 21 dipendenti elencati nel documento (nomi sostituiti con placeholder secondo `.claude/rules/anonymization.md`): Persona-V, Persona-W, Persona-G, Persona-X, Persona-Y, Persona-Z, Persona-AA, Persona-R, Persona-D, Persona-AB, Persona-B, Persona-AC, Persona-I, Persona-J, Persona-AD, Persona-AE, Persona-AF, Persona-T, Persona-P, Persona-AG, Persona-AH.
 
-Gap: ISO-001 confermato ad alta priorità. Necessaria campagna di raccolta firme formale.
-Vedi GAP-TBC.md riga ISO-001 per dettaglio.
+Gap: ISO-001 confermato ad alta priorità. Necessaria campagna di raccolta firme formale. Vedi GAP-TBC.md riga ISO-001 per dettaglio.
 
 ---
 
@@ -417,16 +323,13 @@ Documento: `GDPR-Privacy/xOpenforce/AccordoDiRiservatezza.docx` + PDF firmati da
 - Intrawelt di Alessandro Potalivo & C. Sas (via Elpidiense, 14 – Porto Sant'Elpidio FM)
 - Openforce SRLS unipersonale (via Mercantini, 2 – Pedaso FM)
 
-Scopo: "personalizzazione, configurazione, installazione e manutenzione di un software gestionale"
-(= T-Rex / Odoo). Accordo bilaterale. La relazione commerciale precede l'arrivo di Alessio
-Sopranzi (giu 2024); firmato da Persona-A per Intrawelt.
+Scopo: "personalizzazione, configurazione, installazione e manutenzione di un software gestionale" (= T-Rex / Odoo). Accordo bilaterale. La relazione commerciale precede l'arrivo di Alessio Sopranzi (giu 2024); firmato da Persona-A per Intrawelt.
 
 Allegati siglati da entrambe le parti presenti in:
 - `AccordoDiRiservatezza_signedIntrawelt_IW.pdf.p7m` (firma digitale)
 - `NominaTrattamentodati_signedIntrawelt_IW.pdf.p7m` (DPA art. 28 nomina)
 
-OpenForce è elencata anche nel Registro Sub-Responsabili (DPA sottoscritto 24/05/2018,
-rinnovato annualmente).
+OpenForce è elencata anche nel Registro Sub-Responsabili (DPA sottoscritto 24/05/2018, rinnovato annualmente).
 
 ### 5 Nomina Responsabile Trattamento – Agenti/Traduttori commerciali
 
@@ -442,9 +345,7 @@ Nomine DPA Art. 28 firmate per cinque collaboratori commerciali esterni:
 | Stephan Unser | 5 Nomina Responsabile Trattamento_Stephan Unser.pdf |
 | Tim John | 5 Nomina Responsabile Trattamento_Tim John.pdf |
 
-Modello base: `5 Nomina Responsabile Trattamento.docx`. Le nomine coprono il trattamento
-di dati di clienti e fornitori da parte degli agenti commerciali durante lo svolgimento
-della loro attività per conto di Intrawelt.
+Modello base: `5 Nomina Responsabile Trattamento.docx`. Le nomine coprono il trattamento di dati di clienti e fornitori da parte degli agenti commerciali durante lo svolgimento della loro attività per conto di Intrawelt.
 
 ### Template NDA (6 varianti)
 
@@ -459,38 +360,31 @@ Cartella: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Confidentiality_S
 | Confidentiality Agreement_Ita.doc | Italiano |
 | Confidentiality Agreement_TUV_draft.doc | Bozza per TUV (possibile cliente audit) |
 
-Tutti i template sono in formato .doc (vecchio Word). Usati per accordi di riservatezza
-con traduttori, interpreti e collaboratori freelance.
+Tutti i template sono in formato .doc (vecchio Word). Usati per accordi di riservatezza con traduttori, interpreti e collaboratori freelance.
 
 ### NDA con Fabio Giorgini (developer SCENIA, ott 2025)
 
 Documento: `_ 📜 GDPR E ISO27001/_GDPR compliance/Accordi di non riservatezza (NDA)/Fabio Giorgini/AccordoDiRiservatezza_rev1.docx`
 
-NDA reciproco Intrawelt ↔ Fabio Giorgini (libero professionista IT).
-Firmato contestualmente alla proposta di collaborazione del 29/10/2025.
-Copertura: codice sorgente, architetture, dati clienti SCENIA, API keys, credenziali.
+NDA reciproco Intrawelt ↔ Fabio Giorgini (libero professionista IT). Firmato contestualmente alla proposta di collaborazione del 29/10/2025. Copertura: codice sorgente, architetture, dati clienti SCENIA, API keys, credenziali.
 
 ---
 
 ## Email Authentication – DMARC / SPF / DKIM
 
-Fonte: `Cybersec & IT Governance/Phising and spoofing protection/Notes.docx`
-(report DMARC aggregati ricevuti novembre 2025 da provider terzi)
+Fonte: `Cybersec & IT Governance/Phising and spoofing protection/Notes.docx` (report DMARC aggregati ricevuti novembre 2025 da provider terzi)
 
 DMARC configurato su `intrawelt.com` con tag `rua=` per ricezione report aggregati.
 
-**Provider che inviano report DMARC a Intrawelt:**
-Microsoft, Google, Aruba.it, Mimecast, Yahoo, GMX, Terna, ESA, Amazon SES.
+**Provider che inviano report DMARC a Intrawelt:** Microsoft, Google, Aruba.it, Mimecast, Yahoo, GMX, Terna, ESA, Amazon SES.
 
-Struttura report aggregato: org name, report ID, date range, policy DMARC applicata,
-dati per IP sorgente (pass/fail SPF+DKIM, allineamento header From vs SPF/DKIM domain).
+Struttura report aggregato: org name, report ID, date range, policy DMARC applicata, dati per IP sorgente (pass/fail SPF+DKIM, allineamento header From vs SPF/DKIM domain).
 
 ---
 
 ## Procedura Esercizio Diritti Interessati
 
-Fonte: `GDPR-Privacy/PROCEDURA IN MATERIA DI GESTIONE DEI DIRITTI DEGLI INTERESSATI.docx`
-Redatta da: 4ward s.r.l. (consulenza GDPR). Canale dedicato: **privacy@intrawelt.it**
+Fonte: `GDPR-Privacy/PROCEDURA IN MATERIA DI GESTIONE DEI DIRITTI DEGLI INTERESSATI.docx` Redatta da: 4ward s.r.l. (consulenza GDPR). Canale dedicato: **privacy@intrawelt.it**
 
 ### Diritti coperti (Capo III GDPR)
 
@@ -521,8 +415,7 @@ Categorie di interessati nel registro trattamenti:
 
 ## Studio Password Manager Aziendale (gap SEC-007)
 
-Fonte: `Sviluppo_interno, scripting (IT on FIRE)/[TBC] PASSWORD MANAGER/`
-Documento: `Password manager (Alessio).docx` (1.1 MB). Status: **studio completo, non implementato**.
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/[TBC] PASSWORD MANAGER/` Documento: `Password manager (Alessio).docx` (1.1 MB). Status: **studio completo, non implementato**.
 
 ### Comparazione tecnologie
 
@@ -548,76 +441,29 @@ Funzionalità IT manager tramite Vaultwarden:
 - Revocare accessi centralmente
 - NON può leggere password private (end-to-end encrypted lato client)
 
-Gap: Vaultwarden non supporta SSO/LDAP (solo Bitwarden ufficiale a pagamento).
-Per Intrawelt PMI: sufficiente per fase attuale; SSO da valutare con crescita organizzativa.
+Gap: Vaultwarden non supporta SSO/LDAP (solo Bitwarden ufficiale a pagamento). Per Intrawelt PMI: sufficiente per fase attuale; SSO da valutare con crescita organizzativa.
 
 Gap attuale: SEC-007 — nessun password manager aziendale in produzione a giugno 2026.
 
-**Interim deciso il 05/08/2026 (ADR-021), indipendente da Vaultwarden.** Su richiesta dell'IT
-Manager di avere una situazione stabile senza attendere il progetto Vaultwarden, si adotta un unico
-archivio **KeePassXC `.kdbx` sul NAS**, che eredita il backup gia' esistente, in sostituzione del
-foglio di calcolo in chiaro `accesso_server_accounts_vari.xls` oggi usato come vault interno.
+**Interim deciso il 05/08/2026 (ADR-021), indipendente da Vaultwarden.** Su richiesta dell'IT Manager di avere una situazione stabile senza attendere il progetto Vaultwarden, si adotta un unico archivio **KeePassXC `.kdbx` sul NAS**, che eredita il backup gia' esistente, in sostituzione del foglio di calcolo in chiaro `accesso_server_accounts_vari.xls` oggi usato come vault interno.
 
-La scelta e' coerente con lo studio qui sopra e non lo contraddice: KeePass era stato scartato per
-un solo motivo, i conflitti di scrittura concorrente, e quel motivo **non si applica** finche'
-l'unica persona che accede e' l'IT Manager. Il formato `.kdbx` importa direttamente in
-Vaultwarden, quindi l'interim e' il primo passo dello stesso percorso e non un vicolo cieco.
+La scelta e' coerente con lo studio qui sopra e non lo contraddice: KeePass era stato scartato per un solo motivo, i conflitti di scrittura concorrente, e quel motivo **non si applica** finche' l'unica persona che accede e' l'IT Manager. Il formato `.kdbx` importa direttamente in Vaultwarden, quindi l'interim e' il primo passo dello stesso percorso e non un vicolo cieco.
 
-Limiti dell'interim, dichiarati perche' un interim di cui si tacciono i limiti diventa definitivo:
-un solo archivio con una sola password principale e' un unico punto di rottura, non offre accesso
-condiviso, non registra chi ha letto cosa e non permette di revocare l'accesso a una singola
-persona. Sono esattamente le funzioni che Vaultwarden aggiunge, e per questo **SEC-007 non si
-chiude con questo passo**: si riduce. Cio' che si ottiene subito e' che il gruppo di segreti piu'
-numeroso e piu' pregiato dell'infrastruttura smette di stare in chiaro in un foglio di calcolo.
+Limiti dell'interim, dichiarati perche' un interim di cui si tacciono i limiti diventa definitivo: un solo archivio con una sola password principale e' un unico punto di rottura, non offre accesso condiviso, non registra chi ha letto cosa e non permette di revocare l'accesso a una singola persona. Sono esattamente le funzioni che Vaultwarden aggiunge, e per questo **SEC-007 non si chiude con questo passo**: si riduce. Cio' che si ottiene subito e' che il gruppo di segreti piu' numeroso e piu' pregiato dell'infrastruttura smette di stare in chiaro in un foglio di calcolo.
 
-Passi dell'interim, nell'ordine: creare l'archivio con una password principale robusta e diversa da
-ogni altra in uso; migrare le voci dal foglio di calcolo verificandole una per una, perche' e'
-l'occasione per scoprire quali credenziali non sono piu' valide; verificare che il percorso
-dell'archivio sia incluso in un job di backup; **distruggere il foglio di calcolo** e ogni sua
-copia, che e' il passo che chiude l'esposizione e senza il quale il resto e' inutile; annotare dove
-sta l'archivio in un posto che non sia l'archivio stesso.
-Strumento attuale: password salvate in browser locali o file non cifrati.
+Passi dell'interim, nell'ordine: creare l'archivio con una password principale robusta e diversa da ogni altra in uso; migrare le voci dal foglio di calcolo verificandole una per una, perche' e' l'occasione per scoprire quali credenziali non sono piu' valide; verificare che il percorso dell'archivio sia incluso in un job di backup; **distruggere il foglio di calcolo** e ogni sua copia, che e' il passo che chiude l'esposizione e senza il quale il resto e' inutile; annotare dove sta l'archivio in un posto che non sia l'archivio stesso. Strumento attuale: password salvate in browser locali o file non cifrati.
 
 ---
 
 ## Crittografia dati a riposo – Audit inventario (luglio 2026)
 
-Fonte: `Cybersec & IT Governance/Criptare dati a riposo/AUDIT_INVENTORY.md`
-(inventario generato il 07/2026 con supporto del knowledge graph, dichiarato
-parziale). Gli archivi storici aziendali sono cifrati con due schemi paralleli
-per gli stessi anni, senza un criterio scritto di scelta: container VeraCrypt
-`.hc` per anno (censiti 2009, 2010, 2020, 2021; la sequenza 2011-2019 e 2022+
-non e' censita e va verificata sugli storage fisici) e archivi compressi `.z`
-protetti da password (2009-2022, quattordici anni; tool e modalita' di
-cifratura non documentati, e un eventuale ZipCrypto legacy sarebbe debole).
+Fonte: `Cybersec & IT Governance/Criptare dati a riposo/AUDIT_INVENTORY.md` (inventario generato il 07/2026 con supporto del knowledge graph, dichiarato parziale). Gli archivi storici aziendali sono cifrati con due schemi paralleli per gli stessi anni, senza un criterio scritto di scelta: container VeraCrypt `.hc` per anno (censiti 2009, 2010, 2020, 2021; la sequenza 2011-2019 e 2022+ non e' censita e va verificata sugli storage fisici) e archivi compressi `.z` protetti da password (2009-2022, quattordici anni; tool e modalita' di cifratura non documentati, e un eventuale ZipCrypto legacy sarebbe debole).
 
-Rischio critico rilevato dall'audit: le password e la regola di derivazione
-risiedono in chiaro in file di testo sullo stesso filesystem aziendale
-condiviso (i dettagli restano nel file sorgente locale e non vengono mai
-riportati in questo repository): chiunque acceda a OneDrive con un account
-amministrativo ottiene insieme container e password, azzerando la cifratura
-at-rest nel threat model interno. Non esiste un custodian designato delle
-chiavi, non esiste una policy crittografica documentata (ISO 27001 A.8.24
-assente), i parametri VeraCrypt dei container non sono documentati (cifrario,
-PRF, PIM, keyfile), non c'e' audit log di mount/dismount ne' verifica
-periodica di integrita' (GDPR Art. 32(1)(d) assente).
+Rischio critico rilevato dall'audit: le password e la regola di derivazione risiedono in chiaro in file di testo sullo stesso filesystem aziendale condiviso (i dettagli restano nel file sorgente locale e non vengono mai riportati in questo repository): chiunque acceda a OneDrive con un account amministrativo ottiene insieme container e password, azzerando la cifratura at-rest nel threat model interno. Non esiste un custodian designato delle chiavi, non esiste una policy crittografica documentata (ISO 27001 A.8.24 assente), i parametri VeraCrypt dei container non sono documentati (cifrario, PRF, PIM, keyfile), non c'e' audit log di mount/dismount ne' verifica periodica di integrita' (GDPR Art. 32(1)(d) assente).
 
-Azioni proposte dall'audit, per priorita': P0 entro 30 giorni (spostare le
-password in un vault aziendale con accesso ristretto, designare un custodian
-formale con sostituto, censire fisicamente tutti i container); P1 entro 90
-giorni (scegliere e documentare lo schema unico, documentare i parametri di
-ogni container, redigere la policy crittografica firmata); P2 entro 180
-giorni (valutare TPM-binding, test annuale di mount e integrita', recovery
-drill sulla perdita del custodian). Il rischio password-in-chiaro e' la
-stessa radice del gap SEC-007 (password manager aziendale mai implementato):
-la voce e' registrata come SEC-010 in GAP-TBC #104.
+Azioni proposte dall'audit, per priorita': P0 entro 30 giorni (spostare le password in un vault aziendale con accesso ristretto, designare un custodian formale con sostituto, censire fisicamente tutti i container); P1 entro 90 giorni (scegliere e documentare lo schema unico, documentare i parametri di ogni container, redigere la policy crittografica firmata); P2 entro 180 giorni (valutare TPM-binding, test annuale di mount e integrita', recovery drill sulla perdita del custodian). Il rischio password-in-chiaro e' la stessa radice del gap SEC-007 (password manager aziendale mai implementato): la voce e' registrata come SEC-010 in GAP-TBC #104.
 
-Sul fronte endpoint la copertura at-rest e' invece cambiata il 03/07/2026 con
-l'attivazione di BitLocker su tutti i dischi principali delle macchine
-aziendali (XTS-AES 128 bit, chiavi di ripristino in escrow centralizzato su
-NinjaOne, non possedute dall'utente): il problema descritto in questa sezione
-resta quindi circoscritto agli archivi storici cifrati e alla custodia delle
-loro password, non alla cifratura delle postazioni.
+Sul fronte endpoint la copertura at-rest e' invece cambiata il 03/07/2026 con l'attivazione di BitLocker su tutti i dischi principali delle macchine aziendali (XTS-AES 128 bit, chiavi di ripristino in escrow centralizzato su NinjaOne, non possedute dall'utente): il problema descritto in questa sezione resta quindi circoscritto agli archivi storici cifrati e alla custodia delle loro password, non alla cifratura delle postazioni.
 
 ---
 
@@ -638,8 +484,7 @@ Non esiste un processo formale di incident response. In caso di incidente, il fl
 
 ## Business Continuity Plan 2026 (BCD_2026)
 
-Fonte: `Cybersec & IT Governance/Business Continuity/BCD_2026.docx` (135 KB, 142 §).
-Documento BCP/DRP aziendale. Aggiornamento 2026.
+Fonte: `Cybersec & IT Governance/Business Continuity/BCD_2026.docx` (135 KB, 142 §). Documento BCP/DRP aziendale. Aggiornamento 2026.
 
 ### Comitato di Gestione Crisi
 
@@ -698,15 +543,13 @@ Documento BCP/DRP aziendale. Aggiornamento 2026.
 
 ### Revisione piano
 
-Cadenza revisione: **biennale**.
-Responsabile revisione: Alessio Sopranzi (Responsabile Servizi Tecnici).
+Cadenza revisione: **biennale**. Responsabile revisione: Alessio Sopranzi (Responsabile Servizi Tecnici).
 
 ---
 
 ## Procedura Data Breach
 
-Fonte: `Cybersec & IT Governance/Procedura Data Breach + registro data breach + notifica al Garante/PROCEDURA DATA BREACH INTRAWELT.docx`
-Riferimento normativo: GDPR art. 33 (notifica Autorità), art. 34 (comunicazione interessati).
+Fonte: `Cybersec & IT Governance/Procedura Data Breach + registro data breach + notifica al Garante/PROCEDURA DATA BREACH INTRAWELT.docx` Riferimento normativo: GDPR art. 33 (notifica Autorità), art. 34 (comunicazione interessati).
 
 ### Tipologie di violazione coperte
 
@@ -729,8 +572,7 @@ Riferimento normativo: GDPR art. 33 (notifica Autorità), art. 34 (comunicazione
 | 3 | Notifica all'Autorità Garante | Entro **72 ore** dalla scoperta (se rischio per gli interessati); tramite portale Garante |
 | 4 | Comunicazione agli interessati | Se rischio elevato; comunicazione diretta e trasparente, privilegiando canale principale; descrivere conseguenze e misure adottate |
 
-**Monitoraggio preventivo:** Addetti IT monitorano eventi ICT (log, alert Bitdefender).
-Responsabile: personale IT (Alessio Sopranzi).
+**Monitoraggio preventivo:** Addetti IT monitorano eventi ICT (log, alert Bitdefender). Responsabile: personale IT (Alessio Sopranzi).
 
 ### Registro Data Breach (art. 33, c.5 GDPR)
 
@@ -749,8 +591,7 @@ Allegati procedura:
 
 ## Data Protection Statement – Gap e Stato Implementazione
 
-Fonte: `Cybersec & IT Governance/Data protection/Data protection.docx`
-Documento usato come base per risposte a questionari B2B (fornitori, clienti enterprise).
+Fonte: `Cybersec & IT Governance/Data protection/Data protection.docx` Documento usato come base per risposte a questionari B2B (fornitori, clienti enterprise).
 
 ### Stato attuale (giugno 2026)
 

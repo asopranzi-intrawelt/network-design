@@ -1,8 +1,6 @@
 # IT Backlog – Intrawelt S.a.s.
 
-Registro attività IT strutturato. Fonte: `_Piano_Attivita_IT_v3.xlsx`.
-114 task totali, 8 macro-categorie. Owner: Alessio Sopranzi.
-Aggiornato: giugno 2026.
+Registro attività IT strutturato. Fonte: `_Piano_Attivita_IT_v3.xlsx`. 114 task totali, 8 macro-categorie. Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ---
 
@@ -114,11 +112,7 @@ Aggiornato: giugno 2026.
 | task_56 | Studio ciclo vita dati posta (Exchange, quarantena, traccia) | - | - | 0% |
 | task_57 | Studio Microsoft Purview + Defender integration | - | - | 0% |
 
-**Note task_21 (studio sicurezza avanzata):**
-SOC II type 2, classificazione dati, GDPR art.37, crypto-shredding, supply chain risk,
-IDS/IPS (Bitdefender), DDoS protection, DLP, CVSS >9.0 patch SLA, MFA ovunque,
-password hashed, PIM/PAM, crittografia backup, SDLC DevOps, RPO/RTO, incident management,
-eDiscovery, cloud forensics, physical security.
+**Note task_21 (studio sicurezza avanzata):** SOC II type 2, classificazione dati, GDPR art.37, crypto-shredding, supply chain risk, IDS/IPS (Bitdefender), DDoS protection, DLP, CVSS >9.0 patch SLA, MFA ovunque, password hashed, PIM/PAM, crittografia backup, SDLC DevOps, RPO/RTO, incident management, eDiscovery, cloud forensics, physical security.
 
 **task_31 – Bitdefender pendente su 3 macchine:**
 - WINGROUPSHARE (10.77.116.3) – sotto Seeweb
@@ -233,9 +227,4 @@ eDiscovery, cloud forensics, physical security.
 | task_1 | Formazione T-Rex (syllabus preciso) | - | - |
 | task_19 | Certificazione ISO 27001 con Consulente-ISO27001-1 | 270h | - |
 
-**Nota task_47 (network security):**
-Il testo originale richiede una revisione completa dell'infrastruttura di rete:
-DHCP multipli, VLAN isolation reale (attualmente le subnet .10/.20/.90 non sono isolate a livello firewall),
-WiFi guest separato su .90 con isolamento vero, VPN che vede rete .10 locale,
-accesso ethernet da MAC non noti sulla LAN management.
-Soluzione proposta: whitelist MAC su switch, regole firewall tra VLAN, revisione ACL Nebula.
+**Nota task_47 (network security):** Il testo originale richiede una revisione completa dell'infrastruttura di rete: DHCP multipli, VLAN isolation reale (attualmente le subnet .10/.20/.90 non sono isolate a livello firewall), WiFi guest separato su .90 con isolamento vero, VPN che vede rete .10 locale, accesso ethernet da MAC non noti sulla LAN management. Soluzione proposta: whitelist MAC su switch, regole firewall tra VLAN, revisione ACL Nebula.

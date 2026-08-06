@@ -1,8 +1,6 @@
 # Diagramma di rete Intrawelt - Via Pescolla 2A
 
-Fonte: Analisi_Zyxel_USG_FLEX_500.docx, ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx,
-       interventi 29052026.docx, mappatura porte fisiche.xlsx.
-Aggiornato: maggio 2026. Stato: post installazione XGS2220-30HP (08/05/2026).
+Fonte: Analisi_Zyxel_USG_FLEX_500.docx, ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx, interventi 29052026.docx, mappatura porte fisiche.xlsx. Aggiornato: maggio 2026. Stato: post installazione XGS2220-30HP (08/05/2026).
 
 ---
 
@@ -84,46 +82,19 @@ INTERNET
      PBX cloud Vianova [TBC: transizione in corso]
 ```
 
-Nota fisica confermata dall'utente il 17/07/2026, corroborata da uno screenshot del
-pannello porte Nebula del 54HP (porta 33 con icona uplink, porte 3/5/44 con icona PoE,
-porte 51 e 52 a 10 Gbps): il QNAP QSW-1208-8c non e' un hop intermedio sulla dorsale.
-Dallo switch Piano 2 partono due fibre a 10 Gbps indipendenti, una verso il Piano Terra
-per il traffico dati e fonia e una verso il QNAP, che aggrega NAS fleet e le postazioni
-ad alta velocita' senza toccare il traffico della dorsale.
+Nota fisica confermata dall'utente il 17/07/2026, corroborata da uno screenshot del pannello porte Nebula del 54HP (porta 33 con icona uplink, porte 3/5/44 con icona PoE, porte 51 e 52 a 10 Gbps): il QNAP QSW-1208-8c non e' un hop intermedio sulla dorsale. Dallo switch Piano 2 partono due fibre a 10 Gbps indipendenti, una verso il Piano Terra per il traffico dati e fonia e una verso il QNAP, che aggrega NAS fleet e le postazioni ad alta velocita' senza toccare il traffico della dorsale.
 
-Correzione del 23/07/2026 sull'assegnazione delle due fibre, che la documentazione
-riportava invertita: la vista di dettaglio delle porte in Nebula, con il vicino LLDP
-dichiarato ("Switch piano terra"), stabilisce che la dorsale verso il Piano Terra e' la
-**porta 51 del 54HP** (Trunk, PVID 1, Allowed VLANs `All`), mentre la **porta 52** e' il
-ramo verso il QNAP. Lato Piano Terra il trunk termina sulla porta 29 del 30HP (Trunk,
-PVID 1, Allowed VLANs `1,2,40,90` dopo la correzione del 23/07: la VLAN 2 fonia
-mancava). Chiarito nella stessa verifica anche il ruolo della porta 6 del 54HP, che
-resta su PVID 2 perche' vi e' collegato un dispositivo voce Grandstream di Vianova.
+Correzione del 23/07/2026 sull'assegnazione delle due fibre, che la documentazione riportava invertita: la vista di dettaglio delle porte in Nebula, con il vicino LLDP dichiarato ("Switch piano terra"), stabilisce che la dorsale verso il Piano Terra e' la **porta 51 del 54HP** (Trunk, PVID 1, Allowed VLANs `All`), mentre la **porta 52** e' il ramo verso il QNAP. Lato Piano Terra il trunk termina sulla porta 29 del 30HP (Trunk, PVID 1, Allowed VLANs `1,2,40,90` dopo la correzione del 23/07: la VLAN 2 fonia mancava). Chiarito nella stessa verifica anche il ruolo della porta 6 del 54HP, che resta su PVID 2 perche' vi e' collegato un dispositivo voce Grandstream di Vianova.
 
-Regola operativa appresa lo stesso giorno, valida per qualunque trunk di questi switch:
-il PVID e' un valore singolo (1) e la lista delle VLAN ammesse va solo nel campo
-`Allowed VLANS`. Invertire i due campi sul trunk del core switch fa perdere la VLAN di
-gestione, perche' la gestione dei due apparati viaggia sulla VLAN nativa dei dati
-(classe `.10`) e non sulla VLAN 90 come indicava FW-002 in una versione datata.
+Regola operativa appresa lo stesso giorno, valida per qualunque trunk di questi switch: il PVID e' un valore singolo (1) e la lista delle VLAN ammesse va solo nel campo `Allowed VLANS`. Invertire i due campi sul trunk del core switch fa perdere la VLAN di gestione, perche' la gestione dei due apparati viaggia sulla VLAN nativa dei dati (classe `.10`) e non sulla VLAN 90 come indicava FW-002 in una versione datata.
 
-Aggiunta del 27/07/2026 sul lato server: due VM del nodo Proxmox ospitano ora servizi
-applicativi interni raggiungibili dalla LAN, e vanno lette come endpoint del diagramma
-e non solo come carichi del server. La VM207 (`10.61.20.24`, bridge `vmbr3`) espone un
-backend HTTP sulla porta 8000 legata al proprio indirizzo di LAN e monta in CIFS una
-condivisione del NAS `10.61.20.177`. La VM208 (`10.61.20.25`, bridge `vmbr0`) pubblica
-su TCP/80 e TCP/443 il pilota del portale ISO27001, identity provider incluso, verso
-l'intero dominio di broadcast della `/19`: e' il primo servizio applicativo interno
-esposto in questo modo e non ha nessun filtro interposto, il che rende concreta la
-mancata segmentazione della LAN piatta (NET-009/NET-011, micro-step M22).
+Aggiunta del 27/07/2026 sul lato server: due VM del nodo Proxmox ospitano ora servizi applicativi interni raggiungibili dalla LAN, e vanno lette come endpoint del diagramma e non solo come carichi del server. La VM207 (`10.61.20.24`, bridge `vmbr3`) espone un backend HTTP sulla porta 8000 legata al proprio indirizzo di LAN e monta in CIFS una condivisione del NAS `10.61.20.177`. La VM208 (`10.61.20.25`, bridge `vmbr0`) pubblica su TCP/80 e TCP/443 il pilota del portale ISO27001, identity provider incluso, verso l'intero dominio di broadcast della `/19`: e' il primo servizio applicativo interno esposto in questo modo e non ha nessun filtro interposto, il che rende concreta la mancata segmentazione della LAN piatta (NET-009/NET-011, micro-step M22).
 
 ---
 
 ## Catena WAN e rack SX del Piano 2 (ricostruita il 03/08/2026)
 
-Fonte: descrizione dell'IT Manager del 03/08/2026, corroborata dal `startup-config.conf`
-scaricato dal firewall lo stesso giorno (non versionato, resta in `_notes/`). Sostituisce la
-rappresentazione precedente, che riduceva tutto a un box "ROUTER VIANOVA" e attribuiva il ponte
-radio a un'interfaccia WAN del firewall: **il ponte radio non tocca il firewall**.
+Fonte: descrizione dell'IT Manager del 03/08/2026, corroborata dal `startup-config.conf` scaricato dal firewall lo stesso giorno (non versionato, resta in `_notes/`). Sostituisce la rappresentazione precedente, che riduceva tutto a un box "ROUTER VIANOVA" e attribuiva il ponte radio a un'interfaccia WAN del firewall: **il ponte radio non tocca il firewall**.
 
 ```
         antenna sul tetto
@@ -156,51 +127,23 @@ radio a un'interfaccia WAN del firewall: **il ponte radio non tocca il firewall*
 
 Tre fatti che questa catena stabilisce e che il progetto non aveva.
 
-**Esistono tre percorsi verso Internet, non due.** Fibra FTTO come primario, ponte radio come
-primo backup, e una **linea VDSL sulla porta xDSL del secondo R-1000** come terzo livello. La
-VDSL non era documentata da nessuna parte.
+**Esistono tre percorsi verso Internet, non due.** Fibra FTTO come primario, ponte radio come primo backup, e una **linea VDSL sulla porta xDSL del secondo R-1000** come terzo livello. La VDSL non era documentata da nessuna parte.
 
-**Il failover vive interamente dentro gli apparati del fornitore.** I due R-1000 sono in
-cascata e attestati entrambi sullo S-1000, che consegna al firewall una sola porta dati. Ne
-segue che il firewall non ha e non deve avere una seconda WAN per il backup, e che
-`wan2` sulla P3 — indirizzo del blocco `198.51.100.x/29` nel modello documentale — e' il
-residuo della linea TIM dismessa, non il ponte radio come questa scheda ha sostenuto per
-settimane. L'interfaccia risulta ancora amministrativamente attiva con indirizzo e gateway
-configurati: e' lo stesso residuo che FW-008 segnala sul gruppo WAN_TRUNK, e va spenta insieme
-a quello.
+**Il failover vive interamente dentro gli apparati del fornitore.** I due R-1000 sono in cascata e attestati entrambi sullo S-1000, che consegna al firewall una sola porta dati. Ne segue che il firewall non ha e non deve avere una seconda WAN per il backup, e che `wan2` sulla P3 — indirizzo del blocco `198.51.100.x/29` nel modello documentale — e' il residuo della linea TIM dismessa, non il ponte radio come questa scheda ha sostenuto per settimane. L'interfaccia risulta ancora amministrativamente attiva con indirizzo e gateway configurati: e' lo stesso residuo che FW-008 segnala sul gruppo WAN_TRUNK, e va spenta insieme a quello.
 
-**La porta 8 del 54HP si spiega, ed e' la fonia.** Lo S-1000 sdoppia la consegna: la porta 4
-verso la WAN del firewall per i dati, la porta 1 verso la porta 8 del 54HP per la voce. E'
-per questo che quella porta ha PVID 2, che vi compare un MAC virtuale VRRP dei router del
-fornitore, e che la LAN telefonica non passa dal firewall per progetto (FW-012). Il traffico
-dati rientra invece come LAN e raggiunge il firewall dalla porta 33.
+**La porta 8 del 54HP si spiega, ed e' la fonia.** Lo S-1000 sdoppia la consegna: la porta 4 verso la WAN del firewall per i dati, la porta 1 verso la porta 8 del 54HP per la voce. E' per questo che quella porta ha PVID 2, che vi compare un MAC virtuale VRRP dei router del fornitore, e che la LAN telefonica non passa dal firewall per progetto (FW-012). Il traffico dati rientra invece come LAN e raggiunge il firewall dalla porta 33.
 
 ### Apparati del rack SX mai censiti prima
 
 Due elementi di questa catena non comparivano in nessun documento del progetto.
 
-Il **Mikrotik RB2011UiAS-RM** e' un apparato di routing con dieci porte in formato rack, e sta
-fra l'iniettore PoE dell'antenna e il primo R-1000: il segnale radio entra sulla ETH10 ed esce
-dalla ETH1, che e' una porta PoE. Non e' noto se sia di proprieta' Intrawelt o del fornitore,
-ne' chi lo amministri, ne' se abbia una configurazione documentata da qualche parte. Poiche' sta
-sul percorso di un servizio di continuita', va chiarito: un apparato di cui nessuno conosce le
-credenziali sul percorso del backup di linea e' un rischio di indisponibilita', non solo un
-buco di inventario. Tracciato come NET-018.
+Il **Mikrotik RB2011UiAS-RM** e' un apparato di routing con dieci porte in formato rack, e sta fra l'iniettore PoE dell'antenna e il primo R-1000: il segnale radio entra sulla ETH10 ed esce dalla ETH1, che e' una porta PoE. Non e' noto se sia di proprieta' Intrawelt o del fornitore, ne' chi lo amministri, ne' se abbia una configurazione documentata da qualche parte. Poiche' sta sul percorso di un servizio di continuita', va chiarito: un apparato di cui nessuno conosce le credenziali sul percorso del backup di linea e' un rischio di indisponibilita', non solo un buco di inventario. Tracciato come NET-018.
 
-L'**iniettore PoE** dell'antenna e' l'altro: alimenta il radio e non era censito.
-**Confermato dall'IT Manager il 04/08/2026: e' sotto il gruppo di continuita'.** La domanda
-aperta si chiude quindi nel modo giusto, ed e' un fatto di continuita' operativa che vale
-registrare in positivo: un'assenza di rete elettrica non spegne il backup radio, perche' sia
-l'iniettore sia gli apparati del fornitore a valle sono protetti. Il perimetro esatto di cosa
-alimenta quel gruppo resta da definire, ma la catena del backup di linea vi e' dentro.
+L'**iniettore PoE** dell'antenna e' l'altro: alimenta il radio e non era censito. **Confermato dall'IT Manager il 04/08/2026: e' sotto il gruppo di continuita'.** La domanda aperta si chiude quindi nel modo giusto, ed e' un fatto di continuita' operativa che vale registrare in positivo: un'assenza di rete elettrica non spegne il backup radio, perche' sia l'iniettore sia gli apparati del fornitore a valle sono protetti. Il perimetro esatto di cosa alimenta quel gruppo resta da definire, ma la catena del backup di linea vi e' dentro.
 
 ### Cosa resta aperto su questa parte
 
-Quale gruppo di continuita' alimenta quali apparati del rack SX, dato che l'IT Manager ha
-indicato la catena come ridondata ma il perimetro dell'alimentazione non e' definito. Se i due
-R-1000 siano entrambi del fornitore e in che modo si coordinino, dato che sono in cascata e non
-in parallelo. E la relazione fra questa antenna e l'apparato Ubiquiti sulla porta 4 dello switch
-del Piano Terra, che resta un secondo impianto radio non chiarito (NET-017).
+Quale gruppo di continuita' alimenta quali apparati del rack SX, dato che l'IT Manager ha indicato la catena come ridondata ma il perimetro dell'alimentazione non e' definito. Se i due R-1000 siano entrambi del fornitore e in che modo si coordinino, dato che sono in cascata e non in parallelo. E la relazione fra questa antenna e l'apparato Ubiquiti sulla porta 4 dello switch del Piano Terra, che resta un secondo impianto radio non chiarito (NET-017).
 
 ## Segmentazione VLAN
 
@@ -214,12 +157,7 @@ del Piano Terra, che resta un secondo impianto radio non chiarito (NET-017).
 | Fonia (target) | 100 | 10.61.100.0/24 | Telefoni IP centralino cloud | Target 08/07/2026: zona VOICE su FLEX 500 (interfaccia ge5, gw .1), DHCP sul firewall, SIP ALG off. Non ancora applicato |
 | DMZ | 201 | [TBC] | Segmento DMZ pianificato | VLAN 802.1Q su Proxmox bridge-vlan-aware |
 
-Le tre righe corrette sopra non sono VLAN: sono alias di indirizzo dentro un'unica `/19`,
-ed e' esattamente il difetto che il micro-step M22 affronta. Il disegno target che le
-trasforma in VLAN vere, con l'aggiunta di un segmento per i servizi applicativi interni e
-di uno per IoT/OT, e' progettato in `docs/segmentazione-lan-m22.md` e disegnato in
-`.claude/context/diagrams/segmentazione-target-m22.mmd`. Sintesi degli ID proposti, da
-confermare, secondo la convenzione del progetto ottetto uguale ID VLAN.
+Le tre righe corrette sopra non sono VLAN: sono alias di indirizzo dentro un'unica `/19`, ed e' esattamente il difetto che il micro-step M22 affronta. Il disegno target che le trasforma in VLAN vere, con l'aggiunta di un segmento per i servizi applicativi interni e di uno per IoT/OT, e' progettato in `docs/segmentazione-lan-m22.md` e disegnato in `.claude/context/diagrams/segmentazione-target-m22.mmd`. Sintesi degli ID proposti, da confermare, secondo la convenzione del progetto ottetto uguale ID VLAN.
 
 | VLAN target | ID proposto | Subnet | Contenuto | Stato |
 |---|---|---|---|---|
@@ -230,39 +168,11 @@ confermare, secondo la convenzione del progetto ottetto uguale ID VLAN.
 | IoT / OT | 60 | 10.61.60.0/24 | UPS, domotica, citofono, irrigazione | Progetto |
 | Gestione apparati | da decidere | da decidere | Switch, iLO, AP, admin firewall | Proposta aperta (oggi la gestione switch e' nella classe PC, la iLO su `10.61.1.71`) |
 
-Aggiornamento confermato il 17/07/2026: il secondo collegamento in trunk
-802.1Q tra lo switch 30 porte del Piano Terra e il 54 porte del Piano 2,
-pianificato l'08/07/2026, e' oggi attivo (confermato dall'utente, corroborato
-da screenshot del pannello porte Nebula). Porta la VLAN dati del Piano Terra
-untagged e la VLAN 2 fonia tagged; l'ID VLAN fonia realmente in uso resta 2
-(DHCP+gateway Vianova sulla porta 8 del 54HP, isolati dal firewall, FW-012),
-non 100: il disegno alternativo a VLAN 100 con DHCP sul FLEX 500, nel
-diagramma dell'utente `rete_fonia_voip_08072026_2.drawio-claudio.drawio`, non
-e' quello implementato e resta storico. La topologia corrente e' in
-`rete_stato_attuale_17072026.drawio` (`.claude/context/diagrams/firewall-dmz-2026/`),
-che supera sia quel diagramma sia `rete_stato_target_08072026.drawio` per la
-parte di dorsale/QNAP. Il QNAP QSW-1208-8c non e' un hop intermedio sulla
-dorsale: resta un ramo a parte, sulla porta 52 del 54HP, verso NAS fleet e le
-postazioni a 10 Gbps, invariato rispetto a prima.
+Aggiornamento confermato il 17/07/2026: il secondo collegamento in trunk 802.1Q tra lo switch 30 porte del Piano Terra e il 54 porte del Piano 2, pianificato l'08/07/2026, e' oggi attivo (confermato dall'utente, corroborato da screenshot del pannello porte Nebula). Porta la VLAN dati del Piano Terra untagged e la VLAN 2 fonia tagged; l'ID VLAN fonia realmente in uso resta 2 (DHCP+gateway Vianova sulla porta 8 del 54HP, isolati dal firewall, FW-012), non 100: il disegno alternativo a VLAN 100 con DHCP sul FLEX 500, nel diagramma dell'utente `rete_fonia_voip_08072026_2.drawio-claudio.drawio`, non e' quello implementato e resta storico. La topologia corrente e' in `rete_stato_attuale_17072026.drawio` (`.claude/context/diagrams/firewall-dmz-2026/`), che supera sia quel diagramma sia `rete_stato_target_08072026.drawio` per la parte di dorsale/QNAP. Il QNAP QSW-1208-8c non e' un hop intermedio sulla dorsale: resta un ramo a parte, sulla porta 52 del 54HP, verso NAS fleet e le postazioni a 10 Gbps, invariato rispetto a prima.
 
-Nota di riconciliazione del 03/08/2026: questa scheda portava ancora, nel
-diagramma ASCII e in questa stessa nota, l'assegnazione delle due fibre
-anteriore alla correzione del 23/07/2026 (dorsale sulla 52, QNAP sulla 51),
-in contraddizione con il paragrafo di correzione poco sopra. Allineata alla
-misura autorevole, che e' il vicino LLDP dichiarato nella vista di dettaglio
-della porta in Nebula: **dorsale sulla porta 51, QNAP sulla porta 52**. La
-contraddizione era interna a un solo file e non ha prodotto errori di
-configurazione, ma valeva la pena chiuderla adesso: il numero di porta e' il
-dato che si usa quando si mette mano a un trunk, ed e' proprio su un trunk di
-questo switch che il 23/07 un campo sbagliato ha portato il core switch fuori
-dal piano di gestione.
+Nota di riconciliazione del 03/08/2026: questa scheda portava ancora, nel diagramma ASCII e in questa stessa nota, l'assegnazione delle due fibre anteriore alla correzione del 23/07/2026 (dorsale sulla 52, QNAP sulla 51), in contraddizione con il paragrafo di correzione poco sopra. Allineata alla misura autorevole, che e' il vicino LLDP dichiarato nella vista di dettaglio della porta in Nebula: **dorsale sulla porta 51, QNAP sulla porta 52**. La contraddizione era interna a un solo file e non ha prodotto errori di configurazione, ma valeva la pena chiuderla adesso: il numero di porta e' il dato che si usa quando si mette mano a un trunk, ed e' proprio su un trunk di questo switch che il 23/07 un campo sbagliato ha portato il core switch fuori dal piano di gestione.
 
-Restano aperti NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere il
-NAS-HERO; l'ipotesi del native VLAN mismatch causato dal QNAP inline decade
-ora che la dorsale e' un trunk diretto, ma la causa resta da isolare), TEL-002
-(i due telefoni IP del Piano Terra non risultano visibili nonostante il trunk
-diretto, causa non isolata) e un nuovo punto aperto sulla porta 6 del 54HP
-(PVID 2 come la porta 8, ruolo non confermato).
+Restano aperti NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere il NAS-HERO; l'ipotesi del native VLAN mismatch causato dal QNAP inline decade ora che la dorsale e' un trunk diretto, ma la causa resta da isolare), TEL-002 (i due telefoni IP del Piano Terra non risultano visibili nonostante il trunk diretto, causa non isolata) e un nuovo punto aperto sulla porta 6 del 54HP (PVID 2 come la porta 8, ruolo non confermato).
 
 ---
 
@@ -329,9 +239,7 @@ GroupShare: 10.77.116.3 (WINGROUPSHARE) - raggiungibile via LAN/VPN.
 
 ## Infrastruttura elettrica
 
-UPS: alimentano server, NAS, centralino. Autonomia 15 min. Modello Emerson Liebert IntelliSlot Web Card (IP 10.61.90.33, porta 6004).
-Fotovoltaico: mini-gruppo di continuita aggiuntivo (2025).
-Cambiato gruppo di continuita: febbraio 2025.
+UPS: alimentano server, NAS, centralino. Autonomia 15 min. Modello Emerson Liebert IntelliSlot Web Card (IP 10.61.90.33, porta 6004). Fotovoltaico: mini-gruppo di continuita aggiuntivo (2025). Cambiato gruppo di continuita: febbraio 2025.
 
 ---
 
@@ -348,9 +256,4 @@ Cambiato gruppo di continuita: febbraio 2025.
 | Switch Nebula offline intermittente (nuovo, 01/07/2026) | Entrambi gli switch (XGS2220-54HP e XGS2220-30HP) risultano occasionalmente offline sul pannello Nebula con rete dati funzionante: sintomo del solo canale di gestione cloud, non dello switching locale. Ipotesi principale legata a FW-008 (WAN_TRUNK con wan2 morto ancora primario); vedi GAP-TBC #101 e roadmap M20/M21 |
 | Porta 6 del 54HP (nuovo, 17/07/2026) | Ha PVID 2 come la porta 8 (Vianova DHCP fonia, FW-012), ma il ruolo non e' confermato: il pannello d'insieme di Nebula non mostra il PVID per porta, serve la vista di dettaglio della singola porta. Vedi GAP-TBC #102/#103 |
 
-Diagrammi sorgente (drawio/svg) dell'analisi firewall/DMZ del 29/05-05/06/2026
-sono archiviati in `.claude/context/diagrams/firewall-dmz-2026/` e registrati
-nella tabella diagrammi di `docs/firewall-zyxel-usg-flex-500.md`. Il
-consolidamento in un unico diagramma Mermaid aggiornato di questa topologia
-e' rimandato alla fine della fase di ottimizzazione rete in corso (vedi
-`.claude/context/roadmap.md`), per evitare di ricostruirlo a ogni micro-intervento.
+Diagrammi sorgente (drawio/svg) dell'analisi firewall/DMZ del 29/05-05/06/2026 sono archiviati in `.claude/context/diagrams/firewall-dmz-2026/` e registrati nella tabella diagrammi di `docs/firewall-zyxel-usg-flex-500.md`. Il consolidamento in un unico diagramma Mermaid aggiornato di questa topologia e' rimandato alla fine della fase di ottimizzazione rete in corso (vedi `.claude/context/roadmap.md`), per evitare di ricostruirlo a ogni micro-intervento.

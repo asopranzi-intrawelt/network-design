@@ -1,19 +1,16 @@
 # Skill: docx-ingest
 
-> Ingestione progressiva di documenti Word voluminosi con ottimizzazione del contesto.
-> Si basa sulla disclosure progressiva descritta in `rules/token-economy.md`.
+> Ingestione progressiva di documenti Word voluminosi con ottimizzazione del contesto. Si basa sulla disclosure progressiva descritta in `rules/token-economy.md`.
 
 ## Quando usarla
 
-Quando l'utente vuole lavorare su un documento Word (.doc/.docx) presente in `_notes/`.
-Tipicamente per ricostruire la storia della rete da documenti esistenti.
+Quando l'utente vuole lavorare su un documento Word (.doc/.docx) presente in `_notes/`. Tipicamente per ricostruire la storia della rete da documenti esistenti.
 
 ## Tre livelli di disclosure
 
 ### Livello 1 — TOC e skeleton
 
-Estrarre solo la struttura del documento (indice, titoli di sezione).
-Restituire l'elenco numerato delle sezioni. Costo minimo di token.
+Estrarre solo la struttura del documento (indice, titoli di sezione). Restituire l'elenco numerato delle sezioni. Costo minimo di token.
 
 ```powershell
 # Usare python-docx via python, oppure pandoc se disponibile
@@ -25,8 +22,7 @@ Output: elenco sezioni con numero e titolo. Chiedere all'utente quali sezioni le
 
 ### Livello 2 — Anteprima sezioni
 
-Per le sezioni di interesse, estrarre le prime N righe (tipicamente 20-30) per capire
-il contenuto senza leggere tutto.
+Per le sezioni di interesse, estrarre le prime N righe (tipicamente 20-30) per capire il contenuto senza leggere tutto.
 
 ```powershell
 # Estrarre il documento completo una volta sola, salvare in _notes/.tmp-docx-<nome>/
@@ -58,8 +54,7 @@ Al primo accesso a un documento, creare `_notes/.manifest-docx.json`:
 }
 ```
 
-Se il documento non e' cambiato (hash identico), usare l'estrazione gia' presente
-in `_notes/.tmp-docx-<nome>/`. Evitare riletture costose.
+Se il documento non e' cambiato (hash identico), usare l'estrazione gia' presente in `_notes/.tmp-docx-<nome>/`. Evitare riletture costose.
 
 ## Procedura operativa
 
@@ -75,8 +70,7 @@ in `_notes/.tmp-docx-<nome>/`. Evitare riletture costose.
 
 ## Output versionato
 
-I mirror Markdown curati delle sezioni rilevanti vanno in `docs/infrastructure-timeline/`
-con nome file `YYYY-MM-DD_evento-breve.md`. Quelli grezzi restano in `_notes/.tmp-docx-*/`.
+I mirror Markdown curati delle sezioni rilevanti vanno in `docs/infrastructure-timeline/` con nome file `YYYY-MM-DD_evento-breve.md`. Quelli grezzi restano in `_notes/.tmp-docx-*/`.
 
 ## Strumenti da verificare prima di usare
 

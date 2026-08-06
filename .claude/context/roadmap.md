@@ -14,8 +14,7 @@ last-verified: 41d0581
 
 ## Fase 1 - Ricostruzione storia della rete (COMPLETATA)
 
-Documento Word principale (ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx) ingestato
-con strategia a disclosure progressiva. Estratte 12 sezioni prioritarie.
+Documento Word principale (ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx) ingestato con strategia a disclosure progressiva. Estratte 12 sezioni prioritarie.
 
 Output prodotto in `docs/infrastructure-timeline/`:
 - 2023-baseline.md: stato di partenza pre-IT-manager
@@ -36,101 +35,43 @@ Documenti Word secondari da ingestare (rimandati a Fase 2):
 
 ## Fase 2 - Documentazione stato corrente (COMPLETATA il 10/07/2026)
 
-Obiettivo: documentare in modo completo la rete attuale integrando snapshot Proxmox
-con configurazioni switch, firewall, AP e NAS. Produrre un diagramma di rete completo.
+Obiettivo: documentare in modo completo la rete attuale integrando snapshot Proxmox con configurazioni switch, firewall, AP e NAS. Produrre un diagramma di rete completo.
 
 Steps:
 
-1. **Fatto.** Documenti Word secondari della cartella ARCHITETTURA SERVER-CLOUD-LINEE
-   ingestati (Telefono-PBX, ZYXEL FIREWALL e VPN, licenze). Il documento
-   "[TBC] Diagramma di rete e analisi firewall, centralino" (cartella separata in
-   radice progetto, non OneDrive) e' stato ingestato integralmente il 01/07/2026:
-   vedi `docs/infrastructure-timeline/ingestion-checklist.md` e i riferimenti
-   incrociati in `docs/firewall-zyxel-usg-flex-500.md`, `docs/network-diagram.md`,
-   `docs/telefono-pbx-voip.md`.
+1. **Fatto.** Documenti Word secondari della cartella ARCHITETTURA SERVER-CLOUD-LINEE ingestati (Telefono-PBX, ZYXEL FIREWALL e VPN, licenze). Il documento "[TBC] Diagramma di rete e analisi firewall, centralino" (cartella separata in radice progetto, non OneDrive) e' stato ingestato integralmente il 01/07/2026: vedi `docs/infrastructure-timeline/ingestion-checklist.md` e i riferimenti incrociati in `docs/firewall-zyxel-usg-flex-500.md`, `docs/network-diagram.md`, `docs/telefono-pbx-voip.md`.
 
-2. **Fatto 08/07/2026.** Snapshot v4 eseguito dall'utente
-   (`Get-ProxmoxSnapshot.ps1`): scheda `design-and-security.md` aggiornata,
-   gap #106/#107 riconciliati, nuovo #108 (IP nodo = iLO nello stato
-   cluster). Resta M18 per il re-run post-M5/M16.
+2. **Fatto 08/07/2026.** Snapshot v4 eseguito dall'utente (`Get-ProxmoxSnapshot.ps1`): scheda `design-and-security.md` aggiornata, gap #106/#107 riconciliati, nuovo #108 (IP nodo = iLO nello stato cluster). Resta M18 per il re-run post-M5/M16.
 
-3. **Fatto.** Configurazione switch Zyxel via Nebula documentata in
-   `docs/network-diagram.md` e `docs/infrastructure-timeline/2026-switch-piano-terra.md`
-   (XGS2220-54HP Piano 2, XGS2220-30HP Piano Terra installato aprile 2026,
-   dorsale 10 Gbps operativa dall'08/05/2026).
+3. **Fatto.** Configurazione switch Zyxel via Nebula documentata in `docs/network-diagram.md` e `docs/infrastructure-timeline/2026-switch-piano-terra.md` (XGS2220-54HP Piano 2, XGS2220-30HP Piano Terra installato aprile 2026, dorsale 10 Gbps operativa dall'08/05/2026).
 
-4. **Fatto, ma piano non applicato.** Configurazione firewall Zyxel USG FLEX 500
-   documentata in dettaglio in `docs/firewall-zyxel-usg-flex-500.md` (zone,
-   interfacce, VPN, NAT, security policy, dieci anomalie FW-001/FW-010). Il piano
-   di correzione a sei fasi (05/06/2026) resta da applicare: vedi Fase 3.
+4. **Fatto, ma piano non applicato.** Configurazione firewall Zyxel USG FLEX 500 documentata in dettaglio in `docs/firewall-zyxel-usg-flex-500.md` (zone, interfacce, VPN, NAT, security policy, dieci anomalie FW-001/FW-010). Il piano di correzione a sei fasi (05/06/2026) resta da applicare: vedi Fase 3.
 
-5. NAS fleet: stato RAID, capacita', job backup, versioni firmware. **Fatto
-   10/07/2026**: inventario sistematico consolidato in `vendor-management.md`
-   §QNAP – NAS (RAID, capacita', ruolo, backup per ciascuno dei 5 dispositivi).
-   Resta [TBC] solo la versione firmware, non riportata in nessuna fonte.
+5. NAS fleet: stato RAID, capacita', job backup, versioni firmware. **Fatto 10/07/2026**: inventario sistematico consolidato in `vendor-management.md` §QNAP – NAS (RAID, capacita', ruolo, backup per ciascuno dei 5 dispositivi). Resta [TBC] solo la versione firmware, non riportata in nessuna fonte.
 
-6. **Fatto.** `docs/network-diagram.md` con diagramma ASCII della topologia corrente.
-   Consolidamento in Mermaid versionato (`context/diagrams/network-topology.mmd`)
-   rimandato alla fine della Fase 3, per aggiornarlo una sola volta con lo stato
-   finale invece che a ogni micro-intervento (vedi nota "Diagramma vivo" sotto).
+6. **Fatto.** `docs/network-diagram.md` con diagramma ASCII della topologia corrente. Consolidamento in Mermaid versionato (`context/diagrams/network-topology.mmd`) rimandato alla fine della Fase 3, per aggiornarlo una sola volta con lo stato finale invece che a ogni micro-intervento (vedi nota "Diagramma vivo" sotto).
 
-7. **Fatto 10/07/2026.** Gap analysis ISO27001 Annex A ampliata in
-   `design-and-security.md` da 5 a 10 controlli, incrociando lo snapshot
-   Proxmox v4, il piano firewall a micro-step e `GAP-TBC.md` (nuove righe:
-   A.8.21 VPN IKEv1, A.8.1 endpoint/Intune, A.8.13 backup NAS, A.7.1 badge
-   sala server, A.8.24 crittografia). Non e' una Statement of Applicability
-   formale (resta in Fase 5).
+7. **Fatto 10/07/2026.** Gap analysis ISO27001 Annex A ampliata in `design-and-security.md` da 5 a 10 controlli, incrociando lo snapshot Proxmox v4, il piano firewall a micro-step e `GAP-TBC.md` (nuove righe: A.8.21 VPN IKEv1, A.8.1 endpoint/Intune, A.8.13 backup NAS, A.7.1 badge sala server, A.8.24 crittografia). Non e' una Statement of Applicability formale (resta in Fase 5).
 
 ## Fase 3 - Ottimizzazione Proxmox e firewall: roadmap a micro-step (RIPRENDIBILE dal 10/07/2026)
 
-Sospensione originaria: su decisione dell'utente del 07/07/2026 i micro-step
-operativi (M2 in avanti) erano in pausa finche' non fosse completata la
-ripresa dell'ingestione OneDrive (Fase 1bis sopra). La condizione di
-sblocco si e' verificata il 10/07/2026: la fase e' quindi riprendibile, ma
-la maggior parte dei micro-step da M2 in poi richiede accesso fisico
-all'hardware di rete reale (console seriale, cablaggio, iLO) che l'agente
-non puo' eseguire da remoto — vanno guidati passo passo con l'utente in
-sede. M1 resta l'unico micro-step chiuso.
+Sospensione originaria: su decisione dell'utente del 07/07/2026 i micro-step operativi (M2 in avanti) erano in pausa finche' non fosse completata la ripresa dell'ingestione OneDrive (Fase 1bis sopra). La condizione di sblocco si e' verificata il 10/07/2026: la fase e' quindi riprendibile, ma la maggior parte dei micro-step da M2 in poi richiede accesso fisico all'hardware di rete reale (console seriale, cablaggio, iLO) che l'agente non puo' eseguire da remoto — vanno guidati passo passo con l'utente in sede. M1 resta l'unico micro-step chiuso.
 
-Obiettivo: applicare le correzioni e le ottimizzazioni identificate dall'analisi
-firewall/DMZ/Proxmox, un micro-step alla volta, con commit e aggiornamento di
-`memory/progress.md` a ogni step chiuso. Ogni riga della tabella e' un intervento
-singolo, verificabile, con un solo esito atteso: non si passa alla riga successiva
-finche' quella corrente non e' verificata o esplicitamente rimandata con nota.
+Obiettivo: applicare le correzioni e le ottimizzazioni identificate dall'analisi firewall/DMZ/Proxmox, un micro-step alla volta, con commit e aggiornamento di `memory/progress.md` a ogni step chiuso. Ogni riga della tabella e' un intervento singolo, verificabile, con un solo esito atteso: non si passa alla riga successiva finche' quella corrente non e' verificata o esplicitamente rimandata con nota.
 
 ### Diagramma vivo
 
-In parallelo a ogni micro-step, `docs/network-diagram.md` e la tabella diagrammi
-di `docs/firewall-zyxel-usg-flex-500.md` si aggiornano con una nota testuale del
-cambiamento (non un nuovo diagramma renderizzato a ogni step, per non consumare
-token inutilmente). Il diagramma Mermaid consolidato in
-`.claude/context/diagrams/network-topology.mmd` si rigenera una sola volta, a
-fine Fase 3, riflettendo lo stato finale post-ottimizzazione; i drawio/svg
-intermedi restano come riferimento storico in `context/diagrams/firewall-dmz-2026/`.
+In parallelo a ogni micro-step, `docs/network-diagram.md` e la tabella diagrammi di `docs/firewall-zyxel-usg-flex-500.md` si aggiornano con una nota testuale del cambiamento (non un nuovo diagramma renderizzato a ogni step, per non consumare token inutilmente). Il diagramma Mermaid consolidato in `.claude/context/diagrams/network-topology.mmd` si rigenera una sola volta, a fine Fase 3, riflettendo lo stato finale post-ottimizzazione; i drawio/svg intermedi restano come riferimento storico in `context/diagrams/firewall-dmz-2026/`.
 
 ### Version control
 
-Ogni micro-step chiuso corrisponde a un commit separato (manuale, a cura
-dell'utente secondo `.claude/rules/git-commands-format.md`), cosi' che la
-storia git rispecchi la sequenza degli interventi fisici sulla rete e non un
-unico commit cumulativo di fine fase.
+Ogni micro-step chiuso corrisponde a un commit separato (manuale, a cura dell'utente secondo `.claude/rules/git-commands-format.md`), cosi' che la storia git rispecchi la sequenza degli interventi fisici sulla rete e non un unico commit cumulativo di fine fase.
 
 ### Registro parallelo dei micro-interventi non bloccanti (dal 29/07/2026)
 
-Gli interventi puntuali che emergono come effetto collaterale delle analisi — una
-credenziale di fabbrica mai cambiata, un annuncio multicast inutile, una porta rimasta in
-una VLAN di test, destinazioni di scansione verso postazioni, un campo descrittivo vuoto —
-non vivono in questa tabella ma in `docs/interventi-robustezza.md`, con una regola di
-ammissione esplicita: nessuna finestra di manutenzione, nessun tocco al piano dati di
-apparati centrali, rollback di una sola azione. Nove voci all'apertura (R1-R9).
+Gli interventi puntuali che emergono come effetto collaterale delle analisi — una credenziale di fabbrica mai cambiata, un annuncio multicast inutile, una porta rimasta in una VLAN di test, destinazioni di scansione verso postazioni, un campo descrittivo vuoto — non vivono in questa tabella ma in `docs/interventi-robustezza.md`, con una regola di ammissione esplicita: nessuna finestra di manutenzione, nessun tocco al piano dati di apparati centrali, rollback di una sola azione. Nove voci all'apertura (R1-R9).
 
-La distinzione non e' burocratica: serve a non far aspettare interventi a rischio quasi
-nullo e beneficio alto dietro micro-step strutturali che richiedono progetto, finestre e
-coordinamento. Due voci di quel registro sono anche prerequisiti di M22b e possono essere
-eseguite prima e indipendentemente dalla segmentazione: R7, conversione delle stampanti da
-indirizzo statico a riserva DHCP, e R8, spostamento delle destinazioni di scansione su una
-share dedicata del NAS. R5, il ripristino della porta 19 del 30HP da PVID 90 a PVID 1,
-chiude il gap NET-013 senza attendere nulla.
+La distinzione non e' burocratica: serve a non far aspettare interventi a rischio quasi nullo e beneficio alto dietro micro-step strutturali che richiedono progetto, finestre e coordinamento. Due voci di quel registro sono anche prerequisiti di M22b e possono essere eseguite prima e indipendentemente dalla segmentazione: R7, conversione delle stampanti da indirizzo statico a riserva DHCP, e R8, spostamento delle destinazioni di scansione su una share dedicata del NAS. R5, il ripristino della porta 19 del 30HP da PVID 90 a PVID 1, chiude il gap NET-013 senza attendere nulla.
 
 ### Micro-step tracciati
 
@@ -159,6 +100,7 @@ chiude il gap NET-013 senza attendere nulla.
 | M13c-6 | **Acquisto** dell'hardware scelto, con la stessa procedura di M13b (preventivo dal fornitore abituale). Solo se il passo M13c-3 conclude che serve un AP e non un cavo | MEDIA | ADR-016 | M13c-3, M13c-5 | **Preventivo ricevuto il 31/07/2026** (Punto Informatica, rilevato dal delta OneDrive il 03/08 e non da comunicazione in sessione): un **Zyxel WBE530-EU0101F**, access point da esterno Wi-Fi 7 tri-radio, PoE 802.3at 24 W, due porte LAN 1/2,5 Gbps, NebulaFlex Pro gestibile dalla stessa organizzazione Nebula, con L2-isolation, RADIUS, MAC filtering e rilevamento di AP non autorizzati, temperatura operativa 0-50 °C, staffa di montaggio inclusa. Ordine e consegna **non confermati**. Due conseguenze: la scelta di M13c-3 risulta orientata verso l'apparato nuovo e non verso il cablaggio della centrale, quindi quella decisione va formalizzata invece di essere dedotta da un preventivo; e il grado di protezione contro acqua e polvere non e' dichiarato nel documento, il che per un montaggio sul tetto va verificato prima dell'ordine. Importo e riferimento del preventivo esclusi dai file tracciati per policy |
 | M13c-7 | **Installazione e collaudo**, in questo ordine: montare e alimentare il nuovo apparato lasciando il vecchio in servizio dove possibile; creare la rete radio nuova; riconfigurare la centrale di irrigazione; verificare che la centrale sia raggiungibile **e** che un ciclo di irrigazione parta davvero, perche' la raggiungibilita' IP non dimostra il funzionamento dell'impianto; solo dopo scollegare il vecchio AP. Non fare l'intervento in una giornata in cui l'irrigazione e' critica e non smaltire il vecchio apparato prima del collaudo, cosi' il rollback resta possibile | ALTA | Lezione di change management del 16/07 e del 23/07 | M13c-6 | Da fare |
 | M13c-8 | **Collocazione nel segmento IoT/OT**: portare la porta 4 del 30HP nella VLAN 60 quando il segmento esiste, con le regole della matrice (nessun accesso verso postazioni e server, uscita Internet solo se la centrale la richiede davvero per il cloud del produttore). Fino a quel momento il dispositivo resta nella LAN piatta: mitigazione interim da valutare, l'isolamento di porta a livello switch | ALTA | NET-011/NET-009, matrice dei flussi di M22 | M13c-7, M22c | Da fare |
+| M13c-9 | **Licenza Nebula Professional per il nuovo access point, entro quindici giorni dall'adozione in organizzazione.** Passo aggiunto il 06/08/2026 dopo l'incidente NEB-002 e non facoltativo: il livello dell'organizzazione Nebula e' il **minimo** fra i suoi dispositivi, quindi un apparato adottato senza licenza Plus o Pro fa scendere **l'intera organizzazione** a Base Pack allo scadere della grazia di quindici giorni, e con essa muore la OpenAPI su cui questo progetto legge porte, PVID, VLAN e tabelle MAC. E' esattamente cio' che e' successo il 05/08/2026 con i tre access point della Fase B, adottati il 21/07 senza licenza. La licenza va co-terminata alla data che vincola l'organizzazione, il **22/11/2027**, cosi' da non creare una scadenza sfalsata in piu' da presidiare. Da fare **prima** del montaggio se la licenza si acquista insieme all'hardware, o comunque entro quindici giorni dall'adozione; se l'esito di M13c-3 e' l'eliminazione dell'access point senza sostituzione, questo passo decade con esso | **ALTA** | ADR-022; NEB-002; regola License 2.0 verificata sui pannelli NCC il 06/08/2026 | M13c-6 (acquisto) e M13c-7 (adozione) | Da fare |
 | M25 | **Risoluzione nomi interna: consolidamento e messa in sicurezza.** Oggi la risoluzione dei nomi interni vive interamente su due meccanismi fragili e in concorrenza: i file `hosts` mantenuti a mano su ogni postazione (sedici voci sulla sola macchina ispezionata, nessun inventario delle altre) e gli annunci in broadcast, mDNS e NetBIOS, che per costruzione non attraversano un confine di livello 3. Il firewall, che i client ricevono via DHCP come primo server DNS, ha le tabelle dei record **vuote** e lavora da puro inoltratore verso due resolver pubblici (verificato 30/07/2026). Ne segue che ogni segmentazione rompe qualcosa che oggi funziona: unita' di rete mappate per nome, destinazioni di scansione per nome NetBIOS, servizi interni annunciati in `.local`. Scopo del micro-step: decidere dove vive la zona interna (record sul firewall oppure un servizio dedicato), pubblicare i nomi sul suffisso di ADR-018, migrare i nomi `.local` (R13), ritirare le voci `hosts` a inventario completato, portare il DNS interno anche sui segmenti che oggi ricevono resolver pubblici (Wi-Fi staff), e restringere il controllo di servizio del DNS sul firewall, oggi aperto a qualunque provenienza (FW-014). Non e' prerequisito di R8 ne' della migrazione delle stampanti: e' prerequisito della **segmentazione**, perche' e' cio' che oggi tiene in piedi i riferimenti per nome | ALTA | NET-014 (#131), SEC-016 (#119), FW-014 (#132), ADR-018; interventi R12 e R13 del registro | Nessuna tecnica; conviene prima di M22e, che sposta le postazioni | Da progettare (aperto 31/07/2026 su indicazione dell'IT Manager) |
 | M14 | Aggiornare le VPN IPsec da IKEv1/AES-128/SHA-1/DH2 a parametri correnti; chiarire se PSE-SEEWEB e WIZ_VPN sono transizione o residuo | MEDIA | FW-006, FW-007 | M8 | Da fare |
 | M15 | Attivare firewall Proxmox con policy di default DROP | MEDIA | Fase 3 originale (roadmap storica) | M9 | Da fare |
@@ -180,101 +122,35 @@ chiude il gap NET-013 senza attendere nulla.
 
 ## Fase 1bis - Ripresa ingestione OneDrive IT e timeline completa (SOSTANZIALMENTE COMPLETATA il 10/07/2026)
 
-Obiettivo: completare l'ingestione della cartella OneDrive "Documenti - IT"
-secondo `docs/infrastructure-timeline/ingestion-checklist.md` (riepilogo
-priorita' rigenerato il 07/07/2026), estraendo in massimo dettaglio la storia
-cronologica dei due anni di ristrutturazione dell'infrastruttura di rete.
-Il drift della cartella e' controllato a ogni avvio di sessione da
-`scripts/Check-OneDriveDelta.ps1` (hook SessionStart, baseline non versionata
-in `_notes/`). Primo obiettivo: `Mappatura porte fisiche/` e la nota
-PORT-TAGGING della checklist (tagging dei due switch per la migrazione al
-centralino cloud, dettagli attesi dall'utente quando l'analisi arriva a quel
-punto). Ordine di lavoro: voci ALTA, poi delta 23/06-07/07, poi MEDIA in
-ordine cronologico delle fonti.
+Obiettivo: completare l'ingestione della cartella OneDrive "Documenti - IT" secondo `docs/infrastructure-timeline/ingestion-checklist.md` (riepilogo priorita' rigenerato il 07/07/2026), estraendo in massimo dettaglio la storia cronologica dei due anni di ristrutturazione dell'infrastruttura di rete. Il drift della cartella e' controllato a ogni avvio di sessione da `scripts/Check-OneDriveDelta.ps1` (hook SessionStart, baseline non versionata in `_notes/`). Primo obiettivo: `Mappatura porte fisiche/` e la nota PORT-TAGGING della checklist (tagging dei due switch per la migrazione al centralino cloud, dettagli attesi dall'utente quando l'analisi arriva a quel punto). Ordine di lavoro: voci ALTA, poi delta 23/06-07/07, poi MEDIA in ordine cronologico delle fonti.
 
-Fonte aggiuntiva pianificata (nota utente dell'08/07/2026): IntraLino come
-progetto aziendale va caricato dalla sua documentazione Claude dedicata, che
-vive su una VM; l'utente fornira' quel contesto in una sessione futura.
-Fino ad allora le sezioni IntraLino gia' scritte (architettura n8n in
-`2026-switch-piano-terra.md`, benchmark DoE, sezione in
-`helpdesk-operations.md`) valgono come parziali, ricostruite dai soli
-frammenti OneDrive, e il gap #107 (natura degli host .58/.60) resta aperto
-in attesa di quella fonte.
+Fonte aggiuntiva pianificata (nota utente dell'08/07/2026): IntraLino come progetto aziendale va caricato dalla sua documentazione Claude dedicata, che vive su una VM; l'utente fornira' quel contesto in una sessione futura. Fino ad allora le sezioni IntraLino gia' scritte (architettura n8n in `2026-switch-piano-terra.md`, benchmark DoE, sezione in `helpdesk-operations.md`) valgono come parziali, ricostruite dai soli frammenti OneDrive, e il gap #107 (natura degli host .58/.60) resta aperto in attesa di quella fonte.
 
-**Stato al 10/07/2026**: coda ALTA, delta 23/06-07/07 e coda MEDIA/BASSA
-chiuse. ARCHITETTURA.docx ri-estratto integralmente (sec-005/006/008/009).
-MICROSOFT 365.docx, TREX.docx e STUDIO-RWS-GROUPSHARE.docx verificati:
-non giustificano la stessa ri-estrazione esaustiva (vedi `current-work.md`).
-Restano aperti solo i due elementi deliberatamente riservati: la nota
-PORT-TAGGING (racconto a lavori conclusi) e la fonte IntraLino su VM
-(sessione futura, dipende dall'utente). Nessun'altra azione autonoma
-possibile su questa fase.
+**Stato al 10/07/2026**: coda ALTA, delta 23/06-07/07 e coda MEDIA/BASSA chiuse. ARCHITETTURA.docx ri-estratto integralmente (sec-005/006/008/009). MICROSOFT 365.docx, TREX.docx e STUDIO-RWS-GROUPSHARE.docx verificati: non giustificano la stessa ri-estrazione esaustiva (vedi `current-work.md`). Restano aperti solo i due elementi deliberatamente riservati: la nota PORT-TAGGING (racconto a lavori conclusi) e la fonte IntraLino su VM (sessione futura, dipende dall'utente). Nessun'altra azione autonoma possibile su questa fase.
 
 ## Fase 3bis - Anonimizzazione repository pubblico (AVVIATA)
 
-Il repository e' pubblico su GitHub (verificato via API il 01/07/2026). Fase A
-completata il 01/07/2026: anonimizzati IP pubblici/privati, MAC address e nomi
-propri nei sei file del perimetro network-design attivo (`firewall-zyxel-usg-flex-500.md`
-e `-live.conf`, `network-diagram.md`, `telefono-pbx-voip.md`,
-`2026-switch-piano-terra.md`, `GAP-TBC.md`), piu' `CLAUDE.md`, `STACK.md`,
-`deployment.md`, `network-topology.mmd` e gli 8 diagrammi archiviati in
-`context/diagrams/firewall-dmz-2026/` (stesso IP Proxmox, corretto per
-contatto diretto). Convenzione documentata in `.claude/rules/anonymization.md`,
-mappatura reale privata in `_notes/.anonymization-map.md` (non versionata).
+Il repository e' pubblico su GitHub (verificato via API il 01/07/2026). Fase A completata il 01/07/2026: anonimizzati IP pubblici/privati, MAC address e nomi propri nei sei file del perimetro network-design attivo (`firewall-zyxel-usg-flex-500.md` e `-live.conf`, `network-diagram.md`, `telefono-pbx-voip.md`, `2026-switch-piano-terra.md`, `GAP-TBC.md`), piu' `CLAUDE.md`, `STACK.md`, `deployment.md`, `network-topology.mmd` e gli 8 diagrammi archiviati in `context/diagrams/firewall-dmz-2026/` (stesso IP Proxmox, corretto per contatto diretto). Convenzione documentata in `.claude/rules/anonymization.md`, mappatura reale privata in `_notes/.anonymization-map.md` (non versionata).
 
-Fase B, da fare: audit completo del resto del repository (SCENIA, cybersecurity,
-helpdesk, timeline storica pre-2026, onboarding/offboarding) per lo stesso tipo
-di dati — IP, MAC, nomi propri di dipendenti e clienti accumulati su piu'
-sessioni. E' un lavoro della stessa scala dell'ingestione iniziale, da trattare
-come workstream a parte, non da fare di fretta in coda a un'altra sessione.
+Fase B, da fare: audit completo del resto del repository (SCENIA, cybersecurity, helpdesk, timeline storica pre-2026, onboarding/offboarding) per lo stesso tipo di dati — IP, MAC, nomi propri di dipendenti e clienti accumulati su piu' sessioni. E' un lavoro della stessa scala dell'ingestione iniziale, da trattare come workstream a parte, non da fare di fretta in coda a un'altra sessione.
 
-**Priorita' alta separata dentro la Fase B (09/07/2026)**: durante un audit
-di dati amministrativi/commerciali (vedi sezione dedicata in
-`.claude/rules/anonymization.md`) e' emerso che `2024-infra.md` conteneva,
-gia' da una sessione precedente, le ultime 4 cifre reali di una carta di
-credito aziendale e un MAC address reale (rinnovo licenza Zyxel del
-20/11/2024) — corretti nel file tracciato lo stesso giorno, ma ancora
-presenti in un commit precedente della storia git. A differenza del resto
-degli IP interni (dati di rete, rischio piu' basso e generico), questo e'
-un dato di pagamento: quando si esegue la riscrittura della storia (dopo
-il completamento della Fase B), questo commit va incluso esplicitamente
-nel file di sostituzioni `_notes/.git-filter-replacements.txt` con
-priorita' maggiore rispetto al resto.
+**Priorita' alta separata dentro la Fase B (09/07/2026)**: durante un audit di dati amministrativi/commerciali (vedi sezione dedicata in `.claude/rules/anonymization.md`) e' emerso che `2024-infra.md` conteneva, gia' da una sessione precedente, le ultime 4 cifre reali di una carta di credito aziendale e un MAC address reale (rinnovo licenza Zyxel del 20/11/2024) — corretti nel file tracciato lo stesso giorno, ma ancora presenti in un commit precedente della storia git. A differenza del resto degli IP interni (dati di rete, rischio piu' basso e generico), questo e' un dato di pagamento: quando si esegue la riscrittura della storia (dopo il completamento della Fase B), questo commit va incluso esplicitamente nel file di sostituzioni `_notes/.git-filter-replacements.txt` con priorita' maggiore rispetto al resto.
 
-Riscrittura della storia git: pianificata **una sola volta**, dopo che anche la
-Fase B e' completa, invece che due round separati di force-push. I comandi
-`git filter-repo` con il file di sostituzioni sono preparati in
-`_notes/.git-filter-replacements.txt` (non versionato, da estendere durante la
-Fase B) e vanno eseguiti dall'utente, mai dall'agente: e' un'operazione che
-riscrive quasi tutta la storia del repository (il valore piu' vecchio risale
-al secondo commit del progetto) e richiede force-push coordinato.
+Riscrittura della storia git: pianificata **una sola volta**, dopo che anche la Fase B e' completa, invece che due round separati di force-push. I comandi `git filter-repo` con il file di sostituzioni sono preparati in `_notes/.git-filter-replacements.txt` (non versionato, da estendere durante la Fase B) e vanno eseguiti dall'utente, mai dall'agente: e' un'operazione che riscrive quasi tutta la storia del repository (il valore piu' vecchio risale al secondo commit del progetto) e richiede force-push coordinato.
 
-**Deroga puntuale (17/07/2026, ADR-011)**: la voce Fibercop/Referente-Fibercop-1 e'
-uscita dal round unico per richiesta esterna del CIRST Fibercop e va
-eseguita come round di riscrittura storia a se', prima del resto della
-Fase B. Non re-includerla nel round finale, e' gia' rimossa a parte.
+**Deroga puntuale (17/07/2026, ADR-011)**: la voce Fibercop/Referente-Fibercop-1 e' uscita dal round unico per richiesta esterna del CIRST Fibercop e va eseguita come round di riscrittura storia a se', prima del resto della Fase B. Non re-includerla nel round finale, e' gia' rimossa a parte.
 
 ## Fase 4 - Piano interventi futuri residui (DA PIANIFICARE)
 
-Steps non coperti dalla Fase 3, da pianificare dopo la chiusura dei micro-step
-sopra:
+Steps non coperti dalla Fase 3, da pianificare dopo la chiusura dei micro-step sopra:
 1. Patch management documentato (Proxmox, switch Nebula, firewall, NAS firmware)
 2. Procedure backup e disaster recovery formali
 3. Inventario sistematico NAS fleet (RAID, capacita', firmware)
-4. Ripresa dell'ingestione della cartella OneDrive IT (sospesa su richiesta
-   esplicita dell'utente per dare priorita' alla Fase 3; vedi nota di
-   riallineamento in `ingestion-checklist.md`)
+4. Ripresa dell'ingestione della cartella OneDrive IT (sospesa su richiesta esplicita dell'utente per dare priorita' alla Fase 3; vedi nota di riallineamento in `ingestion-checklist.md`)
 
 ## Fase 5 - Documentazione ISO27001 operativa (DA PIANIFICARE)
 
-**Obiettivo dichiarato dall'utente il 16/07/2026: ottenere la certificazione
-ISO27001 entro marzo 2027.** Da questa data in avanti, ogni micro-step di
-rete (non solo quelli esplicitamente etichettati Fase 5) va letto anche
-con l'angolo ISO27001 quando rilevante — un gap di segmentazione, un
-controllo di accesso, un flusso dati non presidiato sono materiale
-Annex A a prescindere da quando la Fase 5 formale comincia. Vedi
-`current-work.md` per la direttiva permanente sui cinque livelli di
-tracciamento richiesti a ogni passo.
+**Obiettivo dichiarato dall'utente il 16/07/2026: ottenere la certificazione ISO27001 entro marzo 2027.** Da questa data in avanti, ogni micro-step di rete (non solo quelli esplicitamente etichettati Fase 5) va letto anche con l'angolo ISO27001 quando rilevante — un gap di segmentazione, un controllo di accesso, un flusso dati non presidiato sono materiale Annex A a prescindere da quando la Fase 5 formale comincia. Vedi `current-work.md` per la direttiva permanente sui cinque livelli di tracciamento richiesti a ogni passo.
 
 Steps:
 1. Statement of Applicability per i controlli Annex A di rete
