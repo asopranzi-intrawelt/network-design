@@ -6,8 +6,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 24ac874 (05/08/2026, ADR-021 segreti nel blocco env di settings.local)
-Data snapshot:         2026-08-06 (licenza Nebula ripristinata, ADR-022)
+Commit di riferimento: 25e27e7 (06/08/2026, M13c-6 scheda WBE530, UPS piano terra, piano sessioni)
+Data snapshot:         2026-08-06 (merge dei tre file dell'IT Manager: livello fisico ed elettrico)
 ```
 
 Nota di stato al momento della chiusura: il lavoro documentale del 03/08 (chiusura di R8, allineamento schede, resume prompt) e' **su disco ma non ancora committato** — commit e push restano manuali dell'utente secondo i vincoli di team. Alla ripresa, se `git status` mostra modifiche non committate, sono quelle.
@@ -32,7 +32,21 @@ Tutte le schede di `.claude/context/` portano ancora `last-verified: 347f79c`, c
 
 ## Punto di ripresa
 
-**Sessioni del 05-06/08/2026 — leggere questo blocco per primo. Tre esiti, tutti chiusi.**
+**Sessione del 06/08/2026, seconda — leggere questo blocco per primo. E' la sessione 1 del piano: snapshot della rete, parte fisica ed elettrica.**
+
+Tre file passati a mano dall'IT Manager sono stati triagiati e **fusi** nella documentazione, non affiancati. Il piu' importante e' `STATO RETE INTRAWELT.docx`, comparso nel delta della stessa mattina sotto `Documenti - IT\Cybersec & IT Governance` e mai ingerito: descrive la catena fisica da Internet al firewall, la mappa porta-apparato del 54HP e del QNAP, e **l'alimentazione dei due armadi**, che era la lacuna piu' grave dichiarata dal progetto. La scheda dei telefoni del 05/08 e' tornata **compilata**; l'estratto tematico del 03/08 e' tornato **invariato** ed e' servito solo da confronto. I due `.md` sono viste e si possono cancellare; il `.docx` resta in OneDrive ed e' li' che va completata la sua sezione **"Piano Terra", oggi aperta e vuota**.
+
+Struttura decisa con l'IT Manager: la corrispondenza fra layer tracciato e layer narrativo e' **uno a uno con lo stesso nome di file**. Nasce cosi' `docs/livello-fisico-ed-elettrico.md` con la sua controparte `_notes/livello-fisico-ed-elettrico.md`, che porta i valori reali.
+
+**Sei gap nuovi, #145-#150.** Quattro elettrici, tutti dalla stessa lettura: nessuno dei tre gruppi di continuita' d'armadio ha una scheda di rete quindi nessun allarme raggiunge nessuno e autonomia, carico ed eta' delle batterie sono ignoti (ELE-001); il firewall e' alimentato in fondo a **tre ciabatte in cascata** (ELE-002); il NAS-HERO ha i due alimentatori sulla **stessa** sorgente e del server HP Gen10 risulta alimentato il solo PS2 (ELE-003); lo **switch del Piano Terra non e' sotto continuita'** e con lui cadono telefoni, reception, access point, timbracartellini e tratta esterna (ELE-004). Poi **NET-021**, il terminale master Suprema della rilevazione presenze identificato sulla porta 3 del 30HP, che chiude la domanda aperta di NET-020 e apre un asset IoT/OT fuori inventario su LAN piatta, con dati personali e unita' esterna fisicamente accessibile. E **TEL-004**.
+
+**Il fatto che cambia il piano della fonia**: il centralino Panasonic e i **ventisette apparecchi digitali sono stati smantellati il 31/07/2026**, mentre il centralino cloud non e' attivo perche' la quantita' di interni del contratto e' in bianco e i messaggi non sono decisi. TEL-003 si rovescia: non e' piu' una migrazione da progettare ma un intervallo scoperto gia' in corso. **Prima domanda da fare all'IT Manager: con che cosa telefonano oggi quelle ventisette persone.** Seconda: se il Patton SmartNode 5551 sia ancora in servizio, dato che non ha piu' un centralino dietro.
+
+Tre identificazioni e una correzione. L'adattatore analogico dell'ascensore **e' gia' installato** sulla porta 6 del 54HP con uscita verso la presa 2.8.1, ed e' un **HT812** e non l'HT802 dell'offerta: il NAT interno va disattivato, e non e' piu' una precauzione condizionale. L'antenna del tetto termina sulla **ETH10 del MikroTik**, a monte del firewall, ed e' la seconda catena che l'IT Manager segnalava il 03/08 come esistente e non descritta. E i gap **#67/#99** si chiudono **rovesciati**: l'etichetta "SIP-T34W Persona-A" sulla porta 3 del 54HP era corretta e il rilievo del 29/05 sbagliato, con due T34W e tre T31G invece di tre e due.
+
+**Da fare subito alla ripresa**: rilanciare `Check-OneDriveDelta.ps1 -UpdateBaseline`, perche' il triage e' fatto e registrato ma la baseline no. Poi il commit con il bump del frontmatter. Il resto delle pendenze, comprese le nove verifiche nuove che questa sessione ha aperto sul livello fisico ed elettrico, sta in `docs/pendenze-aperte.md`.
+
+**Sessioni del 05-06/08/2026 — antefatto. Tre esiti, tutti chiusi.**
 
 **Cosa resta da sanare, tutto in un posto**: `docs/pendenze-aperte.md`, creato il 06/08/2026. E' una vista e non una fonte — ogni riga punta al registro che la possiede — organizzata in cinque tagli: sanabili subito con rollback di una sola azione, prerequisiti di interventi gia' pianificati, scadenze da presidiare nel tempo, verifiche aperte che non si possono chiudere per inferenza, e igiene documentale. Va potata a fine sessione: una lista di pendenze che non si accorcia mai smette di essere letta.
 

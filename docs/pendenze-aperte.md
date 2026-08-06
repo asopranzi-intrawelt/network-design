@@ -35,7 +35,9 @@ fallisce in modo silenzioso o si scopre irreversibile.
 | Licenziare con Nebula Professional il nuovo access point da esterno **entro quindici giorni** dall'adozione, co-terminato al 22/11/2027 | M13c-9; ADR-022; precedente NEB-002 (#140) | Il livello dell'organizzazione e' il minimo fra i suoi apparati: un dispositivo scoperto fa cadere tutta l'organizzazione a Base Pack e spegne la OpenAPI. E' gia' successo il 05/08 |
 | Misurare quale elemento impone i 100 Mbps sulla tratta del tetto, **prima dell'ordine** del WBE530 | M13c-5; NET-017 (#136) | Se il limite e' il cavo, un apparato con porte da 2,5 Gbps resta strozzato e si paga capacita' inutilizzabile |
 | Aggiungere la VLAN 30 alla lista delle ammesse della porta 29 del 30HP **e** della porta 33 del 54HP | M22b passo 6; `segmentazione-lan-m22.md` | Senza la 33 il segmento stampanti non raggiunge il gateway: non risulta isolato, risulta morto, e la diagnosi parte dal posto sbagliato |
-| Identificare cosa serve la porta 3 del 30HP, e stringere la 4 quando M22c porta il ramo del tetto nel segmento IoT/OT | NET-020 (#144) | La 4 e' l'unica via verso irrigazione, inverter e access point EOL, e il collaudo di quel ramo e' un ciclo di irrigazione reale |
+| Stringere la porta 4 del 30HP quando M22c porta il ramo del tetto nel segmento IoT/OT | NET-020 (#144) | La 4 e' l'unica via verso irrigazione, inverter e access point EOL, e il collaudo di quel ramo e' un ciclo di irrigazione reale. La porta **3** non e' piu' da identificare: e' il master Suprema, vedi NET-021 |
+| Inventariare il terminale Suprema con modello, firmware, indirizzo e porte esposte, e aggiungerlo ai carichi di M22c | NET-021 (#149) | Tratta dati di presenza, quindi dati personali, e l'unita' esterna e' fisicamente accessibile fuori dal perimetro. Va inventariato prima di stringere la porta, non dopo |
+| Decidere il carico dell'UPS del Piano Terra sul consumo reale del 30HP compreso il budget PoE, e prendere la scheda SNMP | ELE-004 (#148), ELE-001 (#145); M13c-6 | La domanda "cosa deve alimentare" ha ora una risposta: lo switch prima di tutto, e con lui i telefoni, l'access point, il timbracartellini e la tratta esterna. Senza scheda SNMP nasce l'ennesimo apparato muto |
 | Risoluzione dei nomi interni prima della segmentazione | M25; R12, R13; NET-014 (#131) | Unita' mappate, destinazioni e servizi interni dipendono oggi da nomi risolti per broadcast o per file `hosts` |
 | Snapshot Proxmox v5 completo, lanciato dall'IT Manager | M18 | Cadenza mensile scaduta: l'ultimo e' dell'08/07. Il MCP non vede job di backup, pool, regole firewall, dischi fisici, SDN, HA e snapshot |
 
@@ -68,11 +70,23 @@ diritto di affermare la risposta.
 | Proprieta', amministratore e credenziali del Mikrotik sulla catena WAN | domanda al fornitore | R17; NET-018 (#137) |
 | Anagrafica dell'inverter del fotovoltaico come asset di rete | sopralluogo | R18; NET-017 (#136) |
 | Se un dispositivo in stato `Unused` concorra al requisito di copertura della licenza | non verificabile senza provocare un declassamento: **non** si prova per curiosita' | ADR-022 |
+| Con che cosa telefonano oggi le ventisette persone i cui apparecchi digitali sono stati rimossi il 31/07 | domanda all'IT Manager, prima cosa | TEL-004 (#150) |
+| Se il Patton SmartNode 5551 sia ancora in servizio dopo lo smantellamento del Panasonic, e per fare che cosa | domanda all'IT Manager | TEL-004 (#150) |
+| Su quale segmento sta davvero il citofono: la VA di novembre 2025 lo mette sulla classe `.90`, l'IT Manager lo dichiara sulla Wi-Fi staff | lettura sull'apparato | `livello-fisico-ed-elettrico.md` §Cosa resta da rilevare |
+| Autonomia, carico, eta' delle batterie e ultimo test di scarica dei tre gruppi di continuita' d'armadio | lettura sul display, e una prova per la scarica | ELE-001 (#145) |
+| Se il server HP ProLiant Gen10 abbia un secondo alimentatore e dove sia collegato | sopralluogo all'armadio di destra | ELE-003 (#147) |
+| Se la quarta presa dello Smart-UPS sia un'uscita protetta o l'ingresso da parete del gruppo | sopralluogo, trenta secondi davanti all'armadio | `livello-fisico-ed-elettrico.md` §Alimentazione |
+| Se il gruppo di continuita' di Sala-1, quello dell'iniettore dell'antenna, sia l'Emerson Liebert di UPS-001 | domanda all'IT Manager o sopralluogo | ELE-001 (#145); UPS-001 |
+| Funzione, modello e alimentazione del NAS-INTRA3; e che cosa risponda all'indirizzo elencato come "documenti" nella scheda di continuita', che e' l'origine del conteggio a cinque NAS | lettura dell'apparato, non ragionamento sull'elenco | `livello-fisico-ed-elettrico.md` §Censimento dei NAS |
+| Il media converter della catena dell'antenna, citato dall'IT Manager e non descritto in nessuna fonte | sopralluogo | `mappatura-porte-fisiche.md` §La catena verso l'esterno |
 
 ## Igiene documentale e di sessione
 
 | Cosa | Nota |
 |---|---|
-| Triagiare i due file di handoff comparsi nel delta del 06/08 come rilevanti per la rete, `intrawelt_telefoni-e-AP_scheda-da-completare.md` e `intrawelt-rete_AP-stampanti-VLAN-fonia_2026-08-03.md`, e solo dopo rilanciare `Check-OneDriveDelta.ps1 -UpdateBaseline` | Non ancora registrati nella checklist di ingestione. I due file hanno **convenzioni diverse sugli indirizzi**: stabilire se un valore e' segnaposto o reale prima di riportarlo in un file tracciato |
+| Rilanciare `Check-OneDriveDelta.ps1 -UpdateBaseline` | Il triage del delta del 06/08 e' **fatto** e registrato nella checklist di ingestione, comprese le tre voci nuove (`STATO RETE INTRAWELT.docx`, la scheda dei telefoni restituita compilata, l'estratto tematico invariato). Manca solo il riallineamento della baseline |
+| Cancellare i due file `.md` passati dall'IT Manager, a merge verificato | Sono viste e non fonti, ed e' cio' che l'IT Manager aveva chiesto di poter fare. Il merge e' completo al 06/08: telefoni, porte fisiche, livello elettrico. Verificare che non serva altro prima di eliminarli da Download e dalla cartella di chat |
+| Completare la sezione "Piano Terra" di `STATO RETE INTRAWELT.docx`, che nel documento sorgente e' aperta e vuota | E' il pezzo mancante del livello fisico ed elettrico. Va scritta li' dall'IT Manager, non inferita qui |
+| Verificare la voce ELE nella scheda di continuita' operativa | `business-continuity-disaster-recovery.md` conosceva un solo gruppo di continuita' su cinque righe: ora ne conosce quattro, e la sezione va riletta con i gap 145-148 accanto |
 | Commit manuale delle modifiche di questa sessione, poi bump del frontmatter `last-verified` sulle schede toccate | E' il passo che a luglio si e' perso per sei settimane |
 | Lo snapshot Nebula congelato `_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json` e' ora **superato** da quello del 06/08, piu' completo | Si puo' eliminare: la ragione per cui esisteva e' venuta meno |

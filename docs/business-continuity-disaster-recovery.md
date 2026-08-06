@@ -41,7 +41,20 @@ Vianova FTTO 1 Gbps + ponte radio Line Recovery Standard (100/20 Mbps) + WAN2 TI
 
 ### UPS e alimentazione
 
-UPS alimentano: server, NAS, apparati hardware centralizzati (centralino). Autonomia: ~15 minuti. [TBC: modelli UPS, numero di UPS, potenza. Da VA: Emerson Liebert IntelliSlot Web Card su 10.61.90.33 (management UPS).]
+UPS alimentano: server, NAS, apparati hardware centralizzati (centralino). Autonomia: ~15 minuti. [TBC: potenza, autonomia reale, eta' delle batterie. Da VA: Emerson Liebert IntelliSlot Web Card su 10.61.90.33 (management UPS).]
+
+**Modelli e numero rilevati il 06/08/2026**, dal documento `STATO RETE INTRAWELT.docx` dell'IT Manager. Il `[TBC: modelli UPS, numero di UPS]` che questa riga portava dal 2025 e' chiuso per i due armadi del Piano 2 e resta aperto per il Piano Terra.
+
+| Gruppo di continuita' | Dove | Tipo | Cosa alimenta, in sintesi |
+|---|---|---|---|
+| APC Smart-UPS SC 1500 | armadio di sinistra | line interactive | switch QNAP, switch core XGS2220-54HP, e la catena di ciabatte da cui dipendono MikroTik, Vianova S-1000, firewall, Vianova R-1000 di backup e Aconnic |
+| APC Back-UPS ES 400 | armadio di sinistra | line interactive | adattatore analogico Grandstream, Vianova R-1000 principale |
+| Elsist UPServer 4.0 | armadio di destra | online a doppia conversione | NAS-HERO (entrambi gli alimentatori), NAS-INTRA, NAS-INTRA2, server HP ProLiant Gen10, PC di backup Proxmox |
+| non identificato | Sala-1 | non noto | iniettore PoE dell'antenna del tetto. Se coincida con l'Emerson Liebert di UPS-001 e' da verificare |
+
+Quattro fatti che questa tabella porta con se' e che pesano su questo documento piu' che altrove. Nessuno dei tre gruppi d'armadio ha una scheda di rete, quindi **nessun allarme di alimentazione raggiunge nessuno**. Il NAS-HERO ha i due alimentatori sulla **stessa** sorgente, quindi la ridondanza e' dell'alimentatore e non della sorgente. Del server HP Gen10 risulta alimentato il solo PS2. E lo **switch del Piano Terra non e' sotto continuita'**, quindi al primo black-out cadono i telefoni del piano, la reception, l'access point e il timbracartellini. Tracciati come ELE-001, ELE-002, ELE-003 e ELE-004 (#145-#148); quadro completo con le catene di alimentazione in `docs/livello-fisico-ed-elettrico.md`.
+
+Ne segue una correzione di postura da registrare qui e non altrove: l'autonomia di quindici minuti dichiarata sopra e' un'affermazione ereditata, non una misura, e non e' attribuita a nessuno dei quattro gruppi in particolare. Finche' non e' misurata su ciascuno, con il carico reale, il piano di continuita' poggia su un numero che nessuno ha verificato.
 
 Caso reale: il 01/07/2025 un blackout ha reso necessaria la sostituzione di un UPS, gestita tramite il fornitore MyOffice (documentazione fornita solo per immagini scansionate, nessun testo estraibile su modello o causa specifica).
 

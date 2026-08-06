@@ -65,8 +65,9 @@ Schede tecniche, sotto `.claude/context/`, con frontmatter di riconciliazione.
 Documentazione strutturata, sotto `docs/`.
 
 ```
-docs/infrastructure-timeline/   storia cronologica degli interventi di rete
-docs/pendenze-aperte.md         vista consolidata di cio' che resta da sanare; non e' una fonte, punta ai registri
+docs/infrastructure-timeline/     storia cronologica degli interventi di rete
+docs/pendenze-aperte.md           vista consolidata di cio' che resta da sanare; non e' una fonte, punta ai registri
+docs/livello-fisico-ed-elettrico.md  armadi, alimentazione, catena fisica WAN, mappa porta-apparato, censimento NAS
 ```
 
 Regole modulari caricate su necessita', sotto `.claude/rules/`.

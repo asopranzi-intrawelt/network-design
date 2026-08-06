@@ -49,7 +49,7 @@ Aggiornamento 10/07/2026: la postazione di Persona-D, in seguito a un cambio di 
 | 0-7-1 | Access Point | AP Piano Terra, adattatore PoE (rimosso con XGS2220-30HP) |
 | 0-8-1 | Locale Caldaia | Patch panel -> patch verso 0-9-1. Qui stava il Cisco switch (rimosso: sostituito da XGS2220-30HP). Da parete arriva alla **porta 4 del XGS2220-30HP** |
 | 0-9-1 | Derivazione tetto | Fa ponte con 0-8-1. **Non e' un access point**: da qui parte un cavo di categoria 6 verso la centrale di irrigazione, e in mezzo gli elettricisti hanno inserito uno **Zyxel GS-105B v5** per diramare l'access point esterno e l'inverter del fotovoltaico. Correzione del 03/08/2026, vedi sotto |
-| 0-10-1 | Lettore impronte | BioStar (IP 10.61.20.199). Cavo rete al lettore esterno; RS485 tra connettore interno ed esterno; la rete lo vede come dispositivo unico. Problemi dal 07/02/2025. |
+| 0-10-1 | Lettore impronte | BioStar (IP 10.61.20.199). Cavo rete al lettore esterno; RS485 tra connettore interno ed esterno; la rete lo vede come dispositivo unico. Problemi dal 07/02/2025. **Attestazione identificata il 06/08/2026**: e' l'unita' master del sistema di rilevazione presenze Suprema, collegata alla **porta 3 del XGS2220-30HP** (100 Mbps, PVID 1, `allowedVLAN` uguale ad `all`). Chiude la domanda aperta di NET-020 sulla porta 3; apre NET-021 sull'asset non inventariato |
 | 0-R-18 | Router/Switch | Cisco (rimosso). Collegava direttamente il firewall Zyxel al Piano 2. Con la dorsale SFP+ il Piano Terra e' collegato allo switch Piano 2 (XGS2220-54HP) via fibra. |
 | 0-R-4 | Postazione | Persona-D, dal 10/07/2026 (ex 0-3-3, vedi Ufficio 3). Patch diretta al rack a seguito di un aggiornamento dell'indirizzo IP della postazione. |
 
@@ -188,15 +188,24 @@ Il rilievo originale delle prese dati e' del 20/08/2020 (Luciani Impianti, insta
 |-------------|-------|----|------|
 | Cisco switch Piano Terra | 0-R-18 | N/A | Rimosso aprile 2026, sostituito da XGS2220-30HP |
 | AP irrigazione (tetto) | 0-9-1 | N/A | Raggiunto via ponte da 0-8-1 |
-| AP Piano Terra | 0-7-1 | N/A | PoE (ora da XGS2220-30HP) |
-| BioStar lettore impronte | 0-10-1 | 10.61.20.199 | RS485 interno/esterno |
+| AP Piano Terra | 0-7-1 | N/A | PoE (ora da XGS2220-30HP), sostituito da NWA130BE su porta 1 |
+| BioStar lettore impronte / master Suprema | 0-10-1 | 10.61.20.199 | RS485 interno/esterno; attestato su **30HP porta 3**, identificato il 06/08/2026 |
 | MH Server domotica | 2-5-2 | 10.61.90.40 | CentOS 7.6, porte 8080/8081 (da VA) |
-| Bticino Classe100X (citofono) | [TBC] | 10.61.90.41 | Linux 2.6, TLSv1.2 |
-| UPS Liebert IntelliSlot | [TBC] | 10.61.90.33 | Web card porta 6004 (da VA) |
+| Bticino Classe100X (citofono) | nessuna, connesso in radio | 10.61.90.41 secondo la VA nov 2025 | **Contraddizione aperta dal 06/08/2026**: l'IT Manager dichiara il citofono connesso alla Wi-Fi staff (VLAN 40) con la propria scheda di rete, il che e' incompatibile con l'indirizzo sulla classe `.90` del referto. Spiegazione piu' probabile: l'indirizzo della VA e' superato. Da leggere sull'apparato |
+| UPS Liebert IntelliSlot | [TBC] | 10.61.90.33 | Web card porta 6004 (da VA). E' l'unico gruppo di continuita' oggi visibile in rete; collocazione fisica ignota, vedi `docs/livello-fisico-ed-elettrico.md` |
 | Allarme intrusione | 2-6-2 | [TBC] | Connessa in rete |
 | AP esterno tetto | 2-7-1 | [TBC] | |
 | AP CED | 2-5-1 | [TBC] | |
-| AP Piano 1 | 1-8-1 | [TBC] | |
+| AP Piano 1 | 1-8-1 | [TBC] | NWA130BE su 54HP porta 41 |
+| Telefono IP, amministrazione Piano 1 | 1.1.2 | — | Yealink SIP-T34W su 54HP porta 3 |
+| Telefono IP, amministrazione Piano 1 | 1.2.1 | — | Yealink SIP-T31G su 54HP porta 5 |
+| Telefono IP, Sala-1 | 2.3.7 | — | Yealink SIP-T31G su 54HP porta 44 |
+| Telefono IP, ufficio centrale Piano Terra | 0.3.1 | — | Yealink SIP-T31G su 30HP porta 13 |
+| Telefono IP, reception | 0.5.3 | — | Yealink SIP-T34W su 30HP porta 23 |
+| Telefono dell'ascensore | 2.8.1 | — | Servito dall'adattatore analogico Grandstream HT812 v2 attestato su 54HP porta 6 |
+| Postazioni a 10 Gbps sul QNAP | 1.6.8, 1.5.3, 1.5.2, 1.5.9, 1.5.12, 1.3.3 | — | Vedi `docs/livello-fisico-ed-elettrico.md` §Mappa porta e apparato |
+
+Le cinque righe dei telefoni, quella dell'ascensore e quella delle postazioni a 10 Gbps sono state aggiunte il 06/08/2026 dal documento `STATO RETE INTRAWELT.docx` e dalla scheda dei telefoni restituita compilata dall'IT Manager. La corrispondenza completa fra porta dello switch e apparato, per tutti e tre gli switch, sta ora in `docs/livello-fisico-ed-elettrico.md`: qui restano le prese a parete, che sono il taglio proprio di questa scheda.
 
 [TBC: IP di tutti gli AP. Modelli AP (Ubiquiti da VA, Debian 7). Porte patch panel corrispondenti alle porte switch. Mappatura completa patch panel -> switch Piano 2 -> dispositivi. Relabeling fisico delle etichette permutate mai completato dal 2020.]
 
@@ -207,6 +216,8 @@ Il rilievo originale delle prese dati e' del 20/08/2020 (Luciani Impianti, insta
 > **Sezione in revisione al 03/08/2026, non usare per operare.** La prima stesura di questa sezione, di poche ore prima, si chiamava "la catena del tetto" e conteneva due errori di attribuzione che l'IT Manager ha corretto. Primo: questa non e' la catena del tetto, e' la catena che parte dallo switch del Piano Terra e va **verso l'esterno**; la connessione radio del tetto e' una cosa distinta. Secondo: l'apparato sulla porta 4 non e' un access point che serve la centrale di irrigazione via Wi-Fi, ma una **connessione radio di backup verso l'esterno** — cioe' l'ipotesi "ponte radio" che M13c-1 aveva classificato come improbabile era quella giusta. Esiste inoltre una seconda catena, che parte dallo switch del Piano 2 e comprende un media converter, un cavo che esce verso un'antenna e un gruppo di continuita' dedicato, e che questa sezione non descrive affatto.
 >
 > Cio' che resta valido e verificato: l'esistenza dello **Zyxel GS-105B v5** sulla tratta, interposto dagli elettricisti, e le tre utenze che ne derivano fra cui l'inverter del fotovoltaico mai censito. Cio' che e' contestato e da riscrivere: il ruolo dell'apparato radio, il fatto che la centrale sia raggiunta via cavo o via radio, e la relazione fra questa catena e quella del Piano 2. Riscrittura in attesa dei dati dell'IT Manager.
+>
+> **Aggiornamento del 06/08/2026, un pezzo dei tre si chiude.** La seconda catena, quella che l'IT Manager segnalava come partente dal Piano 2 con un'antenna e un gruppo di continuita' dedicato, e' ora descritta: l'antenna sul tetto entra in un iniettore PoE alimentato dal gruppo di continuita' di Sala-1 e da li' nella porta ETH10 del MikroTik RB2011UiAS-RM, cioe' termina **a monte del firewall**, dentro il tratto WAN del fornitore, e non su nessuno dei due switch. E' un terzo percorso verso Internet, non un ramo della LAN. Dettaglio in `docs/livello-fisico-ed-elettrico.md` §La catena fisica da Internet al firewall. Restano contestati gli altri due punti, cioe' che cosa sia l'apparato in fondo alla porta 4 e come sia raggiunta la centrale di irrigazione, e resta non descritto il media converter che la stessa nota citava.
 
 Fonte: dichiarazione dell'IT Manager, sollecitata da una verifica di copertura documentale. Nessuna fonte automatica poteva produrre questa informazione, perche' l'apparato intermedio non e' gestito e non compare nell'inventario Nebula.
 
