@@ -1326,6 +1326,50 @@ appesa (vedi nota ISO27001 in `design-and-security.md` §A.9.2).
 
 ---
 
+## NEB-002: la Nebula OpenAPI risponde `Forbidden` dopo la retrocessione a Base Pack
+
+Sintomo. `scripts/Get-NebulaSnapshot.ps1` termina senza errore fatale ma produce uno snapshot
+vuoto, di poche centinaia di byte, con due avvisi: `GET /organizations/{orgId}/sites` e
+`GET /organizations/{orgId}/sites/devices` rispondono `{"detail":"Forbidden"}`. L'endpoint
+`/organizations` continua invece a rispondere e restituisce l'organizzazione. Chi legge in fretta
+puo' scambiarlo per un problema di chiave, perche' la chiamata che riesce e quella che fallisce
+usano la stessa chiave.
+
+Diagnosi, dal caso del 05/08/2026. La causa non era la chiave ma la **licenza**: Zyxel aveva
+notificato per posta la retrocessione dell'organizzazione a Base Pack per scadenza della licenza di
+un dispositivo, e la chiave NCC OpenAPI richiede il Professional Pack sui dispositivi
+dell'organizzazione. Il fatto che l'endpoint delle organizzazioni continui a rispondere e' proprio
+cio' che rende l'errore leggibile: l'autenticazione funziona, e' l'autorizzazione sulle risorse a
+cadere.
+
+Come si distingue dalle altre ipotesi, in ordine di costo. Primo, guardare se esiste una mail di
+Zyxel sulla licenza, che e' il segnale piu' rapido. Secondo, aprire Nebula sotto Organization-wide
+> Licenses & inventory e leggere il livello dell'organizzazione e la scadenza per apparato: il
+livello segue l'apparato peggiore, quindi basta una licenza scaduta su un solo switch. Terzo, se il
+dubbio resta, rigenerare la chiave dal percorso non ovvio (icona "..." in alto, My devices &
+services, scheda NCC OpenAPI Key) e riprovare: se il `Forbidden` resta, la chiave e' innocente.
+Quarto, confrontare con l'ultimo snapshot buono, che nel caso del 05/08 dichiarava `mode: PRO`
+sull'organizzazione mentre la corsa successiva non aveva piu' nulla da dichiarare.
+
+Cosa **non** e'. Non e' un guasto di rete e non e' NEB-001: il piano dati e' indipendente dal
+cloud, switch e access point continuano a inoltrare traffico con la configurazione che hanno, e
+restano gestibili dalla GUI anche in Base Pack. NEB-001 e' l'assenza intermittente di un apparato
+dal piano di gestione, con `DEVICE_IS_OFFLINE` sulle sue interrogazioni; qui invece gli apparati
+stanno bene ed e' l'API a rifiutare la richiesta.
+
+Rimedio e mitigazione. Il rimedio e' il rinnovo del Professional Pack, almeno sugli apparati di cui
+serve la lettura automatica. Finche' non avviene, la mitigazione e' dichiarativa e non tecnica:
+porte, PVID, VLAN ammesse e tabelle MAC vanno lette dalla GUI e riportate a mano, l'ultimo snapshot
+utile va congelato fuori git per non perderlo alla prima riesecuzione dello script — nel caso del
+05/08 e'
+`_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json` — e la riga della cadenza
+in `.claude/rules/fonti-e-riallineamento.md` resta marcata come sospesa, perche' una cadenza che
+non si puo' onorare e' peggio di una cadenza dichiarata assente. Attenzione a una trappola pratica:
+lo script sovrascrive `output/nebula-snapshot.json` anche quando la corsa e' vuota, quindi la copia
+di salvaguardia va fatta **prima** di rilanciarlo.
+
+---
+
 ## Riferimenti utili
 
 Raccolta di riferimenti esterni verificati durante gli interventi, tenuta qui perche'

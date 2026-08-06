@@ -1,5 +1,62 @@
 # Work-log
 
+## 2026-08-05 (5) — Verificato il MCP senza le variabili di Windows; Proxmox riconciliato; la licenza Nebula cade
+
+Commit: PENDING (da fare manualmente)
+File toccati (tracciati): `.claude/memory/decisions.md` (blocco di verifica dentro ADR-021);
+`docs/infrastructure-timeline/GAP-TBC.md` (gap 140 NEB-002, 141 SRV-006, 142 SEC-025, piu'
+riepilogo corretto); `.claude/rules/fonti-e-riallineamento.md` (Nebula da classe B a sospesa,
+nuova sezione §Fonte automatica perduta, precondizione di licenza sul piano FLEX 500, riga di
+cadenza); `.claude/context/design-and-security.md` (seconda riconciliazione live e correzione
+dell'attribuzione VNC); `docs/runbook-anomalie.md` (§NEB-002); `.claude/memory/index.md` (punto
+di ripresa). File locali: `_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json`
+e il suo `.md`, congelati fuori git.
+
+**Scopo della sessione, e sua chiusura.** Verificare che il server MCP `proxmox` fosse
+raggiungibile **senza** le variabili d'ambiente utente di Windows, che ADR-021 aveva deciso di
+eliminare e che lo stesso ADR vincolava a rimuovere "solo dopo la verifica". Verifica **riuscita**,
+con quattro misure indipendenti: nessuna variabile `PROXMOX`/`PVE`/`NEBULA` sopravvive in ambito
+utente ne' in ambito macchina (li' resta solo `NINJARMMCLI`, estranea allo schema); le stesse
+variabili sono invece presenti nell'ambiente di **processo**; la variabile spia
+`NETDESIGN_ENV_CANARY` vale `settings-local-attivo` nel processo e non esiste in ambito utente,
+il che dimostra la catena invece di inferirla; e il MCP ha risposto a quattordici chiamate
+consecutive, quindi l'espansione `${VAR}` di `.mcp.json` ha trovato credenziali valide. Provato
+anche il secondo consumatore: uno script PowerShell lanciato come sottoprocesso della sessione ha
+letto `NEBULA_API_KEY` dall'ambiente. Limite dichiarato nell'ADR: quelle variabili esistono solo
+dentro una sessione aperta su questo progetto, quindi nessuna automazione fuori sessione puo'
+contarci.
+
+**Proxmox riconciliato, dieci VM invariate.** Approfittando del canale verificato, seconda
+ricognizione live dopo quella del 27/07: dieci VM, nessun LXC, sei storage, nessuna aggiunta,
+rimozione, rinomina o cambio di bridge; nodo scarico e uptime coerente. Fatto nuovo, che corregge
+la documentazione: il `-vnc 0.0.0.0:77` attribuito finora alla VM207 sta nel campo `description`
+di sei VM, cioe' commentato e non applicato, mentre l'unica VM con un argomento vero e' la **VM602
+Intralino** con `args: -vnc 0.0.0.0:50`, cioe' una console VNC in ascolto sulla LAN piatta alla
+porta 5950 (gap SRV-006). Registrato anche che il MCP non copre job di backup, pool, regole
+firewall, dischi fisici, SDN, HA e snapshot: **M18 resta scaduto** e lo snapshot v5 va lanciato
+dall'IT Manager, perche' lo script chiede le credenziali a runtime.
+
+**Evento esterno arrivato durante la sessione, ed e' il piu' pesante.** Mail di Zyxel: organizzazione
+retrocessa a **Base Pack** per scadenza della licenza di un dispositivo. Trasformato il dubbio in
+misura rilanciando lo script: alle 11:48 snapshot completo da 205 KB con `mode: PRO`, alle 16:32
+`Forbidden` su `/sites` e `/sites/devices` con la stessa chiave e snapshot vuoto da 427 byte. Ne
+segue che switch e access point **retrocedono da classe B a classe E**, che la cadenza settimanale
+degli snapshot Nebula e' sospesa e non rimandata, che M22b perde lo strumento di verifica
+prima-e-dopo proprio dove il canale di scrittura aveva gia' fallito in silenzio (NEB-001,
+ADR-010), e che il piano di portare il FLEX 500 su Nebula diventa condizionato al rinnovo.
+Salvaguardia applicata prima che lo script sovrascrivesse tutto: l'ultima lettura buona e'
+congelata in `_notes/`, `output/` e' stato riportato al contenuto delle 11:48 e la corsa degradata
+resta come evidenza in `output/nebula-snapshot-20260805-163235.json`. **Decisione di rinnovo non
+presa**: in attesa dell'IT Manager, ed e' la prima cosa da chiedere alla prossima apertura.
+
+**Terzo gap aperto, a costo nullo di rimedio**: `.mcp.json` porta `PROXMOX_ALLOW_DANGER` a `true`,
+quindi i tool distruttivi del MCP sono abilitati lato client e l'unica difesa e' il token
+PVEAuditor di sola lettura (SEC-025). Portarlo a `false` non toglie nulla all'uso documentato.
+
+**Igiene documentale fatta lungo la strada**: il riepilogo di GAP-TBC dichiarava 132 gap totali
+mentre la numerazione era gia' a 139, e conteneva una riga duplicata sul servizio DNS del
+firewall; corretti entrambi, totale ora 142.
+
 ## 2026-08-05 (chiusura, 4) — ADR-021 rivisto su obiezione: i segreti nel progetto, non nel registro
 
 Commit: PENDING (da fare manualmente)
