@@ -6,7 +6,7 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 25e27e7 (06/08/2026, M13c-6 scheda WBE530, UPS piano terra, piano sessioni)
+Commit di riferimento: 4782336 (06/08/2026, bonifica anonimizzazione completa e guard-rail)
 Data snapshot:         2026-08-06 (merge dei tre file dell'IT Manager: livello fisico ed elettrico)
 ```
 
@@ -14,23 +14,25 @@ Nota di stato al momento della chiusura: il lavoro documentale del 03/08 (chiusu
 
 Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT` dal 2026-06-22 nonostante piu' commit successivi. Il riferimento va aggiornato a ogni sessione che tocca schede o memoria, non solo alla prima.
 
-## Nota sul frontmatter delle schede (aggiornata il 06/08/2026)
+## Nota sul frontmatter delle schede (aggiornata il 06/08/2026, bump eseguito)
 
-La nota precedente diceva che tutte le schede portavano `last-verified: 347f79c`: **non e' piu' vero e non lo era gia' piu'**, perche' il bump e' stato fatto in due riprese. Stato reale al 06/08/2026, letto dai file e non dalla memoria: `STACK.md`, `current-work.md`, `deployment.md` e `dev-testing.md` portano `41d0581`; `design-and-security.md` e `roadmap.md` portano `32e5993`.
+Il bump e' stato **fatto** dopo il commit `4782336`: tutte e sei le schede di `.claude/context/` portano ora quell'hash. La nota che questo file conteneva fino a stamattina diceva che tutte portavano `347f79c`, e non era piu' vero da due bump: era stata copiata di sessione in sessione invece di essere riletta dai file.
 
-Nessuno dei due valori copre le modifiche di questa sessione, quindi il bump va rifatto. Vale la regola di sempre e la ragione per cui esiste: il valore corretto e' l'hash del commit che **include** le modifiche, che non esiste finche' il commit non e' fatto, quindi il bump e' un passo separato subito successivo al commit e non va rimandato. E' esattamente il passo che a luglio si e' perso per sei settimane, con il risultato che questo file dichiarava un drift che nessuno chiudeva. Corollario meno ovvio, imparato ora: anche **questa nota** e' uno stato che invecchia, e va riletta dai file invece che copiata dalla versione precedente.
+Ne discende la regola, che vale piu' del valore corrente. Il `last-verified` corretto e' l'hash del commit che **include** le modifiche, quindi il bump e' un passo separato subito successivo al commit e non va rimandato: e' il passo che a luglio si e' perso per sei settimane, con il risultato che questo file dichiarava un drift che nessuno chiudeva. E il corollario imparato oggi: anche questa nota e' uno stato che invecchia, e va riletta dai file invece che ricopiata.
 
 ## Stato di verifica delle schede
 
-| Scheda | last-verified | Stato |
+Tutte a `4782336` nel frontmatter dopo il bump del 06/08/2026. La colonna che conta e' la terza: l'hash dice quando la scheda e' stata dichiarata verificata, non che il contenuto sia allineato.
+
+| Scheda | last-verified | Stato del contenuto |
 |---|---|---|
-| STACK.md | 347f79c | **da riverificare**: drift accumulato, non toccata da luglio. Non conosce i tre script aggiunti da allora (`Get-NinjaSnapshot.ps1`, `New-ScanFolderShortcut.ps1`, e il ruolo di `Get-NebulaSnapshot.ps1` nel censimento) |
-| design-and-security.md | 347f79c (frontmatter) | contenuto allineato al 03/08: inventario a dieci VM, contesto di gestione endpoint (rotazione a trenta giorni, RMM), assenza di servizio di directory, snapshot multi-tenant, gap A.8.20/A.8.22/A.8.24/A.5.14-A.8.3/A.8.4-A.8.31. Frontmatter da bumpare al prossimo commit |
-| deployment.md | 347f79c | **da riverificare**: non conosce l'esecuzione degli script nuovi ne' i vincoli sulle credenziali dell'RMM (ADR-017) |
-| dev-testing.md | 347f79c (frontmatter) | contenuto allineato al 03/08: conteggio VM a dieci, cinque trappole PowerShell, regola sulle verifiche che possono fallire per la ragione giusta, banco di prova fuori linea |
-| current-work.md | 347f79c (frontmatter) | contenuto allineato al 03/08: §Stato al 03/08/2026 con R8 eseguito, code aperte e filone strutturale |
-| roadmap.md | 347f79c (frontmatter) | contenuto allineato al 03/08: M13c (quarto AP), M22a-M22e, M23, M24, **M25** (risoluzione nomi interna), registro parallelo dei micro-interventi |
-| interventi-robustezza.md (docs/) | non applicabile | registro operativo, allineato al 03/08: R1-R14, R8 completato con tabella per destinatario |
+| STACK.md | 4782336 | **da riverificare**: e' la piu' indietro. Non conosce `Get-NinjaSnapshot.ps1`, `New-ScanFolderShortcut.ps1`, `Set-ProjectSecret.ps1`, `Test-Anonymization.py` ne' il ruolo di `Get-NebulaSnapshot.ps1` nel censimento |
+| deployment.md | 4782336 | **da riverificare**: non conosce l'esecuzione degli script nuovi, i vincoli sulle credenziali dell'RMM (ADR-017) ne' i tre file privati che ora alimentano gli script |
+| design-and-security.md | 4782336 | allineata al 03/08; da estendere con il livello elettrico (A.7.11) e con TEL-005 |
+| dev-testing.md | 4782336 | allineata al 03/08 |
+| current-work.md | 4782336 | allineata al 03/08; la feature attiva e' ora la sessione 1, da riscrivere |
+| roadmap.md | 4782336 | allineata al 06/08: M13c-1..9, M22a-e, M25, **M26** (mappa interattiva), registro dei micro-interventi |
+| interventi-robustezza.md (docs/) | non applicabile | registro operativo, allineato al 03/08: R1-R19 |
 
 ## Punto di ripresa
 
@@ -58,7 +60,7 @@ I valori reali degli script non sono stati cancellati ma spostati in tre file pr
 
 **Da fare subito alla ripresa**: rilanciare `Check-OneDriveDelta.ps1 -UpdateBaseline`, perche' il triage e' fatto e registrato ma la baseline no. Poi il commit con il bump del frontmatter. Il resto delle pendenze, comprese le verifiche nuove che questa sessione ha aperto sul livello fisico ed elettrico, sta in `docs/pendenze-aperte.md`.
 
-**Prossimo obiettivo dichiarato dall'IT Manager, da tenere in testa in ogni sessione futura**: una **mappatura di rete interattiva completa** come artefatto parallelo alla documentazione, con cui si possa interagire. Impostazione decisa in **ADR-023**: fonte di verita' strutturata versionata nel repository, generatore deterministico, un solo file HTML autoconsistente. Manca il sistema di design Intrawelt, che va esportato o incollato dall'account dove vive.
+**Mappa di rete interattiva: prima revisione consegnata il 06/08/2026** (M26, impianto in ADR-023). Si apre **`docs/network-map.html`** con un doppio clic, anche offline. Fonte di verita' `data/network-topology.json` con 43 nodi, 55 collegamenti e 16 sorgenti di alimentazione; generatore `scripts/Build-NetworkMap.ps1`, che valida la fonte e porta il guard-rail di anonimizzazione incorporato. Due viste, Rete e Alimentazione, con filtro VLAN, filtro sui soli difetti aperti, ricerca e pannello di dettaglio per apparato. **Il file generato non si modifica mai a mano**: si corregge la fonte e si rigenera. Verificata senza browser con un simulatore di DOM in Node, zero errori a runtime; l'**aspetto** non e' verificato e lo deve guardare l'IT Manager. Fuori perimetro per scelta: singole postazioni e due multifunzione, che compaiono come gruppi. Manca il **design Intrawelt**, che vive su un altro account e da qui non e' raggiungibile.
 
 **Sessioni del 05-06/08/2026 — antefatto. Tre esiti, tutti chiusi.**
 
