@@ -443,6 +443,18 @@ Gap emersi dalla ricognizione diretta del nodo `pve` via MCP Proxmox e dell'inte
 |---|----|-------------|-------|
 | 142 | SEC-025 | `.mcp.json` imposta `PROXMOX_ALLOW_DANGER` a `true`, quindi il server MCP espone e consente i tool che creano, cancellano, accendono, spengono e riportano indietro snapshot di VM e container. Cio' che li rende oggi inoffensivi e' **solo** il token PVEAuditor di sola lettura deciso in ADR-007: la difesa e' singola dove potrebbe essere doppia, e basta un token piu' potente inserito per qualunque ragione futura — anche legittima, come lo schema a due token di ADR-008 — perche' l'abilitazione lato client diventi immediatamente operativa senza che nessuno se ne accorga. Rimedio a costo nullo: portare il valore a `false`, dato che tutto l'uso documentato del MCP in questo progetto e' in lettura. Rilevante per A.8.2 (privilegi elevati), A.8.9 e A.9.4 | Lettura di `.mcp.json` durante la verifica dell'accesso MCP senza variabili d'ambiente di Windows, 05/08/2026 |
 
+## Porte di fonia che accettano qualunque VLAN taggata (06/08/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 143 | NET-019 | Cinque porte configurate per la fonia consegnano il non taggato sulla VLAN 2 (`PVID 2`) ma hanno `allowedVLAN` uguale ad **`all`**, cioe' accettano in ingresso **qualunque VLAN taggata**: la **13 del XGS2220-30HP** e la **3, la 6, la 8 e la 44 del XGS2220-54HP**. Sullo stesso parco esistono due porte di fonia configurate correttamente, la **23 del 30HP** e la **5 del 54HP**, che ammettono la sola VLAN 2, e una terza variante difettosa in senso opposto, la **21 del 30HP** di NET-015, che ammette solo la 2 mentre consegna il non taggato sulla 1. Tre configurazioni diverse per lo stesso ruolo sullo stesso parco. Il rischio concreto e' il salto di VLAN da una presa di fonia: un apparato collegato a una di quelle cinque porte, o un PC in cascata dietro un telefono, raggiunge le VLAN 1, 40 e 90 semplicemente taggando i propri frame, senza toccare niente sullo switch. Non e' teorico, e' l'unica cosa che quelle prese permettono e la 23 no. Le prese sono in aree accessibili e sono alimentate in PoE, quindi il vettore non richiede nemmeno una presa elettrica. **Causa probabile, da confermare e non da dare per fatta**: le porte con la sola VLAN 2 ammessa sono quelle toccate dalla configurazione Voice VLAN del 29/05/2026, mentre quelle con `all` hanno ricevuto il solo `PVID 2` negli spostamenti di luglio senza che venisse toccata la lista delle ammesse, che prima del 23/07 era `all` su ogni porta di entrambi gli switch. Verificabile nel change log di configurazione degli apparati su NCC. Rimedio in **R19**, a basso rischio perche' non cambia il comportamento del traffico non taggato, che gia' finisce in VLAN 2. Rilevante per A.8.20 (sicurezza delle reti), A.8.22 (segregazione) e A.8.9 | Snapshot Nebula del 06/08/2026 alle 09:36, `port-settings` e tabella MAC L2 di entrambi gli switch |
+
+## La tratta del tetto accetta qualunque VLAN taggata (06/08/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 144 | NET-020 | Le porte **3 e 4 del XGS2220-30HP** hanno `PVID 1` e `allowedVLAN` uguale ad **`all`**: sono le ultime due porte rimaste allo stato precedente al 23/07/2026, quando la lista delle ammesse era `all` su ogni porta e la nota corrispondente e' poi stata superata. Entrambe negoziano 100 Mbps contro il gigabit delle vicine. La 4 e' quella che pesa: e' la tratta del tetto ricostruita in NET-017, cioe' patch in locale caldaia, ponte verso `0-9-1`, **switch GS-105B non gestito** e da li' tre rami — centrale di irrigazione, access point EOL con Debian 7 (SEC-018) e inverter del fotovoltaico (R18). I **quattro MAC** appresi su quella porta, tutti in VLAN 1, coincidono con quella ricostruzione e la corroborano a distanza di tre giorni. Ne segue che il ramo IoT/OT dell'azienda, che M22c vuole isolare in un segmento dedicato, oggi si attesta su una porta che accetta qualunque tag e che porta a uno switch su cui nessuno ha visibilita': e' il punto della rete dove il divario fra postura desiderata e postura reale e' piu' largo. Della porta **3** invece non si sa cosa serva: un solo MAC in VLAN 1, 100 Mbps, nessun documento del progetto la descrive, e va identificata prima di stringerla. Rimedio dentro **M22b/M22c** e non come micro-intervento, per la ragione detta in R19. Rilevante per A.8.20, A.8.22, A.8.1 (inventario) | Snapshot Nebula del 06/08/2026 alle 09:36, incrociato con `docs/mappatura-porte-fisiche.md` §La catena del tetto |
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -495,5 +507,7 @@ Gap emersi dalla ricognizione diretta del nodo `pve` via MCP Proxmox e dell'inte
 | Licenza Nebula scaduta, OpenAPI caduta e riaccesa in sedici ore (05-06/08/2026) — risolto | 140 |
 | VNC senza autenticazione applicato sulla VM602 e non sulla VM207 (05/08/2026) | 141 |
 | Tool distruttivi del MCP Proxmox abilitati lato client (05/08/2026) | 142 |
-| **Totale identificati** | **142** |
+| Porte di fonia che accettano qualunque VLAN taggata (06/08/2026) | 143 |
+| Tratta del tetto su porta che accetta qualunque VLAN taggata (06/08/2026) | 144 |
+| **Totale identificati** | **144** |
 | **Di cui risolti** | **9** (14, 54, 55, 61, 63, 106, 111, 116, 140 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
