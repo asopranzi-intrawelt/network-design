@@ -382,6 +382,8 @@ Se si prende la scheda SNMP, l'UPS torna a essere un host di rete, e va collocat
 
 Se non si prende, l'UPS non e' monitorabile in rete: nessuna notifica di mancanza rete, nessuna soglia di batteria, nessuno spegnimento ordinato coordinato con i server. Va detto esplicitamente perche' e' una perdita di capacita' rispetto a oggi, non un risparmio neutro, e il piano di continuita' dichiara procedure che presuppongono di sapere in che stato e' l'UPS.
 
+Lettura aggiunta dall'IT Manager il 06/08/2026, ed e' un intervento futuro e non una nota a margine: quel preventivo e' anche l'indizio che un gruppo di continuita' serve **anche al Piano Terra**, dove oggi non risulta esserci. La domanda che viene prima dell'acquisto e' pero' un'altra e questo progetto non sa rispondere: **che cosa deve alimentare**. Non esiste da nessuna parte l'elenco dei carichi per armadio, ne' quello di cosa resta acceso durante un'interruzione, e senza quello il dimensionamento in VA e' un numero preso a caso. E' esattamente il livello **elettrico** che la sessione dedicata allo snapshot totale della rete deve colmare per prima, e quel censimento e' quindi prerequisito di questo acquisto e non una sua conseguenza.
+
 Da verificare in ogni caso, e non da stimare: l'autonomia. Il documento dichiara 116 minuti su un carico da PC e monitor, mentre il piano di continuita' di questo progetto dichiara quindici minuti sul carico reale, che e' server, NAS e centralino. I due numeri non sono confrontabili e il secondo non e' mai stato misurato: va rifatto il conto sul carico effettivo prima di attribuire al nuovo apparato un miglioramento che potrebbe non esserci. Rilevante per A.11.2 e per il tempo di ripristino dichiarato in `business-continuity-disaster-recovery.md`.
 
 ---
