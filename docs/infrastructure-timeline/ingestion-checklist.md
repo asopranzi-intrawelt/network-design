@@ -583,3 +583,80 @@ Entrambe le librerie: nessuna voce richiede nuova ingestione, tutto ricade in ca
 - [-] `Eter/ORDINE ASSISTENZA ANNUALE.eml`, email licenza Zyxel XGS2220-54HP (modificati) — stessa categoria gia' verificata (righe 513/523), rinnovi senza contenuto nuovo
 
 Baseline aggiornata al 15/07/2026 per entrambe le librerie con `-UpdateBaseline`.
+
+## Delta del 06/08/2026 (triage in apertura di sessione)
+
+Tre librerie, ventisette voci rilevanti in tutto, e un ritrovamento che vale da solo la
+sessione. Il triage e' stato fatto prima di ogni altro lavoro, secondo la regola di
+ammissione di `.claude/rules/fonti-e-riallineamento.md`.
+
+### Documenti - IT
+
+Il delta grezzo conta 406 nuovi, 1 modificato e 403 eliminati, ma il numero e'
+ingannevole: 806 delle 810 voci sono lo spostamento di una sottocartella dentro
+`SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`, cioe' lo
+stesso corpus di ricerca gia' in SKIP dal 15/07, che ricompare come 403 eliminati piu' 403
+nuovi perche' e' cambiato il percorso. Nessun contenuto nuovo.
+
+- [x] `Cybersec & IT Governance/STATO RETE INTRAWELT.docx` (nuovo) — **e' il ritrovamento
+  del triage e la fonte piu' importante arrivata da mesi**. Scritto dall'IT Manager,
+  descrive la catena fisica completa da Internet al firewall, la mappa porta-apparato del
+  XGS2220-54HP e dello switch QNAP, e soprattutto **l'alimentazione dei due armadi**, che
+  e' il livello di cui questo progetto non aveva praticamente nulla. Ingerito il giorno
+  stesso nella scheda nuova `docs/livello-fisico-ed-elettrico.md` e nella sua controparte
+  `_notes/livello-fisico-ed-elettrico.md`; ne discendono i gap **145-148** e
+  l'aggiornamento di `docs/mappatura-porte-fisiche.md`. La sezione "Piano Terra" del
+  documento e' **aperta e vuota**: e' lavoro non ancora fatto, non una lacuna da colmare
+  per inferenza
+- [-] `Cybersec & IT Governance/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/_WIP/` (2
+  nuovi, 1 eliminato) — revisione del 04/08 dell'Information Security Annex Part II e il
+  suo backup pre-modifica. Stessa categoria di Fase 5 gia' decisa, nessun contenuto nuovo
+  per la storia di rete
+- [-] `SCENIA/Ricerca Unimc/.../Materiale_per_dataset/` (403 nuovi, 402 eliminati) —
+  spostamento di percorso del corpus gia' in SKIP dal 15/07
+- [-] `SCENIA/Credenziali e Info Utili Ambiente Staging e Produzione.txt` (modificato) —
+  categoria SKIP permanente, file di credenziali: **non aperto**, per principio
+
+### IT + Administration - Documenti
+
+- [x] `ZYXEL/2026 (allinamento Nebula professional pack)/` (19 nuovi: ricevuta d'ordine,
+  note di riferimento, notifica di declassamento dell'organizzazione, tre fotografie,
+  dodici screenshot fra pannelli NCC e ticket di billing) — e' la documentazione
+  amministrativa dell'episodio gia' ricostruito e chiuso il 05-06/08/2026: declassamento a
+  Base Pack, acquisto dei Professional Pack, scadenze co-terminate. **Gia' ingerito** per
+  altra via, in ADR-022, in `docs/vendor-management.md` e nella voce timeline
+  corrispondente, perche' i fatti erano stati misurati sui pannelli in sessione mentre
+  accadevano. Le voci restano spuntate qui per tracciabilita': confermano dal lato
+  documentale cio' che era stato letto dal lato dell'apparato, e non aggiungono fatti. Gli
+  importi restano fuori dai file tracciati per policy
+- [-] `Daniele Colò - Punto informatica/2026/Preventivi/Preventivo-213_2026...pdf`
+  (modificato) — e' il preventivo del 31/07 gia' ingerito nel triage del 03/08 (access
+  point WBE530 e UPS Addpower). La modifica e' del file, non del contenuto rilevante:
+  modello, alimentazione e opzione SNMP restano quelli gia' registrati in
+  `runbook-anomalie.md` §AP-001 e §UPS-001. Da riaprire solo se l'ordine viene confermato
+- [-] `Proforma/` (1 nuovo, 1 modificato) — contabilita', fuori scope come sempre
+
+### File di chat di Microsoft Teams
+
+- [x] `intrawelt_telefoni-e-AP_scheda-da-completare.md` (nuovo) — la scheda prodotta dal
+  progetto il 05/08 e **restituita compilata dall'IT Manager**. Porta modelli, prese a
+  parete e ubicazione dei cinque telefoni IP, l'identificazione dell'apparato sulla porta 3
+  del 30HP, l'etichetta reale dell'adattatore analogico e lo stato del parco digitale.
+  Ingerita in `docs/telefono-pbx-voip.md`, `docs/mappatura-porte-fisiche.md` e
+  `docs/livello-fisico-ed-elettrico.md`; ne discendono i gap **149-150** e la chiusura
+  rovesciata di #67/#99. **Contiene valori reali** per costruzione — MAC, numeri di
+  interno, una credenziale di apparato — che restano in `_notes/` e non entrano in nessun
+  file tracciato
+- [x] `intrawelt-rete_AP-stampanti-VLAN-fonia_2026-08-03.md` (nuovo) — l'estratto tematico
+  del 03/08 restituito **invariato**. Nessun fatto nuovo: e' servito da confronto per
+  verificare che il merge non perdesse nulla. Vista, non fonte
+- [-] cinque screenshot (`screenshot_73..77`) — sono le catture dei pannelli NCC gia'
+  coperte dalla cartella ZYXEL qui sopra
+
+Esito. I due file `.md` sono viste e non fonti: a merge verificato si possono cancellare,
+ed e' esattamente cio' che l'IT Manager aveva chiesto di poter fare. Il `.docx` dello stato
+rete resta invece in OneDrive come documento dell'IT Manager, e la sua sezione Piano Terra
+va completata li'.
+
+Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` si lancia
+dopo la conferma, cosi' che il prossimo avvio parta pulito.

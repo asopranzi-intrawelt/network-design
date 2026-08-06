@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3906" viewBox="0 0 1060 3906" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3906" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3930" viewBox="0 0 1060 3930" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="3930" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,14 +15,14 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">148 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 05/08/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">149 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 06/08/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
 <text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
-<text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(36)</tspan></text>
+<text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(37)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
 <text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(14)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
@@ -2413,7 +2413,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3890" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-149" class="ev-block has-detail" transform="translate(0,3860)">
+<g class="ev-summary" onclick="toggleEv('ev-149')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#4a3aa7"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">06/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Il livello elettrico entra nella documentazione, e il parco telefonico digitale non c'e' piu' <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">TEL</tspan></text>
+</g>
+<foreignObject id="ev-149-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">06/08/2026 &#8212; Il livello elettrico entra nella documentazione, e il parco telefonico digitale non c'e' piu'</p>
+<p>Tre file passati a mano dall'IT Manager chiudono in una sola sessione due lacune che il progetto dichiarava aperte da mesi. Il documento STATO RETE INTRAWELT.docx, comparso nel delta della stessa mattina sotto Cybersec &amp; IT Governance e scritto dall'IT Manager, descrive per la prima volta l'alimentazione dei due armadi del Piano 2 e la mappa completa fra porte degli switch e apparati; la scheda dei telefoni prodotta dal progetto il 05/08 torna compilata con modelli, prese e ubicazioni dei cinque Yealink, con l'identificazione dell'apparato sulla porta 3 del 30HP e con l'etichetta reale dell'adattatore analogico dell'ascensore. Ne nasce la scheda docs/livello-fisico-ed-elettrico.md con la sua controparte non anonimizzata in _notes/, secondo la regola dei due layer, e ne nascono sei difetti nuovi. Il terzo file, l'estratto tematico del 03/08, torna invariato e serve solo da confronto.</p><p class="sub">L'alimentazione: tre gruppi di continuita', e quattro cose che non vanno</p><p>I gruppi d'armadio sono tre, tutti al Piano 2: un APC Smart-UPS SC 1500 e un APC Back-UPS ES 400 nel rack di sinistra, un Elsist UPServer 4.0 online a doppia conversione nel rack di destra. Il quarto, quello di Sala-1 che alimenta l'iniettore PoE dell'antenna, era gia' noto per sentito dire e resta senza modello.</p><p>Quattro difetti escono dalla stessa lettura. Nessuno dei tre gruppi ha una scheda di rete, quindi nessun allarme di alimentazione raggiunge nessuno e la prima notizia di un guasto e' l'apparato che si spegne (ELE-001, #145). Il firewall e' alimentato in fondo a tre ciabatte in cascata, quattro connessioni elettriche in serie per l'apparato attraverso cui passa tutto il traffico verso Internet, con il carico complessivo mai misurato (ELE-002, #146). Il NAS-HERO ha i due alimentatori sotto lo stesso gruppo, quindi ha la ridondanza dell'alimentatore e non quella della sorgente, e del server HP Gen10 risulta alimentato il solo PS2 (ELE-003, #147). E lo switch del Piano Terra non compare sotto nessun gruppo, il che significa che al primo black-out cadono i due telefoni del piano, la reception, l'access point, il timbracartellini e la tratta che esce verso l'esterno (ELE-004, #148).</p><p>Quest'ultimo difetto e' anche… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="3914" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2567,7 +2583,8 @@
   {id:'ev-145',type:'event',h:24},
   {id:'ev-146',type:'event',h:24},
   {id:'ev-147',type:'event',h:24},
-  {id:'ev-148',type:'event',h:24}
+  {id:'ev-148',type:'event',h:24},
+  {id:'ev-149',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2608,7 +2625,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3906').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 3930').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

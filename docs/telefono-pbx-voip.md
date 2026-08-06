@@ -6,27 +6,41 @@
 
 Il centralino fisico Panasonic KX-NCP1000 e' installato in sede e gestisce la telefonia interna. Il gateway SIP verso la linea Vianova e' il Patton SmartNode 5551.
 
-Linee telefoniche Vianova attive fisicamente dal 17/04/2025, gestite attraverso il contratto myOffice firmato il 18/12/2024 (6 canali voce, 984 euro/mese, centralino cloud previsto).
+Linee telefoniche Vianova attive fisicamente dal 17/04/2025, gestite attraverso il contratto myOffice firmato il 18/12/2024 (6 canali voce, centralino cloud previsto in contratto). Il canone non e' riportato: `.claude/rules/anonymization.md` esclude gli importi dai file tracciati. Correzione applicata il 06/08/2026, il valore era rimasto qui da una stesura precedente alla regola.
+
+### Il centralino fisico e' stato smantellato il 31/07/2026
+
+Dichiarazione dell'IT Manager del 06/08/2026, nella scheda dei telefoni restituita compilata. Il centralino Panasonic e i **ventisette apparecchi digitali** che vi erano attestati sono stati **rimossi fisicamente giovedi' 31/07/2026**. Tutto cio' che questa sezione descrive al presente riguarda quindi lo stato fino a quella data, e va letto come storia.
+
+La conseguenza non e' documentale ma operativa, e capovolge TEL-003. Il gap era stato aperto il 03/08 come "ventisette apparecchi digitali che il centralino cloud non puo' registrare, e per ciascuno va scelto fra telefono SIP nuovo, softphone o gateway di conversione". Oggi la scelta non e' piu' davanti a una migrazione ma dietro a una rimozione gia' avvenuta: quei ventisette interni non hanno piu' un terminale, e il centralino cloud che dovrebbe sostituirli non e' attivo, perche' la quantita' di interni del contratto e' ancora in bianco e i messaggi non sono decisi. Che cosa usino oggi quelle ventisette persone per telefonare e' la prima domanda da fare, e non e' deducibile da nessuna fonte di questo progetto. Tracciato come **TEL-004**.
+
+Ne discendono due code che nessuno ha ancora preso: la sorte del Patton SmartNode 5551, che era il gateway SIP verso la linea e la cui presenza in servizio dopo lo smantellamento non e' dichiarata, e lo smaltimento degli apparecchi rimossi, che ricade sul gap RAEE gia' aperto al #109.
 
 ### Terminali VoIP installati
 
 **Distribuzione corretta il 03/08/2026 sulla tabella MAC di entrambi gli switch, a 54HP rientrato nel piano di gestione.** La versione precedente di questa sezione collocava tre apparecchi al Piano Terra e due al Piano 2, e trattava l'etichetta della porta 3 del 54HP come probabile errore. La misura dice il contrario: cinque apparecchi con prefisso MAC Yealink appresi sulla VLAN 2, **tre sul Piano 2 e due sul Piano Terra**. Chiude M10 e i gap #67/#99.
 
-| Porta | Switch | Piano |
-|---|---|---|
-| 3 | XGS2220-54HP | Piano 2 |
-| 5 | XGS2220-54HP | Piano 2 |
-| 44 | XGS2220-54HP | Piano 2 |
-| 13 | XGS2220-30HP | Piano Terra |
-| 23 | XGS2220-30HP | Piano Terra |
+**Modelli, prese a parete e ubicazioni aggiunti il 06/08/2026** dalla scheda restituita compilata dall'IT Manager. Chiude il `[TBC: modello esatto per porta]` che questa sezione portava dal 03/08.
 
-Corroborazione indipendente: il piano di numerazione conta esattamente cinque interni di tipo IP e IP+, compresa la sala riunioni. L'associazione fra porta, interno e persona vive in `_notes/.anonymization-map.md`, non qui.
+| Porta | Switch | Modello | Presa a parete | Ubicazione dell'apparecchio |
+|---|---|---|---|---|
+| 3 | XGS2220-54HP | Yealink SIP-T34W | 1.1.2 | Piano 1, amministrazione |
+| 5 | XGS2220-54HP | Yealink SIP-T31G | 1.2.1 | Piano 1, amministrazione |
+| 44 | XGS2220-54HP | Yealink SIP-T31G | 2.3.7 | Sala-1 |
+| 13 | XGS2220-30HP | Yealink SIP-T31G | 0.3.1 | ufficio centrale del Piano Terra |
+| 23 | XGS2220-30HP | Yealink SIP-T34W | 0.5.3 | reception |
+
+Va letta con attenzione la distinzione fra le due colonne di ubicazione, perche' e' la fonte di meta' delle confusioni passate su questi cinque apparecchi: lo switch dice a quale armadio l'apparecchio e' attestato, la presa dice in che stanza si trova. I tre apparecchi sul 54HP, che e' lo switch del Piano 2, stanno fisicamente due al Piano 1 e uno in Sala-1.
+
+Corroborazione indipendente: il piano di numerazione conta esattamente cinque interni di tipo IP e IP+, compresa la sala riunioni. L'associazione fra porta, interno e persona vive in `_notes/.anonymization-map.md` e in `_notes/livello-fisico-ed-elettrico.md`, non qui: i numeri di interno sono fra i dati che `.claude/rules/anonymization.md` esclude dai file tracciati.
+
+**La contraddizione anagrafica NET-007 si chiude, e nel senso opposto a quello ipotizzato.** Il progetto portava dal 09/06/2026 uno screenshot che etichettava la porta 3 del 54HP come "SIP-T34W Persona-A" contro un rilievo del 29/05 che collocava i tre T34W al Piano Terra, e aveva concluso che l'etichetta fosse probabilmente sbagliata. La misura dice il contrario: sulla porta 3 c'e' davvero un T34W ed e' davvero quello di Persona-A, quindi l'etichetta era corretta e il rilievo di maggio sbagliato. Sbagliato anche nel conteggio, perche' i T34W sono **due** e i T31G **tre**, non tre e due. E' la seconda smentita dello stesso rilievo dopo quella del 03/08 sulla distribuzione fra i piani, e la lezione e' quella gia' registrata nel protocollo delle fonti: un rilievo e' una fotografia datata, non uno stato. Chiude i gap #67/#99 con esito rovesciato.
 
 **Stato dichiarato dall'utente il 03/08/2026, e corroborato dalla misura.** Tutti e cinque gli apparecchi sono collegati alla rete e **ciascuno sta su una porta che prende correttamente la VLAN della fonia**: il lavoro e' stato completato in sessioni di lavoro precedenti a questa. La misura indipendente dello stesso giorno concorda, perche' i cinque indirizzi compaiono nella tabella MAC dei due switch tutti e cinque sulla VLAN 2 e non sulla VLAN dati.
 
 Ne segue che la parte di rete di TEL-002 non riguarda piu' due apparecchi con la fonia mancante: e' chiusa su tutti e cinque. La documentazione precedente descriveva i due del Piano Terra come "parte di rete risolta ma nessun lease DHCP" sulla base dello stato del 23/07, ed e' quella descrizione a essere superata. Vedi la nota di chiusura in `runbook-anomalie.md` §TEL-002 per il residuo da confermare, che riguarda la registrazione verso il centralino e non la rete.
 
-[TBC: modello esatto per porta. Il rilievo di maggio 2026 attribuiva i T34W al Piano Terra e i T31G al Piano 2, ma quell'attribuzione poggiava sulla distribuzione ora smentita, quindi va riletta dal display degli apparecchi e non dedotta.]
+Resta aperta la sola verifica che gli apparecchi si registrino e chiamino, che si legge dal display e non da una tabella MAC: vedi `runbook-anomalie.md` §TEL-002.
 
 ---
 
@@ -160,6 +174,8 @@ I cinque interni di tipo IP e IP+ coincidono con i cinque Yealink censiti in que
 
 Registrato come gap **TEL-003**, ed e' la ragione per cui il micro-step M17 passa da "rispondere sul testo IVR" a un vero piano di migrazione dei terminali.
 
+**Aggiornamento del 06/08/2026, che cambia il verso del problema.** I ventisette apparecchi digitali non sono piu' da migrare: sono stati rimossi insieme al centralino il 31/07/2026, come descritto in apertura di questa scheda. La domanda non e' piu' con che cosa sostituirli in una migrazione ordinata, ma che cosa usino oggi quelle persone nell'intervallo fra la rimozione e l'attivazione del centralino cloud, che non e' attiva. TEL-003 resta aperto perche' la decisione per persona non e' stata presa e la quantita' del contratto e' ancora in bianco; accanto nasce **TEL-004** per l'intervallo scoperto.
+
 ### Il contratto del centralino virtuale: firmato, con la quantita' lasciata in bianco
 
 Fonte: `_Preventivi\prev Intrawelt_UCC_26.02.26_signed.pdf`, offerta myOffice del 26/02/2026 per il servizio Vianova Unified Communication & Collaboration, **firmata digitalmente dal rappresentante legale il 23/03/2026**. Il fatto che il contratto del centralino cloud sia accettato da marzo non era tracciato in nessun file di questo progetto.
@@ -182,15 +198,19 @@ myOffice ha consegnato un **Grandstream HT-812 v2**, ATA[^ata] con due porte FXS
 
 **Attribuzione all'ascensore: confermata il 03/08/2026, non piu' un'inferenza.** L'offerta corrispondente (`_Preventivi\prev Intrawelt_apparato aggiuntivo_signed.pdf`, codice 052-AL-R0 del 26/03/2026, lo stesso riferimento riportato sul documento di trasporto) e' intitolata esplicitamente "Offerta adattatore telefonico analogico per ascensore" ed e' **firmata digitalmente dal rappresentante legale il 26/03/2026**. Il piano di numerazione corrobora in modo indipendente: l'interno **124 e' ASCENSORE, di tipo analogico**. L'ipotesi dedotta dal nome della cartella diventa quindi un fatto documentato da due fonti.
 
-**Discrepanza fra ordinato e consegnato, da risolvere guardando l'etichetta dell'apparato.** L'offerta firmata a marzo e' per un **Grandstream HT802 v2**: due porte FXS e **una** porta Ethernet a 10/100 Mbps, nessuna funzione di router. Il documento di trasporto di luglio, con lo stesso riferimento di offerta, descrive invece un **HT-812 v2**, due porte FXS con **router NAT Gigabit**, che e' il modello superiore. Le due cose non sono equivalenti per chi deve collegarlo: l'HT802 ha una sola porta e si comporta da endpoint, l'HT812 ha una coppia WAN/LAN e per impostazione predefinita fa NAT e distribuisce indirizzi, quindi va esplicitamente messo in modalita' bridge o collegato solo sulla porta corretta. Prima di configurare va letta l'etichetta dell'apparato fisico: se e' un HT812, la funzione di router va disattivata, perche' un secondo NAT interno e' causa classica di audio unidirezionale e di registrazioni che cadono, e su una LAN piatta un apparato che distribuisce indirizzi per conto proprio e' anche un rischio di conflitto DHCP.
+**Discrepanza fra ordinato e consegnato: sciolta il 06/08/2026 leggendo l'etichetta.** L'offerta firmata a marzo era per un **Grandstream HT802 v2**, due porte FXS e una sola porta Ethernet a 10/100 Mbps, nessuna funzione di router. Il documento di trasporto di luglio, con lo stesso riferimento di offerta, descriveva invece un **HT-812 v2**, due porte FXS con router NAT Gigabit. L'etichetta dell'apparato fisico, letta dall'IT Manager, dice **HT812 V2**: e' stato consegnato il modello superiore. Ne segue la conseguenza operativa che il progetto aveva anticipato in forma condizionale e che ora e' un requisito: l'apparato ha una coppia WAN/LAN e per impostazione predefinita fa NAT e distribuisce indirizzi, quindi la funzione di router va disattivata, perche' un secondo NAT interno e' causa classica di audio unidirezionale e di registrazioni che cadono, e su una LAN piatta un apparato che distribuisce indirizzi per conto proprio e' anche un rischio di conflitto DHCP.
 
-**Capacita': due porte FXS contro tre apparecchi analogici in servizio.** Il piano di numerazione registra quattro interni analogici, di cui uno non connesso e tre in uso: citofono, fax e ascensore. L'offerta copre dichiaratamente il solo ascensore, e con due porte FXS l'apparato ne serve al massimo due. Restano quindi da decidere il citofono, che l'offerta del centralino virtuale conta esplicitamente come un interno a se', e il fax, che e' il caso piu' delicato perche' il fax su rete IP richiede un trasporto dedicato e non funziona in modo affidabile come una normale chiamata vocale: va deciso se dismetterlo, se sostituirlo con un servizio di fax elettronico, o se richiede un apparato proprio. Nessuna delle tre e' scritta da nessuna parte oggi.
+Numero di serie, MAC e credenziale di amministrazione stampata sull'etichetta stanno in `_notes/livello-fisico-ed-elettrico.md` e non qui. Sulla credenziale va detta una cosa che riguarda la sicurezza e non la fonia: sugli HT8xx v2 la password di amministrazione e' randomizzata per dispositivo, quindi non e' una password di fabbrica nota, ma ora esiste in chiaro in piu' copie fuori dal password manager. Va portata sulla VM202 e cambiata alla configurazione, coerentemente con SEC-007, SEC-010 e SEC-011.
 
-Tre questioni di rete da chiarire prima dell'installazione, tutte aperte:
+**Capacita': due porte FXS contro tre apparecchi analogici, ma il quadro e' cambiato.** Il piano di numerazione registrava quattro interni analogici, di cui uno non connesso e tre in uso: citofono, fax e ascensore. L'aggiornamento dell'IT Manager del 06/08/2026 li riduce a uno solo che richieda una porta FXS. Il **fax e' dismesso**, quindi la questione piu' delicata, cioe' il trasporto del fax su rete IP, decade insieme all'apparecchio. Il **citofono non passa dall'adattatore**: e' connesso alla Wi-Fi staff con la propria scheda di rete, quindi e' un endpoint IP e non un terminale analogico, anche se l'offerta del centralino virtuale continua a contarlo come un interno ai fini del canone. Resta l'**ascensore**, che e' esattamente cio' che l'offerta copriva. Con due porte FXS l'apparato e' quindi sovradimensionato rispetto al bisogno attuale, il che e' un problema che non esiste.
 
-Dove si attesta l'apparato, se sulla LAN telefonica Vianova della porta 8 del 54HP come gli altri terminali voce oppure altrove. Se la funzione di router NAT vada disabilitata, perche' un secondo NAT interno e' causa classica di audio unidirezionale e registrazioni che cadono, e su una LAN piatta un apparato che fa NAT e distribuisce indirizzi per conto proprio e' anche un rischio di conflitto DHCP. E come si alimenta e dove si colloca fisicamente rispetto al vano ascensore, che e' lo stesso tratto a cui era stato inizialmente attribuito il sintomo di TEL-002.
+Sul citofono va segnalata una contraddizione aperta invece di essere risolta a tavolino: `docs/mappatura-porte-fisiche.md` lo colloca sulla classe `10.61.90.x` sulla base del referto della vulnerability assessment di novembre 2025, mentre la dichiarazione di oggi lo mette sulla VLAN 40 della Wi-Fi staff. Le due cose non possono essere entrambe vere adesso, e la spiegazione piu' probabile e' che l'indirizzo della VA sia superato da un cambio successivo, ma va letta sull'apparato. Registrata nell'elenco di rilievo di `docs/livello-fisico-ed-elettrico.md` §Cosa resta da rilevare.
 
-Va inoltre chiarito il rapporto con il **Patton SmartNode 5551**, che e' l'attuale gateway con porte FXS e FXO: se l'HT-812 ne assorbe una funzione, se lo sostituisce, o se il Patton resta in servizio durante la transizione. E' la voce che il piano di migrazione elenca come ancora non formalizzata.
+**L'apparato non e' in attesa di installazione: e' installato.** Le tre questioni di rete che questa sezione elencava come "da chiarire prima dell'installazione" sono superate dai fatti, e due delle tre hanno una risposta. L'adattatore e' attestato sulla **porta 6 del XGS2220-54HP**, cioe' proprio sulla LAN telefonica del fornitore, con `PVID 2`, e la sua uscita raggiunge la **presa 2.8.1** che serve l'ascensore. La corroborazione e' indipendente dalla dichiarazione: il MAC appreso su quella porta e' l'indirizzo immediatamente successivo a quello stampato sull'etichetta dell'apparato, che e' il comportamento normale di un dispositivo con due interfacce. Quello che nella documentazione compariva dal 17/07 come "dispositivo voce Grandstream di Vianova sulla porta 6" e' dunque questo adattatore, e non un apparato del fornitore.
+
+Restano aperte la disattivazione del NAT interno, che ora e' un requisito accertato e non piu' condizionale, e l'alimentazione: l'HT812 vuole 12V in continua da alimentatore esterno, non e' PoE, e da dove la prenda nella posizione in cui e' montato non e' documentato. La porta 6 e' inoltre una delle cinque porte di fonia di NET-019 che accettano qualunque VLAN taggata, quindi rientra in R19.
+
+Il rapporto con il **Patton SmartNode 5551** resta la voce non formalizzata del piano di migrazione, e dal 31/07/2026 e' piu' urgente: con il Panasonic smantellato, un gateway che esisteva per interfacciare quel centralino alla linea non ha piu' un centralino dietro. Se sia ancora in servizio, e per fare che cosa, e' una domanda da porre.
 
 [^ata]: *ATA*, Analog Telephone Adapter - apparato che collega un telefono analogico a una rete VoIP, presentando al telefono una porta telefonica tradizionale e parlando SIP verso la rete.
 
