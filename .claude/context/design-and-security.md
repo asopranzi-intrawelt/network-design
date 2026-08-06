@@ -1,5 +1,5 @@
 ---
-last-verified: 32e5993
+last-verified: 4782336
 ---
 
 # Design e sicurezza della rete — angolo ISO27001

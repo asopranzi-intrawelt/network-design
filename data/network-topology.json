@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "titolo": "Topologia di rete Intrawelt",
+    "aggiornato": "2026-08-06",
+    "revisione": 1,
+    "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
+    "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
+    "fonti": [
+      "STATO RETE INTRAWELT.docx, IT Manager, 06/08/2026 (catena fisica, porte, alimentazione)",
+      "Snapshot Nebula del 06/08/2026 (PVID, VLAN ammesse, velocita', tabelle MAC)",
+      "startup-config.conf del 03/08/2026, non versionato (interfacce e zone del firewall)",
+      "Scheda telefoni restituita compilata dall'IT Manager, 06/08/2026",
+      "Risposte dell'IT Manager del 06/08/2026 (alimentazione, softphone, apparati smantellati)"
+    ]
+  },
+
+  "vlan": [
+    { "id": 1,  "nome": "Nativa dati",   "descrizione": "LAN piatta /19: postazioni, server, stampanti sono alias di indirizzo, non VLAN", "colore": "#5b7c99" },
+    { "id": 2,  "nome": "Fonia",         "descrizione": "LAN telefonica del fornitore, DHCP e gateway suoi, non passa dal firewall", "colore": "#c08a3e" },
+    { "id": 40, "nome": "Wi-Fi staff",   "descrizione": "Accesso pieno alla LAN per scelta deliberata (ADR-014)", "colore": "#4f8a6d" },
+    { "id": 90, "nome": "Wi-Fi ospiti",  "descrizione": "Interfaccia general sul firewall, SNAT esplicito, sola uscita Internet", "colore": "#8a5f8f" },
+    { "id": 30, "nome": "Stampanti (progetto)", "descrizione": "Non esiste ancora: e' il primo segmento di M22b", "colore": "#9a9a9a", "stato": "progetto" }
+  ],
+
+  "livelli": [
+    { "id": "internet",     "nome": "Internet e accesso" },
+    { "id": "fornitore",    "nome": "Apparati del fornitore" },
+    { "id": "perimetro",    "nome": "Perimetro" },
+    { "id": "core",         "nome": "Commutazione" },
+    { "id": "distribuzione","nome": "Distribuzione e rami" },
+    { "id": "utenze",       "nome": "Utenze" }
+  ],
+
+  "contenitori": [
+    { "id": "rack-sx", "nome": "Armadio sinistro", "sito": "CED Piano 2", "descrizione": "Tutto cio' che sta fra Internet e la LAN, piu' i due apparati di commutazione principali. Se si spegne, si spegne tutto." },
+    { "id": "rack-dx", "nome": "Armadio destro",  "sito": "CED Piano 2", "descrizione": "Storage e calcolo." },
+    { "id": "pt",      "nome": "Piano Terra",     "sito": "Piano Terra", "descrizione": "Distribuzione del piano. Nessun gruppo di continuita': vedi ELE-004." },
+    { "id": "esterno", "nome": "Esterno e tetto", "sito": "Copertura e locale caldaia", "descrizione": "Tratta cablata verso l'esterno e antenna sul tetto." },
+    { "id": "edificio","nome": "Edificio",        "sito": "Piani 1 e 2", "descrizione": "Apparati distribuiti nei piani." }
+  ],
+
+  "nodi": [
+    { "id": "internet", "nome": "Internet", "tipo": "cloud", "livello": "internet", "contenitore": null,
+      "note": "Tre percorsi indipendenti, il cui failover avviene dentro gli apparati del fornitore e non e' visibile al firewall." },
+
+    { "id": "fibra", "nome": "Fibra", "tipo": "linea", "livello": "internet", "contenitore": null, "note": "Servizio primario." },
+    { "id": "vdsl", "nome": "Linea VDSL", "tipo": "linea", "livello": "internet", "contenitore": null, "note": "Secondo backup, attestata sulla porta xDSL del router 2." },
+    { "id": "antenna", "nome": "Antenna sul tetto", "tipo": "radio", "livello": "internet", "contenitore": "esterno",
+      "note": "Primo backup. Termina a monte del firewall, sulla ETH10 del MikroTik: non e' un ramo della LAN.", "alimentazione": null },
+
+    { "id": "iniettore", "nome": "Iniettore PoE dell'antenna", "tipo": "alimentatore", "livello": "internet", "contenitore": "edificio",
+      "note": "Sotto gruppo di continuita', confermato il 04/08/2026. Il gruppo che lo alimenta e' quello di Sala-1, di modello ignoto.",
+      "alimentazione": "ups-sala1", "gap": ["NET-018"] },
+
+    { "id": "aconnic", "nome": "Aconnic Acceed 2102", "tipo": "terminazione", "livello": "fornitore", "contenitore": "rack-sx",
+      "note": "Apparato di terminazione della fibra. Censito per la prima volta il 06/08/2026.", "alimentazione": "ciabatta-3-sx" },
+
+    { "id": "mikrotik", "nome": "MikroTik RB2011UiAS-RM", "tipo": "router", "livello": "fornitore", "contenitore": "rack-sx",
+      "note": "Riceve l'antenna sulla ETH10 e alimenta l'iniettore in PoE. Proprieta', amministratore e credenziali non noti: R17.",
+      "alimentazione": "ciabatta-2-sx", "gap": ["NET-018"] },
+
+    { "id": "r1000-1", "nome": "Vianova R-1000 (principale)", "tipo": "router", "livello": "fornitore", "contenitore": "rack-sx",
+      "note": "La WAN entra qui. Unico apparato del tratto WAN alimentato dal Back-UPS ES 400.", "alimentazione": "backups" },
+
+    { "id": "r1000-2", "nome": "Vianova R-1000 (backup)", "tipo": "router", "livello": "fornitore", "contenitore": "rack-sx",
+      "note": "Porta la linea VDSL sulla propria porta xDSL.", "alimentazione": "ciabatta-3-sx" },
+
+    { "id": "s1000", "nome": "Vianova S-1000", "tipo": "switch-fornitore", "livello": "fornitore", "contenitore": "rack-sx",
+      "note": "Sdoppia dati e voce: la porta 4 ai dati verso il firewall, la porta 1 alla fonia verso il 54HP. E' qui che le due reti si separano, non nel firewall.",
+      "alimentazione": "ciabatta-2-sx" },
+
+    { "id": "firewall", "nome": "Zyxel USG FLEX 500", "tipo": "firewall", "livello": "perimetro", "contenitore": "rack-sx",
+      "note": "WAN sulla P2, LAN1 sulla P5. Quattordici interfacce di cui alcune residue (FW-013). Alimentato in fondo a tre ciabatte in cascata.",
+      "alimentazione": "ciabatta-1-sx", "gap": ["ELE-002", "FW-013"] },
+
+    { "id": "sw54", "nome": "Zyxel XGS2220-54HP", "tipo": "switch", "livello": "core", "contenitore": "rack-sx",
+      "note": "Core del Piano 2, L3, 48 porte PoE++ e 6 SFP+. Tutto il traffico verso il firewall passa da una sola porta a 1 Gbps in rame, la 33.",
+      "alimentazione": "smartups" },
+
+    { "id": "swqnap", "nome": "QNAP QSW-1208-8c", "tipo": "switch-non-gestito", "livello": "core", "contenitore": "rack-sx",
+      "note": "Ramo storage e postazioni a 10 Gbps. Non gestito: su questo tratto non esiste alcun controllo di livello 2 e non potra' partecipare al tagging di M22.",
+      "alimentazione": "smartups" },
+
+    { "id": "sw30", "nome": "Zyxel XGS2220-30HP", "tipo": "switch", "livello": "core", "contenitore": "pt",
+      "note": "Distribuzione del Piano Terra, L3, 24 porte PoE+ con budget 400 W. Non risulta sotto nessun gruppo di continuita'.",
+      "alimentazione": null, "gap": ["ELE-004"] },
+
+    { "id": "srv-gen10", "nome": "Server HP ProLiant Gen10", "tipo": "server", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "Nodo Proxmox, dieci macchine virtuali. Quattro interfacce: eth2, eth3 ed eth4 sul 54HP, eth1 sul QNAP. Alimentatore unico.",
+      "alimentazione": "ciabatta-2-dx", "gap": ["ELE-003"] },
+
+    { "id": "ilo", "nome": "iLO del server", "tipo": "gestione", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "Gestione fuori banda su una classe mai descritta come segmento: e' l'adiacenza che la segmentazione dovrebbe eliminare per prima.",
+      "alimentazione": "ciabatta-2-dx" },
+
+    { "id": "pc-backup", "nome": "PC di backup Proxmox", "tipo": "server", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "Ex postazione, tenuto come via di rientro se cade il nodo. Alimentato dal Naicon.", "alimentazione": "ciabatta-1-dx" },
+
+    { "id": "nas-hero", "nome": "NAS-HERO", "tipo": "storage", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "QNAP ts-h1677xv-rp, storage Proxmox e destinazione di backup. Due alimentatori, entrambi sotto lo stesso gruppo.",
+      "alimentazione": "ciabatta-1-dx", "alimentazione-2": "ciabatta-2-dx", "gap": ["ELE-003"] },
+
+    { "id": "nas-intra", "nome": "NAS-INTRA", "tipo": "storage", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "Due schede di rete sulle porte 2 e 4 dello stesso switch: ridondanza di scheda, non di apparato. Share Backup e dump delle VM.",
+      "alimentazione": "ciabatta-2-dx" },
+
+    { "id": "nas-intra2", "nome": "NAS-INTRA2", "tipo": "storage", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "QNAP ts-435XeU. Destinazione delle scansioni dopo R8, sette condivisioni nascoste con un solo account di servizio.",
+      "alimentazione": "ciabatta-2-dx" },
+
+    { "id": "nas-intra3", "nome": "NAS-INTRA3", "tipo": "storage", "livello": "distribuzione", "contenitore": "rack-dx",
+      "note": "Funzione non documentata, modello ignoto, alimentazione non descritta in nessuna delle due tabelle elettriche.",
+      "alimentazione": null },
+
+    { "id": "ollama", "nome": "Host Ollama (IntraLino)", "tipo": "server", "livello": "distribuzione", "contenitore": "edificio",
+      "note": "Sulla porta 46 del 54HP. Migliaia di link flap, uno ogni 14-16 secondi, ciascuno con ricalcolo STP: causa non isolata.",
+      "alimentazione": null, "gap": ["NET-010"] },
+
+    { "id": "consegna-fonia", "nome": "Consegna fonia del fornitore", "tipo": "fornitore", "livello": "distribuzione", "contenitore": "rack-sx",
+      "note": "Untagged sulla porta 8. Tre indirizzi appresi, di cui uno virtuale VRRP: sono i router del fornitore in ridondanza.",
+      "alimentazione": null, "gap": ["NET-019"] },
+
+    { "id": "ht812", "nome": "Grandstream HT812 v2", "tipo": "voce", "livello": "distribuzione", "contenitore": "rack-sx",
+      "note": "Adattatore analogico dell'ascensore, gia' installato e collegato. Ha un NAT interno da disattivare, e non e' piu' una precauzione condizionale da quando l'etichetta ha confermato il modello. Si alimenta a 12V in continua e non in PoE: nel documento dell'IT Manager e' fra i due carichi del Back-UPS ES 400, quindi la sua corrente e' nota ed e' protetta.",
+      "alimentazione": "backups", "gap": ["NET-019"] },
+
+    { "id": "ascensore", "nome": "Telefono dell'ascensore", "tipo": "telefono", "livello": "utenze", "contenitore": "edificio",
+      "note": "Apparecchio analogico sulla presa a parete 2.8.1, servito dalla porta FXS dell'adattatore. E' un obbligo di sicurezza, non un interno come gli altri.",
+      "alimentazione": null },
+
+    { "id": "ap-pt", "nome": "Access point Piano Terra", "tipo": "ap", "livello": "distribuzione", "contenitore": "pt",
+      "note": "Zyxel NWA130BE, Wi-Fi 7. Multi-SSID staff e ospiti sullo stesso apparato.", "alimentazione": "poe-sw30" },
+    { "id": "ap-p1", "nome": "Access point Piano 1", "tipo": "ap", "livello": "distribuzione", "contenitore": "edificio",
+      "note": "Zyxel NWA130BE, presa 1-8-1.", "alimentazione": "poe-sw54" },
+    { "id": "ap-p2", "nome": "Access point Piano 2", "tipo": "ap", "livello": "distribuzione", "contenitore": "edificio",
+      "note": "Zyxel NWA130BE. Collocazione fra CED ed esterno tetto ancora ambigua nel rilievo.", "alimentazione": "poe-sw54" },
+
+    { "id": "suprema", "nome": "Terminale presenze Suprema", "tipo": "iot", "livello": "utenze", "contenitore": "pt",
+      "note": "Unita' master della rilevazione presenze, presa 0-10-1, RS485 verso il lettore esterno. Tratta dati personali, e la sua unita' esterna e' fisicamente accessibile fuori dal perimetro.",
+      "alimentazione": "poe-sw30", "gap": ["NET-021", "NET-020"] },
+
+    { "id": "gs105b", "nome": "Zyxel GS-105B v5", "tipo": "switch-non-gestito", "livello": "distribuzione", "contenitore": "esterno",
+      "note": "Cinque porte, non gestito, non PoE. Interposto dagli elettricisti durante il montaggio del fotovoltaico, mai censito dall'IT. Taglia il PoE che la porta 4 erogava.",
+      "alimentazione": null, "gap": ["NET-017", "NET-020"] },
+
+    { "id": "irrigazione", "nome": "Centrale di irrigazione", "tipo": "ot", "livello": "utenze", "contenitore": "esterno",
+      "note": "Cablata con cavo di categoria 6, non servita via radio. Il collaudo di questo ramo e' un ciclo di irrigazione reale, non un ping.",
+      "alimentazione": null, "gap": ["NET-020"] },
+
+    { "id": "inverter", "nome": "Inverter del fotovoltaico", "tipo": "ot", "livello": "utenze", "contenitore": "esterno",
+      "note": "Asset di rete mai censito: marca, modello, indirizzo e porte esposte da rilevare (R18). Un inverter moderno tipicamente contatta il cloud del produttore.",
+      "alimentazione": null, "gap": ["NET-020"] },
+
+    { "id": "ap-eol", "nome": "Access point fuori supporto", "tipo": "ap-eol", "livello": "utenze", "contenitore": "esterno",
+      "note": "Generazione 2011-2013, Debian 7, fuori supporto dal 2018, credenziali perdute. A cosa serva oggi e' la domanda che decide se sostituirlo o rimuoverlo.",
+      "alimentazione": null, "gap": ["SEC-018", "NET-020"] },
+
+    { "id": "tel-1", "nome": "Telefono IP, amministrazione Piano 1", "tipo": "telefono", "livello": "utenze", "contenitore": "edificio",
+      "note": "Yealink SIP-T34W, presa 1.1.2. Porta 3 del 54HP: PVID 2 ma accetta qualunque VLAN taggata.", "alimentazione": "poe-sw54", "gap": ["NET-019"] },
+    { "id": "tel-2", "nome": "Telefono IP, amministrazione Piano 1", "tipo": "telefono", "livello": "utenze", "contenitore": "edificio",
+      "note": "Yealink SIP-T31G, presa 1.2.1. Porta 5 del 54HP: e' una delle due configurate correttamente, ammette la sola VLAN 2.", "alimentazione": "poe-sw54" },
+    { "id": "tel-3", "nome": "Telefono IP, Sala-1", "tipo": "telefono", "livello": "utenze", "contenitore": "edificio",
+      "note": "Yealink SIP-T31G, presa 2.3.7.", "alimentazione": "poe-sw54", "gap": ["NET-019"] },
+    { "id": "tel-4", "nome": "Telefono IP, ufficio centrale Piano Terra", "tipo": "telefono", "livello": "utenze", "contenitore": "pt",
+      "note": "Yealink SIP-T31G, presa 0.3.1.", "alimentazione": "poe-sw30", "gap": ["NET-019"] },
+    { "id": "tel-5", "nome": "Telefono IP, reception", "tipo": "telefono", "livello": "utenze", "contenitore": "pt",
+      "note": "Yealink SIP-T34W, presa 0.5.3. Porta 23 del 30HP: e' la configurazione di riferimento, ammette la sola VLAN 2.", "alimentazione": "poe-sw30" },
+
+    { "id": "postazioni-10g", "nome": "Sei postazioni a 10 Gbps", "tipo": "gruppo", "livello": "utenze", "contenitore": "edificio",
+      "note": "Prese 1.6.8, 1.5.3, 1.5.2, 1.5.9, 1.5.12 e 1.3.3 sul ramo QNAP. Fuori perimetro di questa revisione: qui compaiono come gruppo.",
+      "alimentazione": null },
+
+    { "id": "postazioni-lan", "nome": "Postazioni cablate e multifunzione", "tipo": "gruppo", "livello": "utenze", "contenitore": "edificio",
+      "note": "Circa quaranta postazioni e due multifunzione distribuite sui due switch. Fuori perimetro di questa revisione per scelta.",
+      "alimentazione": null },
+
+    { "id": "softphone", "nome": "Softphone Vianova One", "tipo": "gruppo-voce", "livello": "utenze", "contenitore": "edificio",
+      "note": "Ventisette utenze telefoniche che dal 31/07/2026 vivono come applicazione sugli endpoint Windows. La loro voce nasce sulla LAN dati, non sulla VLAN 2, e attraversa il firewall senza marcatura di qualita'.",
+      "alimentazione": null, "gap": ["TEL-005"] },
+
+    { "id": "wifi-staff", "nome": "Rete Wi-Fi staff", "tipo": "rete-radio", "livello": "utenze", "contenitore": "edificio",
+      "note": "VLAN 40, accesso pieno alla LAN per scelta deliberata. Riceve due resolver pubblici, quindi non risolve i nomi interni.",
+      "alimentazione": null, "gap": ["NET-005"] },
+    { "id": "wifi-guest", "nome": "Rete Wi-Fi ospiti", "tipo": "rete-radio", "livello": "utenze", "contenitore": "edificio",
+      "note": "VLAN 90, interfaccia general sul firewall con SNAT esplicito e sola uscita Internet.",
+      "alimentazione": null }
+  ],
+
+  "collegamenti": [
+    { "da": "internet", "a": "fibra", "mezzo": "logico", "note": "Servizio primario" },
+    { "da": "internet", "a": "vdsl", "mezzo": "logico", "note": "Secondo backup" },
+    { "da": "internet", "a": "antenna", "mezzo": "radio", "note": "Primo backup" },
+
+    { "da": "antenna", "a": "iniettore", "mezzo": "rame", "note": "Discesa dal tetto" },
+    { "da": "iniettore", "a": "mikrotik", "mezzo": "rame", "porta-b": "ETH10", "note": "L'iniettore prende PoE dalla ETH1 e porta il segnale radio sulla ETH10" },
+    { "da": "fibra", "a": "aconnic", "mezzo": "fibra", "note": "Terminazione" },
+    { "da": "aconnic", "a": "r1000-1", "mezzo": "rame", "note": "Uscita Ethernet verso la WAN" },
+    { "da": "r1000-1", "a": "mikrotik", "mezzo": "rame", "porta-a": "P1", "porta-b": "ETH1", "note": "Alimenta il MikroTik in PoE" },
+    { "da": "r1000-1", "a": "r1000-2", "mezzo": "rame", "porta-a": "P2", "porta-b": "P1" },
+    { "da": "vdsl", "a": "r1000-2", "mezzo": "rame", "porta-b": "xDSL", "note": "RJ11" },
+    { "da": "r1000-1", "a": "s1000", "mezzo": "rame", "porta-a": "P2", "porta-b": "P7" },
+    { "da": "r1000-1", "a": "s1000", "mezzo": "rame", "porta-a": "P2", "porta-b": "P8", "note": "Porta la WAN" },
+
+    { "da": "s1000", "a": "firewall", "mezzo": "rame", "porta-a": "P4", "porta-b": "P2 (WAN1)", "note": "Ramo dati" },
+    { "da": "s1000", "a": "sw54", "mezzo": "rame", "porta-a": "P1", "porta-b": "8", "vlan": [2], "note": "Ramo voce, consegna untagged alla VLAN della fonia" },
+
+    { "da": "firewall", "a": "sw54", "mezzo": "rame", "porta-a": "P5 (LAN1)", "porta-b": "33", "velocita": "1 Gbps", "vlan": [1, 40, 90],
+      "criticita": "Collo di bottiglia dell'uscita WAN e del routing centrale: tutta la rete passa da qui a 1 Gbps mentre la dorsale interna va a 10." },
+
+    { "da": "sw54", "a": "sw30", "mezzo": "fibra", "porta-a": "51", "porta-b": "29", "velocita": "10 Gbps", "vlan": [1, 2, 40, 90], "note": "Dorsale fra i piani" },
+    { "da": "sw54", "a": "swqnap", "mezzo": "fibra", "porta-a": "52", "porta-b": "P4", "velocita": "10 Gbps", "note": "Ramo storage" },
+
+    { "da": "sw54", "a": "nas-intra", "mezzo": "rame", "porta-a": "2", "note": "Prima scheda di rete" },
+    { "da": "sw54", "a": "nas-intra", "mezzo": "rame", "porta-a": "4", "note": "Seconda scheda di rete" },
+    { "da": "sw54", "a": "nas-intra3", "mezzo": "rame", "porta-a": "38" },
+    { "da": "sw54", "a": "srv-gen10", "mezzo": "rame", "porta-a": "7", "porta-b": "eth2" },
+    { "da": "sw54", "a": "srv-gen10", "mezzo": "rame", "porta-a": "9", "porta-b": "eth3" },
+    { "da": "sw54", "a": "srv-gen10", "mezzo": "rame", "porta-a": "11", "porta-b": "eth4" },
+    { "da": "sw54", "a": "ilo", "mezzo": "rame", "porta-a": "22" },
+    { "da": "sw54", "a": "pc-backup", "mezzo": "rame", "porta-a": "14" },
+    { "da": "sw54", "a": "ollama", "mezzo": "rame", "porta-a": "46", "criticita": "Migliaia di link flap con ricalcolo STP: NET-010." },
+    { "da": "sw54", "a": "consegna-fonia", "mezzo": "rame", "porta-a": "8", "vlan": [2] },
+    { "da": "sw54", "a": "ht812", "mezzo": "rame", "porta-a": "6", "vlan": [2] },
+    { "da": "ht812", "a": "ascensore", "mezzo": "FXS", "note": "Uscita verso la presa a parete 2.8.1" },
+    { "da": "sw54", "a": "ap-p1", "mezzo": "rame", "porta-a": "41", "vlan": [1, 40, 90], "note": "Trunk multi-SSID" },
+    { "da": "sw54", "a": "ap-p2", "mezzo": "rame", "porta-a": "45", "vlan": [1, 40, 90], "note": "Trunk multi-SSID" },
+    { "da": "sw54", "a": "tel-1", "mezzo": "rame", "porta-a": "3", "vlan": [2] },
+    { "da": "sw54", "a": "tel-2", "mezzo": "rame", "porta-a": "5", "vlan": [2] },
+    { "da": "sw54", "a": "tel-3", "mezzo": "rame", "porta-a": "44", "vlan": [2] },
+    { "da": "sw54", "a": "postazioni-lan", "mezzo": "rame", "note": "Porte non dettagliate in questa revisione" },
+
+    { "da": "swqnap", "a": "nas-hero", "mezzo": "fibra", "porta-a": "P1" },
+    { "da": "swqnap", "a": "nas-intra2", "mezzo": "fibra", "porta-a": "P3" },
+    { "da": "swqnap", "a": "srv-gen10", "mezzo": "rame", "porta-b": "eth1" },
+    { "da": "swqnap", "a": "postazioni-10g", "mezzo": "rame", "porta-a": "P5, P6, P7, P8, P10, P12" },
+
+    { "da": "sw30", "a": "ap-pt", "mezzo": "rame", "porta-a": "1", "vlan": [1, 40, 90], "note": "Trunk multi-SSID" },
+    { "da": "sw30", "a": "suprema", "mezzo": "rame", "porta-a": "3", "velocita": "100 Mbps", "criticita": "PVID 1 e allowedVLAN all: la porta accetta qualunque tag." },
+    { "da": "sw30", "a": "gs105b", "mezzo": "rame", "porta-a": "4", "velocita": "100 Mbps",
+      "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Il limite a 100 Mbps e' quasi certamente il cavo, non l'apparato. La porta accetta qualunque tag." },
+    { "da": "gs105b", "a": "irrigazione", "mezzo": "rame" },
+    { "da": "gs105b", "a": "inverter", "mezzo": "rame" },
+    { "da": "gs105b", "a": "ap-eol", "mezzo": "rame" },
+    { "da": "sw30", "a": "tel-4", "mezzo": "rame", "porta-a": "13", "vlan": [2] },
+    { "da": "sw30", "a": "tel-5", "mezzo": "rame", "porta-a": "23", "vlan": [2] },
+    { "da": "sw30", "a": "postazioni-lan", "mezzo": "rame", "note": "Porte non dettagliate in questa revisione" },
+
+    { "da": "ap-pt", "a": "wifi-staff", "mezzo": "radio", "vlan": [40] },
+    { "da": "ap-p1", "a": "wifi-staff", "mezzo": "radio", "vlan": [40] },
+    { "da": "ap-p2", "a": "wifi-staff", "mezzo": "radio", "vlan": [40] },
+    { "da": "ap-pt", "a": "wifi-guest", "mezzo": "radio", "vlan": [90] },
+    { "da": "ap-p1", "a": "wifi-guest", "mezzo": "radio", "vlan": [90] },
+    { "da": "ap-p2", "a": "wifi-guest", "mezzo": "radio", "vlan": [90] },
+    { "da": "postazioni-lan", "a": "softphone", "mezzo": "logico", "vlan": [1],
+      "criticita": "La voce dei ventisette softphone nasce qui, sulla LAN dati, e non sulla VLAN 2: TEL-005." }
+  ],
+
+  "alimentazione": [
+    { "id": "parete-sx", "nome": "Rete elettrica, armadio sinistro", "tipo": "parete", "alimentato-da": null,
+      "note": "Punto di consegna a parete." },
+    { "id": "ciabatta-4-sx", "nome": "Ciabatta 4 SX", "tipo": "ciabatta", "alimentato-da": "parete-sx",
+      "note": "Sorgente non protetta di ENTRAMBI i gruppi dell'armadio sinistro: e' il punto di guasto singolo che la ridondanza apparente fra i due non copre.",
+      "gap": ["ELE-002"] },
+
+    { "id": "smartups", "nome": "APC Smart-UPS SC 1500", "tipo": "ups", "alimentato-da": "ciabatta-4-sx",
+      "note": "Line interactive. Pacco batterie originale sostituito nel novembre 2024, quindi circa ventuno mesi di eta'. Nessuna scheda di rete: non manda allarmi.",
+      "gap": ["ELE-001"] },
+    { "id": "scatolina-sx", "nome": "Scatolina bianca SX", "tipo": "ciabatta", "alimentato-da": "smartups",
+      "note": "Ciabatta a due prese. Primo anello della cascata che arriva al firewall." },
+    { "id": "ciabatta-2-sx", "nome": "Ciabatta 2 SX", "tipo": "ciabatta", "alimentato-da": "scatolina-sx" },
+    { "id": "ciabatta-1-sx", "nome": "Ciabatta 1 SX", "tipo": "ciabatta", "alimentato-da": "ciabatta-2-sx",
+      "note": "Alimenta il firewall e nient'altro: la cascata sembra nata per dedicargli una presa, ma il risultato sono quattro connessioni in serie.",
+      "gap": ["ELE-002"] },
+    { "id": "ciabatta-3-sx", "nome": "Ciabatta 3 SX", "tipo": "ciabatta", "alimentato-da": "scatolina-sx" },
+    { "id": "backups", "nome": "APC Back-UPS ES 400", "tipo": "ups", "alimentato-da": "ciabatta-4-sx",
+      "note": "Line interactive, il piu' piccolo dei tre. Nessun documento di acquisto o manutenzione presso il fornitore abituale: eta' e stato delle batterie ignoti.",
+      "gap": ["ELE-001"] },
+
+    { "id": "parete-dx", "nome": "Rete elettrica, armadio destro", "tipo": "parete", "alimentato-da": null },
+    { "id": "scatolina-dx", "nome": "Scatolina bianca DX", "tipo": "ciabatta", "alimentato-da": "parete-dx" },
+    { "id": "naicon", "nome": "Naicon UPServer 4000 VA rack", "tipo": "ups", "alimentato-da": "scatolina-dx",
+      "note": "Online a doppia conversione, 4 kVA e 2,70 kW, sei batterie 12V 9Ah, installato nel febbraio 2025. Comunicazione USB e RS232 a targa: nessuna interfaccia di rete, quindi nessun allarme. E' l'unico dei tre con architettura online, ed e' sull'armadio meno sensibile alla micro-interruzione.",
+      "gap": ["ELE-001"] },
+    { "id": "ciabatta-1-dx", "nome": "Ciabatta 1 DX", "tipo": "ciabatta", "alimentato-da": "naicon" },
+    { "id": "ciabatta-2-dx", "nome": "Ciabatta 2 DX", "tipo": "ciabatta", "alimentato-da": "naicon" },
+
+    { "id": "ups-sala1", "nome": "Gruppo di continuita' di Sala-1", "tipo": "ups", "alimentato-da": null,
+      "note": "Alimenta l'iniettore PoE dell'antenna. Modello, fornitore ed eta' ignoti: cercato il 06/08/2026 in tutti i documenti del fornitore abituale dal 2024 e nella libreria amministrativa, nessuna traccia.",
+      "gap": ["ELE-001"] },
+
+    { "id": "poe-sw54", "nome": "PoE dal XGS2220-54HP", "tipo": "poe", "alimentato-da": "smartups",
+      "note": "Gli apparati alimentati in PoE ereditano la continuita' del proprio switch." },
+    { "id": "poe-sw30", "nome": "PoE dal XGS2220-30HP", "tipo": "poe", "alimentato-da": null,
+      "note": "Lo switch del Piano Terra non e' sotto continuita', quindi tutto cio' che alimenta in PoE cade al primo black-out: due telefoni, la reception, l'access point, il terminale presenze e la tratta esterna.",
+      "gap": ["ELE-004"] }
+  ],
+
+  "gap": [
+    { "id": "ELE-001", "titolo": "Nessuna visibilita' sull'alimentazione e nessun allarme", "numero": 145, "gravita": "alta" },
+    { "id": "ELE-002", "titolo": "Il firewall e' in fondo a tre ciabatte in cascata", "numero": 146, "gravita": "alta" },
+    { "id": "ELE-003", "titolo": "Ridondanza di alimentazione apparente e non reale", "numero": 147, "gravita": "alta" },
+    { "id": "ELE-004", "titolo": "Il Piano Terra non ha continuita' elettrica", "numero": 148, "gravita": "alta" },
+    { "id": "NET-005", "titolo": "Wi-Fi staff con accesso completo alla LAN: rischio accettato", "numero": null, "gravita": "media" },
+    { "id": "NET-010", "titolo": "Link flap continui sulla porta 46 del 54HP", "numero": 115, "gravita": "media" },
+    { "id": "NET-017", "titolo": "Apparato di commutazione non documentato sulla tratta esterna", "numero": 136, "gravita": "media" },
+    { "id": "NET-018", "titolo": "MikroTik e iniettore PoE non censiti", "numero": 137, "gravita": "media" },
+    { "id": "NET-019", "titolo": "Porte di fonia che accettano qualunque VLAN taggata", "numero": 143, "gravita": "alta" },
+    { "id": "NET-020", "titolo": "La tratta esterna accetta qualunque VLAN taggata", "numero": 144, "gravita": "alta" },
+    { "id": "NET-021", "titolo": "Terminale di rilevazione presenze non inventariato", "numero": 149, "gravita": "alta" },
+    { "id": "SEC-018", "titolo": "Access point fuori supporto sulla LAN piatta", "numero": 124, "gravita": "alta" },
+    { "id": "TEL-005", "titolo": "La fonia si e' spostata sulla LAN dati", "numero": 151, "gravita": "media" },
+    { "id": "FW-013", "titolo": "Interfacce residue sul firewall", "numero": 130, "gravita": "bassa" }
+  ]
+}

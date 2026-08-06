@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topologia di rete Intrawelt</title>
+<style>
+  :root{
+    --bg:#f6f5f2; --panel:#ffffff; --ink:#151d20; --ink-soft:#5a6468; --line:#d8d4cc;
+    --accent:#2f6f7d; --accent-soft:#e3eef0; --warn:#b4553a; --warn-soft:#f6e5df;
+    --shadow:0 1px 2px rgba(21,29,32,.06),0 4px 14px rgba(21,29,32,.05);
+    --serif:Georgia,'Iowan Old Style','Palatino Linotype','Book Antiqua',serif;
+    --sans:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --mono:'Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#14181a; --panel:#1c2225; --ink:#e8e6e1; --ink-soft:#9aa4a8; --line:#2e3639;
+           --accent:#6fb3c0; --accent-soft:#1e3238; --warn:#e08b6e; --warn-soft:#3a2620;
+           --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3); }
+  }
+  :root[data-theme="dark"]{ --bg:#14181a; --panel:#1c2225; --ink:#e8e6e1; --ink-soft:#9aa4a8; --line:#2e3639;
+    --accent:#6fb3c0; --accent-soft:#1e3238; --warn:#e08b6e; --warn-soft:#3a2620;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3); }
+  :root[data-theme="light"]{ --bg:#f6f5f2; --panel:#ffffff; --ink:#151d20; --ink-soft:#5a6468; --line:#d8d4cc;
+    --accent:#2f6f7d; --accent-soft:#e3eef0; --warn:#b4553a; --warn-soft:#f6e5df;
+    --shadow:0 1px 2px rgba(21,29,32,.06),0 4px 14px rgba(21,29,32,.05); }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55}
+  header{padding:22px 26px 14px;border-bottom:1px solid var(--line)}
+  h1{font-family:var(--serif);font-size:26px;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
+  .sub{color:var(--ink-soft);font-size:13.5px;max-width:82ch}
+  .sub code{font-family:var(--mono);font-size:12.5px;background:var(--accent-soft);padding:1px 5px;border-radius:3px}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 26px;border-bottom:1px solid var(--line);
+           position:sticky;top:0;background:var(--bg);z-index:20}
+  .group{display:flex;gap:6px;align-items:center}
+  .group + .group{margin-left:10px;padding-left:14px;border-left:1px solid var(--line)}
+  .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin-right:2px}
+  button.chip{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--line);background:var(--panel);
+              color:var(--ink);border-radius:999px;cursor:pointer;transition:.12s}
+  button.chip:hover{border-color:var(--accent)}
+  button.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.chip.warn[aria-pressed="true"]{background:var(--warn);border-color:var(--warn)}
+  input[type=search]{font:inherit;font-size:13px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;
+                     background:var(--panel);color:var(--ink);min-width:190px}
+
+  .wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:0;align-items:start}
+  @media (max-width:1080px){ .wrap{grid-template-columns:minmax(0,1fr)} #panel{position:static;border-left:none;border-top:1px solid var(--line)} }
+
+  #stage{position:relative;padding:24px 26px 60px;overflow-x:auto}
+  #links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .layer{position:relative;margin-bottom:34px}
+  .layer > h2{font-family:var(--serif);font-size:13px;font-weight:600;color:var(--ink-soft);margin:0 0 10px;
+              text-transform:uppercase;letter-spacing:.09em}
+  .row{display:flex;flex-wrap:wrap;gap:12px;position:relative;z-index:2}
+
+  .node{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 12px;min-width:150px;max-width:230px;
+        box-shadow:var(--shadow);cursor:pointer;transition:.14s;position:relative}
+  .node:hover,.node.sel{border-color:var(--accent);transform:translateY(-1px)}
+  .node.sel{box-shadow:0 0 0 2px var(--accent)}
+  .node .n-name{font-weight:600;font-size:13.5px;line-height:1.3}
+  .node .n-meta{font-size:11.5px;color:var(--ink-soft);margin-top:3px;font-family:var(--mono)}
+  .node .n-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+  .tag{font-size:10.5px;padding:1px 6px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);white-space:nowrap}
+  .tag.gap{background:var(--warn-soft);border-color:var(--warn);color:var(--warn);font-weight:600}
+  .tag.nopwr{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+  .node.dim{opacity:.22;filter:saturate(.2)}
+  .node[data-kind="cloud"],.node[data-kind="linea"],.node[data-kind="radio"]{background:var(--accent-soft)}
+  .node[data-kind="gruppo"],.node[data-kind="gruppo-voce"],.node[data-kind="rete-radio"]{border-style:dashed}
+  .node[data-kind="ups"]{background:var(--accent-soft)}
+  .node[data-kind="parete"]{background:var(--warn-soft);border-color:var(--warn)}
+
+  path.link{fill:none;stroke:var(--line);stroke-width:1.6}
+  path.link.hot{stroke:var(--accent);stroke-width:2.6}
+  path.link.crit{stroke:var(--warn);stroke-width:2.2;stroke-dasharray:none}
+  path.link.dim{opacity:.12}
+  path.link.radio{stroke-dasharray:4 4}
+  path.link.fibra{stroke-width:2.6}
+
+  #panel{position:sticky;top:57px;max-height:calc(100vh - 57px);overflow:auto;border-left:1px solid var(--line);
+         padding:22px 22px 40px;background:var(--panel)}
+  #panel h3{font-family:var(--serif);font-size:18px;margin:0 0 2px;font-weight:600}
+  #panel .kind{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin-bottom:12px}
+  #panel p{margin:0 0 12px;font-size:13.5px}
+  #panel .sec{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);
+              margin:16px 0 6px;padding-top:10px;border-top:1px solid var(--line)}
+  #panel ul{margin:0;padding-left:16px;font-size:13px}
+  #panel li{margin-bottom:5px}
+  #panel .crit{background:var(--warn-soft);border-left:3px solid var(--warn);padding:8px 10px;font-size:13px;margin:0 0 12px;border-radius:0 5px 5px 0}
+  #panel code{font-family:var(--mono);font-size:12.5px}
+  .empty{color:var(--ink-soft);font-size:13.5px}
+
+  footer{padding:18px 26px 40px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;max-width:100ch}
+  footer p{margin:0 0 8px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 0;font-size:12px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .swatch{width:22px;height:0;border-top:2px solid var(--line);display:inline-block}
+  .swatch.fib{border-top-width:3px;border-color:var(--accent)}
+  .swatch.rad{border-top:2px dashed var(--ink-soft)}
+  .swatch.cri{border-top:2px solid var(--warn)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Topologia di rete Intrawelt</h1>
+  <div class="sub">Generata da <code>data/network-topology.json</code> con <code>scripts/Build-NetworkMap.ps1</code>. Questo file non si modifica a mano: si corregge la fonte e si rigenera (ADR&#8209;023). Indirizzi, MAC e nomi di persona sono segnaposto. Aggiornamento del <strong>__GENERATED_AT__</strong>.</div>
+</header>
+
+<div class="toolbar">
+  <div class="group">
+    <span class="lbl">Vista</span>
+    <button class="chip" id="v-rete" aria-pressed="true">Rete</button>
+    <button class="chip" id="v-pwr" aria-pressed="false">Alimentazione</button>
+  </div>
+  <div class="group" id="vlanbar"><span class="lbl">VLAN</span></div>
+  <div class="group">
+    <button class="chip warn" id="onlygap" aria-pressed="false">Solo difetti aperti</button>
+  </div>
+  <div class="group">
+    <input type="search" id="q" placeholder="Cerca un apparato...">
+    <button class="chip" id="theme">Tema</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="stage"><svg id="links"></svg><div id="layers"></div></div>
+  <aside id="panel"><p class="empty">Seleziona un apparato per vederne porta, alimentazione, collegamenti e difetti aperti. Passa il puntatore su un nodo per illuminarne i collegamenti.</p></aside>
+</div>
+
+<footer>
+  <p><strong>Come leggerla.</strong> Nella vista Rete le righe sono livelli logici, da Internet alle utenze, e ogni linea e' un collegamento fisico reale con la sua porta. Nella vista Alimentazione l'albero parte dalla presa a parete e scende fino all'apparato: e' la stessa infrastruttura vista dal lato della corrente, ed e' li' che si legge che cosa cade insieme.</p>
+  <p><strong>Perimetro dichiarato.</strong> Le singole postazioni di lavoro e le due multifunzione sono fuori da questa revisione per scelta e compaiono come gruppi tratteggiati. Un nodo senza sorgente di alimentazione nota porta l'etichetta <em>alimentazione ignota</em>: e' una lacuna dichiarata, non un apparato senza corrente.</p>
+  <div class="legend">
+    <span><i class="swatch"></i> rame</span>
+    <span><i class="swatch fib"></i> fibra</span>
+    <span><i class="swatch rad"></i> radio o logico</span>
+    <span><i class="swatch cri"></i> collegamento con criticita'</span>
+  </div>
+</footer>
+
+<script type="application/json" id="topo">__TOPOLOGY_DATA__</script>
+<script>
+(function(){
+  "use strict";
+  var D = JSON.parse(document.getElementById('topo').textContent);
+  var stage = document.getElementById('stage');
+  var layersEl = document.getElementById('layers');
+  var svg = document.getElementById('links');
+  var panel = document.getElementById('panel');
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  var view = 'rete';
+  var vlanFilter = null;
+  var onlyGap = false;
+  var query = '';
+  var selected = null;
+  var els = {};      // id -> element
+  var drawn = [];    // {path, a, b, link}
+
+  var gapById = {};
+  (D.gap||[]).forEach(function(g){ gapById[g.id] = g; });
+  var nodeById = {};
+  D.nodi.forEach(function(n){ nodeById[n.id] = n; });
+  var pwrById = {};
+  (D.alimentazione||[]).forEach(function(p){ pwrById[p.id] = p; });
+
+  function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt!=null) e.textContent = txt; return e; }
+  function esc(s){ return String(s==null?'':s); }
+
+  // ---------- costruzione delle viste ----------
+  function nodeCard(n, meta, extraTags){
+    var d = el('div','node');
+    d.dataset.id = n.id;
+    d.dataset.kind = n.tipo || '';
+    d.appendChild(el('div','n-name', n.nome));
+    if(meta) d.appendChild(el('div','n-meta', meta));
+    var tags = el('div','n-tags');
+    (extraTags||[]).forEach(function(t){
+      var s = el('span','tag' + (t.cls?(' '+t.cls):''), t.text); tags.appendChild(s);
+    });
+    (n.gap||[]).forEach(function(g){ tags.appendChild(el('span','tag gap', g)); });
+    if(tags.childNodes.length) d.appendChild(tags);
+    d.addEventListener('click', function(){ select(n.id); });
+    d.addEventListener('mouseenter', function(){ hot(n.id, true); });
+    d.addEventListener('mouseleave', function(){ hot(n.id, false); });
+    els[n.id] = d;
+    return d;
+  }
+
+  // Le porte di QUESTO nodo: su un collegamento, 'porta-a' e' del lato 'da' e 'porta-b'
+  // del lato 'a'. Confonderle significa scrivere sulla scheda la porta dell'apparato
+  // di fronte, che e' l'errore piu' facile e il piu' costoso quando si va a cablare.
+  function myPorts(id){
+    var bits = [];
+    D.collegamenti.forEach(function(l){
+      if(l.da === id && l['porta-a']) bits.push(String(l['porta-a']));
+      if(l.a === id && l['porta-b']) bits.push(String(l['porta-b']));
+    });
+    return bits;
+  }
+
+  function portLabel(id){
+    var p = myPorts(id);
+    if(!p.length) return '';
+    if(p.length <= 3) return 'porta ' + p.join(', ');
+    return p.length + ' porte in uso';
+  }
+
+  function buildRete(){
+    layersEl.innerHTML = ''; els = {};
+    D.livelli.forEach(function(L){
+      var nodes = D.nodi.filter(function(n){ return n.livello === L.id; });
+      if(!nodes.length) return;
+      var sec = el('div','layer');
+      sec.appendChild(el('h2', null, L.nome));
+      var row = el('div','row');
+      nodes.forEach(function(n){
+        var meta = [];
+        var p = portLabel(n.id);
+        if(p) meta.push(p);
+        if(n.contenitore){
+          var c = (D.contenitori||[]).filter(function(x){ return x.id===n.contenitore; })[0];
+          if(c) meta.push(c.nome.toLowerCase());
+        }
+        var tags = [];
+        if(!n.alimentazione && ['cloud','linea','radio','gruppo','gruppo-voce','rete-radio'].indexOf(n.tipo)<0){
+          tags.push({text:'alimentazione ignota', cls:'nopwr'});
+        }
+        row.appendChild(nodeCard(n, meta.join('  ·  '), tags));
+      });
+      sec.appendChild(row);
+      layersEl.appendChild(sec);
+    });
+  }
+
+  function buildPwr(){
+    layersEl.innerHTML = ''; els = {};
+    // profondita' dell'albero elettrico
+    var depth = {};
+    function d(id, guard){
+      if(depth[id]!=null) return depth[id];
+      if(guard>20) return 0;
+      var p = pwrById[id];
+      var up = p && p['alimentato-da'];
+      depth[id] = up ? d(up, (guard||0)+1) + 1 : 0;
+      return depth[id];
+    }
+    Object.keys(pwrById).forEach(function(id){ d(id,0); });
+    var maxd = 0; Object.keys(depth).forEach(function(k){ maxd = Math.max(maxd, depth[k]); });
+
+    for(var lv=0; lv<=maxd; lv++){
+      var ids = Object.keys(pwrById).filter(function(id){ return depth[id]===lv; });
+      if(!ids.length) continue;
+      var sec = el('div','layer');
+      var titolo = lv===0 ? 'Sorgenti' : (lv===1 ? 'Gruppi di continuita e primo livello' : 'Distribuzione, livello ' + lv);
+      sec.appendChild(el('h2', null, titolo));
+      var row = el('div','row');
+      ids.forEach(function(id){
+        var p = pwrById[id];
+        var fake = { id:'pwr:'+id, nome:p.nome, tipo:p.tipo, gap:p.gap||[] };
+        var carichi = D.nodi.filter(function(n){ return n.alimentazione===id || n['alimentazione-2']===id; }).length;
+        row.appendChild(nodeCard(fake, p.tipo + (carichi ? ('  ·  ' + carichi + ' carichi') : '')));
+      });
+      sec.appendChild(row);
+      layersEl.appendChild(sec);
+    }
+    // apparati, raggruppati sotto il proprio ramo
+    var sec2 = el('div','layer');
+    sec2.appendChild(el('h2', null, 'Apparati alimentati'));
+    var row2 = el('div','row');
+    D.nodi.filter(function(n){ return n.alimentazione; }).forEach(function(n){
+      var src = pwrById[n.alimentazione];
+      var meta = src ? src.nome : '';
+      if(n['alimentazione-2'] && pwrById[n['alimentazione-2']]) meta += '  +  ' + pwrById[n['alimentazione-2']].nome;
+      row2.appendChild(nodeCard(n, meta));
+    });
+    sec2.appendChild(row2);
+    layersEl.appendChild(sec2);
+
+    var senza = D.nodi.filter(function(n){ return !n.alimentazione && ['cloud','linea','radio','gruppo','gruppo-voce','rete-radio'].indexOf(n.tipo)<0; });
+    if(senza.length){
+      var sec3 = el('div','layer');
+      sec3.appendChild(el('h2', null, 'Alimentazione non documentata'));
+      var row3 = el('div','row');
+      senza.forEach(function(n){ row3.appendChild(nodeCard(n, '', [{text:'da rilevare', cls:'nopwr'}])); });
+      sec3.appendChild(row3);
+      layersEl.appendChild(sec3);
+    }
+  }
+
+  // ---------- collegamenti ----------
+  function currentLinks(){
+    if(view === 'rete') return D.collegamenti.map(function(l){ return {a:l.da, b:l.a, l:l}; });
+    var out = [];
+    Object.keys(pwrById).forEach(function(id){
+      var up = pwrById[id]['alimentato-da'];
+      if(up) out.push({a:'pwr:'+up, b:'pwr:'+id, l:{mezzo:'corrente'}});
+    });
+    D.nodi.forEach(function(n){
+      if(n.alimentazione) out.push({a:'pwr:'+n.alimentazione, b:n.id, l:{mezzo:'corrente'}});
+      if(n['alimentazione-2']) out.push({a:'pwr:'+n['alimentazione-2'], b:n.id, l:{mezzo:'corrente', note:'secondo alimentatore'}});
+    });
+    return out;
+  }
+
+  function draw(){
+    var box = stage.getBoundingClientRect();
+    svg.setAttribute('width', stage.scrollWidth);
+    svg.setAttribute('height', stage.scrollHeight);
+    svg.innerHTML = '';
+    drawn = [];
+    currentLinks().forEach(function(k){
+      var ea = els[k.a], eb = els[k.b];
+      if(!ea || !eb) return;
+      var ra = ea.getBoundingClientRect(), rb = eb.getBoundingClientRect();
+      var x1 = ra.left - box.left + ra.width/2 + stage.scrollLeft;
+      var y1 = ra.top - box.top + ra.height + stage.scrollTop;
+      var x2 = rb.left - box.left + rb.width/2 + stage.scrollLeft;
+      var y2 = rb.top - box.top + stage.scrollTop;
+      var dpath;
+      if(Math.abs((ra.top) - (rb.top)) < 12){
+        // stessa riga: curva laterale sotto le due schede
+        var yb = Math.max(ra.bottom, rb.bottom) - box.top + stage.scrollTop;
+        dpath = 'M'+x1+','+(y1)+' C'+x1+','+(yb+26)+' '+x2+','+(yb+26)+' '+x2+','+(rb.bottom - box.top + stage.scrollTop);
+      } else if (y2 < y1) {
+        // il bersaglio sta piu' in alto: parti dall'alto della sorgente
+        var y1b = ra.top - box.top + stage.scrollTop;
+        var y2b = rb.top - box.top + rb.height + stage.scrollTop;
+        var mid = (y1b + y2b)/2;
+        dpath = 'M'+x1+','+y1b+' C'+x1+','+mid+' '+x2+','+mid+' '+x2+','+y2b;
+      } else {
+        var m = (y1 + y2)/2;
+        dpath = 'M'+x1+','+y1+' C'+x1+','+m+' '+x2+','+m+' '+x2+','+y2;
+      }
+      var p = document.createElementNS(SVGNS,'path');
+      p.setAttribute('d', dpath);
+      var cls = 'link';
+      if(k.l.mezzo === 'fibra') cls += ' fibra';
+      if(k.l.mezzo === 'radio' || k.l.mezzo === 'logico') cls += ' radio';
+      if(k.l.criticita) cls += ' crit';
+      p.setAttribute('class', cls);
+      svg.appendChild(p);
+      drawn.push({p:p, a:k.a, b:k.b, l:k.l});
+    });
+    applyFilters();
+  }
+
+  // ---------- interazione ----------
+  function hot(id, on){
+    drawn.forEach(function(d){
+      if(d.a===id || d.b===id) d.p.classList.toggle('hot', on);
+    });
+  }
+
+  function linksOf(id){
+    return D.collegamenti.filter(function(l){ return l.da===id || l.a===id; });
+  }
+
+  function powerChain(n){
+    var chain = [], cur = n.alimentazione, guard = 0;
+    while(cur && guard++ < 12){
+      var p = pwrById[cur];
+      if(!p) break;
+      chain.push(p);
+      cur = p['alimentato-da'];
+    }
+    return chain;
+  }
+
+  function select(id){
+    selected = id;
+    Object.keys(els).forEach(function(k){ els[k].classList.toggle('sel', k===id); });
+    var real = id.indexOf('pwr:')===0 ? null : nodeById[id];
+    panel.innerHTML = '';
+    if(!real){
+      var p = pwrById[id.slice(4)];
+      if(!p){ panel.innerHTML = '<p class="empty">Nessun dettaglio.</p>'; return; }
+      panel.appendChild(el('h3',null,p.nome));
+      panel.appendChild(el('div','kind', p.tipo));
+      if(p.note) panel.appendChild(el('p',null,p.note));
+      var carichi = D.nodi.filter(function(n){ return n.alimentazione===p.id || n['alimentazione-2']===p.id; });
+      var derivate = (D.alimentazione||[]).filter(function(x){ return x['alimentato-da']===p.id; });
+      if(derivate.length){
+        panel.appendChild(el('div','sec','Alimenta a valle'));
+        var u0 = el('ul'); derivate.forEach(function(x){ u0.appendChild(el('li',null,x.nome)); }); panel.appendChild(u0);
+      }
+      if(carichi.length){
+        panel.appendChild(el('div','sec','Apparati su questa sorgente'));
+        var u1 = el('ul'); carichi.forEach(function(x){ u1.appendChild(el('li',null,x.nome)); }); panel.appendChild(u1);
+      }
+      if(p.gap && p.gap.length){
+        panel.appendChild(el('div','sec','Difetti aperti'));
+        var u2 = el('ul'); p.gap.forEach(function(g){ u2.appendChild(el('li',null, g + (gapById[g] ? ' — ' + gapById[g].titolo : ''))); }); panel.appendChild(u2);
+      }
+      return;
+    }
+    panel.appendChild(el('h3',null,real.nome));
+    var cont = real.contenitore ? (D.contenitori||[]).filter(function(c){return c.id===real.contenitore;})[0] : null;
+    panel.appendChild(el('div','kind', (real.tipo||'') + (cont ? '  ·  ' + cont.nome : '')));
+    if(real.note) panel.appendChild(el('p',null,real.note));
+
+    var ls = linksOf(real.id);
+    var crits = ls.filter(function(l){ return l.criticita; });
+    crits.forEach(function(l){ var c = el('div','crit', l.criticita); panel.appendChild(c); });
+
+    if(ls.length){
+      panel.appendChild(el('div','sec','Collegamenti'));
+      var ul = el('ul');
+      ls.forEach(function(l){
+        var altro = l.da===real.id ? nodeById[l.a] : nodeById[l.da];
+        var mia = l.da===real.id ? l['porta-a'] : l['porta-b'];
+        var sua = l.da===real.id ? l['porta-b'] : l['porta-a'];
+        var t = (altro?altro.nome:'?');
+        var det = [];
+        if(mia) det.push('porta ' + mia);
+        if(sua) det.push('lato remoto ' + sua);
+        if(l.mezzo) det.push(l.mezzo);
+        if(l.velocita) det.push(l.velocita);
+        if(l.vlan) det.push('VLAN ' + l.vlan.join(', '));
+        var testo = t + (det.length ? ' — ' + det.join(', ') : '');
+        if(l.note) testo += '. ' + l.note;
+        ul.appendChild(el('li', null, testo));
+      });
+      panel.appendChild(ul);
+    }
+
+    var chain = powerChain(real);
+    panel.appendChild(el('div','sec','Alimentazione'));
+    if(!chain.length){
+      panel.appendChild(el('p','empty','Non documentata. E una lacuna dichiarata, non un apparato senza corrente: vedi la scheda del livello fisico ed elettrico.'));
+    } else {
+      var ulp = el('ul');
+      chain.forEach(function(p){ ulp.appendChild(el('li',null,p.nome)); });
+      panel.appendChild(ulp);
+      if(real['alimentazione-2']){
+        var s2 = pwrById[real['alimentazione-2']];
+        if(s2) panel.appendChild(el('p','empty','Secondo alimentatore su ' + s2.nome + '.'));
+      }
+    }
+
+    if(real.gap && real.gap.length){
+      panel.appendChild(el('div','sec','Difetti aperti'));
+      var ug = el('ul');
+      real.gap.forEach(function(g){
+        var info = gapById[g];
+        ug.appendChild(el('li', null, g + (info ? ' — ' + info.titolo + (info.numero? ' (#'+info.numero+')' : '') : '')));
+      });
+      panel.appendChild(ug);
+    }
+  }
+
+  function applyFilters(){
+    var q = query.trim().toLowerCase();
+    Object.keys(els).forEach(function(id){
+      var real = id.indexOf('pwr:')===0 ? pwrById[id.slice(4)] : nodeById[id];
+      if(!real) return;
+      var hide = false;
+      if(q && (real.nome||'').toLowerCase().indexOf(q) < 0 && (real.note||'').toLowerCase().indexOf(q) < 0) hide = true;
+      if(onlyGap && !(real.gap && real.gap.length)) hide = true;
+      if(vlanFilter != null){
+        var touches = D.collegamenti.some(function(l){
+          return (l.da===id || l.a===id) && l.vlan && l.vlan.indexOf(vlanFilter) >= 0;
+        });
+        if(!touches) hide = true;
+      }
+      els[id].classList.toggle('dim', hide);
+    });
+    drawn.forEach(function(d){
+      var dim = false;
+      if(vlanFilter != null) dim = !(d.l.vlan && d.l.vlan.indexOf(vlanFilter) >= 0);
+      if(els[d.a] && els[d.a].classList.contains('dim') && els[d.b] && els[d.b].classList.contains('dim')) dim = true;
+      d.p.classList.toggle('dim', dim);
+    });
+  }
+
+  function render(){
+    if(view==='rete') buildRete(); else buildPwr();
+    requestAnimationFrame(function(){ draw(); });
+  }
+
+  // ---------- barra ----------
+  document.getElementById('v-rete').addEventListener('click', function(){
+    view='rete'; this.setAttribute('aria-pressed','true');
+    document.getElementById('v-pwr').setAttribute('aria-pressed','false'); render();
+  });
+  document.getElementById('v-pwr').addEventListener('click', function(){
+    view='pwr'; this.setAttribute('aria-pressed','true');
+    document.getElementById('v-rete').setAttribute('aria-pressed','false'); render();
+  });
+  var vb = document.getElementById('vlanbar');
+  D.vlan.forEach(function(v){
+    if(v.stato === 'progetto') return;
+    var b = el('button','chip', v.id + ' ' + v.nome.toLowerCase());
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click', function(){
+      var on = b.getAttribute('aria-pressed')==='true';
+      Array.prototype.forEach.call(vb.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed','false'); });
+      if(on){ vlanFilter = null; } else { vlanFilter = v.id; b.setAttribute('aria-pressed','true'); }
+      applyFilters();
+    });
+    vb.appendChild(b);
+  });
+  document.getElementById('onlygap').addEventListener('click', function(){
+    onlyGap = !onlyGap; this.setAttribute('aria-pressed', onlyGap ? 'true':'false'); applyFilters();
+  });
+  document.getElementById('q').addEventListener('input', function(){ query = this.value; applyFilters(); });
+  document.getElementById('theme').addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme');
+    var next = cur === 'dark' ? 'light' : (cur === 'light' ? 'dark' :
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+    document.documentElement.setAttribute('data-theme', next);
+    requestAnimationFrame(draw);
+  });
+
+  var t;
+  window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(draw, 120); });
+  render();
+})();
+</script>
+</body>
+</html>
