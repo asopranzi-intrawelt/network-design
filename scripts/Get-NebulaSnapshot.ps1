@@ -189,11 +189,34 @@ foreach ($org in $allOrgs) {
         }
     }
 
+    # Dispositivi in inventario ma non assegnati a nessun sito. L'endpoint dei
+    # dispositivi raggruppa per sito e restituisce anche un gruppo con siteId nullo:
+    # e' li' che vive un apparato registrato nell'organizzazione e non ancora messo in
+    # servizio (stato "Unused" nella GUI). Il ciclo qui sopra itera i siti, quindi quel
+    # gruppo veniva scartato in silenzio. Scoperto il 06/08/2026 interrogando l'API a
+    # mano: l'USG FLEX 500 c'era nella risposta e non nello snapshot. Un dispositivo che
+    # esiste e non compare e' peggio di un dispositivo assente, perche' l'inventario
+    # sembra completo.
+    $unassigned = @()
+    foreach ($group in $siteDevicesResp) {
+        if (-not $group.siteId) {
+            foreach ($d in $group.devices) { $unassigned += $d }
+        }
+    }
+    if ($unassigned.Count -gt 0) {
+        Write-Host ("    Non assegnati a un sito: {0}" -f $unassigned.Count) -ForegroundColor Yellow
+        foreach ($d in $unassigned) {
+            $etichetta = if ([string]::IsNullOrWhiteSpace($d.name)) { "(senza nome)" } else { $d.name }
+            Write-Host ("      $etichetta [{0}] tipo {1}" -f $d.model, $d.type) -ForegroundColor DarkGray
+        }
+    }
+
     $orgsData += [PSCustomObject]@{
-        orgId = $oid
-        name  = $org.name
-        mode  = $org.mode
-        sites = $sitesData
+        orgId               = $oid
+        name                = $org.name
+        mode                = $org.mode
+        sites               = $sitesData
+        unassigned_devices  = $unassigned
     }
 }
 
@@ -254,6 +277,20 @@ foreach ($org in $orgsData) {
     $lines.Add("| Org ID | $($org.orgId) |")
     $lines.Add("| Mode | $($org.mode) |")
     $lines.Add("")
+
+    if ($org.unassigned_devices -and @($org.unassigned_devices).Count -gt 0) {
+        $lines.Add("### Dispositivi in inventario ma non assegnati a un sito")
+        $lines.Add("")
+        $lines.Add("Sono registrati nell'organizzazione e concorrono al requisito di licenza (ADR-022), ma non essendo in un sito non espongono porte, tabelle MAC o configurazione. Nella GUI corrispondono allo stato ``Unused``.")
+        $lines.Add("")
+        $lines.Add("| Nome | Tipo | Modello | Serial |")
+        $lines.Add("|---|---|---|---|")
+        foreach ($d in $org.unassigned_devices) {
+            $etichetta = if ([string]::IsNullOrWhiteSpace($d.name)) { "(senza nome)" } else { $d.name }
+            $lines.Add("| $etichetta | $($d.type) | $($d.model) | $($d.sn) |")
+        }
+        $lines.Add("")
+    }
 
     foreach ($site in $org.sites) {
         $lines.Add("### Sito: $($site.name)")
