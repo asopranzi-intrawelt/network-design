@@ -7,14 +7,35 @@
     Le credenziali vengono chieste a runtime. Nessun segreto finisce su disco.
 .NOTES
     Owner: Alessio Sopranzi
-    Richiede: accesso alla rete LAN Intrawelt (192.168.20.0/24)
+    Richiede: accesso alla LAN Intrawelt. Gli indirizzi dei dispositivi da verificare
+    NON sono cablati nello script perche' il repository e' pubblico: si passano come
+    parametri, e i valori reali vivono in _notes/.anonymization-map.md.
 #>
 
 [CmdletBinding()]
 param(
     [switch]$SkipNetworkTests,
-    [string]$OutputPath = "$PSScriptRoot\..\output\security-anomaly-check.txt"
+    [string]$OutputPath = "$PSScriptRoot\..\output\security-anomaly-check.txt",
+
+    # Indirizzi dei dispositivi verificati. Nessun valore predefinito: sono dati reali di
+    # rete e questo file e' versionato in un repository pubblico. I valori si leggono da
+    # _notes/.anonymization-map.md e si passano da riga di comando, oppure si mettono in
+    # _notes/.security-check-targets.json (ignorato da git) che lo script carica da se'.
+    [string]$SwitchMgmtIp,
+    [string]$UpsIp,
+    [string]$MyHomeIp,
+    [string]$BticinoIp
 )
+
+# Se i parametri non sono stati passati, prova a caricarli dal file privato.
+$targetsFile = Join-Path $PSScriptRoot '..\_notes\.security-check-targets.json'
+if (Test-Path -LiteralPath $targetsFile) {
+    $t = Get-Content -Raw -LiteralPath $targetsFile | ConvertFrom-Json
+    if (-not $SwitchMgmtIp) { $SwitchMgmtIp = $t.SwitchMgmtIp }
+    if (-not $UpsIp)        { $UpsIp        = $t.UpsIp }
+    if (-not $MyHomeIp)     { $MyHomeIp     = $t.MyHomeIp }
+    if (-not $BticinoIp)    { $BticinoIp    = $t.BticinoIp }
+}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'SilentlyContinue'
@@ -65,41 +86,41 @@ if (Test-Path $gapFile) {
 }
 
 # --- CHECK 2: FW-002 - Switch management su VLAN Guest ---
-Write-Host "[FW-002] Verifica switch management su VLAN 90 (192.168.90.37)..." -ForegroundColor Yellow
+Write-Host "[FW-002] Verifica switch management su VLAN 90 ($SwitchMgmtIp)..." -ForegroundColor Yellow
 if (-not $SkipNetworkTests) {
-    $ping = Test-Connection -ComputerName '192.168.90.37' -Count 1 -Quiet
+    $ping = Test-Connection -ComputerName $SwitchMgmtIp -Count 1 -Quiet
     if ($ping) {
-        $tcpResult = Test-NetConnection -ComputerName '192.168.90.37' -Port 443 -WarningAction SilentlyContinue
+        $tcpResult = Test-NetConnection -ComputerName $SwitchMgmtIp -Port 443 -WarningAction SilentlyContinue
         if ($tcpResult.TcpTestSucceeded) {
             Add-Result 'FW-002' 'Switch management su VLAN Guest' 'CRITICA' 'CONFERMATO' `
-                'Switch 192.168.90.37 risponde su porta 443 (HTTPS management). Spostare management su VLAN 10.'
+                "Lo switch $SwitchMgmtIp risponde su porta 443 (HTTPS management). Spostare management su VLAN 10."
         } else {
             Add-Result 'FW-002' 'Switch management su VLAN Guest' 'ALTA' 'VERIFICA' `
-                '192.168.90.37 risponde al ping ma non a 443. Verificare se la mgmt interface e ancora su VLAN 90.'
+                "$SwitchMgmtIp risponde al ping ma non a 443. Verificare se la mgmt interface e ancora su VLAN 90."
         }
     } else {
         Add-Result 'FW-002' 'Switch management su VLAN Guest' 'OK' 'Non raggiungibile' `
-            '192.168.90.37 non risponde. Potrebbe essere stato corretto o spento.'
+            "$SwitchMgmtIp non risponde. Potrebbe essere stato corretto o spento."
     }
 } else {
     Add-Result 'FW-002' 'Switch management su VLAN Guest' 'ALTA' 'SALTATO' 'Test di rete saltati (-SkipNetworkTests).'
 }
 
 # --- CHECK 3: UPS su VLAN Guest ---
-Write-Host "[UPS-001] Verifica UPS Emerson Liebert su VLAN Guest (192.168.90.33)..." -ForegroundColor Yellow
+Write-Host "[UPS-001] Verifica UPS Emerson Liebert su VLAN Guest ($UpsIp)..." -ForegroundColor Yellow
 if (-not $SkipNetworkTests) {
-    $upsReach = Test-NetConnection -ComputerName '192.168.90.33' -Port 6004 -WarningAction SilentlyContinue
+    $upsReach = Test-NetConnection -ComputerName $UpsIp -Port 6004 -WarningAction SilentlyContinue
     if ($upsReach.TcpTestSucceeded) {
         Add-Result 'UPS-001' 'UPS Emerson Liebert su VLAN Guest' 'ALTA' 'CONFERMATO' `
-            'UPS 192.168.90.33 risponde su porta 6004 (management). Spostare su VLAN 10.'
+            "L'UPS $UpsIp risponde su porta 6004 (management). Spostare su VLAN 10."
     } else {
-        $pingUps = Test-Connection -ComputerName '192.168.90.33' -Count 1 -Quiet
+        $pingUps = Test-Connection -ComputerName $UpsIp -Count 1 -Quiet
         if ($pingUps) {
             Add-Result 'UPS-001' 'UPS Emerson Liebert su VLAN Guest' 'ALTA' 'PARZIALE' `
-                '192.168.90.33 risponde al ping ma non a 6004. Verificare porta management UPS.'
+                "$UpsIp risponde al ping ma non a 6004. Verificare porta management UPS."
         } else {
             Add-Result 'UPS-001' 'UPS Emerson Liebert su VLAN Guest' 'MEDIA' 'Non raggiungibile' `
-                '192.168.90.33 non risponde. Spostato su altra VLAN o spento.'
+                "$UpsIp non risponde. Spostato su altra VLAN o spento."
         }
     }
 } else {
@@ -107,30 +128,30 @@ if (-not $SkipNetworkTests) {
 }
 
 # --- CHECK 4: MyHome Server CentOS 7 EOL ---
-Write-Host "[EOL-001] Verifica MyHome Server CentOS 7 (192.168.90.40)..." -ForegroundColor Yellow
+Write-Host "[EOL-001] Verifica MyHome Server CentOS 7 ($MyHomeIp)..." -ForegroundColor Yellow
 if (-not $SkipNetworkTests) {
-    $myHome = Test-Connection -ComputerName '192.168.90.40' -Count 1 -Quiet
+    $myHome = Test-Connection -ComputerName $MyHomeIp -Count 1 -Quiet
     if ($myHome) {
         Add-Result 'EOL-001' 'MyHome Server CentOS 7.6 EOL' 'ALTA' 'ATTIVO' `
-            '192.168.90.40 risponde. CentOS 7 EOL da giugno 2024. Nessun aggiornamento sicurezza. Pianificare migrazione o isolamento.'
+            "$MyHomeIp risponde. CentOS 7 EOL da giugno 2024. Nessun aggiornamento sicurezza. Pianificare migrazione o isolamento."
     } else {
         Add-Result 'EOL-001' 'MyHome Server CentOS 7.6 EOL' 'MEDIA' 'Non raggiungibile' `
-            '192.168.90.40 non risponde. Verificare se dispositivo e spento o rimosso.'
+            "$MyHomeIp non risponde. Verificare se dispositivo e spento o rimosso."
     }
 } else {
     Add-Result 'EOL-001' 'MyHome Server CentOS 7.6 EOL' 'ALTA' 'SALTATO' 'Test di rete saltati (-SkipNetworkTests).'
 }
 
 # --- CHECK 5: Bticino citofono Linux 2.6 EOL ---
-Write-Host "[EOL-002] Verifica Bticino Classe100X (192.168.90.41)..." -ForegroundColor Yellow
+Write-Host "[EOL-002] Verifica Bticino Classe100X ($BticinoIp)..." -ForegroundColor Yellow
 if (-not $SkipNetworkTests) {
-    $bticino = Test-Connection -ComputerName '192.168.90.41' -Count 1 -Quiet
+    $bticino = Test-Connection -ComputerName $BticinoIp -Count 1 -Quiet
     if ($bticino) {
         Add-Result 'EOL-002' 'Bticino Classe100X Linux 2.6 EOL' 'MEDIA' 'ATTIVO' `
-            '192.168.90.41 risponde. Linux kernel 2.6 EOL. Firmware non aggiornabile. Isolare su VLAN dedicata IoT.'
+            "$BticinoIp risponde. Linux kernel 2.6 EOL. Firmware non aggiornabile. Isolare su VLAN dedicata IoT."
     } else {
         Add-Result 'EOL-002' 'Bticino Classe100X Linux 2.6 EOL' 'BASSA' 'Non raggiungibile' `
-            '192.168.90.41 non risponde.'
+            "$BticinoIp non risponde."
     }
 } else {
     Add-Result 'EOL-002' 'Bticino Classe100X Linux 2.6 EOL' 'MEDIA' 'SALTATO' 'Test di rete saltati (-SkipNetworkTests).'

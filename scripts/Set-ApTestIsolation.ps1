@@ -85,11 +85,17 @@ function Get-NebulaArrayValue {
     return @($Response)
 }
 
-$Targets = @(
-    @{ SwitchMac = "70:49:A2:39:F9:00"; SwitchModel = "XGS2220-30HP"; PortNum = 1;  ApName = "PianoTerra" },
-    @{ SwitchMac = "F4:4D:5C:8F:7C:39"; SwitchModel = "XGS2220-54HP"; PortNum = 41; ApName = "PianoPrimo" },
-    @{ SwitchMac = "F4:4D:5C:8F:7C:39"; SwitchModel = "XGS2220-54HP"; PortNum = 45; ApName = "PianoSecondo" }
-)
+# I MAC reali dei due switch non stanno in un file tracciato, perche' il repository e'
+# pubblico: vivono in `_notes/.nebula-targets.json`, ignorato da git. La traduzione
+# segnaposto -> valore reale sta in `_notes/.anonymization-map.md`. Il file contiene un
+# array di oggetti con i campi SwitchMac, SwitchModel, PortNum, ApName.
+$TargetsFile = Join-Path $PSScriptRoot '..\_notes\.nebula-targets.json'
+if (-not (Test-Path -LiteralPath $TargetsFile)) {
+    Write-Error "File dei target non trovato: $TargetsFile - vedi _notes/.anonymization-map.md per ricostruirlo."
+    exit 1
+}
+$Targets = @(Get-Content -Raw -LiteralPath $TargetsFile | ConvertFrom-Json)
+if ($Targets.Count -eq 0) { Write-Error "Il file dei target e' vuoto: $TargetsFile"; exit 1 }
 
 Write-Host "Scoperta organizzazione e siti Nebula..." -ForegroundColor Cyan
 $orgs = @(Invoke-NebulaGet "/organizations")

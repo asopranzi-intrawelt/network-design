@@ -32,7 +32,7 @@ Tre linee dati separate. Velocita' massima per linea: 100 Mbit/s. Le tre linee a
 
 IP pubblici TIM WAN1: 192.0.2.50 / 192.0.2.51 / 192.0.2.52 IP pubblico TIM WAN2: 198.51.100.216/29
 
-In fattura TIM erano presenti servizi inutili mai notati: Affitto router extra (bimestrale, staccato da almeno ottobre 2024 quando arriva Alessio Sopranzi, molto probabilmente staccato da molto prima). Servizio "Nuvola IT Sinfonia" (monitoraggio superfluo che Intrawelt paga a TIM). 8 indirizzi IP pubblici aggiuntivi mai utilizzati. Taurus Bond firewall in comodato d'uso a TIM (mai connesso, trovato fisicamente in sede staccato, va restituito). Costo stimato complessivo dei servizi inutili: oltre 1.000 euro bimestrale.
+In fattura TIM erano presenti servizi inutili mai notati: Affitto router extra (bimestrale, staccato da almeno ottobre 2024 quando arriva Alessio Sopranzi, molto probabilmente staccato da molto prima). Servizio "Nuvola IT Sinfonia" (monitoraggio superfluo che Intrawelt paga a TIM). 8 indirizzi IP pubblici aggiuntivi mai utilizzati. Taurus Bond firewall in comodato d'uso a TIM (mai connesso, trovato fisicamente in sede staccato, va restituito). Costo stimato complessivo dei servizi inutili: rilevante su base bimestrale, importo non riportato.
 
 TIM gestisce anche la fonia: linee ISDN con problemi ricorrenti dal febbraio 2024. Il centralino fisico e' un Panasonic KX-NCP1000.
 

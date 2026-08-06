@@ -8,24 +8,9 @@ Aggiornato: 2026-07-09 | Owner: Alessio Sopranzi
 
 Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta entrambe le cartelle con le rispettive baseline locali (`_notes/.onedrive-manifest.json` e `_notes/.onedrive-manifest-admin.json`, non versionate) e viene eseguito automaticamente a ogni avvio di sessione (hook SessionStart in `settings.local.json`). Quando il report segnala variazioni, le voci rilevanti si registrano qui e si riesegue lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-09 (entrambe le librerie).
 
-Nota (09/07/2026): i nomi cartella effettivi su disco per alcune voci differiscono
-da quelli storici scritti in questa checklist (es. `Sviluppo_interno, scripting (IT on
-FIRE)` -> reale `sviluppo-interno`; `Sviluppo_NinjaOne` -> reale `sviluppo-ninjaOne`;
-`Sviluppo_Proxmox` -> reale `sviluppo-proxmox`; `Sviluppo_T-Rex (Odoo)` -> reale
-`sviluppo-odoo`). La cartella top-level `TOOL AI coding assistance` esiste anche fuori
-da `sviluppo-interno` (verificata vuota). I riferimenti restano coi nomi storici per
-continuita' con le voci gia' spuntate, ma la verifica futura va fatta sui nomi reali.
+Nota (09/07/2026): i nomi cartella effettivi su disco per alcune voci differiscono da quelli storici scritti in questa checklist (es. `Sviluppo_interno, scripting (IT on FIRE)` -> reale `sviluppo-interno`; `Sviluppo_NinjaOne` -> reale `sviluppo-ninjaOne`; `Sviluppo_Proxmox` -> reale `sviluppo-proxmox`; `Sviluppo_T-Rex (Odoo)` -> reale `sviluppo-odoo`). La cartella top-level `TOOL AI coding assistance` esiste anche fuori da `sviluppo-interno` (verificata vuota). I riferimenti restano coi nomi storici per continuita' con le voci gia' spuntate, ma la verifica futura va fatta sui nomi reali.
 
-Nota (09/07/2026, seconda): le cartelle `sviluppo-interno`, `sviluppo-ninjaOne`,
-`sviluppo-odoo` e `sviluppo-proxmox` sono state rimosse da OneDrive lo stesso
-giorno perche' l'utente le ha convertite in progetti standalone sotto `D:\`
-(es. `D:\sviluppo-ninjaOne`, `D:\intralino`, `D:\openproject`, `D:\eni-ruolini-python-local`,
-ecc. — riorganizzazione dello spazio di lavoro personale, non perdita dati:
-verificato con l'utente). Le voci di ingestione gia' spuntate sopra restano valide
-come documentazione storica di cosa era stato studiato quando quei contenuti
-vivevano ancora su OneDrive; non richiedono correzione. La baseline del delta e'
-stata aggiornata di conseguenza e non segnalera' piu' queste cartelle come
-"eliminate" nelle sessioni successive.
+Nota (09/07/2026, seconda): le cartelle `sviluppo-interno`, `sviluppo-ninjaOne`, `sviluppo-odoo` e `sviluppo-proxmox` sono state rimosse da OneDrive lo stesso giorno perche' l'utente le ha convertite in progetti standalone sotto `D:\` (es. `D:\sviluppo-ninjaOne`, `D:\intralino`, `D:\openproject`, `D:\eni-ruolini-python-local`, ecc. — riorganizzazione dello spazio di lavoro personale, non perdita dati: verificato con l'utente). Le voci di ingestione gia' spuntate sopra restano valide come documentazione storica di cosa era stato studiato quando quei contenuti vivevano ancora su OneDrive; non richiedono correzione. La baseline del delta e' stata aggiornata di conseguenza e non segnalera' piu' queste cartelle come "eliminate" nelle sessioni successive.
 
 Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai ingestire (credenziali)
 
@@ -485,32 +470,13 @@ Restano non analizzate le due fotografie del rack e alcuni screenshot intermedi 
 
 ## Nota storica PORT-TAGGING (stato precedente, aggiornata 07/07/2026 pomeriggio)
 
-Il tagging delle porte dei due switch (XGS2220-54HP Piano 2, XGS2220-30HP
-Piano Terra) per la migrazione al centralino cloud Vianova e' **in corso**:
-l'utente ha eseguito interventi il 07/07/2026 e ha salvato le evidenze in
-`_notes/[TBC] screenshot e note myoffice/` (16 screenshot, 2 foto e una nota
-testuale; non versionati, da analizzare al momento del racconto — dalla nota
-e' gia' stata estratta l'architettura della LAN telefoni, vedi timeline
-07/07/2026 e FW-012). Il racconto completo arrivera' **a lavori conclusi**, quando
-tutti gli endpoint (telefoni inclusi) funzioneranno. Nel frattempo sono
-tracciati i fatti gia' noti: voce 07/07/2026 in
-`2026-switch-piano-terra.md`, gap NET-008 (VLAN 1 non taggabile sulla
-dorsale senza perdere connettivita' verso NAS-HERO) e TEL-002 (telefoni via
-vano ascensore non passano le VLAN) in GAP-TBC #102/#103. `Mappatura porte
-fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
+Il tagging delle porte dei due switch (XGS2220-54HP Piano 2, XGS2220-30HP Piano Terra) per la migrazione al centralino cloud Vianova e' **in corso**: l'utente ha eseguito interventi il 07/07/2026 e ha salvato le evidenze in `_notes/[TBC] screenshot e note myoffice/` (16 screenshot, 2 foto e una nota testuale; non versionati, da analizzare al momento del racconto — dalla nota e' gia' stata estratta l'architettura della LAN telefoni, vedi timeline 07/07/2026 e FW-012). Il racconto completo arrivera' **a lavori conclusi**, quando tutti gli endpoint (telefoni inclusi) funzioneranno. Nel frattempo sono tracciati i fatti gia' noti: voce 07/07/2026 in `2026-switch-piano-terra.md`, gap NET-008 (VLAN 1 non taggabile sulla dorsale senza perdere connettivita' verso NAS-HERO) e TEL-002 (telefoni via vano ascensore non passano le VLAN) in GAP-TBC #102/#103. `Mappatura porte fisiche/` e' stata ingestita (nessuna informazione VLAN nelle fonti).
 
 ---
 
 ## IT + Administration - Documenti — 742 file (nuova libreria, censita il 09/07/2026)
 
-Libreria OneDrive separata, scoperta tramite il collegamento `Analisi Domini
-Intrawelt - collegamento.lnk` dentro `ARCHITETTURA SERVER-CLOUD-LINEE/`.
-Complemento amministrativo/fornitori di tutta la parte tecnica gia' ingerita:
-contratti, fatture, corrispondenza vendor. Baseline creata il 09/07/2026
-(`_notes/.onedrive-manifest-admin.json`, 738 file censiti — la differenza con
-i 742 e' data da qualche file escluso dai pattern standard, es. `.lnk`).
-Priorita' assegnata per rilevanza rispetto alla rete/infrastruttura tecnica
-gia' documentata, non ancora verificata contenuto per contenuto.
+Libreria OneDrive separata, scoperta tramite il collegamento `Analisi Domini Intrawelt - collegamento.lnk` dentro `ARCHITETTURA SERVER-CLOUD-LINEE/`. Complemento amministrativo/fornitori di tutta la parte tecnica gia' ingerita: contratti, fatture, corrispondenza vendor. Baseline creata il 09/07/2026 (`_notes/.onedrive-manifest-admin.json`, 738 file censiti — la differenza con i 742 e' data da qualche file escluso dai pattern standard, es. `.lnk`). Priorita' assegnata per rilevanza rispetto alla rete/infrastruttura tecnica gia' documentata, non ancora verificata contenuto per contenuto.
 
 - [x] `VIANOVA (+ disdetta TIM)/` — 96 file → vendor-management.md §Vianova (offerta 07/02/2024, economics contrattuali, referenti), 2025-q2-migrazione-tim-vianova.md (richiesta VPN Unmanaged 10/04/2025, disdetta TIM 15/05-25/07/2025). Foto/video installazione (fibra, giunzione) non estratti come testo. Discrepanza di date non riconciliata segnalata in vendor-management.md. Credenziali reali NON riportate (09/07/2026)
 - [x] `ZYXEL/` — 45 file → 2025-q3-q4.md §20/11-18/12/2025 (causa radice rinnovo licenze: carta di credito dismessa, ticket disassociazione licenza sbagliata). Resto = storico fatture/ricevute 2020-2024 licenza goldpack, nessun contenuto aggiuntivo oltre a quanto gia' documentato (09/07/2026)
@@ -519,10 +485,10 @@ gia' documentata, non ancora verificata contenuto per contenuto.
 - [x] `QNAP cloud license/` — 13 file → verificato 09/07/2026: 4 foto della licenza (non testo) + fatture Azure gen-lug 2025 (fatturazione pura, cartella nominata in modo fuorviante). Nessuna ingestione (Azure come vendor cloud non era finora documentato ma qui e' solo billing, nessun dettaglio tecnico)
 - [x] `Aruba (amministrazione e cloud)/` — 6 file → verificato 09/07/2026: notifiche automatiche top-up Aruba Cloud + un documento di studio (23/12/2025) su una valutazione di acquisto VPS Aruba Cloud (specifiche 4 vCPU/8GB/80GB), mai confermato come completato nella fonte. Il documento contiene numerose credenziali reali (password di reset, codici di accesso) MAI riportate; prezzo/promo non riportati per policy amministrativa. Nessuna ingestione in file tracciato
 - [x] `SEEWEB/` — 1 file → `Contratto_Seeweb_26.09.14.pdf` verificato: scansione immagine, nessun testo estraibile. Rapporto Seeweb (dal 2014!) gia' noto da altre fonti (VPS SCENIA, tunnel IPsec)
-- [x] `Daniele Colò - Punto informatica/` — 64 file → vendor-management.md §Punto Informatica (ragione sociale, acquisto switch Piano Terra 13/03/2026 e telefoni Yealink 24/03/2026 con prezzi). Resto = 58 fatture/ordini/preventivi 2024-2026 di attrezzatura generica (PC, GPU), non specifica alla rete, non ingerita singolarmente (09/07/2026)
+- [x] `Persona-H - Punto informatica/` — 64 file → vendor-management.md §Punto Informatica (ragione sociale, acquisto switch Piano Terra 13/03/2026 e telefoni Yealink 24/03/2026 con prezzi). Resto = 58 fatture/ordini/preventivi 2024-2026 di attrezzatura generica (PC, GPU), non specifica alla rete, non ingerita singolarmente (09/07/2026)
 - [x] `Amazon AWS (dismissione Glacier, migrazione S3, eliminazione servizi inutili)/` — 118 file → GAP-TBC.md #110/SEC-012 (access key IAM admin del 2019 senza MFA, ancora attiva, origine di una chiamata anomala ad Amazon Translate mai identificata). Resto = screenshot procedurali (dismissione Glacier, script CLI, inventory retrieval S3) senza testo aggiuntivo oltre a quanto gia' verificato nell'analisi anni vecchi (09/07/2026)
 - [x] `Google cloud services (aborted)/` — 4 file → verificato 09/07/2026: solo notifiche di fatturazione/sospensione, progetto GCP confermato abortito, nessuna ingestione
-- [x] `Openforce/` — 3 file → helpdesk-operations.md §Odoo 18 – Scope migrazione (preventivo 27/11/2025, importo non riportato, nuovo contatto tecnico Patrick Trabocchi) (09/07/2026)
+- [x] `Openforce/` — 3 file → helpdesk-operations.md §Odoo 18 – Scope migrazione (preventivo 27/11/2025, importo non riportato, nuovo contatto tecnico Referente-OpenForce-3) (09/07/2026)
 - [x] `Eter/` — 7 file → verificato: solo fatture/ordini, vendor certificati gia' noto, nessun contenuto aggiuntivo
 - [x] `TREX/` — 2 file → helpdesk-operations.md §Odoo 18 (fee +25% legacy versions da Odoo, pressione temporale sulla migrazione v18) (09/07/2026)
 - [x] `MICROSOFT/` — 5 file → cybersecurity-governance.md §Bitdefender (razionale difesa a piu' livelli Defender P1/Bitdefender/Zyxel, risolve il TBC "Email Security"). 3 file di storico mail/Teams vuoti (0 byte), .lnk punta a MICROSOFT 365.docx gia' ingerito (09/07/2026)
@@ -542,7 +508,7 @@ La baseline dei due manifest era ferma al 15/07/2026 e l'hook di avvio segnalava
 - [x] `Miscellaneous procedure e utilities/` — 1 voce, procedura HR per i permessi sui turni. Fuori scope
 - [x] `Proforma/` — 6 voci, contabilita'. Fuori scope
 - [x] `MyOffice/Transizione centralino cloud 2026/` — 4 voci → il documento di trasporto del gateway FXS **ingerito** (vedi deroga puntuale sopra e voce timeline 31/07/2026); restano non aperti l'omonimo `.eml`, una fattura elettronica e un archivio di fatture, tutti amministrativi
-- [x] `Daniele Colò - Punto informatica/2026/Preventivi/` — 2 voci, ed e' **il ritrovamento del triage**. Il primo preventivo, del 17/07, e' quello di Fase B per i tre access point NWA130BE gia' documentato in ADR-012: conferma modello e quantita', nessun fatto nuovo. Il secondo, del 31/07, contiene **due apparati di rete mai censiti**: un access point da esterno Zyxel WBE530-EU0101F, che e' l'hardware di M13c, e un UPS rack Addpower TP130N-1500 con scheda SNMP opzionale. Ingeriti in `runbook-anomalie.md` §AP-001 e §UPS-001, in `roadmap.md` M13c-5/M13c-6 e nella voce timeline 31/07/2026
+- [x] `Persona-H - Punto informatica/2026/Preventivi/` — 2 voci, ed e' **il ritrovamento del triage**. Il primo preventivo, del 17/07, e' quello di Fase B per i tre access point NWA130BE gia' documentato in ADR-012: conferma modello e quantita', nessun fatto nuovo. Il secondo, del 31/07, contiene **due apparati di rete mai censiti**: un access point da esterno Zyxel WBE530-EU0101F, che e' l'hardware di M13c, e un UPS rack Addpower TP130N-1500 con scheda SNMP opzionale. Ingeriti in `runbook-anomalie.md` §AP-001 e §UPS-001, in `roadmap.md` M13c-5/M13c-6 e nella voce timeline 31/07/2026
 
 Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` va lanciato dopo la conferma dell'utente, cosi' che il prossimo avvio di sessione parta pulito.
 
@@ -558,105 +524,54 @@ Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline
 
 ## IT + Administration - Documenti — stato al 09/07/2026
 
-Tutte le voci ALTA, MEDIA e BASSA di questa libreria sono chiuse (vedi
-sezione dedicata sopra). Unica eccezione deliberata: `MyOffice/Transizione
-centralino cloud 2026/` non ingerita perche' si sovrappone alla nota
-PORT-TAGGING riservata al racconto "a lavori conclusi" — resta in attesa
-della stessa indicazione dell'utente.
+Tutte le voci ALTA, MEDIA e BASSA di questa libreria sono chiuse (vedi sezione dedicata sopra). Unica eccezione deliberata: `MyOffice/Transizione centralino cloud 2026/` non ingerita perche' si sovrappone alla nota PORT-TAGGING riservata al racconto "a lavori conclusi" — resta in attesa della stessa indicazione dell'utente.
 
 ## Delta 09/07 -> 15/07/2026 (triage del 15/07/2026)
 
 Entrambe le librerie: nessuna voce richiede nuova ingestione, tutto ricade in categorie gia' decise. La corsa completa dello script (non solo il riepilogo troncato dell'hook di sessione) ha rilevato 42 nuovi file in `Documenti - IT`, non 11: la differenza sono 39 documenti sotto `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/` (coppie bilingue EN-IT/IT-DE/IT-EN, ambito Pharma-med — foglietti illustrativi, sinossi di studio, moduli di consenso informato) che sono il corpus grezzo del tirocinio universitario Unimc sul benchmark di traduzione, non documentazione IT: stessa categoria SKIP gia' decisa per "Ricerca Unimc" (righe 401-403, letteratura/materiale di ricerca esterno).
 - [-] `SCENIA/Documentazione scenia/admin_OK.pptx`, `user_OK.pptx`, `Guida_portale_SCENIA_claude.pptx` (nuovi) — stessa categoria SKIP di riga 478
-- [x] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Benchmark Study per
-  Intrawelt.docx` — non e' un file nuovo ma lo spostamento del file gia'
-  ingerito (riga 402) dentro una nuova sottocartella insieme al corpus dataset
-  e ai paper accademici di supporto (gia' SKIP, riga 403); nessun contenuto
-  aggiuntivo
+- [x] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Benchmark Study per Intrawelt.docx` — non e' un file nuovo ma lo spostamento del file gia' ingerito (riga 402) dentro una nuova sottocartella insieme al corpus dataset e ai paper accademici di supporto (gia' SKIP, riga 403); nessun contenuto aggiuntivo
 - [-] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/` (39 file, coppie bilingue Pharma-med) — SKIP, corpus di ricerca esterno (vedi nota sopra)
 - [-] `Cybersec/_QUESTIONARI FORNITORI/WindTre/` (Annex Part II, WIP .docx) e `Documentazione scenia admin.pptx` modificati — revisioni di lavoro su categorie gia' coperte, nessun contenuto nuovo per la storia di rete
 - [-] `Persona-H - Punto informatica/2026/Fatture/*.pdf` (nuovo) — stessa categoria delle 58 fatture gia' verificate e non ingerite singolarmente (riga 519)
-- [-] `MyOffice/Transizione centralino cloud 2026/modulo richiesta
-  variazione Vianova_Intrawelt_sig.pdf` (nuovo) — cade nella stessa
-  sottocartella riservata alla nota PORT-TAGGING (riga 514/545-547), resta
-  in attesa della stessa indicazione dell'utente
+- [-] `MyOffice/Transizione centralino cloud 2026/modulo richiesta variazione Vianova_Intrawelt_sig.pdf` (nuovo) — cade nella stessa sottocartella riservata alla nota PORT-TAGGING (riga 514/545-547), resta in attesa della stessa indicazione dell'utente
 - [-] `Eter/ORDINE ASSISTENZA ANNUALE.eml`, email licenza Zyxel XGS2220-54HP (modificati) — stessa categoria gia' verificata (righe 513/523), rinnovi senza contenuto nuovo
 
 Baseline aggiornata al 15/07/2026 per entrambe le librerie con `-UpdateBaseline`.
 
 ## Delta del 06/08/2026 (triage in apertura di sessione)
 
-Tre librerie, ventisette voci rilevanti in tutto, e un ritrovamento che vale da solo la
-sessione. Il triage e' stato fatto prima di ogni altro lavoro, secondo la regola di
-ammissione di `.claude/rules/fonti-e-riallineamento.md`.
+Tre librerie, ventisette voci rilevanti in tutto, e un ritrovamento che vale da solo la sessione. Il triage e' stato fatto prima di ogni altro lavoro, secondo la regola di ammissione di `.claude/rules/fonti-e-riallineamento.md`.
 
 ### Documenti - IT
 
-Il delta grezzo conta 406 nuovi, 1 modificato e 403 eliminati, ma il numero e'
-ingannevole: 806 delle 810 voci sono lo spostamento di una sottocartella dentro
-`SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`, cioe' lo
-stesso corpus di ricerca gia' in SKIP dal 15/07, che ricompare come 403 eliminati piu' 403
-nuovi perche' e' cambiato il percorso. Nessun contenuto nuovo.
+Il delta grezzo conta 406 nuovi, 1 modificato e 403 eliminati, ma il numero e' ingannevole: 806 delle 810 voci sono lo spostamento di una sottocartella dentro `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`, cioe' lo stesso corpus di ricerca gia' in SKIP dal 15/07, che ricompare come 403 eliminati piu' 403 nuovi perche' e' cambiato il percorso. Nessun contenuto nuovo.
 
-- [x] `Cybersec & IT Governance/STATO RETE INTRAWELT.docx` (nuovo) — **e' il ritrovamento
-  del triage e la fonte piu' importante arrivata da mesi**. Scritto dall'IT Manager,
-  descrive la catena fisica completa da Internet al firewall, la mappa porta-apparato del
-  XGS2220-54HP e dello switch QNAP, e soprattutto **l'alimentazione dei due armadi**, che
-  e' il livello di cui questo progetto non aveva praticamente nulla. Ingerito il giorno
-  stesso nella scheda nuova `docs/livello-fisico-ed-elettrico.md` e nella sua controparte
-  `_notes/livello-fisico-ed-elettrico.md`; ne discendono i gap **145-148** e
-  l'aggiornamento di `docs/mappatura-porte-fisiche.md`. La sezione "Piano Terra" del
-  documento e' **aperta e vuota**: e' lavoro non ancora fatto, non una lacuna da colmare
-  per inferenza
-- [-] `Cybersec & IT Governance/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/_WIP/` (2
-  nuovi, 1 eliminato) — revisione del 04/08 dell'Information Security Annex Part II e il
-  suo backup pre-modifica. Stessa categoria di Fase 5 gia' decisa, nessun contenuto nuovo
-  per la storia di rete
-- [-] `SCENIA/Ricerca Unimc/.../Materiale_per_dataset/` (403 nuovi, 402 eliminati) —
-  spostamento di percorso del corpus gia' in SKIP dal 15/07
-- [-] `SCENIA/Credenziali e Info Utili Ambiente Staging e Produzione.txt` (modificato) —
-  categoria SKIP permanente, file di credenziali: **non aperto**, per principio
+- [x] `Cybersec & IT Governance/STATO RETE INTRAWELT.docx` (nuovo) — **e' il ritrovamento del triage e la fonte piu' importante arrivata da mesi**. Scritto dall'IT Manager, descrive la catena fisica completa da Internet al firewall, la mappa porta-apparato del XGS2220-54HP e dello switch QNAP, e soprattutto **l'alimentazione dei due armadi**, che e' il livello di cui questo progetto non aveva praticamente nulla. Ingerito il giorno stesso nella scheda nuova `docs/livello-fisico-ed-elettrico.md` e nella sua controparte `_notes/livello-fisico-ed-elettrico.md`; ne discendono i gap **145-148** e l'aggiornamento di `docs/mappatura-porte-fisiche.md`. La sezione "Piano Terra" del documento e' **aperta e vuota**: e' lavoro non ancora fatto, non una lacuna da colmare per inferenza
+- [-] `Cybersec & IT Governance/_QUESTIONARI FORNITORI/WindTre/Busta Tecnica/_WIP/` (2 nuovi, 1 eliminato) — revisione del 04/08 dell'Information Security Annex Part II e il suo backup pre-modifica. Stessa categoria di Fase 5 gia' decisa, nessun contenuto nuovo per la storia di rete
+- [-] `SCENIA/Ricerca Unimc/.../Materiale_per_dataset/` (403 nuovi, 402 eliminati) — spostamento di percorso del corpus gia' in SKIP dal 15/07
+- [-] `SCENIA/Credenziali e Info Utili Ambiente Staging e Produzione.txt` (modificato) — categoria SKIP permanente, file di credenziali: **non aperto**, per principio
 
 ### IT + Administration - Documenti
 
-- [x] `ZYXEL/2026 (allinamento Nebula professional pack)/` (19 nuovi: ricevuta d'ordine,
-  note di riferimento, notifica di declassamento dell'organizzazione, tre fotografie,
-  dodici screenshot fra pannelli NCC e ticket di billing) — e' la documentazione
-  amministrativa dell'episodio gia' ricostruito e chiuso il 05-06/08/2026: declassamento a
-  Base Pack, acquisto dei Professional Pack, scadenze co-terminate. **Gia' ingerito** per
-  altra via, in ADR-022, in `docs/vendor-management.md` e nella voce timeline
-  corrispondente, perche' i fatti erano stati misurati sui pannelli in sessione mentre
-  accadevano. Le voci restano spuntate qui per tracciabilita': confermano dal lato
-  documentale cio' che era stato letto dal lato dell'apparato, e non aggiungono fatti. Gli
-  importi restano fuori dai file tracciati per policy
-- [-] `Daniele Colò - Punto informatica/2026/Preventivi/Preventivo-213_2026...pdf`
-  (modificato) — e' il preventivo del 31/07 gia' ingerito nel triage del 03/08 (access
-  point WBE530 e UPS Addpower). La modifica e' del file, non del contenuto rilevante:
-  modello, alimentazione e opzione SNMP restano quelli gia' registrati in
-  `runbook-anomalie.md` §AP-001 e §UPS-001. Da riaprire solo se l'ordine viene confermato
+- [x] `ZYXEL/2026 (allinamento Nebula professional pack)/` (19 nuovi: ricevuta d'ordine, note di riferimento, notifica di declassamento dell'organizzazione, tre fotografie, dodici screenshot fra pannelli NCC e ticket di billing) — e' la documentazione amministrativa dell'episodio gia' ricostruito e chiuso il 05-06/08/2026: declassamento a Base Pack, acquisto dei Professional Pack, scadenze co-terminate. **Gia' ingerito** per altra via, in ADR-022, in `docs/vendor-management.md` e nella voce timeline corrispondente, perche' i fatti erano stati misurati sui pannelli in sessione mentre accadevano. Le voci restano spuntate qui per tracciabilita': confermano dal lato documentale cio' che era stato letto dal lato dell'apparato, e non aggiungono fatti. Gli importi restano fuori dai file tracciati per policy
+- [-] `Persona-H - Punto informatica/2026/Preventivi/Preventivo-213_2026...pdf` (modificato) — e' il preventivo del 31/07 gia' ingerito nel triage del 03/08 (access point WBE530 e UPS Addpower). La modifica e' del file, non del contenuto rilevante: modello, alimentazione e opzione SNMP restano quelli gia' registrati in `runbook-anomalie.md` §AP-001 e §UPS-001. Da riaprire solo se l'ordine viene confermato
 - [-] `Proforma/` (1 nuovo, 1 modificato) — contabilita', fuori scope come sempre
 
 ### File di chat di Microsoft Teams
 
-- [x] `intrawelt_telefoni-e-AP_scheda-da-completare.md` (nuovo) — la scheda prodotta dal
-  progetto il 05/08 e **restituita compilata dall'IT Manager**. Porta modelli, prese a
-  parete e ubicazione dei cinque telefoni IP, l'identificazione dell'apparato sulla porta 3
-  del 30HP, l'etichetta reale dell'adattatore analogico e lo stato del parco digitale.
-  Ingerita in `docs/telefono-pbx-voip.md`, `docs/mappatura-porte-fisiche.md` e
-  `docs/livello-fisico-ed-elettrico.md`; ne discendono i gap **149-150** e la chiusura
-  rovesciata di #67/#99. **Contiene valori reali** per costruzione — MAC, numeri di
-  interno, una credenziale di apparato — che restano in `_notes/` e non entrano in nessun
-  file tracciato
-- [x] `intrawelt-rete_AP-stampanti-VLAN-fonia_2026-08-03.md` (nuovo) — l'estratto tematico
-  del 03/08 restituito **invariato**. Nessun fatto nuovo: e' servito da confronto per
-  verificare che il merge non perdesse nulla. Vista, non fonte
-- [-] cinque screenshot (`screenshot_73..77`) — sono le catture dei pannelli NCC gia'
-  coperte dalla cartella ZYXEL qui sopra
+- [x] `intrawelt_telefoni-e-AP_scheda-da-completare.md` (nuovo) — la scheda prodotta dal progetto il 05/08 e **restituita compilata dall'IT Manager**. Porta modelli, prese a parete e ubicazione dei cinque telefoni IP, l'identificazione dell'apparato sulla porta 3 del 30HP, l'etichetta reale dell'adattatore analogico e lo stato del parco digitale. Ingerita in `docs/telefono-pbx-voip.md`, `docs/mappatura-porte-fisiche.md` e `docs/livello-fisico-ed-elettrico.md`; ne discendono i gap **149-150** e la chiusura rovesciata di #67/#99. **Contiene valori reali** per costruzione — MAC, numeri di interno, una credenziale di apparato — che restano in `_notes/` e non entrano in nessun file tracciato
+- [x] `intrawelt-rete_AP-stampanti-VLAN-fonia_2026-08-03.md` (nuovo) — l'estratto tematico del 03/08 restituito **invariato**. Nessun fatto nuovo: e' servito da confronto per verificare che il merge non perdesse nulla. Vista, non fonte
+- [-] cinque screenshot (`screenshot_73..77`) — sono le catture dei pannelli NCC gia' coperte dalla cartella ZYXEL qui sopra
 
-Esito. I due file `.md` sono viste e non fonti: a merge verificato si possono cancellare,
-ed e' esattamente cio' che l'IT Manager aveva chiesto di poter fare. Il `.docx` dello stato
-rete resta invece in OneDrive come documento dell'IT Manager, e la sua sezione Piano Terra
-va completata li'.
+Esito. I due file `.md` sono viste e non fonti: a merge verificato si possono cancellare, ed e' esattamente cio' che l'IT Manager aveva chiesto di poter fare. Il `.docx` dello stato rete resta invece in OneDrive come documento dell'IT Manager, e la sua sezione Piano Terra va completata li'.
 
-Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` si lancia
-dopo la conferma, cosi' che il prossimo avvio parta pulito.
+Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` si lancia dopo la conferma, cosi' che il prossimo avvio parta pulito.
+
+## Ritrovamento del 06/08/2026, fuori delta: la cartella della sostituzione UPS del 01/07/2025
+
+Emerso cercando nella libreria amministrativa il gruppo di continuita' di Sala-1, e non da una segnalazione del delta: la cartella esisteva dal 2025 ed era gia' stata classificata come amministrativa. Contiene tre documenti scansionati, senza testo estraibile, che vanno letti come immagini.
+
+- [x] modulo di rientro in garanzia del fornitore di linea, 01/07/2025 → l'apparato sostituito dopo il black-out era una **alimentazione di backup del fornitore**, non un gruppo di continuita' dell'azienda, rientrata perche' andava in allarme e si spegneva. Ingerito in `docs/livello-fisico-ed-elettrico.md` §Il quarto gruppo e in `docs/business-continuity-disaster-recovery.md`; resta da chiarire il rapporto con il Back-UPS ES 400 oggi descritto sui due router
+- [x] mail di apertura dell'intervento, 30/06/2025 → conferma data e classificazione dell'intervento come non bloccante; nessun contenuto tecnico ulteriore
+- [ ] **scheda tecnica di installazione del fornitore di linea** → **da triagiare a parte, e vale piu' della cartella che la contiene**. Non riguarda l'UPS: e' il documento di installazione del servizio, e riporta gli indirizzi delle **cinque linee di accesso** (principale dati, secondaria dati, secondaria voce, backup dati, backup voce) con fornitore e identificativo di terminazione per ciascuna, la subnet della voce, la subnet pubblica, i due resolver del fornitore, e il modello del gateway telefonico con le sue porte BRI. E' la fonte che descrive la catena WAN **dal lato del fornitore**, cioe' il pezzo che `docs/livello-fisico-ed-elettrico.md` ricostruisce solo dal lato degli apparati in sede. Tutti i valori sono reali: nessuno puo' entrare in un file tracciato senza passare dalla mappa dei segnaposto
