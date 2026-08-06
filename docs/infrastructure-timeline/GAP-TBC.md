@@ -1,7 +1,6 @@
 ﻿# GAP-TBC "” Registro completo delle sezioni incomplete
 
-Ogni voce indica: sezione di origine, tipo di informazione mancante, e dove
-trovare il materiale per completarla (screenshot, file, mail).
+Ogni voce indica: sezione di origine, tipo di informazione mancante, e dove trovare il materiale per completarla (screenshot, file, mail).
 
 ---
 
@@ -21,8 +20,7 @@ Sezione quasi interamente placeholder (puntini di sospensione).
 | 2 | I2 | Intervento I2 descrizione e data | Screenshot o note operative |
 | 3 | I3 | Intervento I3 descrizione e data | Screenshot o note operative |
 
-Tutta la sezione va integrata con screenshot del diagramma di rete 2026
-(file "[TBC] Diagramma di rete" nella cartella ARCHITETTURA SERVER-CLOUD-LINEE).
+Tutta la sezione va integrata con screenshot del diagramma di rete 2026 (file "[TBC] Diagramma di rete" nella cartella ARCHITETTURA SERVER-CLOUD-LINEE).
 
 ---
 
@@ -39,30 +37,13 @@ Tutta la sezione va integrata con screenshot del diagramma di rete 2026
 
 ## sec-005 "” Piano 1 (Ufficio IT) — VERIFICATA IL 10/07/2026
 
-Nessun marcatore [TBC] esplicito nella sezione (103 paragrafi, 0 immagini).
-Contenuto: NAS INTRA3 (QNAP TS-210), specifiche hardware/software complete,
-storico eventi (dismesso di fatto dal 2022, accesso e formattazione
-21/02/2025 gia' documentato, riconnessione e analisi dischi 27/06/2025 non
-ancora documentato — aggiunto in `2025-q1-server-vianova.md`). Sezione ora
-completamente coperta.
+Nessun marcatore [TBC] esplicito nella sezione (103 paragrafi, 0 immagini). Contenuto: NAS INTRA3 (QNAP TS-210), specifiche hardware/software complete, storico eventi (dismesso di fatto dal 2022, accesso e formattazione 21/02/2025 gia' documentato, riconnessione e analisi dischi 27/06/2025 non ancora documentato — aggiunto in `2025-q1-server-vianova.md`). Sezione ora completamente coperta.
 
 ---
 
 ## sec-006 "” Piano 2 Rack SX — VERIFICATA IL 10/07/2026
 
-974 paragrafi, 17 [TBC] espliciti nella sezione. La maggior parte del
-contenuto (walkthrough menu Zyxel USG FLEX 500, VPN, certificati SSL,
-switch, centralino Panasonic) era gia' coperta da `firewall-zyxel-usg-flex-500.md`,
-`2023-baseline.md`, `2024-infra.md` e `telephony-pbx.md`. Novita' emerse:
-data precisa disattivazione VPN_auth_LAN2 (15/05/2025, gap #14 risolto),
-valutazione Supremo come alternativa controllata ad AnyDesk/TeamViewer
-(contesto aggiunto a SEC-003), consegna hardware Vianova telefonia
-(UPS-700 + Patton SmartNode, DDT 29/03/2024, in `2023-baseline.md`).
-Emersa anche una discrepanza sul modello del centralino Panasonic
-(KX-NCP1000 qui vs KX-TDA100 in `telephony-pbx.md`, quest'ultima ora
-segnalata come probabile errore) e sulla data di inizio servizio
-telefonico Vianova (aprile 2024 confermato da due fonti indipendenti vs
-aprile 2025 in telephony-pbx.md).
+974 paragrafi, 17 [TBC] espliciti nella sezione. La maggior parte del contenuto (walkthrough menu Zyxel USG FLEX 500, VPN, certificati SSL, switch, centralino Panasonic) era gia' coperta da `firewall-zyxel-usg-flex-500.md`, `2023-baseline.md`, `2024-infra.md` e `telephony-pbx.md`. Novita' emerse: data precisa disattivazione VPN_auth_LAN2 (15/05/2025, gap #14 risolto), valutazione Supremo come alternativa controllata ad AnyDesk/TeamViewer (contesto aggiunto a SEC-003), consegna hardware Vianova telefonia (UPS-700 + Patton SmartNode, DDT 29/03/2024, in `2023-baseline.md`). Emersa anche una discrepanza sul modello del centralino Panasonic (KX-NCP1000 qui vs KX-TDA100 in `telephony-pbx.md`, quest'ultima ora segnalata come probabile errore) e sulla data di inizio servizio telefonico Vianova (aprile 2024 confermato da due fonti indipendenti vs aprile 2025 in telephony-pbx.md).
 
 ---
 
@@ -79,29 +60,13 @@ aprile 2025 in telephony-pbx.md).
 
 ## sec-008 "” Cloud SEEWEB — VERIFICATA IL 10/07/2026
 
-162 paragrafi, 0 immagini, 2 [TBC] espliciti nella sezione (entrambi su
-WINSRV2019, gia' presenti nella scheda SEC-001 esistente: nessun contenuto
-aggiuntivo scoperto oltre al disco di rete non identificato, vedi
-#112/SRV-004 piu' sotto). Il resto della sezione (accesso firewall cloud,
-Foundation Server Pro, WINGROUPSHARE/WINSRV2019, procedura GroupShare,
-ticket SEEWEB 1317639) e' ora integrato in vendor-management.md §Seeweb e
-helpdesk-operations.md §GroupShare.
+162 paragrafi, 0 immagini, 2 [TBC] espliciti nella sezione (entrambi su WINSRV2019, gia' presenti nella scheda SEC-001 esistente: nessun contenuto aggiuntivo scoperto oltre al disco di rete non identificato, vedi #112/SRV-004 piu' sotto). Il resto della sezione (accesso firewall cloud, Foundation Server Pro, WINGROUPSHARE/WINSRV2019, procedura GroupShare, ticket SEEWEB 1317639) e' ora integrato in vendor-management.md §Seeweb e helpdesk-operations.md §GroupShare.
 
 ---
 
 ## sec-009 — Non attivi / dismessi
 
-VERIFICATA IL 10/07/2026. Re-estrazione completa (1543 paragrafi): guasto
-lettore BioStar2 e migrazione su HP Gen10/Windows Server 2022, host
-legacy HP G6 (predecessore di G5, VM eGetrad/SVN/TestWeb/DOMV/posta/
-antivirus consolidate su G5 prima di fine 2024), predecessore Seeweb del
-GroupShare attuale (Cloud Server 280SPU poi 2000SPU per GroupShare 2017),
-NAS FTP e NAS documenti HPX1400 (dismissione e valutazione riuso
-OpenMediaVault, non decisa nella fonte), rimozione fisica dello switch
-GS1900-24 (08/05/2026, tenuto come backup). USG20/USG60 in coda alla
-sezione privi di contenuto testuale utile (solo screenshot). La maggior
-parte del contenuto era gia' coperta da file esistenti; novita' aggiunte
-a 2025-q1-server-vianova.md, 2023-baseline.md, vendor-management.md.
+VERIFICATA IL 10/07/2026. Re-estrazione completa (1543 paragrafi): guasto lettore BioStar2 e migrazione su HP Gen10/Windows Server 2022, host legacy HP G6 (predecessore di G5, VM eGetrad/SVN/TestWeb/DOMV/posta/ antivirus consolidate su G5 prima di fine 2024), predecessore Seeweb del GroupShare attuale (Cloud Server 280SPU poi 2000SPU per GroupShare 2017), NAS FTP e NAS documenti HPX1400 (dismissione e valutazione riuso OpenMediaVault, non decisa nella fonte), rimozione fisica dello switch GS1900-24 (08/05/2026, tenuto come backup). USG20/USG60 in coda alla sezione privi di contenuto testuale utile (solo screenshot). La maggior parte del contenuto era gia' coperta da file esistenti; novita' aggiunte a 2025-q1-server-vianova.md, 2023-baseline.md, vendor-management.md.
 
 ---
 
@@ -161,8 +126,7 @@ Questa sezione e' esplicitamente marcata [TBC] nel titolo.
 
 ## Timeline files "” TBC trasversali
 
-Questi TBC sono stati identificati durante la scrittura dei file timeline e non
-sono esplicitamente nel documento Word.
+Questi TBC sono stati identificati durante la scrittura dei file timeline e non sono esplicitamente nel documento Word.
 
 | # | File | Evento | Cosa manca |
 |---|---|---|---|
@@ -343,11 +307,7 @@ sono esplicitamente nel documento Word.
 
 ## VM applicative su Proxmox — ricognizione live del 27/07/2026 (VM207, VM208)
 
-Gap emersi dalla ricognizione diretta del nodo `pve` via MCP Proxmox e dell'interno
-delle due VM via SSH il 27/07/2026, fuori dai filoni Wi-Fi e telefonia. Le due VM
-ospitano progetti applicativi con repository e documentazione propri: qui si registra
-solo cio' che ha rilevanza di rete e di sicurezza, non lo stato di avanzamento del
-loro sviluppo.
+Gap emersi dalla ricognizione diretta del nodo `pve` via MCP Proxmox e dell'interno delle due VM via SSH il 27/07/2026, fuori dai filoni Wi-Fi e telefonia. Le due VM ospitano progetti applicativi con repository e documentazione propri: qui si registra solo cio' che ha rilevanza di rete e di sicurezza, non lo stato di avanzamento del loro sviluppo.
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
@@ -465,11 +425,11 @@ loro sviluppo.
 |---|----|-------------|-------|
 | 139 | SEC-024 | Le regole `deny` della sessione bloccano l'agente sulla lettura del file `.env`, che e' la copia di **scorta** dei segreti e che **nessuno script legge**; non lo bloccano sulla lettura delle **variabili d'ambiente utente**, che sono la copia **operativa** e sono ottenibili con un comando qualunque da qualunque processo dell'utente. La protezione e' quindi collocata sulla copia inerte e non su quella viva. Non e' un difetto di progettazione: uno script che usa un segreto deve poterlo ottenere, e se l'agente esegue quello script allora l'agente ha accesso al segreto — nessuna variante dello schema lo evita. Va registrato perche' altrimenti la formula "il segreto sta in una variabile d'ambiente" viene letta come una barriera quando non lo e'. Conseguenza sulla lettura dello spostamento della chiave Nebula del 05/08/2026, da file sul desktop a variabile utente: **non** ha protetto il segreto dall'agente ne' da un processo in esecuzione come quell'utente, ha eliminato quattro esposizioni accidentali diverse — file visibile sfogliando una cartella, file in un backup del desktop, file in una condivisione schermo o in uno screenshot, file copiabile in una cartella sincronizzata. E' igiene contro il vettore piu' probabile, non un confine. Il confine manca ed e' **SEC-007**, il password manager sulla VM202 mai adottato: anche quello non elimina l'asimmetria, ma sposta la custodia in un sistema con controllo di accesso, registro degli accessi e rotazione invece del filesystem e del registro di una postazione. Da valutare come mitigazione interim, e la valutazione va fatta con onesta': aggiungere le variabili d'ambiente alle regole `deny` **romperebbe** l'esecuzione degli script da parte dell'agente, quindi non e' un rimedio ma uno spostamento del problema. Rilevante per A.5.17, A.8.12 e A.9.4 | Domanda dell'IT Manager del 05/08/2026 sulla coerenza fra il `.env` e la chiave rimossa dal desktop; verifica in campo del rifiuto della lettura di `.env` |
 
-## Licenza Nebula scaduta: la fonte automatica di switch e access point si spegne (05/08/2026)
+## Licenza Nebula scaduta: la fonte automatica si spegne e viene riaccesa (05-06/08/2026) — RISOLTO
 
 | # | ID | Descrizione | Fonte |
 |---|----|-------------|-------|
-| 140 | NEB-002 | Il 05/08/2026 Zyxel ha notificato per posta che l'organizzazione e' stata **retrocessa a Base Pack (licenza gratuita) per scadenza della licenza di un dispositivo**. La conseguenza misurata nella stessa giornata: la **Nebula OpenAPI non e' piu' utilizzabile**. Alle 11:48 `Get-NebulaSnapshot.ps1` aveva prodotto uno snapshot completo di 205 KB con i cinque apparati gestiti (tre NWA130BE, XGS2220-30HP, XGS2220-54HP), stato porte, `port-settings` e tabelle MAC L2, e l'organizzazione dichiarava `mode: PRO`; alle 16:32, con la **stessa chiave** nella stessa variabile d'ambiente, `GET /organizations` risponde ancora ma `GET /organizations/{orgId}/sites` e `GET /organizations/{orgId}/sites/devices` rispondono `{"detail":"Forbidden"}` e lo snapshot prodotto e' di 427 byte, vuoto. La causa e' coerente con quanto la documentazione dello script annota dal 14/07/2026, cioe' che la chiave NCC OpenAPI **richiede licenza Professional Pack** sui dispositivi dell'organizzazione; l'ipotesi alternativa, una revoca della chiave, si esclude rigenerandola. Cosa **non** cambia: il piano dati e' indipendente dal cloud, switch e access point continuano a inoltrare traffico con la configurazione che hanno e restano gestibili dalla GUI anche in Base Pack. Cosa cambia, e pesa: switch e access point **retrocedono dalla classe B alla classe E** del protocollo delle fonti, interrogabili solo tramite l'IT Manager con uno screenshot, quindi la cadenza confermata il 03/08 (snapshot prima di ogni task su porte, VLAN o access point, e comunque settimanale) **non e' piu' onorabile**; si perde lo strumento di verifica prima-e-dopo proprio su **M22b**, che e' l'intervento in cui il canale di scrittura Nebula aveva gia' perso silenziosamente configurazioni (NEB-001, ADR-010); e il piano di portare lo **USG FLEX 500 su Nebula**, che avrebbe spostato il firewall da classe E a classe B, diventa condizionato alla licenza e non piu' solo alla tempistica. Si perde inoltre la conservazione estesa dei dati storici di connettivita' ed eventi, il cui valore esatto in Base Pack va letto in Nebula sotto Organization-wide > Licenses & inventory e non ricordato. Da verificare in quello stesso pannello **quale** apparato abbia la licenza scaduta e con quale data, perche' il livello dell'organizzazione segue l'apparato peggiore; i tre access point sono di acquisto recente, quindi il candidato probabile e' uno dei due switch. Decisione di rinnovo **aperta e non ancora presa**: se si rinnova il Professional almeno sui due switch la fonte automatica torna, se non si rinnova va scritto come rinuncia dichiarata alla verifica automatica di porte, PVID e tabelle MAC. Misura di salvaguardia gia' applicata: lo snapshot buono delle 11:48 e' stato congelato in `_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json` (fuori git) perche' e' l'ultima lettura di classe B disponibile, e la corsa degradata resta come evidenza in `output/nebula-snapshot-20260805-163235.json`. Rilevante per A.8.1 (inventario), A.5.19-A.5.22 (fornitori e licenze) e A.8.9 (gestione delle configurazioni) | Mail automatica del Nebula Team del 05/08/2026 e riesecuzione dello script nella stessa sessione, con confronto fra la corsa delle 11:48 e quella delle 16:32 |
+| 140 | NEB-002 | **Aperto il 05/08/2026 alle 16:09 locali, chiuso il 06/08/2026 alle 08:51: sedici ore.** Zyxel ha notificato per posta la retrocessione dell'organizzazione a **Base Pack** per scadenza della licenza di un dispositivo, e con essa e' caduta la **Nebula OpenAPI**, cioe' la fonte di classe B di questo progetto su porte, PVID, VLAN ammesse, tabelle MAC e access point. La caduta e' stata misurata prima di conoscerne la causa: alle 11:48 lo snapshot era completo, 205 KB, cinque apparati, `mode: PRO`; alle 16:32, con la **stessa chiave**, `GET /organizations` rispondeva ancora ma `/sites` e `/sites/devices` rispondevano `{"detail":"Forbidden"}` e lo snapshot usciva vuoto, 427 byte. Il change log di NCC data il cambio di stato Pro Pack -> Base Pack alle **14:09 UTC**, cioe' le 16:09 locali, esattamente fra le due misure. **Causa accertata**: i tre access point **NWA130BE** della Fase B erano stati aggiunti all'organizzazione il **21/07/2026** con `License info` vuota, cioe' senza licenza Nebula, mentre i due switch erano coperti; il periodo di grazia di **quindici giorni** previsto da License 2.0 scade il **05/08**, e il livello dell'organizzazione e' il **minimo** fra i dispositivi, non la loro somma. La decisione di ADR-012 aveva comprato l'hardware degli access point e non le loro licenze: costo nascosto che non si manifesta all'installazione ma allo scadere della grazia. **Rimedio applicato**: acquisto di Nebula **Professional Pack** per tutti e sei i dispositivi in inventario con scadenze **co-terminate**, decisione e dati in **ADR-022**; la data che vincola l'organizzazione e' la piu' vicina, il **22/11/2027**. **Verifica di chiusura**, 06/08/2026 08:51: `mode: PRO`, endpoint autorizzati, cinque apparati censiti, e snapshot **piu' completo di quello pre-declassamento** perche' il 54HP ha restituito anche la tabella MAC che il 05/08 mancava (54 porte e 58 voci MAC sul 54HP, 30 porte e 48 voci sul 30HP). La chiave API **non e' stata rigenerata**: il declassamento sospende l'autorizzazione, non revoca la chiave, e l'organizzazione e' risalita a Pro da sola senza usare il pulsante "Upgrade Now". **Cosa resta, e non e' un residuo ma un vincolo permanente**: ogni dispositivo nuovo adottato nell'organizzazione va licenziato entro quindici giorni o fa ricadere tutto, il che riguarda subito l'access point da esterno di **M13c** (nuovo passo M13c-9). Procedura diagnostica in `runbook-anomalie.md` §NEB-002, conservata perche' vale per la prossima volta. Rilevante per A.8.1 (inventario), A.5.19-A.5.22 (fornitori e licenze) e A.8.9 (gestione delle configurazioni) | Mail del Nebula Team del 05/08/2026; riesecuzione dello script alle 11:48 e alle 16:32 del 05/08 e alle 08:51 del 06/08; pannelli NCC License & inventory (schede Overview, Devices, Licenses, Change log) e wizard Purchase License |
 
 ## VNC senza autenticazione applicato su una sola VM, e non quella documentata (05/08/2026)
 
@@ -532,8 +492,8 @@ loro sviluppo.
 | Catena WAN: Mikrotik e iniettore PoE non censiti, terzo backup VDSL (03/08/2026) | 137 |
 | Configurazioni di firewall in libreria sincronizzata (05/08/2026) | 138 |
 | Custodia dei segreti: asimmetria fra copia operativa e copia di scorta (05/08/2026) | 139 |
-| Licenza Nebula scaduta, OpenAPI non piu' utilizzabile (05/08/2026) | 140 |
+| Licenza Nebula scaduta, OpenAPI caduta e riaccesa in sedici ore (05-06/08/2026) — risolto | 140 |
 | VNC senza autenticazione applicato sulla VM602 e non sulla VM207 (05/08/2026) | 141 |
 | Tool distruttivi del MCP Proxmox abilitati lato client (05/08/2026) | 142 |
 | **Totale identificati** | **142** |
-| **Di cui risolti** | **8** (14, 54, 55, 61, 63, 106, 111, 116 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
+| **Di cui risolti** | **9** (14, 54, 55, 61, 63, 106, 111, 116, 140 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |

@@ -1,7 +1,6 @@
 # Runbook Anomalie di Rete e Sicurezza – Intrawelt
 
-Runbook operativi per le anomalie documentate in GAP-TBC.md e VA 2025.
-Ogni runbook segue lo stesso schema: Verifica → Impatto → Fix → Verifica post-fix.
+Runbook operativi per le anomalie documentate in GAP-TBC.md e VA 2025. Ogni runbook segue lo stesso schema: Verifica → Impatto → Fix → Verifica post-fix.
 
 ---
 
@@ -202,58 +201,16 @@ Dopo la dismissione completa della connettività TIM (luglio 2025), rimangono co
 
 ## AP-001: Access Point con Debian 7 (EOL), NON gestiti da Nebula
 
-**Severity**: ALTA
-**Origine**: VA Onova nov 2025; smentita ipotesi Nebula confermata il 14/07/2026
-**Stato**: APERTO
+**Severity**: ALTA **Origine**: VA Onova nov 2025; smentita ipotesi Nebula confermata il 14/07/2026 **Stato**: APERTO
 
 ### Contesto
-Almeno tre dei cinque access point WiFi noti (0-9-1 tetto e altri due non
-ancora localizzati con precisione) girano un firmware basato su Debian 7
-(EOL dal 2018, Dropbear SSH aperto), con MAC vendor Ubiquiti rilevato
-dalla scansione. **Verificato il 14/07/2026**: nessuno di questi AP
-compare nell'organizzazione Nebula gia' usata per i due switch Zyxel —
-smentisce la precedente ipotesi "AP gestiti Nebula" (`vendor-management.md`
-corretta di conseguenza). La gestione reale di questi dispositivi non e'
-identificata: potrebbero essere in modalita' standalone (nessun
-controller) o adottati da un controller UniFi non ancora localizzato.
-Questo blocca anche il progetto di rete ospiti (NET-005): senza un modo
-noto di gestirli centralmente non si puo' creare in modo affidabile un
-secondo SSID taggato su VLAN.
+Almeno tre dei cinque access point WiFi noti (0-9-1 tetto e altri due non ancora localizzati con precisione) girano un firmware basato su Debian 7 (EOL dal 2018, Dropbear SSH aperto), con MAC vendor Ubiquiti rilevato dalla scansione. **Verificato il 14/07/2026**: nessuno di questi AP compare nell'organizzazione Nebula gia' usata per i due switch Zyxel — smentisce la precedente ipotesi "AP gestiti Nebula" (`vendor-management.md` corretta di conseguenza). La gestione reale di questi dispositivi non e' identificata: potrebbero essere in modalita' standalone (nessun controller) o adottati da un controller UniFi non ancora localizzato. Questo blocca anche il progetto di rete ospiti (NET-005): senza un modo noto di gestirli centralmente non si puo' creare in modo affidabile un secondo SSID taggato su VLAN.
 
-**Aggiornamento 14/07/2026**: una scansione live dell'intera classe
-Guest (10.61.90.1-254, Advanced IP Scanner) non mostra piu' nessuno dei
-dispositivi noti dalla VA di novembre 2025 agli stessi indirizzi — ne'
-i tre presunti AP (.34/.35/.38), ne' lo switch di management (.37), l'UPS
-(.33), il server MyHome (.40) o il citofono Bticino (.41). La classe
-oggi risulta popolata da dispositivi diversi (vendor MAC HPE, Xiaomi,
-MSI, Pegatron, ASUS — coerenti con telefoni/laptop, non con
-infrastruttura). **Non e' verificato se questo significhi che i problemi
-precedenti sono stati risolti** (dispositivi spostati altrove) o
-semplicemente che erano spenti/non raggiungibili al momento della
-scansione, o che hanno cambiato IP in 8 mesi: da chiarire prima di
-considerare chiuso NET-001/FW-002/UPS-001/AP-001. Per gli AP in
-particolare, dato che non sono raggiungibili ai vecchi indirizzi, il modo
-piu' affidabile per localizzarli ora e' controllare via Nebula i dettagli
-delle porte switch a cui sono fisicamente collegati (mappatura nota:
-0-7-1, 0-9-1, 1-8-1, 2-5-1, 2-7-1) invece di cercarli per IP: lo switch,
-essendo Zyxel/Nebula, mostra MAC e stato del link per porta
-indipendentemente dal fatto che il dispositivo collegato non sia Zyxel.
+**Aggiornamento 14/07/2026**: una scansione live dell'intera classe Guest (10.61.90.1-254, Advanced IP Scanner) non mostra piu' nessuno dei dispositivi noti dalla VA di novembre 2025 agli stessi indirizzi — ne' i tre presunti AP (.34/.35/.38), ne' lo switch di management (.37), l'UPS (.33), il server MyHome (.40) o il citofono Bticino (.41). La classe oggi risulta popolata da dispositivi diversi (vendor MAC HPE, Xiaomi, MSI, Pegatron, ASUS — coerenti con telefoni/laptop, non con infrastruttura). **Non e' verificato se questo significhi che i problemi precedenti sono stati risolti** (dispositivi spostati altrove) o semplicemente che erano spenti/non raggiungibili al momento della scansione, o che hanno cambiato IP in 8 mesi: da chiarire prima di considerare chiuso NET-001/FW-002/UPS-001/AP-001. Per gli AP in particolare, dato che non sono raggiungibili ai vecchi indirizzi, il modo piu' affidabile per localizzarli ora e' controllare via Nebula i dettagli delle porte switch a cui sono fisicamente collegati (mappatura nota: 0-7-1, 0-9-1, 1-8-1, 2-5-1, 2-7-1) invece di cercarli per IP: lo switch, essendo Zyxel/Nebula, mostra MAC e stato del link per porta indipendentemente dal fatto che il dispositivo collegato non sia Zyxel.
 
-**Strumento disponibile (14/07/2026)**: `scripts/Get-NebulaSnapshot.ps1`
-interroga l'API REST ufficiale di Nebula e produce in `output/nebula-config.md`
-la tabella MAC L2 per porta di ogni switch — lo stesso controllo del passo
-2 sotto, ma per l'intera organizzazione in un colpo solo invece che porta
-per porta a mano nel portale (vedi ADR-009). Richiede una chiave API
-Nebula: icona "..." nella barra in alto di Nebula Control Center > "My
-devices & services" > scheda "NCC OpenAPI Key" > Generate (percorso non
-ovvio, vedi ADR-009 per il dettaglio di dove NON si trova).
+**Strumento disponibile (14/07/2026)**: `scripts/Get-NebulaSnapshot.ps1` interroga l'API REST ufficiale di Nebula e produce in `output/nebula-config.md` la tabella MAC L2 per porta di ogni switch — lo stesso controllo del passo 2 sotto, ma per l'intera organizzazione in un colpo solo invece che porta per porta a mano nel portale (vedi ADR-009). Richiede una chiave API Nebula: icona "..." nella barra in alto di Nebula Control Center > "My devices & services" > scheda "NCC OpenAPI Key" > Generate (percorso non ovvio, vedi ADR-009 per il dettaglio di dove NON si trova).
 
-**RISOLTO — tre AP localizzati per porta (14/07/2026)**: eseguito lo
-script, incrociata la tabella MAC L2 di entrambi gli switch con l'elenco
-delle porte trunk (per scartare le voci viste solo di riflesso attraverso
-il dorsale). Risultato, tre dispositivi con lo stesso MAC vendor Ubiquiti
-gia' noto dalla VA, ciascuno su una porta non-trunk (collegamento fisico
-diretto, non dorsale):
+**RISOLTO — tre AP localizzati per porta (14/07/2026)**: eseguito lo script, incrociata la tabella MAC L2 di entrambi gli switch con l'elenco delle porte trunk (per scartare le voci viste solo di riflesso attraverso il dorsale). Risultato, tre dispositivi con lo stesso MAC vendor Ubiquiti gia' noto dalla VA, ciascuno su una porta non-trunk (collegamento fisico diretto, non dorsale):
 
 | AP | Switch | Porta | Note |
 |---|---|---|---|
@@ -261,11 +218,7 @@ diretto, non dorsale):
 | Ubiquiti #2 | XGS2220-54HP (Piano 2) | 45 | Idem |
 | Ubiquiti #3 | XGS2220-30HP (Piano Terra) | 1 | Visto anche su una delle due porte a 10 Gbps del XGS2220-54HP, coerente con l'apprendimento del MAC attraverso il collegamento tra i due switch: il collegamento reale e' sul Piano Terra, non sul Piano 2. Nota del 23/07/2026: il numero di porta annotato nel rilievo del 14/07 (52) va letto con la correzione di topologia dello stesso 23/07 — la porta della dorsale e' la 51, la 52 e' il ramo verso il QNAP. La conclusione sull'ubicazione dell'AP non cambia, ma su quale delle due porte fosse comparso il MAC serve un nuovo rilievo per esserne certi |
 
-Corrispondenza con le cinque ubicazioni fisiche note
-(`mappatura-porte-fisiche.md`: Piano Terra 0-7-1, tetto 0-9-1, Piano 1
-1-8-1, CED 2-5-1, esterno tetto 2-7-1): **risolta il 15/07/2026** grazie
-al nome LLDP configurato su ciascun dispositivo, letto dalla vista
-Nebula "Clients" (esportazione CSV):
+Corrispondenza con le cinque ubicazioni fisiche note (`mappatura-porte-fisiche.md`: Piano Terra 0-7-1, tetto 0-9-1, Piano 1 1-8-1, CED 2-5-1, esterno tetto 2-7-1): **risolta il 15/07/2026** grazie al nome LLDP configurato su ciascun dispositivo, letto dalla vista Nebula "Clients" (esportazione CSV):
 
 | Nome LLDP | MAC | IP attuale | Switch / porta | Ubicazione plausibile |
 |---|---|---|---|---|
@@ -274,216 +227,56 @@ Nebula "Clients" (esportazione CSV):
 | PianoSecondo | AA:BB:CC:00:00:26 | 10.61.10.202 | XGS2220-54HP porta 45 | CED o esterno tetto (2-5-1 / 2-7-1, ambiguo tra i due) |
 | EsternoIrrigazione | AA:BB:CC:00:00:28 | 10.61.10.243 | XGS2220-30HP porta 4 | Tetto/irrigazione (0-9-1) |
 
-**Correzione 15/07/2026**: la sessione precedente aveva classificato
-EsternoIrrigazione come "vendor diverso dagli altri tre" per il prefisso
-MAC differente. Riscontro diretto sul referto Nessus originale della VA
-Onova (fonte: `Intrawelt_remediation_checklist_2026-05-15_15-00.html`,
-righe indicate dall'utente) smentisce questo: il dispositivo e' descritto
-esplicitamente come "gemello hardware" degli altri due (stesso Debian 7 +
-Dropbear SSH), quindi e' Ubiquiti come gli altri tre — il prefisso MAC
-diverso riflette solo un lotto/periodo di produzione diverso, non un
-vendor diverso. Il referto conferma anche le tre corrispondenze IP del
-06/11/2025: 10.61.90.34 = EsternoIrrigazione, 10.61.90.35 =
-PianoTerra, 10.61.90.38 = PianoSecondo. **PianoPrimo (AA:BB:CC:00:00:25,
-oggi .201) non compare in nessuna fingerprint di quello scan**: o era
-spento/scollegato il 06/11/2025, o e' stato installato/ricollegato dopo
-quella data — non deducibile da nessuna fonte disponibile, resta [TBC].
+**Correzione 15/07/2026**: la sessione precedente aveva classificato EsternoIrrigazione come "vendor diverso dagli altri tre" per il prefisso MAC differente. Riscontro diretto sul referto Nessus originale della VA Onova (fonte: `Intrawelt_remediation_checklist_2026-05-15_15-00.html`, righe indicate dall'utente) smentisce questo: il dispositivo e' descritto esplicitamente come "gemello hardware" degli altri due (stesso Debian 7 + Dropbear SSH), quindi e' Ubiquiti come gli altri tre — il prefisso MAC diverso riflette solo un lotto/periodo di produzione diverso, non un vendor diverso. Il referto conferma anche le tre corrispondenze IP del 06/11/2025: 10.61.90.34 = EsternoIrrigazione, 10.61.90.35 = PianoTerra, 10.61.90.38 = PianoSecondo. **PianoPrimo (AA:BB:CC:00:00:25, oggi .201) non compare in nessuna fingerprint di quello scan**: o era spento/scollegato il 06/11/2025, o e' stato installato/ricollegato dopo quella data — non deducibile da nessuna fonte disponibile, resta [TBC].
 
-**Dashboard web: confermato assente, non solo "non trovato".** Lo scan
-Nessus originale (non credenziale, quindi affidabile per il solo elenco
-porte aperte) riporta come unica porta TCP aperta su questi host la 22
-(Dropbear SSH). Coerente con i tentativi falliti su 443 (connessione
-rifiutata) e 8443 (stesso esito) di questa sessione: questi dispositivi
-non hanno mai avuto un'interfaccia web di gestione raggiungibile in rete,
-non e' un problema di percorso o porta sbagliata.
+**Dashboard web: confermato assente, non solo "non trovato".** Lo scan Nessus originale (non credenziale, quindi affidabile per il solo elenco porte aperte) riporta come unica porta TCP aperta su questi host la 22 (Dropbear SSH). Coerente con i tentativi falliti su 443 (connessione rifiutata) e 8443 (stesso esito) di questa sessione: questi dispositivi non hanno mai avuto un'interfaccia web di gestione raggiungibile in rete, non e' un problema di percorso o porta sbagliata.
 
-**Accesso SSH: raggiunto ma non autenticato.** Superata la negoziazione
-crittografica (host key + MAC algorithm obsoleti, richiede
-`-o HostKeyAlgorithms=+ssh-rsa,ssh-dss -o MACs=+hmac-sha1`), le
-credenziali di fabbrica `ubnt`/`ubnt` risultano cambiate. Nessuna
-credenziale alternativa trovata nel vault interno (`accesso_server_accounts_vari.xls`,
-oggi su NAS INTRA2 dopo la dismissione di HPX1400) ne' in nessun
-documento gia' ingerito in questo progetto. Nessun controller UniFi
-individuato sulla rete. **Reset di fabbrica valutato e rimandato**: e'
-l'unica via per rientrare, ma disconnette all'istante tutti i client
-Wi-Fi collegati in quel momento a quell'AP specifico — non eseguito
-perche' disruptivo durante l'orario operativo, non per motivi tecnici.
+**Accesso SSH: raggiunto ma non autenticato.** Superata la negoziazione crittografica (host key + MAC algorithm obsoleti, richiede `-o HostKeyAlgorithms=+ssh-rsa,ssh-dss -o MACs=+hmac-sha1`), le credenziali di fabbrica `ubnt`/`ubnt` risultano cambiate. Nessuna credenziale alternativa trovata nel vault interno (`accesso_server_accounts_vari.xls`, oggi su NAS INTRA2 dopo la dismissione di HPX1400) ne' in nessun documento gia' ingerito in questo progetto. Nessun controller UniFi individuato sulla rete. **Reset di fabbrica valutato e rimandato**: e' l'unica via per rientrare, ma disconnette all'istante tutti i client Wi-Fi collegati in quel momento a quell'AP specifico — non eseguito perche' disruptivo durante l'orario operativo, non per motivi tecnici.
 
 ### Decisione architetturale — segmentazione in due fasi (15/07/2026)
 
-Dato che i tre AP legacy non sono raggiungibili senza un reset
-disruptivo, la via d'accesso per risolvere sia NET-005 (isolamento Wi-Fi
-dalla LAN management) sia il progetto rete ospiti (M13) passa dallo
-switch/firewall, non dagli AP — quel livello e' interamente sotto
-controllo (Nebula + Zyxel USG FLEX 500), indipendentemente da cosa gli
-AP sanno fare.
+Dato che i tre AP legacy non sono raggiungibili senza un reset disruptivo, la via d'accesso per risolvere sia NET-005 (isolamento Wi-Fi dalla LAN management) sia il progetto rete ospiti (M13) passa dallo switch/firewall, non dagli AP — quel livello e' interamente sotto controllo (Nebula + Zyxel USG FLEX 500), indipendentemente da cosa gli AP sanno fare.
 
-**Fase A — segmentazione della Wi-Fi esistente, nessun hardware nuovo,
-eseguibile subito.** Le tre porte gia' localizzate (XGS2220-30HP porta 1,
-XGS2220-54HP porte 41 e 45) vengono configurate come access port su una
-VLAN dedicata al traffico Wi-Fi staff, isolata dalla VLAN 10 management
-tramite ACL sul firewall. E' comportamento 802.1Q standard lato switch:
-il traffico che entra da quella porta fisica viene taggato nella VLAN
-scelta indipendentemente da cosa fa l'AP a monte — l'AP non deve sapere
-nulla di VLAN, non richiede nessuna configurazione su di esso. Risolve
-NET-005 senza toccare i tre dispositivi legacy.
+**Fase A — segmentazione della Wi-Fi esistente, nessun hardware nuovo, eseguibile subito.** Le tre porte gia' localizzate (XGS2220-30HP porta 1, XGS2220-54HP porte 41 e 45) vengono configurate come access port su una VLAN dedicata al traffico Wi-Fi staff, isolata dalla VLAN 10 management tramite ACL sul firewall. E' comportamento 802.1Q standard lato switch: il traffico che entra da quella porta fisica viene taggato nella VLAN scelta indipendentemente da cosa fa l'AP a monte — l'AP non deve sapere nulla di VLAN, non richiede nessuna configurazione su di esso. Risolve NET-005 senza toccare i tre dispositivi legacy.
 
-**Fase B — sostituzione pianificata, non affiancamento.** L'opzione
-"aggiungere un solo AP Zyxel nuovo dedicato al solo guest, lasciando i
-tre Ubiquiti a fare lo staff" e' stata scartata: se comunque serve
-comprare hardware Zyxel/Nebula per avere il guest, non ha senso lasciare
-in produzione tre dispositivi EOL dal 2018, non gestibili, non
-aggiornabili, e con la password sconosciuta anche per l'uso attuale (se
-mai servisse cambiarla — es. dopo un incidente di sicurezza o
-un'uscita di personale — oggi non sarebbe possibile senza un reset). La
-via piu' difendibile, anche in ottica ISO 27001 (A.8.8 Management of
-technical vulnerabilities, gia' un gap aperto in `design-and-security.md`),
-e' pianificare la sostituzione di tutti e quattro i punti (i tre esistenti
-+ quello nuovo previsto per il guest) con AP Zyxel Nebula: multi-SSID
-nativo (staff + guest sullo stesso AP fisico, ciascuno taggato sulla
-propria VLAN), DPPSK per gli ospiti, gestione e aggiornamento firmware
-dallo stesso pannello gia' in uso per gli switch. La Fase A resta valida
-e utile anche in questo scenario: e' il modo in cui, da subito, il
-traffico Wi-Fi attuale smette di condividere la VLAN di management,
-mentre la Fase B (investimento hardware) si pianifica con calma senza
-lasciare aperto nel frattempo il gap di isolamento.
+**Fase B — sostituzione pianificata, non affiancamento.** L'opzione "aggiungere un solo AP Zyxel nuovo dedicato al solo guest, lasciando i tre Ubiquiti a fare lo staff" e' stata scartata: se comunque serve comprare hardware Zyxel/Nebula per avere il guest, non ha senso lasciare in produzione tre dispositivi EOL dal 2018, non gestibili, non aggiornabili, e con la password sconosciuta anche per l'uso attuale (se mai servisse cambiarla — es. dopo un incidente di sicurezza o un'uscita di personale — oggi non sarebbe possibile senza un reset). La via piu' difendibile, anche in ottica ISO 27001 (A.8.8 Management of technical vulnerabilities, gia' un gap aperto in `design-and-security.md`), e' pianificare la sostituzione di tutti e quattro i punti (i tre esistenti
++ quello nuovo previsto per il guest) con AP Zyxel Nebula: multi-SSID nativo (staff + guest sullo stesso AP fisico, ciascuno taggato sulla propria VLAN), DPPSK per gli ospiti, gestione e aggiornamento firmware dallo stesso pannello gia' in uso per gli switch. La Fase A resta valida e utile anche in questo scenario: e' il modo in cui, da subito, il traffico Wi-Fi attuale smette di condividere la VLAN di management, mentre la Fase B (investimento hardware) si pianifica con calma senza lasciare aperto nel frattempo il gap di isolamento.
 
 ### Procedura fix
 
-1. **Fase A (subito, nessun acquisto)**: creare la VLAN Wi-Fi staff sui
-   due switch via Nebula, impostare le porte 1 (XGS2220-30HP) e 41/45
-   (XGS2220-54HP) come access port su quella VLAN, aggiungere le regole
-   ACL sul firewall USG FLEX 500 per negare l'accesso da quella VLAN
-   verso la VLAN 10 management (stesso pattern gia' usato per
-   Guest→LAN deny).
-2. **Fase B (pianificata)**: preventivo per 3-4 AP Zyxel Nebula (uno per
-   ciascuna ubicazione fisica gia' mappata, piu' l'eventuale copertura
-   guest), sostituzione graduale dei tre Ubiquiti EOL, configurazione
-   multi-SSID (staff + guest) con VLAN tagging e DPPSK nativi.
+1. **Fase A (subito, nessun acquisto)**: creare la VLAN Wi-Fi staff sui due switch via Nebula, impostare le porte 1 (XGS2220-30HP) e 41/45 (XGS2220-54HP) come access port su quella VLAN, aggiungere le regole ACL sul firewall USG FLEX 500 per negare l'accesso da quella VLAN verso la VLAN 10 management (stesso pattern gia' usato per Guest→LAN deny).
+2. **Fase B (pianificata)**: preventivo per 3-4 AP Zyxel Nebula (uno per ciascuna ubicazione fisica gia' mappata, piu' l'eventuale copertura guest), sostituzione graduale dei tre Ubiquiti EOL, configurazione multi-SSID (staff + guest) con VLAN tagging e DPPSK nativi.
 
 ### Correzioni emerse eseguendo Fase A (15/07/2026)
 
-Verificato a schermo che il PVID sulla porta di uno switch Nebula e' un
-campo di testo libero: non serve creare la VLAN da nessuna parte prima,
-scriverla su una porta e' sufficiente (corretta un'ipotesi opposta scritta
-in giornata in ADR-010).
+Verificato a schermo che il PVID sulla porta di uno switch Nebula e' un campo di testo libero: non serve creare la VLAN da nessuna parte prima, scriverla su una porta e' sufficiente (corretta un'ipotesi opposta scritta in giornata in ADR-010).
 
-Verificato sui dati reali di entrambi gli switch che ogni porta controllata
-finora — comprese le sei porte 49-54 del 54HP marcate "trunk" e la porta 29
-del 30HP verso il dorsale (marcata `trunk: false` ma non per questo meno
-permissiva) — ha `allowedVLAN: ["all"]`: lascia gia' passare qualunque VLAN
-taggata. Conseguenza pratica: la VLAN 40 attraversera' gia' la dorsale tra i
-due switch senza bisogno di nessuna modifica esplicita sui trunk, l'unico
-intervento reale resta sulle tre porte AP (PVID + restringere il loro
-`allowedVLAN` da "all" a vuoto, per un isolamento effettivo e non solo
-cosmetico).
+Verificato sui dati reali di entrambi gli switch che ogni porta controllata finora — comprese le sei porte 49-54 del 54HP marcate "trunk" e la porta 29 del 30HP verso il dorsale (marcata `trunk: false` ma non per questo meno permissiva) — ha `allowedVLAN: ["all"]`: lascia gia' passare qualunque VLAN taggata. Conseguenza pratica: la VLAN 40 attraversera' gia' la dorsale tra i due switch senza bisogno di nessuna modifica esplicita sui trunk, l'unico intervento reale resta sulle tre porte AP (PVID + restringere il loro `allowedVLAN` da "all" a vuoto, per un isolamento effettivo e non solo cosmetico).
 
-**Effetto collaterale non risolto da Fase A, da tenere a mente**: questo
-`allowedVLAN: "all"` universale significa che, oggi, qualunque dispositivo
-capace di inviare frame 802.1Q taggati su una qualsiasi porta dei due
-switch potrebbe gia' iniettare traffico in una VLAN arbitraria, VLAN 10
-management inclusa — non e' una protezione che Fase A introduce o rimuove,
-e' un limite di postura L2 preesistente su tutta la rete, piu' ampio del
-perimetro Wi-Fi. Irrigidire `allowedVLAN` porta per porta su tutta la rete
-(non solo sulle tre porte AP) sarebbe un intervento di hardening a parte,
-di scala paragonabile a un audit completo delle porte fisiche: non
-bloccante per Fase A, ma da registrare come possibile voce futura in
-`design-and-security.md`/`GAP-TBC.md` quando si affrontera' la Fase 5 ISO27001.
-3. Se in futuro si trovasse comunque un modo per entrare nei tre AP
-   legacy (nuova credenziale scoperta, controller UniFi individuato) prima
-   della Fase B, valutare se vale la pena configurarli come "solo staff,
-   isolati" (Fase A li rende comunque sicuri anche senza login) invece di
-   investire tempo per farci convivere un secondo SSID che il firmware
-   EOL potrebbe non supportare comunque bene.
+**Effetto collaterale non risolto da Fase A, da tenere a mente**: questo `allowedVLAN: "all"` universale significa che, oggi, qualunque dispositivo capace di inviare frame 802.1Q taggati su una qualsiasi porta dei due switch potrebbe gia' iniettare traffico in una VLAN arbitraria, VLAN 10 management inclusa — non e' una protezione che Fase A introduce o rimuove, e' un limite di postura L2 preesistente su tutta la rete, piu' ampio del perimetro Wi-Fi. Irrigidire `allowedVLAN` porta per porta su tutta la rete (non solo sulle tre porte AP) sarebbe un intervento di hardening a parte, di scala paragonabile a un audit completo delle porte fisiche: non bloccante per Fase A, ma da registrare come possibile voce futura in `design-and-security.md`/`GAP-TBC.md` quando si affrontera' la Fase 5 ISO27001.
+3. Se in futuro si trovasse comunque un modo per entrare nei tre AP legacy (nuova credenziale scoperta, controller UniFi individuato) prima della Fase B, valutare se vale la pena configurarli come "solo staff, isolati" (Fase A li rende comunque sicuri anche senza login) invece di investire tempo per farci convivere un secondo SSID che il firmware EOL potrebbe non supportare comunque bene.
 
 ### Preventivo Fase B scelto (20/07/2026)
 
-Ricevuto un preventivo da Punto Informatica (partner hardware gia' noto,
-vedi `vendor-management.md` §Punto Informatica) per tre access point Zyxel
-NWA130BE-EU0101, standard Wi-Fi 7 (802.11be) tri-radio (2,4 GHz, 5 GHz, 6
-GHz), velocita' massima dichiarata fino a 11 Gbps, due porte Ethernet da
-2,5 Gbps, CPU quad-core Qualcomm, supporto NebulaFlex (standalone o
-cloud-managed, quindi gestibile dalla stessa organizzazione Nebula gia' in
-uso per i due switch), WPA3. L'utente ha scelto questo preventivo per la
-Fase B: importo, sconto e riferimento del documento restano fuori dai file
-tracciati per policy di anonimizzazione (`.claude/rules/anonymization.md`).
+Ricevuto un preventivo da Punto Informatica (partner hardware gia' noto, vedi `vendor-management.md` §Punto Informatica) per tre access point Zyxel NWA130BE-EU0101, standard Wi-Fi 7 (802.11be) tri-radio (2,4 GHz, 5 GHz, 6 GHz), velocita' massima dichiarata fino a 11 Gbps, due porte Ethernet da 2,5 Gbps, CPU quad-core Qualcomm, supporto NebulaFlex (standalone o cloud-managed, quindi gestibile dalla stessa organizzazione Nebula gia' in uso per i due switch), WPA3. L'utente ha scelto questo preventivo per la Fase B: importo, sconto e riferimento del documento restano fuori dai file tracciati per policy di anonimizzazione (`.claude/rules/anonymization.md`).
 
-La quantita' di tre unita' copre esattamente le tre ubicazioni AP per
-personale/ospiti gia' mappate (PianoTerra su XGS2220-30HP porta 1,
-PianoPrimo su XGS2220-54HP porta 41, PianoSecondo su XGS2220-54HP porta
-45), una per una, coerente con il piano gia' scritto sopra (multi-SSID
-staff + guest sullo stesso AP fisico, invece di un quarto dispositivo
-guest dedicato). **EsternoIrrigazione** (XGS2220-30HP porta 4, AP dedicato
-alla centrale di irrigazione sul tetto secondo il rilievo fisico, non
-copertura Wi-Fi per il personale) resta fuori da questo preventivo e fuori
-scope per questa fase: la sua eventuale sostituzione, se necessaria, e' una
-decisione separata non ancora presa.
+La quantita' di tre unita' copre esattamente le tre ubicazioni AP per personale/ospiti gia' mappate (PianoTerra su XGS2220-30HP porta 1, PianoPrimo su XGS2220-54HP porta 41, PianoSecondo su XGS2220-54HP porta 45), una per una, coerente con il piano gia' scritto sopra (multi-SSID staff + guest sullo stesso AP fisico, invece di un quarto dispositivo guest dedicato). **EsternoIrrigazione** (XGS2220-30HP porta 4, AP dedicato alla centrale di irrigazione sul tetto secondo il rilievo fisico, non copertura Wi-Fi per il personale) resta fuori da questo preventivo e fuori scope per questa fase: la sua eventuale sostituzione, se necessaria, e' una decisione separata non ancora presa.
 
-**Aggiornamento 28/07/2026: l'EsternoIrrigazione entra in scope (M13c, ADR-016).**
-La clausola "fuori scope" scritta qui sopra vale per il preventivo di Fase B e
-resta storicamente corretta, ma la decisione e' stata superata. Con i tre AP nuovi
-in servizio dal 21-27/07 e i tre vecchi scomparsi dalle tabelle MAC, questo e'
-l'unico dispositivo della classe ancora in rete: Debian 7 con Dropbear SSH come
-sola porta aperta, non gestibile, collegato senza filtri alla LAN piatta. Il
-problema e' passato da condizione diffusa a singolo apparato identificato, e come
-tale si chiude. Otto sotto-passi tracciati in `roadmap.md` (M13c-1 a M13c-8), gap
-dedicato SEC-018 (`GAP-TBC.md` #124).
+**Aggiornamento 28/07/2026: l'EsternoIrrigazione entra in scope (M13c, ADR-016).** La clausola "fuori scope" scritta qui sopra vale per il preventivo di Fase B e resta storicamente corretta, ma la decisione e' stata superata. Con i tre AP nuovi in servizio dal 21-27/07 e i tre vecchi scomparsi dalle tabelle MAC, questo e' l'unico dispositivo della classe ancora in rete: Debian 7 con Dropbear SSH come sola porta aperta, non gestibile, collegato senza filtri alla LAN piatta. Il problema e' passato da condizione diffusa a singolo apparato identificato, e come tale si chiude. Otto sotto-passi tracciati in `roadmap.md` (M13c-1 a M13c-8), gap dedicato SEC-018 (`GAP-TBC.md` #124).
 
-Quattro fatti tecnici da tenere presenti quando si affronta quell'intervento, tutti
-gia' accertati e nessuno ovvio. Il collegamento al tetto e' **cablato**, non un ponte
-radio: il rilievo fisico registra un patch intermedio nel locale caldaia
-(`mappatura-porte-fisiche.md`, 0-8-1 patch verso 0-9-1), quindi l'apparato sul tetto
-e' un access point alimentato in PoE dalla porta 4 e il client radio e' la centrale
-di irrigazione. La porta 4 negozia a **100 Mbps** mentre le porte delle postazioni
-dello stesso switch negoziano a 1 Gbps: va chiarito se il limite sia l'eta'
-dell'apparato o la tratta (patch e cavo verso il tetto), perche' nel secondo caso un
-AP nuovo resterebbe strozzato. La **passphrase della rete radio attuale non e'
-recuperabile**, perche' l'AP e' inaccessibile: l'SSID si legge con una scansione dal
-tetto, la chiave no, quindi l'intervento comporta per costruzione la creazione di una
-rete nuova e la riconfigurazione della centrale, che puo' richiedere il fornitore
-dell'impianto. E la prima opzione da valutare non e' un AP nuovo ma **nessun AP**: se
-la centrale espone una porta Ethernet raggiungibile dal cavo che arriva al tetto, il
-collegamento diventa cablato e l'apparato fuori supporto sparisce invece di essere
-sostituito.
+Quattro fatti tecnici da tenere presenti quando si affronta quell'intervento, tutti gia' accertati e nessuno ovvio. Il collegamento al tetto e' **cablato**, non un ponte radio: il rilievo fisico registra un patch intermedio nel locale caldaia (`mappatura-porte-fisiche.md`, 0-8-1 patch verso 0-9-1), quindi l'apparato sul tetto e' un access point alimentato in PoE dalla porta 4 e il client radio e' la centrale di irrigazione. La porta 4 negozia a **100 Mbps** mentre le porte delle postazioni dello stesso switch negoziano a 1 Gbps: va chiarito se il limite sia l'eta' dell'apparato o la tratta (patch e cavo verso il tetto), perche' nel secondo caso un AP nuovo resterebbe strozzato. La **passphrase della rete radio attuale non e' recuperabile**, perche' l'AP e' inaccessibile: l'SSID si legge con una scansione dal tetto, la chiave no, quindi l'intervento comporta per costruzione la creazione di una rete nuova e la riconfigurazione della centrale, che puo' richiedere il fornitore dell'impianto. E la prima opzione da valutare non e' un AP nuovo ma **nessun AP**: se la centrale espone una porta Ethernet raggiungibile dal cavo che arriva al tetto, il collegamento diventa cablato e l'apparato fuori supporto sparisce invece di essere sostituito.
 
-**Aggiornamento 03/08/2026: individuato l'hardware candidato per M13c.** Rilevato dal
-delta OneDrive e non da comunicazione in sessione, il preventivo di Punto Informatica
-del 31/07/2026 propone un **Zyxel WBE530-EU0101F**, access point da esterno Wi-Fi 7
-(802.11be/ax/ac/n/g/b/a) tri-radio a 2,4, 5 e 6 GHz, sei stream spaziali, throughput
-aggregato dichiarato fino a 11 Gbps, due porte LAN da 1/2,5 Gbps, alimentazione PoE
-802.3at da 24 W con ingresso DC alternativo, gestione NebulaFlex Pro dalla stessa
-organizzazione Nebula gia' in uso, WPA3 con 802.1X e RADIUS, isolamento di livello 2,
-MAC filtering, rilevamento di access point non autorizzati, band steering e fast
-roaming, temperatura operativa 0-50 °C, staffa di montaggio e viti incluse. Ordine e
-consegna **non confermati**; importo e riferimento del preventivo esclusi dai file
-tracciati per policy.
+**Aggiornamento 03/08/2026: individuato l'hardware candidato per M13c.** Rilevato dal delta OneDrive e non da comunicazione in sessione, il preventivo di Punto Informatica del 31/07/2026 propone un **Zyxel WBE530-EU0101F**, access point da esterno Wi-Fi 7 (802.11be/ax/ac/n/g/b/a) tri-radio a 2,4, 5 e 6 GHz, sei stream spaziali, throughput aggregato dichiarato fino a 11 Gbps, due porte LAN da 1/2,5 Gbps, alimentazione PoE 802.3at da 24 W con ingresso DC alternativo, gestione NebulaFlex Pro dalla stessa organizzazione Nebula gia' in uso, WPA3 con 802.1X e RADIUS, isolamento di livello 2, MAC filtering, rilevamento di access point non autorizzati, band steering e fast roaming, temperatura operativa 0-50 °C, staffa di montaggio e viti incluse. Ordine e consegna **non confermati**; importo e riferimento del preventivo esclusi dai file tracciati per policy.
 
-Tre cose da chiarire prima di trasformare il preventivo in un ordine, tutte gia'
-previste dai sotto-passi di M13c e nessuna risolta dal documento.
+Tre cose da chiarire prima di trasformare il preventivo in un ordine, tutte gia' previste dai sotto-passi di M13c e nessuna risolta dal documento.
 
-La decisione di M13c-3 non e' formalizzata: l'esistenza di un preventivo per un
-access point orienta verso la sostituzione, ma la prima opzione da valutare era
-l'eliminazione dell'apparato cablando la centrale di irrigazione. Va scritto quale
-delle due si e' scelta e perche', invece di dedurlo da un documento commerciale.
+La decisione di M13c-3 non e' formalizzata: l'esistenza di un preventivo per un access point orienta verso la sostituzione, ma la prima opzione da valutare era l'eliminazione dell'apparato cablando la centrale di irrigazione. Va scritto quale delle due si e' scelta e perche', invece di dedurlo da un documento commerciale.
 
-Il grado di protezione contro acqua e polvere non e' dichiarato nel preventivo. Per
-un apparato "da esterno" destinato a un tetto e' il parametro che decide se
-sopravvive, e la temperatura operativa da 0 °C in su va confrontata con le minime
-invernali del sito.
+Il grado di protezione contro acqua e polvere non e' dichiarato nel preventivo. Per un apparato "da esterno" destinato a un tetto e' il parametro che decide se sopravvive, e la temperatura operativa da 0 °C in su va confrontata con le minime invernali del sito.
 
-La tratta e' il vincolo che pesa piu' di tutti, ed e' la ragione per cui M13c-5 e'
-stato promosso ad ALTA: la porta 4 del 30HP negozia oggi a 100 Mbps. Se il limite e'
-il cavo verso il tetto e non l'apparato vecchio, un access point con due porte da
-2,5 Gbps resta strozzato a un ventesimo della sua capacita', e la verifica costa un
-portatile collegato al posto del terminale.
+La tratta e' il vincolo che pesa piu' di tutti, ed e' la ragione per cui M13c-5 e' stato promosso ad ALTA: la porta 4 del 30HP negozia oggi a 100 Mbps. Se il limite e' il cavo verso il tetto e non l'apparato vecchio, un access point con due porte da 2,5 Gbps resta strozzato a un ventesimo della sua capacita', e la verifica costa un portatile collegato al posto del terminale.
 
-Resta aperta l'ambiguita' gia' segnalata su PianoSecondo (porta 45 del
-54HP): il rilievo fisico conosce cinque ubicazioni AP, ma solo quattro
-dispositivi Ubiquiti risultano oggi effettivamente in rete, e PianoSecondo
-potrebbe corrispondere sia alla posizione CED (2-5-1) sia all'esterno tetto
-(2-7-1) — non risolvibile senza un sopralluogo. Stato acquisto (ordine
-effettivo, consegna) non tracciato in questa sessione: qui si registra solo
-la scelta del modello e della quantita'.
+Resta aperta l'ambiguita' gia' segnalata su PianoSecondo (porta 45 del 54HP): il rilievo fisico conosce cinque ubicazioni AP, ma solo quattro dispositivi Ubiquiti risultano oggi effettivamente in rete, e PianoSecondo potrebbe corrispondere sia alla posizione CED (2-5-1) sia all'esterno tetto (2-7-1) — non risolvibile senza un sopralluogo. Stato acquisto (ordine effettivo, consegna) non tracciato in questa sessione: qui si registra solo la scelta del modello e della quantita'.
 
 ### Verifica
 
@@ -498,24 +291,9 @@ Test-NetConnection -ComputerName 10.61.10.1 -Port 443
 
 ### Incidente 16/07/2026: le tre porte AP interrompono l'SSID quando ritaggate
 
-**Sequenza applicata** (dopo che il lato firewall era gia' pronto e
-verificato: interfaccia `vlan40`, zona `WIFI_STAFF`, DHCP, security policy
-in ordine corretto): le tre porte AP spostate una alla volta con
-`Set-NebulaWifiVlan.ps1 -Only Access -ApName <nome> -Apply`, ciascuna
-verificata subito dopo via rilettura API (`portVid`/`allowedVLAN` corretti)
-e, per PianoTerra, anche via tabella MAC L2 (il MAC reale dell'AP
-comparuto taggato VLAN 40). Tutti e tre gli esiti tecnici a livello switch
-erano positivi.
+**Sequenza applicata** (dopo che il lato firewall era gia' pronto e verificato: interfaccia `vlan40`, zona `WIFI_STAFF`, DHCP, security policy in ordine corretto): le tre porte AP spostate una alla volta con `Set-NebulaWifiVlan.ps1 -Only Access -ApName <nome> -Apply`, ciascuna verificata subito dopo via rilettura API (`portVid`/`allowedVLAN` corretti) e, per PianoTerra, anche via tabella MAC L2 (il MAC reale dell'AP comparuto taggato VLAN 40). Tutti e tre gli esiti tecnici a livello switch erano positivi.
 
-**Sintomo**: entro pochi minuti dall'ultima porta applicata, l'SSID
-"intrawelt" e' sparito completamente dalla scansione Wi-Fi — non solo non
-raggiungibile, proprio assente dall'elenco delle reti visibili.
-Confermato con **due dispositivi diversi** (uno smartphone, un portatile
-con scheda di rete diversa): nessuno dei due vedeva la rete, escludendo un
-problema del singolo dispositivo o della sua cache di scansione. Un primo
-sospetto (cache di scansione Android dopo aver dimenticato la rete) e'
-stato scartato dalla prova con "Add network" manuale (SSID + password
-corretti, hidden network) che non ha comunque prodotto connessione.
+**Sintomo**: entro pochi minuti dall'ultima porta applicata, l'SSID "intrawelt" e' sparito completamente dalla scansione Wi-Fi — non solo non raggiungibile, proprio assente dall'elenco delle reti visibili. Confermato con **due dispositivi diversi** (uno smartphone, un portatile con scheda di rete diversa): nessuno dei due vedeva la rete, escludendo un problema del singolo dispositivo o della sua cache di scansione. Un primo sospetto (cache di scansione Android dopo aver dimenticato la rete) e' stato scartato dalla prova con "Add network" manuale (SSID + password corretti, hidden network) che non ha comunque prodotto connessione.
 
 **Diagnostica lato switch durante l'incidente** (rieseguito
 `Get-NebulaSnapshot.ps1`): tutti e tre i collegamenti fisici switch-AP
@@ -531,173 +309,48 @@ switch — abbiano smesso di trasmettere, per una ragione non verificabile
 dato che questi tre dispositivi restano inaccessibili (credenziali perse,
 nessuna dashboard, vedi §AP-001).
 
-**Rollback**: `Set-NebulaWifiVlan.ps1 -Only Access -VlanId 1 -Apply`
-(tutte e tre le porte insieme, per massimizzare la velocita' di ripristino
-data la situazione live), verificato dallo script stesso
-(`portVid` tornato a 1 su tutte e tre) e confermato empiricamente:
-l'SSID e' ritornato visibile e connettibile entro pochi minuti, sullo
-stesso dispositivo di test.
+**Rollback**: `Set-NebulaWifiVlan.ps1 -Only Access -VlanId 1 -Apply` (tutte e tre le porte insieme, per massimizzare la velocita' di ripristino data la situazione live), verificato dallo script stesso (`portVid` tornato a 1 su tutte e tre) e confermato empiricamente: l'SSID e' ritornato visibile e connettibile entro pochi minuti, sullo stesso dispositivo di test.
 
-**Ipotesi principale, non confermata**: il principio teorico alla base di
-Fase A — "il tagging 802.1Q e' una responsabilita' dello switch, l'access
-point non deve sapere nulla della VLAN sottostante" — e' corretto per
-hardware moderno, ma evidentemente non ha retto per questi tre AP Ubiquiti
-del 2011-2013. Ipotesi plausibili, nessuna verificabile senza accesso al
-dispositivo: (a) l'AP ha un proprio indirizzo IP di management statico
-configurato per la vecchia subnet, e perdere la raggiungibilita' del
-proprio gateway a un livello piu' basso ha innescato un comportamento di
-failsafe che disabilita il radio; (b) il firmware datato richiede un
-riavvio per rinegoziare correttamente il collegamento dopo un cambio di
-VLAN nativa, e il rollback e' arrivato prima che un eventuale riavvio
-spontaneo potesse verificarsi; (c) un comportamento di firmware non
-documentato e specifico di questa generazione di hardware.
+**Ipotesi principale, non confermata**: il principio teorico alla base di Fase A — "il tagging 802.1Q e' una responsabilita' dello switch, l'access point non deve sapere nulla della VLAN sottostante" — e' corretto per hardware moderno, ma evidentemente non ha retto per questi tre AP Ubiquiti del 2011-2013. Ipotesi plausibili, nessuna verificabile senza accesso al dispositivo: (a) l'AP ha un proprio indirizzo IP di management statico configurato per la vecchia subnet, e perdere la raggiungibilita' del proprio gateway a un livello piu' basso ha innescato un comportamento di failsafe che disabilita il radio; (b) il firmware datato richiede un riavvio per rinegoziare correttamente il collegamento dopo un cambio di VLAN nativa, e il rollback e' arrivato prima che un eventuale riavvio spontaneo potesse verificarsi; (c) un comportamento di firmware non documentato e specifico di questa generazione di hardware.
 
-**Conseguenze per la roadmap**: rafforza, con una prova pratica non solo
-teorica, la decisione gia' presa per Fase B (sostituzione invece di
-affiancamento, vedi sopra) — questi AP si sono dimostrati fragili anche a
-un intervento di rete che avrebbe dovuto essere per loro completamente
-trasparente. La configurazione lato firewall (interfaccia, zona, DHCP,
-security policy) resta applicata e valida: non e' stata rollbackata, e
-sara' riusabile sia per un nuovo tentativo Fase A con una procedura piu'
-prudente (presenza fisica a un AP alla volta, finestra di osservazione
-piu' lunga prima di dichiarare il tentativo riuscito, eventuale
-power-cycle manuale dell'AP dopo il cambio) sia per la Fase B (gli AP
-Zyxel Nebula sostitutivi useranno la stessa VLAN 40). Da valutare anche
-un meccanismo alternativo che non richieda di toccare il PVID della porta
-AP, ad esempio la funzione "Layer 2 Isolation" vista nel menu Network del
-firewall ma mai esplorata.
+**Conseguenze per la roadmap**: rafforza, con una prova pratica non solo teorica, la decisione gia' presa per Fase B (sostituzione invece di affiancamento, vedi sopra) — questi AP si sono dimostrati fragili anche a un intervento di rete che avrebbe dovuto essere per loro completamente trasparente. La configurazione lato firewall (interfaccia, zona, DHCP, security policy) resta applicata e valida: non e' stata rollbackata, e sara' riusabile sia per un nuovo tentativo Fase A con una procedura piu' prudente (presenza fisica a un AP alla volta, finestra di osservazione piu' lunga prima di dichiarare il tentativo riuscito, eventuale power-cycle manuale dell'AP dopo il cambio) sia per la Fase B (gli AP Zyxel Nebula sostitutivi useranno la stessa VLAN 40). Da valutare anche un meccanismo alternativo che non richieda di toccare il PVID della porta AP, ad esempio la funzione "Layer 2 Isolation" vista nel menu Network del firewall ma mai esplorata.
 
 ### Secondo tentativo (16/07/2026, stesso giorno): scoperta di inaffidabilita' nella sincronizzazione Nebula-switch
 
-Prima di riprovare su tutti e tre gli AP, si e' deciso un test mirato e
-piu' prudente su un solo AP (PianoTerra): applicare la VLAN, forzare
-subito un riavvio PoE da remoto (nuovo parametro `-PowerCycle` dello
-script, spegne/riaccende `pseEnabled`), e osservare piu' a lungo prima di
-giudicare. Per eliminare l'ambiguita' gia' notata (un client Wi-Fi puo'
-agganciare un AP diverso da quello sotto test), creato anche uno script
-dedicato (`Set-ApTestIsolation.ps1`) per spegnere temporaneamente il PoE
-degli altri due AP durante il test.
+Prima di riprovare su tutti e tre gli AP, si e' deciso un test mirato e piu' prudente su un solo AP (PianoTerra): applicare la VLAN, forzare subito un riavvio PoE da remoto (nuovo parametro `-PowerCycle` dello script, spegne/riaccende `pseEnabled`), e osservare piu' a lungo prima di giudicare. Per eliminare l'ambiguita' gia' notata (un client Wi-Fi puo' agganciare un AP diverso da quello sotto test), creato anche uno script dedicato (`Set-ApTestIsolation.ps1`) per spegnere temporaneamente il PoE degli altri due AP durante il test.
 
 **Due scoperte, entrambe indipendenti dal comportamento degli AP stessi**:
 
-1. La scrittura su PianoTerra e' stata inizialmente rifiutata in modo
-   silenzioso (risposta `200 OK` dall'API, ma la rilettura immediata
-   mostrava ancora il valore vecchio) — non un errore, un ritardo di
-   propagazione fra il cloud Nebula e lo switch fisico. Un secondo
-   tentativo, con un retry a backoff crescente aggiunto allo script, ha
-   avuto successo ed e' stato verificato correttamente.
-2. Pochi minuti dopo, senza alcuna azione esterna, **la porta di
-   PianoTerra e' tornata da sola al valore precedente** (`portVid` da 40 a
-   1). Nello stesso momento, la tabella MAC dello switch mostrava che
-   PianoPrimo e PianoSecondo — su cui avevamo appena impostato
-   `pseEnabled: false` per isolare il test, confermato dalla rilettura API
-   — **erano in realta' ancora pienamente funzionanti**: il telefono di
-   test, dopo aver dimenticato e reinserito la rete da capo, si e'
-   ricollegato proprio a PianoPrimo, il cui MAC compariva regolarmente
-   nella tabella MAC dello switch.
+1. La scrittura su PianoTerra e' stata inizialmente rifiutata in modo silenzioso (risposta `200 OK` dall'API, ma la rilettura immediata mostrava ancora il valore vecchio) — non un errore, un ritardo di propagazione fra il cloud Nebula e lo switch fisico. Un secondo tentativo, con un retry a backoff crescente aggiunto allo script, ha avuto successo ed e' stato verificato correttamente.
+2. Pochi minuti dopo, senza alcuna azione esterna, **la porta di PianoTerra e' tornata da sola al valore precedente** (`portVid` da 40 a 1). Nello stesso momento, la tabella MAC dello switch mostrava che PianoPrimo e PianoSecondo — su cui avevamo appena impostato `pseEnabled: false` per isolare il test, confermato dalla rilettura API — **erano in realta' ancora pienamente funzionanti**: il telefono di test, dopo aver dimenticato e reinserito la rete da capo, si e' ricollegato proprio a PianoPrimo, il cui MAC compariva regolarmente nella tabella MAC dello switch.
 
-**Conclusione**: il canale di scrittura verso questi due switch tramite
-Nebula OpenAPI non e' affidabile quanto assunto — non solo per
-l'heartbeat/dashboard (gia' noto come NEB-001), ma per le scritture di
-configurazione stesse, che possono non restare stabili nel tempo o non
-tradursi in un effetto fisico reale (il caso del PoE). Continuare a
-testare da remoto in queste condizioni rischia di produrre altri falsi
-segnali invece di risposte affidabili. Ripristinato il PoE di PianoPrimo/
-PianoSecondo per sicurezza (anche se sembravano non averlo mai perso).
-Decisione in sospeso con l'utente su come procedere: le opzioni sul
-tavolo sono un test con presenza fisica reale (nessun affidamento su API
-per la diagnosi), un'indagine piu' approfondita di NEB-001 prima di
-continuare (es. aprire un ticket con il supporto Zyxel viste due prove
-concrete di scritture non affidabili), oppure accettare che questi tre AP
-EOL non sono un buon bersaglio per interventi di rete da remoto e
-dare priorita' alla Fase B. **Scelto: approfondire NEB-001.**
+**Conclusione**: il canale di scrittura verso questi due switch tramite Nebula OpenAPI non e' affidabile quanto assunto — non solo per l'heartbeat/dashboard (gia' noto come NEB-001), ma per le scritture di configurazione stesse, che possono non restare stabili nel tempo o non tradursi in un effetto fisico reale (il caso del PoE). Continuare a testare da remoto in queste condizioni rischia di produrre altri falsi segnali invece di risposte affidabili. Ripristinato il PoE di PianoPrimo/ PianoSecondo per sicurezza (anche se sembravano non averlo mai perso). Decisione in sospeso con l'utente su come procedere: le opzioni sul tavolo sono un test con presenza fisica reale (nessun affidamento su API per la diagnosi), un'indagine piu' approfondita di NEB-001 prima di continuare (es. aprire un ticket con il supporto Zyxel viste due prove concrete di scritture non affidabili), oppure accettare che questi tre AP EOL non sono un buon bersaglio per interventi di rete da remoto e dare priorita' alla Fase B. **Scelto: approfondire NEB-001.**
 
 ### Approfondimento NEB-001 (16/07/2026): trovata una causa concreta e localizzata
 
-Interrogati due endpoint Nebula OpenAPI non ancora usati nel progetto
-(`connectivity`, storico online/offline; `event-logs`, log eventi) tramite
-il nuovo script `Get-NebulaConnectivityHistory.ps1`. Risultati:
+Interrogati due endpoint Nebula OpenAPI non ancora usati nel progetto (`connectivity`, storico online/offline; `event-logs`, log eventi) tramite il nuovo script `Get-NebulaConnectivityHistory.ps1`. Risultati:
 
-Nessuno dei due switch risulta mai offline nelle ultime 24 ore secondo lo
-storico di connettivita' — esclude, almeno per come Nebula la misura, che
-il canale cloud si sia disconnesso durante i nostri test.
+Nessuno dei due switch risulta mai offline nelle ultime 24 ore secondo lo storico di connettivita' — esclude, almeno per come Nebula la misura, che il canale cloud si sia disconnesso durante i nostri test.
 
-Il log eventi del 30HP (switch di PianoTerra) mostra esattamente i due
-eventi PoE del nostro power-cycle (porta 1 disabilitata, poi "Delivering
-Power" 12 secondi dopo, coerente con l'attesa dello script) seguiti da due
-brevi flap di link, plausibilmente il boot dell'AP stesso — nessuna
-anomalia, tutto coerente con le nostre azioni.
+Il log eventi del 30HP (switch di PianoTerra) mostra esattamente i due eventi PoE del nostro power-cycle (porta 1 disabilitata, poi "Delivering Power" 12 secondi dopo, coerente con l'attesa dello script) seguiti da due brevi flap di link, plausibilmente il boot dell'AP stesso — nessuna anomalia, tutto coerente con le nostre azioni.
 
-Il log eventi del 54HP (switch di PianoPrimo e PianoSecondo) non contiene
-**nessun** evento per le porte 41 o 45 in tutta la finestra di 24 ore,
-nonostante le scritture PoE fatte oggi — ma contiene **migliaia** di
-eventi di link flap sulla **porta 46** (su/giu' ogni 14-16 secondi,
-ciascuno con ricalcolo STP), una porta senza alcun dispositivo
-documentato. Verificato che al momento del controllo quella porta
-risultava effettivamente `OFFLINE`. Registrato come nuovo gap **NET-010**
-(`GAP-TBC.md`).
+Il log eventi del 54HP (switch di PianoPrimo e PianoSecondo) non contiene **nessun** evento per le porte 41 o 45 in tutta la finestra di 24 ore, nonostante le scritture PoE fatte oggi — ma contiene **migliaia** di eventi di link flap sulla **porta 46** (su/giu' ogni 14-16 secondi, ciascuno con ricalcolo STP), una porta senza alcun dispositivo documentato. Verificato che al momento del controllo quella porta risultava effettivamente `OFFLINE`. Registrato come nuovo gap **NET-010** (`GAP-TBC.md`).
 
-**Identificato dall'utente**: la porta 46 ospita il PC che fa girare
-Ollama (10.61.20.58, la stessa macchina ambigua di SRV-002/#107 — GPU
-dedicata, sistema operativo Linux, finora non chiaro se fisica o VM),
-confermato raggiungibile via HTTP sulla porta 11500 ("Ollama is running")
-nonostante il link flap continuo. La causa del flap non e' ancora nota
-(ipotesi: Energy Efficient Ethernet/risparmio energetico della scheda di
-rete, ASPM PCIe, driver, cavo) — da controllare direttamente sull'host con
-`ethtool` (non Gestione Dispositivi Windows, ipotesi iniziale errata
-corretta dall'utente) prima di considerare risolto NET-010.
+**Identificato dall'utente**: la porta 46 ospita il PC che fa girare Ollama (10.61.20.58, la stessa macchina ambigua di SRV-002/#107 — GPU dedicata, sistema operativo Linux, finora non chiaro se fisica o VM), confermato raggiungibile via HTTP sulla porta 11500 ("Ollama is running") nonostante il link flap continuo. La causa del flap non e' ancora nota (ipotesi: Energy Efficient Ethernet/risparmio energetico della scheda di rete, ASPM PCIe, driver, cavo) — da controllare direttamente sull'host con `ethtool` (non Gestione Dispositivi Windows, ipotesi iniziale errata corretta dall'utente) prima di considerare risolto NET-010.
 
 ### Nuova occorrenza NEB-001 (27/07/2026): il 54HP fuori dal piano di gestione
 
-Durante la raccolta dello snapshot Nebula per il censimento del micro-step M22a, la
-lettura della tabella MAC del solo XGS2220-54HP e' stata rifiutata con
-`422 DEVICE_IS_OFFLINE`, mentre ogni lettura sul XGS2220-30HP e' andata a buon fine
-(configurazione delle 30 porte e tabella MAC con 58 voci). Il 54HP risulta quindi
-assente dal piano di gestione a quattro giorni dall'episodio del 23/07, quando era
-andato offline per un PVID non valido sul trunk ed era rientrato da solo dopo il
-salvataggio della configurazione corretta.
+Durante la raccolta dello snapshot Nebula per il censimento del micro-step M22a, la lettura della tabella MAC del solo XGS2220-54HP e' stata rifiutata con `422 DEVICE_IS_OFFLINE`, mentre ogni lettura sul XGS2220-30HP e' andata a buon fine (configurazione delle 30 porte e tabella MAC con 58 voci). Il 54HP risulta quindi assente dal piano di gestione a quattro giorni dall'episodio del 23/07, quando era andato offline per un PVID non valido sul trunk ed era rientrato da solo dopo il salvataggio della configurazione corretta.
 
-Ci sono tre letture possibili e non e' ancora deciso quale sia: una ricaduta dello
-stesso evento del 23/07, una nuova manifestazione dell'inaffidabilita' del canale
-Nebula su questo specifico switch, o un'anomalia distinta. L'indizio a favore di un
-problema circoscritto al piano di gestione e' che il piano dati risulta integro:
-nella tabella MAC del 30HP compaiono MAC del Piano 2 appresi attraverso la dorsale,
-compresi quelli dei due access point Zyxel del Piano 1 e del Piano 2, quindi lo
-switch continua a commutare e la dorsale trasporta tutte e quattro le VLAN.
+Ci sono tre letture possibili e non e' ancora deciso quale sia: una ricaduta dello stesso evento del 23/07, una nuova manifestazione dell'inaffidabilita' del canale Nebula su questo specifico switch, o un'anomalia distinta. L'indizio a favore di un problema circoscritto al piano di gestione e' che il piano dati risulta integro: nella tabella MAC del 30HP compaiono MAC del Piano 2 appresi attraverso la dorsale, compresi quelli dei due access point Zyxel del Piano 1 e del Piano 2, quindi lo switch continua a commutare e la dorsale trasporta tutte e quattro le VLAN.
 
-Verifica da fare, nell'ordine: controllare lo stato del 54HP nel pannello Nebula
-(online, porte, temperature); se e' offline, verificare da un client cablato del
-Piano 2 che navigazione e accesso ai NAS funzionino, cosi' da separare piano dati e
-piano gestione; solo dopo, se resta offline, valutare un intervento sull'apparato
-tenendo presente che e' il core switch e che un riavvio non e' un'azione innocua.
-Non ripetere l'errore del 23/07: le modifiche di configurazione si salvano anche da
-offline e vengono applicate al rientro, quindi non serve forzare nulla per scriverle.
+Verifica da fare, nell'ordine: controllare lo stato del 54HP nel pannello Nebula (online, porte, temperature); se e' offline, verificare da un client cablato del Piano 2 che navigazione e accesso ai NAS funzionino, cosi' da separare piano dati e piano gestione; solo dopo, se resta offline, valutare un intervento sull'apparato tenendo presente che e' il core switch e che un riavvio non e' un'azione innocua. Non ripetere l'errore del 23/07: le modifiche di configurazione si salvano anche da offline e vengono applicate al rientro, quindi non serve forzare nulla per scriverle.
 
-Effetto sul progetto: il censimento di M22a e' completo per il Piano Terra e
-mancante per il Piano 2, e la seconda meta' va ripresa quando lo switch torna
-gestibile.
+Effetto sul progetto: il censimento di M22a e' completo per il Piano Terra e mancante per il Piano 2, e la seconda meta' va ripresa quando lo switch torna gestibile.
 
-**Interpretazione**: il problema non e' (solo) una sincronizzazione cloud
-generica inaffidabile — e' plausibilmente specifico del 54HP, dove una
-porta guasta o mal collegata genera churn continuo (flap + STP) che
-probabilmente degrada l'affidabilita' delle altre operazioni su quello
-stesso switch (le scritture su porta 41/45 che non hanno "attecchito").
-Il 30HP, senza questa anomalia, si e' comportato in modo pulito e
-prevedibile sulle stesse identiche operazioni (VLAN + power-cycle su
-PianoTerra). Non spiega pero' del tutto la "reversione" della VLAN vista
-su PianoTerra: il log eventi di Nebula non sembra tracciare i cambi di
-VLAN/PVID come categoria di evento (solo link, PoE, STP, salvataggi di
-configurazione), quindi la sua assenza non conferma ne' esclude una
-reversione reale — resta un'ipotesi aperta, distinta dal problema di
-porta 46 e piu' facilmente spiegabile con una lettura cache-stale lato
-Nebula che con un vero cambio non richiesto.
+**Interpretazione**: il problema non e' (solo) una sincronizzazione cloud generica inaffidabile — e' plausibilmente specifico del 54HP, dove una porta guasta o mal collegata genera churn continuo (flap + STP) che probabilmente degrada l'affidabilita' delle altre operazioni su quello stesso switch (le scritture su porta 41/45 che non hanno "attecchito"). Il 30HP, senza questa anomalia, si e' comportato in modo pulito e prevedibile sulle stesse identiche operazioni (VLAN + power-cycle su PianoTerra). Non spiega pero' del tutto la "reversione" della VLAN vista su PianoTerra: il log eventi di Nebula non sembra tracciare i cambi di VLAN/PVID come categoria di evento (solo link, PoE, STP, salvataggi di configurazione), quindi la sua assenza non conferma ne' esclude una reversione reale — resta un'ipotesi aperta, distinta dal problema di porta 46 e piu' facilmente spiegabile con una lettura cache-stale lato Nebula che con un vero cambio non richiesto.
 
-**Prossimo passo consigliato**: diagnosticare la porta 46 del 54HP (cavo,
-dispositivo collegato, eventuale loop) prima di fidarsi di nuove scritture
-su quello switch — quindi prima di riprovare su PianoPrimo/PianoSecondo.
-PianoTerra, sul 30HP che si e' mostrato pulito, resta un candidato piu'
-ragionevole per un eventuale nuovo tentativo con osservazione prolungata,
-indipendentemente dalla porta 46.
+**Prossimo passo consigliato**: diagnosticare la porta 46 del 54HP (cavo, dispositivo collegato, eventuale loop) prima di fidarsi di nuove scritture su quello switch — quindi prima di riprovare su PianoPrimo/PianoSecondo. PianoTerra, sul 30HP che si e' mostrato pulito, resta un candidato piu' ragionevole per un eventuale nuovo tentativo con osservazione prolungata, indipendentemente dalla porta 46.
 
 ---
 
@@ -717,123 +370,57 @@ L'UPS (Emerson Liebert IntelliSlot, IP 10.61.90.33, porta gestione 6004) è sull
 3. Aggiornare regole firewall: solo VLAN 10 può raggiungere l'UPS
 4. Testare notifiche SNMP/mail dell'UPS dopo la modifica
 
-Nota del 03/08/2026 sulla scansione live del 14/07: l'UPS non risponde piu' a
-`10.61.90.33`, come tutta l'infrastruttura che occupava la VLAN 90 e che dal
-22-23/07 risulta ripulita. Non e' verificato se sia stato spostato o solo spento
-al momento della scansione: la procedura sopra resta valida ma il primo passo e'
-ritrovare l'apparato, non spostarlo.
+Nota del 03/08/2026 sulla scansione live del 14/07: l'UPS non risponde piu' a `10.61.90.33`, come tutta l'infrastruttura che occupava la VLAN 90 e che dal 22-23/07 risulta ripulita. Non e' verificato se sia stato spostato o solo spento al momento della scansione: la procedura sopra resta valida ma il primo passo e' ritrovare l'apparato, non spostarlo.
 
 ### Aggiornamento 03/08/2026: preventivo per un UPS nuovo, e la decisione di rete che porta con se'
 
-Rilevato dal delta OneDrive, non da comunicazione in sessione: il preventivo di
-Punto Informatica del 31/07/2026 include, insieme all'access point da esterno di
-M13c, un **UPS rack Addpower TP130N-1500** in un'unita' — line interactive
-monofase, 1500 VA / 1350 W, convertibile tower/rack 19", otto prese IEC, onda
-sinusoidale pura, quattro batterie 12 V/7 Ah. Ordine e consegna non confermati,
-e non e' dichiarato nel documento se sostituisca l'Emerson Liebert o si affianchi.
+Rilevato dal delta OneDrive, non da comunicazione in sessione: il preventivo di Punto Informatica del 31/07/2026 include, insieme all'access point da esterno di M13c, un **UPS rack Addpower TP130N-1500** in un'unita' — line interactive monofase, 1500 VA / 1350 W, convertibile tower/rack 19", otto prese IEC, onda sinusoidale pura, quattro batterie 12 V/7 Ah. Ordine e consegna non confermati, e non e' dichiarato nel documento se sostituisca l'Emerson Liebert o si affianchi.
 
-Il dato che conta per questo progetto e' uno solo, e va deciso **prima**
-dell'ordine e non dopo: la comunicazione di serie di quell'apparato e' USB e
-RS232, mentre la **scheda relè e la scheda SNMP Ethernet sono opzionali**. Ne
-seguono due strade con conseguenze opposte.
+Il dato che conta per questo progetto e' uno solo, e va deciso **prima** dell'ordine e non dopo: la comunicazione di serie di quell'apparato e' USB e RS232, mentre la **scheda relè e la scheda SNMP Ethernet sono opzionali**. Ne seguono due strade con conseguenze opposte.
 
-Se si prende la scheda SNMP, l'UPS torna a essere un host di rete, e va
-collocato direttamente nel segmento IoT/OT di M22c con una regola che ne
-restringa la gestione alle sole postazioni IT. E' l'occasione per non ripetere
-l'errore che UPS-001 registra: l'apparato attuale e' finito nella rete ospiti e
-c'e' rimasto per anni, ed e' molto piu' economico nascere nel segmento giusto
-che esserci spostato dopo.
+Se si prende la scheda SNMP, l'UPS torna a essere un host di rete, e va collocato direttamente nel segmento IoT/OT di M22c con una regola che ne restringa la gestione alle sole postazioni IT. E' l'occasione per non ripetere l'errore che UPS-001 registra: l'apparato attuale e' finito nella rete ospiti e c'e' rimasto per anni, ed e' molto piu' economico nascere nel segmento giusto che esserci spostato dopo.
 
-Se non si prende, l'UPS non e' monitorabile in rete: nessuna notifica di
-mancanza rete, nessuna soglia di batteria, nessuno spegnimento ordinato
-coordinato con i server. Va detto esplicitamente perche' e' una perdita di
-capacita' rispetto a oggi, non un risparmio neutro, e il piano di continuita'
-dichiara procedure che presuppongono di sapere in che stato e' l'UPS.
+Se non si prende, l'UPS non e' monitorabile in rete: nessuna notifica di mancanza rete, nessuna soglia di batteria, nessuno spegnimento ordinato coordinato con i server. Va detto esplicitamente perche' e' una perdita di capacita' rispetto a oggi, non un risparmio neutro, e il piano di continuita' dichiara procedure che presuppongono di sapere in che stato e' l'UPS.
 
-Da verificare in ogni caso, e non da stimare: l'autonomia. Il documento dichiara
-116 minuti su un carico da PC e monitor, mentre il piano di continuita' di questo
-progetto dichiara quindici minuti sul carico reale, che e' server, NAS e
-centralino. I due numeri non sono confrontabili e il secondo non e' mai stato
-misurato: va rifatto il conto sul carico effettivo prima di attribuire al nuovo
-apparato un miglioramento che potrebbe non esserci. Rilevante per A.11.2 e per il
-tempo di ripristino dichiarato in `business-continuity-disaster-recovery.md`.
+Da verificare in ogni caso, e non da stimare: l'autonomia. Il documento dichiara 116 minuti su un carico da PC e monitor, mentre il piano di continuita' di questo progetto dichiara quindici minuti sul carico reale, che e' server, NAS e centralino. I due numeri non sono confrontabili e il secondo non e' mai stato misurato: va rifatto il conto sul carico effettivo prima di attribuire al nuovo apparato un miglioramento che potrebbe non esserci. Rilevante per A.11.2 e per il tempo di ripristino dichiarato in `business-continuity-disaster-recovery.md`.
 
 ---
 
 ## TEL-002: telefoni IP e VLAN della fonia — parte di rete CHIUSA
 
-**Severity**: era ALTA, oggi residuo BASSO
-**Origine**: osservazione del 07/07/2026 ("i telefoni del piano inferiore non passano le VLAN"),
-GAP-TBC #103 e #116
-**Stato**: **parte di rete chiusa il 03/08/2026**; residuo solo sul livello applicativo
+**Severity**: era ALTA, oggi residuo BASSO **Origine**: osservazione del 07/07/2026 ("i telefoni del piano inferiore non passano le VLAN"), GAP-TBC #103 e #116 **Stato**: **parte di rete chiusa il 03/08/2026**; residuo solo sul livello applicativo
 
 ### Storia breve, perche' la diagnosi e' istruttiva
 
-Il sintomo iniziale del 07/07 era formulato come un problema del tratto che attraversa il vano
-ascensore. Non lo era: riguardava telefoni collegati direttamente a porte dello switch. Il
-23/07 la diagnosi e' partita dall'apparato funzionante invece che da quello rotto, per ricavarne
-la specifica corretta, e ha trovato una causa doppia — il trunk lato Piano Terra non ammetteva
-la VLAN 2, quindi la fonia arrivava al piano e li' si fermava, e le porte dei telefoni erano
-in access sulla VLAN dati. Corretti entrambi i difetti, gli apparecchi sono comparsi sulla
-VLAN 2.
+Il sintomo iniziale del 07/07 era formulato come un problema del tratto che attraversa il vano ascensore. Non lo era: riguardava telefoni collegati direttamente a porte dello switch. Il 23/07 la diagnosi e' partita dall'apparato funzionante invece che da quello rotto, per ricavarne la specifica corretta, e ha trovato una causa doppia — il trunk lato Piano Terra non ammetteva la VLAN 2, quindi la fonia arrivava al piano e li' si fermava, e le porte dei telefoni erano in access sulla VLAN dati. Corretti entrambi i difetti, gli apparecchi sono comparsi sulla VLAN 2.
 
 ### Stato al 03/08/2026: chiuso sulla rete, su tutti e cinque
 
-Dichiarato dall'utente e corroborato da una misura indipendente lo stesso giorno. Tutti e
-cinque i telefoni Yealink sono collegati e **ciascuno sta su una porta che prende correttamente
-la VLAN della fonia**; il lavoro e' stato completato in sessioni di lavoro precedenti, non
-tutte tracciate in questo repository. La conferma tecnica: la tabella MAC dei due switch mostra
-i cinque indirizzi tutti sulla VLAN 2 — porte 3, 5 e 44 del XGS2220-54HP e porte 13 e 23 del
-XGS2220-30HP — e non sulla VLAN dati.
+Dichiarato dall'utente e corroborato da una misura indipendente lo stesso giorno. Tutti e cinque i telefoni Yealink sono collegati e **ciascuno sta su una porta che prende correttamente la VLAN della fonia**; il lavoro e' stato completato in sessioni di lavoro precedenti, non tutte tracciate in questo repository. La conferma tecnica: la tabella MAC dei due switch mostra i cinque indirizzi tutti sulla VLAN 2 — porte 3, 5 e 44 del XGS2220-54HP e porte 13 e 23 del XGS2220-30HP — e non sulla VLAN dati.
 
-La formulazione precedente di questa anomalia, cioe' "i due apparecchi del Piano Terra hanno la
-parte di rete risolta ma non ottengono un lease dal DHCP della fonia", fotografava lo stato del
-23/07 ed e' **superata**. Va letta come storia, non come stato.
+La formulazione precedente di questa anomalia, cioe' "i due apparecchi del Piano Terra hanno la parte di rete risolta ma non ottengono un lease dal DHCP della fonia", fotografava lo stato del 23/07 ed e' **superata**. Va letta come storia, non come stato.
 
 ### Residuo da confermare, e come si conferma
 
-Resta un solo punto, e non e' di rete: che ciascun apparecchio **si registri** verso il
-centralino e faccia una chiamata. E' una distinzione che vale la pena tenere netta, perche' un
-telefono correttamente attestato sulla VLAN della fonia puo' ancora non funzionare per ragioni
-che stanno interamente sopra il livello 2 — provisioning per MAC lato fornitore, credenziali
-SIP, raggiungibilita' della piattaforma.
+Resta un solo punto, e non e' di rete: che ciascun apparecchio **si registri** verso il centralino e faccia una chiamata. E' una distinzione che vale la pena tenere netta, perche' un telefono correttamente attestato sulla VLAN della fonia puo' ancora non funzionare per ragioni che stanno interamente sopra il livello 2 — provisioning per MAC lato fornitore, credenziali SIP, raggiungibilita' della piattaforma.
 
-La verifica non richiede strumenti: il display dell'apparecchio mostra il proprio interno
-quando la registrazione e' andata a buon fine, e una chiamata interna piu' una verso l'esterno
-chiudono la questione. Se il display mostra l'interno su tutti e cinque, questa anomalia si
-chiude del tutto e i gap #103 e #116 si possono marcare risolti.
+La verifica non richiede strumenti: il display dell'apparecchio mostra il proprio interno quando la registrazione e' andata a buon fine, e una chiamata interna piu' una verso l'esterno chiudono la questione. Se il display mostra l'interno su tutti e cinque, questa anomalia si chiude del tutto e i gap #103 e #116 si possono marcare risolti.
 
-Nota di contesto per non confondere due cose diverse: la migrazione della fonia **non** e'
-completa quando i cinque Yealink funzionano. Restano ventisette interni digitali del Panasonic
-che non parlano SIP, che e' un problema di scala e non di rete, tracciato a parte come TEL-003
-(GAP-TBC #133) e progettato in M17.
+Nota di contesto per non confondere due cose diverse: la migrazione della fonia **non** e' completa quando i cinque Yealink funzionano. Restano ventisette interni digitali del Panasonic che non parlano SIP, che e' un problema di scala e non di rete, tracciato a parte come TEL-003 (GAP-TBC #133) e progettato in M17.
 
 ---
 
 ## NET-005: Wi-Fi "intrawelt" senza isolamento, nessuna rete ospiti
 
-**Severity**: ALTA
-**Origine**: task_47 (Piano Attività IT v3.xlsx); confermato live il 14/07/2026
-**Stato**: APERTO come **rischio accettato** dal 22/07/2026 (decisione dell'IT
-Manager, vedi "Aggiornamento 22-23/07/2026" in fondo alla sezione). Fase A
-tentata e ripristinata il 16/07/2026, vedi "Incidente 16/07/2026" piu' sotto
+**Severity**: ALTA **Origine**: task_47 (Piano Attività IT v3.xlsx); confermato live il 14/07/2026 **Stato**: APERTO come **rischio accettato** dal 22/07/2026 (decisione dell'IT Manager, vedi "Aggiornamento 22-23/07/2026" in fondo alla sezione). Fase A tentata e ripristinata il 16/07/2026, vedi "Incidente 16/07/2026" piu' sotto
 
 ### Contesto
 
-La Wi-Fi aziendale "intrawelt" non è su una VLAN dedicata: i client che si
-connettono ricevono un indirizzo nella stessa classe /19 della VLAN 10
-(Management/Server), con gateway e subnet mask coerenti con la LAN
-interna, non con un segmento isolato.
+La Wi-Fi aziendale "intrawelt" non è su una VLAN dedicata: i client che si connettono ricevono un indirizzo nella stessa classe /19 della VLAN 10 (Management/Server), con gateway e subnet mask coerenti con la LAN interna, non con un segmento isolato.
 
 ### Evidenza live (14/07/2026)
 
-Un PC esterno non censito in NinjaOne si è connesso alla Wi-Fi "intrawelt"
-e ha ottenuto in DHCP l'indirizzo 10.61.10.247 (subnet mask 255.255.224.0,
-gateway 10.61.10.1) — esattamente la stessa VLAN/subnet della rete di
-management, non un segmento separato. MAC AA:BB:CC:00:00:21 (vendor
-Intel). Conferma diretta che oggi qualunque dispositivo che si connette
-alla Wi-Fi ottiene di fatto accesso alla stessa rete su cui vivono switch,
-server e infrastruttura di gestione.
+Un PC esterno non censito in NinjaOne si è connesso alla Wi-Fi "intrawelt" e ha ottenuto in DHCP l'indirizzo 10.61.10.247 (subnet mask 255.255.224.0, gateway 10.61.10.1) — esattamente la stessa VLAN/subnet della rete di management, non un segmento separato. MAC AA:BB:CC:00:00:21 (vendor Intel). Conferma diretta che oggi qualunque dispositivo che si connette alla Wi-Fi ottiene di fatto accesso alla stessa rete su cui vivono switch, server e infrastruttura di gestione.
 
 ### Verifica pre-fix
 
@@ -846,30 +433,12 @@ ipconfig
 
 ### Procedura fix (sequenza consigliata)
 
-1. Identificare con certezza il modello reale degli access point (marca/
-   modello non confermato nella documentazione, vedi nota in
-   `GAP-TBC.md` NET-005): il modo più rapido è controllare se compaiono
-   come dispositivi nell'organizzazione Nebula già usata per gli switch
-   (https://nebula.zyxel.com) — se sì, sono Zyxel gestiti dallo stesso
-   portale; se no, verificare fisicamente l'etichetta su uno dei cinque AP
-   noti (porte 0-7-1, 0-9-1, 1-8-1, 2-5-1, 2-7-1).
-2. Eseguire prima M12 (roadmap): spostare fuori dalla VLAN 90 i quattro
-   dispositivi di infrastruttura che oggi la occupano per errore (switch
-   management, UPS, MyHome server, citofono Bticino) — non riusarla per il
-   traffico ospiti finché resta contaminata da infrastruttura critica.
-3. Decidere la VLAN di destinazione per la Wi-Fi aziendale (non
-   necessariamente .10: vedi nota architetturale in `current-work.md`) e
-   crearla se non esiste già.
-4. Sul pannello di gestione AP (Nebula o equivalente): creare un secondo
-   SSID per gli ospiti, taggato sulla VLAN 90 ripulita; abilitare
-   isolamento client-to-client e, se disponibile, captive portal e
-   bandwidth limit per SSID.
-5. Sullo switch: la porta a cui è collegato ogni AP passa da access a
-   trunk, per portare sia la VLAN Wi-Fi aziendale sia la VLAN 90 guest,
-   entrambe tagged, lasciando all'AP il compito di assegnare il tag in
-   base all'SSID scelto dal client.
-6. Sul firewall: confermare Guest→LAN deny (già presente), aggiungere
-   Guest→WAN allow esplicita e Guest→DMZ deny quando la DMZ sarà attiva.
+1. Identificare con certezza il modello reale degli access point (marca/ modello non confermato nella documentazione, vedi nota in `GAP-TBC.md` NET-005): il modo più rapido è controllare se compaiono come dispositivi nell'organizzazione Nebula già usata per gli switch (https://nebula.zyxel.com) — se sì, sono Zyxel gestiti dallo stesso portale; se no, verificare fisicamente l'etichetta su uno dei cinque AP noti (porte 0-7-1, 0-9-1, 1-8-1, 2-5-1, 2-7-1).
+2. Eseguire prima M12 (roadmap): spostare fuori dalla VLAN 90 i quattro dispositivi di infrastruttura che oggi la occupano per errore (switch management, UPS, MyHome server, citofono Bticino) — non riusarla per il traffico ospiti finché resta contaminata da infrastruttura critica.
+3. Decidere la VLAN di destinazione per la Wi-Fi aziendale (non necessariamente .10: vedi nota architetturale in `current-work.md`) e crearla se non esiste già.
+4. Sul pannello di gestione AP (Nebula o equivalente): creare un secondo SSID per gli ospiti, taggato sulla VLAN 90 ripulita; abilitare isolamento client-to-client e, se disponibile, captive portal e bandwidth limit per SSID.
+5. Sullo switch: la porta a cui è collegato ogni AP passa da access a trunk, per portare sia la VLAN Wi-Fi aziendale sia la VLAN 90 guest, entrambe tagged, lasciando all'AP il compito di assegnare il tag in base all'SSID scelto dal client.
+6. Sul firewall: confermare Guest→LAN deny (già presente), aggiungere Guest→WAN allow esplicita e Guest→DMZ deny quando la DMZ sarà attiva.
 
 ### Verifica post-fix
 
@@ -884,193 +453,102 @@ Test-NetConnection -ComputerName 10.61.10.1 -Port 443
 
 ### Aggiornamento 22-23/07/2026: la postura si divide in due, e per la staff e' una scelta
 
-Con la messa in opera della Wi-Fi a due SSID l'intento di questa anomalia si e'
-diviso in due strade opposte, e la distinzione va tenuta ferma per non leggere il
-gap come un difetto ancora da correggere.
+Con la messa in opera della Wi-Fi a due SSID l'intento di questa anomalia si e' diviso in due strade opposte, e la distinzione va tenuta ferma per non leggere il gap come un difetto ancora da correggere.
 
-Per la rete ospiti la direzione e' quella originaria e il lavoro e' fatto: la VLAN
-90 e' stata ripulita dall'infrastruttura che vi era finita per errore (management
-degli switch, UPS, server domotica, vecchi AP), ha un SSID dedicato, esce su
-Internet tramite la policy route `GUEST_SNAT` e la sua regola di uscita e' stata
-ristretta da destinazione `any` a sola WAN. Verificato che un client ospite naviga e
-non raggiunge la LAN interna.
+Per la rete ospiti la direzione e' quella originaria e il lavoro e' fatto: la VLAN 90 e' stata ripulita dall'infrastruttura che vi era finita per errore (management degli switch, UPS, server domotica, vecchi AP), ha un SSID dedicato, esce su Internet tramite la policy route `GUEST_SNAT` e la sua regola di uscita e' stata ristretta da destinazione `any` a sola WAN. Verificato che un client ospite naviga e non raggiunge la LAN interna.
 
-Per la Wi-Fi staff la direzione e' stata invertita su decisione esplicita dell'IT
-Manager: la regola `WIFI_STAFF_to_LAN1_deny` e' passata ad `allow` (rinominata di
-conseguenza), quindi la staff ha **accesso completo alla LAN**, NAS compreso,
-esattamente come una postazione cablata. Il razionale e' che i due SSID sono
-distinti e protetti da password: la staff serve i dispositivi fidati dell'azienda,
-la rete non fidata e' la guest. Verificato dopo la modifica che un dispositivo sullo
-SSID staff raggiunge il NAS.
+Per la Wi-Fi staff la direzione e' stata invertita su decisione esplicita dell'IT Manager: la regola `WIFI_STAFF_to_LAN1_deny` e' passata ad `allow` (rinominata di conseguenza), quindi la staff ha **accesso completo alla LAN**, NAS compreso, esattamente come una postazione cablata. Il razionale e' che i due SSID sono distinti e protetti da password: la staff serve i dispositivi fidati dell'azienda, la rete non fidata e' la guest. Verificato dopo la modifica che un dispositivo sullo SSID staff raggiunge il NAS.
 
-La conseguenza documentale e' che NET-005 non si chiude con una ACL sulla sola
-Wi-Fi. L'isolamento tentato con M13a e' stato rimosso per scelta, il rischio
-residuo (un dispositivo staff compromesso ha la stessa visibilita' di un PC
-cablato) e' accettato consapevolmente, e la chiusura vera passa da M22, cioe' dalla
-segmentazione reale delle tre classi della LAN piatta `/19` (NET-009). La modifica
-resta reversibile: basta riportare l'azione della regola a `deny`.
+La conseguenza documentale e' che NET-005 non si chiude con una ACL sulla sola Wi-Fi. L'isolamento tentato con M13a e' stato rimosso per scelta, il rischio residuo (un dispositivo staff compromesso ha la stessa visibilita' di un PC cablato) e' accettato consapevolmente, e la chiusura vera passa da M22, cioe' dalla segmentazione reale delle tre classi della LAN piatta `/19` (NET-009). La modifica resta reversibile: basta riportare l'azione della regola a `deny`.
 
 ---
 
 ## NAS-001: NAS HERO irraggiungibile
 
-**Severity**: BASSA
-**Origine**: nota IntraLino_Knowledge, senza data
-**Stato**: procedura nota, nessuna causa root documentata
+**Severity**: BASSA **Origine**: nota IntraLino_Knowledge, senza data **Stato**: procedura nota, nessuna causa root documentata
 
 ### Contesto
-NAS HERO (10.61.20.169) risulta talvolta irraggiungibile dalla rete, con un
-popup di errore di connessione al tentativo di accesso. Nessuna causa root
-e' documentata nella fonte.
+NAS HERO (10.61.20.169) risulta talvolta irraggiungibile dalla rete, con un popup di errore di connessione al tentativo di accesso. Nessuna causa root e' documentata nella fonte.
 
 ### Procedura fix
-1. Individuare il NAS in sala server (spia rossa sotto il pulsante di
-   accensione se in stato di errore).
+1. Individuare il NAS in sala server (spia rossa sotto il pulsante di accensione se in stato di errore).
 2. Spegnimento: tenere premuto il pulsante di accensione.
 3. Attendere il completamento dello spegnimento.
-4. Riavvio: premere nuovamente il pulsante di accensione e attendere il
-   ripristino del sistema e delle connessioni di rete.
+4. Riavvio: premere nuovamente il pulsante di accensione e attendere il ripristino del sistema e delle connessioni di rete.
 5. Verificare dalla propria postazione che il NAS sia di nuovo accessibile.
 
 ---
 
 ## PRN-001: la multifunzione del Piano 1 non stampa a colori
 
-**Severity**: MEDIA (funzione mancante, nessun impatto su rete o dati)
-**Origine**: barra di stato dell'apparato, rilevata il 03/08/2026 durante la configurazione
-delle destinazioni di scansione
-**Stato**: aperto, in attesa di verifica
+**Severity**: MEDIA (funzione mancante, nessun impatto su rete o dati) **Origine**: barra di stato dell'apparato, rilevata il 03/08/2026 durante la configurazione delle destinazioni di scansione **Stato**: aperto, in attesa di verifica
 
 ### Contesto
 
-La multifunzione Canon del Piano 1 riporta nella propria barra di stato che la stampa a
-colori non puo' essere effettuata, con l'invito a contattare il responsabile
-dell'assistenza. Il messaggio e' comparso mentre si lavorava sulla rubrica delle
-destinazioni di scansione, quindi non e' stato causato da quell'intervento: scansione e
-stampa in bianco e nero non risultano interessate, e le voci di rubrica configurate
-funzionano.
+La multifunzione Canon del Piano 1 riporta nella propria barra di stato che la stampa a colori non puo' essere effettuata, con l'invito a contattare il responsabile dell'assistenza. Il messaggio e' comparso mentre si lavorava sulla rubrica delle destinazioni di scansione, quindi non e' stato causato da quell'intervento: scansione e stampa in bianco e nero non risultano interessate, e le voci di rubrica configurate funzionano.
 
 ### Cosa verificare, in ordine
 
-Il livello dei consumabili di colore e lo stato delle unita' tamburo, perche' un toner
-esaurito o un'unita' a fine vita producono esattamente questo blocco selettivo. Poi
-eventuali codici di errore nel registro dell'apparato, che dicono se si tratta di un
-consumabile o di un guasto meccanico. Infine, se nessuna delle due cose spiega il
-messaggio, il contratto di assistenza del fornitore: su questi apparati la parte colore e'
-tipicamente coperta dal canone, quindi la chiamata e' il percorso normale e non
-un'escalation.
+Il livello dei consumabili di colore e lo stato delle unita' tamburo, perche' un toner esaurito o un'unita' a fine vita producono esattamente questo blocco selettivo. Poi eventuali codici di errore nel registro dell'apparato, che dicono se si tratta di un consumabile o di un guasto meccanico. Infine, se nessuna delle due cose spiega il messaggio, il contratto di assistenza del fornitore: su questi apparati la parte colore e' tipicamente coperta dal canone, quindi la chiamata e' il percorso normale e non un'escalation.
 
 ### Perche' e' tracciata qui
 
-Non e' un'anomalia di rete e non appartiene ai filoni di questo progetto, ma e' un guasto
-attivo su un apparato che il progetto documenta come asset: registrarlo evita che la
-prossima persona che apre la scheda della multifunzione lo scopra come sorpresa, e permette
-di distinguere questo blocco da un eventuale problema futuro sulla scansione, che ha causa
-del tutto diversa.
+Non e' un'anomalia di rete e non appartiene ai filoni di questo progetto, ma e' un guasto attivo su un apparato che il progetto documenta come asset: registrarlo evita che la prossima persona che apre la scheda della multifunzione lo scopra come sorpresa, e permette di distinguere questo blocco da un eventuale problema futuro sulla scansione, che ha causa del tutto diversa.
 
 ---
 
 ## NAS-003: interfaccia di amministrazione di NAS-INTRA2 molto lenta
 
-**Severity**: BASSA (nessun impatto sul servizio file, impatto sul lavoro amministrativo)
-**Origine**: rilevata il 29/07/2026 durante la preparazione dell'intervento R8
-**Stato**: aperto, causa non isolata
+**Severity**: BASSA (nessun impatto sul servizio file, impatto sul lavoro amministrativo) **Origine**: rilevata il 29/07/2026 durante la preparazione dell'intervento R8 **Stato**: aperto, causa non isolata
 
 ### Contesto
 
-L'interfaccia web di amministrazione dell'apparato (porta 8080) risponde con lentezza
-marcata: la navigazione tra le sezioni del pannello di controllo richiede attese di
-diverse decine di secondi, al punto che raggiungere una specifica scheda diventa un
-esercizio di pazienza. Il servizio file non e' interessato: le condivisioni rispondono e
-le multifunzione e le postazioni vi accedono normalmente.
+L'interfaccia web di amministrazione dell'apparato (porta 8080) risponde con lentezza marcata: la navigazione tra le sezioni del pannello di controllo richiede attese di diverse decine di secondi, al punto che raggiungere una specifica scheda diventa un esercizio di pazienza. Il servizio file non e' interessato: le condivisioni rispondono e le multifunzione e le postazioni vi accedono normalmente.
 
 ### Ipotesi, in ordine di plausibilita'
 
-La prima e' la mole di oggetti che l'apparato deve contabilizzare. La stessa lettura che ha
-rilevato la lentezza ha mostrato che una singola cartella condivisa contiene circa 3,45
-milioni di cartelle e 1,86 milioni di file per 14,37 TB (gap STOR-001, `GAP-TBC.md` #127):
-il pannello delle cartelle condivise calcola dimensioni e conteggi, e su un albero di quelle
-proporzioni l'operazione e' intrinsecamente costosa. Coerente con il fatto che la lentezza si
-manifesta proprio nelle pagine che mostrano quei numeri.
+La prima e' la mole di oggetti che l'apparato deve contabilizzare. La stessa lettura che ha rilevato la lentezza ha mostrato che una singola cartella condivisa contiene circa 3,45 milioni di cartelle e 1,86 milioni di file per 14,37 TB (gap STOR-001, `GAP-TBC.md` #127): il pannello delle cartelle condivise calcola dimensioni e conteggi, e su un albero di quelle proporzioni l'operazione e' intrinsecamente costosa. Coerente con il fatto che la lentezza si manifesta proprio nelle pagine che mostrano quei numeri.
 
-La seconda e' la dotazione hardware rispetto al carico: l'apparato ha 4 GB di RAM e una CPU
-ARM quad-core, dimensionati per servire file e non per gestire indicizzazione, antivirus,
-snapshot e pannello web su milioni di oggetti contemporaneamente.
+La seconda e' la dotazione hardware rispetto al carico: l'apparato ha 4 GB di RAM e una CPU ARM quad-core, dimensionati per servire file e non per gestire indicizzazione, antivirus, snapshot e pannello web su milioni di oggetti contemporaneamente.
 
-La terza, da escludere per prima perche' e' la piu' facile da verificare, e' un'attivita' in
-corso sull'apparato che sta consumando risorse: un job di backup, una verifica di integrita',
-un'indicizzazione multimediale o una scansione antivirus.
+La terza, da escludere per prima perche' e' la piu' facile da verificare, e' un'attivita' in corso sull'apparato che sta consumando risorse: un job di backup, una verifica di integrita', un'indicizzazione multimediale o una scansione antivirus.
 
 ### Verifica suggerita
 
-Aprire il monitor delle risorse dell'apparato e osservare carico CPU, occupazione di memoria
-e attivita' disco mentre si naviga il pannello; controllare l'elenco dei job in esecuzione e
-l'eventuale indicizzazione multimediale attiva su cartelle che non ne hanno bisogno, che e'
-una causa classica di carico inutile su questi apparati. Se il carico e' basso e la lentezza
-resta, l'ipotesi si sposta sul conteggio degli oggetti e la mitigazione e' evitare le pagine
-che calcolano dimensioni, non risolvere la lentezza.
+Aprire il monitor delle risorse dell'apparato e osservare carico CPU, occupazione di memoria e attivita' disco mentre si naviga il pannello; controllare l'elenco dei job in esecuzione e l'eventuale indicizzazione multimediale attiva su cartelle che non ne hanno bisogno, che e' una causa classica di carico inutile su questi apparati. Se il carico e' basso e la lentezza resta, l'ipotesi si sposta sul conteggio degli oggetti e la mitigazione e' evitare le pagine che calcolano dimensioni, non risolvere la lentezza.
 
 ### Perche' e' tracciata
 
-Non e' un guasto, ma va conosciuta prima di pianificare interventi che richiedono diversi
-passaggi in quella interfaccia — come R8, la creazione della cartella delle scansioni con i
-permessi per sottocartella — perche' cambia la stima dei tempi da minuti a decine di minuti.
+Non e' un guasto, ma va conosciuta prima di pianificare interventi che richiedono diversi passaggi in quella interfaccia — come R8, la creazione della cartella delle scansioni con i permessi per sottocartella — perche' cambia la stima dei tempi da minuti a decine di minuti.
 
 ---
 
 ## NAS-002: Unita' di rete mappate (`net use`) invisibili in Esplora risorse
 
-**Severity**: BASSA
-**Origine**: sessione operativa 16/07/2026 (side-note durante il micro-step M13a)
-**Stato**: risolto
+**Severity**: BASSA **Origine**: sessione operativa 16/07/2026 (side-note durante il micro-step M13a) **Stato**: risolto
 
 ### Contesto
-Due unita' di rete mappate con `net use` verso condivisioni del NAS-INTRA2
-(10.61.20.177) — `U:` sulla condivisione "utili(new)" (7,46 TB liberi su
-21,5 TB) e `A:` su un'altra condivisione dello stesso NAS usata da
-Persona-A e Persona-B — risultavano confermate "OK" dal comando `net use`
-ma Esplora risorse non le trovava ("Impossibile trovare U:").
+Due unita' di rete mappate con `net use` verso condivisioni del NAS-INTRA2 (10.61.20.177) — `U:` sulla condivisione "utili(new)" (7,46 TB liberi su 21,5 TB) e `A:` su un'altra condivisione dello stesso NAS usata da Persona-A e Persona-B — risultavano confermate "OK" dal comando `net use` ma Esplora risorse non le trovava ("Impossibile trovare U:").
 
 ### Causa
-*UAC token splitting*[^2]: la PowerShell usata per la mappatura era aperta
-come amministratore (titolo finestra "Amministratore: Windows PowerShell").
-Un processo elevato e un processo non elevato dello stesso utente
-Windows mantengono due sessioni di rete separate per motivi di sicurezza:
-le unita' mappate in un contesto (la PowerShell elevata) non sono visibili
-nell'altro (Explorer, che gira sempre non elevato). `net use` confermava la
-connessione perche' verificava solo il proprio contesto elevato.
+*UAC token splitting*[^2]: la PowerShell usata per la mappatura era aperta come amministratore (titolo finestra "Amministratore: Windows PowerShell"). Un processo elevato e un processo non elevato dello stesso utente Windows mantengono due sessioni di rete separate per motivi di sicurezza: le unita' mappate in un contesto (la PowerShell elevata) non sono visibili nell'altro (Explorer, che gira sempre non elevato). `net use` confermava la connessione perche' verificava solo il proprio contesto elevato.
 
 ### Fix
-Rieseguire le stesse mappature `net use` da una PowerShell o CMD **non**
-elevata (aperta normalmente, senza "Esegui come amministratore").
+Rieseguire le stesse mappature `net use` da una PowerShell o CMD **non** elevata (aperta normalmente, senza "Esegui come amministratore").
 
 ### Regola pratica
-Le mappature di rete vanno sempre fatte da una shell non elevata, a meno
-che non debbano essere usate anche da applicazioni elevate che richiedono
-esplicitamente quelle stesse unita'.
+Le mappature di rete vanno sempre fatte da una shell non elevata, a meno che non debbano essere usate anche da applicazioni elevate che richiedono esplicitamente quelle stesse unita'.
 
-[^2]: *UAC*, User Account Control — il meccanismo di Windows che separa i
-privilegi di un processo amministrativo da quelli di un processo utente
-standard nella stessa sessione di accesso.
+[^2]: *UAC*, User Account Control — il meccanismo di Windows che separa i privilegi di un processo amministrativo da quelli di un processo utente standard nella stessa sessione di accesso.
 
 ---
 
 ## VM-001: Disco pieno (100%) su VM sito WordPress aziendale (10.61.20.23)
 
-**Severity**: ALTA
-**Origine**: sessione operativa 10/07/2026
-**Stato**: risolto (mitigazione + rimedio strutturale eseguiti)
+**Severity**: ALTA **Origine**: sessione operativa 10/07/2026 **Stato**: risolto (mitigazione + rimedio strutturale eseguiti)
 
 ### Contesto
-La VM che serve il sito WordPress aziendale (10.61.20.23, containerizzato,
-con MySQL e servizi accessori) e' risultata con il filesystem radice
-(`/dev/sda2`, 32G) al 100% di utilizzo e 0 byte disponibili, con conseguente
-fallimento di operazioni base (scrittura su `~/.ssh/authorized_keys`,
-`npm cache clean`). Causa principale: cache di snapd
-(`/var/lib/snapd/cache`) cresciuta fino a 4,7G senza mai essere ripulita.
-Contributori minori: cache npm utente (~3G, non ripulita per mancanza di
-spazio), un file gia' cancellato ma ancora aperto da un processo Claude Code
-(238MB non liberabili finche' il processo non chiude il file).
+La VM che serve il sito WordPress aziendale (10.61.20.23, containerizzato, con MySQL e servizi accessori) e' risultata con il filesystem radice (`/dev/sda2`, 32G) al 100% di utilizzo e 0 byte disponibili, con conseguente fallimento di operazioni base (scrittura su `~/.ssh/authorized_keys`, `npm cache clean`). Causa principale: cache di snapd (`/var/lib/snapd/cache`) cresciuta fino a 4,7G senza mai essere ripulita. Contributori minori: cache npm utente (~3G, non ripulita per mancanza di spazio), un file gia' cancellato ma ancora aperto da un processo Claude Code (238MB non liberabili finche' il processo non chiude il file).
 
 ### Verifica pre-fix
 ```
@@ -1080,11 +558,7 @@ sudo du -sh /var/lib/snapd/cache
 ```
 
 ### Procedura fix
-1. Svuotare la cache di snapd. Attenzione: la directory non e' leggibile
-   dall'utente non privilegiato, quindi il carattere jolly va espanso
-   *dentro* la shell di root — `sudo rm -rf /var/lib/snapd/cache/*` fallisce
-   silenziosamente perche' il glob si espande nella shell utente prima che
-   `sudo` entri in gioco, e la shell utente non puo' leggere la directory:
+1. Svuotare la cache di snapd. Attenzione: la directory non e' leggibile dall'utente non privilegiato, quindi il carattere jolly va espanso *dentro* la shell di root — `sudo rm -rf /var/lib/snapd/cache/*` fallisce silenziosamente perche' il glob si espande nella shell utente prima che `sudo` entri in gioco, e la shell utente non puo' leggere la directory:
    ```
    sudo find /var/lib/snapd/cache -mindepth 1 -delete
    ```
@@ -1095,51 +569,29 @@ sudo du -sh /var/lib/snapd/cache
    ```
 
 ### Verifica post-fix
-Spazio libero passato da 0 a ~237M. Sufficiente per operazioni minime, non
-un margine di sicurezza duraturo su una VM di produzione con MySQL attivo.
+Spazio libero passato da 0 a ~237M. Sufficiente per operazioni minime, non un margine di sicurezza duraturo su una VM di produzione con MySQL attivo.
 
 ### Rimedio strutturale (eseguito il 10/07/2026)
-237M restava insufficiente per una VM di produzione: un backup o un log
-spike l'avrebbero riportata rapidamente a 0. Si e' scoperto che il disco
-virtuale era gia' provisionato a 64G in Proxmox, ma la partizione/filesystem
-guest ne usava solo 32G (32G non allocati in coda al disco, nessuna modifica
-lato Proxmox necessaria). Shutdown/Start della VM, poi dentro la VM:
+237M restava insufficiente per una VM di produzione: un backup o un log spike l'avrebbero riportata rapidamente a 0. Si e' scoperto che il disco virtuale era gia' provisionato a 64G in Proxmox, ma la partizione/filesystem guest ne usava solo 32G (32G non allocati in coda al disco, nessuna modifica lato Proxmox necessaria). Shutdown/Start della VM, poi dentro la VM:
 ```
 sudo growpart /dev/sda 2
 sudo resize2fs /dev/sda2
 ```
-Risultato: `/dev/sda2` passato da 32G a 63G, spazio libero da ~237M a 32G
-(48% di utilizzo). Rimane comunque valido, come miglioria futura non
-urgente, rimuovere le revisioni snap disabilitate rimaste (`snap list --all`,
-poi `sudo snap remove <nome> --revision=<rev>` per ogni riga con nota
-"disabilitato") per liberare ulteriore margine.
+Risultato: `/dev/sda2` passato da 32G a 63G, spazio libero da ~237M a 32G (48% di utilizzo). Rimane comunque valido, come miglioria futura non urgente, rimuovere le revisioni snap disabilitate rimaste (`snap list --all`, poi `sudo snap remove <nome> --revision=<rev>` per ogni riga con nota "disabilitato") per liberare ulteriore margine.
 
 ---
 
 ## SEC-015: GroupShare (Seeweb) servito in chiaro su HTTP dopo scomparsa del certificato HTTPS
 
-**Severity**: ALTA
-**Origine**: Segnalazione utente, handoff operativo `handoff-SSL.md` (17-20/07/2026)
-**Stato**: APERTO (workaround HTTP applicato, cifratura non ripristinata)
+**Severity**: ALTA **Origine**: Segnalazione utente, handoff operativo `handoff-SSL.md` (17-20/07/2026) **Stato**: APERTO (workaround HTTP applicato, cifratura non ripristinata)
 
 ### Contesto
 
-Il portale Trados GroupShare (`http(s)://gs.intrawelt.com`) gira sulla VM
-WINGROUPSHARE (Windows Server + IIS, sito "SDL Server"), ospitata nel cloud
-Seeweb sulla rete remota raggiunta via VPN IPsec 10.77.116.0/24 (firewall
-.1, host ESXi .2, VM .3; IP pubblico della VM mappato su 192.0.2.121 —
-stessi placeholder gia' in uso in `2026-switch-piano-terra.md` per la voce
-GroupShare del 06/07/2026). Non e' un servizio on-premise: il traffico LAN
-verso GroupShare esce dalla WAN Intrawelt verso Seeweb, fuori dal perimetro
-del firewall Zyxel USG FLEX 500.
+Il portale Trados GroupShare (`http(s)://gs.intrawelt.com`) gira sulla VM WINGROUPSHARE (Windows Server + IIS, sito "SDL Server"), ospitata nel cloud Seeweb sulla rete remota raggiunta via VPN IPsec 10.77.116.0/24 (firewall .1, host ESXi .2, VM .3; IP pubblico della VM mappato su 192.0.2.121 — stessi placeholder gia' in uso in `2026-switch-piano-terra.md` per la voce GroupShare del 06/07/2026). Non e' un servizio on-premise: il traffico LAN verso GroupShare esce dalla WAN Intrawelt verso Seeweb, fuori dal perimetro del firewall Zyxel USG FLEX 500.
 
 ### Sintomo
 
-`https://gs.intrawelt.com` irraggiungibile (`ERR_CONNECTION_TIMED_OUT`),
-confermato sia da un client sulla LAN Intrawelt sia da una rete esterna:
-porta 443 non risponde, porta 80 (HTTP) risponde regolarmente. Nessun
-avviso di certificato non fidato: la connessione TCP sulla 443 non arriva
-proprio a destinazione, non e' un problema di trust.
+`https://gs.intrawelt.com` irraggiungibile (`ERR_CONNECTION_TIMED_OUT`), confermato sia da un client sulla LAN Intrawelt sia da una rete esterna: porta 443 non risponde, porta 80 (HTTP) risponde regolarmente. Nessun avviso di certificato non fidato: la connessione TCP sulla 443 non arriva proprio a destinazione, non e' un problema di trust.
 
 ### Diagnosi (via RDP sulla VM, IP interno 10.77.116.3)
 
@@ -1155,45 +607,24 @@ Get-WebBinding                     # solo binding http *:80: sui due siti IIS,
                                     # nessun binding https/443
 ```
 
-**Causa radice**: il certificato pubblico di `gs.intrawelt.com` non esiste
-piu' nello store e il binding HTTPS/443 e' assente dalla configurazione
-IIS — non un binding rotto, rimosso o mai ricreato, probabilmente alla
-scadenza del certificato precedente. Il sito serviva quindi solo HTTP sulla
-porta 80.
+**Causa radice**: il certificato pubblico di `gs.intrawelt.com` non esiste piu' nello store e il binding HTTPS/443 e' assente dalla configurazione IIS — non un binding rotto, rimosso o mai ricreato, probabilmente alla scadenza del certificato precedente. Il sito serviva quindi solo HTTP sulla porta 80.
 
-Diagnosi e intervento condotti da Alessio Sopranzi con Persona-E (referente
-RWS/GroupShare gia' noto dall'upgrade SR1->SR2 del 06/07/2026) e Persona-H
-(Punto Informatica).
+Diagnosi e intervento condotti da Alessio Sopranzi con Persona-E (referente RWS/GroupShare gia' noto dall'upgrade SR1->SR2 del 06/07/2026) e Persona-H (Punto Informatica).
 
 ### Fix tentato
 
-Scelto win-acme (Let's Encrypt) per l'emissione automatica del certificato,
-la creazione del binding 443 e il rinnovo automatico (~60 giorni), cosi' da
-non ripresentare il problema. Primo lancio fallito (`wacs.exe` →
-"No websites with host bindings have been configured in IIS"): il binding
-esistente del sito "SDL Server" era `*:80:` senza host header, quindi
-win-acme non sapeva per quale hostname emettere il certificato. Fix
-identificato: aggiungere un binding con host header dedicato
+Scelto win-acme (Let's Encrypt) per l'emissione automatica del certificato, la creazione del binding 443 e il rinnovo automatico (~60 giorni), cosi' da non ripresentare il problema. Primo lancio fallito (`wacs.exe` → "No websites with host bindings have been configured in IIS"): il binding esistente del sito "SDL Server" era `*:80:` senza host header, quindi win-acme non sapeva per quale hostname emettere il certificato. Fix identificato: aggiungere un binding con host header dedicato
 
 ```powershell
 Import-Module WebAdministration
 New-WebBinding -Name "SDL Server" -Protocol http -Port 80 -HostHeader "gs.intrawelt.com"
 ```
 
-per abilitare la validazione HTTP-01 di win-acme sulla porta 80 gia'
-pubblica e funzionante.
+per abilitare la validazione HTTP-01 di win-acme sulla porta 80 gia' pubblica e funzionante.
 
 ### Stato attuale: HTTP ripristinato, HTTPS no
 
-**La connettivita' cifrata non e' stata ripristinata.** Per sbloccare
-subito i Project Manager (client Trados Studio non riuscivano piu' a
-raggiungere il portale), si e' ripristinata la sola connettivita' HTTP
-normale invece di completare il percorso win-acme fino in fondo. Il
-traffico verso il portale GroupShare — incluse le credenziali applicative
-degli utenti — viaggia oggi in chiaro. Registrato come gap **SEC-015**
-(`GAP-TBC.md` #117) e in `design-and-security.md` §A.13.2 (Trasferimento
-delle informazioni): resta aperto, il completamento del binding HTTPS
-tramite win-acme e' il fix corretto gia' identificato ma non applicato.
+**La connettivita' cifrata non e' stata ripristinata.** Per sbloccare subito i Project Manager (client Trados Studio non riuscivano piu' a raggiungere il portale), si e' ripristinata la sola connettivita' HTTP normale invece di completare il percorso win-acme fino in fondo. Il traffico verso il portale GroupShare — incluse le credenziali applicative degli utenti — viaggia oggi in chiaro. Registrato come gap **SEC-015** (`GAP-TBC.md` #117) e in `design-and-security.md` §A.13.2 (Trasferimento delle informazioni): resta aperto, il completamento del binding HTTPS tramite win-acme e' il fix corretto gia' identificato ma non applicato.
 
 ### Verifica (da rieseguire quando si completa il fix HTTPS)
 
@@ -1206,18 +637,11 @@ Test-NetConnection gs.intrawelt.com -Port 443   # atteso: TcpTestSucceeded True
 
 ## END-001: Errore 657rx / 0x80090016 — app M365 non autenticano dopo reset password (workplace join orfano)
 
-**Severity**: MEDIA (blocco operativo di una postazione, nessun dato esposto)
-**Origine**: Segnalazione utente, intervento di helpdesk (20/07/2026)
-**Stato**: RISOLTO (registrazione dispositivo ricreata pulita)
+**Severity**: MEDIA (blocco operativo di una postazione, nessun dato esposto) **Origine**: Segnalazione utente, intervento di helpdesk (20/07/2026) **Stato**: RISOLTO (registrazione dispositivo ricreata pulita)
 
 ### Contesto
 
-Su una postazione Windows con account locale (non joinata a Entra ID),
-dopo il reset della password Microsoft 365 dell'utente tutte le app
-Microsoft (OneDrive, Teams, Office) hanno smesso di autenticare. Il login
-falliva a prescindere dalla password appena impostata: segno che il
-problema non era la credenziale ma il canale con cui il dispositivo
-tentava di presentarla.
+Su una postazione Windows con account locale (non joinata a Entra ID), dopo il reset della password Microsoft 365 dell'utente tutte le app Microsoft (OneDrive, Teams, Office) hanno smesso di autenticare. Il login falliva a prescindere dalla password appena impostata: segno che il problema non era la credenziale ma il canale con cui il dispositivo tentava di presentarla.
 
 ### Sintomo
 
@@ -1244,25 +668,13 @@ Indicatori chiave nel caso risolto:
 | `DeviceCertificateValidity` | data vecchia (2017) | Registrazione orfana/antica |
 | `TpmProtected` | NO | Chiave nel Software KSP, non nel TPM |
 
-Test discriminante per isolare il perimetro del guasto: creare un account
-Windows locale temporaneo e provare da li' il login M365. Se funziona il
-problema e' per-profilo/per-utente (questo caso); se restituisce lo stesso
-errore e' per-macchina (TPM), e in quel caso si procede al clear del TPM,
-ma solo dopo aver sospeso BitLocker.
+Test discriminante per isolare il perimetro del guasto: creare un account Windows locale temporaneo e provare da li' il login M365. Se funziona il problema e' per-profilo/per-utente (questo caso); se restituisce lo stesso errore e' per-macchina (TPM), e in quel caso si procede al clear del TPM, ma solo dopo aver sospeso BitLocker.
 
-**Causa radice**: la postazione aveva un workplace join (registrazione
-"Accesso aziendale o scolastico") vecchio e orfano, con keyset software
-corrotto. Le app passano dal broker AAD, che tenta di autenticarsi con la
-chiave del dispositivo invece che con la password; se quella chiave e'
-inaccessibile il login fallisce sempre, qualunque sia la password. Ne' il
-TPM (`TpmProtected : NO`, chiave nel Software KSP) ne' la password nuova
-erano in causa: era la registrazione del dispositivo a essere rotta.
+**Causa radice**: la postazione aveva un workplace join (registrazione "Accesso aziendale o scolastico") vecchio e orfano, con keyset software corrotto. Le app passano dal broker AAD, che tenta di autenticarsi con la chiave del dispositivo invece che con la password; se quella chiave e' inaccessibile il login fallisce sempre, qualunque sia la password. Ne' il TPM (`TpmProtected : NO`, chiave nel Software KSP) ne' la password nuova erano in causa: era la registrazione del dispositivo a essere rotta.
 
 ### Procedura fix
 
-Tutto con l'utente interessato loggato; prompt non amministrativo salvo
-dove indicato. Chiudere prima tutte le app Microsoft (Teams, Office,
-OneDrive dall'area di notifica).
+Tutto con l'utente interessato loggato; prompt non amministrativo salvo dove indicato. Chiudere prima tutte le app Microsoft (Teams, Office, OneDrive dall'area di notifica).
 
 ```cmd
 rem 1. Tentare la rimozione standard della registrazione
@@ -1284,9 +696,7 @@ dsregcmd /status
 rem atteso: WorkplaceJoined : NO, WorkAccountCount : 0
 ```
 
-Rifare quindi il login in Teams/OneDrive con la password corrente: alla
-schermata "Rimani connesso a tutte le app" consentire la registrazione,
-cosi' da creare una registrazione nuova e pulita.
+Rifare quindi il login in Teams/OneDrive con la password corrente: alla schermata "Rimani connesso a tutte le app" consentire la registrazione, cosi' da creare una registrazione nuova e pulita.
 
 ### Verifica post-fix
 
@@ -1308,12 +718,7 @@ certutil -deletehellocontainer
 rem se risponde NTE_NOT_FOUND -> il problema NON e' Hello, ma la registrazione dispositivo
 ```
 
-In aggiunta, in Gestione credenziali eliminare le voci
-`MicrosoftOffice16_Data`, `AAD Token Broker` e OneDrive. Lato Entra ID, dal
-portale di amministrazione (Dispositivi), eliminare eventuali record orfani
-della postazione, cercando per nome PC o per WorkplaceDeviceId: e' l'igiene
-che chiude il ciclo di vita della vecchia identita' di dispositivo rimasta
-appesa (vedi nota ISO27001 in `design-and-security.md` §A.9.2).
+In aggiunta, in Gestione credenziali eliminare le voci `MicrosoftOffice16_Data`, `AAD Token Broker` e OneDrive. Lato Entra ID, dal portale di amministrazione (Dispositivi), eliminare eventuali record orfani della postazione, cercando per nome PC o per WorkplaceDeviceId: e' l'igiene che chiude il ciclo di vita della vecchia identita' di dispositivo rimasta appesa (vedi nota ISO27001 in `design-and-security.md` §A.9.2).
 
 ### Riferimento codici errore
 
@@ -1328,53 +733,28 @@ appesa (vedi nota ISO27001 in `design-and-security.md` §A.9.2).
 
 ## NEB-002: la Nebula OpenAPI risponde `Forbidden` dopo la retrocessione a Base Pack
 
-Sintomo. `scripts/Get-NebulaSnapshot.ps1` termina senza errore fatale ma produce uno snapshot
-vuoto, di poche centinaia di byte, con due avvisi: `GET /organizations/{orgId}/sites` e
-`GET /organizations/{orgId}/sites/devices` rispondono `{"detail":"Forbidden"}`. L'endpoint
-`/organizations` continua invece a rispondere e restituisce l'organizzazione. Chi legge in fretta
-puo' scambiarlo per un problema di chiave, perche' la chiamata che riesce e quella che fallisce
-usano la stessa chiave.
+Sintomo. `scripts/Get-NebulaSnapshot.ps1` termina senza errore fatale ma produce uno snapshot vuoto, di poche centinaia di byte, con due avvisi: `GET /organizations/{orgId}/sites` e `GET /organizations/{orgId}/sites/devices` rispondono `{"detail":"Forbidden"}`. L'endpoint `/organizations` continua invece a rispondere e restituisce l'organizzazione. Chi legge in fretta puo' scambiarlo per un problema di chiave, perche' la chiamata che riesce e quella che fallisce usano la stessa chiave.
 
-Diagnosi, dal caso del 05/08/2026. La causa non era la chiave ma la **licenza**: Zyxel aveva
-notificato per posta la retrocessione dell'organizzazione a Base Pack per scadenza della licenza di
-un dispositivo, e la chiave NCC OpenAPI richiede il Professional Pack sui dispositivi
-dell'organizzazione. Il fatto che l'endpoint delle organizzazioni continui a rispondere e' proprio
-cio' che rende l'errore leggibile: l'autenticazione funziona, e' l'autorizzazione sulle risorse a
-cadere.
+Diagnosi, dal caso del 05/08/2026. La causa non era la chiave ma la **licenza**: Zyxel aveva notificato per posta la retrocessione dell'organizzazione a Base Pack per scadenza della licenza di un dispositivo, e la chiave NCC OpenAPI richiede il Professional Pack sui dispositivi dell'organizzazione. Il fatto che l'endpoint delle organizzazioni continui a rispondere e' proprio cio' che rende l'errore leggibile: l'autenticazione funziona, e' l'autorizzazione sulle risorse a cadere.
 
-Come si distingue dalle altre ipotesi, in ordine di costo. Primo, guardare se esiste una mail di
-Zyxel sulla licenza, che e' il segnale piu' rapido. Secondo, aprire Nebula sotto Organization-wide
-> Licenses & inventory e leggere il livello dell'organizzazione e la scadenza per apparato: il
-livello segue l'apparato peggiore, quindi basta una licenza scaduta su un solo switch. Terzo, se il
-dubbio resta, rigenerare la chiave dal percorso non ovvio (icona "..." in alto, My devices &
-services, scheda NCC OpenAPI Key) e riprovare: se il `Forbidden` resta, la chiave e' innocente.
-Quarto, confrontare con l'ultimo snapshot buono, che nel caso del 05/08 dichiarava `mode: PRO`
-sull'organizzazione mentre la corsa successiva non aveva piu' nulla da dichiarare.
+Come si distingue dalle altre ipotesi, in ordine di costo. Primo, guardare se esiste una mail di Zyxel sulla licenza, che e' il segnale piu' rapido. Secondo, aprire Nebula sotto Organization-wide
+> Licenses & inventory e leggere il livello dell'organizzazione e la scadenza per apparato: il livello segue l'apparato peggiore, quindi basta una licenza scaduta su un solo switch. Terzo, se il dubbio resta, rigenerare la chiave dal percorso non ovvio (icona "..." in alto, My devices & services, scheda NCC OpenAPI Key) e riprovare: se il `Forbidden` resta, la chiave e' innocente. Quarto, confrontare con l'ultimo snapshot buono, che nel caso del 05/08 dichiarava `mode: PRO` sull'organizzazione mentre la corsa successiva non aveva piu' nulla da dichiarare.
 
-Cosa **non** e'. Non e' un guasto di rete e non e' NEB-001: il piano dati e' indipendente dal
-cloud, switch e access point continuano a inoltrare traffico con la configurazione che hanno, e
-restano gestibili dalla GUI anche in Base Pack. NEB-001 e' l'assenza intermittente di un apparato
-dal piano di gestione, con `DEVICE_IS_OFFLINE` sulle sue interrogazioni; qui invece gli apparati
-stanno bene ed e' l'API a rifiutare la richiesta.
+Cosa **non** e'. Non e' un guasto di rete e non e' NEB-001: il piano dati e' indipendente dal cloud, switch e access point continuano a inoltrare traffico con la configurazione che hanno, e restano gestibili dalla GUI anche in Base Pack. NEB-001 e' l'assenza intermittente di un apparato dal piano di gestione, con `DEVICE_IS_OFFLINE` sulle sue interrogazioni; qui invece gli apparati stanno bene ed e' l'API a rifiutare la richiesta.
 
-Rimedio e mitigazione. Il rimedio e' il rinnovo del Professional Pack, almeno sugli apparati di cui
-serve la lettura automatica. Finche' non avviene, la mitigazione e' dichiarativa e non tecnica:
-porte, PVID, VLAN ammesse e tabelle MAC vanno lette dalla GUI e riportate a mano, l'ultimo snapshot
-utile va congelato fuori git per non perderlo alla prima riesecuzione dello script — nel caso del
-05/08 e'
-`_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json` — e la riga della cadenza
-in `.claude/rules/fonti-e-riallineamento.md` resta marcata come sospesa, perche' una cadenza che
-non si puo' onorare e' peggio di una cadenza dichiarata assente. Attenzione a una trappola pratica:
-lo script sovrascrive `output/nebula-snapshot.json` anche quando la corsa e' vuota, quindi la copia
-di salvaguardia va fatta **prima** di rilanciarlo.
+Rimedio. Il rimedio e' coprire con Professional Pack **ogni** dispositivo dell'organizzazione, non solo quelli che servono alla lettura automatica: il livello dell'organizzazione e' il minimo, quindi lasciarne fuori uno vanifica la spesa sugli altri. Nel caso del 05/08 gli scoperti erano i tre access point della Fase B, entrati in organizzazione il 21/07 senza licenza, e il declassamento e' arrivato quindici giorni esatti dopo. Decisione, dati e scadenze in ADR-022.
+
+Cosa aspettarsi dopo l'acquisto, verificato il 06/08/2026. L'organizzazione risale a Pro **da sola**, senza usare il pulsante "Upgrade Now", e la **chiave API non va rigenerata**: il declassamento sospende l'autorizzazione, non revoca la chiave, quindi la stessa chiave che rispondeva `Forbidden` riprende a funzionare. La prova di ripristino e' un rilancio dello script: se l'organizzazione dichiara `mode: PRO` e gli endpoint dei siti e dei dispositivi rispondono, la fonte e' tornata.
+
+Mitigazione finche' l'organizzazione resta in Base, e trappola pratica. Porte, PVID, VLAN ammesse e tabelle MAC vanno lette dalla GUI e riportate a mano, e la riga della cadenza in `.claude/rules/fonti-e-riallineamento.md` va marcata come sospesa, perche' una cadenza che non si puo' onorare e' peggio di una cadenza dichiarata assente. La trappola: lo script sovrascrive `output/nebula-snapshot.json` anche quando la corsa e' vuota, quindi la copia di salvaguardia dell'ultimo snapshot buono va fatta **prima** di rilanciarlo — nel caso del 05/08 e' `_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json`, ed e' servita.
+
+Prevenzione, che e' la parte che conta. Ogni apparato nuovo adottato nell'organizzazione va licenziato **entro quindici giorni**: e' la stessa regola che ha prodotto questo guasto, e vale per il prossimo access point come e' valsa per i tre della Fase B.
 
 ---
 
 ## Riferimenti utili
 
-Raccolta di riferimenti esterni verificati durante gli interventi, tenuta qui perche'
-sono le pagine che servono davvero in mezzo a un intervento e ritrovarle costa tempo.
-Ogni voce indica a cosa e' servita, non solo cosa contiene.
+Raccolta di riferimenti esterni verificati durante gli interventi, tenuta qui perche' sono le pagine che servono davvero in mezzo a un intervento e ritrovarle costa tempo. Ogni voce indica a cosa e' servita, non solo cosa contiene.
 
 | Riferimento | A cosa serve | URL |
 |---|---|---|

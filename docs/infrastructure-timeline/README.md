@@ -1,10 +1,8 @@
 # Timeline interventi infrastrutturali di rete - Intrawelt
 
-Ogni file documenta una fase cronologica. Le date sono estratte direttamente
-dal documento Word ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx.
+Ogni file documenta una fase cronologica. Le date sono estratte direttamente dal documento Word ARCHITETTURA SERVER-CLOUD-LINEE 20052026.docx.
 
-I marcatori [TBC] indicano sezioni in cui mancano screenshot o informazioni da
-aggiungere manualmente dall'utente prima che la documentazione sia completa.
+I marcatori [TBC] indicano sezioni in cui mancano screenshot o informazioni da aggiungere manualmente dall'utente prima che la documentazione sia completa.
 
 ## File
 

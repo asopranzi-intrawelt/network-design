@@ -1,18 +1,12 @@
 # Checklist Ingestion Documenti IT – Intrawelt
 
-Cartelle sorgente (due librerie OneDrive distinte, entrambe monitorate dal
-09/07/2026):
+Cartelle sorgente (due librerie OneDrive distinte, entrambe monitorate dal 09/07/2026):
 - `C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT` (tecnica, perimetro principale)
 - `C:\Users\Utente\OneDrive - Intrawelt S.a.s\IT + Administration - Documenti` (amministrativa/fornitori, 742 file — scoperta il 09/07/2026 tramite un collegamento `.lnk` dentro ARCHITETTURA SERVER-CLOUD-LINEE, sezione dedicata piu' sotto)
 
 Aggiornato: 2026-07-09 | Owner: Alessio Sopranzi
 
-Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta entrambe le cartelle
-con le rispettive baseline locali (`_notes/.onedrive-manifest.json` e
-`_notes/.onedrive-manifest-admin.json`, non versionate) e viene eseguito
-automaticamente a ogni avvio di sessione (hook SessionStart in `settings.local.json`).
-Quando il report segnala variazioni, le voci rilevanti si registrano qui e si riesegue
-lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-09 (entrambe le librerie).
+Controllo del drift: `scripts/Check-OneDriveDelta.ps1` confronta entrambe le cartelle con le rispettive baseline locali (`_notes/.onedrive-manifest.json` e `_notes/.onedrive-manifest-admin.json`, non versionate) e viene eseguito automaticamente a ogni avvio di sessione (hook SessionStart in `settings.local.json`). Quando il report segnala variazioni, le voci rilevanti si registrano qui e si riesegue lo script con `-UpdateBaseline`. Baseline corrente: 2026-07-09 (entrambe le librerie).
 
 Nota (09/07/2026): i nomi cartella effettivi su disco per alcune voci differiscono
 da quelli storici scritti in questa checklist (es. `Sviluppo_interno, scripting (IT on
@@ -35,11 +29,7 @@ stata aggiornata di conseguenza e non segnalera' piu' queste cartelle come
 
 Legenda: `[x]` estratto | `[ ]` da fare | `[-]` skip intenzionale | `[!]` mai ingestire (credenziali)
 
-Eccezione di anonimizzazione dichiarata (vedi `.claude/rules/anonymization.md`):
-i nomi di file e cartelle tra backtick sono percorsi letterali della cartella
-OneDrive sorgente e restano verbatim anche quando contengono nomi propri,
-perche' un placeholder li renderebbe introvabili. La prosa descrittiva fuori
-dai percorsi usa i placeholder.
+Eccezione di anonimizzazione dichiarata (vedi `.claude/rules/anonymization.md`): i nomi di file e cartelle tra backtick sono percorsi letterali della cartella OneDrive sorgente e restano verbatim anche quando contengono nomi propri, perche' un placeholder li renderebbe introvabili. La prosa descrittiva fuori dai percorsi usa i placeholder.
 
 ---
 
@@ -466,8 +456,7 @@ dai percorsi usa i placeholder.
 
 ## Delta 23/06 -> 07/07/2026 (triage del 07/07/2026)
 
-File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
-`Check-OneDriveDelta.ps1` (esclusi artefatti graphify-out, cache, mirror scraping).
+File nuovi o modificati dopo lo snapshot del 23/06, rilevati con `Check-OneDriveDelta.ps1` (esclusi artefatti graphify-out, cache, mirror scraping).
 
 - [x] `Helpdesk_T-Rex/aggiornamento groupshare/groupshare-upgrade-handoff.md` — ingestita (vedi sezione Helpdesk_T-Rex)
 - [x] `Cybersec/Criptare dati a riposo/AUDIT_INVENTORY.md` → cybersecurity-governance.md §Crittografia dati a riposo + GAP-TBC #104/SEC-010 (07/07/2026; dettagli di derivazione password NON riportati nel repo, restano nel sorgente)
@@ -482,32 +471,17 @@ File nuovi o modificati dopo lo snapshot del 23/06, rilevati con
 
 ## Nota PORT-TAGGING — CHIUSA il 03/08/2026
 
-La riserva e' stata sciolta su indicazione esplicita dell'utente. Le evidenze in
-`_notes/[TBC] screenshot e note myoffice/` sono state lette come immagini e hanno prodotto tre
-esiti, tutti riportati nei file tracciati.
+La riserva e' stata sciolta su indicazione esplicita dell'utente. Le evidenze in `_notes/[TBC] screenshot e note myoffice/` sono state lette come immagini e hanno prodotto tre esiti, tutti riportati nei file tracciati.
 
-Il primo chiude un TBC che questa documentazione portava aperto da luglio: la pagina Voice VLAN
-di Nebula mostra **Voice VLAN ID 2, Priority 5, Assign VLAN by LLDP-MED, DSCP 46**, quindi il
-DSCP non era rimasto sul default 44 (`telefono-pbx-voip.md` §Priorita' e QoS).
+Il primo chiude un TBC che questa documentazione portava aperto da luglio: la pagina Voice VLAN di Nebula mostra **Voice VLAN ID 2, Priority 5, Assign VLAN by LLDP-MED, DSCP 46**, quindi il DSCP non era rimasto sul default 44 (`telefono-pbx-voip.md` §Priorita' e QoS).
 
-Il secondo e' una correzione: sul dispositivo e' attiva **anche** la sezione "Vendor ID based
-VLAN", con il prefisso del produttore dei telefoni mappato sulla VLAN 2. La scheda affermava che
-si fosse scelto LLDP-MED *invece* dell'OUI; in realta' convivono, e la conseguenza pratica —
-apparecchi di altri produttori non catturati dalla voce per prefisso — e' ora scritta.
+Il secondo e' una correzione: sul dispositivo e' attiva **anche** la sezione "Vendor ID based VLAN", con il prefisso del produttore dei telefoni mappato sulla VLAN 2. La scheda affermava che si fosse scelto LLDP-MED *invece* dell'OUI; in realta' convivono, e la conseguenza pratica — apparecchi di altri produttori non catturati dalla voce per prefisso — e' ora scritta.
 
-Il terzo e' la conferma visiva che il **DHCP Server Guard e' disattivato** a livello di
-impostazioni di sito, non solo sul singolo switch: rafforza NET-012, che era stato rilevato via
-API.
+Il terzo e' la conferma visiva che il **DHCP Server Guard e' disattivato** a livello di impostazioni di sito, non solo sul singolo switch: rafforza NET-012, che era stato rilevato via API.
 
-Un quarto fatto arriva dagli screenshot dell'applicazione di comunicazione unificata: alla data
-del 07/07/2026 il client mostra la rubrica degli interni con l'indicatore di presenza di un
-collega, quindi il centralino cloud non era soltanto contrattualizzato, era **parzialmente in
-servizio** con utenti registrati. Non era scritto in nessun file di questo progetto.
+Un quarto fatto arriva dagli screenshot dell'applicazione di comunicazione unificata: alla data del 07/07/2026 il client mostra la rubrica degli interni con l'indicatore di presenza di un collega, quindi il centralino cloud non era soltanto contrattualizzato, era **parzialmente in servizio** con utenti registrati. Non era scritto in nessun file di questo progetto.
 
-Restano non analizzate le due fotografie del rack e alcuni screenshot intermedi della stessa
-giornata, che documentano passaggi di GUI gia' coperti dai fatti sopra: non aggiungono
-informazione oltre a quanto la lettura diretta degli apparati ha poi misurato in modo
-autorevole il 03/08/2026.
+Restano non analizzate le due fotografie del rack e alcuni screenshot intermedi della stessa giornata, che documentano passaggi di GUI gia' coperti dai fatti sopra: non aggiungono informazione oltre a quanto la lettura diretta degli apparati ha poi misurato in modo autorevole il 03/08/2026.
 
 ## Nota storica PORT-TAGGING (stato precedente, aggiornata 07/07/2026 pomeriggio)
 
@@ -560,45 +534,17 @@ gia' documentata, non ancora verificata contenuto per contenuto.
 
 ## Triage del delta 15/07 → 03/08/2026 (arretrato di diciannove giorni, chiuso il 03/08)
 
-La baseline dei due manifest era ferma al 15/07/2026 e l'hook di avvio segnalava da giorni
-**398 nuovi, 2 modificati e 86 eliminati** su "Documenti - IT" piu' **12 nuovi** su "IT +
-Administration", senza che nessuno li avesse smistati. Triage eseguito il 03/08/2026 sulla
-lista completa (`-MaxList 600`), raggruppata per cartella di primo livello. La lezione di
-metodo e' che un numero grande spaventa e viene rimandato: smistato per cartella, il
-novantacinque per cento del delta si e' rivelato estraneo alla rete in tre minuti, e cio'
-che contava erano **due file**.
+La baseline dei due manifest era ferma al 15/07/2026 e l'hook di avvio segnalava da giorni **398 nuovi, 2 modificati e 86 eliminati** su "Documenti - IT" piu' **12 nuovi** su "IT + Administration", senza che nessuno li avesse smistati. Triage eseguito il 03/08/2026 sulla lista completa (`-MaxList 600`), raggruppata per cartella di primo livello. La lezione di metodo e' che un numero grande spaventa e viene rimandato: smistato per cartella, il novantacinque per cento del delta si e' rivelato estraneo alla rete in tre minuti, e cio' che contava erano **due file**.
 
-- [x] `SCENIA/` — 379 voci → progetto SaaS separato (dataset di tirocinio, analisi
-  knowledgebase, logica crediti). Nessun contenuto di rete o infrastruttura. Non ingerito,
-  coerentemente con il perimetro di ADR-015
-- [x] `TOOL AI coding assistance/` — 85 voci, in gran parte **eliminazioni** (screenshot e
-  note della configurazione di una estensione VS Code). Nessun impatto: nessuna di quelle
-  fonti era mai stata ingerita
-- [x] `Cybersec & IT Governance/` — 21 voci → due filoni, entrambi di governance e non di
-  rete. Il round 4 del questionario WindTre (revisioni fino al 28/07, un file di
-  contraddizioni fra comunicazioni del fornitore) e un filone **AI-ACT interamente nuovo**
-  (indice, dossier consulente, assessment, verifica del diritto italiano L.132/2025,
-  questionario al sub-processor, relazione in .docx). Materiale di Fase 5 e di conformita'
-  AI, non di network design: **non ingerito qui**, segnalato perche' e' un workstream nuovo
-  che nessun artefatto di questo progetto conosce. Modificata anche la checklist ISO27001
-  rev4, sempre Fase 5
-- [x] `Miscellaneous procedure e utilities/` — 1 voce, procedura HR per i permessi sui
-  turni. Fuori scope
+- [x] `SCENIA/` — 379 voci → progetto SaaS separato (dataset di tirocinio, analisi knowledgebase, logica crediti). Nessun contenuto di rete o infrastruttura. Non ingerito, coerentemente con il perimetro di ADR-015
+- [x] `TOOL AI coding assistance/` — 85 voci, in gran parte **eliminazioni** (screenshot e note della configurazione di una estensione VS Code). Nessun impatto: nessuna di quelle fonti era mai stata ingerita
+- [x] `Cybersec & IT Governance/` — 21 voci → due filoni, entrambi di governance e non di rete. Il round 4 del questionario WindTre (revisioni fino al 28/07, un file di contraddizioni fra comunicazioni del fornitore) e un filone **AI-ACT interamente nuovo** (indice, dossier consulente, assessment, verifica del diritto italiano L.132/2025, questionario al sub-processor, relazione in .docx). Materiale di Fase 5 e di conformita' AI, non di network design: **non ingerito qui**, segnalato perche' e' un workstream nuovo che nessun artefatto di questo progetto conosce. Modificata anche la checklist ISO27001 rev4, sempre Fase 5
+- [x] `Miscellaneous procedure e utilities/` — 1 voce, procedura HR per i permessi sui turni. Fuori scope
 - [x] `Proforma/` — 6 voci, contabilita'. Fuori scope
-- [x] `MyOffice/Transizione centralino cloud 2026/` — 4 voci → il documento di trasporto del
-  gateway FXS **ingerito** (vedi deroga puntuale sopra e voce timeline 31/07/2026); restano
-  non aperti l'omonimo `.eml`, una fattura elettronica e un archivio di fatture, tutti
-  amministrativi
-- [x] `Daniele Colò - Punto informatica/2026/Preventivi/` — 2 voci, ed e' **il ritrovamento
-  del triage**. Il primo preventivo, del 17/07, e' quello di Fase B per i tre access point
-  NWA130BE gia' documentato in ADR-012: conferma modello e quantita', nessun fatto nuovo. Il
-  secondo, del 31/07, contiene **due apparati di rete mai censiti**: un access point da
-  esterno Zyxel WBE530-EU0101F, che e' l'hardware di M13c, e un UPS rack Addpower
-  TP130N-1500 con scheda SNMP opzionale. Ingeriti in `runbook-anomalie.md` §AP-001 e
-  §UPS-001, in `roadmap.md` M13c-5/M13c-6 e nella voce timeline 31/07/2026
+- [x] `MyOffice/Transizione centralino cloud 2026/` — 4 voci → il documento di trasporto del gateway FXS **ingerito** (vedi deroga puntuale sopra e voce timeline 31/07/2026); restano non aperti l'omonimo `.eml`, una fattura elettronica e un archivio di fatture, tutti amministrativi
+- [x] `Daniele Colò - Punto informatica/2026/Preventivi/` — 2 voci, ed e' **il ritrovamento del triage**. Il primo preventivo, del 17/07, e' quello di Fase B per i tre access point NWA130BE gia' documentato in ADR-012: conferma modello e quantita', nessun fatto nuovo. Il secondo, del 31/07, contiene **due apparati di rete mai censiti**: un access point da esterno Zyxel WBE530-EU0101F, che e' l'hardware di M13c, e un UPS rack Addpower TP130N-1500 con scheda SNMP opzionale. Ingeriti in `runbook-anomalie.md` §AP-001 e §UPS-001, in `roadmap.md` M13c-5/M13c-6 e nella voce timeline 31/07/2026
 
-Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` va
-lanciato dopo la conferma dell'utente, cosi' che il prossimo avvio di sessione parta pulito.
+Baseline **non** ancora riallineata al momento della scrittura: `-UpdateBaseline` va lanciato dopo la conferma dell'utente, cosi' che il prossimo avvio di sessione parta pulito.
 
 ## Riepilogo priorità (rigenerato 09/07/2026 dallo stato reale delle spunte)
 
@@ -620,37 +566,20 @@ della stessa indicazione dell'utente.
 
 ## Delta 09/07 -> 15/07/2026 (triage del 15/07/2026)
 
-Entrambe le librerie: nessuna voce richiede nuova ingestione, tutto ricade
-in categorie gia' decise. La corsa completa dello script (non solo il
-riepilogo troncato dell'hook di sessione) ha rilevato 42 nuovi file in
-`Documenti - IT`, non 11: la differenza sono 39 documenti sotto
-`SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`
-(coppie bilingue EN-IT/IT-DE/IT-EN, ambito Pharma-med — foglietti
-illustrativi, sinossi di studio, moduli di consenso informato) che sono il
-corpus grezzo del tirocinio universitario Unimc sul benchmark di
-traduzione, non documentazione IT: stessa categoria SKIP gia' decisa per
-"Ricerca Unimc" (righe 401-403, letteratura/materiale di ricerca esterno).
-- [-] `SCENIA/Documentazione scenia/admin_OK.pptx`, `user_OK.pptx`,
-  `Guida_portale_SCENIA_claude.pptx` (nuovi) — stessa categoria SKIP di riga 478
+Entrambe le librerie: nessuna voce richiede nuova ingestione, tutto ricade in categorie gia' decise. La corsa completa dello script (non solo il riepilogo troncato dell'hook di sessione) ha rilevato 42 nuovi file in `Documenti - IT`, non 11: la differenza sono 39 documenti sotto `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/` (coppie bilingue EN-IT/IT-DE/IT-EN, ambito Pharma-med — foglietti illustrativi, sinossi di studio, moduli di consenso informato) che sono il corpus grezzo del tirocinio universitario Unimc sul benchmark di traduzione, non documentazione IT: stessa categoria SKIP gia' decisa per "Ricerca Unimc" (righe 401-403, letteratura/materiale di ricerca esterno).
+- [-] `SCENIA/Documentazione scenia/admin_OK.pptx`, `user_OK.pptx`, `Guida_portale_SCENIA_claude.pptx` (nuovi) — stessa categoria SKIP di riga 478
 - [x] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Benchmark Study per
   Intrawelt.docx` — non e' un file nuovo ma lo spostamento del file gia'
   ingerito (riga 402) dentro una nuova sottocartella insieme al corpus dataset
   e ai paper accademici di supporto (gia' SKIP, riga 403); nessun contenuto
   aggiuntivo
-- [-] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/`
-  (39 file, coppie bilingue Pharma-med) — SKIP, corpus di ricerca esterno
-  (vedi nota sopra)
-- [-] `Cybersec/_QUESTIONARI FORNITORI/WindTre/` (Annex Part II, WIP .docx)
-  e `Documentazione scenia admin.pptx` modificati — revisioni di lavoro su
-  categorie gia' coperte, nessun contenuto nuovo per la storia di rete
-- [-] `Persona-H - Punto informatica/2026/Fatture/*.pdf` (nuovo) — stessa
-  categoria delle 58 fatture gia' verificate e non ingerite singolarmente (riga 519)
+- [-] `SCENIA/Ricerca Unimc/Tirocinio Tirocinante-Unimc-1/Materiale_per_dataset/` (39 file, coppie bilingue Pharma-med) — SKIP, corpus di ricerca esterno (vedi nota sopra)
+- [-] `Cybersec/_QUESTIONARI FORNITORI/WindTre/` (Annex Part II, WIP .docx) e `Documentazione scenia admin.pptx` modificati — revisioni di lavoro su categorie gia' coperte, nessun contenuto nuovo per la storia di rete
+- [-] `Persona-H - Punto informatica/2026/Fatture/*.pdf` (nuovo) — stessa categoria delle 58 fatture gia' verificate e non ingerite singolarmente (riga 519)
 - [-] `MyOffice/Transizione centralino cloud 2026/modulo richiesta
   variazione Vianova_Intrawelt_sig.pdf` (nuovo) — cade nella stessa
   sottocartella riservata alla nota PORT-TAGGING (riga 514/545-547), resta
   in attesa della stessa indicazione dell'utente
-- [-] `Eter/ORDINE ASSISTENZA ANNUALE.eml`, email licenza Zyxel XGS2220-54HP
-  (modificati) — stessa categoria gia' verificata (righe 513/523), rinnovi
-  senza contenuto nuovo
+- [-] `Eter/ORDINE ASSISTENZA ANNUALE.eml`, email licenza Zyxel XGS2220-54HP (modificati) — stessa categoria gia' verificata (righe 513/523), rinnovi senza contenuto nuovo
 
 Baseline aggiornata al 15/07/2026 per entrambe le librerie con `-UpdateBaseline`.

@@ -1,8 +1,6 @@
 # SCENIA – Piattaforma AI di Traduzione Assistita
 
-Documentazione del progetto SCENIA: fullstack SaaS di traduzione automatica e assistita
-basata su LLM. Intrawelt ricopre il ruolo di **Responsabile del trattamento (Processor)**
-verso i clienti. Partner tecnologico: **AIDAPT S.r.l.** (chatbot Caity).
+Documentazione del progetto SCENIA: fullstack SaaS di traduzione automatica e assistita basata su LLM. Intrawelt ricopre il ruolo di **Responsabile del trattamento (Processor)** verso i clienti. Partner tecnologico: **AIDAPT S.r.l.** (chatbot Caity).
 
 Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
@@ -10,8 +8,7 @@ Owner: Alessio Sopranzi. Aggiornato: giugno 2026.
 
 ## Cos'è SCENIA
 
-Piattaforma SaaS di traduzione automatica e assistita (CAT + LLM) per clienti B2B, sviluppata
-internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
+Piattaforma SaaS di traduzione automatica e assistita (CAT + LLM) per clienti B2B, sviluppata internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 
 **Stack tecnologico:**
 - LLM: `gpt-4.1` via Azure OpenAI (Azure Sweden Central, SEE)
@@ -93,56 +90,19 @@ internamente con AIDAPT come fornitore dell'infrastruttura cloud AI.
 
 ## DPIA ScenIA — stato al 02/07/2026
 
-La DPIA (base: template EDPB 2026) non e' piu' un template vuoto: le sezioni
-valutative centrali sono compilate. La valutazione di necessita' documenta le
-alternative considerate e le scelte meno intrusive adottate: modalita' di
-traduzione diretta in-memory senza persistenza come default; memoria di
-traduzione opt-in segregata per organization_id (e, dalla versione ultima,
-anche per argument); modalita' "common organization" confermata da AIDAPT per
-tradurre da esempi condivisi senza caricare documenti propri; provider LLM in
-stateless/Zero Data Retention senza training sui dati; trattamento solo SEE
-(AWS eu-west-1, Azure Sweden Central; Bedrock non attivo) con unico
-trasferimento verso il Regno Unito (RWS/Trados) coperto da decisione di
-adeguatezza UE valida fino al 27/12/2031, senza necessita' di SCC. Il
-balancing test conclude per la proporzionalita': nessuna profilazione ne'
-decisione automatizzata con effetti giuridici, severita' tipica bassa-media
-per contenuti B2B, alta solo in caso di dati art. 9 accidentali, mitigata da
-esclusione contrattuale, filtro PII lato client (PLANNED) e misure tecniche.
-Nelle misure e' entrata la non-ritenzione del contenuto tradotto con
-cancellazione automatica delle Translation Unit dopo la generazione. Il
-documento resta materiale di lavoro e non sostituisce il parere legale.
+La DPIA (base: template EDPB 2026) non e' piu' un template vuoto: le sezioni valutative centrali sono compilate. La valutazione di necessita' documenta le alternative considerate e le scelte meno intrusive adottate: modalita' di traduzione diretta in-memory senza persistenza come default; memoria di traduzione opt-in segregata per organization_id (e, dalla versione ultima, anche per argument); modalita' "common organization" confermata da AIDAPT per tradurre da esempi condivisi senza caricare documenti propri; provider LLM in stateless/Zero Data Retention senza training sui dati; trattamento solo SEE (AWS eu-west-1, Azure Sweden Central; Bedrock non attivo) con unico trasferimento verso il Regno Unito (RWS/Trados) coperto da decisione di adeguatezza UE valida fino al 27/12/2031, senza necessita' di SCC. Il balancing test conclude per la proporzionalita': nessuna profilazione ne' decisione automatizzata con effetti giuridici, severita' tipica bassa-media per contenuti B2B, alta solo in caso di dati art. 9 accidentali, mitigata da esclusione contrattuale, filtro PII lato client (PLANNED) e misure tecniche. Nelle misure e' entrata la non-ritenzione del contenuto tradotto con cancellazione automatica delle Translation Unit dopo la generazione. Il documento resta materiale di lavoro e non sostituisce il parere legale.
 
 ---
 
 ## Call AIDAPT 06/07/2026 — Qdrant e Knowledge Base
 
-Fonte: `SCENIA/Useful Resources/call aidapt 6.7.2026.docx`. Sul fronte
-infrastrutturale AIDAPT ha introdotto la quantizzazione per alleggerire il
-carico su Qdrant nella ricerca degli esempi di traduzione e ha scalato
-l'istanza a 32 GB di RAM; la versione 18 di Qdrant portera' la quantizzazione
-turbo a 2 bit, con il vettore principale diviso in tre parti e le informazioni
-principali concentrate nella prima.
+Fonte: `SCENIA/Useful Resources/call aidapt 6.7.2026.docx`. Sul fronte infrastrutturale AIDAPT ha introdotto la quantizzazione per alleggerire il carico su Qdrant nella ricerca degli esempi di traduzione e ha scalato l'istanza a 32 GB di RAM; la versione 18 di Qdrant portera' la quantizzazione turbo a 2 bit, con il vettore principale diviso in tre parti e le informazioni principali concentrate nella prima.
 
-Sul fronte della qualita' dei dati resta aperta la domanda se abbia senso
-inserire tutti i segmenti nella Knowledge Base: a oggi circa lo 0,1 per cento
-dei punti su Qdrant e' costituito da soli link. Le strade discusse sono la
-pulizia con tecniche deterministiche standard (regex) oppure l'appalto del
-lavoro a un agente AI, valutando ogni punto sia nelle sue caratteristiche
-proprie sia in relazione agli altri (case sensitivity, numeri, caratteri
-speciali). Per la specific knowledge i referenti AIDAPT (Referente-AIDAPT-1 e
-Referente-AIDAPT-2) hanno consigliato una seconda collezione dentro la stessa
-istanza Qdrant, perche' l'aggiunta di documenti nella specific knowledge mette
-in difficolta' la collezione principale: in una traduzione con specific
-knowledge le Translation Unit si pescano prima dalla collezione dedicata, con
-la collezione principale come fallback.
+Sul fronte della qualita' dei dati resta aperta la domanda se abbia senso inserire tutti i segmenti nella Knowledge Base: a oggi circa lo 0,1 per cento dei punti su Qdrant e' costituito da soli link. Le strade discusse sono la pulizia con tecniche deterministiche standard (regex) oppure l'appalto del lavoro a un agente AI, valutando ogni punto sia nelle sue caratteristiche proprie sia in relazione agli altri (case sensitivity, numeri, caratteri speciali). Per la specific knowledge i referenti AIDAPT (Referente-AIDAPT-1 e Referente-AIDAPT-2) hanno consigliato una seconda collezione dentro la stessa istanza Qdrant, perche' l'aggiunta di documenti nella specific knowledge mette in difficolta' la collezione principale: in una traduzione con specific knowledge le Translation Unit si pescano prima dalla collezione dedicata, con la collezione principale come fallback.
 
 ## Checklist operativa caricamento nuovo customer (01/07/2026)
 
-Fonte: `SCENIA/Checklist caricamento nuovo customer su Scenia.docx`. La
-checklist interna per l'onboarding di un nuovo cliente sulla piattaforma
-richiede sei elementi: combinazione linguistica, organigramma aziendale con le
-email, project manager da associare, settori, nome esatto del customer e
-documentazione del portale da consegnare al cliente.
+Fonte: `SCENIA/Checklist caricamento nuovo customer su Scenia.docx`. La checklist interna per l'onboarding di un nuovo cliente sulla piattaforma richiede sei elementi: combinazione linguistica, organigramma aziendale con le email, project manager da associare, settori, nome esatto del customer e documentazione del portale da consegnare al cliente.
 
 ---
 
@@ -198,8 +158,7 @@ documentazione del portale da consegnare al cliente.
 | < 95% | 20% |
 Cap massimo annuo: 20%.
 
-**Esclusioni SLA:** malfunzionamenti AWS/Azure/OpenAI, superamento flussi LLM o
-mancata ricarica credito, manutenzioni programmate, errori logici modelli (allucinazioni).
+**Esclusioni SLA:** malfunzionamenti AWS/Azure/OpenAI, superamento flussi LLM o mancata ricarica credito, manutenzioni programmate, errori logici modelli (allucinazioni).
 
 ---
 
@@ -223,8 +182,7 @@ mancata ricarica credito, manutenzioni programmate, errori logici modelli (alluc
 Sessione di lavoro tecnico su DPIA ScenIA (template EDPB v1.0). Presenti: Alessio + AIDAPT.
 
 **Architettura e flussi SCENIA:**
-- Rotta "translate diretta": traduzione senza passaggio per vector store per documenti usa-e-getta
-  (load → vector store solo per documenti da riutilizzare come knowledge base)
+- Rotta "translate diretta": traduzione senza passaggio per vector store per documenti usa-e-getta (load → vector store solo per documenti da riutilizzare come knowledge base)
 - Logica ottimizzazione punti Qdrant: eliminazione punti con <4 caratteri, filtraggio caratteri speciali
 - Segregazione: i dati di ogni organizzazione sono logicamente separati nel vector store
 
@@ -257,12 +215,7 @@ Sessione di lavoro tecnico su DPIA ScenIA (template EDPB v1.0). Presenti: Alessi
 - Supporta italiano e multilingual; funziona anche su portatile (leggero)
 - Alternativa: NLP classica senza LLM (meno precisa per nomi propri contestuali)
 
-**Rischio principale identificato:**
-Il meccanismo RAG crea un canale potenziale di diffusione dati: segmenti di un documento di
-organizzazione A potrebbero essere usati come contesto per tradurre documenti di organizzazione B.
-Mitigazione: segregazione logica Qdrant per organizzazione è architetturale; l'LLM riceve in
-prompt esplicito che gli esempi servono solo come contesto, non arricchiscono il documento.
-L'impatto è limitato: singoli segmenti non contengono informazioni auto-contenute.
+**Rischio principale identificato:** Il meccanismo RAG crea un canale potenziale di diffusione dati: segmenti di un documento di organizzazione A potrebbero essere usati come contesto per tradurre documenti di organizzazione B. Mitigazione: segregazione logica Qdrant per organizzazione è architetturale; l'LLM riceve in prompt esplicito che gli esempi servono solo come contesto, non arricchiscono il documento. L'impatto è limitato: singoli segmenti non contengono informazioni auto-contenute.
 
 **Documento DPIA:**
 - Template EDPB v1.0 2026 in compilazione (DPIA_SCENIA_2026.docx)
@@ -295,77 +248,35 @@ Da `Domande_interne_Intrawelt_2026-06-11.md` — risposte già inserite da Intra
 | Team DPIA | Persona-A (DPO, CEO, Referente) |
 | Prima stesura DPIA | 11/06/2026 |
 
-**Pending blocchi DPA firma:** A1-A4 (dati Intrawelt ✅ completati), E1-E2 (dati Cliente, per ogni contratto),
-B2 massimali (nessun cap), C3 trasparenza AI Act art. 50, C4 informativa utenti, D2-D3 AI Act + revisione legale.
+**Pending blocchi DPA firma:** A1-A4 (dati Intrawelt ✅ completati), E1-E2 (dati Cliente, per ogni contratto), B2 massimali (nessun cap), C3 trasparenza AI Act art. 50, C4 informativa utenti, D2-D3 AI Act + revisione legale.
 
 ---
 
 ## Requisiti di Sicurezza a AIDAPT — aree a/b/c/d (giu 2026)
 
-Da `SCENIA/SECURITY/Condivisione con AIDAPT/a), b), c), d)/` — note Intrawelt con i
-requisiti tecnici da formalizzare per scritto da AIDAPT.
+Da `SCENIA/SECURITY/Condivisione con AIDAPT/a), b), c), d)/` — note Intrawelt con i requisiti tecnici da formalizzare per scritto da AIDAPT.
 
-**a) Sicurezza applicativa:** cifratura E2E TLS 1.2/1.3 (client→API→LLM) e a riposo (KMS?);
-IAM con least privilege, rotazione chiavi, chiavi separate per DB/vector store/backup;
-multitenant isolation: backend deve impedire interrogazione risorse di altro cliente;
-protezione rotte API (token temporizzati, replay attack, rate limiting, lock per brute force);
-SAST sul codice sorgente, DAST sull'applicazione in esecuzione; SDLC sicuro (branch protection,
-dipendenze/CVE patching continuo).
+**a) Sicurezza applicativa:** cifratura E2E TLS 1.2/1.3 (client→API→LLM) e a riposo (KMS?); IAM con least privilege, rotazione chiavi, chiavi separate per DB/vector store/backup; multitenant isolation: backend deve impedire interrogazione risorse di altro cliente; protezione rotte API (token temporizzati, replay attack, rate limiting, lock per brute force); SAST sul codice sorgente, DAST sull'applicazione in esecuzione; SDLC sicuro (branch protection, dipendenze/CVE patching continuo).
 
-**b) Sicurezza operativa:** audit trail e supervisione eventi (eventuale SIEM/SOC); backup con
-dettaglio per ogni componente (RDS, vector store, S3, config, segreti): tecnologia, verifica
-integrità (checksum/hash), versionamento, account separati, retention + cancellazione alla
-scadenza, test di restore periodici; RPO/RTO concordati; modello responsabilità AIDAPT vs AWS;
-differenziazione backup operativi / compliance / DR; log audit delle operazioni di backup.
+**b) Sicurezza operativa:** audit trail e supervisione eventi (eventuale SIEM/SOC); backup con dettaglio per ogni componente (RDS, vector store, S3, config, segreti): tecnologia, verifica integrità (checksum/hash), versionamento, account separati, retention + cancellazione alla scadenza, test di restore periodici; RPO/RTO concordati; modello responsabilità AIDAPT vs AWS; differenziazione backup operativi / compliance / DR; log audit delle operazioni di backup.
 
-**c) Governance del dato:** classificazione dati + regole conservazione per categoria; versioning
-glossari/TM; onboarding/offboarding clienti con garanzie di cancellazione reale; auditabilità
-verso clienti; gestione richieste interessati (artt. 15-22 GDPR); documentazione data breach;
-registro trattamenti formalizzato.
+**c) Governance del dato:** classificazione dati + regole conservazione per categoria; versioning glossari/TM; onboarding/offboarding clienti con garanzie di cancellazione reale; auditabilità verso clienti; gestione richieste interessati (artt. 15-22 GDPR); documentazione data breach; registro trattamenti formalizzato.
 
-**d) LLM security e governance:** prompt hardening (separazione system/developer/user prompt,
-sanitizzazione input); validazione output e controlli hallucination (confidence scoring RAG);
-versioning prompt + test regressione dopo update modelli; filtraggio contesto vector store
-prima dell'LLM; logging sicuro interazioni (prompt, contesto, output, metadata — senza PII
-e senza segreti); retention log LLM separata da dati applicativi; limiti etici documentati;
-monitoraggio drift comportamentale modelli.
+**d) LLM security e governance:** prompt hardening (separazione system/developer/user prompt, sanitizzazione input); validazione output e controlli hallucination (confidence scoring RAG); versioning prompt + test regressione dopo update modelli; filtraggio contesto vector store prima dell'LLM; logging sicuro interazioni (prompt, contesto, output, metadata — senza PII e senza segreti); retention log LLM separata da dati applicativi; limiti etici documentati; monitoraggio drift comportamentale modelli.
 
-> **Nota:** AIDAPT è responsabile della sicurezza applicativa in quanto sviluppatori
-> delle rotte API — non sufficiente dire "è tutto su AWS". Il cliente finale B2B verrà
-> a chiedere queste garanzie e Intrawelt dovrà rispondervi in quanto erogatore del SaaS.
+> **Nota:** AIDAPT è responsabile della sicurezza applicativa in quanto sviluppatori delle rotte API — non sufficiente dire "è tutto su AWS". Il cliente finale B2B verrà a chiedere queste garanzie e Intrawelt dovrà rispondervi in quanto erogatore del SaaS.
 
 ---
 
 ## Risposte Tecniche AIDAPT (allegato tecnico, ricevute — estratto in DPA/extracted)
 
-Documento di risposta di AIDAPT ai requisiti a/b/c/d, perimetrato al backend
-e all'infrastruttura AWS secondo il modello di responsabilita' condivisa
-(Intrawelt: autenticazione utenti finali, UI, logica frontend; AIDAPT:
-backend traduzione e AI). Punti salienti: tenant dedicato con AWS
-Organization autonoma per Intrawelt (segregazione a livello di account, non
-solo logica; chiavi di cifratura non condivise); cifratura AES-256 su RDS e
-SSE-S3 su snapshot Qdrant, TLS >= 1.2 in transito con endpoint LLM in region
-europee; API key dedicate con rotazione e JWT via Cognito per la dashboard;
-rate limiting dichiarato "in deploy nella prossima release"; CI/CD con
-linting e test piu' Dependabot per le CVE; log centralizzati su Grafana di
-natura tecnica senza payload (niente PII nei log); backup giornalieri
-application-consistent con retention tecnica 7 giorni RDS e 10 giorni Vector
-Store; RPO < 24 ore e RTO 8-12 ore lavorative da DRP; garanzia No Training
-sancita dal DPA (Art A.5.3) con accordi Enterprise Zero Data Retention verso
-i provider; filtri contenuti nativi (Azure Content Safety); notifica breach
-a Intrawelt entro 48 ore dalla conoscenza; export via API dei glossari e
-primitive di cancellazione puntuale e massiva per organizzazione.
+Documento di risposta di AIDAPT ai requisiti a/b/c/d, perimetrato al backend e all'infrastruttura AWS secondo il modello di responsabilita' condivisa (Intrawelt: autenticazione utenti finali, UI, logica frontend; AIDAPT: backend traduzione e AI). Punti salienti: tenant dedicato con AWS Organization autonoma per Intrawelt (segregazione a livello di account, non solo logica; chiavi di cifratura non condivise); cifratura AES-256 su RDS e SSE-S3 su snapshot Qdrant, TLS >= 1.2 in transito con endpoint LLM in region europee; API key dedicate con rotazione e JWT via Cognito per la dashboard; rate limiting dichiarato "in deploy nella prossima release"; CI/CD con linting e test piu' Dependabot per le CVE; log centralizzati su Grafana di natura tecnica senza payload (niente PII nei log); backup giornalieri application-consistent con retention tecnica 7 giorni RDS e 10 giorni Vector Store; RPO < 24 ore e RTO 8-12 ore lavorative da DRP; garanzia No Training sancita dal DPA (Art A.5.3) con accordi Enterprise Zero Data Retention verso i provider; filtri contenuti nativi (Azure Content Safety); notifica breach a Intrawelt entro 48 ore dalla conoscenza; export via API dei glossari e primitive di cancellazione puntuale e massiva per organizzazione.
 
-Nota di riconciliazione: la retention tecnica dei backup dichiarata qui
-(7/10 giorni) e' piu' stretta dei 60 giorni massimi di rotazione indicati
-nell'Allegato I; e la notifica breach "entro 48 ore" e' piu' specifica dello
-standard EDPB 9/2022 "senza ingiustificato ritardo" recepito nel DPA. Da
-armonizzare in sede di consolidamento contrattuale.
+Nota di riconciliazione: la retention tecnica dei backup dichiarata qui (7/10 giorni) e' piu' stretta dei 60 giorni massimi di rotazione indicati nell'Allegato I; e la notifica breach "entro 48 ore" e' piu' specifica dello standard EDPB 9/2022 "senza ingiustificato ritardo" recepito nel DPA. Da armonizzare in sede di consolidamento contrattuale.
 
 ## Questionario AIDAPT — Stato 30 punti (precompilato 11/06/2026)
 
-`Questionario_AIDAPT_PRECOMPILATO_2026-06-11.md` — NON è risposta AIDAPT: ricostruzione
-Intrawelt da documenti ricevuti (RT 9/02/2026, RM 19/02/2026, SLA, DRP, BCP, DPIA meeting).
+`Questionario_AIDAPT_PRECOMPILATO_2026-06-11.md` — NON è risposta AIDAPT: ricostruzione Intrawelt da documenti ricevuti (RT 9/02/2026, RM 19/02/2026, SLA, DRP, BCP, DPIA meeting).
 
 **Sintesi: ✅ 1 / ⚠️ 11 / ❌ 18**
 
@@ -423,8 +334,7 @@ AIDAPT (Sub-resp.) ──▶ Intrawelt (Resp.) ──▶ Cliente (Titolare) ─�
 
 **Problema nel DRP §6:** soglia fissa "48h" → può erodere le 72h del Titolare verso l'Autorità.
 
-**Soluzione DPA v1.3:** tutto allineato a "senza ingiustificato ritardo" (EDPB Linee guida 9/2022).
-Le indicazioni orarie restano obiettivi operativi interni non vincolanti.
+**Soluzione DPA v1.3:** tutto allineato a "senza ingiustificato ritardo" (EDPB Linee guida 9/2022). Le indicazioni orarie restano obiettivi operativi interni non vincolanti.
 
 **Azioni richieste ad AIDAPT (da Memo 11/06/2026):**
 1. Aggiornare DRP §6 → "senza ingiustificato ritardo"
@@ -433,8 +343,7 @@ Le indicazioni orarie restano obiettivi operativi interni non vincolanti.
 4. Indicare referente e canale dedicati (email/PEC + reperibile urgente)
 5. Fornire log e supporto tecnico su richiesta Intrawelt
 
-**Punto aperto:** T₀ della "conoscenza" incerto finché audit log Qdrant non configurato
-→ AIDAPT deve chiarire come rilevano e datano una violazione su backend/RDS/S3/Qdrant.
+**Punto aperto:** T₀ della "conoscenza" incerto finché audit log Qdrant non configurato → AIDAPT deve chiarire come rilevano e datano una violazione su backend/RDS/S3/Qdrant.
 
 ---
 
@@ -461,11 +370,7 @@ Documento di supporto commerciale/utente. Punti chiave:
 
 ## Stato attuale (giugno 2026)
 
-Il prodotto ScenIA è in produzione. La compliance GDPR (DPA con clienti, DPIA) è in fase
-finale di redazione. I gap di sicurezza tecnici (SAST/DAST, VA/PT, Qdrant audit log) sono
-stati identificati e portati all'attenzione di AIDAPT tramite questionario formale.
-Il DPA richiede completamento dei placeholder delle Parti (dati Cliente per ogni contratto)
-e negoziazione dei massimali di responsabilità prima della firma.
+Il prodotto ScenIA è in produzione. La compliance GDPR (DPA con clienti, DPIA) è in fase finale di redazione. I gap di sicurezza tecnici (SAST/DAST, VA/PT, Qdrant audit log) sono stati identificati e portati all'attenzione di AIDAPT tramite questionario formale. Il DPA richiede completamento dei placeholder delle Parti (dati Cliente per ogni contratto) e negoziazione dei massimali di responsabilità prima della firma.
 
 **Pending DPIA (post-meeting 27/05/2026):**
 - Scrivere privacy policy per utenti ScenIA (trasparenza trattamento)
@@ -519,11 +424,7 @@ Ticket Aruba **18346774A** (13/02/2026): analisi opzioni backup.
 
 ## Architettura domini scenia.it (stato aprile 2026)
 
-Dominio registrato su Register.it il 03/02/2026 (registrante: Persona-A
-per Intrawelt Di Alessandro Potalivo & C. Sas, ragione sociale registrata come
-tale nel WHOIS; stato iniziale `inactive, dnsHold` fino al completamento della
-procedura), scadenza 03/02/2027 con rinnovo automatico attivo. Nameserver
-delegati a Cloudflare (kaiser.ns.cloudflare.com, tara.ns.cloudflare.com).
+Dominio registrato su Register.it il 03/02/2026 (registrante: Persona-A per Intrawelt Di Alessandro Potalivo & C. Sas, ragione sociale registrata come tale nel WHOIS; stato iniziale `inactive, dnsHold` fino al completamento della procedura), scadenza 03/02/2027 con rinnovo automatico attivo. Nameserver delegati a Cloudflare (kaiser.ns.cloudflare.com, tara.ns.cloudflare.com).
 
 | Sottodominio | IP / Destinazione | Ruolo |
 |-------------|-------------------|-------|
@@ -533,19 +434,7 @@ delegati a Cloudflare (kaiser.ns.cloudflare.com, tara.ns.cloudflare.com).
 | staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare Zero Trust) |
 | scenia.intrawelt.com | certificato dedicato dall'11/05/2026 (vedi nota) | Landing interna sito Intrawelt (TBC) |
 
-Nota (verificata live il 09/07/2026): il certificato *wildcard* di
-`intrawelt.com` presso Fastnet e' stato riemesso **senza wildcard**
-l'11/05/2026 per un limite tecnico Plesk (vedi `vendor-management.md`
-§Fastnet). Interrogando direttamente `scenia.intrawelt.com:443` risulta un
-certificato Let's Encrypt **dedicato**, emesso lo stesso giorno
-(11/05/2026, valido 90 giorni), con Subject Alternative Name limitato al
-solo `scenia.intrawelt.com`: il sottodominio non dipende (piu') dal
-wildcard di `intrawelt.com` ed e' correttamente coperto. Verificato anche
-`intrawelt.com` stesso: certificato Let's Encrypt valido con SAN
-`intrawelt.com`, `intrawelt.it`, `www.intrawelt.com`, `www.intrawelt.it`
-(nessun wildcard, coerente con la nota Fastnet), scadenza circa un mese
-dopo la data di questa verifica — rinnovo automatico Plesk atteso prima
-della scadenza.
+Nota (verificata live il 09/07/2026): il certificato *wildcard* di `intrawelt.com` presso Fastnet e' stato riemesso **senza wildcard** l'11/05/2026 per un limite tecnico Plesk (vedi `vendor-management.md` §Fastnet). Interrogando direttamente `scenia.intrawelt.com:443` risulta un certificato Let's Encrypt **dedicato**, emesso lo stesso giorno (11/05/2026, valido 90 giorni), con Subject Alternative Name limitato al solo `scenia.intrawelt.com`: il sottodominio non dipende (piu') dal wildcard di `intrawelt.com` ed e' correttamente coperto. Verificato anche `intrawelt.com` stesso: certificato Let's Encrypt valido con SAN `intrawelt.com`, `intrawelt.it`, `www.intrawelt.com`, `www.intrawelt.it` (nessun wildcard, coerente con la nota Fastnet), scadenza circa un mese dopo la data di questa verifica — rinnovo automatico Plesk atteso prima della scadenza.
 
 ---
 
@@ -562,8 +451,7 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` — decisione architetturale 11/
 
 ### Controlli accesso
 
-- SSH: solo chiavi ED25519 (root login disabilitato), porta consentita solo da
-  IP Intrawelt pubblico e IP Collaboratore-Esterno-1 (IP nella mappa locale)
+- SSH: solo chiavi ED25519 (root login disabilitato), porta consentita solo da IP Intrawelt pubblico e IP Collaboratore-Esterno-1 (IP nella mappa locale)
 - Fail2Ban: ban automatico dopo 3-4 tentativi SSH falliti
 - ufw: policy DROP su input/forward, ACCEPT su output (eccetto regole esplicite)
 
@@ -652,67 +540,29 @@ Nota: Intrawelt è su macchina dedicata → modalità flessibili concordabili ca
 
 **Definizioni chiave (Allegato A DPA):**
 
-- **Zero Data Retention (ZDR)**: Azure OpenAI stateless per default; abuse monitoring
-  NON disattivato nel setup AIDAPT (richiede approvazione Microsoft).
-- **Abuse Monitoring**: disattivazione completa richiede approvazione MS, non ancora
-  attiva → dato di traduzione transitoriamente accessibile per monitoring Azure.
-- **Memory / Qdrant**: similarity search injectata nel prompt ad ogni invocazione;
-  non disattivabile dall'utente finale.
+- **Zero Data Retention (ZDR)**: Azure OpenAI stateless per default; abuse monitoring NON disattivato nel setup AIDAPT (richiede approvazione Microsoft).
+- **Abuse Monitoring**: disattivazione completa richiede approvazione MS, non ancora attiva → dato di traduzione transitoriamente accessibile per monitoring Azure.
+- **Memory / Qdrant**: similarity search injectata nel prompt ad ogni invocazione; non disattivabile dall'utente finale.
 
 ---
 
 ## Allegati contrattuali separati A-L (02/07/2026)
 
-Il 02/07/2026 gli allegati del contratto ScenIA sono stati scorporati in
-file autonomi sotto `SCENIA/SECURITY/Allegati/` (A Definizioni, B
-Descrizione servizio, E SLA, F Supporto, G Change Control, H Sicurezza, I
-Backup/Retention/DR, J DPA, K Subprocessor; lo schema complessivo in
-`definizioni allegati.txt` prevede anche C Trial, D Prezzi e L
-Audit/certificazioni). B, E, G e K erano gia' documentati nelle sezioni
-dedicate di questa scheda; i contenuti nuovi sono F, H, I e J.
+Il 02/07/2026 gli allegati del contratto ScenIA sono stati scorporati in file autonomi sotto `SCENIA/SECURITY/Allegati/` (A Definizioni, B Descrizione servizio, E SLA, F Supporto, G Change Control, H Sicurezza, I Backup/Retention/DR, J DPA, K Subprocessor; lo schema complessivo in `definizioni allegati.txt` prevede anche C Trial, D Prezzi e L Audit/certificazioni). B, E, G e K erano gia' documentati nelle sezioni dedicate di questa scheda; i contenuti nuovi sono F, H, I e J.
 
-Allegato F, supporto tecnico: orario 9-18 CET lun-ven con eventuale
-reperibilita' H24 per severita' critica; escalation a tre livelli (supporto
-Intrawelt, team tecnico del gestore del framework, management) con trigger
-automatico al superamento dei tempi; matrice severita' S1-S4 con risposta
-2/4/8/24 ore e obiettivi di risoluzione da 8 ore lavorative (S1, workaround)
-a 10 giorni (S4). Canale di supporto e referente escalation restano
-placeholder da completare per contratto.
+Allegato F, supporto tecnico: orario 9-18 CET lun-ven con eventuale reperibilita' H24 per severita' critica; escalation a tre livelli (supporto Intrawelt, team tecnico del gestore del framework, management) con trigger automatico al superamento dei tempi; matrice severita' S1-S4 con risposta 2/4/8/24 ore e obiettivi di risoluzione da 8 ore lavorative (S1, workaround) a 10 giorni (S4). Canale di supporto e referente escalation restano placeholder da completare per contratto.
 
-Allegato H, sicurezza: consolida le TOM lungo la catena Intrawelt/AIDAPT con
-i gap dichiarati in trasparenza: rate limiting applicativo non implementato,
-audit log Qdrant non configurato, SAST/DAST assenti, commit non firmati,
-nessun VA/PT formale eseguito, nessuna certificazione formale (percorso in
-corso). MFA utenti finali e filtro PII lato client sono esplicitamente in
-carico a Intrawelt/Cliente. Allineamento volontario a ETSI EN 304 223.
+Allegato H, sicurezza: consolida le TOM lungo la catena Intrawelt/AIDAPT con i gap dichiarati in trasparenza: rate limiting applicativo non implementato, audit log Qdrant non configurato, SAST/DAST assenti, commit non firmati, nessun VA/PT formale eseguito, nessuna certificazione formale (percorso in corso). MFA utenti finali e filtro PII lato client sono esplicitamente in carico a Intrawelt/Cliente. Allineamento volontario a ETSI EN 304 223.
 
-Allegato I, backup e DR: backup giornalieri cifrati nel SEE con rotazione a
-60 giorni massimi non configurabile; progetti Trados eliminati dopo 90
-giorni, log 90 giorni, TU e glossari per la durata contrattuale cancellabili
-per organization_id; diritto all'oblio sui backup gestito tramite registro
-delle cancellazioni AIDAPT (in fase di attivazione) piu' rotazione; RPO < 24
-ore e RTO 8-12 ore lavorative unici per tutti gli scenari (guasto
-componente, outage regionale best effort, ransomware); BCP approvato il
-30/04/2026, DRP revisionato il 27/02/2026, test periodici di ripristino non
-documentati (gap da colmare).
+Allegato I, backup e DR: backup giornalieri cifrati nel SEE con rotazione a 60 giorni massimi non configurabile; progetti Trados eliminati dopo 90 giorni, log 90 giorni, TU e glossari per la durata contrattuale cancellabili per organization_id; diritto all'oblio sui backup gestito tramite registro delle cancellazioni AIDAPT (in fase di attivazione) piu' rotazione; RPO < 24 ore e RTO 8-12 ore lavorative unici per tutti gli scenari (guasto componente, outage regionale best effort, ransomware); BCP approvato il 30/04/2026, DRP revisionato il 27/02/2026, test periodici di ripristino non documentati (gap da colmare).
 
-Allegato J, DPA in forma sintetica: Intrawelt come Responsabile ex art. 28
-(referente privacy Persona-A, privacy@intrawelt.com; anagrafica completa nel
-sorgente locale, non qui); categorie di dati (TU con eventuali dati di terzi,
-metadati, glossari e memorie, dati di onboarding, dati dei linguisti, log
-pseudonimi) con esclusione artt. 9-10 su dichiarazione del Titolare e
-clausola di salvaguardia; sub-responsabili con autorizzazione generale
-(AIDAPT, AWS eu-west-1, Azure OpenAI Sweden Central, RWS/Trados UE-UK in
-adeguatezza); breach notification "senza ingiustificato ritardo" secondo
-EDPB 9/2022 con le 72 ore verso l'autorita' a carico del solo Titolare;
-nessun massimale di responsabilita' (art. 82 GDPR, art. 1229 c.c.).
+Allegato J, DPA in forma sintetica: Intrawelt come Responsabile ex art. 28 (referente privacy Persona-A, privacy@intrawelt.com; anagrafica completa nel sorgente locale, non qui); categorie di dati (TU con eventuali dati di terzi, metadati, glossari e memorie, dati di onboarding, dati dei linguisti, log pseudonimi) con esclusione artt. 9-10 su dichiarazione del Titolare e clausola di salvaguardia; sub-responsabili con autorizzazione generale (AIDAPT, AWS eu-west-1, Azure OpenAI Sweden Central, RWS/Trados UE-UK in adeguatezza); breach notification "senza ingiustificato ritardo" secondo EDPB 9/2022 con le 72 ore verso l'autorita' a carico del solo Titolare; nessun massimale di responsabilita' (art. 82 GDPR, art. 1229 c.c.).
 
 ---
 
 ## Ricerca UNIMC – Benchmark ScenIA
 
-Fonte: `SCENIA/Ricerca Unimc/Benchmark Study per Intrawelt.docx` (31 KB)
-Autori: UNIMC/VRAI Lab (Frontoni, Sernani, Santini). Periodo: 2024-2025.
+Fonte: `SCENIA/Ricerca Unimc/Benchmark Study per Intrawelt.docx` (31 KB) Autori: UNIMC/VRAI Lab (Frontoni, Sernani, Santini). Periodo: 2024-2025.
 
 ### Obiettivi
 
@@ -751,8 +601,7 @@ ScenIA confrontabile con: ChatGPT (solo prompt, no TM) e modelli open-source spe
 
 ## Knowledge Base ScenIA – Metriche (25/05/2026)
 
-Fonte: `SCENIA/analisi knowledgebase/metriche_documenti_25-05-2026.json` (83 KB)
-Snapshot del Vector Store (Qdrant) al 25/05/2026.
+Fonte: `SCENIA/analisi knowledgebase/metriche_documenti_25-05-2026.json` (83 KB) Snapshot del Vector Store (Qdrant) al 25/05/2026.
 
 **Struttura dati (per documento):**
 
@@ -774,28 +623,16 @@ Snapshot del Vector Store (Qdrant) al 25/05/2026.
 
 ## Checklist Sicurezza SCENIA (gap analysis in corso)
 
-Fonte: `SCENIA/SECURITY/DPA/Checklist_Sicurezza_Dropdown.xlsx`
-Stato: tutti gli item "Da fare" — documento di gap analysis preparato da Alessio Sopranzi.
+Fonte: `SCENIA/SECURITY/DPA/Checklist_Sicurezza_Dropdown.xlsx` Stato: tutti gli item "Da fare" — documento di gap analysis preparato da Alessio Sopranzi.
 
 ### A) Sicurezza applicativa
-Cifratura transito+riposo, TLS 1.2/1.3, chiamate LLM su rete privata AWS, IAM/POLP/rotazione
-chiavi, segregazione chiavi DB/vector store/backup, separazione tenant, RBAC, protezione API
-(token/firme/anti-replay/rate limiting), SAST, DAST, CI/CD sicuro, Secure SDLC, commit
-firmati/branch protection, gestione CVE/patching, hardening container.
+Cifratura transito+riposo, TLS 1.2/1.3, chiamate LLM su rete privata AWS, IAM/POLP/rotazione chiavi, segregazione chiavi DB/vector store/backup, separazione tenant, RBAC, protezione API (token/firme/anti-replay/rate limiting), SAST, DAST, CI/CD sicuro, Secure SDLC, commit firmati/branch protection, gestione CVE/patching, hardening container.
 
 ### B) Sicurezza operativa
-Audit trail accessi, integrazione SIEM/SOC, snapshot RDS/backup logici/export, verifica
-integrità backup (checksum), frequenza/posizione/versionamento backup, account separati per
-backup, retention policy GDPR/ISO27001, RPO/RTO definiti, test di restore, piano DR,
-modello responsabilità AIDAPT vs AWS, log e audit trail backup.
+Audit trail accessi, integrazione SIEM/SOC, snapshot RDS/backup logici/export, verifica integrità backup (checksum), frequenza/posizione/versionamento backup, account separati per backup, retention policy GDPR/ISO27001, RPO/RTO definiti, test di restore, piano DR, modello responsabilità AIDAPT vs AWS, log e audit trail backup.
 
 ### C) Governance del dato
-Classificazione dati, regole conservazione per categoria, portabilità, versionamento
-glossari/TM, minimizzazione, processi onboarding/offboarding documentati, auditabilità,
-DSAR GDPR, documentazione data breach, SLA informativi, registro trattamenti formalizzato.
+Classificazione dati, regole conservazione per categoria, portabilità, versionamento glossari/TM, minimizzazione, processi onboarding/offboarding documentati, auditabilità, DSAR GDPR, documentazione data breach, SLA informativi, registro trattamenti formalizzato.
 
 ### D) LLM Security & Governance
-Hardening prompt (system/developer/user), sanitizzazione input, validazione output
-anti-hallucination (RAG scoring), scelta/manutenzione modelli, versioning prompt,
-monitoring model drift, test regressione output, filtraggio contesto pre-LLM,
-documentazione limiti etici, logging sicuro (esclusione PII dai log), retention log LLM.
+Hardening prompt (system/developer/user), sanitizzazione input, validazione output anti-hallucination (RAG scoring), scelta/manutenzione modelli, versioning prompt, monitoring model drift, test regressione output, filtraggio contesto pre-LLM, documentazione limiti etici, logging sicuro (esclusione PII dai log), retention log LLM.
