@@ -16,7 +16,7 @@ I vecchi dischi liberati dalla migrazione (1x 4 TB, 3x 3 TB, 1x 2 TB nuovo) sono
 
 Mail da info@vianova.it delle 12:54: dall'03/02/2025 l'accesso all'Area Clienti Vianova richiede autenticazione a due fattori (codice SMS). Solo l'utente con profilo Amministratore puo' abilitare la 2FA per tutti. Procedura: Area Clienti, menu Impostazioni, clicca Sicurezza, spunta "autenticazione a due fattori", clicca Conferma. FAQ 2FA: vianova.it/supporto/area-clienti/faq-autenticazione-a-due-fattori/
 
-La 2FA viene abilitata per asopranzi@intrawelt.com. Mail secondaria per il recovery scelta dall'IT manager: alesop.intrawelt@gmail.com. I successivi accessi richiedono codice a 6 cifre via SMS.
+La 2FA viene abilitata per asopranzi@intrawelt.com. Mail secondaria per il recovery: una casella personale dell'IT Manager, non riportata. I successivi accessi richiedono codice a 6 cifre via SMS.
 
 ## 17/01/2025 - Controllo CrystalDisk sui dischi ex-NAS INTRA2
 
@@ -46,7 +46,7 @@ Referente-Vianova-2 (referente-vianova-2@vianova.it) scrive alle 15:33: consider
 
 ## 28/01/2025 - Conversazione WhatsApp con Persona-H: server Proxmox
 
-Da conversazione WhatsApp privata con Persona-H (daniele@puntoinformatica.com): conferma dell'utilizzo di 48 CPU (2x24 core) sul nuovo server HP ProLiant DL380 Gen10.
+Da conversazione WhatsApp privata con Persona-H (persona-h@puntoinformatica.com): conferma dell'utilizzo di 48 CPU (2x24 core) sul nuovo server HP ProLiant DL380 Gen10.
 
 ## 30/01/2025 - Primo accensione HP ProLiant DL380 Gen10
 
@@ -92,7 +92,7 @@ Tutti i server del rack DX vengono fisicamente connessi alle porte dello switch 
 
 ## 07/02/2025 - Mail da Referente-BioStar2-1 su migrazione BioStar2
 
-Mail proveniente da tecnico2@giudiciepolidori.it verso info@lucianiimpianti.it, girata da smartellini@intrawelt.com ad asopranzi@intrawelt.com. Contiene link alle istruzioni per la migrazione del sistema BioStar2 (controllo accessi fisici): support.supremainc.com/en/support/solutions/articles/24000005907
+Mail proveniente da tecnico2@giudiciepolidori.it verso info@lucianiimpianti.it, girata da persona-b@intrawelt.com ad asopranzi@intrawelt.com. Contiene link alle istruzioni per la migrazione del sistema BioStar2 (controllo accessi fisici): support.supremainc.com/en/support/solutions/articles/24000005907
 
 ## 07-09/02/2025 - Esperimenti Proxmox di Persona-H
 
@@ -110,9 +110,9 @@ Mail di Persona-J a Referente-RWS-1: installato Studio 2024 su un PC di test. Ri
 
 Persona-A chiama Referente-Vianova-1 (referente-vianova-1@myofficegroup.it) per sollecitare lo stato dell'attivazione Vianova.
 
-Referente-Vianova-1 invia mail il 12/02/2025 alle 10:47 a info@vianova.it (CC: Antonio Pomponio referente-vianova-5@vianova.it, Referente-Vianova-2 referente-vianova-2@vianova.it, wi wi@myofficegroup.it), oggetto "cliente Intrawelt di Alessandro Potalivo". Scrive di aver visionato il pannello Merlino/Provisioning: il prossimo step interno e' fissato al 19 febbraio. Ricorda che la posa e' prevista entro 120 giorni dalla contrattualizzazione del 24/12/2024. Il cliente lamenta appuntamenti andati a vuoto e ritiene non necessario alcuno scavo perche' la fibra arriva gia' in sede.
+Referente-Vianova-1 invia mail il 12/02/2025 alle 10:47 a info@vianova.it (CC: Referente-Vianova-5 referente-vianova-5@vianova.it, Referente-Vianova-2 referente-vianova-2@vianova.it, wi wi@myofficegroup.it), oggetto "cliente Intrawelt di Alessandro Potalivo". Scrive di aver visionato il pannello Merlino/Provisioning: il prossimo step interno e' fissato al 19 febbraio. Ricorda che la posa e' prevista entro 120 giorni dalla contrattualizzazione del 24/12/2024. Il cliente lamenta appuntamenti andati a vuoto e ritiene non necessario alcuno scavo perche' la fibra arriva gia' in sede.
 
-Stessa data alle 11:54: risposta di Referente-Vianova-6 (manuela.cinquini@vianova.it, CC: Referente-Vianova-2, Referente-Vianova-5, wi). Referente-Vianova-6 chiarisce che il percorso fibra e' gia' predisposto e nel verbale di sopralluogo non si menzionano lavorazioni particolari. Non ci sono step prefissati al 19/02 ma solo monitoraggio. Il cavo passera' entro fine febbraio, poi a seguire nei giorni successivi installazione del catalyst (switch Cisco Catalyst con porte SFP/SFP+ per connessioni fino a 10 Gbps). Le tempistiche sono contrattualmente nei limiti dei 120 giorni (scadenza aprile 2025). Vianova si scusa per gli appuntamenti disattesi e chiede di essere avvisata tempestivamente in futuro per avere basi di reclamo verso il proprio fornitore.
+Stessa data alle 11:54: risposta di Referente-Vianova-6 (referente-vianova-6@vianova.it, CC: Referente-Vianova-2, Referente-Vianova-5, wi). Referente-Vianova-6 chiarisce che il percorso fibra e' gia' predisposto e nel verbale di sopralluogo non si menzionano lavorazioni particolari. Non ci sono step prefissati al 19/02 ma solo monitoraggio. Il cavo passera' entro fine febbraio, poi a seguire nei giorni successivi installazione del catalyst (switch Cisco Catalyst con porte SFP/SFP+ per connessioni fino a 10 Gbps). Le tempistiche sono contrattualmente nei limiti dei 120 giorni (scadenza aprile 2025). Vianova si scusa per gli appuntamenti disattesi e chiede di essere avvisata tempestivamente in futuro per avere basi di reclamo verso il proprio fornitore.
 
 Stessa data alle 16:25: Referente-Vianova-1 risponde ad Alessio Sopranzi confermando di non poter dare una data precisa e che aggiornera' appena possibile. Si e' contrattualmente nei tempi massimi entro aprile 2025.
 
@@ -130,7 +130,7 @@ Referente-RWS-1 (RWS) conferma: 3 licenze Trados Studio 2024 con codice attivo d
 
 ## Febbraio 2025 - Onboarding Persona-Q
 
-Creazione account NAS HERO (10.61.20.169) per Persona-Q, nuova dipendente. Account agolino@intrawelt.com, gruppo pm-junior. Configurazione replicata dall'account mmarini (modello di riferimento per i PM junior).
+Creazione account NAS HERO (10.61.20.169) per Persona-Q, nuova dipendente. Account persona-q@intrawelt.com, gruppo pm-junior. Configurazione replicata dall'account mmarini (modello di riferimento per i PM junior).
 
 ## 21/02/2025 - Accesso e formattazione NAS INTRA3
 

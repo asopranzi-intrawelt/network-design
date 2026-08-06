@@ -11,9 +11,11 @@
 
     Target fissi (da docs/runbook-anomalie.md §AP-001, verificati il 15/07/2026 via
     tabella MAC L2 incrociata con LLDP):
-      XGS2220-30HP porta 1   -> AP "PianoTerra"  (74:83:C2:20:8F:27)
-      XGS2220-54HP porta 41  -> AP "PianoPrimo"   (74:83:C2:83:48:12)
-      XGS2220-54HP porta 45  -> AP "PianoSecondo" (74:83:C2:20:8E:E6)
+      XGS2220-30HP porta 1   -> AP "PianoTerra"   (AA:BB:CC:00:00:27)
+      XGS2220-54HP porta 41  -> AP "PianoPrimo"   (AA:BB:CC:00:00:25)
+      XGS2220-54HP porta 45  -> AP "PianoSecondo" (AA:BB:CC:00:00:26)
+    I MAC qui sopra sono segnaposto: i valori reali si leggono da
+    _notes/.nebula-targets.json e da _notes/.anonymization-map.md, entrambi non versionati.
     (EsternoIrrigazione, XGS2220-30HP porta 4, e' fuori scope: e' l'AP dell'irrigazione,
     non fa parte della Wi-Fi staff da isolare in questa fase.)
 
@@ -186,11 +188,17 @@ function Get-NebulaArrayValue {
 # ---------------------------------------------------------------------------
 # 2. Target fissi (vedi runbook-anomalie.md §AP-001)
 # ---------------------------------------------------------------------------
-$Targets = @(
-    @{ SwitchMac = "70:49:A2:39:F9:00"; SwitchModel = "XGS2220-30HP"; PortNum = 1;  ApName = "PianoTerra" },
-    @{ SwitchMac = "F4:4D:5C:8F:7C:39"; SwitchModel = "XGS2220-54HP"; PortNum = 41; ApName = "PianoPrimo" },
-    @{ SwitchMac = "F4:4D:5C:8F:7C:39"; SwitchModel = "XGS2220-54HP"; PortNum = 45; ApName = "PianoSecondo" }
-)
+# I MAC reali dei due switch non stanno in un file tracciato, perche' il repository e'
+# pubblico: vivono in `_notes/.nebula-targets.json`, ignorato da git. La traduzione
+# segnaposto -> valore reale sta in `_notes/.anonymization-map.md`. Il file contiene un
+# array di oggetti con i campi SwitchMac, SwitchModel, PortNum, ApName.
+$TargetsFile = Join-Path $PSScriptRoot '..\_notes\.nebula-targets.json'
+if (-not (Test-Path -LiteralPath $TargetsFile)) {
+    Write-Error "File dei target non trovato: $TargetsFile - vedi _notes/.anonymization-map.md per ricostruirlo."
+    exit 1
+}
+$Targets = @(Get-Content -Raw -LiteralPath $TargetsFile | ConvertFrom-Json)
+if ($Targets.Count -eq 0) { Write-Error "Il file dei target e' vuoto: $TargetsFile"; exit 1 }
 
 # ---------------------------------------------------------------------------
 # 3. Scoperta organizzazione/sito/switch (stesso pattern di Get-NebulaSnapshot.ps1)

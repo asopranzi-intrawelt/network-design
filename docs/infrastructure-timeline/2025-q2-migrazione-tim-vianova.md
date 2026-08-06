@@ -16,7 +16,7 @@ Fonte: `_DA SISTEMARE (Alessio)/PROXMOX/` (note datate; le cartelle del 04/04 e 
 
 Tecnico Camillo (myOffice) arriva in sede. Problema riscontrato: l'ordine di lavoro non prevede uno schema con il router di backup e non contiene una richiesta di ritiro dell'apparato preesistente. Il tecnico Ciccarelli specifica che Vianova stava usando uno schema obsoleto riferito ad un tipo di apparato non piu' in uso. Prima di aprire e spacchettare il materiale si attende che richiami Vianova.
 
-Nel pomeriggio alle 15:44 arriva mail da Serena Cortesi (serena.cortesi@vianova.it, Customer Care, telefono 145) ad Persona-A (persona-a@intrawelt.com): "Buona sera, per la sede in oggetto abbiamo eseguito la variazione profilo richiesta. Il profilo Vianova e' adesso: a progetto 6 canali, FTTO fino a 1Gbps TIM, Opzione Line Recovery Radio Standard."
+Nel pomeriggio alle 15:44 arriva mail da Referente-Vianova-7 (referente-vianova-7@vianova.it, Customer Care, telefono 145) ad Persona-A (persona-a@intrawelt.com): "Buona sera, per la sede in oggetto abbiamo eseguito la variazione profilo richiesta. Il profilo Vianova e' adesso: a progetto 6 canali, FTTO fino a 1Gbps TIM, Opzione Line Recovery Radio Standard."
 
 ## 08/04/2025 - Referente-MyOffice-1 conferma invio mail a Vianova
 
@@ -52,7 +52,7 @@ Vianova chiama il 23/04/2025: la fibra di backup e' up mentre il ponte radio e' 
 
 ## 30/04/2025 - Analisi servizi attivi sull'IP TIM prima dello switch
 
-Documento di analisi prodotto da Alessio Sopranzi (mail tra asopranzi@intrawelt.com, persona-a@intrawelt.com e daniele@puntoinformatica.com del mattino del 30/04/2025).
+Documento di analisi prodotto da Alessio Sopranzi (mail tra asopranzi@intrawelt.com, persona-a@intrawelt.com e persona-h@puntoinformatica.com del mattino del 30/04/2025).
 
 Servizi che alla data del 30/04/2025 usano ancora l'IP TIM 192.0.2.50:
 
@@ -158,7 +158,7 @@ Alessio Sopranzi chiama il numero 145 (supporto Vianova). Confermato: il servizi
 
 Senza VPN Unmanaged, il router R-1000 intercetta e blocca il traffico IKE/NAT-T perche' Vianova offre di default una VPN gestita da loro (verso la propria infrastruttura cloud), non un passthrough verso apparati del cliente.
 
-Stessa data: Alessio Sopranzi scrive a l.olivieri@myofficegroup.it (Leonardo Olivieri) spiegando la situazione. Leonardo Olivieri risponde lo stesso giorno: allega il documento precompilato per la modifica contrattuale da inviare firmato e timbrato a info@vianova.it. Nota esplicita nel documento: "si tratta di una sola VPN Point-To-Point."
+Stessa data: Alessio Sopranzi scrive a Referente-MyOffice-4 (referente-myoffice-4@myofficegroup.it) spiegando la situazione. Referente-MyOffice-4 risponde lo stesso giorno: allega il documento precompilato per la modifica contrattuale da inviare firmato e timbrato a info@vianova.it. Nota esplicita nel documento: "si tratta di una sola VPN Point-To-Point."
 
 Nota di Alessio Sopranzi: "Le porte erano aperte col gestore precedente, avrebbero dovuto esserlo pure con loro. E' una questione di principio, ci siamo stati a sbattere un mese e il problema era il router loro non configurato."
 
@@ -168,7 +168,7 @@ Il 04/06/2025 alle 14:32 Vianova conferma che il servizio VPN Unmanaged e' attiv
 
 ## 05/06/2025 - Tunnel ancora non funziona dopo VPN Unmanaged
 
-Nonostante la VPN Unmanaged attiva, il tunnel IPsec non si completa. Alessio Sopranzi scrive a Leonardo Olivieri (l.olivieri@myofficegroup.it) il 05/06/2025.
+Nonostante la VPN Unmanaged attiva, il tunnel IPsec non si completa. Alessio Sopranzi scrive a Referente-MyOffice-4 (referente-myoffice-4@myofficegroup.it) il 05/06/2025.
 
 Log del firewall Zyxel: il tunnel parte (fase 1 IKE ok), l'IP sorgente usato e' 203.0.113.x, il traffico e' visibile in uscita lato Zyxel. Dal firewall cloud SEEWEB (OPNsense) non arriva nulla.
 
@@ -192,7 +192,7 @@ Root cause confermata: tra l'IP pubblico Vianova 203.0.113.x e il firewall SEEWE
 
 Modifiche eseguite dal tecnico SEEWEB sul firewall OPNsense cloud: Aperte le porte UDP 500 e 4500 a tutti sulla regola Firewall > LAN di OPNsense (sicuro perche' il server IPsec dello Zyxel filtra comunque il peer IP, nessun problema di sicurezza aggiuntivo). Configurazione del peer remoto del tunnel aggiornata per accettare il traffico dall'IP del gateway intermedio Vianova invece di 203.0.113.x direttamente.
 
-Verifica finale il 24/06/2025 alle ore 16:46: RDP su 10.77.116.3 (WINGROUPSHARE) con Administrator / [redacted]: accesso riuscito. RDP su 10.77.116.4 (WINSRV2019) con utente analisi1: accesso riuscito. Verifica da Sergio Marini su DTP1 e DTP2: funziona.
+Verifica finale il 24/06/2025 alle ore 16:46: RDP su 10.77.116.3 (WINGROUPSHARE) con Administrator / [redacted]: accesso riuscito. RDP su 10.77.116.4 (WINSRV2019) con utente analisi1: accesso riuscito. Verifica da Persona-AB su DTP1 e DTP2: funziona.
 
 Il tunnel IPsec Intrawelt-SEEWEB e' pienamente operativo su IP Vianova 203.0.113.x. Durata totale del processo di risoluzione: dall'08/05 al 24/06/2025, 47 giorni.
 

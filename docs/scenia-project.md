@@ -396,7 +396,7 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx`
 | Storage | 80 GB |
 | Data transfer | 50 TB/mese (in + out) |
 | OS | Ubuntu 22.04 LTS |
-| IP pubblico | 80.211.141.50 |
+| IP pubblico | <IP-SCENIA-VPS-PROD> |
 | Hypervisor | OpenStack (Aruba-managed) |
 
 **Stack applicativo:**
@@ -409,7 +409,7 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx`
 | Parametro | Valore |
 |-----------|--------|
 | Piano | O2A4 (piano simile a produzione) |
-| IP pubblico | 93.186.255.24 |
+| IP pubblico | <IP-SCENIA-VPS-STAGING> |
 | Ruolo | staging-portal.scenia.it (proxato Cloudflare) |
 
 ### Backup VPS
@@ -428,10 +428,10 @@ Dominio registrato su Register.it il 03/02/2026 (registrante: Persona-A per Intr
 
 | Sottodominio | IP / Destinazione | Ruolo |
 |-------------|-------------------|-------|
-| scenia.it | 80.211.141.50 | Sito istituzionale (one-page, vendor management) |
-| portal.scenia.it | 80.211.141.50 | Portale produzione → Trados Accelerate (Flowhandler) |
-| contact.scenia.it | 80.211.141.50 | Landing form contatti (design Attilio) |
-| staging-portal.scenia.it | 93.186.255.24 | Portale staging (proxato Cloudflare Zero Trust) |
+| scenia.it | <IP-SCENIA-VPS-PROD> | Sito istituzionale (one-page, vendor management) |
+| portal.scenia.it | <IP-SCENIA-VPS-PROD> | Portale produzione → Trados Accelerate (Flowhandler) |
+| contact.scenia.it | <IP-SCENIA-VPS-PROD> | Landing form contatti (design Attilio) |
+| staging-portal.scenia.it | <IP-SCENIA-VPS-STAGING> | Portale staging (proxato Cloudflare Zero Trust) |
 | scenia.intrawelt.com | certificato dedicato dall'11/05/2026 (vedi nota) | Landing interna sito Intrawelt (TBC) |
 
 Nota (verificata live il 09/07/2026): il certificato *wildcard* di `intrawelt.com` presso Fastnet e' stato riemesso **senza wildcard** l'11/05/2026 per un limite tecnico Plesk (vedi `vendor-management.md` §Fastnet). Interrogando direttamente `scenia.intrawelt.com:443` risulta un certificato Let's Encrypt **dedicato**, emesso lo stesso giorno (11/05/2026, valido 90 giorni), con Subject Alternative Name limitato al solo `scenia.intrawelt.com`: il sottodominio non dipende (piu') dal wildcard di `intrawelt.com` ed e' correttamente coperto. Verificato anche `intrawelt.com` stesso: certificato Let's Encrypt valido con SAN `intrawelt.com`, `intrawelt.it`, `www.intrawelt.com`, `www.intrawelt.it` (nessun wildcard, coerente con la nota Fastnet), scadenza circa un mese dopo la data di questa verifica — rinnovo automatico Plesk atteso prima della scadenza.

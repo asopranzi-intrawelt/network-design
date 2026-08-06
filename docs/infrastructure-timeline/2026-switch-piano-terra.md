@@ -302,8 +302,7 @@ Il file `startup-config.conf` datato 05/06/2026 e conservato con il piano contie
 
 ## 09/06/2026 - Provisioning utente e app Vianova One (centralino cloud)
 
-Fonte: screenshot cartella `08062026 (steps)`, mail `Messagistica centrale
-telefonica.eml` (09/06/2026, telefonia@myofficegroup.it).
+Fonte: screenshot cartella `08062026 (steps)`, mail `Messagistica centrale telefonica.eml` (09/06/2026, telefonia@myofficegroup.it).
 
 Riunione con myOffice/Vianova per la migrazione al centralino cloud (Alessia Referente-Vianova-1). Nella stessa giornata Alessio esegue due interventi operativi concreti, indipendenti dal piano di revisione firewall.
 
@@ -433,7 +432,7 @@ Rimozione DHCP server classe .90 (configurazione residua dallo switch Piano Terr
 
 Fonte: `_DA SISTEMARE (Alessio)/Analisi mail/marsk-17062026/analisi-problema-consegna.md` (Claude Code M365 trace analysis, 17/06/2026)
 
-**Mittente**: `ADM_DWIT_TEST_POWERPLATFORM@enispa.onmicrosoft.com` (Eni Power Automate Flow) IP sorgente: `<IP-ENI-AZURE-SOURCE>` (Azure Cloud), Tenant Eni: `c16e514b-893e-4a01-9a30-b8fef514a650` **Destinatario**: `enivipa@intrawelt.com` (+ `persona-d@intrawelt.com` in parallelo scoperto da trace) **Oggetto tipo**: `Traduzione per [Nome Cognome] - [ID]` (richieste VIPA)
+**Mittente**: un account di servizio del tenant Microsoft del cliente (Power Automate Flow); l'indirizzo completo non e' riportato perche' e' un dato del cliente IP sorgente: `<IP-ENI-AZURE-SOURCE>` (Azure Cloud), Tenant Eni: `c16e514b-893e-4a01-9a30-b8fef514a650` **Destinatario**: `enivipa@intrawelt.com` (+ `persona-d@intrawelt.com` in parallelo scoperto da trace) **Oggetto tipo**: `Traduzione per [Nome Cognome] - [ID]` (richieste VIPA)
 
 **Episodi di mancata consegna:**
 - 16/06/2026 ore 13:15–13:35 IT: 7 mail mancanti (6 persone fisiche destinatarie delle traduzioni; i cognomi restano nel documento sorgente locale, non qui)
@@ -448,10 +447,7 @@ Fonte: `_DA SISTEMARE (Alessio)/Analisi mail/marsk-17062026/analisi-problema-con
 
 ## Maggio-Luglio 2026 - Benchmark DoE IntraLino (C1/C2/C3), GPU RTX 5060 Ti e test C4
 
-Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Qdrant + Ollama + Ubuntu + n8n
-self-hosting/_File Benchmark e implement/` (stato progetto, guide, due report
-differenziali). Contenuto anonimizzato secondo `.claude/rules/anonymization.md`;
-la cartella sorgente contiene anche file di credenziali, mai riportati.
+Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Qdrant + Ollama + Ubuntu + n8n self-hosting/_File Benchmark e implement/` (stato progetto, guide, due report differenziali). Contenuto anonimizzato secondo `.claude/rules/anonymization.md`; la cartella sorgente contiene anche file di credenziali, mai riportati.
 
 Il benchmark applica un impianto DoE[^1] alla pipeline RAG[^2] self-hosted IntraLino per isolare due fattori: l'impatto della GPU a parita' di modello (C1, CPU con llama3.2:3B, contro C2, GPU con lo stesso modello) e l'impatto del modello a parita' di hardware (C2 contro C3, llama3.1:8b). Il confronto diretto C1-C3 e' vietato dalla metodologia perche' varierebbe due fattori insieme. Le misure quantitative (matrice A: TTFT, throughput, durata, CPU, RAM, VRAM, latenza embedding) interrogano Ollama in isolamento; quelle qualitative (matrice B: aderenza, coerenza, recall@k, preferenza pairwise) attraversano la pipeline completa e sono affidate a un panel di 5 valutatori con stimoli anchor ripresentati in cieco per misurare la deriva di giudizio.
 
@@ -796,10 +792,7 @@ Stato: sette postazioni funzionanti. Restano due code, entrambe registrate: veri
 
 ## 31/07/2026 - Consegnato un gateway FXS per la fonia analogica dell'ascensore
 
-Fatto rilevato il 03/08/2026 dal delta OneDrive, non da una comunicazione in sessione, e
-verificato leggendo il documento di trasporto in
-`IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\DDT del gateway
-FXS (ascensore)`.
+Fatto rilevato il 03/08/2026 dal delta OneDrive, non da una comunicazione in sessione, e verificato leggendo il documento di trasporto in `IT + Administration - Documenti\MyOffice\Transizione centralino cloud 2026\DDT del gateway FXS (ascensore)`.
 
 myOffice ha consegnato un **Grandstream HT-812 v2**, adattatore telefonico analogico con due porte FXS e router NAT Gigabit, in un'unita' sola: trasporto datato 01/07/2026, ricevuta controfirmata il 31/07/2026. Importi e riferimenti dei documenti amministrativi restano fuori dai file tracciati.
 
@@ -953,3 +946,15 @@ La correzione riguarda i telefoni, e vale come metodo. Il progetto portava dal 0
 ### Cosa resta scoperto, dichiarato invece che dedotto
 
 La sezione "Piano Terra" del documento sorgente e' aperta e vuota, quindi il livello fisico ed elettrico di quel piano resta ignoto. Dei tre gruppi di continuita' non si conoscono autonomia, carico, eta' delle batterie ne' data dell'ultimo test di scarica. Degli armadi non si conosce l'occupazione per unita' rack. Del citofono esiste una contraddizione fra il referto della VA di novembre 2025, che lo colloca sulla classe della guest, e la dichiarazione di oggi che lo mette sulla Wi-Fi staff. E il conteggio dei NAS scende da cinque a quattro, con il quinto che si rivela probabilmente una condivisione elencata accanto a quattro apparati in una riga della scheda di continuita': si chiude leggendo cosa risponde a quell'indirizzo, non ragionandoci sopra.
+
+### Le risposte dell'IT Manager, la stessa sera: cinque domande chiuse e una che cambia il quadro
+
+Il merge aveva prodotto un elenco di domande che nessuna fonte automatica poteva chiudere. Cinque hanno avuto risposta in giornata, e una di esse rovescia un gap aperto poche ore prima.
+
+La piu' importante riguarda i ventisette interni rimasti senza apparecchio: telefonano con il **client Vianova One installato su ogni endpoint Windows 11**, cioe' con un softphone. TEL-004 si chiude come difetto, perche' non esiste nessun intervallo scoperto, e la scelta che TEL-003 poneva per ciascuno dei ventisette risulta gia' fatta in modo uniforme. Nella stessa risposta il **Patton SmartNode 5551 e' dichiarato smantellato**, quindi esce dal piano di migrazione la voce sulla sua configurazione durante la transizione. Resta il solo smaltimento, sul gap RAEE #109.
+
+Il rovesciamento e' che quella risposta apre una conseguenza di rete che nessuno aveva valutato, tracciata come **TEL-005**: la voce della grande maggioranza degli utenti non viaggia piu' sulla VLAN 2 ma nasce sulla LAN dati piatta, attraversa l'uplink a 1 Gbps della porta 33 e esce dal firewall, senza ricevere la marcatura di qualita' che gli switch applicano al traffico taggato dei telefoni fisici. La VLAN 2 oggi trasporta sei apparati. Nessuno ha cambiato la rete, eppure la fonia ha cambiato percorso, segmento e trattamento: e' il caso di scuola dell'obsolescenza silenziosa che il protocollo delle fonti descrive, con l'aggravante che qui l'affermazione superata era corretta e verificata quando fu scritta.
+
+Le altre quattro risposte, in breve. La quarta presa dello Smart-UPS e' il suo **ingresso da parete**, quindi la Ciabatta 4 SX e' la sorgente non protetta di **entrambi** i gruppi dell'armadio di sinistra, e la ridondanza apparente fra i due non copre il guasto piu' banale. Il server HP ProLiant Gen10 ha un **solo alimentatore**, sulla Ciabatta 2 DX: non c'e' una ridondanza da sistemare, non esiste, e il nodo che esegue le dieci macchine virtuali si ferma per un guasto al proprio alimentatore anche a gruppo perfettamente funzionante. L'intervento sul Piano Terra, cioe' il gruppo di continuita' sullo switch 30HP e l'inventario del terminale Suprema nella stessa uscita, e' **pianificato per fine agosto 2026**. E il pacco dell'access point da esterno del preventivo **non e' ancora arrivato** al 06/08, quindi la sessione dedicata al montaggio slitta e non va rincorsa.
+
+Una quinta domanda resta aperta e va posta al fornitore: il gruppo di continuita' di Sala-1, cercato in tutti i documenti del fornitore abituale dal 2024 e nella libreria amministrativa, **non compare**, ne' come Emerson ne' come Liebert. La ricerca ha pero' identificato i due gruppi d'armadio che erano descritti solo per nome d'uso. Quello di destra e' un **Naicon UPServer 4000 VA rack** installato nel febbraio 2025, online a doppia conversione, 4 kVA e 2,70 kW, sei batterie 12V 9Ah, e con porte di comunicazione dichiarate a targa come **USB e RS232**: l'assenza di scheda di rete passa da osservazione a dato certificato. Dello Smart-UPS SC 1500 risulta la sostituzione del pacco batterie nel **novembre 2024**. Ed e' emerso un apparato in piu' di cui il progetto non sapeva nulla: una alimentazione di backup da 700 VA **di proprieta' del fornitore di linea**, sostituita in garanzia il 01/07/2025 perche' entrava in allarme, il cui rapporto con il Back-UPS ES 400 oggi descritto sui due router va chiarito.

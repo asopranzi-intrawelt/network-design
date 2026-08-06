@@ -258,7 +258,7 @@ Accesso remoto: VPN RemoteAccess_Wiz (IKEv2) o SSL VPN → poi RDP/browser
 7. NinjaOne: agent su macchina
 8. Registrare in registro onboarding (Mantis/ticket interno)
 
-**Caso esempio (Greta Cavalieri, 14/11/2024):**
+**Caso esempio (Persona-AI, 14/11/2024):**
 - Ticket Mantis #1428, aperto 13/11/2024 da Persona-J
 - Postazione preparata (PC), account M365 creato, Trados Studio installato
 
@@ -469,7 +469,7 @@ Possibili flussi:
 - **Automazione via middleware**: Python/PowerShell; alert critici NinjaOne → ticket automatici Odoo via script o webhook intermediari
 - **Reporting centralizzato**: aggregare dati NinjaOne in Odoo (SLA compliance, asset lifecycle, performance IT)
 
-Stato: **TBC** — da studiare con Fabio Giorgini + OpenForce dopo migrazione Odoo 12→18.
+Stato: **TBC** — da studiare con Collaboratore-Esterno-1 + OpenForce dopo migrazione Odoo 12→18.
 
 ---
 
@@ -498,15 +498,7 @@ Fonte: `Sviluppo_T-Rex (Odoo)/Odoo_12/28052025 - Risoluzione problema restore/` 
 
 Procedura consolidata per ricostruire l'ambiente di sviluppo Odoo 12 in locale (Docker `intrawelt-docker-env`) e ripristinarvi un dump di produzione. Dal database manager (`<ip>:8070/web/database/manager`) si cancella l'eventuale database precedente e si esegue il restore del `.dump` con la master password (nel file di configurazione dell'ambiente), nominando il database con prefisso `test_` per distinguerlo dalla produzione. Prima del restore si stacca la connessione internet; dal container PostgreSQL (`docker exec -it <id> bash`, poi `psql -U odoo -d test_intrawelt`) si disattivano tutti i cron con `update ir_cron set active='f'`, cosi' l'ambiente di test non scarica ne' invia posta reale (incidente gia' accaduto in passato con notifiche ripartite verso clienti). Le query di servizio (blocco server di posta, reset password di tutti gli utenti, eliminazione attachment `.js/.css/.less/asset` per rigenerare gli asset) sono raccolte nel file `dev_database_manager.csv` dentro l'ambiente.
 
-Dopo il restore: `docker compose run --rm --service-ports odoo run -d
-test_intrawelt -u all --stop-after-init` per aggiornare tutti i moduli, poi
-avvio in modalita' sviluppo con `--dev=xml,pdb,qweb --workers=0`. Per lo
-sviluppo iterativo si aggiorna un solo modulo (`-u <modulo>`), si verificano
-le viste ereditate con il plugin di debug del browser e, in caso di fix
-rilasciato, si fa `git pull` sul branch di test 12.0-test nella cartella
-degli addons linkata in `docker-compose.yml`. L'ambiente ripristinato e'
-sacrificabile: si puo' rifare il restore in ogni momento, e serve anche per
-demo interne raggiungendolo da altre macchine della LAN su `<ip>:8070`.
+Dopo il restore: `docker compose run --rm --service-ports odoo run -d test_intrawelt -u all --stop-after-init` per aggiornare tutti i moduli, poi avvio in modalita' sviluppo con `--dev=xml,pdb,qweb --workers=0`. Per lo sviluppo iterativo si aggiorna un solo modulo (`-u <modulo>`), si verificano le viste ereditate con il plugin di debug del browser e, in caso di fix rilasciato, si fa `git pull` sul branch di test 12.0-test nella cartella degli addons linkata in `docker-compose.yml`. L'ambiente ripristinato e' sacrificabile: si puo' rifare il restore in ogni momento, e serve anche per demo interne raggiungendolo da altre macchine della LAN su `<ip>:8070`.
 
 ## Odoo 12 – Audit attivita' di un utente (sola lettura)
 
@@ -516,15 +508,7 @@ Per tracciare le azioni di un utente non serve intervenire sul database di produ
 
 ## Odoo – Studio API per estrazione dati CRM (novembre 2025)
 
-Fonte: thread "intrawelt - api per crm" (03/11/2025), cartella `Appina per
-query gestionale , webhook (2025)/`. OpenForce indica le API XML-RPC di Odoo
-come via per estrarre dati CRM e visualizzarli esternamente, con i nomi
-tecnici dei campi ricavabili in modalita' debug o dalla struttura database;
-disponibile l'ambiente demo v18 (`demo18.openforce.it`, database di test che
-scade ogni 30 giorni). Il CRM, poco personalizzato, e' il candidato per i
-primi test sulla v18 prima della migrazione. L'app con webhook ipotizzata
-dal nome della cartella non risulta sviluppata. Vedi anche la voce 03/11/2025
-in `infrastructure-timeline/2025-q3-q4.md`.
+Fonte: thread "intrawelt - api per crm" (03/11/2025), cartella `Appina per query gestionale , webhook (2025)/`. OpenForce indica le API XML-RPC di Odoo come via per estrarre dati CRM e visualizzarli esternamente, con i nomi tecnici dei campi ricavabili in modalita' debug o dalla struttura database; disponibile l'ambiente demo v18 (`demo18.openforce.it`, database di test che scade ogni 30 giorni). Il CRM, poco personalizzato, e' il candidato per i primi test sulla v18 prima della migrazione. L'app con webhook ipotizzata dal nome della cartella non risulta sviluppata. Vedi anche la voce 03/11/2025 in `infrastructure-timeline/2025-q3-q4.md`.
 
 ## OpenProject – Gantt tool interno (VM205)
 

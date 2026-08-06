@@ -18,7 +18,7 @@ _notes/                     layer narrativo locale (ignorato da git)
 
 ```powershell
 # Aggiornare lo snapshot Proxmox
-.\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 192.168.20.11
+.\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 10.61.20.11
 ```
 
 ## Documentazione

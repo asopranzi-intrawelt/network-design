@@ -22,6 +22,22 @@ Gli IP pubblici Intrawelt vanno sostituiti con gli intervalli di documentazione 
 
 La traduzione placeholder -> valore reale non si scrive mai in un file tracciato: vive in `_notes/.anonymization-map.md`, ignorato da git, e si estende con nuove voci mano a mano che si anonimizzano altri documenti, riusando lo stesso placeholder se la stessa persona o lo stesso indirizzo ricompaiono altrove. Chi opera davvero sulla rete consulta quel file in locale per tradurre i placeholder ai valori reali.
 
+## Il controllo automatico, e perche' non basta la buona volonta'
+
+Dal 06/08/2026 esiste `scripts/Test-Anonymization.py`, che passa **tutti** i file tracciati da git e riporta indirizzi reali, MAC reali, nomi propri di persona, caselle di posta personali, importi, numeri di telefono, IBAN, partite IVA e i segreti letterali gia' noti. Si lancia dalla radice del progetto, esce con codice diverso da zero se trova qualcosa nelle categorie bloccanti, e va eseguito **prima di ogni commit** che tocchi documentazione.
+
+```powershell
+python scripts/Test-Anonymization.py
+```
+
+Lo script e' versionato e non contiene nessun valore reale: cio' che deve cercare vive in `_notes/.anonymization-patterns.json`, ignorato da git accanto alla mappa dei segnaposto. Se quel file manca lo script si ferma e lo dichiara, invece di restituire un esito verde che non ha calcolato. Quando la mappa cresce, cresce anche quel file: sono due facce dello stesso dato.
+
+La ragione per cui questo controllo esiste, e va usato, e' un numero. Il primo passaggio, il 06/08/2026, ha trovato **centoquarantotto riscontri** su ottantanove file tracciati, di cui una trentina erano valori reali veri: indirizzi cablati dentro tre script, MAC di switch dentro due script di scrittura, indirizzi pubblici di macchine virtuali di progetto, caselle di posta personali di dipendenti e referenti, importi contrattuali, e un caso che vale da solo la regola, cioe' una voce di work-log che pubblicava **la corrispondenza fra un segnaposto e la persona reale**, che e' il dato piu' sensibile di tutta la materia perche' rende reversibile ogni altra anonimizzazione. Nessuno di quei residui era stato introdotto di proposito, e nessuno apparteneva alla sessione che li ha scoperti.
+
+Ne discende la regola operativa: il controllo si fa sull'**intero albero tracciato**, non sui soli file toccati dalla sessione. Un residuo non si introduce, si eredita, e restare puliti sui propri file non dice niente sul repository.
+
+Due cose che lo script non puo' fare e restano umane. Non distingue un falso positivo da un leak quando il valore e' ambiguo, per esempio un numero di versione che somiglia a un indirizzo: quei riscontri finiscono nelle categorie non bloccanti e vanno guardati. E non conosce il contesto: un nome dentro la ragione sociale legale e' ammesso, lo stesso nome in una frase narrativa no, e la lista delle eccezioni di contesto va tenuta aggiornata a mano nel file dei pattern.
+
 ## Cosa fare quando si trova un valore reale gia' pubblicato
 
 Non si riscrive la storia git da soli: la riscrittura di una storia condivisa e pubblica e' un'operazione pianificata, con backup e comunicazione preventiva se ci sono altri collaboratori, mai un'azione improvvisata a valle di una singola sessione. Segnalare il valore trovato, aggiungerlo alla mappa privata, correggerlo nel file tracciato corrente, e annotare la necessita' di una pulizia della storia come lavoro a parte (vedi lo stato della Fase B in `.claude/context/roadmap.md`).

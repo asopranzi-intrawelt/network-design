@@ -13,7 +13,7 @@
     v3: aggiunta raccolta firewall (cluster + per-VM/LXC), dischi fisici, PCI devices,
         SDN (zone/vnet), pool risorse, backup schedules, HA resources, snapshot VM.
 .PARAMETER ProxmoxHost
-    Hostname o indirizzo IP del nodo Proxmox (es. 192.168.20.11).
+    Hostname o indirizzo IP del nodo Proxmox (es. 10.61.20.11).
 .PARAMETER Port
     Porta HTTPS dell'API Proxmox. Default: 8006.
 .PARAMETER Username
@@ -21,9 +21,9 @@
 .PARAMETER OutputDir
     Cartella di destinazione dell'output. Default: output\ nella radice del progetto.
 .EXAMPLE
-    .\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 192.168.20.11
+    .\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 10.61.20.11
 .EXAMPLE
-    .\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 192.168.20.11 -Port 8006 -Username root@pam
+    .\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 10.61.20.11 -Port 8006 -Username root@pam
 #>
 
 [CmdletBinding()]
