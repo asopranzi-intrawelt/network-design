@@ -36,6 +36,11 @@ Tutte a `4782336` nel frontmatter dopo il bump del 06/08/2026. La colonna che co
 
 ## Punto di ripresa
 
+**07/08/2026 — la sessione successiva e' il montaggio dell'access point esterno (M13c), e si apre da `_notes/RESUME_PROMPT.md`**, riscritto per quello scopo; la versione precedente e' archiviata accanto. La domanda da porre per prima e' scritta li' e non va saltata: l'IT Manager ha chiesto "un access point esterno **per irrigazione e inverter**", ma entrambe quelle utenze **sono cablate** al GS-105B, quindi la formulazione ammette tre letture molto diverse — sostituire lo switch non gestito, sostituire l'access point EOL, oppure passare via radio due utenze oggi cablate, che sarebbe un peggioramento. Cablaggio, alimentazione e collaudo cambiano a seconda della risposta.
+
+Da non dimenticare in quella sessione: **M13c-9**, la licenza Nebula entro quindici giorni dall'adozione, che e' la condizione di sopravvivenza della fonte con cui si verifica il lavoro appena fatto; e l'aggiornamento di `data/network-topology.json` a intervento concluso, perche' se la mappa non si aggiorna al primo intervento utile il modello di M26 e' gia' fallito.
+
+
 **Sessione del 06/08/2026, seconda — leggere questo blocco per primo. E' la sessione 1 del piano: snapshot della rete, parte fisica ed elettrica.**
 
 Tre file passati a mano dall'IT Manager sono stati triagiati e **fusi** nella documentazione, non affiancati. Il piu' importante e' `STATO RETE INTRAWELT.docx`, comparso nel delta della stessa mattina sotto `Documenti - IT\Cybersec & IT Governance` e mai ingerito: descrive la catena fisica da Internet al firewall, la mappa porta-apparato del 54HP e del QNAP, e **l'alimentazione dei due armadi**, che era la lacuna piu' grave dichiarata dal progetto. La scheda dei telefoni del 05/08 e' tornata **compilata**; l'estratto tematico del 03/08 e' tornato **invariato** ed e' servito solo da confronto. I due `.md` sono viste e si possono cancellare; il `.docx` resta in OneDrive ed e' li' che va completata la sua sezione **"Piano Terra", oggi aperta e vuota**.
