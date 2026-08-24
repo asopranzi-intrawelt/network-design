@@ -32,9 +32,29 @@ Contro `output/proxmox-snapshot.json`, per il livello di virtualizzazione:
 Su entrambi, l'eta' dello snapshot: una misura vecchia non e' una misura, e
 confrontarcisi darebbe un verde che non vuol dire niente.
 
+Cosa tocca, e cosa non tocca
+----------------------------
+Legge tre file gia' sul disco e stampa testo. Non scrive niente, non apre
+connessioni di rete, non usa credenziali. E' deliberato: e' cio' che rende
+questo script l'unico dei tre della catena che si possa far girare da un hook
+senza pensarci. Chi rinfresca gli snapshot fa chiamate autenticate verso il
+fornitore, e quella resta una decisione di una persona.
+
+Nomi reali nell'output
+----------------------
+I nomi che vengono dalla fonte sono gia' pubblicabili, perche' la fonte e'
+tracciata e passa il guard-rail di anonimizzazione. I nomi che vengono dagli
+snapshot no: `output/` e' ignorato da git proprio perche' contiene nomi host
+reali. Per questo, in modo predefinito, gli identificatori presi dagli snapshot
+si stampano senza etichetta (solo il numero della macchina, solo il conteggio
+degli apparati). Con `--nomi` si vedono per esteso, ed e' la modalita' per una
+persona che sta guardando; senza, e' la modalita' per un hook. In nessun caso
+l'output di questo script va rediretto dentro un file tracciato.
+
 Uso
 ---
     python scripts/Test-TopologyDrift.py
+    python scripts/Test-TopologyDrift.py --nomi          # etichette per esteso
     python scripts/Test-TopologyDrift.py --giorni 14     # soglia di eta'
     python scripts/Test-TopologyDrift.py --silenzioso    # solo il verdetto
 
@@ -65,6 +85,19 @@ GIALLO = "\033[33m"
 VERDE = "\033[32m"
 GRIGIO = "\033[90m"
 FINE = "\033[0m"
+
+
+# Interruttore globale: le etichette che vengono dagli snapshot si stampano solo
+# se una persona le ha chieste. I nomi che vengono dalla fonte non passano di qui,
+# perche' quelli sono gia' pubblicabili per costruzione.
+MOSTRA_NOMI = False
+
+
+def etichetta(nome):
+    """Restituisce ' \"nome\"' se le etichette sono ammesse, stringa vuota altrimenti."""
+    if not nome:
+        return ""
+    return ' "%s"' % nome if MOSTRA_NOMI else ""
 
 
 def colora(testo, colore):
@@ -218,8 +251,9 @@ def controlla_nebula(topo, neb, esito, giorni_max):
         if nome not in dichiarati:
             esito.scosta(
                 "nebula",
-                "inventario: l'apparato gestito \"%s\" (%s) esiste in Nebula e nessun nodo della "
-                "fonte lo rivendica con il campo `nebula`" % (nome, dev.get("model") or "modello ignoto"),
+                "inventario: un apparato gestito (%s) esiste in Nebula e nessun nodo della fonte "
+                "lo rivendica con il campo `nebula`%s"
+                % (dev.get("model") or "modello ignoto", etichetta(nome)),
             )
         else:
             esito.confrontati += 1
@@ -355,12 +389,14 @@ def controlla_proxmox(topo, prox, esito, giorni_max):
     ]
     if sconosciute and not gruppo:
         for vmid, nome in sconosciute:
-            esito.scosta("proxmox", "la macchina %d (%s) esiste e non e' nella fonte" % (vmid, nome))
+            esito.scosta("proxmox",
+                         "la macchina %d esiste e non e' nella fonte%s" % (vmid, etichetta(nome)))
     elif sconosciute:
         esito.avvisa(
             "%d macchine non hanno un nodo proprio nella fonte e ricadono nel gruppo "
-            "'Altre VM di servizio': %s. E' una scelta di perimetro, non uno scostamento."
-            % (len(sconosciute), ", ".join("%d %s" % (v, n) for v, n in sconosciute))
+            "'Altre VM di servizio' (%s). E' una scelta di perimetro, non uno scostamento."
+            % (len(sconosciute),
+               ", ".join(("%d%s" % (v, etichetta(n))) for v, n in sconosciute))
         )
 
 
@@ -370,7 +406,14 @@ def main():
     ap.add_argument("--giorni", type=int, default=10,
                     help="eta' massima accettata per uno snapshot, in giorni (default 10)")
     ap.add_argument("--silenzioso", action="store_true", help="stampa solo il verdetto finale")
+    ap.add_argument("--nomi", action="store_true",
+                    help="stampa per esteso le etichette prese dagli snapshot (nomi host e nomi "
+                         "di apparato). Senza questa opzione restano fuori, perche' output/ e' "
+                         "ignorato da git proprio per quelli.")
     args = ap.parse_args()
+
+    global MOSTRA_NOMI
+    MOSTRA_NOMI = args.nomi
 
     topo = leggi_json(FONTE)
     if topo is None:
