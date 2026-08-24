@@ -85,56 +85,74 @@ public class TrustAllCertsPolicy : ICertificatePolicy {
 # ---------------------------------------------------------------------------
 # 2. Credenziali
 # ---------------------------------------------------------------------------
-if (-not $Username) {
+# Due modi di autenticarsi, e il primo esiste per una ragione misurata. Il ticket
+# utente chiede una password a mano, quindi questo script non puo' girare da un
+# hook: al 24/08/2026 lo snapshot sul disco aveva 47 giorni mentre quello Nebula,
+# che si autentica da variabile d'ambiente, era del giorno stesso. Non e' una
+# coincidenza, e' la conseguenza. Il token API di sola lettura di ADR-021 e' gia'
+# nel blocco env di settings.local.json per il server MCP: se c'e', si usa quello
+# e lo script diventa eseguibile senza una persona davanti.
+$baseUrl = "https://${ProxmoxHost}:${Port}/api2/json"
+$tokenName  = $env:PROXMOX_TOKEN_NAME
+$tokenValue = $env:PROXMOX_TOKEN_VALUE
+$usaToken   = $tokenName -and $tokenValue
+
+if ($usaToken) {
+    # Formato dell'intestazione: PVEAPIToken=utente@realm!nome=valore
+    $intestazioneToken = "PVEAPIToken=$tokenName=$tokenValue"
+    Write-Host "Autenticazione con token API di sola lettura (da variabile d'ambiente)" -ForegroundColor Green
+}
+
+if (-not $usaToken -and -not $Username) {
     $Username = Read-Host "Username Proxmox (es. root@pam)"
 }
-if ($Username -notmatch '@') {
+if (-not $usaToken -and $Username -notmatch '@') {
     Write-Warning "Username '$Username' non contiene il realm. Proxmox richiede il formato user@realm (es. root@pam)."
     $Username = "$Username@pam"
     Write-Host "  Uso: $Username" -ForegroundColor Yellow
 }
-$securePwd = Read-Host "Password per $Username" -AsSecureString
-$bstr      = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePwd)
-$plainPwd  = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
-
 # ---------------------------------------------------------------------------
-# 3. Autenticazione: POST /api2/json/access/ticket
+# 3. Autenticazione: token API, oppure ticket utente
 # ---------------------------------------------------------------------------
-$baseUrl  = "https://${ProxmoxHost}:${Port}/api2/json"
-$authBody = "username=$([uri]::EscapeDataString($Username))&password=$([uri]::EscapeDataString($plainPwd))"
+$pveSession = $null
+if (-not $usaToken) {
+    $securePwd = Read-Host "Password per $Username" -AsSecureString
+    $bstr      = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePwd)
+    $plainPwd  = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
 
-[System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
-Remove-Variable plainPwd -ErrorAction SilentlyContinue
+    $authBody = "username=$([uri]::EscapeDataString($Username))&password=$([uri]::EscapeDataString($plainPwd))"
 
-$authParams = @{
-    Uri         = "$baseUrl/access/ticket"
-    Method      = 'POST'
-    Body        = $authBody
-    ContentType = 'application/x-www-form-urlencoded'
+    [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+    Remove-Variable plainPwd -ErrorAction SilentlyContinue
+
+    $authParams = @{
+        Uri         = "$baseUrl/access/ticket"
+        Method      = 'POST'
+        Body        = $authBody
+        ContentType = 'application/x-www-form-urlencoded'
+    }
+    if ($isPSCore) { $authParams['SkipCertificateCheck'] = $true }
+
+    try {
+        $authResp = Invoke-RestMethod @authParams
+    } catch {
+        Write-Error "Autenticazione fallita su ${ProxmoxHost}:${Port} - $_"
+        exit 1
+    }
+
+    $ticket = $authResp.data.ticket
+    if (-not $ticket) {
+        Write-Error "Ticket non ricevuto. Verificare credenziali."
+        exit 1
+    }
+    Write-Host "Autenticato come $Username su $ProxmoxHost" -ForegroundColor Green
+
+    # WebRequestSession con CookieContainer: unico modo affidabile in PS 5.1
+    # per passare il PVEAuthCookie (Invoke-RestMethod ignora l'header Cookie manuale)
+    $pveSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+    $pveCookie  = New-Object System.Net.Cookie("PVEAuthCookie", $ticket, "/", $ProxmoxHost)
+    $pveSession.Cookies.Add($pveCookie)
 }
-if ($isPSCore) { $authParams['SkipCertificateCheck'] = $true }
-
-try {
-    $authResp = Invoke-RestMethod @authParams
-} catch {
-    Write-Error "Autenticazione fallita su ${ProxmoxHost}:${Port} - $_"
-    exit 1
-}
-
-$ticket = $authResp.data.ticket
-$csrf   = $authResp.data.CSRFPreventionToken
-
-if (-not $ticket) {
-    Write-Error "Ticket non ricevuto. Verificare credenziali."
-    exit 1
-}
-Write-Host "Autenticato come $Username su $ProxmoxHost" -ForegroundColor Green
-
-# WebRequestSession con CookieContainer: unico modo affidabile in PS 5.1
-# per passare il PVEAuthCookie (Invoke-RestMethod ignora l'header Cookie manuale)
-$pveSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-$pveCookie  = New-Object System.Net.Cookie("PVEAuthCookie", $ticket, "/", $ProxmoxHost)
-$pveSession.Cookies.Add($pveCookie)
 
 # ---------------------------------------------------------------------------
 # 4. Helper GET API
@@ -142,10 +160,11 @@ $pveSession.Cookies.Add($pveCookie)
 function Invoke-PVEGet {
     param([string]$Path)
     $p = @{
-        Uri        = "$baseUrl$Path"
-        Method     = 'GET'
-        WebSession = $pveSession
+        Uri    = "$baseUrl$Path"
+        Method = 'GET'
     }
+    if ($usaToken) { $p['Headers'] = @{ Authorization = $intestazioneToken } }
+    else           { $p['WebSession'] = $pveSession }
     if ($isPSCore) { $p['SkipCertificateCheck'] = $true }
     try {
         $r = Invoke-RestMethod @p
