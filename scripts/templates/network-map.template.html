@@ -147,6 +147,12 @@ aside p:last-child{margin-bottom:0}
 .colonna line{stroke:var(--filo);stroke-width:1;stroke-dasharray:2 4}
 .colonna text{font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);fill:var(--tenue)}
 .portalab{font-size:9px;fill:var(--tenue)}
+/* testi liberi, fuori da un gruppo .nodo: senza fill esplicito restano neri e
+   spariscono su fondo scuro, che e' quello che e' successo alla prima resa
+   della vista Porte */
+.titolo-sw{font-size:15px;font-weight:500;fill:var(--inch)}
+.sotto-sw{font-size:10.5px;fill:var(--tenue);letter-spacing:.04em}
+.leg-sw{font-size:10.5px;fill:var(--tenue)}
 .velolab{font-size:9.5px;fill:var(--inch);font-weight:500}
 .velolab-bg{fill:var(--tela)}
 
@@ -188,6 +194,7 @@ footer li{margin-bottom:3px}
     <button data-vista="fisica" aria-pressed="false">Fisica</button>
     <button data-vista="segmenti" aria-pressed="false">Segmenti</button>
     <button data-vista="elettrica" aria-pressed="false">Elettrica</button>
+    <button data-vista="porte" aria-pressed="false">Porte</button>
   </div>
   <input class="campo" id="cerca" type="search" placeholder="Cerca apparato, porta, nota&hellip;" autocomplete="off">
   <button class="mini" id="btn-difetti" aria-pressed="false">Solo con difetti</button>
@@ -239,6 +246,7 @@ footer li{margin-bottom:3px}
 </footer>
 
 <script type="application/json" id="topo">__TOPOLOGY_DATA__</script>
+<script type="application/json" id="porte">__PORTMATRIX_DATA__</script>
 <script>
 "use strict";
 /* ============================================================================
@@ -790,7 +798,159 @@ function taglia(s, n){ s = String(s||''); return s.length > n ? s.slice(0, n-1) 
 var svg = document.getElementById('grafo'), mondo = document.getElementById('mondo');
 var Gcur = null;
 
+/* --------------------------------------------------------------------------
+   Vista Porte. Non e' un grafo e non passa dal motore di disposizione: e' il
+   prospetto dei due switch gestiti come si vedono in faccia al rack, numeri
+   dispari sopra e pari sotto, con gli ultimi sei separati perche' sono gli
+   uplink. I dati vengono da data/port-matrix.json, estratto dallo snapshot
+   Nebula tenendo fuori gli indirizzi MAC.
+   ----------------------------------------------------------------------- */
+var MATRICE = (function(){
+  var el2 = document.getElementById('porte');
+  if(!el2) return null;
+  try { return JSON.parse(el2.textContent); } catch(e){ return null; }
+})();
+var COL_VEL = {'10 Gb/s':'#4D11A7', '1 Gb/s':'#AFD100', '100 Mb/s':'#57CCF6', '10 Mb/s':'#E7000B'};
+var CELLA = 30, CELLAH = 26, CELLAGAP = 4;
+
+function porteNoteDallaFonte(){
+  /* Che cosa la topologia dice essere attaccato a una porta. Serve a far vedere
+     nello stesso disegno le due cose che oggi vivono separate: cio' che la fonte
+     racconta e cio' che l'apparato misura. */
+  var m = {};
+  LINK.forEach(function(l){
+    [['da','porta-a'],['a','porta-b']].forEach(function(coppia){
+      var sid = l[coppia[0]], grezzo = l[coppia[1]];
+      if(!grezzo) return;
+      var mm = String(grezzo).match(/^\s*(\d+)\s*$/);
+      if(!mm) return;
+      var altro = coppia[0] === 'da' ? l.a : l.da;
+      m[sid + ':' + parseInt(mm[1], 10)] = {nodo:altro, link:l};
+    });
+  });
+  return m;
+}
+
+function disegnaPorte(){
+  while(mondo.firstChild) mondo.removeChild(mondo.firstChild);
+  ETICHETTE = [];
+  var vuoto = document.getElementById('vuoto');
+  if(!MATRICE || !MATRICE.switch || !MATRICE.switch.length){
+    vuoto.textContent = 'La matrice delle porte non e\' stata generata. Si produce con '
+      + 'scripts/Export-PortMatrix.py a partire dallo snapshot Nebula, e finisce in '
+      + 'data/port-matrix.json.';
+    vuoto.classList.add('on');
+    Gcur = {nodi:[], archi:[], segmenti:[], ranghi:[], righe:{}, larg:0, altez:0, vista:'porte'};
+    return;
+  }
+  vuoto.classList.remove('on');
+  vuoto.textContent = 'Nessun apparato risponde ai filtri attivi.';
+
+  var note = porteNoteDallaFonte();
+  var g = el('g');
+  mondo.appendChild(g);
+  var y = 0, largMax = 0;
+
+  MATRICE.switch.forEach(function(sw){
+    var nodo = sw.nodo ? byId[sw.nodo] : null;
+    var titolo = el('text', {x:0, y:y, 'class':'titolo-sw'});
+    titolo.appendChild(txt((nodo ? nodo.nome : sw.modello) + '  ·  ' + sw['porte-totali'] + ' porte'));
+    g.appendChild(titolo);
+
+    var attive = sw.porte.filter(function(p){ return p.collegamento; }).length;
+    var sotto = el('text', {x:0, y:y + 16, 'class':'sotto-sw'});
+    sotto.appendChild(txt(attive + ' con collegamento attivo · '
+      + sw.porte.filter(function(p){ return p.trunk; }).length + ' in trunk · '
+      + sw.porte.filter(function(p){ return p.poe; }).length + ' erogano PoE'));
+    g.appendChild(sotto);
+
+    var tot = sw.porte.length, uplink = 6, banco = tot - uplink;
+    y += 34;
+
+    sw.porte.forEach(function(p){
+      var indice = p.n - 1;
+      var inUplink = p.n > banco;
+      var i = inUplink ? (p.n - banco - 1) : indice;
+      var colonna = Math.floor(i / 2);
+      var riga = i % 2;
+      var x = colonna * (CELLA + CELLAGAP);
+      if(inUplink) x += Math.ceil(banco / 2) * (CELLA + CELLAGAP) + 26;
+      var cy = y + riga * (CELLAH + CELLAGAP);
+
+      var noto = note[sw.nodo + ':' + p.n];
+      var cella = el('g', {'class':'porta', transform:'translate(' + x + ',' + cy + ')'});
+      var box = el('rect', {x:0, y:0, width:CELLA, height:CELLAH,
+        fill:'var(--carta)', stroke: p.collegamento ? 'var(--filo-forte)' : 'var(--filo)',
+        'stroke-width': noto ? 1.6 : 1});
+      if(!p.attiva || !p.collegamento) box.setAttribute('stroke-dasharray', '3 2');
+      cella.appendChild(box);
+
+      if(p.collegamento){
+        cella.appendChild(el('rect', {x:0, y:CELLAH - 3, width:CELLA, height:3,
+          fill: COL_VEL[p.collegamento] || 'var(--filo-forte)'}));
+      }
+      if(p.trunk){
+        cella.appendChild(el('path', {d:'M0 0 L7 0 L0 7 Z', fill:'var(--inch)'}));
+      }
+      if(p.poe){
+        cella.appendChild(el('circle', {cx:CELLA - 5, cy:5, r:2.2, fill:'var(--iw-success)'}));
+      }
+      var num = el('text', {x:CELLA/2, y:CELLAH/2 + 3, 'text-anchor':'middle'});
+      num.setAttribute('style', 'font-size:10px;fill:' + (p.collegamento ? 'var(--inch)' : 'var(--tenue)'));
+      num.appendChild(txt(String(p.n)));
+      cella.appendChild(num);
+
+      var tt = el('title');
+      tt.appendChild(txt('Porta ' + p.n
+        + (p.collegamento ? ' · ' + p.collegamento : ' · nessun collegamento')
+        + ' · PVID ' + p.pvid + (p.trunk ? ' · trunk' : '')
+        + (p.stazioni ? ' · ' + p.stazioni + ' stazioni' : '')
+        + (noto ? ' · fonte: ' + ((byId[noto.nodo] || {}).nome || noto.nodo) : '')));
+      cella.appendChild(tt);
+      cella.style.cursor = 'pointer';
+      cella.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        S.sel = {tipo:'porta', sw:sw, p:p, noto:noto};
+        scheda();
+      });
+      g.appendChild(cella);
+      largMax = Math.max(largMax, x + CELLA);
+    });
+    y += 2 * (CELLAH + CELLAGAP) + 44;
+  });
+
+  /* legenda propria di questa vista: i colori qui dicono la velocita', non il mezzo */
+  var leg = el('g', {transform:'translate(0,' + y + ')'});
+  var lx = 0;
+  [['10 Gb/s','#4D11A7'], ['1 Gb/s','#AFD100'], ['100 Mb/s','#57CCF6'], ['10 Mb/s','#E7000B']]
+    .forEach(function(v){
+      leg.appendChild(el('rect', {x:lx, y:0, width:18, height:3, fill:v[1]}));
+      var t = el('text', {x:lx + 24, y:4, 'class':'leg-sw'});
+      t.appendChild(txt(v[0])); leg.appendChild(t);
+      lx += 24 + v[0].length * 6.2 + 22;
+    });
+  [['angolo pieno in alto a sinistra', 'porta in trunk'],
+   ['pallino verde in alto a destra', 'eroga PoE'],
+   ['bordo tratteggiato', 'nessun collegamento'],
+   ['bordo piu' + '’' + ' spesso', 'la fonte sa cosa e' + '’' + ' attaccato']]
+    .forEach(function(v, i){
+      var t = el('text', {x:0, y:22 + i * 16, 'class':'leg-sw'});
+      t.appendChild(txt(v[0] + ': ' + v[1])); leg.appendChild(t);
+    });
+  g.appendChild(leg);
+  y += 22 + 4 * 15;
+
+  mondo.setAttribute('transform', 'translate(70,56)');
+  Gcur = {nodi:[], archi:[], segmenti:[], ranghi:[], righe:{}, larg:largMax, altez:y, vista:'porte'};
+  /* Qui l'inquadratura completa entra e va usata: un prospetto di porte tagliato
+     a meta' non serve a niente, e la soglia alta lo tagliava per una manciata di
+     pixel. */
+  if(!S.fitCache[S.vista]){ inquadra(0.6); S.fitCache[S.vista] = 1; }
+  else applicaVB();
+}
+
 function ridisegna(){
+  if(S.vista === 'porte') return disegnaPorte();
   var G = disponi(costruisciGrafo(S.vista));
   Gcur = G;
   while(mondo.firstChild) mondo.removeChild(mondo.firstChild);
@@ -1111,6 +1271,7 @@ function scheda(){
     return;
   }
   if(S.sel.tipo === 'arco') return schedaArco(S.sel.l);
+  if(S.sel.tipo === 'porta') return schedaPorta(S.sel.sw, S.sel.p, S.sel.noto);
   var r = S.sel.rif;
   var cap = h('div','cap');
   cap.appendChild(h('div','occhiello', r._pwr ? 'Sorgente di alimentazione' : ((LIVNOME[r.livello]||r.livello||'') + (r.stato === 'progetto' ? ' · pianificato' : ''))));
@@ -1216,6 +1377,71 @@ function scheda(){
     });
     pannello.appendChild(sg);
   }
+}
+
+function schedaPorta(sw, p, noto){
+  var nodo = sw.nodo ? byId[sw.nodo] : null;
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello', (nodo ? nodo.nome : sw.modello)));
+  cap.appendChild(h('h2', null, 'Porta ' + p.n));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){ S.sel = null; scheda(); });
+  cap.appendChild(x); pannello.appendChild(cap);
+
+  var s = sezione('Misurato sull\'apparato');
+  var dl = document.createElement('dl'); dl.className = 'kv';
+  function kv(k, v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
+  kv('Abilitata', p.attiva ? 'si' : 'no, disabilitata da configurazione');
+  kv('Collegamento', p.collegamento || 'nessuno');
+  kv('Modalita', p.trunk ? 'trunk 802.1Q' : 'accesso');
+  kv('PVID', String(p.pvid));
+  kv('VLAN ammesse', (p['vlan-ammesse'] || []).join(', '));
+  if(p.poe !== undefined) kv('PoE', p.poe ? 'eroga alimentazione' : 'presente ma non eroga');
+  kv('Stazioni viste', String(p.stazioni));
+  if(p['vlan-viste']) kv('VLAN osservate', p['vlan-viste'].join(', '));
+  s.appendChild(dl); pannello.appendChild(s);
+
+  /* Le due letture messe una accanto all'altra: e' il punto della vista. */
+  var sf = sezione('Cosa ne dice la fonte');
+  if(noto){
+    var altro = byId[noto.nodo];
+    sf.appendChild(h('p', null, 'La topologia dichiara qui ' + ((altro && altro.nome) || noto.nodo) + '.'));
+    var b = h('button','mini','Vai all\'apparato');
+    b.addEventListener('click', function(){
+      S.vista = 'logica';
+      [].forEach.call(document.querySelectorAll('#viste button'), function(y){
+        y.setAttribute('aria-pressed', y.dataset.vista === 'logica' ? 'true' : 'false');
+      });
+      S.sel = {tipo:'nodo', id:noto.nodo, rif:altro};
+      S.fitCache = {}; scheda(); ridisegna(); portaSu(noto.nodo);
+    });
+    sf.appendChild(b);
+    if(noto.link && noto.link.note) sf.appendChild(h('div','dett', noto.link.note));
+  } else if(p.collegamento){
+    var pr = h('p', null, 'La topologia non censisce nessun collegamento su questa porta, ma la porta '
+      + 'ha un collegamento attivo' + (p.stazioni ? ' e vede ' + p.stazioni + ' stazioni' : ' e non vede nessuna stazione')
+      + '. E\' una lacuna della fonte, non dell\'apparato.');
+    pr.style.color = 'var(--iw-error)';
+    sf.appendChild(pr);
+  } else {
+    sf.appendChild(h('p', null, 'Nessun collegamento censito e nessun collegamento attivo: porta libera.'));
+  }
+  pannello.appendChild(sf);
+
+  if(p.collegamento === '10 Mb/s' || p.collegamento === '100 Mb/s'){
+    var sa = sezione('Da guardare');
+    var t = h('p', null, 'Su uno switch gigabit una negoziazione a ' + p.collegamento
+      + ' merita una verifica: le cause tipiche sono un cavo o una permuta con coppie danneggiate, '
+      + 'oppure un apparato vecchio. Quale delle due, questo dato non lo dice.');
+    t.style.color = 'var(--iw-error)';
+    sa.appendChild(t); pannello.appendChild(sa);
+  }
+
+  var sm = sezione('Provenienza');
+  sm.appendChild(h('p', null, 'Misura del ' + ((MATRICE.meta || {})['misura-del'] || 'data ignota')
+    + ', estratta dallo snapshot Nebula in data/port-matrix.json. Gli indirizzi MAC non escono da '
+    + 'quel file: restano soltanto il conteggio delle stazioni e le VLAN in cui si vedono.'));
+  pannello.appendChild(sm);
 }
 
 function schedaArco(l){
@@ -1374,7 +1600,7 @@ var ISO_INIZIALE = null;
   if(!f) return;
   f.split(',').forEach(function(pezzo){
     pezzo = pezzo.trim();
-    if(['logica','fisica','segmenti','elettrica'].indexOf(pezzo) >= 0){
+    if(['logica','fisica','segmenti','elettrica','porte'].indexOf(pezzo) >= 0){
       S.vista = pezzo;
       [].forEach.call(document.querySelectorAll('#viste button'), function(x){
         x.setAttribute('aria-pressed', x.dataset.vista === pezzo ? 'true' : 'false');

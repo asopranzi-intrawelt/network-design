@@ -123,6 +123,20 @@ $jsonInline = $raw -replace '</script', '<\/script'
 $html = $html.Replace('__TOPOLOGY_DATA__', $jsonInline)
 $html = $html.Replace('__GENERATED_AT__', $stamp)
 
+# Seconda fonte tracciata: la matrice delle porte, estratta dallo snapshot Nebula
+# da scripts/Export-PortMatrix.py. E' facoltativa di proposito: un clone che non
+# l'ha ancora generata deve poter costruire la mappa lo stesso, con una vista in
+# meno invece che con un errore.
+$matricePath = Join-Path $root 'data\port-matrix.json'
+if (Test-Path -LiteralPath $matricePath) {
+    $matrice = (Get-Content -Raw -Encoding UTF8 -LiteralPath $matricePath) -replace '</script', '<\/script'
+    Write-Host "  Matrice delle porte agganciata da data\port-matrix.json" -ForegroundColor DarkGray
+} else {
+    $matrice = 'null'
+    Write-Host "  Matrice delle porte assente: la vista Porte restera' vuota. Genera con scripts\Export-PortMatrix.py" -ForegroundColor Yellow
+}
+$html = $html.Replace('__PORTMATRIX_DATA__', $matrice)
+
 $avvertenza = @"
 <!--
   FILE GENERATO. NON MODIFICARE A MANO.

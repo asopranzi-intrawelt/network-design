@@ -1,0 +1,1160 @@
+{
+  "meta": {
+    "titolo": "Matrice delle porte degli switch gestiti",
+    "misura-del": "2026-08-24T11:23:45",
+    "estratto-da": "output/nebula-snapshot.json (ignorato da git)",
+    "generatore": "scripts/Export-PortMatrix.py",
+    "avvertenza": "File derivato e tracciato. Non si modifica a mano: si rilancia lo snapshot Nebula e poi questo script. Contiene solo dati di configurazione delle porte piu' due aggregati della tabella MAC, cioe' il numero di stazioni distinte viste e le VLAN in cui si vedono. Gli indirizzi MAC non escono da qui per costruzione, e un controllo lo verifica prima di scrivere.",
+    "campi": "n numero di porta; attiva abilitazione amministrativa; trunk modalita' 802.1Q; pvid VLAN nativa; vlan-ammesse elenco o \"all\"; poe presente solo sulle porte con alimentazione, vero se erogante; collegamento velocita' negoziata o nullo se la porta e' spenta o scollegata; stazioni numero di indirizzi distinti nella tabella MAC; vlan-viste VLAN in cui quel traffico appare."
+  },
+  "switch": [
+    {
+      "nodo": "sw54",
+      "modello": "XGS2220-54HP",
+      "porte-totali": 54,
+      "porte": [
+        {
+          "n": 1,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 2,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 3,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 5,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "2"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 6,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 7,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 8,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 9,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 10,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 11,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 12,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 13,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 14,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 15,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 16,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 17,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 18,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 19,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 20,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 21,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 22,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 23,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 24,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 25,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 26,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 27,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 28,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 29,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 30,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 31,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 32,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 33,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1,
+            40,
+            90
+          ]
+        },
+        {
+          "n": 34,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 35,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 36,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 37,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 38,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 39,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 40,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 41,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 2,
+          "vlan-viste": [
+            1,
+            40
+          ]
+        },
+        {
+          "n": 42,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 43,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 44,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 45,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 46,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 47,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 48,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 49,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 50,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 51,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": "10 Gb/s",
+          "stazioni": 19,
+          "vlan-viste": [
+            1,
+            2,
+            40
+          ]
+        },
+        {
+          "n": 52,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": "10 Gb/s",
+          "stazioni": 9,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 53,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 54,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        }
+      ]
+    },
+    {
+      "nodo": "sw30",
+      "modello": "XGS2220-30HP",
+      "porte-totali": 30,
+      "porte": [
+        {
+          "n": 1,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 4,
+          "vlan-viste": [
+            1,
+            40
+          ]
+        },
+        {
+          "n": 2,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 3,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 4,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 5,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 6,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 7,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 8,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 9,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 10,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 11,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 12,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 13,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 14,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 15,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 16,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 17,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 18,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 19,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 90,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 20,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 21,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "2"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 22,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 23,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "2"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 24,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 25,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 26,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 27,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 28,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 29,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "2",
+            "40",
+            "90"
+          ],
+          "collegamento": "10 Gb/s",
+          "stazioni": 32,
+          "vlan-viste": [
+            1,
+            2,
+            40,
+            90
+          ]
+        },
+        {
+          "n": 30,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        }
+      ]
+    }
+  ]
+}
