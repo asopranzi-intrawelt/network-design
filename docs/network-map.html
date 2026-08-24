@@ -250,7 +250,7 @@ footer li{margin-bottom:3px}
   "meta": {
     "titolo": "Topologia di rete Intrawelt",
     "aggiornato": "2026-08-24",
-    "revisione": 3,
+    "revisione": 4,
     "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
     "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
     "fonti": [
@@ -484,6 +484,7 @@ footer li{margin-bottom:3px}
     {
       "id": "sw54",
       "nome": "Zyxel XGS2220-54HP",
+      "nebula": "Switch piano 2 (rack)",
       "tipo": "switch",
       "livello": "core",
       "contenitore": "rack-sx",
@@ -502,6 +503,7 @@ footer li{margin-bottom:3px}
     {
       "id": "sw30",
       "nome": "Zyxel XGS2220-30HP",
+      "nebula": "Switch piano terra",
       "tipo": "switch",
       "livello": "core",
       "contenitore": "pt",
@@ -631,6 +633,7 @@ footer li{margin-bottom:3px}
     {
       "id": "ap-pt",
       "nome": "Access point Piano Terra",
+      "nebula": "AP piano terra",
       "tipo": "ap",
       "livello": "distribuzione",
       "contenitore": "pt",
@@ -640,6 +643,7 @@ footer li{margin-bottom:3px}
     {
       "id": "ap-p1",
       "nome": "Access point Piano 1",
+      "nebula": "AP Piano 1",
       "tipo": "ap",
       "livello": "distribuzione",
       "contenitore": "edificio",
@@ -649,6 +653,7 @@ footer li{margin-bottom:3px}
     {
       "id": "ap-p2",
       "nome": "Access point Piano 2",
+      "nebula": "AP Piano 2",
       "tipo": "ap",
       "livello": "distribuzione",
       "contenitore": "edificio",
