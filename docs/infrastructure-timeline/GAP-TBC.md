@@ -503,6 +503,12 @@ Fonte comune: `STATO RETE INTRAWELT.docx`, scritto dall'IT Manager e comparso ne
 |---|----|-------------|-------|
 | 155 | NET-024 | Il sito nuovo in lavorazione sulla VM 209 e' servito da `next dev` in ascolto **su tutte le interfacce** alla porta 3000, per scelta deliberata e documentata: l'ambiente deve essere visibile in LAN perche' il committente lo verifichi. Sulla LAN piatta `/19` questo significa pero' che il **pannello di amministrazione del CMS** e' raggiungibile da qualunque postazione, telefono, stampante o apparato del perimetro aziendale, e che l'unica difesa e' l'autenticazione applicativa di Payload. Il contenuto dietro quella schermata non e' vuoto: ventinove articoli, i global di intestazione e piede, gli uffici commerciali, e quattro ruoli con due utenze reali. Si aggiunge il fatto che il modo di esecuzione e' quello di sviluppo, quindi gli errori escono con traccia completa. Non e' un difetto del progetto del sito, che ha fatto la scelta giusta per il suo scopo: e' la **terza manifestazione dello stesso difetto strutturale** gia' registrato come #121 (portale asset su 80 e 443 in LAN piatta) e #152 (bridge che sembrano segregazione), e va risolta dove nasce, cioe' con la segmentazione di M22, non con una toppa sulla singola macchina. Da verificare a parte, e questo progetto non l'ha misurato: se il firewall di sistema della macchina sia attivo. Rilevante per A.8.22 (segregazione), A.8.20 (sicurezza delle reti) e A.5.15 (controllo degli accessi) | `STATO_DELL_ARTE_2026-08-21.md`, letto sulla VM 209 il 24/08/2026, §2 «Dove gira oggi» e §0 |
 
+## Otto porte a 10 Mb/s su due switch gigabit, e nessuna di esse e' censita (24/08/2026)
+
+| # | ID | Descrizione | Fonte |
+|---|----|-------------|-------|
+| 156 | NET-025 | La matrice completa delle porte, estratta per la prima volta il 24/08/2026, misura su ottantaquattro porte quarantotto collegamenti attivi cosi' distribuiti: tre a 10 Gb/s, ventotto a 1 Gb/s, **nove a 100 Mb/s** e **otto a 10 Mb/s**. Le otto a 10 Mb/s sono la 24, la 31 e la 48 del 54HP e la 2, la 11, la 12, la 18 e la 22 del 30HP, e hanno tutte una caratteristica in comune: **zero indirizzi nella tabella MAC**, cioe' un collegamento che si stabilisce e non porta traffico. Nessuna delle otto compare in un collegamento della fonte, quindi il progetto non sa cosa ci sia attaccato. Le cause tipiche di una negoziazione a 10 Mb/s su hardware gigabit sono due, un cavo o una permuta con coppie danneggiate oppure un apparato molto vecchio, e **questo dato non dice quale**: va verificato sul posto, presa per presa, incrociando con la mappa delle prese a parete. Vale la pena tenerle insieme alle nove a 100 Mb/s, fra cui la porta 14 del 54HP che la fonte attribuisce al PC di backup Proxmox e che vede zero stazioni, e la porta 3 del 30HP del terminale presenze. Il fatto non era mai emerso perche' il progetto conosceva ventisei porte su ottantaquattro, e solo come etichetta di collegamento. Rilevante per A.8.14 (ridondanza degli impianti) e A.5.9 (inventario degli asset) | `data/port-matrix.json`, estratta da `scripts/Export-PortMatrix.py` sullo snapshot Nebula del 24/08/2026 |
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -565,7 +571,8 @@ Fonte comune: `STATO RETE INTRAWELT.docx`, scritto dall'IT Manager e comparso ne
 | Corrispondenza fra bridge, porte del server e porte dello switch mai verificata (24/08/2026) | 153 |
 | Il segmento DMZ 201 resta progettato e non attivo, con un consumatore in attesa (24/08/2026) | 154 |
 | Pannello di amministrazione del CMS di staging esposto a tutta la LAN piatta (24/08/2026) | 155 |
-| **Totale identificati** | **155** |
+| Otto porte negoziano a 10 Mb/s su switch gigabit, nessuna censita (24/08/2026) | 156 |
+| **Totale identificati** | **156** |
 | **Di cui risolti** | **10** (14, 54, 55, 61, 63, 106, 111, 116, 140, 150 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
 
 Nota sui gap **#67 e #99** (contraddizione anagrafica NET-007 sulla porta 3 del 54HP): chiusi il 06/08/2026, con esito **rovesciato** rispetto all'ipotesi registrata. L'etichetta "SIP-T34W Persona-A" era corretta e il rilievo del 29/05/2026 era sbagliato, sia sull'attribuzione sia sul conteggio dei modelli. Non sono conteggiati fra i risolti qui sopra perche' la chiusura e' documentale e va riverificata alla prossima lettura della scheda; vedi `docs/telefono-pbx-voip.md` §Terminali VoIP installati.
