@@ -813,6 +813,26 @@ var MATRICE = (function(){
 var COL_VEL = {'10 Gb/s':'#4D11A7', '1 Gb/s':'#AFD100', '100 Mb/s':'#57CCF6', '10 Mb/s':'#E7000B'};
 var CELLA = 30, CELLAH = 26, CELLAGAP = 4;
 
+/* Occupazione di una porta. Serve a rispondere alla domanda che ci si fa davanti
+   a un armadio, cioe' "quante porte libere ho e dove", che finora i dati
+   contenevano e la mappa non formulava. Le due letture restano separate: la barra
+   in basso dice la velocita' negoziata, il filetto a sinistra dice chi la occupa. */
+var OCCUPAZIONE = {
+  censita:  {colore:'#4D11A7', et:'apparato censito nella fonte'},
+  utenza:   {colore:'#ACB0CD', et:'una singola utenza, coperta dal gruppo aggregato'},
+  multipla: {colore:'#57CCF6', et:'piu’ apparati dietro la stessa porta'},
+  muta:     {colore:'#E7000B', et:'collegamento attivo e nessun traffico'},
+  libera:   {colore:null,      et:'libera, disponibile per una permuta'},
+  spenta:   {colore:null,      et:'disabilitata da configurazione'}
+};
+function occupazione(p, noto){
+  if(!p.attiva) return 'spenta';
+  if(noto) return 'censita';
+  if(!p.collegamento) return 'libera';
+  if(!p.stazioni) return 'muta';
+  return p.stazioni === 1 ? 'utenza' : 'multipla';
+}
+
 function porteNoteDallaFonte(){
   /* Che cosa la topologia dice essere attaccato a una porta. Serve a far vedere
      nello stesso disegno le due cose che oggi vivono separate: cio' che la fonte
@@ -849,7 +869,7 @@ function disegnaPorte(){
   var note = porteNoteDallaFonte();
   var g = el('g');
   mondo.appendChild(g);
-  var y = 0, largMax = 0;
+  var y = 0, largMax = 0, libereTotali = 0;
 
   MATRICE.switch.forEach(function(sw){
     var nodo = sw.nodo ? byId[sw.nodo] : null;
@@ -857,15 +877,29 @@ function disegnaPorte(){
     titolo.appendChild(txt((nodo ? nodo.nome : sw.modello) + '  ·  ' + sw['porte-totali'] + ' porte'));
     g.appendChild(titolo);
 
-    var attive = sw.porte.filter(function(p){ return p.collegamento; }).length;
+    var conta = {};
+    sw.porte.forEach(function(p){
+      var st = occupazione(p, note[sw.nodo + ':' + p.n]);
+      conta[st] = (conta[st] || 0) + 1;
+    });
+    var pezzi = [];
+    if(conta.libera) pezzi.push(conta.libera + ' libere');
+    if(conta.censita) pezzi.push(conta.censita + ' censite');
+    if(conta.utenza) pezzi.push(conta.utenza + ' con una singola utenza');
+    if(conta.multipla) pezzi.push(conta.multipla + ' con piu’ apparati');
+    if(conta.muta) pezzi.push(conta.muta + ' attive ma mute');
+    if(conta.spenta) pezzi.push(conta.spenta + ' disabilitate');
     var sotto = el('text', {x:0, y:y + 16, 'class':'sotto-sw'});
-    sotto.appendChild(txt(attive + ' con collegamento attivo · '
-      + sw.porte.filter(function(p){ return p.trunk; }).length + ' in trunk · '
-      + sw.porte.filter(function(p){ return p.poe; }).length + ' erogano PoE'));
+    sotto.appendChild(txt(pezzi.join(' · ')));
     g.appendChild(sotto);
+    var sotto2 = el('text', {x:0, y:y + 30, 'class':'sotto-sw'});
+    sotto2.appendChild(txt(sw.porte.filter(function(p){ return p.trunk; }).length + ' in trunk · '
+      + sw.porte.filter(function(p){ return p.poe; }).length + ' erogano PoE'));
+    g.appendChild(sotto2);
+    libereTotali += (conta.libera || 0);
 
     var tot = sw.porte.length, uplink = 6, banco = tot - uplink;
-    y += 34;
+    y += 48;
 
     sw.porte.forEach(function(p){
       var indice = p.n - 1;
@@ -889,6 +923,11 @@ function disegnaPorte(){
         cella.appendChild(el('rect', {x:0, y:CELLAH - 3, width:CELLA, height:3,
           fill: COL_VEL[p.collegamento] || 'var(--filo-forte)'}));
       }
+      var occ = occupazione(p, noto);
+      if(OCCUPAZIONE[occ].colore){
+        cella.appendChild(el('rect', {x:0, y:0, width:3, height:CELLAH - 3,
+          fill: OCCUPAZIONE[occ].colore}));
+      }
       if(p.trunk){
         cella.appendChild(el('path', {d:'M0 0 L7 0 L0 7 Z', fill:'var(--inch)'}));
       }
@@ -901,11 +940,10 @@ function disegnaPorte(){
       cella.appendChild(num);
 
       var tt = el('title');
-      tt.appendChild(txt('Porta ' + p.n
-        + (p.collegamento ? ' · ' + p.collegamento : ' · nessun collegamento')
+      tt.appendChild(txt('Porta ' + p.n + ' · ' + OCCUPAZIONE[occ].et
+        + (p.collegamento ? ' · ' + p.collegamento : '')
         + ' · PVID ' + p.pvid + (p.trunk ? ' · trunk' : '')
-        + (p.stazioni ? ' · ' + p.stazioni + ' stazioni' : '')
-        + (noto ? ' · fonte: ' + ((byId[noto.nodo] || {}).nome || noto.nodo) : '')));
+        + (noto ? ' · ' + ((byId[noto.nodo] || {}).nome || noto.nodo) : '')));
       cella.appendChild(tt);
       cella.style.cursor = 'pointer';
       cella.addEventListener('click', function(ev){
@@ -919,26 +957,49 @@ function disegnaPorte(){
     y += 2 * (CELLAH + CELLAGAP) + 44;
   });
 
-  /* legenda propria di questa vista: i colori qui dicono la velocita', non il mezzo */
+  /* Legenda propria di questa vista: due canali indipendenti, la barra in basso
+     per la velocita' negoziata e il filetto a sinistra per chi occupa la porta. */
   var leg = el('g', {transform:'translate(0,' + y + ')'});
+  var tl = el('text', {x:0, y:0, 'class':'titolo-sw'});
+  tl.setAttribute('style', 'font-size:13px');
+  tl.appendChild(txt(libereTotali + (libereTotali === 1 ? ' porta libera in tutto' : ' porte libere in tutto')
+    + ', disponibili per una permuta senza toccare niente'));
+  leg.appendChild(tl);
+
   var lx = 0;
+  var t0 = el('text', {x:0, y:24, 'class':'leg-sw'});
+  t0.appendChild(txt('barra in basso, velocita’ negoziata:')); leg.appendChild(t0);
+  lx = 190;
   [['10 Gb/s','#4D11A7'], ['1 Gb/s','#AFD100'], ['100 Mb/s','#57CCF6'], ['10 Mb/s','#E7000B']]
     .forEach(function(v){
-      leg.appendChild(el('rect', {x:lx, y:0, width:18, height:3, fill:v[1]}));
-      var t = el('text', {x:lx + 24, y:4, 'class':'leg-sw'});
+      leg.appendChild(el('rect', {x:lx, y:21, width:18, height:3, fill:v[1]}));
+      var t = el('text', {x:lx + 24, y:25, 'class':'leg-sw'});
       t.appendChild(txt(v[0])); leg.appendChild(t);
       lx += 24 + v[0].length * 6.2 + 22;
     });
+
+  var t1 = el('text', {x:0, y:44, 'class':'leg-sw'});
+  t1.appendChild(txt('filetto a sinistra, chi occupa la porta:')); leg.appendChild(t1);
+  var ly = 60;
+  ['censita', 'utenza', 'multipla', 'muta', 'libera'].forEach(function(k){
+    var o = OCCUPAZIONE[k];
+    if(o.colore) leg.appendChild(el('rect', {x:6, y:ly - 8, width:3, height:11, fill:o.colore}));
+    else leg.appendChild(el('rect', {x:6, y:ly - 8, width:3, height:11, fill:'none',
+      stroke:'var(--filo)', 'stroke-dasharray':'2 2'}));
+    var t = el('text', {x:18, y:ly, 'class':'leg-sw'});
+    t.appendChild(txt(o.et)); leg.appendChild(t);
+    ly += 16;
+  });
+
   [['angolo pieno in alto a sinistra', 'porta in trunk'],
    ['pallino verde in alto a destra', 'eroga PoE'],
-   ['bordo tratteggiato', 'nessun collegamento'],
-   ['bordo piu' + '’' + ' spesso', 'la fonte sa cosa e' + '’' + ' attaccato']]
+   ['bordo tratteggiato', 'nessun collegamento negoziato']]
     .forEach(function(v, i){
-      var t = el('text', {x:0, y:22 + i * 16, 'class':'leg-sw'});
+      var t = el('text', {x:0, y:ly + 8 + i * 16, 'class':'leg-sw'});
       t.appendChild(txt(v[0] + ': ' + v[1])); leg.appendChild(t);
     });
   g.appendChild(leg);
-  y += 22 + 4 * 15;
+  y += ly + 8 + 3 * 16;
 
   mondo.setAttribute('transform', 'translate(70,56)');
   Gcur = {nodi:[], archi:[], segmenti:[], ranghi:[], righe:{}, larg:largMax, altez:y, vista:'porte'};
@@ -1417,14 +1478,31 @@ function schedaPorta(sw, p, noto){
     });
     sf.appendChild(b);
     if(noto.link && noto.link.note) sf.appendChild(h('div','dett', noto.link.note));
-  } else if(p.collegamento){
-    var pr = h('p', null, 'La topologia non censisce nessun collegamento su questa porta, ma la porta '
-      + 'ha un collegamento attivo' + (p.stazioni ? ' e vede ' + p.stazioni + ' stazioni' : ' e non vede nessuna stazione')
-      + '. E\' una lacuna della fonte, non dell\'apparato.');
-    pr.style.color = 'var(--iw-error)';
-    sf.appendChild(pr);
+  } else if(!p.attiva){
+    sf.appendChild(h('p', null, 'Porta disabilitata da configurazione. Non e\' libera nel senso di '
+      + 'utilizzabile subito: prima va riabilitata, e conviene sapere perche\' era stata spenta.'));
+  } else if(!p.collegamento){
+    var pl = h('p', null, 'Nessun collegamento negoziato e niente di censito: porta libera, '
+      + 'disponibile per una permuta senza toccare nient\'altro.');
+    pl.style.color = 'var(--iw-success)';
+    sf.appendChild(pl);
+  } else if(p.stazioni === 1){
+    sf.appendChild(h('p', null, 'Un solo indirizzo visto in VLAN ' + ((p['vlan-viste'] || [p.pvid]).join(', '))
+      + ': e\' una singola utenza, cioe' + '’' + ' una postazione o una stampante. Non e\' una lacuna: '
+      + 'le postazioni sono fuori dal perimetro dichiarato della mappa e compaiono nel gruppo aggregato. '
+      + 'Se serve il nome di quella specifica macchina, la fonte giusta e\' il censimento degli endpoint, '
+      + 'non questa mappa.'));
+  } else if(p.stazioni > 1){
+    var pm = h('p', null, p.stazioni + ' indirizzi distinti su una sola porta: dietro c\'e\' altro, '
+      + 'tipicamente uno switch o un apparato con piu\' interfacce. Questa merita di essere censita.');
+    pm.style.color = 'var(--iw-error)';
+    sf.appendChild(pm);
   } else {
-    sf.appendChild(h('p', null, 'Nessun collegamento censito e nessun collegamento attivo: porta libera.'));
+    var pz = h('p', null, 'Il collegamento e\' negoziato' + (p.collegamento ? ' a ' + p.collegamento : '')
+      + ' ma la tabella MAC non vede **nessun** indirizzo: un cavo che si aggancia e non porta traffico. '
+      + 'Non e\' una postazione e non e\' una porta libera. E\' il caso da verificare sul posto (#156).');
+    pz.style.color = 'var(--iw-error)';
+    sf.appendChild(pz);
   }
   pannello.appendChild(sf);
 
