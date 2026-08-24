@@ -67,7 +67,10 @@ if (-not (Test-Path -LiteralPath $SourcePath))   { Fail "Fonte non trovata: $Sou
 if (-not (Test-Path -LiteralPath $TemplatePath)) { Fail "Template non trovato: $TemplatePath" }
 
 # --- 1. Lettura e validazione della fonte -----------------------------------
-$raw = Get-Content -Raw -LiteralPath $SourcePath
+# -Encoding UTF8 non e' pleonastico: sotto Windows PowerShell 5.1 il default e' la
+# codepage ANSI della macchina, e senza questo la fonte italiana torna in mojibake
+# dentro l'artefatto (i "·" diventano "Â·", i trattini lunghi "â€”").
+$raw = Get-Content -Raw -Encoding UTF8 -LiteralPath $SourcePath
 try   { $topo = $raw | ConvertFrom-Json }
 catch { Fail "La fonte non e' JSON valido: $($_.Exception.Message)" }
 
@@ -111,7 +114,7 @@ if ($problemi.Count -gt 0) {
 
 # --- 2. Iniezione nel template ----------------------------------------------
 $stamp = Get-Date -Format 'dd/MM/yyyy'
-$html  = Get-Content -Raw -LiteralPath $TemplatePath
+$html  = Get-Content -Raw -Encoding UTF8 -LiteralPath $TemplatePath
 
 # Il JSON entra dentro un tag <script type="application/json">: l'unica sequenza che
 # lo chiuderebbe in anticipo e' "</script", quindi si neutralizza quella e basta.
