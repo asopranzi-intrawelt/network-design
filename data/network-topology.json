@@ -2,7 +2,7 @@
   "meta": {
     "titolo": "Topologia di rete Intrawelt",
     "aggiornato": "2026-08-24",
-    "revisione": 4,
+    "revisione": 5,
     "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
     "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
     "fonti": [
@@ -276,7 +276,8 @@
       "gap": [
         "ELE-003",
         "NET-022",
-        "NET-023"
+        "NET-023",
+        "NET-026"
       ]
     },
     {
@@ -1140,29 +1141,31 @@
       "a": "vmbr0",
       "mezzo": "logico",
       "porta-b": "eno1",
-      "note": "Bridge dell'host sulla prima porta. Quale delle quattro prese fisiche del server corrisponda a eno1 non e' verificato: la mappa fisica censisce le porte del server come eth1-eth4 e il sistema operativo le chiama eno1-eno4, e le due numerazioni non sono state confrontate.",
-      "criticita": "NET-023: senza quella corrispondenza non si sa su quale porta dello switch va configurato il trunk della DMZ, e M4 non e' eseguibile alla cieca."
+      "note": "Bridge dell'host sulla prima porta, eno1. **Determinato il 24/08/2026**: i MAC delle macchine attestate qui compaiono sulla porta 52 del 54HP, che e' il ramo verso lo switch QNAP non gestito, quindi eno1 corrisponde alla presa che la mappa fisica chiama eth1. Ne discende il fatto che conta: l'indirizzo di gestione dell'hypervisor, 10.61.20.11/19, raggiunge la rete **attraverso uno switch non gestito**, dove non esiste controllo di livello 2, non si possono taggare VLAN e non c'e' visibilita' per porta."
     },
     {
       "da": "srv-gen10",
       "a": "vmbr1",
       "mezzo": "logico",
+      "porta-a": "7",
       "porta-b": "eno2",
-      "note": "Bridge dell'host sulla seconda porta, il piu' scarico."
+      "note": "Bridge dell'host sulla seconda porta, eno2. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla **porta 7 del 54HP**, che la mappa fisica chiama eth2. E' il piu' scarico dei quattro, con la sola seconda scheda della VM 100, ed e' su una porta di uno switch gestito: e' quindi il candidato naturale per la VLAN 201 della DMZ."
     },
     {
       "da": "srv-gen10",
       "a": "vmbr2",
       "mezzo": "logico",
+      "porta-a": "9",
       "porta-b": "eno3",
-      "note": "Bridge dell'host sulla terza porta: qui stanno i due ambienti del sito."
+      "note": "Bridge dell'host sulla terza porta, eno3. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla **porta 9 del 54HP**, che la mappa fisica chiama eth3. Qui stanno i due ambienti del sito, la VM 206 e la VM 209."
     },
     {
       "da": "srv-gen10",
       "a": "vmbr3",
       "mezzo": "logico",
+      "porta-a": "11",
       "porta-b": "eno4",
-      "note": "Bridge dell'host sulla quarta porta."
+      "note": "Bridge dell'host sulla quarta porta, eno4. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla **porta 11 del 54HP**, che la mappa fisica chiama eth4."
     },
     {
       "da": "vmbr2",
@@ -1508,9 +1511,9 @@
     },
     {
       "id": "NET-023",
-      "titolo": "Corrispondenza fra bridge, porte del server e porte dello switch mai verificata",
+      "titolo": "Corrispondenza fra bridge, porte del server e porte dello switch — RISOLTA il 24/08/2026 incrociando i MAC",
       "numero": 153,
-      "gravita": "media"
+      "gravita": "bassa"
     },
     {
       "id": "FW-014",
@@ -1523,6 +1526,12 @@
       "titolo": "Il pannello di amministrazione del CMS di staging e' esposto a tutta la LAN piatta",
       "numero": 155,
       "gravita": "media"
+    },
+    {
+      "id": "NET-026",
+      "titolo": "L'indirizzo di gestione dell'hypervisor passa da uno switch non gestito",
+      "numero": 157,
+      "gravita": "alta"
     }
   ]
 }
