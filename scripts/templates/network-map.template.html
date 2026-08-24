@@ -126,6 +126,14 @@ aside p:last-child{margin-bottom:0}
 .nodo:hover .box{stroke:var(--inch)}
 .nodo.sel .box{stroke:var(--inch);stroke-width:2}
 .nodo.spento{opacity:.16}
+.nodo.contesto{opacity:.42}
+.nodo.contesto .box{stroke-dasharray:2 3}
+.nodo.radice .box{stroke:var(--accento);stroke-width:2.5}
+.nastro{background:var(--carta);border-bottom:1px solid var(--filo);padding:7px 24px;display:none;align-items:center;gap:12px;font-size:12.5px}
+.nastro.on{display:flex}
+.nastro .et{color:var(--tenue);text-transform:uppercase;letter-spacing:var(--iw-track);font-size:10px}
+.nastro strong{font-weight:500}
+.nastro .conta{color:var(--tenue)}
 .nodo .badge{fill:var(--iw-error)}
 .nodo .badgetxt{font-size:9px;fill:#fff;font-weight:500}
 .arco{fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
@@ -188,6 +196,13 @@ footer li{margin-bottom:3px}
   <div class="sep"></div>
   <button class="mini" id="btn-tema">Tema</button>
   <button class="mini" id="btn-stampa">Stampa</button>
+</div>
+
+<div class="nastro" id="nastro">
+  <span class="et">Ramo isolato</span>
+  <strong id="nastro-nome"></strong>
+  <span class="conta" id="nastro-conta"></span>
+  <button class="mini" id="nastro-esci">Mostra tutta la rete</button>
 </div>
 
 <div class="filtri">
@@ -298,7 +313,7 @@ var S = {
   mezzi:{}, vlan:{}, cont:{},
   soloDifetti:false, mostraProgetto:true, mostraPorte:true,
   cerca:'', sel:null, hover:null,
-  vb:{x:0,y:0,w:1000,h:700}, fitCache:{}
+  vb:{x:0,y:0,w:1000,h:700}, fitCache:{}, iso:null
 };
 Object.keys(COL_MEZZO).forEach(function(m){ S.mezzi[m]=true; });
 Object.keys(VLAN).forEach(function(v){ S.vlan[v]=true; });
@@ -328,6 +343,44 @@ LINK.forEach(function(l,i){
   if(INC[l.a] && l.a!==l.da) INC[l.a].push(i);
 });
 
+/* Isolamento di un ramo. La domanda operativa vera non e' "chi tocca questo
+   apparato" ma "che cosa sta dietro": se devo intervenire sullo switch di un piano
+   voglio vedere tutto cio' che dipende da lui, e la sola spina che lo alimenta di
+   traffico, non l'intera azienda. Discendenti per chiusura in avanti sugli archi,
+   antenati per chiusura all'indietro: i primi sono il ramo, i secondi sono il
+   contesto e si disegnano attenuati, perche' non sono l'oggetto dell'intervento. */
+var GIU = {}, SU = {};
+LINK.forEach(function(l){
+  (GIU[l.da] = GIU[l.da] || []).push(l.a);
+  (SU[l.a] = SU[l.a] || []).push(l.da);
+});
+function isolamento(id){
+  var dentro = {}, disc = {}, ant = {};
+  dentro[id] = 1;
+  var coda = [id], g = 0;
+  while(coda.length && g++ < 500){
+    var x = coda.pop();
+    (GIU[x] || []).forEach(function(y){ if(!dentro[y]){ dentro[y] = 1; disc[y] = 1; coda.push(y); } });
+  }
+  /* Il contesto a monte si ferma a due salti. Risalire fino a Internet aggiungerebbe
+     otto ranghi di catena WAN che a chi deve intervenire su un piano non dicono
+     niente, e allungherebbero il disegno tanto da impedire di vedere il ramo tutto
+     insieme, che e' la sola ragione per cui lo si isola. Due salti bastano a
+     rispondere alla domanda "da dove pende". */
+  var frontiera = [id];
+  for(var salto = 0; salto < 2; salto++){
+    var prossima = [];
+    frontiera.forEach(function(x2){
+      (SU[x2] || []).forEach(function(y){
+        if(!dentro[y]){ dentro[y] = 1; ant[y] = 1; prossima.push(y); }
+      });
+    });
+    frontiera = prossima;
+    if(!frontiera.length) break;
+  }
+  return {dentro:dentro, disc:disc, ant:ant, radice:id};
+}
+
 function catenaElettrica(id){
   var n = byId[id], out = [];
   if(!n) return out;
@@ -343,7 +396,7 @@ function catenaElettrica(id){
 /* --------------------------------------------------------------------------
    Motore di disposizione
    ----------------------------------------------------------------------- */
-var LARG = 152, ALT = 44, GAPX = 16, GAPY = 82, GAPD = 7;
+var LARG = 152, ALT = 44, GAPX = 16, GAPY = 82, GAPD = 7, MAXFILA = 9;
 function passo(a, b){ return (a.dummy || b.dummy) ? GAPD : GAPX; }
 
 function costruisciGrafo(vista){
@@ -387,15 +440,27 @@ function costruisciGrafo(vista){
   } else {
     var base = {};
     visibili.forEach(function(n){ base[n.id] = Math.max(0, LIV.indexOf(n.livello)); });
-    /* sotto-rango dentro la corsia, per gli archi che non la lasciano */
+    /* Sotto-rango dentro la corsia, per gli archi che non la lasciano. Nella vista
+       fisica non serve e fa danno: li' le colonne sono i luoghi e due apparati dello
+       stesso armadio stanno gia' affiancati nella cella, quindi il sotto-rango
+       raddoppierebbe l'altezza per separare cose che non hanno bisogno di esserlo. */
     var sub = {}; visibili.forEach(function(n){ sub[n.id]=0; });
-    for(var it=0; it<14; it++){
-      var mosso = false;
-      archi.forEach(function(e){
-        if(base[e.da] !== base[e.a]) return;
-        if(sub[e.a] < sub[e.da] + 1){ sub[e.a] = sub[e.da] + 1; mosso = true; }
-      });
-      if(!mosso) break;
+    if(vista !== 'fisica'){
+      for(var it=0; it<14; it++){
+        var mosso = false;
+        archi.forEach(function(e){
+          if(base[e.da] !== base[e.a]) return;
+          if(sub[e.a] < sub[e.da] + 1){ sub[e.a] = sub[e.da] + 1; mosso = true; }
+        });
+        if(!mosso) break;
+      }
+      /* Qui era stato provato di spezzare su piu' file le righe di sole foglie
+         troppo lunghe, ed e' stato tolto perche' misurato controproducente:
+         abbassare una foglia di una riga allunga il suo arco, che diventa un nodo
+         fittizio in piu' su ogni rango attraversato. Il conto reale e' stato
+         cinquantatre fittizi in piu' e due ranghi in piu' per una riduzione di
+         larghezza trascurabile. La larghezza non nasce dalle righe lunghe: nasce
+         dai vuoti, e si aggredisce li' (vedi il passo di compattazione). */
     }
     var chiavi = {};
     visibili.forEach(function(n){ chiavi[base[n.id]*100 + sub[n.id]] = 1; });
@@ -604,6 +669,24 @@ function disponi(G){
       }
     });
   }
+  /* 5c. compattazione dei vuoti. L'ottimizzazione per mediana allinea bene i nodi
+     con i loro vicini ma lascia golfi di spazio vuoto dove una riga corta insegue
+     una riga lunga: misurato, e' da li' che venivano quasi duemila pixel di
+     larghezza su cinquemila. Qui i vuoti oltre una certa soglia vengono riportati
+     alla soglia, riga per riga, conservando l'ordine e quindi il numero di incroci.
+     Gli archi diventano un po' piu' obliqui, il disegno si legge molto meglio. */
+  var VUOTOMAX = LARG * 1.2;
+  ranghi.forEach(function(r){
+    var fila = righe[r].slice().sort(function(a,b){ return a.x - b.x; });
+    if(fila.length < 2) return;
+    var orig = fila.map(function(n){ return n.x; });
+    for(var i=1; i<fila.length; i++){
+      var g = passo(fila[i-1], fila[i]);
+      var vuoto = orig[i] - (orig[i-1] + fila[i-1].w);
+      fila[i].x = fila[i-1].x + fila[i-1].w + Math.max(g, Math.min(vuoto, g + VUOTOMAX));
+    }
+  });
+
   /* 6. y, e centratura orizzontale delle righe */
   var minX = 1e9, maxX = -1e9;
   ranghi.forEach(function(r,i){
@@ -662,6 +745,7 @@ function ancora(G, idx){
    Filtri
    ----------------------------------------------------------------------- */
 function nodoVisibile(n){
+  if(S.iso && !S.iso.dentro[n.id]) return false;
   if(!S.mostraProgetto && n.stato === 'progetto') return false;
   if(S.soloDifetti && !(n.gap && n.gap.length)) return false;
   var c = n.contenitore || '__nessuno';
@@ -669,6 +753,7 @@ function nodoVisibile(n){
   return true;
 }
 function arcoVisibile(l){
+  if(S.iso && !(S.iso.dentro[l.da] && S.iso.dentro[l.a])) return false;
   if(!S.mostraProgetto && l.stato === 'progetto') return false;
   if(S.mezzi[l.mezzo] === false) return false;
   if(l.vlan && l.vlan.length){
@@ -795,6 +880,8 @@ function ridisegna(){
     var r = n.rif;
     var cls = 'nodo';
     if(r.stato === 'progetto') cls += ' progetto';
+    if(S.iso && S.iso.ant[n.id]) cls += ' contesto';
+    if(S.iso && S.iso.radice === n.id) cls += ' radice';
     if(S.sel && S.sel.tipo === 'nodo' && S.sel.id === n.id) cls += ' sel';
     if(accesi && !accesi.nodi[n.id]) cls += ' spento';
     if(S.cerca && !r._pwr && !combacia(r)) cls += ' spento';
@@ -819,6 +906,13 @@ function ridisegna(){
     g.addEventListener('mouseenter', function(){ S.hover = n.id; ridisegna(); });
     g.addEventListener('mouseleave', function(){ if(S.hover === n.id){ S.hover = null; ridisegna(); } });
     g.addEventListener('click', function(ev){ ev.stopPropagation(); S.sel = {tipo:'nodo', id:n.id, rif:r}; scheda(); ridisegna(); });
+    if(!r._pwr){
+      g.addEventListener('dblclick', function(ev){
+        ev.stopPropagation(); ev.preventDefault();
+        S.hover = null;
+        if(S.iso && S.iso.radice === n.id) esciIsolamento(); else isola(n.id);
+      });
+    }
     gNodi.appendChild(g);
   });
 
@@ -973,6 +1067,36 @@ tela.addEventListener('click', function(ev){
   S.sel = null; scheda(); ridisegna();
 });
 
+function isola(id){
+  if(!byId[id]) return;
+  S.iso = isolamento(id);
+  S.fitCache = {};
+  aggiornaNastro();
+  ridisegna();
+  /* Un ramo isolato e' piccolo: qui l'inquadratura completa quasi sempre entra
+     leggibile, e vederlo tutto insieme e' esattamente il motivo per cui lo si isola. */
+  inquadra(0.45);
+}
+function esciIsolamento(){
+  if(!S.iso) return;
+  var era = S.iso.radice;
+  S.iso = null; S.fitCache = {};
+  aggiornaNastro();
+  ridisegna();
+  portaSu(era);
+}
+function aggiornaNastro(){
+  var n = document.getElementById('nastro');
+  n.classList.toggle('on', !!S.iso);
+  if(!S.iso) return;
+  document.getElementById('nastro-nome').textContent = (byId[S.iso.radice] || {}).nome || S.iso.radice;
+  var nd = Object.keys(S.iso.disc).length, na = Object.keys(S.iso.ant).length;
+  document.getElementById('nastro-conta').textContent =
+    nd + (nd === 1 ? ' apparato a valle' : ' apparati a valle') + ', ' +
+    na + (na === 1 ? ' a monte come contesto' : ' a monte come contesto') +
+    '. Il contesto e\' disegnato attenuato: non e\' parte del ramo.';
+}
+
 /* --------------------------------------------------------------------------
    Scheda laterale
    ----------------------------------------------------------------------- */
@@ -995,6 +1119,27 @@ function scheda(){
   x.addEventListener('click', function(){ S.sel = null; scheda(); ridisegna(); });
   cap.appendChild(x);
   pannello.appendChild(cap);
+
+  if(!r._pwr){
+    var sa = h('div','sez');
+    var attivo = S.iso && S.iso.radice === r.id;
+    var b1 = h('button','mini', attivo ? 'Esci dal ramo isolato' : 'Isola questo ramo');
+    b1.setAttribute('aria-pressed', attivo ? 'true' : 'false');
+    b1.addEventListener('click', function(){ if(attivo) esciIsolamento(); else isola(r.id); });
+    sa.appendChild(b1);
+    var b2 = h('button','mini','Inquadra qui');
+    b2.style.marginLeft = '6px';
+    b2.addEventListener('click', function(){ portaSu(r.id); });
+    sa.appendChild(b2);
+    var quanti = Object.keys(isolamento(r.id).disc).length;
+    sa.appendChild(h('div','dett', quanti
+      ? ('A valle di questo apparato dipendono ' + quanti + (quanti === 1 ? ' altro nodo.' : ' altri nodi.') + ' Doppio clic sul disegno fa la stessa cosa.')
+      : 'Nessun apparato dipende da questo: e\' una foglia della topologia.'));
+    sa.querySelector('.dett').style.marginTop = '8px';
+    sa.querySelector('.dett').style.color = 'var(--tenue)';
+    sa.querySelector('.dett').style.fontSize = '11.5px';
+    pannello.appendChild(sa);
+  }
 
   var s1 = sezione('Identita');
   var dl = document.createElement('dl'); dl.className = 'kv';
@@ -1205,26 +1350,45 @@ document.getElementById('btn-tema').addEventListener('click', function(){
   document.documentElement.setAttribute('data-tema', next);
   ridisegna();
 });
+document.getElementById('nastro-esci').addEventListener('click', esciIsolamento);
 document.addEventListener('keydown', function(ev){
-  if(ev.key === 'Escape'){ S.sel = null; scheda(); ridisegna(); }
+  if(ev.key === 'Escape'){
+    if(S.iso){ esciIsolamento(); return; }
+    S.sel = null; scheda(); ridisegna();
+  }
+  if(ev.key === 'i' && S.sel && S.sel.tipo === 'nodo' && !/input|textarea/i.test(document.activeElement.tagName)){
+    if(S.iso && S.iso.radice === S.sel.id) esciIsolamento(); else isola(S.sel.id);
+  }
   if(ev.key === 'f' && !/input|textarea/i.test(document.activeElement.tagName)) inquadra();
 });
 window.addEventListener('resize', function(){ inquadra(0.62); });
 
-/* Il frammento dell'indirizzo sceglie la vista di apertura: #fisica, #segmenti,
-   #elettrica. Serve a chi vuole rimandare qualcuno direttamente alla vista giusta
-   invece di dirgli "poi clicca sul terzo pulsante". */
+/* Il frammento dell'indirizzo sceglie cosa aprire: una vista fra #fisica,
+   #segmenti, #elettrica, oppure un ramo isolato con #isola=<identificatore>, e le
+   due cose si combinano con la virgola. Serve a rimandare qualcuno direttamente al
+   punto di cui si sta parlando invece di dirgli "poi clicca sul terzo pulsante e
+   fai doppio clic sullo switch del piano terra". */
+var ISO_INIZIALE = null;
 (function daFrammento(){
-  var f = (location.hash || '').replace('#','');
-  if(['logica','fisica','segmenti','elettrica'].indexOf(f) < 0) return;
-  S.vista = f;
-  [].forEach.call(document.querySelectorAll('#viste button'), function(x){
-    x.setAttribute('aria-pressed', x.dataset.vista === f ? 'true' : 'false');
+  var f = decodeURIComponent((location.hash || '').replace('#',''));
+  if(!f) return;
+  f.split(',').forEach(function(pezzo){
+    pezzo = pezzo.trim();
+    if(['logica','fisica','segmenti','elettrica'].indexOf(pezzo) >= 0){
+      S.vista = pezzo;
+      [].forEach.call(document.querySelectorAll('#viste button'), function(x){
+        x.setAttribute('aria-pressed', x.dataset.vista === pezzo ? 'true' : 'false');
+      });
+    } else if(pezzo.indexOf('isola=') === 0){
+      var id = pezzo.slice(6);
+      if(byId[id]) ISO_INIZIALE = id;
+    }
   });
 })();
 
+if(ISO_INIZIALE){ S.iso = isolamento(ISO_INIZIALE); aggiornaNastro(); }
 ridisegna();
-inquadra(0.62);
+inquadra(ISO_INIZIALE ? 0.45 : 0.62);
 </script>
 </body>
 </html>
