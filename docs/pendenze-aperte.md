@@ -57,7 +57,7 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Che cosa espone la OpenAPI per il firewall **assegnato a un sito** in Cloud Monitoring Mode | assegnarlo e rileggere; oggi in stato `Unused` espone la sola anagrafica | `.claude/rules/fonti-e-riallineamento.md` §Fonte automatica pianificata |
 | Perche' le porte di fonia hanno due generazioni di configurazione | change log di configurazione degli apparati su NCC | NET-019 (#143) |
 | Cosa c'e' davvero sulla porta 52 del 54HP, che ha imparato undici indirizzi mentre la documentazione la descrive come ramo QNAP | sopralluogo fisico, nella sessione dedicata allo snapshot della rete | osservazione del 06/08/2026 |
-| Cosa e' collegato alle tre porte che negoziano 10 Mbps (5 e 22 del 30HP, 25 del 54HP) | sopralluogo e prova del cavo | R16; NET-016 (#135) |
+| Cosa e' collegato alle **otto** porte che negoziano 10 Mb/s: 24, 31 e 48 del 54HP, e 2, 11, 12, 18 e 22 del 30HP. Tutte e otto hanno **zero indirizzi** nella tabella MAC, cioe' un collegamento che si stabilisce e non porta traffico. Da tenere insieme al fatto che l'insieme **non e' stabile**: delle tre registrate come lente in NET-016 due sono oggi a 1 Gb/s con una stazione ciascuna (porta 5 del 30HP e porta 25 del 54HP) e una sola e' rimasta lenta (porta 22 del 30HP), mentre sette sono nuove. Un guasto permanente di cablaggio non guarisce da solo, quindi almeno per una parte la causa e' un'altra e va cercata sul posto | sopralluogo e prova del cavo, presa per presa, incrociando con la mappa delle prese a parete | R16; NET-016 (#135); NET-025 (#156) |
 | Proprieta', amministratore e credenziali del Mikrotik sulla catena WAN | domanda al fornitore | R17; NET-018 (#137) |
 | Anagrafica dell'inverter del fotovoltaico come asset di rete | sopralluogo | R18; NET-017 (#136) |
 | Se un dispositivo in stato `Unused` concorra al requisito di copertura della licenza | non verificabile senza provocare un declassamento: **non** si prova per curiosita' | ADR-022 |
@@ -67,6 +67,8 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Il rapporto fra l'alimentazione di backup da 700 VA del fornitore di linea, sostituita in garanzia il 01/07/2025, e il Back-UPS ES 400 oggi descritto sui due router | domanda al fornitore di linea | ELE-001 (#145) |
 | Funzione, modello e alimentazione del NAS-INTRA3; e che cosa risponda all'indirizzo elencato come "documenti" nella scheda di continuita', che e' l'origine del conteggio a cinque NAS | lettura dell'apparato, non ragionamento sull'elenco | `livello-fisico-ed-elettrico.md` §Censimento dei NAS |
 | Il media converter della catena dell'antenna, citato dall'IT Manager e non descritto in nessuna fonte | sopralluogo | `mappatura-porte-fisiche.md` §La catena verso l'esterno |
+| Se il conteggio di **trentasei porte libere** (venticinque sul 54HP, undici sul 30HP) regge al riscontro sull'armadio | confronto a vista fra la vista Porte della mappa e i due armadi | vista Porte di `docs/network-map.html`; rinviato su richiesta dell'IT Manager al termine del lavoro su interfaccia e usabilita' |
+| Se una porta che la mappa da' per **libera** sia davvero senza cavo, e se una porta data per **censita** porti davvero l'apparato dichiarato | due riscontri puntuali a campione, uno per tipo | vista Porte di `docs/network-map.html`; stesso rinvio |
 
 ## Igiene documentale e di sessione
 
