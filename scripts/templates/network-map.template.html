@@ -5,518 +5,1226 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Topologia di rete Intrawelt</title>
 <style>
-  :root{
-    --bg:#f6f5f2; --panel:#ffffff; --ink:#151d20; --ink-soft:#5a6468; --line:#d8d4cc;
-    --accent:#2f6f7d; --accent-soft:#e3eef0; --warn:#b4553a; --warn-soft:#f6e5df;
-    --shadow:0 1px 2px rgba(21,29,32,.06),0 4px 14px rgba(21,29,32,.05);
-    --serif:Georgia,'Iowan Old Style','Palatino Linotype','Book Antiqua',serif;
-    --sans:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;
-    --mono:'Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+:root{
+  --iw-black:#000; --iw-purple:#4D11A7; --iw-cyan:#57CCF6; --iw-green:#AFD100; --iw-lblue:#8CE1FF;
+  --iw-ink:#0A0A0A; --iw-muted:#4C4C63; --iw-disabled:#ACB0CD; --iw-inverse:#fff;
+  --iw-surface:#fff; --iw-sunken:#F4F5F9; --iw-border:#D0D4E3; --iw-border-strong:#ACB0CD;
+  --iw-error:#E7000B; --iw-success:#92B500;
+  --iw-grad-brand:linear-gradient(270deg,#57CCF6 7.21%,#AFD100 16.83%,#00CECE 67.79%,#4D11A7 96.15%);
+  --iw-font-sans:"Altro Var","Altro Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --iw-font-serif:"Altro Serif","Altro Var",Georgia,serif;
+  --iw-track:.2em; --iw-mod:20px;
+  --tela:var(--iw-sunken); --carta:var(--iw-surface); --inch:var(--iw-ink);
+  --filo:var(--iw-border); --filo-forte:var(--iw-border-strong); --tenue:var(--iw-muted);
+  --accento:var(--iw-purple);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-tema="chiaro"]){
+    --tela:#000; --carta:#0A0A0A; --inch:#fff; --filo:#2A2A38; --filo-forte:#3D3D52;
+    --tenue:#9BA0BC; --accento:var(--iw-lblue);
   }
-  @media (prefers-color-scheme:dark){
-    :root{ --bg:#14181a; --panel:#1c2225; --ink:#e8e6e1; --ink-soft:#9aa4a8; --line:#2e3639;
-           --accent:#6fb3c0; --accent-soft:#1e3238; --warn:#e08b6e; --warn-soft:#3a2620;
-           --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3); }
-  }
-  :root[data-theme="dark"]{ --bg:#14181a; --panel:#1c2225; --ink:#e8e6e1; --ink-soft:#9aa4a8; --line:#2e3639;
-    --accent:#6fb3c0; --accent-soft:#1e3238; --warn:#e08b6e; --warn-soft:#3a2620;
-    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3); }
-  :root[data-theme="light"]{ --bg:#f6f5f2; --panel:#ffffff; --ink:#151d20; --ink-soft:#5a6468; --line:#d8d4cc;
-    --accent:#2f6f7d; --accent-soft:#e3eef0; --warn:#b4553a; --warn-soft:#f6e5df;
-    --shadow:0 1px 2px rgba(21,29,32,.06),0 4px 14px rgba(21,29,32,.05); }
+}
+:root[data-tema="scuro"]{
+  --tela:#000; --carta:#0A0A0A; --inch:#fff; --filo:#2A2A38; --filo-forte:#3D3D52;
+  --tenue:#9BA0BC; --accento:var(--iw-lblue);
+}
+*{box-sizing:border-box;border-radius:0}
+html,body{height:100%}
+body{margin:0;background:var(--tela);color:var(--inch);font-family:var(--iw-font-sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.caps{text-transform:uppercase;letter-spacing:var(--iw-track);font-size:11px;font-weight:500}
+button,input,select{font:inherit;color:inherit;border-radius:0}
 
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55}
-  header{padding:22px 26px 14px;border-bottom:1px solid var(--line)}
-  h1{font-family:var(--serif);font-size:26px;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
-  .sub{color:var(--ink-soft);font-size:13.5px;max-width:82ch}
-  .sub code{font-family:var(--mono);font-size:12.5px;background:var(--accent-soft);padding:1px 5px;border-radius:3px}
+/* ---------- testata ---------- */
+.filetto{height:var(--iw-mod);background:var(--iw-grad-brand)}
+header.testa{background:var(--carta);border-bottom:1px solid var(--filo);padding:18px 24px 14px}
+header.testa h1{margin:0;font-size:24px;font-weight:500;letter-spacing:-.01em}
+header.testa .sotto{margin-top:4px;color:var(--tenue);font-size:13px;max-width:110ch}
+header.testa .meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--tenue);font-size:11px;text-transform:uppercase;letter-spacing:var(--iw-track)}
 
-  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 26px;border-bottom:1px solid var(--line);
-           position:sticky;top:0;background:var(--bg);z-index:20}
-  .group{display:flex;gap:6px;align-items:center}
-  .group + .group{margin-left:10px;padding-left:14px;border-left:1px solid var(--line)}
-  .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin-right:2px}
-  button.chip{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--line);background:var(--panel);
-              color:var(--ink);border-radius:999px;cursor:pointer;transition:.12s}
-  button.chip:hover{border-color:var(--accent)}
-  button.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-  button.chip.warn[aria-pressed="true"]{background:var(--warn);border-color:var(--warn)}
-  input[type=search]{font:inherit;font-size:13px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;
-                     background:var(--panel);color:var(--ink);min-width:190px}
+/* ---------- barra comandi ---------- */
+.barra{position:sticky;top:0;z-index:30;background:var(--carta);border-bottom:1px solid var(--filo);
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 24px}
+.gruppo{display:flex;align-items:center;gap:0;border:1px solid var(--filo)}
+.gruppo>button{background:transparent;border:0;border-right:1px solid var(--filo);padding:7px 13px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:var(--iw-track);font-size:11px;font-weight:500;transition:background 220ms cubic-bezier(.2,.6,.2,1),color 220ms cubic-bezier(.2,.6,.2,1)}
+.gruppo>button:last-child{border-right:0}
+.gruppo>button:hover{background:var(--tela)}
+.gruppo>button[aria-pressed="true"]{background:var(--inch);color:var(--carta)}
+.sep{flex:1}
+.campo{border:1px solid var(--filo);background:var(--carta);padding:7px 10px;min-width:200px}
+.campo::placeholder{color:var(--iw-disabled)}
+.mini{background:transparent;border:1px solid var(--filo);padding:6px 10px;cursor:pointer;font-size:12px}
+.mini:hover{background:var(--tela)}
+.mini[aria-pressed="true"]{background:var(--inch);color:var(--carta);border-color:var(--inch)}
 
-  .wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:0;align-items:start}
-  @media (max-width:1080px){ .wrap{grid-template-columns:minmax(0,1fr)} #panel{position:static;border-left:none;border-top:1px solid var(--line)} }
+/* ---------- filtri ---------- */
+.filtri{background:var(--carta);border-bottom:1px solid var(--filo);padding:8px 24px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.fila{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fila>.et{color:var(--tenue);text-transform:uppercase;letter-spacing:var(--iw-track);font-size:10px;margin-right:2px;min-width:74px}
+.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--filo);background:transparent;padding:4px 9px;font-size:11px;cursor:pointer;
+  transition:background 220ms cubic-bezier(.2,.6,.2,1),border-color 220ms cubic-bezier(.2,.6,.2,1),opacity 120ms}
+.tag:hover{border-color:var(--filo-forte)}
+.tag[aria-pressed="false"]{opacity:.4}
+.tag .sw{width:14px;height:3px;display:inline-block}
+.tag .sw.tratteggio{background-image:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px)}
 
-  #stage{position:relative;padding:24px 26px 60px;overflow-x:auto}
-  #links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-  .layer{position:relative;margin-bottom:34px}
-  .layer > h2{font-family:var(--serif);font-size:13px;font-weight:600;color:var(--ink-soft);margin:0 0 10px;
-              text-transform:uppercase;letter-spacing:.09em}
-  .row{display:flex;flex-wrap:wrap;gap:12px;position:relative;z-index:2}
+/* ---------- corpo ---------- */
+main{display:flex;height:calc(100vh - 210px);min-height:520px}
+#tela{flex:1;position:relative;overflow:hidden;background:var(--tela);cursor:grab}
+#tela.trascino{cursor:grabbing}
+#grafo{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hud{position:absolute;left:12px;bottom:12px;display:flex;gap:6px;z-index:10}
+.hud button{background:var(--carta);border:1px solid var(--filo);width:32px;height:32px;cursor:pointer;font-size:15px;line-height:1}
+.hud button.largo{width:auto;padding:0 12px;font-size:11px;text-transform:uppercase;letter-spacing:var(--iw-track)}
+.hud button:hover{background:var(--tela)}
+.vuoto{position:absolute;inset:0;display:none;place-items:center;color:var(--tenue);font-size:13px;text-align:center;padding:40px}
+.vuoto.on{display:grid}
 
-  .node{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 12px;min-width:150px;max-width:230px;
-        box-shadow:var(--shadow);cursor:pointer;transition:.14s;position:relative}
-  .node:hover,.node.sel{border-color:var(--accent);transform:translateY(-1px)}
-  .node.sel{box-shadow:0 0 0 2px var(--accent)}
-  .node .n-name{font-weight:600;font-size:13.5px;line-height:1.3}
-  .node .n-meta{font-size:11.5px;color:var(--ink-soft);margin-top:3px;font-family:var(--mono)}
-  .node .n-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
-  .tag{font-size:10.5px;padding:1px 6px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);white-space:nowrap}
-  .tag.gap{background:var(--warn-soft);border-color:var(--warn);color:var(--warn);font-weight:600}
-  .tag.nopwr{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
-  .node.dim{opacity:.22;filter:saturate(.2)}
-  .node[data-kind="cloud"],.node[data-kind="linea"],.node[data-kind="radio"]{background:var(--accent-soft)}
-  .node[data-kind="gruppo"],.node[data-kind="gruppo-voce"],.node[data-kind="rete-radio"]{border-style:dashed}
-  .node[data-kind="ups"]{background:var(--accent-soft)}
-  .node[data-kind="parete"]{background:var(--warn-soft);border-color:var(--warn)}
+/* ---------- pannello ---------- */
+aside{width:396px;flex:0 0 396px;background:var(--carta);border-left:1px solid var(--filo);overflow-y:auto}
+aside .vuoto-p{padding:24px;color:var(--tenue);font-size:13px}
+aside .cap{position:sticky;top:0;background:var(--carta);border-bottom:1px solid var(--filo);padding:16px 20px 12px;z-index:2}
+aside .cap .occhiello{color:var(--tenue);font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track)}
+aside .cap h2{margin:4px 0 0;font-size:20px;font-weight:500;line-height:1.2}
+aside .cap .chiudi{position:absolute;top:12px;right:14px;background:transparent;border:1px solid var(--filo);width:26px;height:26px;cursor:pointer;line-height:1}
+aside .sez{padding:14px 20px;border-bottom:1px solid var(--filo)}
+aside .sez>h3{margin:0 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);color:var(--tenue);font-weight:500}
+aside p{margin:0 0 8px}
+aside p:last-child{margin-bottom:0}
+.kv{display:grid;grid-template-columns:104px 1fr;gap:3px 10px;font-size:12.5px}
+.kv dt{color:var(--tenue)}
+.kv dd{margin:0}
+.rigalink{border:1px solid var(--filo);padding:8px 10px;margin-bottom:6px;font-size:12.5px}
+.rigalink:last-child{margin-bottom:0}
+.rigalink .capo{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.rigalink .verso{font-weight:500}
+.rigalink .dett{color:var(--tenue);font-size:11.5px;margin-top:3px}
+.rigalink .crit{color:var(--iw-error);font-size:11.5px;margin-top:4px}
+.gapriga{display:flex;gap:8px;align-items:baseline;font-size:12.5px;padding:5px 0;border-bottom:1px dotted var(--filo)}
+.gapriga:last-child{border-bottom:0}
+.grav{font-size:9.5px;text-transform:uppercase;letter-spacing:var(--iw-track);padding:1px 6px;border:1px solid currentColor;white-space:nowrap}
+.grav.alta{color:var(--iw-error)}
+.grav.media{color:var(--iw-purple)}
+.grav.bassa{color:var(--tenue)}
+:root[data-tema="scuro"] .grav.media,@media (prefers-color-scheme:dark){:root:not([data-tema="chiaro"]) .grav.media{color:var(--iw-lblue)}}
+.catena{list-style:none;margin:0;padding:0;font-size:12.5px}
+.catena li{padding:4px 0 4px 16px;position:relative}
+.catena li::before{content:"";position:absolute;left:3px;top:12px;width:8px;height:1px;background:var(--filo-forte)}
+.catena li .nm{font-weight:500}
+.catena li .ds{color:var(--tenue);font-size:11.5px}
 
-  path.link{fill:none;stroke:var(--line);stroke-width:1.6}
-  path.link.hot{stroke:var(--accent);stroke-width:2.6}
-  path.link.crit{stroke:var(--warn);stroke-width:2.2;stroke-dasharray:none}
-  path.link.dim{opacity:.12}
-  path.link.radio{stroke-dasharray:4 4}
-  path.link.fibra{stroke-width:2.6}
+/* ---------- svg ---------- */
+.nodo{cursor:pointer}
+.nodo .box{fill:var(--carta);stroke:var(--filo);stroke-width:1}
+.nodo .accento{stroke-width:0}
+.nodo .nm{font-size:12.5px;font-weight:500;fill:var(--inch)}
+.nodo .sb{font-size:10px;fill:var(--tenue);letter-spacing:.06em;text-transform:uppercase}
+.nodo .ic{stroke:var(--inch);stroke-width:1;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nodo.progetto .box{stroke-dasharray:4 3;stroke:var(--filo-forte)}
+.nodo.progetto .nm,.nodo.progetto .sb{fill:var(--tenue)}
+.nodo.progetto .ic{stroke:var(--tenue)}
+.nodo:hover .box{stroke:var(--inch)}
+.nodo.sel .box{stroke:var(--inch);stroke-width:2}
+.nodo.spento{opacity:.16}
+.nodo .badge{fill:var(--iw-error)}
+.nodo .badgetxt{font-size:9px;fill:#fff;font-weight:500}
+.arco{fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.arco.spento{opacity:.07}
+.arco.acceso{stroke-width:2.6}
+.arco.progetto{stroke-dasharray:6 4}
+.arco-hit{fill:none;stroke:transparent;stroke-width:12;cursor:pointer}
+.corsia rect{fill:var(--carta);opacity:.45}
+.corsia text{font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);fill:var(--tenue)}
+.corsia line{stroke:var(--filo);stroke-width:1}
+.colonna line{stroke:var(--filo);stroke-width:1;stroke-dasharray:2 4}
+.colonna text{font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);fill:var(--tenue)}
+.portalab{font-size:9px;fill:var(--tenue)}
+.velolab{font-size:9.5px;fill:var(--inch);font-weight:500}
+.velolab-bg{fill:var(--tela)}
 
-  #panel{position:sticky;top:57px;max-height:calc(100vh - 57px);overflow:auto;border-left:1px solid var(--line);
-         padding:22px 22px 40px;background:var(--panel)}
-  #panel h3{font-family:var(--serif);font-size:18px;margin:0 0 2px;font-weight:600}
-  #panel .kind{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin-bottom:12px}
-  #panel p{margin:0 0 12px;font-size:13.5px}
-  #panel .sec{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);
-              margin:16px 0 6px;padding-top:10px;border-top:1px solid var(--line)}
-  #panel ul{margin:0;padding-left:16px;font-size:13px}
-  #panel li{margin-bottom:5px}
-  #panel .crit{background:var(--warn-soft);border-left:3px solid var(--warn);padding:8px 10px;font-size:13px;margin:0 0 12px;border-radius:0 5px 5px 0}
-  #panel code{font-family:var(--mono);font-size:12.5px}
-  .empty{color:var(--ink-soft);font-size:13.5px}
+/* ---------- piede ---------- */
+footer{background:var(--carta);border-top:1px solid var(--filo);padding:20px 24px 32px}
+footer .griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+footer h3{margin:0 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);color:var(--tenue);font-weight:500}
+footer ul{margin:0;padding-left:16px;font-size:12px;color:var(--tenue)}
+footer li{margin-bottom:3px}
+.leg{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:11.5px}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.leg i{width:18px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block}
+.avviso{border-left:3px solid var(--iw-error);padding:8px 12px;background:var(--tela);font-size:12.5px;margin-top:14px}
 
-  footer{padding:18px 26px 40px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;max-width:100ch}
-  footer p{margin:0 0 8px}
-  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 0;font-size:12px}
-  .legend span{display:flex;align-items:center;gap:6px}
-  .swatch{width:22px;height:0;border-top:2px solid var(--line);display:inline-block}
-  .swatch.fib{border-top-width:3px;border-color:var(--accent)}
-  .swatch.rad{border-top:2px dashed var(--ink-soft)}
-  .swatch.cri{border-top:2px solid var(--warn)}
+@media print{
+  .barra,.filtri,.hud,aside{display:none!important}
+  main{height:auto;display:block}
+  #tela{overflow:visible;height:auto}
+  body{background:#fff}
+}
+@media (max-width:1100px){
+  main{flex-direction:column;height:auto}
+  #tela{height:70vh}
+  aside{width:auto;flex:none;border-left:0;border-top:1px solid var(--filo);max-height:60vh}
+}
 </style>
 </head>
 <body>
-<header>
-  <h1>Topologia di rete Intrawelt</h1>
-  <div class="sub">Generata da <code>data/network-topology.json</code> con <code>scripts/Build-NetworkMap.ps1</code>. Questo file non si modifica a mano: si corregge la fonte e si rigenera (ADR&#8209;023). Indirizzi, MAC e nomi di persona sono segnaposto. Aggiornamento del <strong>__GENERATED_AT__</strong>.</div>
+<div class="filetto"></div>
+<header class="testa">
+  <h1 id="tit">Topologia di rete Intrawelt</h1>
+  <div class="sotto" id="sotto"></div>
+  <div class="meta" id="metariga"></div>
 </header>
 
-<div class="toolbar">
-  <div class="group">
-    <span class="lbl">Vista</span>
-    <button class="chip" id="v-rete" aria-pressed="true">Rete</button>
-    <button class="chip" id="v-pwr" aria-pressed="false">Alimentazione</button>
+<div class="barra">
+  <div class="gruppo" id="viste">
+    <button data-vista="logica" aria-pressed="true">Logica</button>
+    <button data-vista="fisica" aria-pressed="false">Fisica</button>
+    <button data-vista="segmenti" aria-pressed="false">Segmenti</button>
+    <button data-vista="elettrica" aria-pressed="false">Elettrica</button>
   </div>
-  <div class="group" id="vlanbar"><span class="lbl">VLAN</span></div>
-  <div class="group">
-    <button class="chip warn" id="onlygap" aria-pressed="false">Solo difetti aperti</button>
-  </div>
-  <div class="group">
-    <input type="search" id="q" placeholder="Cerca un apparato...">
-    <button class="chip" id="theme">Tema</button>
-  </div>
+  <input class="campo" id="cerca" type="search" placeholder="Cerca apparato, porta, nota&hellip;" autocomplete="off">
+  <button class="mini" id="btn-difetti" aria-pressed="false">Solo con difetti</button>
+  <button class="mini" id="btn-progetto" aria-pressed="true">Mostra il pianificato</button>
+  <button class="mini" id="btn-porte" aria-pressed="true">Etichette di porta</button>
+  <div class="sep"></div>
+  <button class="mini" id="btn-tema">Tema</button>
+  <button class="mini" id="btn-stampa">Stampa</button>
 </div>
 
-<div class="wrap">
-  <div id="stage"><svg id="links"></svg><div id="layers"></div></div>
-  <aside id="panel"><p class="empty">Seleziona un apparato per vederne porta, alimentazione, collegamenti e difetti aperti. Passa il puntatore su un nodo per illuminarne i collegamenti.</p></aside>
+<div class="filtri">
+  <div class="fila" id="f-mezzo"><span class="et">Mezzo</span></div>
+  <div class="fila" id="f-vlan"><span class="et">VLAN</span></div>
+  <div class="fila" id="f-cont"><span class="et">Luogo</span></div>
 </div>
+
+<main>
+  <div id="tela">
+    <svg id="grafo" xmlns="http://www.w3.org/2000/svg"><g id="mondo"></g></svg>
+    <div class="vuoto" id="vuoto">Nessun apparato risponde ai filtri attivi.</div>
+    <div class="hud">
+      <button id="z-meno" title="Riduci">&minus;</button>
+      <button id="z-piu" title="Ingrandisci">+</button>
+      <button id="z-fit" class="largo" title="Inquadra tutto">Inquadra</button>
+    </div>
+  </div>
+  <aside id="pannello"><div class="vuoto-p">Seleziona un apparato o un collegamento nel disegno per vederne la scheda. Passando il puntatore su un nodo si accendono i suoi soli collegamenti.</div></aside>
+</main>
 
 <footer>
-  <p><strong>Come leggerla.</strong> Nella vista Rete le righe sono livelli logici, da Internet alle utenze, e ogni linea e' un collegamento fisico reale con la sua porta. Nella vista Alimentazione l'albero parte dalla presa a parete e scende fino all'apparato: e' la stessa infrastruttura vista dal lato della corrente, ed e' li' che si legge che cosa cade insieme.</p>
-  <p><strong>Perimetro dichiarato.</strong> Le singole postazioni di lavoro e le due multifunzione sono fuori da questa revisione per scelta e compaiono come gruppi tratteggiati. Un nodo senza sorgente di alimentazione nota porta l'etichetta <em>alimentazione ignota</em>: e' una lacuna dichiarata, non un apparato senza corrente.</p>
-  <div class="legend">
-    <span><i class="swatch"></i> rame</span>
-    <span><i class="swatch fib"></i> fibra</span>
-    <span><i class="swatch rad"></i> radio o logico</span>
-    <span><i class="swatch cri"></i> collegamento con criticita'</span>
+  <div class="griglia">
+    <div>
+      <h3>Come si legge</h3>
+      <div class="leg" id="legmezzo"></div>
+      <div class="leg" style="margin-top:8px" id="legstato"></div>
+    </div>
+    <div><h3>Perimetro</h3><p style="font-size:12px;color:var(--tenue);margin:0" id="perim"></p></div>
+    <div><h3>Fonti</h3><ul id="fonti"></ul></div>
+    <div><h3>Difetti aperti</h3><div id="gaplista"></div></div>
   </div>
+  <div class="avviso" id="avvertenza"></div>
 </footer>
 
 <script type="application/json" id="topo">__TOPOLOGY_DATA__</script>
 <script>
-(function(){
-  "use strict";
-  var D = JSON.parse(document.getElementById('topo').textContent);
-  var stage = document.getElementById('stage');
-  var layersEl = document.getElementById('layers');
-  var svg = document.getElementById('links');
-  var panel = document.getElementById('panel');
-  var SVGNS = 'http://www.w3.org/2000/svg';
+"use strict";
+/* ============================================================================
+   Mappa di rete Intrawelt. Tutto cio' che segue disegna a partire dal solo
+   contenuto di data/network-topology.json inlineato qui sopra: nessuna
+   coordinata e' scritta a mano, il posizionamento e' calcolato a ogni apertura.
+   Impianto del disegno: assegnazione di rango per corsia, nodi fittizi sugli
+   archi lunghi, ordinamento per baricentro per ridurre gli incroci, poi
+   coordinate orizzontali per mediana con ripacchettamento. E' la ricetta di
+   Sugiyama ridotta all'osso, che e' quanto serve a 55 nodi.
+   ========================================================================= */
+var D = JSON.parse(document.getElementById('topo').textContent);
+var NODI = D.nodi || [], LINK = D.collegamenti || [], PWR = D.alimentazione || [];
+var byId = {}; NODI.forEach(function(n){ byId[n.id] = n; });
+var LIV = (D.livelli||[]).map(function(l){ return l.id; });
+var LIVNOME = {}; (D.livelli||[]).forEach(function(l){ LIVNOME[l.id]=l.nome; });
+var CONT = {}; (D.contenitori||[]).forEach(function(c){ CONT[c.id]=c; });
+var VLAN = {}; (D.vlan||[]).forEach(function(v){ VLAN[v.id]=v; });
+var GAP = {}; (D.gap||[]).forEach(function(g){ GAP[g.id]=g; });
+var PWRID = {}; PWR.forEach(function(p){ PWRID[p.id]=p; });
 
-  var view = 'rete';
-  var vlanFilter = null;
-  var onlyGap = false;
-  var query = '';
-  var selected = null;
-  var els = {};      // id -> element
-  var drawn = [];    // {path, a, b, link}
+/* --- colore di segmento: la fonte porta valori fuori sistema, qui si rimappano
+   sui colori istituzionali. Il grigio resta ai segmenti in stato di progetto. --- */
+var COL_VLAN = {1:'#4C4C63', 2:'#4D11A7', 40:'#AFD100', 90:'#57CCF6', 30:'#ACB0CD', 201:'#ACB0CD'};
+var COL_MEZZO = {
+  fibra:{c:'#57CCF6', d:'', et:'Fibra'},
+  rame:{c:'#4C4C63', d:'', et:'Rame'},
+  radio:{c:'#4D11A7', d:'7 4', et:'Radio'},
+  logico:{c:'#ACB0CD', d:'2 4', et:'Logico'},
+  FXS:{c:'#AFD100', d:'', et:'FXS analogico'}
+};
+function colMezzo(m){ return COL_MEZZO[m] || {c:'#4C4C63', d:'', et:m}; }
 
-  var gapById = {};
-  (D.gap||[]).forEach(function(g){ gapById[g.id] = g; });
-  var nodeById = {};
-  D.nodi.forEach(function(n){ nodeById[n.id] = n; });
-  var pwrById = {};
-  (D.alimentazione||[]).forEach(function(p){ pwrById[p.id] = p; });
+/* --- icone: riquadro 24, tratto 1px, currentColor, nessun riempimento --- */
+var IC = {
+  cloud:'M6 17h11a3.5 3.5 0 0 0 .3-7 5 5 0 0 0-9.6-1.2A3.9 3.9 0 0 0 6 17Z',
+  linea:'M3 12h5m8 0h5M8 9v6h8V9Z',
+  radio:'M12 20V11m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-5-6a6 6 0 0 1 10 0M4.5 6a10 10 0 0 1 15 0',
+  alimentatore:'M13 3 5 14h6l-1 7 8-11h-6l1-7Z',
+  terminazione:'M4 8h16v8H4Zm3 2v4m4-4v4m4-4v4',
+  router:'M3 14h18v5H3Zm3 2.5h.01M9 16.5h.01M12 16.5h.01M17 5l-5 5m5-5h-4m4 0v4',
+  'switch-fornitore':'M3 13h18v7H3Zm3 2.5h2m3 0h2m3 0h2M8 4v6m8-6v6M8 7h8',
+  fornitore:'M4 20V9l8-5 8 5v11Zm5 0v-6h6v6',
+  firewall:'M4 5h16v14H4Zm0 4.7h16M4 14.3h16M9 5v4.7m6 0v4.6m-6 0v4.7',
+  switch:'M3 13h18v7H3Zm3 2.5h2m3 0h2m3 0h2M8 4l3 5m5-5-3 5',
+  'switch-non-gestito':'M3 13h18v7H3Zm3 2.5h2m3 0h2m3 0h2M12 4v5',
+  bridge:'M4 16h16M6 16v-3m12 3v-3M4 12h16M9 12V9m6 3V9M8 6h8',
+  ap:'M12 20v-6m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-4.5-1.5a5 5 0 0 1 9 0M5 6.5a9 9 0 0 1 14 0',
+  'ap-eol':'M12 20v-6m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-4.5-1.5a5 5 0 0 1 9 0M4 4l16 16',
+  server:'M4 4h16v6H4Zm0 10h16v6H4ZM7 7h.01M7 17h.01M11 7h5m-5 10h5',
+  gestione:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0-9V3m0 18v-3m6-6h3M3 12h3m11.6-5.6 2-2m-15.2 15.2 2-2m11.2 0 2 2M4.4 6.4l2 2',
+  storage:'M4 5h16v5H4Zm0 9h16v5H4ZM7 7.5h.01M7 16.5h.01M11 7.5h6m-6 9h6',
+  telefono:'M7 3h10v18H7Zm2 3h6m-6 3h6m-6 3h6m-3 4h.01',
+  voce:'M4 8h16v8H4Zm4 8v3h8v-3M8 11h.01M12 11h.01M16 11h.01',
+  'gruppo-voce':'M5 9h9v7H5Zm3 7v3h5v-3M8 12h.01M11 12h.01M17 6h3v9h-3',
+  gruppo:'M3 6h7v5H3Zm11 0h7v5h-7ZM3 15h7v4H3Zm11 0h7v4h-7Z',
+  'rete-radio':'M12 18a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm-4-3.5a6 6 0 0 1 8 0M5 11a10 10 0 0 1 14 0M2.5 7.5a14 14 0 0 1 19 0',
+  iot:'M8 8h8v8H8Zm3-5v3m2-3v3m-2 15v-3m2 3v-3M3 11h3m-3 2h3m15-2h3m-3 2h3',
+  ot:'M12 3v4m0 10v4M3 12h4m10 0h4M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
+  parete:'M4 4h16v16H4Zm5 5h.01M15 9h.01M9 14h6',
+  ciabatta:'M3 10h18v5H3Zm3 1.5h2m4-1.5v-4m-1 5.5h2m4-1.5h2',
+  ups:'M4 6h16v12H4Zm3 3h4l-2 3h3l-4 4M15 9h3m-3 3h3m-3 3h3',
+  poe:'M13 3 6 13h5l-1 8 8-11h-5l1-7ZM3 20h18'
+};
+function icona(tipo){ return IC[tipo] || 'M4 6h16v12H4Z'; }
 
-  function el(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt!=null) e.textContent = txt; return e; }
-  function esc(s){ return String(s==null?'':s); }
+/* --------------------------------------------------------------------------
+   Stato dell'interfaccia
+   ----------------------------------------------------------------------- */
+var S = {
+  vista:'logica',
+  mezzi:{}, vlan:{}, cont:{},
+  soloDifetti:false, mostraProgetto:true, mostraPorte:true,
+  cerca:'', sel:null, hover:null,
+  vb:{x:0,y:0,w:1000,h:700}, fitCache:{}
+};
+Object.keys(COL_MEZZO).forEach(function(m){ S.mezzi[m]=true; });
+Object.keys(VLAN).forEach(function(v){ S.vlan[v]=true; });
+Object.keys(CONT).forEach(function(c){ S.cont[c]=true; });
+S.cont['__nessuno']=true;
 
-  // ---------- costruzione delle viste ----------
-  function nodeCard(n, meta, extraTags){
-    var d = el('div','node');
-    d.dataset.id = n.id;
-    d.dataset.kind = n.tipo || '';
-    d.appendChild(el('div','n-name', n.nome));
-    if(meta) d.appendChild(el('div','n-meta', meta));
-    var tags = el('div','n-tags');
-    (extraTags||[]).forEach(function(t){
-      var s = el('span','tag' + (t.cls?(' '+t.cls):''), t.text); tags.appendChild(s);
+/* --------------------------------------------------------------------------
+   Derivate: VLAN per nodo, difetti per nodo, catena elettrica
+   ----------------------------------------------------------------------- */
+var VLAN_NODO = {};
+NODI.forEach(function(n){ VLAN_NODO[n.id] = {}; });
+LINK.forEach(function(l){
+  (l.vlan||[]).forEach(function(v){
+    if(VLAN_NODO[l.da]) VLAN_NODO[l.da][v]=1;
+    if(VLAN_NODO[l.a]) VLAN_NODO[l.a][v]=1;
+  });
+});
+/* Ricaduta dichiarata: solo una minoranza di collegamenti porta il campo vlan.
+   Un nodo senza alcuna VLAN dichiarata sui propri archi non viene attribuito
+   d'ufficio alla VLAN nativa: finisce nel gruppo "non dichiarata", perche'
+   attribuirlo sarebbe un'inferenza travestita da dato. */
+function vlanDi(id){ return Object.keys(VLAN_NODO[id]||{}).map(Number).sort(function(a,b){return a-b;}); }
+
+var INC = {}; NODI.forEach(function(n){ INC[n.id]=[]; });
+LINK.forEach(function(l,i){
+  if(INC[l.da]) INC[l.da].push(i);
+  if(INC[l.a] && l.a!==l.da) INC[l.a].push(i);
+});
+
+function catenaElettrica(id){
+  var n = byId[id], out = [];
+  if(!n) return out;
+  [n.alimentazione, n['alimentazione-2']].forEach(function(start){
+    if(!start) return;
+    var ramo = [], cur = start, guard = 0;
+    while(cur && PWRID[cur] && guard++ < 20){ ramo.push(PWRID[cur]); cur = PWRID[cur]['alimentato-da']; }
+    out.push(ramo);
+  });
+  return out;
+}
+
+/* --------------------------------------------------------------------------
+   Motore di disposizione
+   ----------------------------------------------------------------------- */
+var LARG = 152, ALT = 44, GAPX = 16, GAPY = 82, GAPD = 7;
+function passo(a, b){ return (a.dummy || b.dummy) ? GAPD : GAPX; }
+
+function costruisciGrafo(vista){
+  /* Restituisce {nodi:[{id,rank,rif,tipo,...}], archi:[{i,da,a,...}], corsie:[], colonne:[]} */
+  if(vista === 'elettrica') return grafoElettrico();
+  var visibili = NODI.filter(nodoVisibile);
+  var set = {}; visibili.forEach(function(n){ set[n.id]=1; });
+  var archi = [];
+  LINK.forEach(function(l,i){
+    if(!set[l.da] || !set[l.a]) return;
+    if(!arcoVisibile(l)) return;
+    archi.push({idx:i, da:l.da, a:l.a, l:l});
+  });
+  var rango = {}, corsie = [];
+  if(vista === 'segmenti'){
+    /* Nella vista per segmenti si disegnano i soli collegamenti che dichiarano
+       una VLAN. Gli altri quaranta non sono "senza VLAN": sono collegamenti di
+       cui la fonte non registra il tag, e disegnarli qui li farebbe leggere come
+       un'informazione che non c'e'. */
+    archi = archi.filter(function(e){ return e.l.vlan && e.l.vlan.length; });
+    var conteggio = {};
+    visibili.forEach(function(n){
+      var vs = vlanDi(n.id);
+      var v = vs.length ? vs[0] : -1;
+      conteggio[v] = (conteggio[v] || 0) + 1;
+      n.__v = v;
     });
-    (n.gap||[]).forEach(function(g){ tags.appendChild(el('span','tag gap', g)); });
-    if(tags.childNodes.length) d.appendChild(tags);
-    d.addEventListener('click', function(){ select(n.id); });
-    d.addEventListener('mouseenter', function(){ hot(n.id, true); });
-    d.addEventListener('mouseleave', function(){ hot(n.id, false); });
-    els[n.id] = d;
-    return d;
-  }
-
-  // Le porte di QUESTO nodo: su un collegamento, 'porta-a' e' del lato 'da' e 'porta-b'
-  // del lato 'a'. Confonderle significa scrivere sulla scheda la porta dell'apparato
-  // di fronte, che e' l'errore piu' facile e il piu' costoso quando si va a cablare.
-  function myPorts(id){
-    var bits = [];
-    D.collegamenti.forEach(function(l){
-      if(l.da === id && l['porta-a']) bits.push(String(l['porta-a']));
-      if(l.a === id && l['porta-b']) bits.push(String(l['porta-b']));
+    var gruppi = Object.keys(VLAN).map(Number).sort(function(a,b){return a-b;})
+      .filter(function(v){ return conteggio[v]; });
+    if(conteggio[-1]) gruppi.push(-1);
+    gruppi.forEach(function(v,k){
+      corsie.push({r:k,
+        nome: v === -1
+          ? 'Nessuna VLAN dichiarata sugli archi di questi apparati'
+          : ('VLAN ' + v + ' · ' + VLAN[v].nome + (VLAN[v].stato === 'progetto' ? ' · pianificata' : '')),
+        col: v === -1 ? null : (COL_VLAN[v] || null)});
     });
-    return bits;
+    visibili.forEach(function(n){ rango[n.id] = Math.max(0, gruppi.indexOf(n.__v)); });
+    var vuote = Object.keys(VLAN).map(Number).filter(function(v){ return !conteggio[v]; });
+    if(vuote.length) corsie.__vuote = vuote;
+  } else {
+    var base = {};
+    visibili.forEach(function(n){ base[n.id] = Math.max(0, LIV.indexOf(n.livello)); });
+    /* sotto-rango dentro la corsia, per gli archi che non la lasciano */
+    var sub = {}; visibili.forEach(function(n){ sub[n.id]=0; });
+    for(var it=0; it<14; it++){
+      var mosso = false;
+      archi.forEach(function(e){
+        if(base[e.da] !== base[e.a]) return;
+        if(sub[e.a] < sub[e.da] + 1){ sub[e.a] = sub[e.da] + 1; mosso = true; }
+      });
+      if(!mosso) break;
+    }
+    var chiavi = {};
+    visibili.forEach(function(n){ chiavi[base[n.id]*100 + sub[n.id]] = 1; });
+    var ordinate = Object.keys(chiavi).map(Number).sort(function(a,b){return a-b;});
+    var mappa = {}; ordinate.forEach(function(k,i){ mappa[k]=i; });
+    visibili.forEach(function(n){ rango[n.id] = mappa[base[n.id]*100 + sub[n.id]]; });
+    ordinate.forEach(function(k,i){
+      var liv = LIV[Math.floor(k/100)];
+      var primo = i===0 || Math.floor(ordinate[i-1]/100) !== Math.floor(k/100);
+      corsie.push({r:i, nome: primo ? (LIVNOME[liv]||liv) : '', col:null});
+    });
   }
-
-  function portLabel(id){
-    var p = myPorts(id);
-    if(!p.length) return '';
-    if(p.length <= 3) return 'porta ' + p.join(', ');
-    return p.length + ' porte in uso';
+  var nodi = visibili.map(function(n){
+    return {id:n.id, rif:n, rank:rango[n.id], ordine:0, x:0, y:0, w:LARG, h:ALT, dummy:false,
+            col: (n.contenitore && CONT[n.contenitore]) ? n.contenitore : '__nessuno'};
+  });
+  var colonne = null;
+  if(vista === 'fisica'){
+    /* Vista fisica: le corsie restano le righe, i luoghi diventano colonne.
+       Ne esce una matrice luogo per livello, che e' il modo piu' diretto per
+       rispondere alla domanda "che cosa c'e' dentro quell'armadio, e a che
+       altezza logica sta". La disposizione qui non e' libera: e' una griglia. */
+    var ordine = (D.contenitori||[]).map(function(c){ return c.id; });
+    var usate = {}; nodi.forEach(function(n){ usate[n.col] = 1; });
+    colonne = ordine.filter(function(c){ return usate[c]; });
+    if(usate['__nessuno']) colonne.push('__nessuno');
   }
+  return {nodi:nodi, archi:archi, corsie:corsie, colonne:colonne,
+          sequenziale:(vista === 'segmenti'), vista:vista};
+}
 
-  function buildRete(){
-    layersEl.innerHTML = ''; els = {};
-    D.livelli.forEach(function(L){
-      var nodes = D.nodi.filter(function(n){ return n.livello === L.id; });
-      if(!nodes.length) return;
-      var sec = el('div','layer');
-      sec.appendChild(el('h2', null, L.nome));
-      var row = el('div','row');
-      nodes.forEach(function(n){
-        var meta = [];
-        var p = portLabel(n.id);
-        if(p) meta.push(p);
-        if(n.contenitore){
-          var c = (D.contenitori||[]).filter(function(x){ return x.id===n.contenitore; })[0];
-          if(c) meta.push(c.nome.toLowerCase());
+function grafoElettrico(){
+  /* Secondo grafo sullo stesso patrimonio: dalla presa a parete all'apparato. */
+  var nodi = [], archi = [], prof = {};
+  function profondita(p, g){
+    if(prof[p.id] !== undefined) return prof[p.id];
+    if(g > 20) return 0;
+    var su = p['alimentato-da'];
+    prof[p.id] = (su && PWRID[su]) ? profondita(PWRID[su], g+1) + 1 : 0;
+    return prof[p.id];
+  }
+  PWR.forEach(function(p){ profondita(p, 0); });
+  var maxp = 0; PWR.forEach(function(p){ maxp = Math.max(maxp, prof[p.id]); });
+  PWR.forEach(function(p){
+    nodi.push({id:'pwr:'+p.id, rif:{id:'pwr:'+p.id, nome:p.nome, tipo:p.tipo, note:p.note,
+      gap:p.gap, contenitore:null, _pwr:true}, rank:prof[p.id], ordine:0, x:0, y:0, w:LARG, h:ALT, dummy:false});
+    if(p['alimentato-da'] && PWRID[p['alimentato-da']]){
+      archi.push({idx:-1, da:'pwr:'+p['alimentato-da'], a:'pwr:'+p.id, l:{mezzo:'rame', note:'Derivazione elettrica'}});
+    }
+  });
+  NODI.filter(nodoVisibile).forEach(function(n){
+    var fonti = [n.alimentazione, n['alimentazione-2']].filter(Boolean);
+    if(!fonti.length) return;
+    nodi.push({id:n.id, rif:n, rank:maxp+1, ordine:0, x:0, y:0, w:LARG, h:ALT, dummy:false});
+    fonti.forEach(function(f){
+      if(PWRID[f]) archi.push({idx:-1, da:'pwr:'+f, a:n.id, l:{mezzo:'rame', note:'Alimenta'}});
+    });
+  });
+  var corsie = [];
+  for(var r=0; r<=maxp+1; r++){
+    corsie.push({r:r, nome: r===0 ? 'Rete elettrica' : (r===maxp+1 ? 'Apparati alimentati' : 'Derivazione '+r), col:null});
+  }
+  nodi.forEach(function(n){ n.col = '__nessuno'; });
+  return {nodi:nodi, archi:archi, corsie:corsie, colonne:null, vista:'elettrica'};
+}
+
+function disponi(G){
+  var idx = {}; G.nodi.forEach(function(n){ idx[n.id]=n; });
+  /* 1. nodi fittizi sugli archi che saltano piu' di un rango */
+  var segmenti = [], contatore = 0;
+  G.archi.forEach(function(e){
+    var a = idx[e.da], b = idx[e.a];
+    if(!a || !b) return;
+    var r1 = a.rank, r2 = b.rank;
+    if(r1 === r2){ e.tipo='piatto'; e.catena=[a,b]; segmenti.push(e); return; }
+    var giu = r2 > r1, passo = giu ? 1 : -1, catena = [a], prev = a;
+    for(var r = r1 + passo; r !== r2; r += passo){
+      var d = {id:'__d'+(contatore++), rif:null, rank:r, ordine:0, x:0, y:0, w:8, h:8, dummy:true, col:a.col};
+      G.nodi.push(d); idx[d.id]=d; catena.push(d); prev = d;
+    }
+    catena.push(b);
+    e.tipo = 'normale'; e.catena = catena; segmenti.push(e);
+  });
+  /* 2. righe */
+  var righe = {};
+  G.nodi.forEach(function(n){ (righe[n.rank] = righe[n.rank] || []).push(n); });
+  var ranghi = Object.keys(righe).map(Number).sort(function(a,b){return a-b;});
+  ranghi.forEach(function(r){ righe[r].forEach(function(n,i){ n.ordine = i; }); });
+  /* 3. vicinato lungo la catena (i fittizi contano) */
+  var su = {}, giu = {};
+  G.nodi.forEach(function(n){ su[n.id]=[]; giu[n.id]=[]; });
+  segmenti.forEach(function(e){
+    for(var i=0; i<e.catena.length-1; i++){
+      var a = e.catena[i], b = e.catena[i+1];
+      if(a.rank === b.rank) continue;
+      var alto = a.rank < b.rank ? a : b, basso = a.rank < b.rank ? b : a;
+      giu[alto.id].push(basso.id); su[basso.id].push(alto.id);
+    }
+  });
+  /* 4. ordinamento per baricentro, andata e ritorno */
+  function baricentro(n, verso){
+    var vic = (verso === 'su' ? su[n.id] : giu[n.id]);
+    if(!vic.length) return n.ordine;
+    var s = 0; vic.forEach(function(v){ s += idx[v].ordine; });
+    return s / vic.length;
+  }
+  for(var pass=0; pass<16; pass++){
+    var verso = (pass % 2 === 0) ? 'su' : 'giu';
+    var seq = (verso === 'su') ? ranghi : ranghi.slice().reverse();
+    seq.forEach(function(r){
+      var fila = righe[r];
+      fila.forEach(function(n){ n._b = baricentro(n, verso); });
+      fila.sort(function(a,b){ return (a._b - b._b) || (a.ordine - b.ordine); });
+      fila.forEach(function(n,i){ n.ordine = i; });
+    });
+  }
+  /* 5a. vista fisica: le colonne sono i luoghi, la x non si ottimizza, si assegna */
+  if(G.colonne){
+    var pos = {}; G.colonne.forEach(function(c,i){ pos[c] = i; });
+    var capienza = {}; G.colonne.forEach(function(c){ capienza[c] = 1; });
+    ranghi.forEach(function(r){
+      var conta = {};
+      righe[r].forEach(function(n){ if(n.dummy) return; conta[n.col] = (conta[n.col]||0) + 1; });
+      Object.keys(conta).forEach(function(c){ capienza[c] = Math.max(capienza[c]||1, conta[c]); });
+    });
+    var off = {}, cur = 0;
+    G.colonne.forEach(function(c){ off[c] = cur; cur += capienza[c] * (LARG + GAPX) + 40; });
+    G.colOffset = off; G.colCapienza = capienza; G.colFine = cur;
+    ranghi.forEach(function(r){
+      var conta2 = {};
+      righe[r].sort(function(a,b){ return (pos[a.col] - pos[b.col]) || (a.ordine - b.ordine); });
+      righe[r].forEach(function(n,i){
+        n.ordine = i;
+        var c = n.col, k = conta2[c] || 0;
+        if(n.dummy){
+          /* il fittizio non occupa uno slot: viaggia sul bordo della sua colonna */
+          n.x = (off[c] === undefined ? 0 : off[c]) + capienza[c] * (LARG + GAPX) - 20;
+        } else {
+          conta2[c] = k + 1;
+          n.x = off[c] + k * (LARG + GAPX);
         }
-        var tags = [];
-        if(!n.alimentazione && ['cloud','linea','radio','gruppo','gruppo-voce','rete-radio'].indexOf(n.tipo)<0){
-          tags.push({text:'alimentazione ignota', cls:'nopwr'});
-        }
-        row.appendChild(nodeCard(n, meta.join('  ·  '), tags));
       });
-      sec.appendChild(row);
-      layersEl.appendChild(sec);
     });
+    ranghi.forEach(function(r,i){ righe[r].forEach(function(n){ n.y = i * (ALT + GAPY); }); });
+    G.righe = righe; G.ranghi = ranghi; G.segmenti = segmenti;
+    G.larg = cur; G.altez = ranghi.length * (ALT + GAPY);
+    ancora(G, idx);
+    return G;
   }
-
-  function buildPwr(){
-    layersEl.innerHTML = ''; els = {};
-    // profondita' dell'albero elettrico
-    var depth = {};
-    function d(id, guard){
-      if(depth[id]!=null) return depth[id];
-      if(guard>20) return 0;
-      var p = pwrById[id];
-      var up = p && p['alimentato-da'];
-      depth[id] = up ? d(up, (guard||0)+1) + 1 : 0;
-      return depth[id];
-    }
-    Object.keys(pwrById).forEach(function(id){ d(id,0); });
-    var maxd = 0; Object.keys(depth).forEach(function(k){ maxd = Math.max(maxd, depth[k]); });
-
-    for(var lv=0; lv<=maxd; lv++){
-      var ids = Object.keys(pwrById).filter(function(id){ return depth[id]===lv; });
-      if(!ids.length) continue;
-      var sec = el('div','layer');
-      var titolo = lv===0 ? 'Sorgenti' : (lv===1 ? 'Gruppi di continuita e primo livello' : 'Distribuzione, livello ' + lv);
-      sec.appendChild(el('h2', null, titolo));
-      var row = el('div','row');
-      ids.forEach(function(id){
-        var p = pwrById[id];
-        var fake = { id:'pwr:'+id, nome:p.nome, tipo:p.tipo, gap:p.gap||[] };
-        var carichi = D.nodi.filter(function(n){ return n.alimentazione===id || n['alimentazione-2']===id; }).length;
-        row.appendChild(nodeCard(fake, p.tipo + (carichi ? ('  ·  ' + carichi + ' carichi') : '')));
+  /* 5a-bis. vista per segmenti: le righe sono scaffali, si impacchetta e si centra.
+     L'ottimizzazione per mediana qui farebbe danno, perche' spingerebbe una riga
+     da un solo apparato lontano dal centro inseguendo i vicini di un'altra riga. */
+  if(G.sequenziale){
+    var largMax = 0;
+    ranghi.forEach(function(r){
+      var cur2 = 0, prec2 = null;
+      righe[r].forEach(function(n){
+        if(prec2) cur2 += passo(prec2, n);
+        n.x = cur2; cur2 += n.w; prec2 = n;
       });
-      sec.appendChild(row);
-      layersEl.appendChild(sec);
-    }
-    // apparati, raggruppati sotto il proprio ramo
-    var sec2 = el('div','layer');
-    sec2.appendChild(el('h2', null, 'Apparati alimentati'));
-    var row2 = el('div','row');
-    D.nodi.filter(function(n){ return n.alimentazione; }).forEach(function(n){
-      var src = pwrById[n.alimentazione];
-      var meta = src ? src.nome : '';
-      if(n['alimentazione-2'] && pwrById[n['alimentazione-2']]) meta += '  +  ' + pwrById[n['alimentazione-2']].nome;
-      row2.appendChild(nodeCard(n, meta));
+      largMax = Math.max(largMax, cur2);
     });
-    sec2.appendChild(row2);
-    layersEl.appendChild(sec2);
-
-    var senza = D.nodi.filter(function(n){ return !n.alimentazione && ['cloud','linea','radio','gruppo','gruppo-voce','rete-radio'].indexOf(n.tipo)<0; });
-    if(senza.length){
-      var sec3 = el('div','layer');
-      sec3.appendChild(el('h2', null, 'Alimentazione non documentata'));
-      var row3 = el('div','row');
-      senza.forEach(function(n){ row3.appendChild(nodeCard(n, '', [{text:'da rilevare', cls:'nopwr'}])); });
-      sec3.appendChild(row3);
-      layersEl.appendChild(sec3);
-    }
-  }
-
-  // ---------- collegamenti ----------
-  function currentLinks(){
-    if(view === 'rete') return D.collegamenti.map(function(l){ return {a:l.da, b:l.a, l:l}; });
-    var out = [];
-    Object.keys(pwrById).forEach(function(id){
-      var up = pwrById[id]['alimentato-da'];
-      if(up) out.push({a:'pwr:'+up, b:'pwr:'+id, l:{mezzo:'corrente'}});
+    ranghi.forEach(function(r,i){
+      var fila = righe[r];
+      if(!fila.length) return;
+      var fine = fila[fila.length-1].x + fila[fila.length-1].w;
+      var off2 = (largMax - fine) / 2;
+      fila.forEach(function(n){ n.x += off2; n.y = i * (ALT + GAPY); });
     });
-    D.nodi.forEach(function(n){
-      if(n.alimentazione) out.push({a:'pwr:'+n.alimentazione, b:n.id, l:{mezzo:'corrente'}});
-      if(n['alimentazione-2']) out.push({a:'pwr:'+n['alimentazione-2'], b:n.id, l:{mezzo:'corrente', note:'secondo alimentatore'}});
-    });
-    return out;
+    G.righe = righe; G.ranghi = ranghi; G.segmenti = segmenti;
+    G.larg = largMax; G.altez = ranghi.length * (ALT + GAPY);
+    ancora(G, idx);
+    return G;
   }
-
-  function draw(){
-    var box = stage.getBoundingClientRect();
-    svg.setAttribute('width', stage.scrollWidth);
-    svg.setAttribute('height', stage.scrollHeight);
-    svg.innerHTML = '';
-    drawn = [];
-    currentLinks().forEach(function(k){
-      var ea = els[k.a], eb = els[k.b];
-      if(!ea || !eb) return;
-      var ra = ea.getBoundingClientRect(), rb = eb.getBoundingClientRect();
-      var x1 = ra.left - box.left + ra.width/2 + stage.scrollLeft;
-      var y1 = ra.top - box.top + ra.height + stage.scrollTop;
-      var x2 = rb.left - box.left + rb.width/2 + stage.scrollLeft;
-      var y2 = rb.top - box.top + stage.scrollTop;
-      var dpath;
-      if(Math.abs((ra.top) - (rb.top)) < 12){
-        // stessa riga: curva laterale sotto le due schede
-        var yb = Math.max(ra.bottom, rb.bottom) - box.top + stage.scrollTop;
-        dpath = 'M'+x1+','+(y1)+' C'+x1+','+(yb+26)+' '+x2+','+(yb+26)+' '+x2+','+(rb.bottom - box.top + stage.scrollTop);
-      } else if (y2 < y1) {
-        // il bersaglio sta piu' in alto: parti dall'alto della sorgente
-        var y1b = ra.top - box.top + stage.scrollTop;
-        var y2b = rb.top - box.top + rb.height + stage.scrollTop;
-        var mid = (y1b + y2b)/2;
-        dpath = 'M'+x1+','+y1b+' C'+x1+','+mid+' '+x2+','+mid+' '+x2+','+y2b;
-      } else {
-        var m = (y1 + y2)/2;
-        dpath = 'M'+x1+','+y1+' C'+x1+','+m+' '+x2+','+m+' '+x2+','+y2;
-      }
-      var p = document.createElementNS(SVGNS,'path');
-      p.setAttribute('d', dpath);
-      var cls = 'link';
-      if(k.l.mezzo === 'fibra') cls += ' fibra';
-      if(k.l.mezzo === 'radio' || k.l.mezzo === 'logico') cls += ' radio';
-      if(k.l.criticita) cls += ' crit';
-      p.setAttribute('class', cls);
-      svg.appendChild(p);
-      drawn.push({p:p, a:k.a, b:k.b, l:k.l});
-    });
-    applyFilters();
+  /* 5b. vista libera: x per mediana con ripacchettamento, y per rango */
+  ranghi.forEach(function(r){
+    righe[r].forEach(function(n,i){ n.x = i * (LARG + GAPX); });
+  });
+  function mediana(n){
+    var vic = su[n.id].concat(giu[n.id]);
+    if(!vic.length) return n.x;
+    var xs = vic.map(function(v){ return idx[v].x + idx[v].w/2; }).sort(function(a,b){return a-b;});
+    var m = xs.length % 2 ? xs[(xs.length-1)/2] : (xs[xs.length/2-1] + xs[xs.length/2]) / 2;
+    return m - n.w/2;
   }
-
-  // ---------- interazione ----------
-  function hot(id, on){
-    drawn.forEach(function(d){
-      if(d.a===id || d.b===id) d.p.classList.toggle('hot', on);
-    });
-  }
-
-  function linksOf(id){
-    return D.collegamenti.filter(function(l){ return l.da===id || l.a===id; });
-  }
-
-  function powerChain(n){
-    var chain = [], cur = n.alimentazione, guard = 0;
-    while(cur && guard++ < 12){
-      var p = pwrById[cur];
-      if(!p) break;
-      chain.push(p);
-      cur = p['alimentato-da'];
-    }
-    return chain;
-  }
-
-  function select(id){
-    selected = id;
-    Object.keys(els).forEach(function(k){ els[k].classList.toggle('sel', k===id); });
-    var real = id.indexOf('pwr:')===0 ? null : nodeById[id];
-    panel.innerHTML = '';
-    if(!real){
-      var p = pwrById[id.slice(4)];
-      if(!p){ panel.innerHTML = '<p class="empty">Nessun dettaglio.</p>'; return; }
-      panel.appendChild(el('h3',null,p.nome));
-      panel.appendChild(el('div','kind', p.tipo));
-      if(p.note) panel.appendChild(el('p',null,p.note));
-      var carichi = D.nodi.filter(function(n){ return n.alimentazione===p.id || n['alimentazione-2']===p.id; });
-      var derivate = (D.alimentazione||[]).filter(function(x){ return x['alimentato-da']===p.id; });
-      if(derivate.length){
-        panel.appendChild(el('div','sec','Alimenta a valle'));
-        var u0 = el('ul'); derivate.forEach(function(x){ u0.appendChild(el('li',null,x.nome)); }); panel.appendChild(u0);
-      }
-      if(carichi.length){
-        panel.appendChild(el('div','sec','Apparati su questa sorgente'));
-        var u1 = el('ul'); carichi.forEach(function(x){ u1.appendChild(el('li',null,x.nome)); }); panel.appendChild(u1);
-      }
-      if(p.gap && p.gap.length){
-        panel.appendChild(el('div','sec','Difetti aperti'));
-        var u2 = el('ul'); p.gap.forEach(function(g){ u2.appendChild(el('li',null, g + (gapById[g] ? ' — ' + gapById[g].titolo : ''))); }); panel.appendChild(u2);
-      }
-      return;
-    }
-    panel.appendChild(el('h3',null,real.nome));
-    var cont = real.contenitore ? (D.contenitori||[]).filter(function(c){return c.id===real.contenitore;})[0] : null;
-    panel.appendChild(el('div','kind', (real.tipo||'') + (cont ? '  ·  ' + cont.nome : '')));
-    if(real.note) panel.appendChild(el('p',null,real.note));
-
-    var ls = linksOf(real.id);
-    var crits = ls.filter(function(l){ return l.criticita; });
-    crits.forEach(function(l){ var c = el('div','crit', l.criticita); panel.appendChild(c); });
-
-    if(ls.length){
-      panel.appendChild(el('div','sec','Collegamenti'));
-      var ul = el('ul');
-      ls.forEach(function(l){
-        var altro = l.da===real.id ? nodeById[l.a] : nodeById[l.da];
-        var mia = l.da===real.id ? l['porta-a'] : l['porta-b'];
-        var sua = l.da===real.id ? l['porta-b'] : l['porta-a'];
-        var t = (altro?altro.nome:'?');
-        var det = [];
-        if(mia) det.push('porta ' + mia);
-        if(sua) det.push('lato remoto ' + sua);
-        if(l.mezzo) det.push(l.mezzo);
-        if(l.velocita) det.push(l.velocita);
-        if(l.vlan) det.push('VLAN ' + l.vlan.join(', '));
-        var testo = t + (det.length ? ' — ' + det.join(', ') : '');
-        if(l.note) testo += '. ' + l.note;
-        ul.appendChild(el('li', null, testo));
+  for(var p2=0; p2<8; p2++){
+    var seq2 = (p2 % 2 === 0) ? ranghi : ranghi.slice().reverse();
+    seq2.forEach(function(r){
+      var fila = righe[r];
+      fila.forEach(function(n){ n._d = mediana(n); });
+      /* sinistra -> destra */
+      var cur = -1e9, prec = null;
+      fila.forEach(function(n){
+        var minimo = prec ? cur + passo(prec, n) : -1e9;
+        var x = Math.max(n._d, minimo);
+        n.x = x; cur = x + n.w; prec = n;
       });
-      panel.appendChild(ul);
-    }
-
-    var chain = powerChain(real);
-    panel.appendChild(el('div','sec','Alimentazione'));
-    if(!chain.length){
-      panel.appendChild(el('p','empty','Non documentata. E una lacuna dichiarata, non un apparato senza corrente: vedi la scheda del livello fisico ed elettrico.'));
-    } else {
-      var ulp = el('ul');
-      chain.forEach(function(p){ ulp.appendChild(el('li',null,p.nome)); });
-      panel.appendChild(ulp);
-      if(real['alimentazione-2']){
-        var s2 = pwrById[real['alimentazione-2']];
-        if(s2) panel.appendChild(el('p','empty','Secondo alimentatore su ' + s2.nome + '.'));
+      /* destra -> sinistra, per riportare indietro chi era stato spinto */
+      cur = 1e9; prec = null;
+      for(var i = fila.length - 1; i >= 0; i--){
+        var n2 = fila[i];
+        var massimo = prec ? cur - passo(prec, n2) - n2.w : 1e9;
+        n2.x = Math.min(n2.x, massimo);
+        if(n2.x < n2._d) n2.x = Math.min(n2._d, massimo);
+        cur = n2.x; prec = n2;
       }
-    }
+    });
+  }
+  /* 6. y, e centratura orizzontale delle righe */
+  var minX = 1e9, maxX = -1e9;
+  ranghi.forEach(function(r,i){
+    righe[r].forEach(function(n){
+      n.y = i * (ALT + GAPY);
+      minX = Math.min(minX, n.x); maxX = Math.max(maxX, n.x + n.w);
+    });
+  });
+  var largTot = maxX - minX;
+  ranghi.forEach(function(r){
+    var fila = righe[r];
+    if(!fila.length) return;
+    var a = fila[0].x, b = fila[fila.length-1].x + fila[fila.length-1].w;
+    var off = (largTot - (b - a)) / 2 - (a - minX);
+    fila.forEach(function(n){ n.x += off - minX; });
+  });
+  G.righe = righe; G.ranghi = ranghi; G.segmenti = segmenti;
+  G.larg = largTot; G.altez = ranghi.length * (ALT + GAPY);
+  ancora(G, idx);
+  return G;
+}
 
-    if(real.gap && real.gap.length){
-      panel.appendChild(el('div','sec','Difetti aperti'));
-      var ug = el('ul');
-      real.gap.forEach(function(g){
-        var info = gapById[g];
-        ug.appendChild(el('li', null, g + (info ? ' — ' + info.titolo + (info.numero? ' (#'+info.numero+')' : '') : '')));
-      });
-      panel.appendChild(ug);
-    }
+/* Punti di attacco. Senza questo passo tutti gli archi di un nodo escono dallo
+   stesso punto e sotto lo switch con venti collegamenti incidenti si forma un
+   pettine illeggibile. Qui gli attacchi si distribuiscono sul bordo del nodo,
+   ordinati per la posizione di cio' a cui vanno: e' anche l'ordine con cui le
+   porte stanno fisicamente sull'apparato, quindi il disegno smette di
+   incrociarsi da solo. */
+function ancora(G, idx){
+  var lati = {};
+  G.segmenti.forEach(function(e){
+    if(e.tipo === 'piatto') return;
+    var a = e.catena[0], b = e.catena[e.catena.length-1];
+    var n1 = e.catena[1], n2 = e.catena[e.catena.length-2];
+    if(!n1 || !n2) return;
+    var latoA = n1.rank > a.rank ? 'giu' : 'su';
+    var latoB = n2.rank < b.rank ? 'su' : 'giu';
+    (lati[a.id+'|'+latoA] = lati[a.id+'|'+latoA] || []).push({e:e, capo:'A', verso:n1.x + n1.w/2});
+    (lati[b.id+'|'+latoB] = lati[b.id+'|'+latoB] || []).push({e:e, capo:'B', verso:n2.x + n2.w/2});
+  });
+  Object.keys(lati).forEach(function(k){
+    var lista = lati[k], n = idx[k.split('|')[0]];
+    if(!n) return;
+    lista.sort(function(p,q){ return p.verso - q.verso; });
+    var m = lista.length;
+    var marg = Math.min(13, n.w / (m + 1));
+    var luce = n.w - marg * 2;
+    lista.forEach(function(p, i){
+      var x = n.x + marg + (m === 1 ? luce / 2 : luce * i / (m - 1));
+      if(p.capo === 'A') p.e.ancoraA = x; else p.e.ancoraB = x;
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Filtri
+   ----------------------------------------------------------------------- */
+function nodoVisibile(n){
+  if(!S.mostraProgetto && n.stato === 'progetto') return false;
+  if(S.soloDifetti && !(n.gap && n.gap.length)) return false;
+  var c = n.contenitore || '__nessuno';
+  if(S.cont[c] === false) return false;
+  return true;
+}
+function arcoVisibile(l){
+  if(!S.mostraProgetto && l.stato === 'progetto') return false;
+  if(S.mezzi[l.mezzo] === false) return false;
+  if(l.vlan && l.vlan.length){
+    var uno = l.vlan.some(function(v){ return S.vlan[v] !== false; });
+    if(!uno) return false;
+  }
+  return true;
+}
+function combacia(n){
+  if(!S.cerca) return true;
+  var q = S.cerca.toLowerCase();
+  if((n.nome||'').toLowerCase().indexOf(q) >= 0) return true;
+  if((n.id||'').toLowerCase().indexOf(q) >= 0) return true;
+  if((n.tipo||'').toLowerCase().indexOf(q) >= 0) return true;
+  if((n.note||'').toLowerCase().indexOf(q) >= 0) return true;
+  if((n.gap||[]).join(' ').toLowerCase().indexOf(q) >= 0) return true;
+  var trovato = false;
+  (INC[n.id]||[]).forEach(function(i){
+    var l = LINK[i];
+    if(String(l['porta-a']||'').toLowerCase() === q || String(l['porta-b']||'').toLowerCase() === q) trovato = true;
+    if((l.note||'').toLowerCase().indexOf(q) >= 0) trovato = true;
+  });
+  return trovato;
+}
+
+/* --------------------------------------------------------------------------
+   Disegno
+   ----------------------------------------------------------------------- */
+var NS = 'http://www.w3.org/2000/svg';
+function el(t, a){ var e = document.createElementNS(NS, t); if(a) for(var k in a) e.setAttribute(k, a[k]); return e; }
+function txt(t){ return document.createTextNode(t); }
+function taglia(s, n){ s = String(s||''); return s.length > n ? s.slice(0, n-1) + '…' : s; }
+
+var svg = document.getElementById('grafo'), mondo = document.getElementById('mondo');
+var Gcur = null;
+
+function ridisegna(){
+  var G = disponi(costruisciGrafo(S.vista));
+  Gcur = G;
+  while(mondo.firstChild) mondo.removeChild(mondo.firstChild);
+  document.getElementById('vuoto').classList.toggle('on', G.nodi.filter(function(n){return !n.dummy;}).length === 0);
+
+  var M = 60;
+  var gCorsie = el('g', {'class':'corsia'}), gCol = el('g', {'class':'colonna'}),
+      gArchi = el('g'), gEtich = el('g'), gNodi = el('g');
+  mondo.appendChild(gCorsie); mondo.appendChild(gCol);
+  mondo.appendChild(gArchi); mondo.appendChild(gEtich); mondo.appendChild(gNodi);
+
+  /* colonne dei luoghi, solo nella vista fisica */
+  if(G.colonne && G.colOffset){
+    G.colonne.forEach(function(c){
+      var x0 = G.colOffset[c], larg = G.colCapienza[c] * (LARG + GAPX);
+      var nome = c === '__nessuno' ? 'Non collocato' : (CONT[c] ? CONT[c].nome : c);
+      var sito = c === '__nessuno' ? '' : (CONT[c] ? CONT[c].sito : '');
+      var t = el('text', {x:x0, y:-30});
+      t.appendChild(txt(nome + (sito ? ' · ' + sito : ''))); gCol.appendChild(t);
+      gCol.appendChild(el('line', {x1:x0 - 20, y1:-24, x2:x0 - 20, y2:G.altez}));
+      gCol.appendChild(el('line', {x1:x0 + larg + 20, y1:-24, x2:x0 + larg + 20, y2:G.altez}));
+    });
   }
 
-  function applyFilters(){
-    var q = query.trim().toLowerCase();
-    Object.keys(els).forEach(function(id){
-      var real = id.indexOf('pwr:')===0 ? pwrById[id.slice(4)] : nodeById[id];
-      if(!real) return;
-      var hide = false;
-      if(q && (real.nome||'').toLowerCase().indexOf(q) < 0 && (real.note||'').toLowerCase().indexOf(q) < 0) hide = true;
-      if(onlyGap && !(real.gap && real.gap.length)) hide = true;
-      if(vlanFilter != null){
-        var touches = D.collegamenti.some(function(l){
-          return (l.da===id || l.a===id) && l.vlan && l.vlan.indexOf(vlanFilter) >= 0;
+  /* corsie: la riga attraversa tutto il disegno, l'etichetta resta agganciata al
+     bordo sinistro della vista, altrimenti scompare al primo spostamento e la
+     mappa perde il solo riferimento che dice a che altezza logica si sta guardando */
+  ETICHETTE = [];
+  G.corsie.forEach(function(c){
+    var y = c.r * (ALT + GAPY);
+    if(!c.nome) return;
+    var ln = el('line', {x1:-3000, y1:y+24, x2:G.larg+3000, y2:y+24});
+    gCorsie.appendChild(ln);
+    var g = el('g');
+    var sf = el('rect', {x:0, y:y+2, width: c.nome.length * 6.4 + 14, height:18, fill:'var(--tela)'});
+    g.appendChild(sf);
+    var t = el('text', {x:6, y:y+15, 'text-anchor':'start'});
+    t.appendChild(txt(c.nome)); g.appendChild(t);
+    gCorsie.appendChild(g);
+    ETICHETTE.push(g);
+  });
+  if(G.corsie.__vuote && G.corsie.__vuote.length){
+    var yv = G.corsie.length * (ALT + GAPY) + 8;
+    var tv2 = el('text', {x:0, y:yv, 'class':'portalab'});
+    tv2.appendChild(txt('Non compaiono qui: VLAN ' + G.corsie.__vuote.join(', ') +
+      '. Nessun collegamento della fonte le dichiara, quindi nessun apparato vi e\' attribuibile senza inferire.'));
+    gCorsie.appendChild(tv2);
+    ETICHETTE.push(tv2);
+  }
+
+  /* archi */
+  var accesi = insiemeAcceso();
+  G.segmenti.forEach(function(e){
+    var l = e.l, cm = colMezzo(l.mezzo);
+    var colore = cm.c;
+    if(S.vista === 'segmenti' && l.vlan && l.vlan.length) colore = COL_VLAN[l.vlan[0]] || cm.c;
+    var pts = puntiArco(e);
+    var d = percorso(pts);
+    var cls = 'arco';
+    if(l.stato === 'progetto') cls += ' progetto';
+    var vivo = accesi && (accesi.archi[e.idx] === 1);
+    if(accesi) cls += vivo ? ' acceso' : ' spento';
+    var p = el('path', {d:d, 'class':cls, stroke:colore, 'stroke-dasharray': (l.stato==='progetto' ? '6 4' : cm.d)});
+    gArchi.appendChild(p);
+    var hit = el('path', {d:d, 'class':'arco-hit'});
+    hit.addEventListener('click', function(ev){ ev.stopPropagation(); S.sel = {tipo:'arco', idx:e.idx, l:l, e:e}; scheda(); ridisegna(); });
+    gArchi.appendChild(hit);
+
+    if(S.mostraPorte && !accesi || (accesi && vivo)){
+      if(l['porta-a'] && pts.length > 1) etichettaPorta(gEtich, pts[0], pts[1], l['porta-a'], colore);
+      if(l['porta-b'] && pts.length > 1) etichettaPorta(gEtich, pts[pts.length-1], pts[pts.length-2], l['porta-b'], colore);
+    }
+    if(l.velocita){
+      var mid = pts[Math.floor(pts.length/2)];
+      var g = el('g');
+      var w = l.velocita.length * 5.6 + 8;
+      g.appendChild(el('rect', {x:mid.x - w/2, y:mid.y - 7, width:w, height:14, 'class':'velolab-bg'}));
+      var tv = el('text', {x:mid.x, y:mid.y + 3.5, 'text-anchor':'middle', 'class':'velolab'});
+      tv.appendChild(txt(l.velocita)); g.appendChild(tv);
+      gEtich.appendChild(g);
+    }
+  });
+
+  /* nodi */
+  G.nodi.forEach(function(n){
+    if(n.dummy) return;
+    var r = n.rif;
+    var cls = 'nodo';
+    if(r.stato === 'progetto') cls += ' progetto';
+    if(S.sel && S.sel.tipo === 'nodo' && S.sel.id === n.id) cls += ' sel';
+    if(accesi && !accesi.nodi[n.id]) cls += ' spento';
+    if(S.cerca && !r._pwr && !combacia(r)) cls += ' spento';
+    var g = el('g', {'class':cls, transform:'translate('+n.x+','+n.y+')'});
+    g.appendChild(el('rect', {'class':'box', x:0, y:0, width:n.w, height:n.h}));
+    var accento = coloreAccento(r);
+    if(accento) g.appendChild(el('rect', {'class':'accento', x:0, y:0, width:3, height:n.h, fill:accento}));
+    var ico = el('path', {'class':'ic', d:icona(r.tipo), transform:'translate(11,11) scale(.82)'});
+    g.appendChild(ico);
+    var ng = (r.gap||[]).length;
+    var t1 = el('text', {'class':'nm', x:34, y:19});
+    t1.appendChild(txt(taglia(r.nome, ng ? 17 : 21))); g.appendChild(t1);
+    var t2 = el('text', {'class':'sb', x:34, y:33});
+    t2.appendChild(txt(taglia(sottotitolo(r), 25))); g.appendChild(t2);
+    if(ng){
+      g.appendChild(el('circle', {'class':'badge', cx:n.w-11, cy:11, r:7.5}));
+      var tb = el('text', {'class':'badgetxt', x:n.w-11, y:14.5, 'text-anchor':'middle'});
+      tb.appendChild(txt(String(ng))); g.appendChild(tb);
+    }
+    var titolo = el('title'); titolo.appendChild(txt(r.nome + (r.note ? ' — ' + taglia(r.note, 180) : '')));
+    g.appendChild(titolo);
+    g.addEventListener('mouseenter', function(){ S.hover = n.id; ridisegna(); });
+    g.addEventListener('mouseleave', function(){ if(S.hover === n.id){ S.hover = null; ridisegna(); } });
+    g.addEventListener('click', function(ev){ ev.stopPropagation(); S.sel = {tipo:'nodo', id:n.id, rif:r}; scheda(); ridisegna(); });
+    gNodi.appendChild(g);
+  });
+
+  mondo.setAttribute('transform', 'translate(70,56)');
+  if(!S.fitCache[S.vista]){ inquadra(0.62); S.fitCache[S.vista] = 1; }
+  else applicaVB();
+}
+
+function sottotitolo(r){
+  if(r._pwr) return r.tipo;
+  var parti = [];
+  if(r.stato === 'progetto') parti.push('progetto');
+  if(r.contenitore && CONT[r.contenitore]) parti.push(CONT[r.contenitore].nome);
+  else parti.push(r.tipo);
+  return parti.join(' · ');
+}
+function coloreAccento(r){
+  if(r._pwr) return r.tipo === 'ups' ? '#AFD100' : (r.tipo === 'parete' ? '#4D11A7' : '#ACB0CD');
+  if(r.stato === 'progetto') return '#ACB0CD';
+  var vs = vlanDi(r.id);
+  if(S.vista === 'segmenti' && vs.length) return COL_VLAN[vs[0]] || null;
+  var perLivello = {internet:'#57CCF6', fornitore:'#8CE1FF', perimetro:'#E7000B', core:'#4D11A7',
+                    distribuzione:'#AFD100', servizi:'#00CECE', utenze:'#ACB0CD'};
+  return perLivello[r.livello] || null;
+}
+
+function puntiArco(e){
+  var pts = [];
+  for(var i=0; i<e.catena.length; i++){
+    var n = e.catena[i];
+    var cx = n.x + n.w/2;
+    if(n.dummy){ pts.push({x:cx, y:n.y + 4}); continue; }
+    if(i === 0) pts.push({x: (e.ancoraA !== undefined ? e.ancoraA : cx), y:e.catena[1] && e.catena[1].rank < n.rank ? n.y : n.y + n.h});
+    else if(i === e.catena.length-1) pts.push({x: (e.ancoraB !== undefined ? e.ancoraB : cx), y:e.catena[i-1].rank < n.rank ? n.y : n.y + n.h});
+    else pts.push({x:cx, y:n.y + n.h/2});
+  }
+  if(e.tipo === 'piatto' && pts.length === 2){
+    /* arco dentro la stessa riga: scavalca sopra la fila */
+    var a = e.catena[0], b = e.catena[1];
+    var y = a.y - 26;
+    return [{x:a.x + a.w/2, y:a.y}, {x:a.x + a.w/2, y:y}, {x:b.x + b.w/2, y:y}, {x:b.x + b.w/2, y:b.y}];
+  }
+  return pts;
+}
+function percorso(pts){
+  if(pts.length < 2) return '';
+  var d = 'M' + pts[0].x + ' ' + pts[0].y, R = 9;
+  for(var i=1; i<pts.length; i++){
+    var p0 = pts[i-1], p1 = pts[i];
+    if(Math.abs(p1.x - p0.x) < 0.5){ d += ' L' + p1.x + ' ' + p1.y; continue; }
+    var ym = (p0.y + p1.y) / 2;
+    var s = p1.x > p0.x ? 1 : -1;
+    var r = Math.min(R, Math.abs(p1.x - p0.x)/2, Math.abs(ym - p0.y), Math.abs(p1.y - ym));
+    if(r < 2){ d += ' L' + p1.x + ' ' + p1.y; continue; }
+    d += ' L' + p0.x + ' ' + (ym - r);
+    d += ' Q' + p0.x + ' ' + ym + ' ' + (p0.x + s*r) + ' ' + ym;
+    d += ' L' + (p1.x - s*r) + ' ' + ym;
+    d += ' Q' + p1.x + ' ' + ym + ' ' + p1.x + ' ' + (ym + r);
+    d += ' L' + p1.x + ' ' + p1.y;
+  }
+  return d;
+}
+function etichettaPorta(g, p, verso, testo, colore){
+  var dy = verso.y > p.y ? 11 : -5;
+  var t = el('text', {x:p.x + 5, y:p.y + dy, 'class':'portalab', fill:colore});
+  t.appendChild(txt(String(testo))); g.appendChild(t);
+}
+
+function insiemeAcceso(){
+  var focus = S.hover || (S.sel && S.sel.tipo === 'nodo' ? S.sel.id : null);
+  if(!focus) return null;
+  var nodi = {}, archi = {};
+  nodi[focus] = 1;
+  (INC[focus]||[]).forEach(function(i){
+    archi[i] = 1;
+    nodi[LINK[i].da] = 1; nodi[LINK[i].a] = 1;
+  });
+  return {nodi:nodi, archi:archi};
+}
+
+/* --------------------------------------------------------------------------
+   Inquadratura, zoom, trascinamento
+   ----------------------------------------------------------------------- */
+var ETICHETTE = [];
+function applicaVB(){
+  svg.setAttribute('viewBox', S.vb.x+' '+S.vb.y+' '+S.vb.w+' '+S.vb.h);
+  /* le etichette di corsia inseguono il bordo sinistro della vista */
+  var x = S.vb.x - 70 + 8;
+  for(var i=0; i<ETICHETTE.length; i++) ETICHETTE[i].setAttribute('transform', 'translate('+x+',0)');
+}
+/* scalaMinima: un disegno da cinquanta nodi non entra leggibile in un portatile,
+   e comprimerlo finche' ci sta e' esattamente il modo di renderlo inutile. Quando
+   l'inquadratura completa scenderebbe sotto la soglia di leggibilita' si parte
+   invece dall'alto a scala leggibile, e il pulsante Inquadra resta li' per chi
+   vuole l'insieme. */
+function inquadra(scalaMinima){
+  var bb;
+  try { bb = mondo.getBBox(); } catch(e){ return; }
+  if(!bb || !bb.width) return;
+  var pad = 44, rw = svg.clientWidth || 1200, rh = svg.clientHeight || 700;
+  var sc = Math.min(rw / (bb.width + pad*2), rh / (bb.height + pad*2));
+  if(scalaMinima && sc < scalaMinima){
+    var w0 = rw / scalaMinima, h0 = rh / scalaMinima;
+    S.vb = {x: bb.x + bb.width/2 - w0/2, y: bb.y - pad, w:w0, h:h0};
+    applicaVB(); return;
+  }
+  var w = rw / sc, h = rh / sc;
+  S.vb = {x: bb.x - (w - bb.width)/2, y: bb.y - (h - bb.height)/2, w:w, h:h};
+  applicaVB();
+}
+function portaSu(id){
+  if(!Gcur) return;
+  var n = null;
+  Gcur.nodi.forEach(function(x){ if(!x.dummy && x.id === id) n = x; });
+  if(!n) return;
+  var rw = svg.clientWidth || 1200, rh = svg.clientHeight || 700, sc = 0.95;
+  S.vb = {x: n.x + n.w/2 - rw/(2*sc), y: n.y + n.h/2 - rh/(2*sc), w: rw/sc, h: rh/sc};
+  applicaVB();
+}
+function zoom(f, cx, cy){
+  var rw = svg.clientWidth || 1000, rh = svg.clientHeight || 700;
+  if(cx === undefined){ cx = S.vb.x + S.vb.w/2; cy = S.vb.y + S.vb.h/2; }
+  var nw = S.vb.w / f, nh = S.vb.h / f;
+  if(nw < 200 || nw > 40000) return;
+  S.vb = {x: cx - (cx - S.vb.x) / f, y: cy - (cy - S.vb.y) / f, w:nw, h:nh};
+  applicaVB();
+}
+function svgPunto(ev){
+  var r = svg.getBoundingClientRect();
+  return {x: S.vb.x + (ev.clientX - r.left) / r.width * S.vb.w,
+          y: S.vb.y + (ev.clientY - r.top) / r.height * S.vb.h};
+}
+var tela = document.getElementById('tela'), trascino = null;
+tela.addEventListener('wheel', function(ev){ ev.preventDefault(); var p = svgPunto(ev); zoom(ev.deltaY < 0 ? 1.12 : 1/1.12, p.x, p.y); }, {passive:false});
+tela.addEventListener('pointerdown', function(ev){
+  if(ev.target.closest && ev.target.closest('.nodo, .arco-hit')) return;
+  trascino = {x:ev.clientX, y:ev.clientY, vb:{x:S.vb.x, y:S.vb.y}};
+  tela.classList.add('trascino'); tela.setPointerCapture(ev.pointerId);
+});
+tela.addEventListener('pointermove', function(ev){
+  if(!trascino) return;
+  var r = svg.getBoundingClientRect();
+  S.vb.x = trascino.vb.x - (ev.clientX - trascino.x) / r.width * S.vb.w;
+  S.vb.y = trascino.vb.y - (ev.clientY - trascino.y) / r.height * S.vb.h;
+  applicaVB();
+});
+['pointerup','pointercancel','pointerleave'].forEach(function(t){
+  tela.addEventListener(t, function(){ trascino = null; tela.classList.remove('trascino'); });
+});
+tela.addEventListener('click', function(ev){
+  if(ev.target.closest && ev.target.closest('.nodo, .arco-hit')) return;
+  S.sel = null; scheda(); ridisegna();
+});
+
+/* --------------------------------------------------------------------------
+   Scheda laterale
+   ----------------------------------------------------------------------- */
+var pannello = document.getElementById('pannello');
+function h(tag, cls, testo){ var e = document.createElement(tag); if(cls) e.className = cls; if(testo !== undefined) e.textContent = testo; return e; }
+function sezione(titolo){ var s = h('div','sez'); if(titolo) s.appendChild(h('h3',null,titolo)); return s; }
+
+function scheda(){
+  pannello.innerHTML = '';
+  if(!S.sel){
+    pannello.appendChild(h('div','vuoto-p','Seleziona un apparato o un collegamento nel disegno per vederne la scheda. Passando il puntatore su un nodo si accendono i suoi soli collegamenti.'));
+    return;
+  }
+  if(S.sel.tipo === 'arco') return schedaArco(S.sel.l);
+  var r = S.sel.rif;
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello', r._pwr ? 'Sorgente di alimentazione' : ((LIVNOME[r.livello]||r.livello||'') + (r.stato === 'progetto' ? ' · pianificato' : ''))));
+  cap.appendChild(h('h2',null,r.nome));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){ S.sel = null; scheda(); ridisegna(); });
+  cap.appendChild(x);
+  pannello.appendChild(cap);
+
+  var s1 = sezione('Identita');
+  var dl = document.createElement('dl'); dl.className = 'kv';
+  function kv(k, v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
+  kv('Identificatore', r.id.replace(/^pwr:/,''));
+  kv('Tipo', r.tipo);
+  if(!r._pwr){
+    kv('Corsia', LIVNOME[r.livello] || r.livello);
+    kv('Luogo', r.contenitore && CONT[r.contenitore] ? CONT[r.contenitore].nome + ' — ' + CONT[r.contenitore].sito : 'non collocato');
+    var vs = vlanDi(r.id);
+    kv('Segmenti', vs.length ? vs.map(function(v){ return 'VLAN ' + v + (VLAN[v] ? ' (' + VLAN[v].nome + ')' : ''); }).join(', ') : 'nessuno dichiarato sui suoi archi');
+    kv('Collegamenti', String((INC[r.id]||[]).length));
+  }
+  s1.appendChild(dl); pannello.appendChild(s1);
+
+  if(r.note){ var sn = sezione('Nota'); sn.appendChild(h('p',null,r.note)); pannello.appendChild(sn); }
+
+  if(!r._pwr){
+    var inc = INC[r.id] || [];
+    if(inc.length){
+      var sl = sezione('Collegamenti (' + inc.length + ')');
+      inc.forEach(function(i){
+        var l = LINK[i], altro = l.da === r.id ? l.a : l.da;
+        var uscente = l.da === r.id;
+        var cm = colMezzo(l.mezzo);
+        var box = h('div','rigalink');
+        var capo = h('div','capo');
+        var v = h('span','verso', (uscente ? '→ ' : '← ') + ((byId[altro]||{}).nome || altro));
+        capo.appendChild(v);
+        var mz = h('span',null, cm.et + (l.stato === 'progetto' ? ' · progetto' : ''));
+        mz.style.color = cm.c; mz.style.fontSize = '11px'; capo.appendChild(mz);
+        box.appendChild(capo);
+        var d = [];
+        var pQui = uscente ? l['porta-a'] : l['porta-b'];
+        var pLa = uscente ? l['porta-b'] : l['porta-a'];
+        if(pQui) d.push('porta locale ' + pQui);
+        if(pLa) d.push('porta remota ' + pLa);
+        if(l.velocita) d.push(l.velocita);
+        if(l.vlan && l.vlan.length) d.push('VLAN ' + l.vlan.join(', '));
+        if(d.length) box.appendChild(h('div','dett', d.join(' · ')));
+        if(l.note) box.appendChild(h('div','dett', l.note));
+        if(l.criticita) box.appendChild(h('div','crit', l.criticita));
+        box.addEventListener('click', function(){ S.sel = {tipo:'arco', idx:i, l:l}; scheda(); ridisegna(); });
+        box.style.cursor = 'pointer';
+        sl.appendChild(box);
+      });
+      pannello.appendChild(sl);
+    }
+    var catene = catenaElettrica(r.id);
+    if(catene.length){
+      var sc = sezione('Catena elettrica');
+      catene.forEach(function(ramo, k){
+        if(catene.length > 1) sc.appendChild(h('div','dett','Alimentatore ' + (k+1)));
+        var ul = h('ul','catena');
+        ramo.forEach(function(p){
+          var li = document.createElement('li');
+          li.appendChild(h('span','nm', p.nome));
+          li.appendChild(h('div','ds', p.tipo + (p.gap && p.gap.length ? ' · ' + p.gap.join(', ') : '')));
+          ul.appendChild(li);
         });
-        if(!touches) hide = true;
-      }
-      els[id].classList.toggle('dim', hide);
-    });
-    drawn.forEach(function(d){
-      var dim = false;
-      if(vlanFilter != null) dim = !(d.l.vlan && d.l.vlan.indexOf(vlanFilter) >= 0);
-      if(els[d.a] && els[d.a].classList.contains('dim') && els[d.b] && els[d.b].classList.contains('dim')) dim = true;
-      d.p.classList.toggle('dim', dim);
-    });
+        sc.appendChild(ul);
+      });
+      pannello.appendChild(sc);
+    }
   }
-
-  function render(){
-    if(view==='rete') buildRete(); else buildPwr();
-    requestAnimationFrame(function(){ draw(); });
-  }
-
-  // ---------- barra ----------
-  document.getElementById('v-rete').addEventListener('click', function(){
-    view='rete'; this.setAttribute('aria-pressed','true');
-    document.getElementById('v-pwr').setAttribute('aria-pressed','false'); render();
-  });
-  document.getElementById('v-pwr').addEventListener('click', function(){
-    view='pwr'; this.setAttribute('aria-pressed','true');
-    document.getElementById('v-rete').setAttribute('aria-pressed','false'); render();
-  });
-  var vb = document.getElementById('vlanbar');
-  D.vlan.forEach(function(v){
-    if(v.stato === 'progetto') return;
-    var b = el('button','chip', v.id + ' ' + v.nome.toLowerCase());
-    b.setAttribute('aria-pressed','false');
-    b.addEventListener('click', function(){
-      var on = b.getAttribute('aria-pressed')==='true';
-      Array.prototype.forEach.call(vb.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed','false'); });
-      if(on){ vlanFilter = null; } else { vlanFilter = v.id; b.setAttribute('aria-pressed','true'); }
-      applyFilters();
+  if(r.gap && r.gap.length){
+    var sg = sezione('Difetti aperti');
+    r.gap.forEach(function(id){
+      var g = GAP[id];
+      var riga = h('div','gapriga');
+      riga.appendChild(h('span','grav ' + (g ? g.gravita : 'bassa'), g ? g.gravita : '?'));
+      riga.appendChild(h('span',null, id + (g ? ' · ' + g.titolo : '') + (g && g.numero ? ' (#' + g.numero + ')' : '')));
+      sg.appendChild(riga);
     });
-    vb.appendChild(b);
-  });
-  document.getElementById('onlygap').addEventListener('click', function(){
-    onlyGap = !onlyGap; this.setAttribute('aria-pressed', onlyGap ? 'true':'false'); applyFilters();
-  });
-  document.getElementById('q').addEventListener('input', function(){ query = this.value; applyFilters(); });
-  document.getElementById('theme').addEventListener('click', function(){
-    var cur = document.documentElement.getAttribute('data-theme');
-    var next = cur === 'dark' ? 'light' : (cur === 'light' ? 'dark' :
-      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
-    document.documentElement.setAttribute('data-theme', next);
-    requestAnimationFrame(draw);
-  });
+    pannello.appendChild(sg);
+  }
+}
 
-  var t;
-  window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(draw, 120); });
-  render();
+function schedaArco(l){
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello','Collegamento' + (l.stato === 'progetto' ? ' · pianificato' : '')));
+  cap.appendChild(h('h2', null, ((byId[l.da]||{}).nome || l.da) + ' → ' + ((byId[l.a]||{}).nome || l.a)));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){ S.sel = null; scheda(); ridisegna(); });
+  cap.appendChild(x); pannello.appendChild(cap);
+  var s = sezione('Dati');
+  var dl = document.createElement('dl'); dl.className = 'kv';
+  function kv(k,v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
+  kv('Mezzo', colMezzo(l.mezzo).et);
+  kv('Porta origine', l['porta-a']);
+  kv('Porta destinazione', l['porta-b']);
+  kv('Velocita', l.velocita);
+  kv('VLAN', l.vlan && l.vlan.length ? l.vlan.map(function(v){ return v + (VLAN[v] ? ' (' + VLAN[v].nome + ')' : ''); }).join(', ') : undefined);
+  kv('Stato', l.stato === 'progetto' ? 'pianificato, non realizzato' : 'in esercizio');
+  s.appendChild(dl); pannello.appendChild(s);
+  if(l.note){ var sn = sezione('Nota'); sn.appendChild(h('p',null,l.note)); pannello.appendChild(sn); }
+  if(l.criticita){ var sc2 = sezione('Criticita'); var p = h('p',null,l.criticita); p.style.color = 'var(--iw-error)'; sc2.appendChild(p); pannello.appendChild(sc2); }
+}
+
+/* --------------------------------------------------------------------------
+   Intestazione, filtri, piede
+   ----------------------------------------------------------------------- */
+(function intestazione(){
+  document.getElementById('tit').textContent = D.meta.titolo || 'Topologia di rete';
+  document.getElementById('sotto').textContent = 'Ogni elemento del disegno nasce da data/network-topology.json. Il file non si modifica a mano: si corregge la fonte e si rigenera.';
+  var m = document.getElementById('metariga');
+  [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
+   ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
+   ['Sorgenti elettriche', String(PWR.length)], ['Difetti', String((D.gap||[]).length)],
+   ['Generato', '__GENERATED_AT__']].forEach(function(p){
+    var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
+  });
+  document.getElementById('perim').textContent = D.meta.perimetro || '';
+  var ul = document.getElementById('fonti');
+  (D.meta.fonti||[]).forEach(function(f){ var li = document.createElement('li'); li.textContent = f; ul.appendChild(li); });
+  document.getElementById('avvertenza').textContent = D.meta.avvertenza || '';
+  var gl = document.getElementById('gaplista');
+  (D.gap||[]).slice().sort(function(a,b){
+    var o = {alta:0, media:1, bassa:2};
+    return (o[a.gravita] - o[b.gravita]) || String(a.id).localeCompare(String(b.id));
+  }).forEach(function(g){
+    var riga = h('div','gapriga');
+    riga.appendChild(h('span','grav ' + g.gravita, g.gravita));
+    riga.appendChild(h('span', null, g.id + ' · ' + g.titolo + (g.numero ? ' (#' + g.numero + ')' : '')));
+    gl.appendChild(riga);
+  });
+  var lm = document.getElementById('legmezzo');
+  Object.keys(COL_MEZZO).forEach(function(k){
+    var s = document.createElement('span'); var i = document.createElement('i');
+    i.style.borderTopColor = COL_MEZZO[k].c;
+    if(COL_MEZZO[k].d) i.style.borderTopStyle = 'dashed';
+    s.appendChild(i); s.appendChild(document.createTextNode(COL_MEZZO[k].et)); lm.appendChild(s);
+  });
+  var ls = document.getElementById('legstato');
+  [['Tratto continuo, riquadro pieno', 'in esercizio'],
+   ['Tratteggio e riquadro tratteggiato', 'pianificato, non realizzato'],
+   ['Pallino rosso sul riquadro', 'numero di difetti aperti sull’apparato']].forEach(function(p){
+    var s = document.createElement('span'); s.textContent = p[0] + ': ' + p[1]; ls.appendChild(s);
+  });
 })();
+
+function chip(cont, etichetta, attivo, colore, tratteggio, onclick){
+  var b = document.createElement('button');
+  b.className = 'tag'; b.setAttribute('aria-pressed', attivo ? 'true' : 'false');
+  if(colore){
+    var sw = document.createElement('span'); sw.className = 'sw' + (tratteggio ? ' tratteggio' : '');
+    if(tratteggio){ sw.style.color = colore; } else { sw.style.background = colore; }
+    b.appendChild(sw);
+  }
+  b.appendChild(document.createTextNode(etichetta));
+  b.addEventListener('click', function(){
+    var nuovo = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', nuovo ? 'true' : 'false');
+    onclick(nuovo); ridisegna();
+  });
+  cont.appendChild(b);
+  return b;
+}
+(function filtri(){
+  var fm = document.getElementById('f-mezzo');
+  Object.keys(COL_MEZZO).forEach(function(k){
+    chip(fm, COL_MEZZO[k].et, true, COL_MEZZO[k].c, !!COL_MEZZO[k].d, function(v){ S.mezzi[k] = v; });
+  });
+  var fv = document.getElementById('f-vlan');
+  Object.keys(VLAN).map(Number).sort(function(a,b){return a-b;}).forEach(function(v){
+    var o = VLAN[v];
+    chip(fv, v + ' · ' + o.nome, true, COL_VLAN[v] || '#ACB0CD', o.stato === 'progetto', function(x){ S.vlan[v] = x; });
+  });
+  var fc = document.getElementById('f-cont');
+  Object.keys(CONT).forEach(function(c){
+    chip(fc, CONT[c].nome, true, null, false, function(x){ S.cont[c] = x; });
+  });
+  chip(fc, 'Non collocato', true, null, false, function(x){ S.cont['__nessuno'] = x; });
+})();
+
+document.getElementById('viste').addEventListener('click', function(ev){
+  var b = ev.target.closest('button'); if(!b) return;
+  S.vista = b.dataset.vista; S.sel = null; S.fitCache = {};
+  [].forEach.call(this.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+  scheda(); ridisegna();
+});
+function interruttore(id, chiave){
+  var b = document.getElementById(id);
+  b.addEventListener('click', function(){
+    S[chiave] = !S[chiave];
+    b.setAttribute('aria-pressed', S[chiave] ? 'true' : 'false');
+    ridisegna();
+  });
+}
+interruttore('btn-difetti','soloDifetti');
+interruttore('btn-progetto','mostraProgetto');
+interruttore('btn-porte','mostraPorte');
+document.getElementById('cerca').addEventListener('input', function(){
+  S.cerca = this.value.trim(); ridisegna();
+  if(S.cerca.length >= 2){
+    var trovati = NODI.filter(function(n){ return nodoVisibile(n) && combacia(n); });
+    if(trovati.length && trovati.length <= 3) portaSu(trovati[0].id);
+  }
+});
+document.getElementById('z-piu').addEventListener('click', function(){ zoom(1.25); });
+document.getElementById('z-meno').addEventListener('click', function(){ zoom(1/1.25); });
+document.getElementById('z-fit').addEventListener('click', function(){ inquadra(); });
+document.getElementById('btn-stampa').addEventListener('click', function(){ inquadra(); setTimeout(function(){ window.print(); }, 80); });
+document.getElementById('btn-tema').addEventListener('click', function(){
+  var cur = document.documentElement.getAttribute('data-tema');
+  var scuroSistema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var next = cur === 'scuro' ? 'chiaro' : (cur === 'chiaro' ? (scuroSistema ? 'scuro' : 'chiaro') : 'scuro');
+  document.documentElement.setAttribute('data-tema', next);
+  ridisegna();
+});
+document.addEventListener('keydown', function(ev){
+  if(ev.key === 'Escape'){ S.sel = null; scheda(); ridisegna(); }
+  if(ev.key === 'f' && !/input|textarea/i.test(document.activeElement.tagName)) inquadra();
+});
+window.addEventListener('resize', function(){ inquadra(0.62); });
+
+/* Il frammento dell'indirizzo sceglie la vista di apertura: #fisica, #segmenti,
+   #elettrica. Serve a chi vuole rimandare qualcuno direttamente alla vista giusta
+   invece di dirgli "poi clicca sul terzo pulsante". */
+(function daFrammento(){
+  var f = (location.hash || '').replace('#','');
+  if(['logica','fisica','segmenti','elettrica'].indexOf(f) < 0) return;
+  S.vista = f;
+  [].forEach.call(document.querySelectorAll('#viste button'), function(x){
+    x.setAttribute('aria-pressed', x.dataset.vista === f ? 'true' : 'false');
+  });
+})();
+
+ridisegna();
+inquadra(0.62);
 </script>
 </body>
 </html>
