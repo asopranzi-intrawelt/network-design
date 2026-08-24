@@ -235,7 +235,7 @@ footer li{margin-bottom:3px}
   "meta": {
     "titolo": "Topologia di rete Intrawelt",
     "aggiornato": "2026-08-24",
-    "revisione": 2,
+    "revisione": 3,
     "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
     "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
     "fonti": [
@@ -247,7 +247,8 @@ footer li{margin-bottom:3px}
       "API Proxmox interrogata il 24/08/2026 via MCP di sola lettura (inventario VM, bridge per VM)",
       "output/proxmox-config.md dello snapshot 08/07/2026, non versionato (topologia dei bridge dell'host)",
       "diario-impianto-vps.md, 13/08/2026 (impianto VPS di produzione e VM 209 di staging)",
-      "handoff-Per Alessio.md, 21/08/2026 (assetto dei tre ambienti del sito)"
+      "handoff-Per Alessio.md, 21/08/2026 (assetto dei tre ambienti del sito)",
+      "STATO_DELL_ARTE_2026-08-21.md, letto sulla VM 209 il 24/08/2026 (stato del sito, runtime e persistenza)"
     ]
   },
   "vlan": [
@@ -849,8 +850,11 @@ footer li{margin-bottom:3px}
       "tipo": "server",
       "livello": "servizi",
       "contenitore": "rack-dx",
-      "note": "Ambiente di sviluppo e staging del sito nuovo, creato il 12/08/2026. Ubuntu 24.04.2 Desktop, quattro processori virtuali, 8 GB di memoria con ballooning a 4, disco da 80 GB sullo storage SERVIZI, agente QEMU attivo, avvio automatico all'accensione dell'host. Indirizzo statico 10.61.20.209 con maschera /19 e gateway 10.61.20.1. Sopra gira Payload 3.88 con Next.js 16 e PostgreSQL 17 in container; il pannello di amministrazione risponde sulla porta 3000 e resta visibile alla sola LAN per scelta dichiarata, perche' la produzione non e' qui. Il primo indirizzo era stato preso via DHCP nella fascia .10 invece che nella .20: non era un errore di configurazione ma la LAN piatta che si manifesta, perche' con maschera /19 le due fasce sono la stessa rete servita da piu' ambiti.",
-      "alimentazione": null
+      "note": "Ambiente di sviluppo e staging del sito nuovo, creato il 12/08/2026 e in lavorazione continua fino al 21/08. Ubuntu 24.04.2 Desktop, quattro processori virtuali, 8 GB di memoria con ballooning a 4, disco da 80 GB sullo storage SERVIZI, agente QEMU attivo, avvio automatico. Indirizzo statico 10.61.20.209 con maschera /19 e gateway 10.61.20.1. Sopra gira Payload 3.88 con Next.js 16, servito da 'next dev' e non da una immagine costruita: e' un ambiente di prova, non una preproduzione, e la lentezza della prima apertura di una schermata e' la compilazione a richiesta e non un difetto della rete. Il pannello di amministrazione risponde sulla porta 3000, in ascolto su tutte le interfacce e quindi raggiungibile da qualunque host della LAN piatta: l'unica difesa e' l'autenticazione applicativa (NET-024). Se il firewall di sistema della macchina sia attivo non e' verificato da questo progetto. Il contenuto caricato dalla redazione vive su disco locale della macchina, non su un archivio esterno, quindi la sua continuita' dipende interamente dal backup della VM. Il primo indirizzo era stato preso via DHCP nella fascia .10 invece che nella .20: non era un errore di configurazione ma la LAN piatta che si manifesta, perche' con maschera /19 le due fasce sono la stessa rete servita da piu' ambiti.",
+      "alimentazione": null,
+      "gap": [
+        "NET-024"
+      ]
     },
     {
       "id": "vm206",
@@ -920,6 +924,15 @@ footer li{margin-bottom:3px}
       "livello": "internet",
       "contenitore": "cloud",
       "note": "Hosting Plesk dove vive il sito pubblico di oggi, 198.51.100.35, con il DNS del dominio puntato qui. Sullo stesso hosting e' stata depositata anche la versione dell'agenzia, senza che il DNS la raggiunga. Fuori perimetro Intrawelt: nessun apparato di questa mappa lo controlla.",
+      "alimentazione": null
+    },
+    {
+      "id": "pg209",
+      "nome": "PostgreSQL del sito",
+      "tipo": "storage",
+      "livello": "servizi",
+      "contenitore": "rack-dx",
+      "note": "PostgreSQL 17 in container sulla VM 209, con volume dedicato e riavvio automatico. Sta sulla rete interna di Docker della macchina e non ha un indirizzo proprio sulla LAN: compare in mappa perche' e' la persistenza del sito, non perche' sia un apparato di rete. Lo schema si sposta in produzione replicando tredici migrazioni versionate, non sincronizzando il database: e' la scelta che rende riproducibile il rilascio.",
       "alimentazione": null
     }
   ],
@@ -1487,6 +1500,12 @@ footer li{margin-bottom:3px}
       ],
       "stato": "progetto",
       "note": "Attestazione prevista della prima macchina in DMZ, sul bridge scelto per il segmento. Disegnata su vmbr1 come ipotesi da verificare, non come decisione presa."
+    },
+    {
+      "da": "vm209",
+      "a": "pg209",
+      "mezzo": "logico",
+      "note": "Rete interna di Docker sulla macchina virtuale. Non attraversa nessun apparato di questa mappa."
     }
   ],
   "alimentazione": [
@@ -1725,6 +1744,12 @@ footer li{margin-bottom:3px}
       "id": "FW-014",
       "titolo": "Il segmento DMZ 201 resta progettato e non attivo, con un consumatore in attesa",
       "numero": 154,
+      "gravita": "media"
+    },
+    {
+      "id": "NET-024",
+      "titolo": "Il pannello di amministrazione del CMS di staging e' esposto a tutta la LAN piatta",
+      "numero": 155,
       "gravita": "media"
     }
   ]
