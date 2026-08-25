@@ -288,7 +288,7 @@ footer li{margin-bottom:3px}
   "meta": {
     "titolo": "Topologia di rete Intrawelt",
     "aggiornato": "2026-08-24",
-    "revisione": 5,
+    "revisione": 6,
     "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
     "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
     "fonti": [
@@ -1101,7 +1101,7 @@ footer li{margin-bottom:3px}
       "mezzo": "rame",
       "porta-a": "P5 (LAN1)",
       "porta-b": "33",
-      "velocita": "1 Gbps",
+      "velocita": "1 Gb/s",
       "vlan": [
         1,
         40,
@@ -1115,7 +1115,7 @@ footer li{margin-bottom:3px}
       "mezzo": "fibra",
       "porta-a": "51",
       "porta-b": "29",
-      "velocita": "10 Gbps",
+      "velocita": "10 Gb/s",
       "vlan": [
         1,
         2,
@@ -1130,7 +1130,7 @@ footer li{margin-bottom:3px}
       "mezzo": "fibra",
       "porta-a": "52",
       "porta-b": "P4",
-      "velocita": "10 Gbps",
+      "velocita": "10 Gb/s",
       "note": "Ramo storage"
     },
     {
@@ -1315,7 +1315,7 @@ footer li{margin-bottom:3px}
       "a": "suprema",
       "mezzo": "rame",
       "porta-a": "3",
-      "velocita": "100 Mbps",
+      "velocita": "100 Mb/s",
       "criticita": "PVID 1 e allowedVLAN all: la porta accetta qualunque tag."
     },
     {
@@ -1323,7 +1323,7 @@ footer li{margin-bottom:3px}
       "a": "gs105b",
       "mezzo": "rame",
       "porta-a": "4",
-      "velocita": "100 Mbps",
+      "velocita": "100 Mb/s",
       "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Il limite a 100 Mbps e' quasi certamente il cavo, non l'apparato. La porta accetta qualunque tag."
     },
     {
@@ -3935,13 +3935,17 @@ function ridisegna(){
     var ico = el('path', {'class':'ic', d:icona(r.tipo), transform:'translate(11,11) scale(.82)'});
     g.appendChild(ico);
     var ng = (r.gap||[]).length;
+    /* Il distintivo dei difetti stava in alto a destra e mangiava le ultime
+       lettere del nome: "Zyxel USG FLEX 500" usciva come "Zyxel USG FLEX 5...".
+       Sta in basso a destra, accanto al sottotitolo che e' sempre corto, e la
+       riga del nome torna disponibile per intero. */
     var t1 = el('text', {'class':'nm', x:34, y:19});
-    t1.appendChild(txt(taglia(r.nome, ng ? 17 : 21))); g.appendChild(t1);
+    t1.appendChild(txt(taglia(r.nome, 21))); g.appendChild(t1);
     var t2 = el('text', {'class':'sb', x:34, y:33});
-    t2.appendChild(txt(taglia(sottotitolo(r), 25))); g.appendChild(t2);
+    t2.appendChild(txt(taglia(sottotitolo(r), ng ? 20 : 25))); g.appendChild(t2);
     if(ng){
-      g.appendChild(el('circle', {'class':'badge', cx:n.w-11, cy:11, r:7.5}));
-      var tb = el('text', {'class':'badgetxt', x:n.w-11, y:14.5, 'text-anchor':'middle'});
+      g.appendChild(el('circle', {'class':'badge', cx:n.w-11, cy:n.h-11, r:7.5}));
+      var tb = el('text', {'class':'badgetxt', x:n.w-11, y:n.h-7.5, 'text-anchor':'middle'});
       tb.appendChild(txt(String(ng))); g.appendChild(tb);
     }
     var titolo = el('title'); titolo.appendChild(txt(r.nome + (r.note ? ' — ' + taglia(r.note, 180) : '')));
