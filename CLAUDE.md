@@ -88,6 +88,7 @@ Documentazione strutturata, sotto `docs/`.
 docs/infrastructure-timeline/     storia cronologica degli interventi di rete
 docs/pendenze-aperte.md           vista consolidata di cio' che resta da sanare; non e' una fonte, punta ai registri
 docs/livello-fisico-ed-elettrico.md  armadi, alimentazione, catena fisica WAN, mappa porta-apparato, censimento NAS
+docs/virtualizzazione-proxmox-e-bridge.md  come il server Gen10 e' attaccato alla rete: cinque cavi, quattro bridge, misurato vs dedotto
 ```
 
 Regole modulari caricate su necessita', sotto `.claude/rules/`.
