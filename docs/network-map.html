@@ -4,7 +4,7 @@
   Fonte:      data/network-topology.json
   Generatore: scripts/Build-NetworkMap.ps1
   Decisione:  ADR-023, micro-step M26
-  Generato il 24/08/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
+  Generato il 25/08/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
   e soprattutto crea una seconda verita' accanto alla fonte: correggere la fonte.
 -->
 <html lang="it">
@@ -169,15 +169,33 @@ aside p:last-child{margin-bottom:0}
 .velolab-bg{fill:var(--tela)}
 
 /* ---------- piede ---------- */
-footer{background:var(--carta);border-top:1px solid var(--filo);padding:20px 24px 32px}
-footer .griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+footer{background:var(--carta);border-top:1px solid var(--filo);padding:0 0 28px}
 footer h3{margin:0 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);color:var(--tenue);font-weight:500}
 footer ul{margin:0;padding-left:16px;font-size:12px;color:var(--tenue)}
 footer li{margin-bottom:3px}
-.leg{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:11.5px}
-.leg span{display:inline-flex;align-items:center;gap:6px}
+
+/* La legenda sta attaccata al disegno, perche' e' cio' che serve mentre lo si
+   guarda. Il resto e' materiale di consultazione e sta chiuso: in una pagina
+   dove il disegno e' il contenuto, tre colonne di testo sempre aperte sotto
+   rubano attenzione e allungano lo scorrimento senza servire quasi mai. */
+.banda-legenda{padding:14px 24px 16px;border-bottom:1px solid var(--filo)}
+.leg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:11.5px;margin-bottom:6px}
+.leg:last-child{margin-bottom:0}
+.leg span{display:inline-flex;align-items:center;gap:6px;color:var(--tenue)}
 .leg i{width:18px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block}
-.avviso{border-left:3px solid var(--iw-error);padding:8px 12px;background:var(--tela);font-size:12.5px;margin-top:14px}
+
+.fisarmonica{border-bottom:1px solid var(--filo)}
+.fisarmonica>summary{list-style:none;cursor:pointer;padding:11px 24px;display:flex;align-items:center;gap:10px;
+  font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);font-weight:500;color:var(--inch);
+  transition:background 220ms cubic-bezier(.2,.6,.2,1)}
+.fisarmonica>summary::-webkit-details-marker{display:none}
+.fisarmonica>summary::before{content:"+";font-size:14px;line-height:1;width:12px;color:var(--tenue)}
+.fisarmonica[open]>summary::before{content:"2"}
+.fisarmonica>summary:hover{background:var(--tela)}
+.fisarmonica .conteggio{color:var(--tenue);letter-spacing:0;text-transform:none;font-weight:400;font-size:11px}
+.corpo-fis{padding:2px 24px 18px;font-size:12px;color:var(--tenue);max-width:120ch}
+.corpo-fis p{margin:0}
+.avviso{border-left:3px solid var(--iw-error);padding:8px 12px;background:var(--tela);font-size:12.5px;margin:16px 24px 0}
 
 @media print{
   .barra,.filtri,.hud,aside{display:none!important}
@@ -244,16 +262,25 @@ footer li{margin-bottom:3px}
 </main>
 
 <footer>
-  <div class="griglia">
-    <div>
-      <h3>Come si legge</h3>
-      <div class="leg" id="legmezzo"></div>
-      <div class="leg" style="margin-top:8px" id="legstato"></div>
-    </div>
-    <div><h3>Perimetro</h3><p style="font-size:12px;color:var(--tenue);margin:0" id="perim"></p></div>
-    <div><h3>Fonti</h3><ul id="fonti"></ul></div>
-    <div><h3>Difetti aperti</h3><div id="gaplista"></div></div>
-  </div>
+  <section class="banda-legenda">
+    <h3>Come si legge</h3>
+    <div class="leg" id="legmezzo"></div>
+    <div class="leg" id="legstato"></div>
+  </section>
+
+  <details class="fisarmonica">
+    <summary>Perimetro <span class="conteggio" id="c-perim"></span></summary>
+    <div class="corpo-fis"><p id="perim"></p></div>
+  </details>
+  <details class="fisarmonica">
+    <summary>Fonti <span class="conteggio" id="c-fonti"></span></summary>
+    <div class="corpo-fis"><ul id="fonti"></ul></div>
+  </details>
+  <details class="fisarmonica">
+    <summary>Difetti aperti <span class="conteggio" id="c-gap"></span></summary>
+    <div class="corpo-fis"><div id="gaplista"></div></div>
+  </details>
+
   <div class="avviso" id="avvertenza"></div>
 </footer>
 
@@ -4137,7 +4164,7 @@ tela.addEventListener('pointermove', function(ev){
 });
 tela.addEventListener('click', function(ev){
   if(ev.target.closest && ev.target.closest('.nodo, .arco-hit')) return;
-  S.sel = null; scheda(); ridisegna();
+  S.sel = null; scheda(); applicaEvidenza();
 });
 
 function isola(id){
@@ -4178,6 +4205,10 @@ function h(tag, cls, testo){ var e = document.createElement(tag); if(cls) e.clas
 function sezione(titolo){ var s = h('div','sez'); if(titolo) s.appendChild(h('h3',null,titolo)); return s; }
 
 function scheda(){
+  /* Con una ricerca attiva, deselezionare non riporta al testo generico ma
+     all'elenco dei risultati: altrimenti un clic sullo sfondo cancella l'esito
+     della ricerca lasciando pero' la casella piena, e sembra che si sia rotta. */
+  if(!S.sel && S.cerca){ schedaRicerca(); return; }
   pannello.innerHTML = '';
   if(!S.sel){
     pannello.appendChild(h('div','vuoto-p','Seleziona un apparato o un collegamento nel disegno per vederne la scheda. Passando il puntatore su un nodo si accendono i suoi soli collegamenti.'));
@@ -4456,12 +4487,16 @@ function schedaArco(l){
   [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
    ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
    ['Sorgenti elettriche', String(PWR.length)], ['Difetti', String((D.gap||[]).length)],
-   ['Generato', '24/08/2026']].forEach(function(p){
+   ['Generato', '25/08/2026']].forEach(function(p){
     var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
   });
   document.getElementById('perim').textContent = D.meta.perimetro || '';
   var ul = document.getElementById('fonti');
   (D.meta.fonti||[]).forEach(function(f){ var li = document.createElement('li'); li.textContent = f; ul.appendChild(li); });
+  document.getElementById('c-fonti').textContent = (D.meta.fonti||[]).length + ' fonti dichiarate';
+  document.getElementById('c-perim').textContent = 'cosa entra nella mappa e cosa no';
+  var alti = (D.gap||[]).filter(function(g){ return g.gravita === 'alta'; }).length;
+  document.getElementById('c-gap').textContent = (D.gap||[]).length + ' aperti, di cui ' + alti + ' ad alta gravita';
   document.getElementById('avvertenza').textContent = D.meta.avvertenza || '';
   var gl = document.getElementById('gaplista');
   (D.gap||[]).slice().sort(function(a,b){
