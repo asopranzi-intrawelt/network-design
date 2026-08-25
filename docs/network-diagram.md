@@ -203,6 +203,8 @@ Virtual server VPN_UDP_500 e VPN_UDP_4500 attivi. 7 virtual server disattivati (
 
 ## Architettura DMZ pianificata (VLAN 201)
 
+> **Avvertenza del 25/08/2026: lo schema qui sotto non e' piu' applicabile come scritto.** Prescrive di rendere VLAN-aware `vmbr0`, e le misure del 24/08/2026 mostrano due ostacoli indipendenti: `vmbr0` non esce su una porta dello switch gestito ma sul QNAP QSW-1208-8c, che e' non gestito e i tag 802.1Q li propaga per caso e non per configurazione (#157/NET-026), ed e' anche l'unico bridge che porta l'indirizzo di gestione dell'hypervisor, quindi la modifica andrebbe applicata a caldo sull'unica via d'accesso in banda al server. Il candidato corretto e' `vmbr1`, sulla porta 7 del 54HP, ma la riscrittura di M4-M6 resta **sospesa** al riscontro `lldpcli show neighbors ports eno2` sull'host, perche' la corrispondenza di quel bridge con la porta 7 poggia oggi su un solo indirizzo. Il quadro completo, con il fondamento didattico dei concetti in gioco, e' in `docs/virtualizzazione-proxmox-e-bridge.md`. Lo schema resta qui come stato storico del piano di maggio.
+
 ```
 Firewall USG FLEX 500 (L3 only)
    │
