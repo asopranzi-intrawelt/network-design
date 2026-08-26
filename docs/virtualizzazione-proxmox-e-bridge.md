@@ -1,6 +1,6 @@
 # Come il server HP ProLiant Gen10 e' attaccato alla rete
 
-> Scheda aperta il 25/08/2026, a valle delle misure del 24/08 che hanno chiuso il difetto #153 e aperto il #157. Risponde a una domanda sola, posta dall'IT Manager: in che modo l'unico server fisico dell'azienda e' collegato alla rete, dal cavo nell'armadio fino alla scheda della singola macchina virtuale. E' scritta con fondamento didattico secondo la direttiva permanente dei cinque livelli (`.claude/context/current-work.md`): ogni concetto viene spiegato prima di essere usato, perche' una scheda che dia per scontato che cosa sia un bridge o che cosa significhi VLAN-aware si legge solo da chi gia' lo sa, e chi gia' lo sa non ha bisogno della scheda.
+> Scheda aperta il 25/08/2026, a valle delle misure del 24/08 che hanno chiuso il difetto #153 e aperto il #157, e aggiornata in giornata con la conferma LLDP del 25/08 e con il disegno dell'intervento sulla DMZ. Risponde a una domanda sola, posta dall'IT Manager: in che modo l'unico server fisico dell'azienda e' collegato alla rete, dal cavo nell'armadio fino alla scheda della singola macchina virtuale. E' scritta con fondamento didattico secondo la direttiva permanente dei cinque livelli (`.claude/context/current-work.md`): ogni concetto viene spiegato prima di essere usato, perche' una scheda che dia per scontato che cosa sia un bridge o che cosa significhi VLAN-aware si legge solo da chi gia' lo sa, e chi gia' lo sa non ha bisogno della scheda.
 >
 > Convenzione. Modelli, nomi di apparato e numeri di porta sono reali, perche' servono a operare. Indirizzi IP e MAC seguono i segnaposto di `.claude/rules/anonymization.md`; la traduzione vive in `_notes/.anonymization-map.md`. La fonte strutturata di tutto cio' che segue e' `data/network-topology.json` alla revisione 6 del 24/08/2026, corroborata da `data/port-matrix.json` e dagli snapshot Proxmox e Nebula in `output/`, non versionati.
 
@@ -94,19 +94,70 @@ L'unico identificatore visibile da entrambe le parti e' l'indirizzo fisico. Sull
 | `vmbr0` / eno1 | l'indirizzo della scheda dell'host compare nella tabella della porta 52 | diretta: lo switch ha visto proprio quella scheda su quella porta |
 | `vmbr2` / eno3 | l'indirizzo della scheda dell'host compare nella tabella della porta 9 | diretta, per la stessa ragione |
 | `vmbr3` / eno4 | la scheda non compare; compaiono sulla porta 11 gli indirizzi delle macchine attestate sul bridge | indiretta, ma corroborata da piu' macchine |
-| `vmbr1` / eno2 | la scheda non compare; compare sulla porta 7 l'indirizzo dell'unica macchina attestata sul bridge | indiretta e appoggiata a un solo riscontro |
+| `vmbr1` / eno2 | **confermata il 25/08/2026 da LLDP**: e' lo switch stesso ad annunciare nome e numero di porta sul cavo | diretta e dichiarata dall'apparato, la piu' forte delle quattro |
 
 Il motivo per cui due schede su quattro non compaiono non e' un'anomalia ed e' bene capirlo, perche' e' lo stesso meccanismo delle stazioni visto dall'altro lato. Uno switch impara un indirizzo solo se vede una trama partire da quell'indirizzo. La scheda eno2 ha un proprio indirizzo fisico come ogni scheda, ma l'host non ha nessun IP su `vmbr1`, quindi non ha mai niente da dire su quel cavo, quindi non spedisce mai nulla in proprio, quindi lo switch non impara mai quell'indirizzo. Cio' che impara sono gli indirizzi delle macchine virtuali, perche' un bridge inoltra le loro trame senza riscriverne il mittente: e' la differenza fra un bridge e un router, il primo trasparente e il secondo no. Guardando la porta 7 dello switch, quindi, non si vede il server: si vede la macchina virtuale che gli sta dietro.
 
 Le prime due righe della tabella sono percio' una misura, le altre due un ragionamento corretto ma di secondo grado, del tipo "su quel bridge c'e' solo questa macchina, quella macchina si vede sulla porta 7, dunque il bridge esce dalla porta 7". Il ragionamento regge se e solo se la premessa e' completa. Su `vmbr3` poggia su tre macchine e un errore singolo non lo ribalta; su `vmbr1` poggia su una sola e un errore singolo lo ribalta tutto.
 
-Il guaio e' che `vmbr1` e' proprio il bridge candidato per la DMZ, cioe' quello su cui si andrebbe a scrivere il piano. La conferma diretta e' un comando da lanciare sull'host, e va ottenuta prima di riscrivere M4-M6.
+Il guaio era che `vmbr1` e' proprio il bridge candidato per la DMZ, cioe' quello su cui si sarebbe andati a scrivere il piano. La conferma diretta e' arrivata il 25/08/2026 ed e' descritta nella sezione che segue.
 
 ```
 lldpcli show neighbors ports eno2
 ```
 
-*LLDP*[^lldp] risolve il problema alla radice invece di aggirarlo: fa in modo che sia lo switch a presentarsi sul cavo, dichiarando il proprio nome e il proprio numero di porta, quindi non resta piu' niente da dedurre. Se `lldpd` non e' installato sull'host, la conferma arriva comunque al passo M5, che prevede di accendere una macchina di prova sul bridge scelto e guardare su quale porta compare: a quel punto e' di nuovo una misura diretta.
+*LLDP*[^lldp] risolve il problema alla radice invece di aggirarlo: fa in modo che sia lo switch a presentarsi sul cavo, dichiarando il proprio nome e il proprio numero di porta, quindi non resta piu' niente da dedurre.
+
+### La conferma, ottenuta il 25/08/2026
+
+Sull'host `lldpd` non era installato, e la scelta e' stata di installarlo invece di aggirare il problema una volta sola. Il ragionamento e' che il pacchetto e' piccolo, non tocca la configurazione di rete e non richiede riavvii, mentre il beneficio dura: da quel momento tutte e quattro le schede del server si identificano da sole, e l'ambiguita' fra le tre numerazioni non puo' piu' ripresentarsi, ne' per questo progetto ne' per chi verra' dopo. L'installazione ha portato con se' quattro dipendenze di sistema, `libsensors-config`, `libsensors5`, `libsnmp-base` e `libsnmp40`, e ha registrato il servizio all'avvio.
+
+La risposta al comando dice tre cose, e la prima e' quella che serviva.
+
+Primo, il numero di porta: `PortID: local 7`, con descrizione `Port7`. La corrispondenza `vmbr1` con la porta 7 del 54HP non e' piu' dedotta da un indirizzo, e' dichiarata dall'apparato che sta dall'altro capo del cavo. Il difetto #153 e' chiuso in tutte e quattro le righe, e il prerequisito bloccante di M4 non esiste piu'.
+
+Secondo, l'identita' del vicino: nome di sistema "Switch piano 2 (rack)", identificativo di telaio `AA:BB:CC:00:00:01`, modello XGS2220-54HP codificato nelle estensioni proprietarie del vendor. Coincide con cio' che la mappa gia' affermava, quindi e' anche una verifica indipendente della fonte.
+
+Terzo, due informazioni che nessuno stava cercando e che vale la pena registrare invece di lasciarle passare. L'indirizzo di gestione annunciato dallo switch e' `10.61.10.203`, cioe' nella classe delle postazioni e non in un segmento di gestione, il che conferma dal lato dell'apparato quanto la scheda del firewall diceva dal lato della configurazione. E la versione di firmware annunciata e' `V4.80(ABXQ.2)` datata `08/07/2023`: sullo switch centrale della rete, e' una versione di piu' di due anni fa, tracciata come difetto #158.
+
+## Che problema stiamo risolvendo, prima del come
+
+Le sezioni che seguono descrivono un intervento, e un intervento si giudica dal problema che chiude. Vale quindi la pena scrivere il problema per intero, perche' resti leggibile anche fra un anno a chi non era nella stanza.
+
+Oggi ogni macchina virtuale del server sta sulla stessa rete di ogni postazione, telefono e stampante dell'azienda: un solo dominio di broadcast, la LAN piatta con maschera `/19`. Ne discende che qualunque host della rete puo' bussare a qualunque porta di qualunque macchina virtuale, e l'unica difesa e' quella che ciascun servizio si porta dietro da solo. Non e' un'ipotesi: e' gia' successo tre volte, e sono tre difetti aperti. Il portale asset della VM 208 pubblica sulle porte 80 e 443 verso l'intero dominio di broadcast (#121). Il pannello di amministrazione del CMS di staging sulla VM 209 risponde a chiunque, con la sola autenticazione applicativa a difenderlo (#155). E la stessa cosa accadra' con il prossimo servizio interno che verra' acceso, perche' non c'e' niente nell'architettura che lo impedisca.
+
+Una *DMZ*[^dmz] e' la risposta consolidata a questo problema, ed e' bene dire con precisione in che cosa consiste, perche' il nome evoca piu' di quello che e'. Non e' un apparato e non e' un cavo diverso: e' una rete separata, con un proprio intervallo di indirizzi, dove si collocano i servizi che devono essere raggiungibili, e la cui separazione consiste nel fatto che il traffico fra quella rete e la LAN e' obbligato a passare da un apparato che decide che cosa puo' passare, cioe' il firewall. Il beneficio non e' rendere i servizi irraggiungibili, che sarebbe l'opposto del loro scopo, ma fare in modo che chi compromette un servizio pubblicato non si trovi automaticamente dentro la rete dove stanno i file, i NAS e le postazioni.
+
+Il collegamento con i bridge, che e' il punto in cui questa scheda e il piano DMZ si toccano, e' il seguente. Perche' una macchina virtuale stia nella DMZ, il suo traffico deve arrivare allo switch marchiato come appartenente alla VLAN 201 anziche' alla VLAN 1. Il marchio e' l'etichetta *802.1Q*[^dot1q] di quattro byte aggiunta a ogni trama, e qualcuno la deve apporre materialmente. Oggi non la appone nessuno: non i bridge, che come si e' visto non sanno che cosa sia una VLAN, e non lo switch, che ha quelle quattro porte in accesso e quindi tratta indistintamente tutto come VLAN 1. Il lavoro sui bridge consiste esattamente nell'insegnare a uno dei quattro ad apporre quell'etichetta, e alla porta corrispondente dello switch a rispettarla.
+
+## I vincoli dichiarati dall'IT Manager il 25/08/2026
+
+Due vincoli sono stati posti prima di cominciare, e vanno scritti qui perche' restringono le soluzioni ammissibili: senza di essi, fra sei mesi qualcuno riproporra' in buona fede una strada gia' esclusa.
+
+Il primo e' che i collegamenti fisici del server non si spostano. Ne discende che il difetto #157 non si risolve ricablando eth1 dal QNAP a una porta gestita, e che qualunque disegno della DMZ deve appoggiarsi a un bridge gia' attestato su uno switch gestito, con una modifica di sola configurazione. Il vincolo e' compatibile con il piano, perche' `vmbr1` e' gia' sulla porta 7 del 54HP e la conferma e' ora diretta. Va notato che il vincolo riguarda i cavi del server e non l'eventuale cavo nuovo fra la porta P7 del firewall e lo switch previsto da M6, che e' un'altra tratta e va decisa a parte.
+
+Il secondo e' che nessun intervento deve togliere agli endpoint interni della LAN l'accesso ai servizi interni. E' un requisito funzionale, e cambia il disegno in un punto preciso: segmentare non significa interrompere, significa rendere esplicito e filtrato cio' che oggi e' implicito e non filtrato. Quando la VM 208 sara' in un segmento separato, la regola che permette alle postazioni di raggiungerla sulle porte 80 e 443 dovra' essere scritta a mano sul firewall, mentre oggi funziona proprio perche' non esiste nessuna regola. Ne discende anche una conseguenza sulla destinazione: la roadmap prevede due segmenti distinti, la DMZ 201 per cio' che si pubblica verso l'esterno e la VLAN 50 dei servizi applicativi interni prevista da M22d, e per un portale che serve soltanto utenti interni la destinazione corretta e' la seconda, non la prima.
+
+Il terzo elemento, dichiarato nello stesso momento, non e' un vincolo ma uno stato di fatto: oggi la protezione dei servizi interni e' affidata al firewall di sistema delle singole macchine Linux. E' la sezione che segue.
+
+## La protezione host-based, che oggi e' l'unica difesa e non e' censita
+
+Un firewall di sistema, su Linux tipicamente amministrato con *ufw*[^ufw], filtra il traffico in ingresso sulla singola macchina: e' una difesa che vive dentro l'host che deve proteggere, invece che sul percorso fra gli host. La differenza rispetto a un firewall di rete e' sostanziale e va detta senza sminuire nessuna delle due. La difesa host-based e' precisa, perche' conosce i propri servizi, e sopravvive a un cambio di indirizzamento; ma e' distribuita, quindi va configurata e verificata macchina per macchina, e chi amministra la macchina puo' disattivarla, per errore o durante una diagnosi, senza che nessuno se ne accorga altrove. La difesa di rete e' centrale e ispezionabile in un solo posto, e non dipende dalla buona configurazione di ciascun host, ma non sa nulla di cio' che accade fra due macchine dello stesso segmento.
+
+Le due sono complementari e non alternative, ed e' la ragione per cui il censimento di quella host-based e' un prerequisito e non una curiosita': senza sapere che cosa ciascuna macchina permette oggi, non si puo' scrivere una regola di rete che non tolga un accesso funzionante. Al 25/08/2026 questo progetto non ha nessun censimento del genere per le macchine interne, e l'unica configurazione `ufw` documentata e' quella della VPS esterna del progetto SCENIA in `docs/scenia-project.md`, che e' un'altra macchina in un altro contesto. Tracciato come micro-step M27-7.
+
+## La scala dei micro-step della DMZ, e dove siamo
+
+L'ordine non e' arbitrario, e ogni gradino porta con se' la ragione per cui viene prima del successivo. Lo stato e' aggiornato al 25/08/2026.
+
+| Passo | Cosa fa | Dove | Perche' in questa posizione | Stato |
+|---|---|---|---|---|
+| M4-0 | confermare su quale porta dello switch esce `vmbr1` | comando sull'host | tutto il resto configura "la porta 7": se non fosse la 7 si configurerebbe la porta sbagliata, e si toccherebbe un cavo che porta altro | **fatto il 25/08/2026**, esito positivo, porta 7 confermata da LLDP |
+| M4 | portare la porta 7 dello switch da accesso a trunk, con la VLAN 1 non taggata e la 201 taggata | Nebula | e' il passo che puo' far cadere cio' che oggi passa da quel cavo, quindi va fatto con il rollback pronto e non per primo | da fare, il disegno va riscritto su `vmbr1` |
+| M5 | applicare la configurazione sul bridge, dalla console iLO | Proxmox | e' la modifica che, se sbagliata, toglie l'accesso alla macchina su cui la si sta facendo | da fare |
+| M6 | il braccio del firewall verso il segmento, e la validazione di livello 2 | firewall e switch | il segmento deve avere un gateway prima che qualcuno vi si affacci | da fare, da decidere se braccio dedicato sulla P7 o VLAN taggata sul collegamento gia' esistente |
+| M7-M9 | zona, regole, pubblicazione e prima macchina nel segmento | firewall e Proxmox | si prova su una macchina sacrificabile prima di spostarvi un servizio in uso | da fare |
+| M27-7 | censimento della protezione host-based sulle macchine Linux | SSH sulle macchine | senza sapere che cosa ogni host permette oggi, una regola di rete puo' togliere un accesso funzionante | da fare, ed e' il prossimo |
 
 ## Perche' il piano DMZ scritto a maggio non e' piu' applicabile
 
@@ -132,9 +183,9 @@ I fatti di questa scheda toccano quattro controlli dell'Annex A, e sono gia' reg
 
 ## Cosa resta da verificare
 
-Tre cose, in ordine di quanto bloccano.
+Tre cose, in ordine di quanto bloccano. La prima della lista precedente, il riscontro LLDP su eno2, e' stata chiusa il 25/08/2026 con esito positivo e non compare piu' qui.
 
-La prima e' il riscontro LLDP su eno2, chiesto all'IT Manager il 25/08/2026 e non ancora arrivato: blocca la riscrittura di M4-M6.
+La prima e' il censimento della protezione host-based sulle macchine Linux, micro-step M27-7: senza di esso una regola di rete rischia di togliere un accesso oggi funzionante, il che violerebbe il secondo vincolo dichiarato dall'IT Manager.
 
 La seconda e' su quale porta del QNAP atterri eth1. La tabella di quell'apparato in `docs/livello-fisico-ed-elettrico.md` censisce le porte 1, 3, 4, 5, 6, 7, 8, 10 e 12, e il server non compare in nessuna riga: le candidate sono la 2, la 9 e l'11, e su uno switch non gestito non esiste modo di chiederlo da remoto. Va guardato in armadio, e conviene farlo nello stesso sopralluogo in cui si verificano le trentasei porte libere e le nove porte con collegamento attivo e zero traffico.
 
@@ -155,3 +206,7 @@ La terza e' da quale sorgente elettrica dipenda il QNAP, che con il difetto #157
 [^stp]: *STP*, Spanning Tree Protocol - il protocollo che impedisce i cicli in una rete di livello 2 disattivando i collegamenti ridondanti; su un bridge senza percorsi alternativi non ha nulla da fare, ed e' il motivo per cui qui e' spento.
 
 [^lldp]: *LLDP*, Link Layer Discovery Protocol - protocollo con cui gli apparati di rete annunciano su ogni cavo la propria identita' e il numero della porta, cosi' che il vicino sappia con precisione a che cosa e' collegato.
+
+[^dmz]: *DMZ*, demilitarized zone - segmento di rete separato dove si collocano i servizi raggiungibili dall'esterno o da molti, in modo che una loro compromissione non dia accesso diretto alla rete interna; il traffico fra DMZ e rete interna passa obbligatoriamente da un firewall che lo filtra.
+
+[^ufw]: *ufw*, uncomplicated firewall - l'interfaccia di amministrazione semplificata del filtro di pacchetti del kernel Linux, con cui si definisce quali connessioni in ingresso una singola macchina accetta.
