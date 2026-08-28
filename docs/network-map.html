@@ -4,7 +4,7 @@
   Fonte:      data/network-topology.json
   Generatore: scripts/Build-NetworkMap.ps1
   Decisione:  ADR-023, micro-step M26
-  Generato il 25/08/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
+  Generato il 28/08/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
   e soprattutto crea una seconda verita' accanto alla fonte: correggere la fonte.
 -->
 <html lang="it">
@@ -287,8 +287,8 @@ footer li{margin-bottom:3px}
 <script type="application/json" id="topo">{
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-08-25",
-  "revisione": 7,
+  "aggiornato": "2026-08-28",
+  "revisione": 8,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
   "fonti": [
@@ -303,7 +303,8 @@ footer li{margin-bottom:3px}
    "handoff-Per Alessio.md, 21/08/2026 (assetto dei tre ambienti del sito)",
    "STATO_DELL_ARTE_2026-08-21.md, letto sulla VM 209 il 24/08/2026 (stato del sito, runtime e persistenza)",
    "lldpcli sull'host Proxmox, 25/08/2026 (conferma diretta della corrispondenza vmbr1 - porta 7)",
-   "Snapshot NinjaOne del 25/08/2026 (incrocio tabella MAC / endpoint gestiti, nove porte attribuite)"
+   "Snapshot NinjaOne del 25/08/2026 (incrocio tabella MAC / endpoint gestiti, nove porte attribuite)",
+   "Censimento M27-7 della protezione host-based, 25-28/08/2026 (porte in ascolto sulle macchine Linux)"
   ]
  },
  "vlan": [
@@ -914,7 +915,8 @@ footer li{margin-bottom:3px}
    "note": "Ambiente di sviluppo e staging del sito nuovo, creato il 12/08/2026 e in lavorazione continua fino al 21/08. Ubuntu 24.04.2 Desktop, quattro processori virtuali, 8 GB di memoria con ballooning a 4, disco da 80 GB sullo storage SERVIZI, agente QEMU attivo, avvio automatico. Indirizzo statico 10.61.20.209 con maschera /19 e gateway 10.61.20.1. Sopra gira Payload 3.88 con Next.js 16, servito da 'next dev' e non da una immagine costruita: e' un ambiente di prova, non una preproduzione, e la lentezza della prima apertura di una schermata e' la compilazione a richiesta e non un difetto della rete. Il pannello di amministrazione risponde sulla porta 3000, in ascolto su tutte le interfacce e quindi raggiungibile da qualunque host della LAN piatta: l'unica difesa e' l'autenticazione applicativa (NET-024). Se il firewall di sistema della macchina sia attivo non e' verificato da questo progetto. Il contenuto caricato dalla redazione vive su disco locale della macchina, non su un archivio esterno, quindi la sua continuita' dipende interamente dal backup della VM. Il primo indirizzo era stato preso via DHCP nella fascia .10 invece che nella .20: non era un errore di configurazione ma la LAN piatta che si manifesta, perche' con maschera /19 le due fasce sono la stessa rete servita da piu' ambiti.",
    "alimentazione": null,
    "gap": [
-    "NET-024"
+    "NET-024",
+    "NET-027"
    ]
   },
   {
@@ -993,8 +995,11 @@ footer li{margin-bottom:3px}
    "tipo": "storage",
    "livello": "servizi",
    "contenitore": "rack-dx",
-   "note": "PostgreSQL 17 in container sulla VM 209, con volume dedicato e riavvio automatico. Sta sulla rete interna di Docker della macchina e non ha un indirizzo proprio sulla LAN: compare in mappa perche' e' la persistenza del sito, non perche' sia un apparato di rete. Lo schema si sposta in produzione replicando tredici migrazioni versionate, non sincronizzando il database: e' la scelta che rende riproducibile il rilascio.",
-   "alimentazione": null
+   "note": "PostgreSQL 17 del sito, sulla VM 209. **Correzione del 28/08/2026, misurata**: la revisione precedente affermava che stesse sulla sola rete interna di Docker e non avesse un indirizzo proprio sulla LAN. Il censimento M27-7 misura la porta 5432 in ascolto su tutte le interfacce della macchina, quindi il database e' raggiungibile da qualunque host della LAN piatta con la sola autenticazione del motore a difenderlo (#161). Resta da determinare, con il censimento come amministratore, se l'ascolto sia del motore installato sulla macchina o della pubblicazione di un container. Lo schema si sposta in produzione replicando tredici migrazioni versionate, non sincronizzando il database.",
+   "alimentazione": null,
+   "gap": [
+    "NET-027"
+   ]
   }
  ],
  "collegamenti": [
@@ -4493,7 +4498,7 @@ function schedaArco(l){
   [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
    ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
    ['Sorgenti elettriche', String(PWR.length)], ['Difetti', String((D.gap||[]).length)],
-   ['Generato', '25/08/2026']].forEach(function(p){
+   ['Generato', '28/08/2026']].forEach(function(p){
     var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
   });
   document.getElementById('perim').textContent = D.meta.perimetro || '';
