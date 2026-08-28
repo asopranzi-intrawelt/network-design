@@ -6,8 +6,8 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 4782336 (06/08/2026, bonifica anonimizzazione completa e guard-rail)
-Data snapshot:         2026-08-06 (merge dei tre file dell'IT Manager: livello fisico ed elettrico)
+Commit di riferimento: 32deebb (25/08/2026, scheda didattica sul ramo del server Gen10)
+Data snapshot:         2026-08-25 (riallineamento dopo il push; commit precedenti di riferimento: 6862979, 4782336)
 ```
 
 Nota di stato al momento della chiusura: il lavoro documentale del 03/08 (chiusura di R8, allineamento schede, resume prompt) e' **su disco ma non ancora committato** — commit e push restano manuali dell'utente secondo i vincoli di team. Alla ripresa, se `git status` mostra modifiche non committate, sono quelle.
