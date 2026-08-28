@@ -144,7 +144,9 @@ Il terzo elemento, dichiarato nello stesso momento, non e' un vincolo ma uno sta
 
 Un firewall di sistema, su Linux tipicamente amministrato con *ufw*[^ufw], filtra il traffico in ingresso sulla singola macchina: e' una difesa che vive dentro l'host che deve proteggere, invece che sul percorso fra gli host. La differenza rispetto a un firewall di rete e' sostanziale e va detta senza sminuire nessuna delle due. La difesa host-based e' precisa, perche' conosce i propri servizi, e sopravvive a un cambio di indirizzamento; ma e' distribuita, quindi va configurata e verificata macchina per macchina, e chi amministra la macchina puo' disattivarla, per errore o durante una diagnosi, senza che nessuno se ne accorga altrove. La difesa di rete e' centrale e ispezionabile in un solo posto, e non dipende dalla buona configurazione di ciascun host, ma non sa nulla di cio' che accade fra due macchine dello stesso segmento.
 
-Le due sono complementari e non alternative, ed e' la ragione per cui il censimento di quella host-based e' un prerequisito e non una curiosita': senza sapere che cosa ciascuna macchina permette oggi, non si puo' scrivere una regola di rete che non tolga un accesso funzionante. Al 25/08/2026 questo progetto non ha nessun censimento del genere per le macchine interne, e l'unica configurazione `ufw` documentata e' quella della VPS esterna del progetto SCENIA in `docs/scenia-project.md`, che e' un'altra macchina in un altro contesto. Tracciato come micro-step M27-7.
+Le due sono complementari e non alternative, ed e' la ragione per cui il censimento di quella host-based e' un prerequisito e non una curiosita': senza sapere che cosa ciascuna macchina permette oggi, non si puo' scrivere una regola di rete che non tolga un accesso funzionante.
+
+**Il censimento e' stato eseguito il 25-28/08/2026 come micro-step M27-7, e ha rovesciato la premessa.** Su sette macchine ispezionate `ufw` non e' installato su sei, e sulla settima e' installato ma inattivo: la difesa host-based che si credeva presente non esiste, ed e' il difetto #159. Ne discende una conseguenza sul disegno opposta a quella attesa: il vincolo dell'IT Manager resta valido e va rispettato, ma il timore che una regola di rete rompesse una configurazione host-based esistente non ha oggetto, perche' quella configurazione non c'e'. La segmentazione non ha nulla da preservare a quel livello, ha tutto da costruire, e il firewall di rete non sara' un secondo strato di difesa ma il primo. La matrice completa delle porte in ascolto macchina per macchina, gli otto difetti che ne discendono e la ragione per cui i container complicano qualunque rimedio host-based stanno in `docs/esposizione-servizi-interni.md`.
 
 ## La scala dei micro-step della DMZ, e dove siamo
 
@@ -157,7 +159,7 @@ L'ordine non e' arbitrario, e ogni gradino porta con se' la ragione per cui vien
 | M5 | applicare la configurazione sul bridge, dalla console iLO | Proxmox | e' la modifica che, se sbagliata, toglie l'accesso alla macchina su cui la si sta facendo | da fare |
 | M6 | il braccio del firewall verso il segmento, e la validazione di livello 2 | firewall e switch | il segmento deve avere un gateway prima che qualcuno vi si affacci | da fare, da decidere se braccio dedicato sulla P7 o VLAN taggata sul collegamento gia' esistente |
 | M7-M9 | zona, regole, pubblicazione e prima macchina nel segmento | firewall e Proxmox | si prova su una macchina sacrificabile prima di spostarvi un servizio in uso | da fare |
-| M27-7 | censimento della protezione host-based sulle macchine Linux | SSH sulle macchine | senza sapere che cosa ogni host permette oggi, una regola di rete puo' togliere un accesso funzionante | da fare, ed e' il prossimo |
+| M27-7 | censimento della protezione host-based sulle macchine Linux | SSH sulle macchine | senza sapere che cosa ogni host permette oggi, una regola di rete puo' togliere un accesso funzionante | **fatto il 25-28/08/2026 su sette macchine su nove**, esito in `docs/esposizione-servizi-interni.md`: `ufw` assente ovunque, otto difetti nuovi dal #159 al #166. Da ripetere come amministratore per il nome dei processi, e da completare sulle VM 205 e 208 quando vi si rientrera' |
 
 ## Perche' il piano DMZ scritto a maggio non e' piu' applicabile
 
@@ -185,7 +187,7 @@ I fatti di questa scheda toccano quattro controlli dell'Annex A, e sono gia' reg
 
 Tre cose, in ordine di quanto bloccano. La prima della lista precedente, il riscontro LLDP su eno2, e' stata chiusa il 25/08/2026 con esito positivo e non compare piu' qui.
 
-La prima e' il censimento della protezione host-based sulle macchine Linux, micro-step M27-7: senza di esso una regola di rete rischia di togliere un accesso oggi funzionante, il che violerebbe il secondo vincolo dichiarato dall'IT Manager.
+La prima e' il completamento del censimento M27-7: la prima passata, del 25-28/08/2026, e' stata eseguita da utente non privilegiato su sei macchine su sette, quindi dice che cosa e' esposto ma non chi lo espone, e non ha potuto toccare le VM 205 e 208 perche' le loro credenziali locali sono perdute (#162). La 208 e' il portale asset, cioe' il primo servizio che la segmentazione deve spostare.
 
 La seconda e' su quale porta del QNAP atterri eth1. La tabella di quell'apparato in `docs/livello-fisico-ed-elettrico.md` censisce le porte 1, 3, 4, 5, 6, 7, 8, 10 e 12, e il server non compare in nessuna riga: le candidate sono la 2, la 9 e l'11, e su uno switch non gestito non esiste modo di chiederlo da remoto. Va guardato in armadio, e conviene farlo nello stesso sopralluogo in cui si verificano le trentasei porte libere e le nove porte con collegamento attivo e zero traffico.
 
