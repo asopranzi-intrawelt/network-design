@@ -105,7 +105,7 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 | 810 | TESTNEWEGETRADBOOT | `10.61.20.90` | Ubuntu 24.04.4 LTS | installato, inattivo | 22, 80, 3389, 8080, 8090 | 3350 | da verificare |
 | 205 | GanttTool | non rilevato | non rilevato | non rilevato | non rilevato | non rilevato | macchina non accessibile, #162 |
 | 208 | portaleAsset | `10.61.20.25` | non rilevato | non rilevato | 80 e 443 note da NET-011, il resto non rilevato | non rilevato | macchina non accessibile, #162 |
-| 100 | WinServer2022 | non rilevato | Windows Server 2022 | non applicabile | non rilevato | non rilevato | Windows Defender Firewall, da censire a parte: vedi §La macchina Windows |
+| 100 | WinServer2022 | `10.61.20.12` e `10.61.20.13` | Windows Server 2022 | non applicabile | vedi §La macchina Windows | 6379, 49864 | **firewall disattivato su tutti e tre i profili** (#175) |
 
 ## L'esito della seconda passata, 31/08/2026
 
@@ -178,25 +178,56 @@ La prima riguarda l'etichetta dell'esito. Lo strumento marcava come parziale ogn
 
 La seconda riguarda un ripiego che sembrava equivalente e non lo era. Per aggirare la copia si era proposto di passare lo script attraverso il flusso di ingresso di una sessione remota. Il comando fallisce con errori incomprensibili — righe non trovate e una struttura di controllo che sembra rotta — e la causa non e' lo script: quando PowerShell incanala il contenuto di un file verso un programma esterno, riscrive le terminazioni di riga nella convenzione di Windows, e una shell di sistema unix legge quel carattere in piu' come parte dell'ultimo comando di ogni riga. Da qui il metodo: verso un sistema unix si trasferiscono **file**, con una copia, non flussi di testo passati attraverso PowerShell.
 
-## La macchina Windows, che non e' un caso a parte per pigrizia
+## La macchina Windows, censita il 31/08/2026, e l'assunzione che ha rovesciato
 
-La VM 100 WinServer2022 non compare nella prima passata perche' il comando usato e' scritto per Linux, e su Windows nessuno dei tre strumenti esiste. Non e' pero' fuori perimetro, per tre ragioni distinte.
+La VM 100 WinServer2022 non era nelle prime due passate perche' il comando usato e' scritto per Linux e nessuno dei tre strumenti esiste su Windows. Il censimento equivalente e' stato eseguito il 31/08/2026 dal desktop remoto, con i tre comandi PowerShell riportati piu' avanti.
 
-La prima e' che ha un firewall e ce l'ha da sempre acceso: Windows Defender Firewall e' attivo per impostazione predefinita, con tre profili distinti — dominio, privato e pubblico — e la regola predefinita e' bloccare le connessioni in ingresso non esplicitamente ammesse. Ne discende che su questa macchina la domanda non e' se il filtro esista, ma quali eccezioni siano state aperte nel tempo e su quale profilo, che e' una domanda diversa da quella posta alle macchine Linux.
+### Il firewall c'e' ed e' spento, su tutti e tre i profili
 
-La seconda e' che, essendo un server Windows, ospita per costruzione servizi che le postazioni raggiungono continuamente, e ogni sua porta e' quindi un flusso da preservare nella segmentazione, non una superficie da chiudere.
+Questa scheda aveva scritto, ragionando e non misurando, che su questa macchina "la domanda non e' se il filtro esista, ma quali eccezioni siano state aperte", perche' il firewall di Windows e' attivo per impostazione predefinita. **La misura dice l'opposto**: i tre profili, dominio, privato e pubblico, risultano tutti disattivati, e l'azione predefinita in ingresso non e' nemmeno configurata.
 
-La terza e' la piu' rilevante per il lavoro in corso, e non riguarda il firewall: **la VM 100 e' l'unica macchina attestata su `vmbr1`**, con la propria seconda scheda di rete, e `vmbr1` e' il bridge scelto per portare la VLAN 201. Ne discende un vincolo operativo su M4 che va scritto qui perche' non si perda: quando la porta 7 del 54HP diventera' un trunk, la VLAN 1 dovra' restare **non taggata** su quella porta, altrimenti la seconda scheda di questa macchina perde la rete. Non e' un dettaglio di configurazione, e' la ragione per cui M4 non e' un'operazione a rischio nullo nonostante `vmbr1` sia il bridge piu' scarico.
+E' un'affermazione sbagliata dello stesso tipo di quella corretta il 31/08 sulle macchine Linux, e vale la pena notarlo perche' l'errore e' simmetrico e opposto: la' si era concluso "nessun filtro" avendo guardato un solo livello, qui si era concluso "un filtro c'e'" avendo guardato una documentazione di prodotto invece della macchina. In entrambi i casi il difetto non era nel dato ma nel fatto di non averlo chiesto.
 
-Il censimento equivalente su Windows si fa con tre comandi PowerShell da eseguire come amministratore, ed e' tracciato come parte della seconda passata di M27-7.
+Ne discende che le decine di regole in ingresso che la macchina ha configurate, e che il censimento elenca, **non hanno effetto**: sono un elenco di eccezioni a un blocco che non viene applicato. Chiunque le abbia scritte lavorava presupponendo un firewall acceso.
+
+### Che cosa espone, e perche' e' la macchina piu' esposta del parco
+
+La VM 100 e' un server multiservizio, e l'elenco di cio' che tiene in ascolto e' piu' lungo di quello di tutte le altre macchine messe insieme. Raggruppato per natura, senza le porte effimere del sistema:
+
+| Ambito | Porte in ascolto | Nota |
+|---|---|---|
+| Condivisione file e nomi | 135, 139, 445 | il servizio di condivisione, legato ai due indirizzi della macchina |
+| Web di sistema | 80, 443 | |
+| Scrittorio remoto | 3389 | |
+| Amministrazione remota Windows | 5985, 47001 | e' attivo, quindi la terza strada avrebbe funzionato |
+| Gestione hardware HP | 2301, 2381 | console web di gestione del produttore, vedi sotto |
+| Rilevazione presenze | 9000, 9002, 9010, 51212 | il server del sistema di controllo accessi, vedi sotto |
+| Applicativi | 444 e 9510 (Java), 3002 (Node), 3312 (MySQL) | il database e' in ascolto su tutte le interfacce |
+| Corretti, solo locali | 6379 (Redis), 49864 (SQL Server) | vincolati all'indirizzo locale, come dev'essere |
+
+Tre voci meritano una riga propria e sono diventate altrettanti difetti. Il database MySQL sulla porta 3312 e' in ascolto su tutte le interfacce, quindi raggiungibile da chiunque sulla LAN piatta, ed e' l'unico servizio di questa macchina che abbia un rimedio a costo quasi nullo (#176). La console web di gestione dell'hardware del produttore, sulle porte 2301 e 2381, e' un componente storico che espone stato e configurazione del server e la cui superficie e' nota per essere problematica: va determinato se serva ancora a qualcuno (#175). E il **server del sistema di rilevazione presenze** vive qui (#177), il che chiude una domanda che il progetto aveva aperto da un'altra parte.
+
+### Il sistema di rilevazione presenze era gia' noto per meta'
+
+Il difetto NET-021 registrava l'unita' terminale del sistema di rilevazione presenze sulla porta 3 dello switch del Piano Terra, notando che si trattava di un apparato che tratta dati personali dei dipendenti, collegato alla LAN piatta e assente da ogni inventario. Mancava l'altra meta': **dove stia il server**. Sta sulla VM 100, in ascolto su quattro porte, su una macchina senza firewall.
+
+Ne discende che il flusso dei dati di presenza attraversa per intero la LAN piatta, dal terminale al server, senza alcun filtro interposto in nessuno dei due estremi, e che i dati a riposo stanno su una macchina il cui perimetro e' aperto. E' un fatto che tocca il trattamento di dati personali e non solo la rete.
+
+### I due indirizzi, e la conseguenza su M4
+
+Il censimento mostra il servizio di condivisione file legato a **due indirizzi distinti** della stessa macchina, coerente con il fatto gia' documentato che la VM 100 ha due schede di rete su due bridge diversi, e che la seconda e' l'unica cosa attestata su `vmbr1`.
+
+La conseguenza sul piano rafforza un vincolo gia' scritto su M5, e lo rende piu' stringente di quanto sembrasse. Quella seconda scheda non e' un residuo inattivo: porta il servizio di condivisione file, cioe' traffico che gli utenti usano. Quando la porta 7 del 54HP diventera' un trunk, la VLAN 1 dovra' restare **non taggata**, altrimenti si interrompe una condivisione di rete in uso, e il guasto si manifestera' come "le cartelle non si aprono piu'" senza che nessuno lo colleghi a un intervento sullo switch.
+
+### I comandi usati
 
 ```powershell
-Get-NetFirewallProfile | Select-Object Name, Enabled, DefaultInboundAction, DefaultOutboundAction
-Get-NetFirewallRule -Enabled True -Direction Inbound -Action Allow | Get-NetFirewallPortFilter | Where-Object LocalPort -ne "Any" | Sort-Object LocalPort -Unique
-Get-NetTCPConnection -State Listen | Select-Object LocalAddress, LocalPort, OwningProcess | Sort-Object LocalPort
+Get-NetFirewallProfile | Select-Object Name,Enabled,DefaultInboundAction,DefaultOutboundAction
+Get-NetFirewallRule -Enabled True -Direction Inbound -Action Allow | Get-NetFirewallPortFilter | Where-Object LocalPort -ne "Any" | Select-Object -Unique Protocol,LocalPort | Sort-Object LocalPort
+Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,@{n='Processo';e={(Get-Process -Id $_.OwningProcess).ProcessName}} | Sort-Object LocalPort
 ```
 
-Il primo dice se i tre profili sono accesi e che cosa fanno per impostazione predefinita, il secondo elenca le eccezioni in ingresso effettivamente attive con la porta a cui si riferiscono, il terzo elenca cio' che e' realmente in ascolto e su quale indirizzo, che e' l'equivalente esatto di `ss -tulpn`.
+Il primo dice se i profili sono accesi e che cosa fanno per impostazione predefinita, il secondo elenca le eccezioni in ingresso attive, il terzo e' l'equivalente di `ss -tulpn` e aggiunge il nome del processo.
 
 ## I sette fatti che discendono dalla matrice, in ordine di quanto pesano
 
