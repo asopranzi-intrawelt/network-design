@@ -16,6 +16,14 @@ L'affermazione corretta e' quindi piu' stretta e piu' utile: **il livello host-b
 
 La conseguenza sul piano di segmentazione cambia di segno rispetto a quanto scritto il 28/08. Il vincolo dichiarato dall'IT Manager — nessun intervento deve togliere agli endpoint interni l'accesso ai servizi interni — non solo resta valido, ma torna a essere **stringente**: se sulla VM 204 esiste una lista di indirizzi ammessi, un cambio di indirizzamento dovuto alla segmentazione la rompe, e la rompe silenziosamente, perche' il servizio continuera' a rispondere a chi non e' in lista con un rifiuto che sembra un problema applicativo. La seconda passata del censimento serve a trovare tutte le liste di questo tipo prima di toccare gli indirizzi.
 
+## Da dove si lanciano i comandi, e una regola che sembra pedanteria e non lo e'
+
+I comandi di questa scheda si lanciano da due posti soltanto, e confonderli e' costato tempo il 31/08/2026. Quelli che riguardano una macchina virtuale si lanciano dalla postazione verso quella macchina, con l'alias SSH corrispondente. Quelli che riguardano l'hypervisor, cioe' tutta la famiglia `qm`, si lanciano sull'host Proxmox: dalla postazione con `ssh root@<host> "<comando>"`, oppure direttamente se si e' gia' collegati a quella shell.
+
+La regola che ne discende e' che **non si lancia mai `ssh` verso l'host su cui ci si trova gia'**. Il caso concreto e' stato un `ssh root@<host> "qm agent 208 ping"` digitato mentre si era gia' su quella shell, cioe' il server verso se' stesso, che ha prodotto la richiesta di accettare l'impronta della propria chiave.
+
+Tre ragioni per cui vale la pena evitarlo, e nessuna delle tre e' la superficie di attacco, che non cambia perche' il servizio SSH e' comunque in ascolto. La prima e' che accettare quell'impronta scrive una voce permanente nel file degli host conosciuti **del server**, riferita al server stesso: rumore che resta e che chi verra' dopo dovra' interpretare. La seconda e' la tracciabilita': un comando lanciato dalla postazione lascia una sessione sola e attribuibile, mentre uno lanciato dal server verso se' stesso ne lascia due annidate e nei registri somiglia a un accesso dalla rete. La terza e' pratica: due livelli di shell sono due livelli di citazione, ed e' esattamente il punto in cui i comandi si rompono, come gia' successo con il censimento.
+
 ## Come si chiama la stessa macchina nei tre posti in cui compare
 
 Una macchina di questa infrastruttura porta almeno tre nomi diversi, e non coincidono. Proxmox la identifica con un numero e un nome di macchina virtuale. Il sistema operativo che vi gira dentro ha un proprio nome host, scelto in fase di installazione e in quattro casi lasciato al valore predefinito. E la postazione dell'IT Manager la raggiunge con un alias SSH, che e' un soprannome locale scritto nel suo `~/.ssh/config` e che spesso ricorda l'applicazione invece della macchina: `odoo-vm` per il convertitore dei ruolini, che gira su Odoo, `openproject-vm` per quello che Proxmox chiama GanttTool, che e' OpenProject.
@@ -29,7 +37,7 @@ Nessuno dei tre nomi e' sbagliato, ma la loro convivenza e' una trappola: un com
 | 203 | templateMicroservice | — | nessuno | — | spenta |
 | 204 | ConvertitoreRuoliniENI | `10.61.20.22` | `odoo-vm` | `intrawelt` | `Ubuntu24` |
 | 205 | GanttTool | `10.61.20.61` | `openproject-vm` | `intrawelt` | non rilevato |
-| 206 | intrasite | `10.61.20.23` | `wordpress-vm` | `intrawelt` | `Ubuntu24` |
+| ~~206~~ | ~~intrasite~~ | ~~`10.61.20.23`~~ | ~~`wordpress-vm`~~ | — | — | dismessa il 31/08/2026 |
 | 207 | websiteAnalyst | `10.61.20.24` | `vm207` | `intrawelt` | `Ubuntu24` |
 | 208 | portaleAsset | `10.61.20.25` | `asset-vm` | `portale-asset-it` | `asset` |
 | 209 | IntraNewSite | `10.61.20.209` | nessuno | `intrawelt-site` | `intrawelt-site-...` |
@@ -62,7 +70,7 @@ Il passo 6 precede la reimpostazione delle password per la ragione registrata in
 
 Un programma che offre un servizio apre un *socket*[^socket] in ascolto su una porta, e nel farlo dichiara anche su quale indirizzo vuole ricevere. Quella scelta, che si legge nella colonna sinistra dell'output di `ss`, e' la differenza fra un servizio raggiungibile da tutta la rete e uno raggiungibile solo da se' stesso, e non ha niente a che vedere con il firewall.
 
-Se l'indirizzo dichiarato e' `127.0.0.1`, cioe' l'indirizzo di *loopback*[^loopback], il servizio risponde solo a chi si trova sulla stessa macchina: nessun pacchetto proveniente dalla rete potra' mai raggiungerlo, indipendentemente da qualunque filtro. E' il caso dei database MariaDB sulle macchine 202, 206 e 207, e dei due processi Python sulla 204, e va detto che e' la configurazione corretta per un componente che serve solo l'applicazione che gli sta accanto.
+Se l'indirizzo dichiarato e' `127.0.0.1`, cioe' l'indirizzo di *loopback*[^loopback], il servizio risponde solo a chi si trova sulla stessa macchina: nessun pacchetto proveniente dalla rete potra' mai raggiungerlo, indipendentemente da qualunque filtro. E' il caso dei database MariaDB sulle macchine 202 e 207, e lo era della 206 finche' e' esistita, e dei due processi Python sulla 204, e va detto che e' la configurazione corretta per un componente che serve solo l'applicazione che gli sta accanto.
 
 Se l'indirizzo dichiarato e' `0.0.0.0`, oppure `*`, il servizio accetta connessioni su qualunque interfaccia della macchina, quindi da tutta la LAN piatta. Se e' un indirizzo specifico, per esempio quello della macchina sulla LAN come nel caso della porta 8000 sulla 207, l'effetto pratico e' lo stesso perche' quell'indirizzo e' proprio quello che tutta la rete puo' raggiungere: cambia solo che il servizio non risponde su loopback o sulle reti interne dei container.
 
@@ -90,7 +98,7 @@ La colonna del filtro dice soltanto che cosa risponde `ufw`, che come si e' vist
 |---|---|---|---|---|---|---|---|
 | 202 | PasswordManager | `10.61.20.21` | Ubuntu 24.04.2 LTS | non installato | 22, 80 | 3306, 631 | da verificare |
 | 204 | ConvertitoreRuoliniENI | `10.61.20.22` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8090 | 5000, 5010 | **si**: accesso ristretto per indirizzo, ammessi la postazione dell'IT Manager e due indirizzi della fascia `.70`, riferito il 31/08/2026; livello e sintassi da determinare |
-| 206 | intrasite | `10.61.20.23` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 443 | 3306, 631 | da verificare |
+| ~~206~~ | ~~intrasite~~ | — | — | — | — | — | **dismessa il 31/08/2026**, vedi §La dismissione della VM 206 |
 | 207 | websiteAnalyst | `10.61.20.24` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8000 | 3306, 631 | da verificare |
 | 209 | IntraNewSite | `10.61.20.209` | Ubuntu 24.04.4 LTS | non installato | 22, 3000, 5432 | 631 | da verificare |
 | 602 | Intralino | `10.61.20.60` | Ubuntu 25.10 | non installato | 22, 80, 443, 4443, 5443, 5444 | nessuna | da verificare |
@@ -215,6 +223,44 @@ La modifica alla riga di avvio non e' permanente e non lascia traccia: al riavvi
 Per la VM 205, che non arriva alla schermata di accesso, la seconda via e' comunque necessaria, ma con un passo in piu': prima di cambiare la password conviene capire perche' non arrivi, e la risposta si legge nei registri dell'avvio con `journalctl -b -p err` una volta ottenuta la shell.
 
 Nota di igiene che discende da #162: prima di reimpostare le due password va deciso **dove finiranno**, perche' il deposito delle credenziali di questa infrastruttura e' la VM 202, che oggi risponde in chiaro (#160). Mettere due password nuove dentro un deposito servito senza cifratura riproduce il problema invece di chiuderlo, quindi la sequenza corretta e' prima HTTPS sulla 202, poi la reimpostazione.
+
+## La dismissione della VM 206, e le tre cose da controllare quando una macchina sparisce
+
+Il 31/08/2026 l'IT Manager ha spento e distrutto la VM 206 `intrasite`, con `qm destroy 206 --purge`, dichiarando che non serve piu' per il momento. La macchina era la copia uno a uno del rifacimento del sito commissionato all'agenzia, tenuta come riferimento di contenuto e di marchio, e stava su `vmbr2` insieme alla VM 209.
+
+Il presupposto e' verificato e non riferito: sul NAS, sotto `Backup/dump`, esistono copie `vzdump-qemu-206` datate 16/06, 26/07, 23/08, 29/08, 30/08 e **31/08/2026 alle 06:44**, ciascuna di circa venti gigabyte, con il rispettivo file di annotazioni. La copia piu' recente e' quindi dello stesso giorno della dismissione, presa poche ore prima. Vale la pena registrare il dettaglio perche' e' cio' che distingue una dismissione da una perdita di dati, e perche' fra sei mesi nessuno si ricordera' che il backup c'era.
+
+L'opzione `--purge` merita una riga, perche' e' quella che rende l'operazione piu' pulita e insieme piu' definitiva. Senza di essa Proxmox rimuove la macchina ma lascia dietro i riferimenti che altri oggetti della configurazione le fanno, in particolare le voci nei job di backup e nelle regole di replica, che continuano a puntare a una macchina che non esiste e producono errori a ogni esecuzione. Con `--purge` quei riferimenti vengono rimossi insieme alla macchina, i dischi compresi. Ne discende che il ripristino non e' un annullamento ma un'operazione a se': si ricrea la macchina dal file di backup, e va rifatto a mano cio' che stava fuori dal disco, cioe' l'appartenenza ai job.
+
+Tre cose vanno controllate quando una macchina virtuale sparisce, e valgono come procedura per le prossime volte.
+
+La prima e' **chi la cercava**. Un indirizzo che smette di rispondere non produce un errore leggibile in chi lo interrogava: produce un timeout, che somiglia a un problema di rete. Della 206 va quindi verificato se qualche postazione avesse un riferimento nel proprio file `hosts`, come la documentazione registra, e se qualche altro servizio la chiamasse.
+
+La seconda e' **cosa resta acceso al suo posto**. L'indirizzo che occupava torna libero e potra' essere riassegnato: se qualcuno tiene un riferimento vecchio, in futuro raggiungera' una macchina diversa da quella che si aspetta, che e' peggio di un timeout perche' risponde.
+
+La terza e' la **documentazione derivata**. La macchina compariva nella fonte della mappa, nella matrice di questa scheda, nel diagramma di `.claude/context/diagrams/`, nella scheda dei bridge e in quella della segmentazione: se la si toglie da una sola, le altre continuano a descrivere una macchina che non esiste, ed e' il modo tipico in cui una documentazione comincia a mentire. Le occorrenze sono state aggiornate tutte nella stessa sessione.
+
+## Reimpostare le password delle altre macchine, e dove vanno a finire
+
+La procedura con l'agente ospite funziona su qualunque macchina virtuale in cui l'agente sia installato e in esecuzione, ed e' stata usata con successo sulla VM 208 il 31/08/2026. Due precisazioni prima di applicarla in serie.
+
+La prima e' che **cambiare una password gia' nota non e' un guadagno di sicurezza in se'**. Una rotazione ha senso quando la credenziale e' stata esposta, quando e' condivisa fra piu' persone, quando non rispetta il criterio di robustezza adottato, o quando esce qualcuno che la conosceva. Cambiarle tutte perche' si e' imparata la procedura significa produrre una decina di credenziali nuove da memorizzare da qualche parte, il che sposta il problema invece di risolverlo: il problema, registrato in #168, non e' che le password siano vecchie ma che **non esista un posto unico dove sono scritte**.
+
+La seconda e' una conseguenza della procedura stessa che vale la pena rendere esplicita, perche' cambia il modello di fiducia dell'infrastruttura e non e' ovvia. `qm guest passwd` imposta la password di un utente **senza conoscere quella precedente**: non e' un difetto dello strumento, e' il potere legittimo di chi amministra l'hypervisor, che possiede i dischi delle macchine e potrebbe comunque montarli. Ne discende pero' un fatto che nessun documento del progetto aveva scritto: **chi ha accesso amministrativo a Proxmox ha, di fatto, accesso a ogni macchina virtuale dell'azienda**, compresa quella che ospita il gestore delle password, e puo' ottenerlo in un comando senza lasciare traccia dentro la macchina bersaglio. La protezione del gestore delle password non e' quindi piu' forte della protezione dell'accesso a Proxmox. Tracciato come #169.
+
+### Dove si depositano, e cosa non va fatto
+
+Il posto giusto esiste gia' ed e' progettato: il gestore delle password sulla VM 202, la cui architettura e' descritta in `docs/cybersecurity-governance.md` come Vaultwarden dietro un proxy inverso con HTTPS, autenticazione a due fattori obbligatoria e vault condivisi per area. La misura del censimento dice pero' che di quel disegno manca proprio il pezzo che lo rende utilizzabile: la macchina risponde sulla porta 80 e non ha alcun ascolto sulla 443, quindi oggi il deposito viaggia in chiaro. E' il difetto #160, e questa e' la sua conseguenza pratica: **finche' non e' chiuso, depositare le credenziali nel gestore le espone invece di proteggerle**, perche' un gestore servito senza cifratura trasmette in chiaro, a ogni accesso, sia la password principale sia tutte quelle che custodisce.
+
+Ne discende una sequenza obbligata, ed e' la ragione per cui #160 e' il primo intervento della lista e non uno dei tanti. Prima si chiude l'HTTPS sulla VM 202, poi vi si depositano le credenziali, e solo allora la reimpostazione in serie ha un senso, perche' ha una destinazione.
+
+Tre cose che non vanno fatte, e la prima riguarda direttamente il modo in cui si lavora con un assistente. Le password **non si scrivono in una conversazione** e **non si mettono in un file che l'assistente legge**: la conversazione resta nella trascrizione della sessione finche' non viene cancellata, e un file letto entra nel contesto e da li' puo' finire in un riassunto. Questo progetto non ha mai bisogno del valore di una credenziale: gli serve sapere che esiste, a quale macchina e a quale utenza si riferisce, e dove e' custodita. Non vanno scritte in un file di testo o in un foglio di calcolo su una condivisione, che e' il modo in cui una credenziale sopravvive alla persona che l'ha scritta e diventa leggibile da chiunque abbia accesso alla cartella — lo stesso schema gia' registrato in #126 per le utenze memorizzate nelle multifunzione. E non vanno lasciate nella cartella dei download o nelle foto delle etichette degli apparati, come annotato piu' volte nella mappa privata.
+
+### Il registro senza valori, che e' cio' che serve al progetto
+
+Cio' che manca e che si puo' tenere fin da subito, anche prima dell'HTTPS, e' l'inventario delle credenziali **senza le credenziali**: per ogni macchina, quale utenza esiste, se la password e' nota, dove e' custodita e quando e' stata cambiata l'ultima volta. E' il rimedio a #168, costa poco e non contiene nulla di sensibile, tanto che potrebbe stare in un file tracciato; resta comunque in `_notes/` perche' l'elenco delle utenze e' informazione operativa che non serve a nessuno fuori.
+
+Il modello e' `_notes/registro-credenziali.md`, con una colonna per lo stato e nessuna per il valore. Lo produce anche `scripts/Invoke-HostCensus.ps1` nella sua forma minima, cioe' l'elenco degli host su cui la password non e' risultata disponibile.
 
 ## Cosa resta aperto
 
