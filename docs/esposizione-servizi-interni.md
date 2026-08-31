@@ -92,7 +92,7 @@ Ne discende il metodo della seconda passata: non chiedere a `ufw` se c'e' un fil
 
 ## La matrice dell'esposizione, al 28/08/2026
 
-La colonna del filtro dice soltanto che cosa risponde `ufw`, che come si e' visto e' uno dei quattro livelli: dove dice "non installato" non si deve leggere "nessun filtro", ma "nessun filtro **a questo livello**". La colonna delle restrizioni note raccoglie quanto emerso finora per altra via.
+Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macchine coperte dalla seconda: vedi §L'esito della seconda passata. La colonna del filtro dice soltanto che cosa risponde `ufw`, che come si e' visto e' uno dei quattro livelli: dove dice "non installato" non si deve leggere "nessun filtro", ma "nessun filtro **a questo livello**". La colonna delle restrizioni note raccoglie quanto emerso finora per altra via.
 
 | VM | Nome | Indirizzo | Sistema | `ufw` | Porte in ascolto su tutte le interfacce | Porte solo locali | Restrizioni note per altra via |
 |---|---|---|---|---|---|---|---|
@@ -106,6 +106,40 @@ La colonna del filtro dice soltanto che cosa risponde `ufw`, che come si e' vist
 | 205 | GanttTool | non rilevato | non rilevato | non rilevato | non rilevato | non rilevato | macchina non accessibile, #162 |
 | 208 | portaleAsset | `10.61.20.25` | non rilevato | non rilevato | 80 e 443 note da NET-011, il resto non rilevato | non rilevato | macchina non accessibile, #162 |
 | 100 | WinServer2022 | non rilevato | Windows Server 2022 | non applicabile | non rilevato | non rilevato | Windows Defender Firewall, da censire a parte: vedi §La macchina Windows |
+
+## L'esito della seconda passata, 31/08/2026
+
+Cinque macchine su nove interrogate su tutti e quattro i livelli. Restano fuori la 209, la 810 e l'host Ollama, che non erano nella stessa esecuzione, la 205 che non risponde in rete e la 100 che e' Windows.
+
+| VM | Filtro del kernel | Ammissione nel server web | Container | Conclusione |
+|---|---|---|---|---|
+| 202 | `ufw` inattivo, nessuna regola propria oltre a quelle del motore dei container | nessuna | Vaultwarden, non pubblicato sull'host | il proxy davanti al gestore e' Apache, in chiaro |
+| 204 | `ufw` inattivo, nessuna regola | **si**, `allow`/`deny` su due configurazioni di nginx | nessuno | l'unica macchina con una restrizione per indirizzo |
+| 207 | `ufw` inattivo, tabelle presenti ma vuote | nessuna | nessuno | nessuna restrizione a nessun livello |
+| 208 | nessun `ufw`, regole del motore dei container | nessuna | tre pubblicati su loopback, due su tutte le interfacce | separazione parziale, e fatta bene dove c'e' |
+| 602 | `ufw` non installato | nessuna | dieci, due pile complete | nessuna restrizione a nessun livello |
+
+### La restrizione della VM 204, trovata dov'era prevista
+
+L'ipotesi del secondo livello era corretta. Su `/etc/nginx/sites-available/convertitore-ruolini` e sul gemello `-staging` compaiono quattro direttive `allow` seguite da un `deny all`: l'indirizzo di *loopback*, perche' il servizio sia provabile da dentro la macchina, e tre indirizzi della classe delle postazioni. Il meccanismo e' esattamente quello descritto sopra: la connessione viene stabilita e poi rifiutata a livello applicativo, e nessun comando di sistema la mostra.
+
+Due cose vanno notate oltre al fatto in se'. La prima e' che la restrizione e' **duplicata** su due file, produzione e collaudo, il che significa che una modifica futura va fatta in due posti e che dimenticarne uno non produce nessun errore visibile. La seconda e' che gli indirizzi sono scritti come **valori letterali**, ed e' il punto in cui questa scoperta tocca il piano di segmentazione: vedi #171.
+
+### Il gestore delle password, e il pezzo mancante del suo disegno
+
+La misura chiude una domanda che #160 lasciava aperta, cioe' **come** il gestore sia servito. Il contenitore Vaultwarden espone la porta 80 soltanto verso l'interno della macchina e non e' pubblicato sull'host, il che e' corretto; davanti gli sta **Apache**, in ascolto sulla porta 80 su tutte le interfacce, senza alcun ascolto sulla 443.
+
+Il disegno in `docs/cybersecurity-governance.md` prevedeva un proxy inverso con HTTPS e certificato interno. Il proxy inverso c'e', il HTTPS no, e cambia il server rispetto al progetto, che diceva nginx. Ne discende che il rimedio a #160 e' circoscritto e non richiede di rifare l'architettura: si aggiunge un host virtuale in ascolto sulla 443 con un certificato, si reindirizza la 80, e il contenitore non si tocca.
+
+### Le due macchine senza alcuna restrizione, e quella che ne ha una parziale
+
+Sulla VM 207 non esiste filtro a nessuno dei quattro livelli: le tabelle di `nftables` sono presenti ma vuote, `ufw` e' inattivo, Apache non ha direttive di ammissione, e il servizio applicativo e' in ascolto direttamente sull'indirizzo di LAN alla porta 8000. Il database, correttamente, sta su loopback. Sulla VM 602 la situazione e' la stessa, con in piu' dieci contenitori.
+
+La VM 208 e' il caso piu' interessante perche' mostra che qualcuno **ha** ragionato sull'esposizione, ma a meta'. I suoi servizi di appoggio — il database, la cache, un servizio applicativo interno — sono pubblicati su `127.0.0.1`, quindi irraggiungibili dalla rete, ed e' la scelta giusta. Le porte 80 e 443 sono invece pubblicate su tutte le interfacce, il che e' voluto perche' il portale deve servire gli utenti, ed e' il difetto #121. C'e' pero' anche un processo Node in ascolto sulla porta 3000 su tutte le interfacce, che ha la forma di un ambiente di sviluppo accanto al servizio in esercizio, e va verificato.
+
+### Un fatto trasversale che nessuna delle cinque schede mostra da sola
+
+Su nessuna delle cinque macchine il servizio SSH dichiara esplicitamente quali metodi di autenticazione accetti: la configurazione non contiene alcuna direttiva in merito, quindi valgono i valori predefiniti della distribuzione, che ammettono **anche l'autenticazione con password**. Letto da solo e' un dettaglio; letto insieme a #170, cioe' al fatto che alcune password sono condivise fra piu' macchine, e a #159, cioe' che la porta 22 e' raggiungibile da tutta la LAN piatta su tutte, diventa una via di movimento laterale che non richiede di violare nulla. Tracciato come #172.
 
 ## La macchina Windows, che non e' un caso a parte per pigrizia
 
