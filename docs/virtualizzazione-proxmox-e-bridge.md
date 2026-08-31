@@ -11,7 +11,7 @@ Il server e' uno solo, e' un HP ProLiant Gen10 nell'armadio di destra del CED al
 | Presa sul telaio | Nome nel sistema operativo | Bridge | Dove termina | Misura sulla porta, 24/08/2026 |
 |---|---|---|---|---|
 | eth2 | eno2 | `vmbr1` | XGS2220-54HP, porta 7 | 1 Gb/s, 1 stazione, PVID 1 |
-| eth3 | eno3 | `vmbr2` | XGS2220-54HP, porta 9 | 1 Gb/s, 3 stazioni, PVID 1 |
+| eth3 | eno3 | `vmbr2` | XGS2220-54HP, porta 9 | 1 Gb/s, 3 stazioni, PVID 1 (misura del 24/08, precedente alla dismissione della VM 206) |
 | eth4 | eno4 | `vmbr3` | XGS2220-54HP, porta 11 | 1 Gb/s, 3 stazioni, PVID 1 |
 | eth1 | eno1 | `vmbr0` | QNAP QSW-1208-8c, non gestito | il ramo rientra nel 54HP dalla fibra 52: 10 Gb/s, 9 stazioni, trunk |
 | iLO | scheda di gestione indipendente | — | XGS2220-54HP, porta 22 | 1 Gb/s, 1 stazione, PVID 1 |
@@ -28,7 +28,7 @@ Su questo host i bridge sono quattro e ciascuno contiene una sola scheda fisica:
 |---|---|---|---|---|
 | `vmbr0` | eno1 | 52, attraverso il QNAP non gestito | si, `10.61.20.11/19` | VM 100 prima scheda, VM 202, VM 208, VM 810 |
 | `vmbr1` | eno2 | 7 | no | VM 100 seconda scheda, e nient'altro |
-| `vmbr2` | eno3 | 9 | no | VM 206 e VM 209, i due ambienti del sito |
+| `vmbr2` | eno3 | 9 | no | VM 209; vi era anche la VM 206, dismessa il 31/08/2026 |
 | `vmbr3` | eno4 | 11 | no | VM 203 spenta, VM 204, VM 205, VM 207, VM 602 |
 
 ## L'indirizzo dell'hypervisor, e i tre bridge senza indirizzo
@@ -129,6 +129,50 @@ Oggi ogni macchina virtuale del server sta sulla stessa rete di ogni postazione,
 Una *DMZ*[^dmz] e' la risposta consolidata a questo problema, ed e' bene dire con precisione in che cosa consiste, perche' il nome evoca piu' di quello che e'. Non e' un apparato e non e' un cavo diverso: e' una rete separata, con un proprio intervallo di indirizzi, dove si collocano i servizi che devono essere raggiungibili, e la cui separazione consiste nel fatto che il traffico fra quella rete e la LAN e' obbligato a passare da un apparato che decide che cosa puo' passare, cioe' il firewall. Il beneficio non e' rendere i servizi irraggiungibili, che sarebbe l'opposto del loro scopo, ma fare in modo che chi compromette un servizio pubblicato non si trovi automaticamente dentro la rete dove stanno i file, i NAS e le postazioni.
 
 Il collegamento con i bridge, che e' il punto in cui questa scheda e il piano DMZ si toccano, e' il seguente. Perche' una macchina virtuale stia nella DMZ, il suo traffico deve arrivare allo switch marchiato come appartenente alla VLAN 201 anziche' alla VLAN 1. Il marchio e' l'etichetta *802.1Q*[^dot1q] di quattro byte aggiunta a ogni trama, e qualcuno la deve apporre materialmente. Oggi non la appone nessuno: non i bridge, che come si e' visto non sanno che cosa sia una VLAN, e non lo switch, che ha quelle quattro porte in accesso e quindi tratta indistintamente tutto come VLAN 1. Il lavoro sui bridge consiste esattamente nell'insegnare a uno dei quattro ad apporre quell'etichetta, e alla porta corrispondente dello switch a rispettarla.
+
+## Una DMZ o due segmenti: la domanda posta dall'IT Manager il 31/08/2026
+
+La domanda, riportata nei suoi termini, e' duplice. Primo: la DMZ non deve togliere i servizi interni agli endpoint della LAN, che devono continuare a raggiungerli. Secondo: forse serve allora un segmento distinto per i servizi che Intrawelt eroga verso l'esterno, come il portale asset. Entrambe le osservazioni sono fondate, e la risposta chiarisce un equivoco di linguaggio prima ancora che di architettura.
+
+### Togliere dalla LAN piatta non significa rendere irraggiungibile
+
+L'espressione "togliere i servizi dalla LAN piatta", usata in questa documentazione, e' ambigua e va sciolta. Non significa che le postazioni smettano di raggiungerli: significa che il traffico fra una postazione e un servizio, che oggi passa direttamente da uno switch senza che nessuno lo esamini, dopo la segmentazione attraversa il firewall, che lo lascia passare se una regola lo prevede.
+
+La differenza non e' se il collegamento funziona, ma **chi ha deciso che funzioni**. Oggi funziona perche' non esiste nulla che lo impedisca, ed e' la stessa ragione per cui funzionerebbe un collegamento che nessuno vuole, per esempio dal portatile di un ospite al pannello di amministrazione di una macchina di prova. Dopo, funziona perche' qualcuno lo ha scritto, e cio' che nessuno ha scritto non passa.
+
+Ne discende che il vincolo dell'IT Manager e' pienamente compatibile con la segmentazione, a una condizione operativa precisa: le regole che permettono gli accessi legittimi vanno scritte **contestualmente** allo spostamento, non dopo. E' il motivo per cui la matrice dei flussi, cioe' l'elenco di chi ha bisogno di raggiungere che cosa, e' un prerequisito e non una rifinitura, e per cui il censimento dell'esposizione le sta davanti.
+
+### Il criterio che divide i due segmenti non e' chi usa il servizio
+
+L'intuizione della seconda domanda e' giusta e la roadmap la prevedeva gia', ma il criterio che separa i due segmenti va detto con precisione, perche' quello istintivo porta fuori strada.
+
+Il criterio **non** e' chi usa il servizio. Se lo fosse, un servizio usato dai dipendenti starebbe sempre dentro e uno usato dai clienti sempre fuori, e non e' cosi'. Il criterio e' **da dove puo' arrivare una connessione non richiesta**, cioe' chi puo' bussare alla porta senza essere stato invitato.
+
+Un servizio raggiungibile da Internet puo' ricevere connessioni da chiunque, in qualunque momento, senza che nessuno dentro l'azienda lo sappia. E' quindi il candidato piu' probabile a essere compromesso per primo, e la sola cosa che conta e' che una sua compromissione non consegni la rete interna. Questo e' il segmento **DMZ, VLAN 201**: la sua ragione d'essere e' che dalla DMZ verso la LAN si nega per impostazione predefinita.
+
+Un servizio raggiungibile solo dall'interno riceve connessioni solo da apparati dell'azienda. Il rischio non e' nullo, perche' una postazione compromessa e' dentro, ma e' di natura diversa e non giustifica lo stesso isolamento. Questo e' il segmento dei **servizi applicativi interni, VLAN 50**, gia' previsto dal micro-step M22d: la sua ragione d'essere non e' proteggersi da Internet, e' impedire che una postazione compromessa raggiunga senza filtro **ogni** servizio, e simmetricamente che un servizio compromesso raggiunga ogni postazione e ogni NAS.
+
+| | VLAN 201, DMZ | VLAN 50, servizi interni |
+|---|---|---|
+| Chi puo' iniziare una connessione | chiunque, da Internet | solo apparati dell'azienda |
+| Regola predefinita verso la LAN | nega | nega, con eccezioni piu' ampie |
+| Regola predefinita dalla LAN | consenti cio' che serve | consenti cio' che serve |
+| Rischio da cui protegge | compromissione dall'esterno | movimento laterale dall'interno |
+| Inquilini previsti | proxy inverso e servizi pubblicati | portale asset e servizi interni futuri |
+
+### Il caso del portale asset, che sta esattamente sul confine
+
+Il portale asset della VM 208 e' il caso che rende concreta la distinzione, ed e' anche quello su cui la documentazione ha detto due cose diverse in momenti diversi, quindi vale la pena fissarlo.
+
+Oggi il portale serve utenti interni, quindi la sua destinazione corretta e' la **VLAN 50**. Il piano del giugno 2026 lo destinava alla DMZ perche' allora si prevedeva di pubblicarlo verso l'esterno, e quella previsione non e' stata realizzata.
+
+Se un giorno verra' pubblicato, non serviranno due copie e non servira' una seconda DMZ: si sposta nella **VLAN 201** e si scrive una regola che consente alle postazioni della LAN di raggiungerlo. Un servizio in DMZ resta perfettamente raggiungibile dall'interno, perche' la DMZ nega la direzione DMZ verso LAN, non la direzione LAN verso DMZ. E' l'asimmetria che rende utile il segmento, e capirla evita l'errore di duplicare i servizi.
+
+Ne discende la regola di destinazione, da applicare a ogni servizio nuovo: se qualcuno da fuori deve potervi bussare, va in DMZ; altrimenti va nei servizi interni. Un servizio non cambia segmento perche' cambia chi lo usa, ma perche' cambia **da dove lo si puo' raggiungere senza invito**.
+
+### Che cosa questo non risolve, e va detto
+
+La segmentazione separa i segmenti, non le identita'. Se la stessa credenziale apre piu' macchine, spostarle in segmenti diversi non impedisce a chi la possiede di usarla su tutte quelle che riesce a raggiungere: riduce quante ne raggiunge, non quante ne apre. E' il motivo per cui il difetto #170 va chiuso a prescindere dalla DMZ, e per cui i due lavori non si sostituiscono a vicenda.
 
 ## I vincoli dichiarati dall'IT Manager il 25/08/2026
 

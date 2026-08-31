@@ -91,11 +91,23 @@ foreach ($t in $Target) {
         # sudo -k scarta l'autorizzazione in cache, cosi' una password sbagliata si
         # manifesta subito. Solo l'output dello script viene rediretto su file: il
         # prompt di sudo resta a schermo e l'utente puo' digitarlo.
+        #
+        # Il file di esito viene rimosso prima di essere riscritto, e non e' una
+        # precauzione oziosa: su Ubuntu il parametro di kernel fs.protected_regular
+        # impedisce di aprire in scrittura, dentro una cartella condivisa e con sticky
+        # bit come /tmp, un file gia' esistente e di proprieta' di un altro utente, e
+        # la restrizione vale anche per root. Un residuo lasciato da un'esecuzione
+        # precedente fatta con un utente diverso fa quindi fallire la scrittura con un
+        # errore di permessi che sembra, e non e', un problema di password.
+        # Alla fine la proprieta' passa all'utente della sessione, altrimenti scp non
+        # potrebbe rileggere un file creato da root con permessi restrittivi.
+        $prep = "rm -f $outRem"
+        $post = "chown `$SUDO_USER $outRem 2>/dev/null; chmod 600 $outRem"
         if ($conSudo) {
             Write-Host "  password di sudo di QUESTO host (non quella di Windows)" -ForegroundColor DarkGray
-            $cmd = "sudo -k sh -c 'sh $remoto > $outRem 2>&1'"
+            $cmd = "sudo -k sh -c '$prep; sh $remoto > $outRem 2>&1; $post'"
         } else {
-            $cmd = "sh -c 'sh $remoto > $outRem 2>&1'"
+            $cmd = "sh -c '$prep; sh $remoto > $outRem 2>&1'"
         }
 
         & ssh -t -o ConnectTimeout=15 $t $cmd
@@ -120,7 +132,7 @@ foreach ($t in $Target) {
 
         $prova++
         if ($conSudo -and $prova -lt $Tentativi) {
-            Write-Host "  password non accettata. Riprovo." -ForegroundColor Yellow
+            Write-Host "  non riuscito. Puo' essere la password, oppure un errore del comando: se sopra compare un messaggio diverso da 'Riprovare', la password era corretta." -ForegroundColor Yellow
             continue
         }
 
