@@ -109,7 +109,7 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 
 ## L'esito della seconda passata, 31/08/2026
 
-Sette host su dieci interrogati su tutti e quattro i livelli. Restano fuori la VM 205, che non risponde in rete, la VM 100, che e' Windows e ha una procedura propria, e la VM 810, su cui la copia dello script non e' riuscita per il motivo descritto piu' avanti.
+**Otto host su dieci** interrogati su tutti e quattro i livelli, al 31/08/2026. Restano fuori soltanto la VM 205, che non risponde in rete, e la VM 100, che e' Windows e ha una procedura propria.
 
 Il conto e' salito da nove a dieci perche' nella lista e' entrato un host che nessun inventario del progetto conteneva: l'host Ollama, che non e' una macchina virtuale e per questo era sfuggito a un censimento costruito sull'inventario di Proxmox. La rete lo conosceva gia' come l'apparato sulla porta 46 del 54HP, quello delle oscillazioni del collegamento di NET-010, ma nessuno lo aveva mai trattato come un host da censire.
 
@@ -122,6 +122,7 @@ Il conto e' salito da nove a dieci perche' nella lista e' entrato un host che ne
 | 602 | `ufw` non installato | nessuna | dieci, due pile complete | nessuna restrizione a nessun livello |
 | 209 | `ufw` inattivo, regole del motore dei container | nessuna | uno, PostgreSQL pubblicato su tutte le interfacce | il database e' un contenitore, non il motore della macchina |
 | Ollama | `ufw` inattivo, tabelle del motore dei container vuote | nessuna | nessuno attivo | due istanze del servizio, una locale e una esposta a tutta la LAN |
+| 810 | `ufw` inattivo, regole del motore dei container | nessuna | cinque, due pile complete | i database non sono pubblicati, tutto il resto si |
 
 ### La restrizione della VM 204, trovata dov'era prevista
 
@@ -161,11 +162,21 @@ Sullo stesso host e' in ascolto anche il servizio di scrivania remota sulla port
 
 Su nessuno degli host il servizio SSH dichiara esplicitamente quali metodi di autenticazione accetti: la configurazione non contiene alcuna direttiva in merito, quindi valgono i valori predefiniti della distribuzione, che ammettono **anche l'autenticazione con password**. Letto da solo e' un dettaglio; letto insieme a #170, cioe' al fatto che alcune password sono condivise fra piu' macchine, e a #159, cioe' che la porta 22 e' raggiungibile da tutta la LAN piatta su tutte, diventa una via di movimento laterale che non richiede di violare nulla. Tracciato come #172.
 
-### La VM 810, e perche' la copia non riesce
+### La VM 810, e la lezione sul come si sbaglia una diagnosi
 
-Sulla VM 810 la porta 22 risponde, ma l'autenticazione come amministratore con password viene rifiutata tre volte di seguito. L'ipotesi piu' probabile, da verificare e non da dare per acquisita, e' la politica predefinita della distribuzione per il servizio SSH, che ammette l'accesso dell'utente amministratore **solo con chiave** e non con password. Sarebbe coerente con il fatto che nessuna direttiva esplicita sia stata trovata sulle altre macchine: dove il valore predefinito non e' stato toccato, vale quello, e per l'utente amministratore quel valore e' restrittivo.
+Sulla VM 810 il censimento e' riuscito al secondo tentativo, e la causa del primo fallimento era la piu' banale delle due ipotesi: una password diversa digitata in quel momento, cosa non sorprendente su un parco dove alcune credenziali sono condivise e altre no (#170). La seconda ipotesi, cioe' l'assenza del sottosistema di trasferimento file, e' stata **verificata e smentita**: la copia con il protocollo storico e quella con il protocollo predefinito funzionano entrambe.
 
-Se confermata, ne discendono tre vie, in ordine di costo. Distribuire la chiave pubblica della postazione fra le chiavi autorizzate dell'utente amministratore, che risolve una volta sola e va comunque fatta perche' e' il primo passo dell'intervento sulle credenziali. Eseguire il censimento localmente sulla macchina, a cui si accede in scrittorio remoto. Oppure creare un utente non amministrativo con facolta' di elevazione, che e' la configurazione corretta a regime ma e' un cambiamento e non una lettura.
+Vale la pena tenere il percorso della diagnosi invece del solo esito, perche' contiene due ipotesi sbagliate una dopo l'altra su un guasto che era banale. La prima, la politica che vieta l'accesso dell'utente amministratore con password, e' stata smentita da un comando; la seconda dal comando successivo. E' lo stesso schema descritto in #171: un messaggio di errore che non distingue le cause manda la diagnosi nel posto sbagliato, e in questo caso il messaggio diceva "copia non riuscita" senza dire perche'.
+
+Sull'host risultano cinque contenitori: il servizio in esercizio sulla porta 8080, il gemello di collaudo sulla 8090, un proxy davanti a entrambi sulla porta 80, e **due database che non sono pubblicati** e quindi restano raggiungibili solo dai contenitori accanto, il che e' corretto. Il servizio di scrivania remota e' in ascolto sulla 3389 su tutte le interfacce, come gia' registrato.
+
+I due database sono pero' su una versione del motore la cui serie e' fuori supporto da oltre due anni. Il fatto che non siano esposti alla rete ne riduce molto la portata, perche' per raggiungerli bisogna gia' essere dentro la macchina o dentro un contenitore accanto, ma non lo annulla: una vulnerabilita' del motore diventa sfruttabile appena qualcosa che gli sta accanto viene compromesso, ed e' esattamente la situazione di un ambiente di collaudo che convive con l'esercizio. Tracciato come #174.
+
+### Due lezioni sullo strumento, da non ripetere
+
+La prima riguarda l'etichetta dell'esito. Lo strumento marcava come parziale ogni censimento eseguito senza `sudo`, ma su un host a cui ci si collega gia' come amministratore il comando gira con tutti i privilegi e l'esito e' completo: sulla VM 810 i nomi dei processi e le regole del kernel c'erano tutti, e l'etichetta diceva il contrario. Ora la completezza si riconosce dal contenuto, cioe' dalla presenza dei nomi dei processi, che il kernel mostra soltanto a chi ha i privilegi, invece che dedurla dalla modalita' di esecuzione. E' una differenza di metodo che vale oltre questo strumento: si misura il risultato, non l'intenzione.
+
+La seconda riguarda un ripiego che sembrava equivalente e non lo era. Per aggirare la copia si era proposto di passare lo script attraverso il flusso di ingresso di una sessione remota. Il comando fallisce con errori incomprensibili — righe non trovate e una struttura di controllo che sembra rotta — e la causa non e' lo script: quando PowerShell incanala il contenuto di un file verso un programma esterno, riscrive le terminazioni di riga nella convenzione di Windows, e una shell di sistema unix legge quel carattere in piu' come parte dell'ultimo comando di ogni riga. Da qui il metodo: verso un sistema unix si trasferiscono **file**, con una copia, non flussi di testo passati attraverso PowerShell.
 
 ## La macchina Windows, che non e' un caso a parte per pigrizia
 
@@ -205,11 +216,11 @@ Il settimo e' minore e riguarda l'igiene: quattro macchine distinte rispondono c
 
 A questi si aggiunge il fatto trasversale, che e' il primo in ordine di gravita' e ha un codice proprio: l'assenza del firewall di sistema su tutte e sette le macchine, tracciata come #159.
 
-## Una cosa che il censimento non ha potuto vedere, e va rifatta
+## Il limite della prima passata, superato dalla seconda
 
-Su sei macchine su sette il comando e' stato eseguito da un utente non privilegiato. L'elenco delle porte in ascolto e' comunque completo e affidabile, perche' quel dato il kernel lo espone a chiunque; non lo sono invece due colonne che mancano, cioe' il nome del processo che tiene aperta ciascuna porta e l'elenco dei container. Su tre di quelle macchine, la 202, la 206 e la 209, la presenza delle reti interne di Docker dimostra che il motore dei container e' installato e attivo, mentre il comando ha risposto "nessun docker": non e' vero, e' semplicemente che l'utente non aveva accesso al socket del motore.
+Nella prima passata il comando era stato eseguito da un utente non privilegiato su sei macchine su sette. L'elenco delle porte in ascolto era comunque completo e affidabile, perche' quel dato il kernel lo espone a chiunque; mancavano invece il nome del processo che tiene aperta ciascuna porta e l'elenco dei contenitori, e su tre macchine la risposta "nessun docker" era un errore di permessi e non un'assenza, come dimostrava la presenza delle reti interne del motore.
 
-Ne discende che la matrice qui sopra e' corretta su cosa e' esposto e incompleta su chi lo espone, e la seconda meta' serve per decidere che cosa spegnere. Il comando va ripetuto come amministratore sulle sei macchine.
+Il limite e' superato: la seconda passata del 31/08/2026 e' stata eseguita con privilegi su tutti e otto gli host raggiunti, e la sezione §L'esito della seconda passata contiene sia cosa e' esposto sia chi lo espone. Il paragrafo resta come promemoria del fatto che un censimento senza privilegi risponde a meta' della domanda, e che meta' risposta su una superficie di attacco somiglia troppo a una risposta intera.
 
 ## Perche' i container complicano il quadro, e va saputo prima di installare un filtro
 

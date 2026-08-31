@@ -144,10 +144,16 @@ foreach ($t in $Target) {
             & scp -q "${t}:$outRem" $dest 2>$null
             if ($LASTEXITCODE -eq 0 -and (Test-EsitoValido $dest)) {
                 $righe = (Get-Content $dest | Measure-Object -Line).Lines
-                if ($conSudo) {
-                    $stato = 'ok'; $nota = ''
+                # Senza sudo il censimento e' parziale solo se l'utente della sessione non e'
+                # gia' l'amministratore: su un host a cui ci si collega come root il comando
+                # gira con tutti i privilegi e l'esito e' completo. Lo si riconosce dal fatto
+                # che l'output contiene i nomi dei processi in ascolto, che il kernel mostra
+                # soltanto a chi ha i privilegi.
+                $completo = $conSudo -or ((Get-Content $dest -Raw) -match 'users:\(\("')
+                if ($completo) {
+                    $stato = 'ok'; $nota = if ($conSudo) { '' } else { 'senza sudo ma con utente amministratore' }
                 } else {
-                    $stato = 'ok parziale'; $nota = 'senza sudo: mancano nomi dei processi e regole del kernel'
+                    $stato = 'ok parziale'; $nota = 'senza privilegi: mancano nomi dei processi e regole del kernel'
                 }
                 Write-Host ("  raccolte {0} righe in {1}" -f $righe, $dest) -ForegroundColor Green
                 if (-not $conChiave) { $nota = ($nota + ' | accesso solo con password, chiave non distribuita').Trim(' |') }
