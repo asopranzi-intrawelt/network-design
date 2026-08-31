@@ -55,7 +55,29 @@ $remoto = '/tmp/censimento-host.sh'
 $outRem = '/tmp/censimento-host.out'
 $risultati = @()
 
+# La raggiungibilita' si verifica aprendo una connessione TCP alla porta del servizio
+# SSH, non tentando un accesso con chiave. La prima versione usava `ssh -o BatchMode=yes`,
+# che pero' fallisce in due casi indistinguibili fra loro: host spento e host raggiungibile
+# che accetta soltanto la password. Su questa infrastruttura il secondo caso e' la regola e
+# non l'eccezione, perche' la chiave della postazione e' distribuita solo su una parte
+# delle macchine, quindi il controllo scartava host perfettamente funzionanti.
 function Test-Raggiungibile([string] $h) {
+    $hostname = $h
+    if ($h -match '@') { $hostname = $h.Split('@')[-1] }
+    # Un alias del ~/.ssh/config non e' un nome risolvibile: in quel caso si lascia
+    # decidere a ssh, che sa espandere l'alias, e si considera l'host raggiungibile.
+    if ($hostname -notmatch '^[\d.]+$' -and -not ($hostname -match '\.')) { return $true }
+    try {
+        $c = New-Object System.Net.Sockets.TcpClient
+        $a = $c.BeginConnect($hostname, 22, $null, $null)
+        $ok = $a.AsyncWaitHandle.WaitOne(4000, $false)
+        if ($ok) { $c.EndConnect($a) }
+        $c.Close()
+        return $ok
+    } catch { return $false }
+}
+
+function Test-ChiaveAccettata([string] $h) {
     & ssh -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=accept-new $h 'true' 2>$null | Out-Null
     return ($LASTEXITCODE -eq 0)
 }
@@ -71,9 +93,14 @@ foreach ($t in $Target) {
     $dest = Join-Path $OutputDir ("censimento-{0}.txt" -f ($t -replace '[^\w.-]', '_'))
 
     if (-not (Test-Raggiungibile $t)) {
-        Write-Warning "$t : nessuna risposta su SSH con la chiave. Non e' la password di sudo: o l'host non e' raggiungibile, oppure la chiave non e' accettata."
-        $risultati += [pscustomobject]@{ Host = $t; Esito = 'NON RAGGIUNTO'; Sudo = '-'; Righe = 0; Nota = 'SSH non risponde con la chiave' }
+        Write-Warning "$t : la porta 22 non risponde. L'host e' spento, non raggiungibile in rete, oppure il servizio SSH non e' attivo."
+        $risultati += [pscustomobject]@{ Host = $t; Esito = 'NON RAGGIUNTO'; Sudo = '-'; Righe = 0; Nota = 'porta 22 chiusa o host spento' }
         continue
+    }
+
+    $conChiave = Test-ChiaveAccettata $t
+    if (-not $conChiave) {
+        Write-Host "  la chiave della postazione non e' accettata da questo host: verra' chiesta la password di accesso piu' volte, una per ciascun passaggio (copia, esecuzione, recupero, pulizia)." -ForegroundColor DarkGray
     }
 
     & scp -q -o ConnectTimeout=10 $sh "${t}:$remoto" 2>$null
@@ -123,6 +150,7 @@ foreach ($t in $Target) {
                     $stato = 'ok parziale'; $nota = 'senza sudo: mancano nomi dei processi e regole del kernel'
                 }
                 Write-Host ("  raccolte {0} righe in {1}" -f $righe, $dest) -ForegroundColor Green
+                if (-not $conChiave) { $nota = ($nota + ' | accesso solo con password, chiave non distribuita').Trim(' |') }
                 $risultati += [pscustomobject]@{ Host = $t; Esito = $stato; Sudo = $(if ($conSudo) { 'si' } else { 'no' }); Righe = $righe; Nota = $nota }
                 $fatto = $true
                 continue

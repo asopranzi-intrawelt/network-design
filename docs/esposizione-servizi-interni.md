@@ -109,7 +109,9 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 
 ## L'esito della seconda passata, 31/08/2026
 
-Cinque macchine su nove interrogate su tutti e quattro i livelli. Restano fuori la 209, la 810 e l'host Ollama, che non erano nella stessa esecuzione, la 205 che non risponde in rete e la 100 che e' Windows.
+Sette host su dieci interrogati su tutti e quattro i livelli. Restano fuori la VM 205, che non risponde in rete, la VM 100, che e' Windows e ha una procedura propria, e la VM 810, su cui la copia dello script non e' riuscita per il motivo descritto piu' avanti.
+
+Il conto e' salito da nove a dieci perche' nella lista e' entrato un host che nessun inventario del progetto conteneva: l'host Ollama, che non e' una macchina virtuale e per questo era sfuggito a un censimento costruito sull'inventario di Proxmox. La rete lo conosceva gia' come l'apparato sulla porta 46 del 54HP, quello delle oscillazioni del collegamento di NET-010, ma nessuno lo aveva mai trattato come un host da censire.
 
 | VM | Filtro del kernel | Ammissione nel server web | Container | Conclusione |
 |---|---|---|---|---|
@@ -118,6 +120,8 @@ Cinque macchine su nove interrogate su tutti e quattro i livelli. Restano fuori 
 | 207 | `ufw` inattivo, tabelle presenti ma vuote | nessuna | nessuno | nessuna restrizione a nessun livello |
 | 208 | nessun `ufw`, regole del motore dei container | nessuna | tre pubblicati su loopback, due su tutte le interfacce | separazione parziale, e fatta bene dove c'e' |
 | 602 | `ufw` non installato | nessuna | dieci, due pile complete | nessuna restrizione a nessun livello |
+| 209 | `ufw` inattivo, regole del motore dei container | nessuna | uno, PostgreSQL pubblicato su tutte le interfacce | il database e' un contenitore, non il motore della macchina |
+| Ollama | `ufw` inattivo, tabelle del motore dei container vuote | nessuna | nessuno attivo | due istanze del servizio, una locale e una esposta a tutta la LAN |
 
 ### La restrizione della VM 204, trovata dov'era prevista
 
@@ -137,9 +141,31 @@ Sulla VM 207 non esiste filtro a nessuno dei quattro livelli: le tabelle di `nft
 
 La VM 208 e' il caso piu' interessante perche' mostra che qualcuno **ha** ragionato sull'esposizione, ma a meta'. I suoi servizi di appoggio — il database, la cache, un servizio applicativo interno — sono pubblicati su `127.0.0.1`, quindi irraggiungibili dalla rete, ed e' la scelta giusta. Le porte 80 e 443 sono invece pubblicate su tutte le interfacce, il che e' voluto perche' il portale deve servire gli utenti, ed e' il difetto #121. C'e' pero' anche un processo Node in ascolto sulla porta 3000 su tutte le interfacce, che ha la forma di un ambiente di sviluppo accanto al servizio in esercizio, e va verificato.
 
-### Un fatto trasversale che nessuna delle cinque schede mostra da sola
+### Il database del sito e' un contenitore, e la correzione costa una riga
 
-Su nessuna delle cinque macchine il servizio SSH dichiara esplicitamente quali metodi di autenticazione accetti: la configurazione non contiene alcuna direttiva in merito, quindi valgono i valori predefiniti della distribuzione, che ammettono **anche l'autenticazione con password**. Letto da solo e' un dettaglio; letto insieme a #170, cioe' al fatto che alcune password sono condivise fra piu' macchine, e a #159, cioe' che la porta 22 e' raggiungibile da tutta la LAN piatta su tutte, diventa una via di movimento laterale che non richiede di violare nulla. Tracciato come #172.
+La domanda che #161 lasciava aperta era se la porta 5432 in ascolto su tutte le interfacce appartenesse al motore PostgreSQL installato sulla macchina oppure alla pubblicazione di un contenitore. La misura risponde: e' un contenitore, `intrawelt-pg` sull'immagine ufficiale, pubblicato con la forma `0.0.0.0:5432->5432/tcp`, e in ascolto sull'host c'e' infatti il processo intermediario del motore dei contenitori e non il database.
+
+La risposta e' una buona notizia operativa, perche' cambia il costo del rimedio. Non serve toccare la configurazione di PostgreSQL ne' riprogettare nulla: si cambia la forma della pubblicazione da `5432:5432` a `127.0.0.1:5432:5432` nella definizione del servizio, e il database smette di essere raggiungibile dalla rete restando raggiungibile dall'applicazione che gli sta accanto. E' lo stesso schema gia' applicato correttamente sulla VM 208 per il proprio database, la propria cache e il proprio servizio interno, il che dimostra che la conoscenza c'e' gia' in casa e che qui e' semplicemente mancata.
+
+### L'host Ollama, e un servizio di inferenza aperto a tutta la LAN
+
+Sull'host Ollama il servizio risulta in ascolto **due volte**: sulla porta predefinita `11434` legata al solo indirizzo locale, che e' la configurazione corretta, e sulla porta `11500` su tutte le interfacce, che e' raggiungibile da qualunque host della LAN piatta. Nessun filtro a nessuno dei quattro livelli.
+
+Il punto merita una precisazione, perche' un servizio di inferenza non somiglia a un database e il rischio non e' intuitivo. L'interfaccia di programmazione di Ollama **non prevede autenticazione**: non e' che sia configurata male, e' che nel disegno del prodotto l'autenticazione non esiste, perche' e' pensato per essere in ascolto sul solo indirizzo locale. Chi lo raggiunge puo' quindi non soltanto sottoporre richieste, consumando la scheda grafica, ma anche elencare i modelli presenti, scaricarne di nuovi occupando lo spazio del disco, e **cancellarli**. La stessa interfaccia che serve l'applicazione serve anche l'amministrazione.
+
+Ne discende che il rimedio non e' aggiungere una password, che non esiste, ma togliere l'ascolto dalla rete o metterci davanti qualcosa che autentichi. Tracciato come #173.
+
+Sullo stesso host e' in ascolto anche il servizio di scrivania remota sulla porta 3389, su tutte le interfacce, che e' la stessa condizione gia' registrata per la VM 810 in #164.
+
+### Un fatto trasversale che nessuna scheda mostra da sola
+
+Su nessuno degli host il servizio SSH dichiara esplicitamente quali metodi di autenticazione accetti: la configurazione non contiene alcuna direttiva in merito, quindi valgono i valori predefiniti della distribuzione, che ammettono **anche l'autenticazione con password**. Letto da solo e' un dettaglio; letto insieme a #170, cioe' al fatto che alcune password sono condivise fra piu' macchine, e a #159, cioe' che la porta 22 e' raggiungibile da tutta la LAN piatta su tutte, diventa una via di movimento laterale che non richiede di violare nulla. Tracciato come #172.
+
+### La VM 810, e perche' la copia non riesce
+
+Sulla VM 810 la porta 22 risponde, ma l'autenticazione come amministratore con password viene rifiutata tre volte di seguito. L'ipotesi piu' probabile, da verificare e non da dare per acquisita, e' la politica predefinita della distribuzione per il servizio SSH, che ammette l'accesso dell'utente amministratore **solo con chiave** e non con password. Sarebbe coerente con il fatto che nessuna direttiva esplicita sia stata trovata sulle altre macchine: dove il valore predefinito non e' stato toccato, vale quello, e per l'utente amministratore quel valore e' restrittivo.
+
+Se confermata, ne discendono tre vie, in ordine di costo. Distribuire la chiave pubblica della postazione fra le chiavi autorizzate dell'utente amministratore, che risolve una volta sola e va comunque fatta perche' e' il primo passo dell'intervento sulle credenziali. Eseguire il censimento localmente sulla macchina, a cui si accede in scrittorio remoto. Oppure creare un utente non amministrativo con facolta' di elevazione, che e' la configurazione corretta a regime ma e' un cambiamento e non una lettura.
 
 ## La macchina Windows, che non e' un caso a parte per pigrizia
 
