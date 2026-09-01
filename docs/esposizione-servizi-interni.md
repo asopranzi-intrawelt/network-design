@@ -401,6 +401,38 @@ Cio' che manca e che si puo' tenere fin da subito, anche prima dell'HTTPS, e' l'
 
 Il modello e' `_notes/registro-credenziali.md`, con una colonna per lo stato e nessuna per il valore. Lo produce anche `scripts/Invoke-HostCensus.ps1` nella sua forma minima, cioe' l'elenco degli host su cui la password non e' risultata disponibile.
 
+## La ricognizione TLS del 01/09/2026, e cio' che ha rovesciato
+
+La ricognizione doveva rispondere a una domanda di dettaglio, cioe' come aggiungere HTTPS al gestore delle password. Ha risposto a una domanda diversa e piu' importante: **il gestore delle password non e' raggiungibile dalla rete, e cio' che risponde sulla porta 80 della VM 202 e' un altro servizio.**
+
+### Come si e' stabilito, e perche' i tre indizi convergono
+
+Il contenitore del gestore dichiara la propria porta come `80/tcp`, **senza alcuna corrispondenza verso l'host**. E' una distinzione che nella lettura di un elenco di contenitori si perde facilmente e che qui e' decisiva: una porta scritta come `0.0.0.0:443->443/tcp` e' pubblicata, cioe' l'host la offre alla rete; una porta scritta come `80/tcp` e' soltanto **dichiarata**, cioe' il contenitore la usa al proprio interno e nessuno da fuori la raggiunge. Il gestore e' nel secondo caso.
+
+Restava la possibilita' che un server web lo raggiungesse per conto proprio, ed e' l'ipotesi che questa scheda aveva scritto. La ricognizione la esclude in due modi indipendenti. Gli host virtuali attivi di Apache sono due, e nessuno dei due ha a che vedere con il gestore: uno e' il sito predefinito dell'installazione, l'altro serve un applicativo di gestione dei ticket. E soprattutto **il modulo di inoltro non e' caricato**: dei moduli cercati risulta attivo il solo modulo di riscrittura, quindi Apache non solo non inoltra verso il gestore, ma non ne sarebbe tecnicamente capace nella configurazione attuale.
+
+Ne discende anche perche' il supporto cifrato non e' semplicemente disattivato ma **assente**: il file delle porte contiene un'istruzione per l'ascolto sulla porta cifrata, ma racchiusa in una condizione che si avvera solo se il modulo corrispondente e' caricato, e non lo e'. Sulla macchina non esiste alcun certificato, ne' alcuna autorita' interna fra quelle considerate attendibili dal sistema.
+
+### La correzione a #160, e perche' era un errore di lettura
+
+Il difetto affermava che il gestore delle password fosse servito in chiaro a tutta la LAN e che la password principale vi transitasse a ogni accesso. **Non e' vero, e non lo e' mai stato.** L'affermazione nasceva da un'inferenza fatta su due dati veri messi insieme male: sulla macchina c'era un contenitore del gestore, e sulla macchina c'era Apache in ascolto sulla porta 80. Da li' si era concluso che il secondo servisse il primo, senza verificarlo.
+
+E' il terzo errore dello stesso tipo in una settimana, dopo quello sull'assenza di filtri e quello sul firewall di Windows, e i tre hanno la stessa forma: una conclusione plausibile tratta da una misura parziale, senza fare la misura che l'avrebbe confermata o smentita. Vale la pena registrarlo come schema e non come episodio, perche' la lezione operativa e' precisa: quando due fatti veri suggeriscono un collegamento, il collegamento e' un terzo fatto e va misurato a parte.
+
+Il difetto riformulato e' piu' modesto e piu' utile: il gestore delle password e' **installato e non collegato**. Non c'e' nessuna fuga in corso, nemmeno potenziale, perche' non c'e' nessun accesso. Cio' che manca per renderlo utilizzabile e' l'intera catena: il modulo di inoltro, il modulo cifrato, un host virtuale che punti al contenitore, un certificato e un nome. Coerente, del resto, con la dichiarazione dell'IT Manager che non e' ancora in uso: non lo e' perche' non e' mai stato collegato.
+
+### Il servizio che nessuno aveva censito: la gestione dei ticket
+
+Sulla porta 80 della VM 202 risponde un applicativo di **gestione dei ticket di assistenza**, con un host virtuale dedicato e una radice propria. Nessun documento di questo progetto lo conosceva: la macchina era censita come "gestore delle password" e basta.
+
+Non e' un dettaglio di inventario. Un sistema di ticket contiene per natura descrizioni di problemi, nomi di richiedenti, allegati e non di rado credenziali incollate da un utente dentro una segnalazione; e' quindi un archivio di dati personali e talvolta di segreti, servito in chiaro a tutta la LAN piatta su una macchina senza filtro. Ed e' anche il secondo caso, dopo l'host di inferenza, di un servizio che esisteva e che nessun inventario conteneva. Tracciato come #178.
+
+### Un limite dello strumento, dichiarato
+
+La ricognizione ha guardato dentro il sistema operativo dell'host e non dentro i contenitori. Sulla macchina di IntraLino non ha trovato alcun certificato, ma quella macchina **serve traffico cifrato**, perche' il suo contenitore di inoltro pubblica la porta cifrata verso la rete: il certificato esiste e vive dentro il contenitore, dove lo sguardo dello strumento non arriva.
+
+E' esattamente il certificato a cui l'IT Manager si riferiva, e la sua natura resta quindi da determinare. La domanda che conta e' se sia autofirmato dal contenitore, cioe' il caso comune, oppure emesso da un'autorita' gia' esistente, nel qual caso non ci sarebbe nulla da creare.
+
 ## Certificato per servizio o autorita' interna: la domanda posta il 01/09/2026
 
 L'IT Manager ha osservato che su alcune macchine un certificato esiste gia', per esempio su quella di IntraLino dove e' la macchina stessa a fornirlo, e ha chiesto se non sia quella la scelta giusta. La domanda va sciolta prima di generare il primo certificato per il gestore delle password, perche' le due strade divergono al primo comando e tornare indietro costa il doppio.
