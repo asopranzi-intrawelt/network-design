@@ -78,3 +78,23 @@ if command -v docker >/dev/null 2>&1; then
   docker ps --format '{{.Names}} | {{.Image}} | {{.Ports}}' 2>/dev/null || echo "  non interrogabile"
 fi
 echo "=== fine $(hostname) ==="
+
+echo
+echo "--- 8. certificati dentro i contenitori ---"
+# Aggiunta del 01/09/2026: la ricognizione sull'host non vede dentro i contenitori,
+# e su una macchina il certificato che serve il traffico cifrato viveva proprio li'.
+# Si guarda quindi dentro ciascun contenitore che pubblichi una porta cifrata.
+if command -v docker >/dev/null 2>&1; then
+  docker ps --format '{{.Names}} {{.Ports}}' 2>/dev/null | grep -E '443|8443|5443' | awk '{print $1}' | while read -r c; do
+    echo "  [contenitore $c]"
+    docker exec "$c" sh -c 'find /etc /certs /ssl /data -maxdepth 4 \( -name "*.crt" -o -name "*.pem" -o -name "*.cer" \) 2>/dev/null | head -8' 2>/dev/null | while read -r f; do
+      info=$(docker exec "$c" sh -c "openssl x509 -in '$f' -noout -subject -issuer -enddate 2>/dev/null" 2>/dev/null)
+      [ -n "$info" ] || continue
+      echo "    file: $f"
+      echo "$info" | sed 's/^/      /'
+    done
+  done
+else
+  echo "  docker assente"
+fi
+echo "=== fine sezione contenitori ==="
