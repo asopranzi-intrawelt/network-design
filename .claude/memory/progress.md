@@ -1,5 +1,17 @@
 # Work-log
 
+## 2026-09-01 (2) — La ricognizione TLS rovescia #160, trova due servizi non censiti e un'autorita' interna
+
+Commit: PENDING (da fare manualmente) File toccati (tracciati): **nuovo** `scripts/sonda-tls.sh`; `scripts/ispeziona-tls.sh` (sezione sui contenitori); `scripts/Invoke-HostCensus.ps1` (parametro `-Argomenti`); `docs/esposizione-servizi-interni.md`; `docs/infrastructure-timeline/GAP-TBC.md` (#160 riformulato, #178 e #179 nuovi, riepilogo a 179); `docs/infrastructure-timeline/2026-switch-piano-terra.md`.
+
+**#160 era sbagliato e l'ho riformulato.** Il gestore delle password non e' servito in chiaro: non e' servito affatto. Il contenitore dichiara la porta senza pubblicarla, gli host virtuali attivi non lo riguardano, e il modulo di inoltro non e' nemmeno caricato. Il difetto diventa "installato e non collegato", gravita' da alta a media. Terzo errore dello stesso tipo in una settimana: conclusione plausibile da misura parziale. Lo schema e' registrato in scheda, non l'episodio.
+
+**Due servizi che nessun inventario conteneva.** Sulla porta in chiaro della VM 202 risponde un sistema di gestione ticket (#178), che per natura contiene dati personali e talvolta credenziali incollate dagli utenti. E' il secondo in due giorni dopo il servizio di inferenza dell'host Ollama. La conclusione generale, che vale piu' dei due casi: l'inventario dei servizi applicativi, distinto da quello delle macchine, non esiste.
+
+**Esiste un'autorita' di certificazione interna, di progetto** (#179). Il certificato di IntraLino non e' autofirmato. Buona notizia sulla capacita', tre riserve sull'adozione: chi custodisce la chiave, che e' la piu' grave perche' quella chiave contiene tutte le identita' interne; il nome semplice senza suffisso, che rende concreta la dipendenza da M25; e il perimetro di progetto invece che aziendale. La decisione dipende da un dato ancora da misurare, cioe' se la CA sia gia' installata sulle postazioni.
+
+**Gli strumenti sono cresciuti dove serviva.** Il driver accetta ora `-Script` e `-Argomenti`: il primo perche' lo stesso comando si e' rotto tre volte per citazione, il secondo perche' gli indirizzi reali non possono stare in un file versionato e devono viaggiare nella riga di comando. E' nato `sonda-tls.sh`, che interroga dalla rete invece di guardare dentro la macchina, perche' cio' che determina l'avviso del navigatore e' il certificato **presentato**, non il file su disco.
+
 ## 2026-09-01 — M27-7 chiuso su dieci host; la scelta dei certificati e la dipendenza da M25
 
 Commit: PENDING (da fare manualmente) File toccati (tracciati): **nuovo** `scripts/ispeziona-tls.sh`; `scripts/Invoke-HostCensus.ps1` (parametri `-Script` e `-Prefisso`); `docs/esposizione-servizi-interni.md` (VM 205, VM 100, certificati, gestore non ancora in uso); `docs/infrastructure-timeline/GAP-TBC.md` (#175-#177 nuovi, #160 #162 #174 corretti); `docs/infrastructure-timeline/2026-switch-piano-terra.md`; `.claude/context/STACK.md`.
