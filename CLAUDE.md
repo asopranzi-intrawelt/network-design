@@ -90,6 +90,7 @@ docs/pendenze-aperte.md           vista consolidata di cio' che resta da sanare;
 docs/livello-fisico-ed-elettrico.md  armadi, alimentazione, catena fisica WAN, mappa porta-apparato, censimento NAS
 docs/virtualizzazione-proxmox-e-bridge.md  come il server Gen10 e' attaccato alla rete: cinque cavi, quattro bridge, misurato vs dedotto
 docs/esposizione-servizi-interni.md  matrice delle porte in ascolto per macchina virtuale e stato della protezione host-based
+docs/autorita-certificazione-interna.md  nomi dei servizi interni, autorita' di certificazione, procedura di emissione
 ```
 
 Regole modulari caricate su necessita', sotto `.claude/rules/`.
