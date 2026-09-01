@@ -13,6 +13,15 @@
 # sola prima riga, che dichiara il tipo ed e' pubblica per costruzione, e la usa per
 # distinguere una chiave cifrata da una in chiaro.
 #
+# Limite noto, e la correzione del 01/09/2026. Una ricerca per contenuto e' buona
+# quanto l'elenco di percorsi che attraversa: la prima versione non comprendeva
+# /var/lib/ca, ed e' esattamente dove la chiave si trovava, quindi concluse che non
+# ci fosse. L'elenco e' stato esteso, ma il limite resta strutturale e va ricordato:
+# un esito negativo di questo script significa "non trovato nei percorsi cercati", mai
+# "non esiste". Se un servizio presenta un certificato, la chiave esiste da qualche
+# parte, e la via piu' diretta per trovarla e' guardare da dove il servizio la legge,
+# con scripts/trova-ca-container.sh per i contenitori.
+#
 # Uso: trova-ca.sh [motivo]   (motivo predefinito: "Internal CA")
 
 MOTIVO=${1:-Internal CA}
@@ -27,7 +36,7 @@ fi
 echo
 echo "--- 1. certificati di autorita' che corrispondono al motivo ---"
 trovati=0
-for base in /root /home /opt /srv /etc /var/lib/docker/volumes /data; do
+for base in /root /home /opt /srv /etc /var/lib/ca /var/lib/ssl /var/lib/docker/volumes /data /usr/local; do
   [ -d "$base" ] || continue
   find "$base" -maxdepth 6 \( -name '*.crt' -o -name '*.pem' -o -name '*.cer' \) \
        ! -path '*/ca-certificates/*' ! -path '*/ssl/certs/*' 2>/dev/null | while read -r c; do
@@ -46,7 +55,7 @@ done
 
 echo
 echo "--- 2. chiavi private accanto ai certificati trovati, e loro custodia ---"
-for base in /root /home /opt /srv /etc /var/lib/docker/volumes /data; do
+for base in /root /home /opt /srv /etc /var/lib/ca /var/lib/ssl /var/lib/docker/volumes /data /usr/local; do
   [ -d "$base" ] || continue
   find "$base" -maxdepth 6 \( -name '*.key' -o -name '*key*.pem' \) \
        ! -path '*/doc/*' ! -path '*/examples/*' 2>/dev/null | while read -r k; do
