@@ -99,6 +99,7 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 | 202 | PasswordManager | `10.61.20.21` | Ubuntu 24.04.2 LTS | non installato | 22, 80 | 3306, 631 | da verificare |
 | 204 | ConvertitoreRuoliniENI | `10.61.20.22` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8090 | 5000, 5010 | **si**: accesso ristretto per indirizzo, ammessi la postazione dell'IT Manager e due indirizzi della fascia `.70`, riferito il 31/08/2026; livello e sintassi da determinare |
 | ~~206~~ | ~~intrasite~~ | — | — | — | — | — | **dismessa il 31/08/2026**, vedi §La dismissione della VM 206 |
+| 205 | GanttTool | `10.61.20.61` | `ufw` inattivo, solo catene del motore dei container | nessuna | 22, 80, 9001 | 631, 3306 | rilevata il 01/09/2026 attraverso l'agente ospite; raggiungibile in rete, vedi §La VM 205 |
 | 207 | websiteAnalyst | `10.61.20.24` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8000 | 3306, 631 | da verificare |
 | 209 | IntraNewSite | `10.61.20.209` | Ubuntu 24.04.4 LTS | non installato | 22, 3000, 5432 | 631 | da verificare |
 | 602 | Intralino | `10.61.20.60` | Ubuntu 25.10 | non installato | 22, 80, 443, 4443, 5443, 5444 | nessuna | da verificare |
@@ -177,6 +178,32 @@ I due database sono pero' su una versione del motore la cui serie e' fuori suppo
 La prima riguarda l'etichetta dell'esito. Lo strumento marcava come parziale ogni censimento eseguito senza `sudo`, ma su un host a cui ci si collega gia' come amministratore il comando gira con tutti i privilegi e l'esito e' completo: sulla VM 810 i nomi dei processi e le regole del kernel c'erano tutti, e l'etichetta diceva il contrario. Ora la completezza si riconosce dal contenuto, cioe' dalla presenza dei nomi dei processi, che il kernel mostra soltanto a chi ha i privilegi, invece che dedurla dalla modalita' di esecuzione. E' una differenza di metodo che vale oltre questo strumento: si misura il risultato, non l'intenzione.
 
 La seconda riguarda un ripiego che sembrava equivalente e non lo era. Per aggirare la copia si era proposto di passare lo script attraverso il flusso di ingresso di una sessione remota. Il comando fallisce con errori incomprensibili — righe non trovate e una struttura di controllo che sembra rotta — e la causa non e' lo script: quando PowerShell incanala il contenuto di un file verso un programma esterno, riscrive le terminazioni di riga nella convenzione di Windows, e una shell di sistema unix legge quel carattere in piu' come parte dell'ultimo comando di ogni riga. Da qui il metodo: verso un sistema unix si trasferiscono **file**, con una copia, non flussi di testo passati attraverso PowerShell.
+
+## La VM 205, censita senza rete attraverso l'agente ospite
+
+La macchina non risponde sulla porta 22 dalla postazione, ma e' accesa e il suo agente ospite risponde. Il primo settembre 2026 il censimento e' stato quindi eseguito **attraverso l'hypervisor** invece che attraverso la rete, con `qm guest exec`, ed e' una possibilita' che vale la pena registrare come metodo: quando una macchina virtuale non e' raggiungibile ma l'agente risponde, l'hypervisor e' una via di ispezione che non dipende dalla rete della macchina, e non richiede la console.
+
+Cio' che espone: il servizio SSH sulla 22 e Apache sulla 80, entrambi su tutte le interfacce, piu' una porta 9001 pubblicata da un contenitore. Correttamente vincolati all'indirizzo locale il database MariaDB e il servizio di stampa. Il quadro e' quindi lo stesso delle altre macchine e non contiene sorprese.
+
+### La diagnosi, chiusa il 01/09/2026: la macchina risponde, l'alias era sbagliato
+
+La sequenza delle ipotesi merita di essere tenuta per intero, perche' quattro spiegazioni plausibili sono cadute una dopo l'altra e la causa finale era la piu' banale di tutte.
+
+Non era spenta: l'hypervisor la riportava in esecuzione e l'agente eseguiva comandi. Non era un cambio di indirizzo: l'agente ha confermato lo stesso indirizzo che la postazione stava interrogando. Non era il servizio SSH fermo: risultava attivo e in ascolto su tutte le interfacce. E non era un filtro sulla macchina: `ufw` e' inattivo e nelle regole del kernel ci sono soltanto le catene del motore dei container, nessuna delle quali scarta traffico in ingresso verso l'host.
+
+La prova decisiva e' stata tentare la connessione senza specificare l'utente. La risposta non e' stata un tempo scaduto ma un **rifiuto di autenticazione**, il che dimostra che la connessione si stabilisce e che il servizio risponde: il percorso di rete funziona. Ne discendono due conclusioni. La prima e' che il tempo scaduto osservato il 31/08 era transitorio e non e' piu' riproducibile, quindi va registrato come tale e non spiegato a posteriori con una causa inventata. La seconda e' che il rifiuto aveva una causa propria e indipendente: l'alias SSH della postazione per questa macchina porta un nome utente che non e' quello dell'utenza locale, come l'elenco delle credenziali dell'IT Manager ha reso evidente.
+
+E' anche il motivo per cui questa macchina risultava impenetrabile: il difetto #162 la registrava come inaccessibile per credenziali perdute, mentre la credenziale c'era e a mancare era la corrispondenza fra l'utenza reale e quella scritta nella configurazione della postazione. Un dato sbagliato in un file di configurazione locale ha prodotto una diagnosi sbagliata in un documento tecnico, ed e' lo stesso schema di #171, dove indirizzi scritti a mano dentro una configurazione producono guasti che sembrano di altra natura.
+
+### Le ipotesi formulate durante la diagnosi, per memoria
+
+Tre ipotesi sono state verificate e scartate, e vale la pena tenerne traccia perche' ciascuna sarebbe stata una spiegazione plausibile.
+
+La macchina non e' spenta: l'hypervisor la riporta in esecuzione e l'agente esegue comandi. L'indirizzo non e' cambiato: e' ancora quello che la postazione stava interrogando, quindi non si stava bussando alla porta sbagliata. E il servizio SSH non e' fermo: risulta attivo e in ascolto su tutte le interfacce alla porta 22.
+
+Resta un dato che orienta e non conclude: le statistiche dell'interfaccia della macchina contano oltre centomila pacchetti ricevuti contro meno di settemila trasmessi, con seicentotrentaquattro scartati in ingresso. Riceve molto e risponde poco, il che e' coerente con qualcosa che scarta il traffico prima che arrivi al servizio, oppure con risposte che partono e non tornano indietro.
+
+Le ipotesi che restano sono tre e si distinguono con due prove. La prima e' un filtro attivo sulla macchina, che il censimento dei quattro livelli non ha ancora interrogato su questo host. La seconda e' un problema di percorso fra la postazione e la macchina, che si distingue provando la stessa connessione **dall'hypervisor**, che sta sullo stesso dominio di broadcast ma su un altro cavo: se da li' risponde e dalla postazione no, il difetto non e' nella macchina. La terza, meno probabile ma da non escludere finche' le prime due non hanno risposto, e' un conflitto di indirizzo, cioe' un secondo apparato che rivendica lo stesso indirizzo e si prende una parte del traffico.
 
 ## La macchina Windows, censita il 31/08/2026, e l'assunzione che ha rovesciato
 
