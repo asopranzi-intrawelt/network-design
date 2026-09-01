@@ -43,7 +43,8 @@ param(
     [int] $Tentativi = 2,
     [string] $OutputDir,
     [string] $Script = 'censimento-host.sh',
-    [string] $Prefisso = 'censimento'
+    [string] $Prefisso = 'censimento',
+    [string] $Argomenti = ''
 )
 
 $ErrorActionPreference = 'Continue'
@@ -90,7 +91,7 @@ function Test-ChiaveAccettata([string] $h) {
 
 function Test-EsitoValido([string] $percorso) {
     if (-not (Test-Path $percorso)) { return $false }
-    return ((Get-Content $percorso -Raw) -match 'fine ')
+    return ((Get-Content $percorso -Raw) -match 'fine ')  # ogni script di ricognizione termina con una riga 'fine'
 }
 
 foreach ($t in $Target) {
@@ -134,13 +135,17 @@ foreach ($t in $Target) {
         # errore di permessi che sembra, e non e', un problema di password.
         # Alla fine la proprieta' passa all'utente della sessione, altrimenti scp non
         # potrebbe rileggere un file creato da root con permessi restrittivi.
+        # Gli argomenti dello script viaggiano fra apici singoli lato remoto: e' l'unico
+        # punto in cui un valore fornito dall'utente entra nella riga di comando remota,
+        # quindi viene ripulito di cio' che potrebbe chiuderli anzitempo.
+        $arg = ($Argomenti -replace "[^\w.:@/ -]", '')
         $prep = "rm -f $outRem"
         $post = "chown `$SUDO_USER $outRem 2>/dev/null; chmod 600 $outRem"
         if ($conSudo) {
             Write-Host "  password di sudo di QUESTO host (non quella di Windows)" -ForegroundColor DarkGray
-            $cmd = "sudo -k sh -c '$prep; sh $remoto > $outRem 2>&1; $post'"
+            $cmd = "sudo -k sh -c '$prep; sh $remoto $arg > $outRem 2>&1; $post'"
         } else {
-            $cmd = "sh -c '$prep; sh $remoto > $outRem 2>&1'"
+            $cmd = "sh -c '$prep; sh $remoto $arg > $outRem 2>&1'"
         }
 
         & ssh -t -o ConnectTimeout=15 $t $cmd

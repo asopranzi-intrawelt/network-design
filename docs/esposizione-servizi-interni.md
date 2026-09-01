@@ -475,6 +475,36 @@ L'osservazione dell'IT Manager sul certificato gia' presente su una macchina va 
 
 La distinzione si legge nei campi pubblici del certificato: se soggetto ed emittente coincidono e' autofirmato; se esiste un certificato marcato come autorita' di certificazione, allora un'autorita' c'e'. La ricognizione si fa con `scripts/ispeziona-tls.sh`, che stampa quei campi e non tocca mai le chiavi private.
 
+## L'autorita' interna esiste gia', ed e' di un progetto: la sonda del 01/09/2026
+
+La sonda dalla rete ha risposto alla domanda lasciata aperta. Il certificato che serve il traffico cifrato di IntraLino, su entrambe le porte cifrate che quella macchina pubblica, **non e' autofirmato**: soggetto ed emittente sono distinti, e l'emittente e' un'autorita' di certificazione interna creata per quel progetto. Il certificato e' valido fino alla meta' del 2028 ed e' emesso per un nome semplice, senza alcun suffisso di dominio.
+
+Esiste quindi gia' in azienda la capacita' di emettere certificati, ed e' una buona notizia: significa che qualcuno ha gia' fatto il lavoro di generare un'autorita' e di firmarci un certificato, quindi la strada e' praticata e non teorica. Non significa pero' che quell'autorita' sia gia' l'autorita' aziendale, e le ragioni sono tre.
+
+### Prima domanda: chi custodisce la chiave, che e' la piu' importante di tutte
+
+Una chiave di autorita' non e' una credenziale come le altre e vale la pena dire perche', perche' e' la ragione per cui questa domanda viene prima delle altre due. Chi possiede la chiave privata di un'autorita' puo' emettere un certificato valido per **qualunque nome**, e ogni macchina che consideri attendibile quell'autorita' lo accettera' senza un avviso. Non serve compromettere il servizio bersaglio: basta la chiave, e da quel momento ci si puo' presentare come qualunque servizio interno, gestore delle password compreso.
+
+Ne discende che una chiave di autorita' e' piu' sensibile di qualunque credenziale di servizio, perche' le contiene tutte. Di questa non si sa dove risieda, se sia protetta da una passphrase, chi vi abbia accesso e se ne esista una copia. Finche' quelle risposte mancano, adottarla come autorita' aziendale significherebbe estendere a tutta l'azienda una fiducia di cui non si conosce il fondamento. Tracciato come #179.
+
+### Seconda domanda: il nome, che rimanda alla dipendenza gia' dichiarata
+
+Il certificato e' emesso per un nome semplice, senza suffisso di dominio, ed e' coerente con il fatto che i nomi interni di questa rete non abbiano oggi un servizio che li risolva. Funziona finche' quel nome viene risolto a mano sulle postazioni che lo usano, ma non e' una base su cui costruire: due servizi diversi potrebbero rivendicare nomi che si somigliano, e nulla distingue un nome interno da uno esterno.
+
+E' la stessa dipendenza da M25 gia' registrata poco sopra, e la sonda la rende concreta: qui non e' un'ipotesi, e' un certificato realmente emesso per un nome che nessun servizio risolve.
+
+### Terza domanda: il perimetro, che e' la piu' semplice
+
+L'autorita' porta il nome di un progetto, non dell'azienda. Non e' un ostacolo tecnico, perche' un'autorita' puo' firmare qualunque nome a prescindere da come si chiama; e' un problema di leggibilita' e di ciclo di vita. Fra due anni, quando qualcuno guardera' l'emittente del certificato del gestore delle password e leggera' il nome di un progetto applicativo, non sapra' se sia intenzionale; e se un giorno quel progetto venisse dismesso, la sua autorita' resterebbe a garantire mezza azienda.
+
+### La domanda che decide, e che si risponde in un comando
+
+Le tre considerazioni pesano diversamente a seconda di un solo dato, che non e' ancora stato misurato: **se quell'autorita' sia gia' installata fra quelle attendibili sulle postazioni**.
+
+Se lo e', esiste un patrimonio da non buttare, cioe' un'installazione gia' fatta su ogni postazione, e la scelta ragionevole diventa mettere in sicurezza la chiave esistente e continuare a usarla, magari riemettendo l'autorita' con un nome aziendale quando scadra'. Se non lo e', e gli utenti di IntraLino superano semplicemente l'avviso del navigatore, allora non c'e' nessun patrimonio da preservare: creare un'autorita' aziendale nuova, con custodia della chiave documentata e nomi decisi, costa esattamente quanto adottare quella esistente, e produce un impianto piu' pulito.
+
+Il dato si legge sulla postazione, fra i certificati di autorita' attendibili della macchina e dell'utente, ed e' una lettura che non modifica nulla.
+
 ## Cosa resta aperto
 
 La seconda passata su tutti e quattro i livelli, sulle sette macchine gia' raggiungibili: e' la sola cosa che possa dire dove esistano davvero restrizioni, e la prima domanda a cui deve rispondere e' dove viva quella della VM 204.
