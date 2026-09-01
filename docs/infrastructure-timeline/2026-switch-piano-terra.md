@@ -1101,3 +1101,41 @@ Un certificato certifica un nome, non una macchina, e su questa rete i nomi inte
 
 Nel corso di queste sessioni lo stesso tipo di comando incollato nella riga di comando si e' rotto **tre volte** per citazione, perche' attraversa PowerShell e poi una shell remota e ciascuno dei due livelli interpreta a modo proprio apici, barre verticali e virgolette. La correzione non e' stata scrivere il comando meglio ma smettere di scriverlo: il driver del censimento accetta ora un parametro con lo script da eseguire, quindi qualunque ricognizione futura si scrive in un file, si trasferisce e si esegue. Il problema e' eliminato alla radice invece di essere aggirato ogni volta.
 
+## 01/09/2026 (2) - La ricognizione TLS rovescia il difetto che doveva risolvere, e trova due servizi che nessuno censiva
+
+La ricognizione doveva rispondere a una domanda di dettaglio, cioe' come aggiungere il traffico cifrato al gestore delle password. Ha risposto a tre domande diverse, e la prima annulla il presupposto da cui era partita.
+
+### Il gestore delle password non e' esposto: non e' collegato
+
+Il difetto #160 affermava che il gestore fosse servito in chiaro a tutta la LAN e che la password principale vi transitasse a ogni accesso. La misura lo esclude in tre modi indipendenti. Il contenitore **dichiara** la propria porta senza pubblicarla verso l'host, distinzione che nella lettura di un elenco si perde e che qui e' decisiva: una porta scritta con una corrispondenza verso l'host e' offerta alla rete, una porta scritta da sola e' usata solo all'interno del contenitore. Gli host virtuali attivi del server web sono due e nessuno riguarda il gestore. E il modulo di inoltro non e' caricato, quindi quel server non sarebbe nemmeno tecnicamente capace di raggiungerlo.
+
+Il difetto e' stato riformulato: il gestore e' **installato e non collegato**, e cio' che manca per usarlo e' l'intera catena, cioe' modulo di inoltro, modulo cifrato, host virtuale, certificato e nome. La gravita' scende da alta a media perche' non c'e' esposizione, ma un lavoro da fare prima dell'adozione. E' anche la spiegazione tecnica di quanto l'IT Manager aveva riferito lo stesso giorno, cioe' che il gestore non fosse ancora in uso: non lo e' perche' non e' mai stato collegato.
+
+**E' il terzo errore dello stesso tipo in una settimana**, dopo la conclusione che non esistessero filtri, tratta da una misura su un solo livello, e quella che il firewall del server Windows fosse attivo, tratta dalla documentazione del prodotto invece che dalla macchina. I tre hanno la stessa forma: una conclusione plausibile tratta da una misura parziale, senza fare la misura che l'avrebbe confermata o smentita. La lezione, registrata come schema e non come episodio: quando due fatti veri suggeriscono un collegamento, il collegamento e' un terzo fatto e va misurato a parte.
+
+### Due servizi che esistevano e che nessun inventario conteneva
+
+Sulla porta in chiaro della macchina del gestore risponde in realta' un applicativo di **gestione dei ticket di assistenza**, con host virtuale e radice propri. Nessun documento del progetto lo conosceva. Non e' un dettaglio di inventario: un sistema di ticket contiene descrizioni di problemi, nomi di richiedenti, allegati e non di rado credenziali che un utente incolla dentro una segnalazione, quindi e' un archivio di dati personali e talvolta di segreti, servito in chiaro su una macchina senza filtro. Tracciato come #178.
+
+E' il secondo in due giorni, dopo il servizio di inferenza dell'host Ollama. Il fatto ricorrente dice una cosa precisa e piu' generale dei due casi: **l'inventario dei servizi applicativi, distinto da quello delle macchine, non esiste**. Le macchine le elenca l'hypervisor, gli endpoint li elenca la gestione remota, e cio' che gira sopra non lo elenca nessuno.
+
+### L'autorita' di certificazione interna esiste gia', e appartiene a un progetto
+
+Il certificato che serve il traffico cifrato di IntraLino, interrogato dalla rete perche' l'immagine minimale del contenitore non porta gli strumenti per leggerlo dall'interno, risulta **non autofirmato**: e' emesso da un'autorita' interna creata per quel progetto, vale fino alla meta' del 2028 ed e' rilasciato per un nome semplice senza suffisso di dominio.
+
+E' una buona notizia, perche' la capacita' di emettere certificati e' gia' stata costruita e non e' teorica. Non e' pero' automaticamente l'autorita' aziendale, per tre ragioni di peso decrescente.
+
+La prima e' che **non si sa chi ne custodisca la chiave**, e va detto perche' e' la piu' importante: chi possiede la chiave privata di un'autorita' puo' emettere un certificato valido per qualunque nome, e ogni macchina che la consideri attendibile lo accettera' senza avvisi, senza bisogno di compromettere il servizio bersaglio. Una chiave di autorita' e' quindi piu' sensibile di qualunque credenziale di servizio perche' le contiene tutte. Tracciato come #179.
+
+La seconda e' il nome: il certificato e' emesso per un nome semplice, il che rende concreta la dipendenza da M25 gia' dichiarata. Non e' piu' un'ipotesi sul futuro, e' un certificato realmente emesso per un nome che nessun servizio risolve.
+
+La terza e' il perimetro: l'autorita' porta il nome di un progetto e non dell'azienda, il che non e' un ostacolo tecnico ma un problema di leggibilita' e di ciclo di vita, perche' se quel progetto venisse dismesso la sua autorita' resterebbe a garantire mezza azienda.
+
+La decisione se adottarla o crearne una aziendale dipende da un solo dato ancora da misurare, cioe' se sia gia' installata fra le autorita' attendibili delle postazioni: se lo e' esiste un patrimonio da preservare e conviene metterla in sicurezza, se non lo e' creare un'autorita' aziendale costa lo stesso e produce un impianto piu' pulito.
+
+### Gli strumenti, e perche' sono cresciuti proprio qui
+
+Nella stessa sessione il driver di ricognizione ha guadagnato due parametri. Il primo permette di eseguire uno script qualunque invece del solo censimento, ed e' nato dopo che lo stesso comando incollato nella riga di comando si e' rotto tre volte per citazione attraversando PowerShell e poi una shell remota. Il secondo permette di passare argomenti allo script, ed e' nato da un vincolo di questo repository: gli indirizzi reali non possono stare in un file versionato, quindi devono viaggiare nella riga di comando, che non e' tracciata.
+
+E' nato anche `scripts/sonda-tls.sh`, che interroga un endpoint dalla rete invece di guardare dentro la macchina. La ragione non e' soltanto che l'immagine del contenitore non portava gli strumenti: e' che la domanda giusta era un'altra. Cio' che determina se un utente vedra' un avviso non e' il file su disco, e' il certificato che il server **presenta** al client, e l'unico modo di saperlo con certezza e' chiederlo da fuori.
+
