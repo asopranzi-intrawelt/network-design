@@ -41,18 +41,24 @@ param(
     [Parameter(Mandatory = $true)][string[]] $Target,
     [switch] $NoSudo,
     [int] $Tentativi = 2,
-    [string] $OutputDir
+    [string] $OutputDir,
+    [string] $Script = 'censimento-host.sh',
+    [string] $Prefisso = 'censimento'
 )
 
 $ErrorActionPreference = 'Continue'
 $radice = Split-Path -Parent $PSScriptRoot
-$sh     = Join-Path $PSScriptRoot 'censimento-host.sh'
-if (-not (Test-Path $sh)) { throw "Script di censimento non trovato: $sh" }
+# Lo script da eseguire e' un parametro e non un valore fisso: la stessa meccanica
+# di copia ed esecuzione serve a qualunque ricognizione di sola lettura, e ogni volta
+# che si e' provato a incollare un comando equivalente nella riga di comando esso si
+# e' rotto per citazione prima di arrivare all'host.
+$sh     = Join-Path $PSScriptRoot $Script
+if (-not (Test-Path $sh)) { throw "Script non trovato: $sh" }
 if (-not $OutputDir) { $OutputDir = Join-Path $radice 'output' }
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir | Out-Null }
 
-$remoto = '/tmp/censimento-host.sh'
-$outRem = '/tmp/censimento-host.out'
+$remoto = '/tmp/ricognizione.sh'
+$outRem = '/tmp/ricognizione.out'
 $risultati = @()
 
 # La raggiungibilita' si verifica aprendo una connessione TCP alla porta del servizio
@@ -90,7 +96,7 @@ function Test-EsitoValido([string] $percorso) {
 foreach ($t in $Target) {
     Write-Host ''
     Write-Host "=== $t ===" -ForegroundColor Cyan
-    $dest = Join-Path $OutputDir ("censimento-{0}.txt" -f ($t -replace '[^\w.-]', '_'))
+    $dest = Join-Path $OutputDir ("{0}-{1}.txt" -f $Prefisso, ($t -replace '[^\w.-]', '_'))
 
     if (-not (Test-Raggiungibile $t)) {
         Write-Warning "$t : la porta 22 non risponde. L'host e' spento, non raggiungibile in rete, oppure il servizio SSH non e' attivo."

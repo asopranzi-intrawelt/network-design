@@ -1075,3 +1075,29 @@ Alla prima esecuzione il censimento falliva sulla VM 204 con un errore di permes
 
 Nell'elenco delle credenziali fornito dall'IT Manager compare l'host Ollama, che non e' una macchina virtuale e per questo era sfuggito a un censimento costruito sull'inventario di Proxmox. La rete lo conosce gia': e' l'apparato sulla porta 46 del 54HP, quello delle migliaia di oscillazioni del collegamento registrate in NET-010. Va aggiunto al censimento e alla matrice dei flussi. Il promemoria di metodo e' che un censimento costruito su un inventario ne eredita i buchi.
 
+## 01/09/2026 - Chiuso il censimento su dieci host, e la scelta fra certificato autofirmato e autorita' interna
+
+### M27-7 chiuso nella parte di raccolta
+
+Con la VM 205 e la VM 100 il censimento dell'esposizione copre tutti e dieci gli host. Il quadro complessivo e' che **nessuna macchina ha un filtro al primo livello**, una sola ha una restrizione al secondo, cioe' le direttive di ammissione per indirizzo nella configurazione del server web della VM 204, e il server Windows, che e' il piu' esposto del parco con piu' servizi in ascolto di tutte le altre messe insieme, ha il firewall disattivato su tutti e tre i profili. Resta da compilare la matrice dei flussi, che nessuna misura puo' produrre da sola.
+
+La diagnosi della VM 205 merita di essere ricordata per come e' andata: cinque ipotesi plausibili cadute una dopo l'altra e nessuna causa accertata. L'ultima, un nome utente sbagliato nella configurazione della postazione, era nata da una prova mal fatta, cioe' un comando lanciato senza specificare l'utente, che ne aveva quindi usato uno predefinito della postazione: la prova misurava se stessa e non la macchina. L'unica spiegazione compatibile con le misure e' che il tempo scaduto del 31/08 fosse transitorio, e il progetto lo dichiara invece di attribuirlo a una causa scelta a posteriori.
+
+### La domanda sui certificati, e perche' la risposta e' un'autorita' interna
+
+Prima di aggiungere HTTPS al gestore delle password l'IT Manager ha osservato che su alcune macchine un certificato esiste gia', prodotto dalla macchina stessa, e ha chiesto se non fosse quella la strada. La risposta e' no, e la ragione non e' tecnica ma aritmetica.
+
+Un certificato fa due cose che il linguaggio comune confonde: cifra il traffico, e per questo basta un certificato qualunque, e dimostra l'identita' di chi risponde, e per questo serve la firma di qualcuno che il navigatore gia' consideri attendibile. Un certificato autofirmato afferma la propria identita' appellandosi a se stesso, ed e' per questo che il navigatore protesta: l'avviso non e' un fastidio tecnico, e' la descrizione corretta della situazione. Il rischio di conviverci e' che un utente abituato a superare l'avviso lo superera' anche il giorno in cui l'avviso e' vero.
+
+Con certificati autofirmati per servizio le installazioni sulle postazioni crescono come il prodotto fra il numero di servizi e il numero di postazioni. Con un'autorita' interna si installa una volta sola l'autorita' su ogni postazione, e da quel momento ogni servizio nuovo funziona senza avvisi il giorno stesso. Il punto di pareggio sta intorno ai tre o quattro servizi, e qui sono gia' almeno cinque fra gestore delle password, portale asset, IntraLino, applicativo di pianificazione e il futuro proxy inverso della DMZ.
+
+C'e' pero' una ragione piu' forte del conteggio, e riguarda proprio il lavoro in corso: la segmentazione cambiera' gli indirizzi dei servizi, e un certificato autofirmato emesso oggi per un indirizzo diventera' sbagliato allora, con lo stesso meccanismo del difetto #171. Un'autorita' interna emette certificati per **nomi**, che sopravvivono al cambio di indirizzo.
+
+### La dipendenza scoperta scrivendo la decisione
+
+Un certificato certifica un nome, non una macchina, e su questa rete i nomi interni non hanno oggi un servizio che li risolva: e' il micro-step M25, e una delle macchine e' raggiunta per nome grazie al file degli host di una singola postazione. Ne discende una precedenza che va dichiarata adesso e non a meta' lavoro: prima si stabilisce come si chiamano i servizi interni e chi risolve quei nomi, poi si emettono i certificati. Non serve completare M25, serve fissare il suffisso interno e il modo di risolverlo.
+
+### Tre volte lo stesso errore, e la sua eliminazione
+
+Nel corso di queste sessioni lo stesso tipo di comando incollato nella riga di comando si e' rotto **tre volte** per citazione, perche' attraversa PowerShell e poi una shell remota e ciascuno dei due livelli interpreta a modo proprio apici, barre verticali e virgolette. La correzione non e' stata scrivere il comando meglio ma smettere di scriverlo: il driver del censimento accetta ora un parametro con lo script da eseguire, quindi qualunque ricognizione futura si scrive in un file, si trasferisce e si esegue. Il problema e' eliminato alla radice invece di essere aggirato ogni volta.
+
