@@ -1,6 +1,6 @@
 # Autorita' di certificazione interna e nomi dei servizi
 
-> Scheda aperta il 01/09/2026. Attua ADR-024, che fissa lo schema dei nomi interni, e ADR-025, che stabilisce dove viva la chiave dell'autorita'. Nasce da una domanda operativa — come aggiungere il traffico cifrato al gestore delle password — che ha rivelato una catena di decisioni mai prese: per cifrare serve un certificato, per un certificato serve un nome, per un nome serve chi lo risolva, e per la firma serve un'autorita' di cui qualcuno risponda.
+> Scheda aperta il 01/09/2026. Attua ADR-018, che fissa lo schema dei nomi interni, ADR-024, che vi assegna i primi nomi, e ADR-025, che stabilisce dove viva la chiave dell'autorita'. Nasce da una domanda operativa — come aggiungere il traffico cifrato al gestore delle password — che ha rivelato una catena di decisioni mai prese: per cifrare serve un certificato, per un certificato serve un nome, per un nome serve chi lo risolva, e per la firma serve un'autorita' di cui qualcuno risponda.
 >
 > E' scritta con fondamento didattico secondo la direttiva permanente dei cinque livelli: la materia dei certificati e' quella in cui si sbaglia per analogia con l'esperienza dei siti pubblici, dove tutto e' automatico e nessuna delle decisioni qui descritte e' visibile.
 >
@@ -32,7 +32,7 @@ C'e' pero' una ragione piu' forte del conteggio, e riguarda proprio il lavoro in
 
 Un certificato certifica un nome, non una macchina: il navigatore confronta il nome digitato dall'utente con quello scritto nel certificato, e se non coincidono protesta anche quando la firma e' di un'autorita' attendibile. Scegliere i nomi non e' quindi un preliminare estetico, e' il primo passo tecnico.
 
-Secondo ADR-024 i servizi interni si chiamano sotto **`int.intrawelt.com`**, sottodominio del dominio gia' posseduto dall'azienda, risolto soltanto all'interno e mai pubblicato nel sistema dei nomi pubblico.
+Secondo **ADR-018**, presa il 30/07/2026, i servizi interni si chiamano sotto **`int.intrawelt.com`**, sottodominio del dominio gia' posseduto dall'azienda, risolto soltanto sul resolver interno del firewall e mai pubblicato nel sistema dei nomi pubblico. E' una configurazione a orizzonte separato: lo stesso dominio risponde con nomi diversi a chi interroga da dentro e a chi interroga da fuori, e da fuori quei nomi semplicemente non esistono. ADR-024 la conferma e vi aggiunge i primi nomi concreti.
 
 | Servizio | Nome interno | Stato |
 |---|---|---|
@@ -47,13 +47,21 @@ I nomi si scelgono per **ruolo del servizio** e non per macchina. Un nome legato
 
 Un nome interno non si pubblica mai nel sistema dei nomi pubblico. Il sottodominio esiste solo dentro la rete: chi lo interroga da Internet non deve ottenere risposta, perche' altrimenti l'elenco dei servizi interni diventerebbe leggibile da chiunque.
 
-## La dipendenza da chi risolve i nomi, e la sua scadenza
+## Chi risolve i nomi: il firewall, e il resolver esisteva gia'
 
-Perche' un nome funzioni qualcuno deve tradurlo in un indirizzo, e su questa rete oggi non lo fa nessun servizio: e' il micro-step M25. La documentazione registra gia' un servizio raggiunto per nome grazie al file degli host di una singola postazione, che e' l'equivalente moderno di un foglietto attaccato al monitor.
+Perche' un nome funzioni qualcuno deve tradurlo in un indirizzo. Su questa rete la risposta e' meno lontana di quanto il progetto abbia creduto a lungo, ed e' una delle affermazioni che questo repository ha dovuto correggere: **un resolver interno esiste gia', ed e' il firewall**. La verifica dell'ambito DHCP del 30/07/2026 mostra che il primo server dei nomi distribuito ai client della LAN principale e' il firewall stesso, mentre secondo e terzo non sono impostati.
 
-La soluzione minima e' estendere quella pratica, scrivendo i nomi nel file degli host di ogni postazione. Funziona, costa poco, e non richiede di completare M25. Ha pero' una scadenza dichiarata e va scritta adesso: **quei file si rompono quando gli indirizzi cambiano**, cioe' al primo spostamento di segmento. Sono la stessa fragilita' del difetto #171 in un'altra forma.
+Manca quindi soltanto il contenuto. Il firewall oggi lavora da puro inoltratore verso resolver pubblici e non ospita alcun record di indirizzo proprio, come la lettura della sua configurazione ha confermato correggendo un'ipotesi opposta: le risposte che si ottenevano interrogando il nome di un NAS non venivano da lui, venivano dal client che risolveva in multicast per conto proprio. Ne discende che pubblicare i nomi interni non richiede di introdurre un servizio nuovo ne' di toccare gli endpoint della LAN principale, che gia' interrogano il posto giusto: richiede di creare i record.
 
-Ne discende una conclusione che nessuno aveva ancora tratto e che riguarda il piano principale: **M25 non e' un lavoro parallelo alla segmentazione, e' un suo prerequisito**. Con un servizio dei nomi interno, spostare un servizio di segmento significa cambiare un record; senza, significa toccare ogni postazione. La segmentazione senza risoluzione dei nomi e' eseguibile ma produce lavoro manuale proporzionale al numero di postazioni, ogni volta.
+L'intervento e' tracciato come **R12** in `docs/interventi-robustezza.md` ed e' scelto dall'IT Manager il 01/09/2026 come strada da percorrere, in alternativa al ripiego dei file degli host.
+
+### Tre avvertenze che l'intervento porta con se'
+
+La prima riguarda chi **non** interroga il firewall. L'ambito della rete Wi-Fi del personale distribuisce come server dei nomi due resolver pubblici e non il firewall: i dispositivi collegati in Wi-Fi non risolverebbero quindi alcun nome interno, e il difetto si manifesterebbe come "dal cavo funziona e dal Wi-Fi no", che e' fra i sintomi piu' difficili da attribuire alla causa giusta. Va corretto contestualmente. La rete ospiti deve invece continuare a usare resolver pubblici, e non e' una svista da sanare ma la scelta corretta: un ospite non ha ragione di poter risolvere i nomi dei servizi interni, e la risoluzione e' il primo passo di qualunque ricognizione.
+
+La seconda riguarda l'orizzonte separato. Poiche' i nomi vivono sotto un sottodominio che pubblicamente non esiste, il firewall risponde con i propri record per quel sottodominio e continua a inoltrare tutto il resto, compreso il dominio principale: non serve replicare o oscurare la zona pubblica, che e' il vantaggio pratico della scelta di ADR-018 rispetto all'uso del dominio nudo.
+
+La terza riguarda l'ordine. I record vanno creati **prima** di emettere i certificati, per una ragione di verifica e non di funzionamento: un certificato emesso per un nome che non risolve non si puo' collaudare, e si scoprirebbe che qualcosa non va solo dopo aver toccato la configurazione del servizio, con due variabili cambiate insieme e nessun modo di sapere quale delle due sia il problema.
 
 ## La procedura, e perche' e' scritta invece che ricordata
 
