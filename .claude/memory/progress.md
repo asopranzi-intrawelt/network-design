@@ -1,5 +1,21 @@
 # Work-log
 
+## 2026-09-01 — M27-7 chiuso su dieci host; la scelta dei certificati e la dipendenza da M25
+
+Commit: PENDING (da fare manualmente) File toccati (tracciati): **nuovo** `scripts/ispeziona-tls.sh`; `scripts/Invoke-HostCensus.ps1` (parametri `-Script` e `-Prefisso`); `docs/esposizione-servizi-interni.md` (VM 205, VM 100, certificati, gestore non ancora in uso); `docs/infrastructure-timeline/GAP-TBC.md` (#175-#177 nuovi, #160 #162 #174 corretti); `docs/infrastructure-timeline/2026-switch-piano-terra.md`; `.claude/context/STACK.md`.
+
+**Censimento chiuso su dieci host su dieci.** Nessuna macchina ha un filtro al primo livello, una sola ne ha uno al secondo, e il server Windows, il piu' esposto del parco, ha il firewall spento su tutti e tre i profili. Resta la matrice dei flussi, che nessuna misura produce da sola.
+
+**Una diagnosi finita senza causa, e va scritto cosi'.** Sulla VM 205 cinque ipotesi sono cadute una dopo l'altra. L'ultima, il nome utente sbagliato nella configurazione della postazione, era stata formulata sulla base di una prova mal fatta: un comando lanciato senza specificare l'utente ne aveva usato uno predefinito di Windows, quindi la prova misurava se stessa. Corretta il giorno stesso in scheda e in #162, che risulta falso in entrambe le meta' su quella macchina.
+
+**Il gestore delle password non e' ancora in uso**, precisato dall'IT Manager. #160 passa da attivo a latente, ma la sequenza non cambia e anzi si rafforza: e' adesso che sistemarlo costa meno, perche' dopo l'adozione servirebbe la stessa modifica piu' la rotazione di tutto cio' che nel frattempo fosse stato depositato.
+
+**La decisione sui certificati.** Alla domanda se bastasse il certificato che la macchina genera da se', la risposta e' no, per aritmetica: con certificati autofirmati le installazioni sulle postazioni crescono come servizi per postazioni, con un'autorita' interna si installa una volta sola. Il pareggio sta a tre o quattro servizi e qui sono gia' cinque. La ragione piu' forte e' pero' un'altra: la segmentazione cambiera' gli indirizzi, e un certificato per indirizzo si rompe allora con lo stesso meccanismo di #171, mentre un nome sopravvive.
+
+**La dipendenza scoperta scrivendo la decisione, e che nessuno aveva collegato.** Un certificato certifica un nome, e i nomi interni su questa rete non hanno un servizio che li risolva: e' M25. Ne discende una precedenza da dichiarare adesso: prima il suffisso interno e chi lo risolve, poi i certificati. Non serve completare M25, servono quei due punti.
+
+**Tre volte lo stesso errore di citazione, eliminato alla radice.** Il driver del censimento accetta ora `-Script`: qualunque ricognizione si scrive in un file e si esegue, invece di essere incollata attraverso due shell che la interpretano diversamente.
+
 ## 2026-08-31 (3) — Il criterio che divide DMZ e servizi interni, e la seconda passata del censimento su cinque macchine
 
 Commit: PENDING (da fare manualmente) File toccati (tracciati): `docs/virtualizzazione-proxmox-e-bridge.md` (sezione di progetto sui due segmenti); `docs/esposizione-servizi-interni.md` (esito della seconda passata); `docs/infrastructure-timeline/GAP-TBC.md` (#171 e #172 nuovi, #160 e #163 estesi, #170 corretto, riepilogo a 172); `docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce 31/08 (3)); `scripts/Invoke-HostCensus.ps1` (correzione della scrittura in /tmp). Non tracciati: `output/censimento-*.txt`, `_notes/registro-credenziali.md`.

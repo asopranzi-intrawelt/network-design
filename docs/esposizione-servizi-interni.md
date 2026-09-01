@@ -99,7 +99,7 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 | 202 | PasswordManager | `10.61.20.21` | Ubuntu 24.04.2 LTS | non installato | 22, 80 | 3306, 631 | da verificare |
 | 204 | ConvertitoreRuoliniENI | `10.61.20.22` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8090 | 5000, 5010 | **si**: accesso ristretto per indirizzo, ammessi la postazione dell'IT Manager e due indirizzi della fascia `.70`, riferito il 31/08/2026; livello e sintassi da determinare |
 | ~~206~~ | ~~intrasite~~ | — | — | — | — | — | **dismessa il 31/08/2026**, vedi §La dismissione della VM 206 |
-| 205 | GanttTool | `10.61.20.61` | `ufw` inattivo, solo catene del motore dei container | nessuna | 22, 80, 9001 | 631, 3306 | rilevata il 01/09/2026 attraverso l'agente ospite; raggiungibile in rete, vedi §La VM 205 |
+| 205 | GanttTool | `10.61.20.61` | `ufw` inattivo, solo catene del motore dei container | nessuna | 22, 80, 9001 | 631, 3306, e i contenitori non pubblicati | censita il 01/09/2026, vedi §La VM 205 |
 | 207 | websiteAnalyst | `10.61.20.24` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8000 | 3306, 631 | da verificare |
 | 209 | IntraNewSite | `10.61.20.209` | Ubuntu 24.04.4 LTS | non installato | 22, 3000, 5432 | 631 | da verificare |
 | 602 | Intralino | `10.61.20.60` | Ubuntu 25.10 | non installato | 22, 80, 443, 4443, 5443, 5444 | nessuna | da verificare |
@@ -110,7 +110,7 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 
 ## L'esito della seconda passata, 31/08/2026
 
-**Otto host su dieci** interrogati su tutti e quattro i livelli, al 31/08/2026. Restano fuori soltanto la VM 205, che non risponde in rete, e la VM 100, che e' Windows e ha una procedura propria.
+**Dieci host su dieci** interrogati su tutti e quattro i livelli, fra il 31/08 e il 01/09/2026. Il micro-step M27-7 e' chiuso nella sua parte di raccolta: cio' che resta e' la matrice dei flussi, che nessuna misura puo' produrre da sola.
 
 Il conto e' salito da nove a dieci perche' nella lista e' entrato un host che nessun inventario del progetto conteneva: l'host Ollama, che non e' una macchina virtuale e per questo era sfuggito a un censimento costruito sull'inventario di Proxmox. La rete lo conosceva gia' come l'apparato sulla porta 46 del 54HP, quello delle oscillazioni del collegamento di NET-010, ma nessuno lo aveva mai trattato come un host da censire.
 
@@ -185,25 +185,21 @@ La macchina non risponde sulla porta 22 dalla postazione, ma e' accesa e il suo 
 
 Cio' che espone: il servizio SSH sulla 22 e Apache sulla 80, entrambi su tutte le interfacce, piu' una porta 9001 pubblicata da un contenitore. Correttamente vincolati all'indirizzo locale il database MariaDB e il servizio di stampa. Il quadro e' quindi lo stesso delle altre macchine e non contiene sorprese.
 
-### La diagnosi, chiusa il 01/09/2026: la macchina risponde, l'alias era sbagliato
+### La diagnosi, chiusa il 01/09/2026: nessuna causa, e cinque ipotesi cadute
 
-La sequenza delle ipotesi merita di essere tenuta per intero, perche' quattro spiegazioni plausibili sono cadute una dopo l'altra e la causa finale era la piu' banale di tutte.
+La sequenza merita di essere tenuta per intero, perche' cinque spiegazioni plausibili sono cadute una dopo l'altra e alla fine non ne e' rimasta nessuna. E' un esito scomodo da scrivere e per questo vale la pena scriverlo.
 
-Non era spenta: l'hypervisor la riportava in esecuzione e l'agente eseguiva comandi. Non era un cambio di indirizzo: l'agente ha confermato lo stesso indirizzo che la postazione stava interrogando. Non era il servizio SSH fermo: risultava attivo e in ascolto su tutte le interfacce. E non era un filtro sulla macchina: `ufw` e' inattivo e nelle regole del kernel ci sono soltanto le catene del motore dei container, nessuna delle quali scarta traffico in ingresso verso l'host.
+Non era spenta: l'hypervisor la riportava in esecuzione e l'agente eseguiva comandi. Non era un cambio di indirizzo: l'agente ha confermato lo stesso indirizzo che la postazione stava interrogando. Non era il servizio SSH fermo: risultava attivo e in ascolto su tutte le interfacce. Non era un filtro sulla macchina: `ufw` e' inattivo e nelle regole del kernel ci sono soltanto le catene del motore dei container, nessuna delle quali scarta traffico in ingresso verso l'host. E **non era un nome utente sbagliato**, che era l'ipotesi formulata per ultima: il censimento del 01/09 e' riuscito con lo stesso alias e lo stesso utente che il progetto usava dall'inizio.
 
-La prova decisiva e' stata tentare la connessione senza specificare l'utente. La risposta non e' stata un tempo scaduto ma un **rifiuto di autenticazione**, il che dimostra che la connessione si stabilisce e che il servizio risponde: il percorso di rete funziona. Ne discendono due conclusioni. La prima e' che il tempo scaduto osservato il 31/08 era transitorio e non e' piu' riproducibile, quindi va registrato come tale e non spiegato a posteriori con una causa inventata. La seconda e' che il rifiuto aveva una causa propria e indipendente: l'alias SSH della postazione per questa macchina porta un nome utente che non e' quello dell'utenza locale, come l'elenco delle credenziali dell'IT Manager ha reso evidente.
+Quell'ultima ipotesi era nata da un errore di prova, e va detto perche' e' il tipo di errore che si ripete. La verifica era stata fatta con un comando che non specificava l'utente, quindi il programma ne ha usato uno predefinito preso dal sistema della postazione, e il rifiuto che ne e' seguito riguardava quell'utente inesistente e non la configurazione. La prova misurava se stessa, non la macchina. Ne era discesa una conclusione sbagliata, corretta il giorno stesso.
 
-E' anche il motivo per cui questa macchina risultava impenetrabile: il difetto #162 la registrava come inaccessibile per credenziali perdute, mentre la credenziale c'era e a mancare era la corrispondenza fra l'utenza reale e quella scritta nella configurazione della postazione. Un dato sbagliato in un file di configurazione locale ha prodotto una diagnosi sbagliata in un documento tecnico, ed e' lo stesso schema di #171, dove indirizzi scritti a mano dentro una configurazione producono guasti che sembrano di altra natura.
+Resta quindi la spiegazione piu' scomoda e l'unica compatibile con le misure: **il tempo scaduto del 31/08 era transitorio** e non e' riproducibile. Il progetto non sa perche' sia avvenuto, e questa scheda lo dichiara invece di attribuirlo a una causa plausibile scelta a posteriori. Va tenuto d'occhio: se si ripresenta, i due dati da raccogliere nel momento in cui accade sono se l'hypervisor riesca a raggiungerla e che cosa dica in quel momento la tabella degli indirizzi dello switch per la porta corrispondente, perche' entrambi si perdono appena la situazione si risolve.
 
-### Le ipotesi formulate durante la diagnosi, per memoria
+Cio' che il difetto #162 registrava per questa macchina, cioe' credenziali perdute e macchina inaccessibile, era percio' **falso in entrambe le meta'**, ed e' stato corretto.
 
-Tre ipotesi sono state verificate e scartate, e vale la pena tenerne traccia perche' ciascuna sarebbe stata una spiegazione plausibile.
+### Cosa espone la VM 205
 
-La macchina non e' spenta: l'hypervisor la riporta in esecuzione e l'agente esegue comandi. L'indirizzo non e' cambiato: e' ancora quello che la postazione stava interrogando, quindi non si stava bussando alla porta sbagliata. E il servizio SSH non e' fermo: risulta attivo e in ascolto su tutte le interfacce alla porta 22.
-
-Resta un dato che orienta e non conclude: le statistiche dell'interfaccia della macchina contano oltre centomila pacchetti ricevuti contro meno di settemila trasmessi, con seicentotrentaquattro scartati in ingresso. Riceve molto e risponde poco, il che e' coerente con qualcosa che scarta il traffico prima che arrivi al servizio, oppure con risposte che partono e non tornano indietro.
-
-Le ipotesi che restano sono tre e si distinguono con due prove. La prima e' un filtro attivo sulla macchina, che il censimento dei quattro livelli non ha ancora interrogato su questo host. La seconda e' un problema di percorso fra la postazione e la macchina, che si distingue provando la stessa connessione **dall'hypervisor**, che sta sullo stesso dominio di broadcast ma su un altro cavo: se da li' risponde e dalla postazione no, il difetto non e' nella macchina. La terza, meno probabile ma da non escludere finche' le prime due non hanno risposto, e' un conflitto di indirizzo, cioe' un secondo apparato che rivendica lo stesso indirizzo e si prende una parte del traffico.
+Apache sulla porta 80 e il servizio SSH sulla 22, entrambi su tutte le interfacce, piu' la porta 9001 pubblicata dal proxy dell'applicativo. Correttamente non pubblicati, quindi raggiungibili solo dai contenitori accanto, il database PostgreSQL e la cache. Il database e' pero' su una versione la cui serie e' fuori supporto dalla fine del 2025, come i due della VM 810: vedi #174.
 
 ## La macchina Windows, censita il 31/08/2026, e l'assunzione che ha rovesciato
 
@@ -389,11 +385,63 @@ Ne discende una sequenza obbligata, ed e' la ragione per cui #160 e' il primo in
 
 Tre cose che non vanno fatte, e la prima riguarda direttamente il modo in cui si lavora con un assistente. Le password **non si scrivono in una conversazione** e **non si mettono in un file che l'assistente legge**: la conversazione resta nella trascrizione della sessione finche' non viene cancellata, e un file letto entra nel contesto e da li' puo' finire in un riassunto. Questo progetto non ha mai bisogno del valore di una credenziale: gli serve sapere che esiste, a quale macchina e a quale utenza si riferisce, e dove e' custodita. Non vanno scritte in un file di testo o in un foglio di calcolo su una condivisione, che e' il modo in cui una credenziale sopravvive alla persona che l'ha scritta e diventa leggibile da chiunque abbia accesso alla cartella — lo stesso schema gia' registrato in #126 per le utenze memorizzate nelle multifunzione. E non vanno lasciate nella cartella dei download o nelle foto delle etichette degli apparati, come annotato piu' volte nella mappa privata.
 
+### Il gestore non e' ancora in uso, e questo cambia la ragione dell'urgenza
+
+Precisato dall'IT Manager il 01/09/2026: il gestore delle password della VM 202 e' installato ma **non e' ancora utilizzato**. Il fatto va registrato perche' corregge la valutazione del rischio di #160 in una direzione e la conferma nell'altra.
+
+Nella direzione che attenua: se nessuno vi accede, oggi non transita in chiaro nessuna credenziale, quindi non esiste una fuga in corso. La descrizione del difetto va letta come "cio' che accadrebbe appena qualcuno cominciasse a usarlo" e non come "cio' che sta accadendo". La gravita' resta alta perche' la macchina e' predisposta e l'adozione e' prevista, ma il difetto e' **latente** e non attivo.
+
+Nella direzione che conferma, ed e' quella che conta per la sequenza: proprio perche' non e' ancora in uso, **e' adesso che sistemarlo costa meno**. Farlo oggi significa aggiungere un host virtuale in ascolto sulla porta cifrata e un certificato a un servizio che nessuno sta usando, quindi senza finestra di interruzione da concordare, senza avvisare nessuno e senza nulla da rimediare a posteriori. Farlo dopo l'adozione significherebbe la stessa modifica piu' la rotazione di tutto cio' che nel frattempo e' stato depositato, perche' ogni credenziale inserita su un canale in chiaro va considerata esposta. La differenza fra i due momenti non e' di comodita' ma di quantita' di lavoro, e cresce ogni giorno che il gestore resta li' pronto.
+
+Ne discende anche che l'ordine "prima HTTPS, poi deposito, poi rotazione" non e' cautela eccessiva: e' l'unico ordine che evita di fare due volte lo stesso lavoro.
+
 ### Il registro senza valori, che e' cio' che serve al progetto
 
 Cio' che manca e che si puo' tenere fin da subito, anche prima dell'HTTPS, e' l'inventario delle credenziali **senza le credenziali**: per ogni macchina, quale utenza esiste, se la password e' nota, dove e' custodita e quando e' stata cambiata l'ultima volta. E' il rimedio a #168, costa poco e non contiene nulla di sensibile, tanto che potrebbe stare in un file tracciato; resta comunque in `_notes/` perche' l'elenco delle utenze e' informazione operativa che non serve a nessuno fuori.
 
 Il modello e' `_notes/registro-credenziali.md`, con una colonna per lo stato e nessuna per il valore. Lo produce anche `scripts/Invoke-HostCensus.ps1` nella sua forma minima, cioe' l'elenco degli host su cui la password non e' risultata disponibile.
+
+## Certificato per servizio o autorita' interna: la domanda posta il 01/09/2026
+
+L'IT Manager ha osservato che su alcune macchine un certificato esiste gia', per esempio su quella di IntraLino dove e' la macchina stessa a fornirlo, e ha chiesto se non sia quella la scelta giusta. La domanda va sciolta prima di generare il primo certificato per il gestore delle password, perche' le due strade divergono al primo comando e tornare indietro costa il doppio.
+
+### Che cosa fa davvero un certificato, e perche' il browser si lamenta
+
+Un certificato TLS assolve a due compiti distinti, e nel linguaggio comune vengono confusi. Il primo e' **cifrare** il traffico, e per questo basta un certificato qualunque, anche generato in dieci secondi dalla macchina stessa: la cifratura funziona identica. Il secondo e' **dimostrare l'identita'** di chi risponde, cioe' garantire che dietro quel nome ci sia davvero la macchina che ci si aspetta e non qualcuno che si e' messo in mezzo, e per questo la cifratura non basta.
+
+L'identita' si dimostra con una firma. Il certificato porta la firma di qualcuno, e il browser lo accetta senza protestare solo se quel qualcuno e' nel suo elenco di firmatari attendibili. Un certificato **autofirmato** e' un certificato che si firma da solo, cioe' afferma la propria identita' appellandosi a se stesso: e' esattamente per questo che il browser mostra un avviso, e l'avviso non e' un tecnicismo fastidioso ma la descrizione corretta della situazione, cioe' che nessuno indipendente garantisce quell'identita'.
+
+Ne discende che, di fronte a un avviso, l'utente ha due sole possibilita': cliccare per proseguire, imparando a ignorare un avviso di sicurezza, oppure installare quel singolo certificato fra quelli attendibili della propria postazione. La prima possibilita' e' la peggiore di tutte, e vale la pena dire perche': un utente abituato a superare l'avviso lo superera' anche il giorno in cui l'avviso e' vero, cioe' il giorno in cui qualcuno si e' davvero messo in mezzo. La cifratura senza identita' verificata protegge da chi ascolta e non da chi si sostituisce.
+
+### La differenza fra le due strade sta nel numero di volte
+
+Con i **certificati autofirmati per servizio**, ogni servizio genera il proprio e ogni postazione deve installare quel certificato per non vedere l'avviso. Con `n` servizi e `m` postazioni le installazioni sono `n` per `m`, e crescono ogni volta che nasce un servizio.
+
+Con una **autorita' di certificazione interna**, si genera una volta sola un certificato di autorita', lo si installa una volta sola su ogni postazione fra i firmatari attendibili, e da quel momento ogni certificato che quell'autorita' firma viene accettato senza avvisi. Le installazioni sono `m`, una per postazione, e non crescono mai piu': un servizio nuovo ottiene un certificato firmato e funziona ovunque il giorno stesso.
+
+Il costo si ribalta quindi con il numero di servizi. Con un servizio solo l'autofirmato e' piu' semplice; a partire da tre o quattro l'autorita' interna e' piu' semplice, e la differenza cresce.
+
+### Perche' in questo caso la risposta e' l'autorita' interna
+
+I servizi interni che avranno bisogno di un certificato non sono uno. Ci sono gia' il gestore delle password, il portale asset, IntraLino, l'applicativo di pianificazione, e ci saranno il proxy inverso della DMZ e i servizi che vi verranno pubblicati. Sono almeno cinque, e il piano di segmentazione ne prevede altri.
+
+C'e' pero' una ragione piu' forte del conteggio, e riguarda cio' che questo progetto sta facendo adesso. Il piano di segmentazione spostera' i servizi su segmenti diversi, il che significa che **cambieranno indirizzo**. Un certificato autofirmato generato oggi per un indirizzo diventa sbagliato quando quell'indirizzo cambia, esattamente come le liste di indirizzi letterali del difetto #171, e va rigenerato e reinstallato su ogni postazione. Un'autorita' interna emette invece certificati per **nomi**, e un nome puo' continuare a valere quando l'indirizzo dietro di esso cambia: e' la stessa ragione per cui la segmentazione ha bisogno di una risoluzione dei nomi che funzioni.
+
+E qui la decisione tocca una dipendenza che non va scoperta a meta' lavoro.
+
+### La dipendenza che va dichiarata: senza nomi, i certificati funzionano male
+
+Un certificato certifica un **nome**, non una macchina. Il browser confronta il nome che ha digitato l'utente con quello scritto nel certificato, e se non coincidono protesta anche quando il certificato e' firmato da un'autorita' attendibile.
+
+Su questa rete i nomi interni non hanno oggi un servizio che li risolva: il micro-step M25 registra che la risoluzione dei nomi interni non e' consolidata, e la documentazione di una delle macchine descrive un servizio raggiunto per nome grazie al file degli host di una singola postazione, che e' l'equivalente moderno di un foglietto attaccato a un monitor. E' possibile emettere certificati per indirizzi anziche' per nomi, ma e' una strada peggiore in tre modi: l'indirizzo cambia con la segmentazione, alcuni strumenti la supportano male, e soprattutto rinuncia proprio a cio' che rende utile un'autorita' interna.
+
+Ne discende una precedenza che va detta adesso e non a meta' lavoro: **prima si decide come si chiamano i servizi interni e chi risolve quei nomi, poi si emettono i certificati**. Non serve completare M25 per intero, serve stabilire il suffisso interno e il modo di risolverlo. Se la scelta ricadesse sul file degli host delle postazioni, resterebbe una soluzione fragile ma sufficiente a non sprecare i certificati.
+
+### Il quadro va misurato prima di essere deciso
+
+L'osservazione dell'IT Manager sul certificato gia' presente su una macchina va verificata prima di trarne conclusioni, perche' le due cose che potrebbero esserci sono diverse e si somigliano. Potrebbe essere un certificato autofirmato dal servizio stesso, che e' il caso comune e non costituisce un'autorita'. Oppure potrebbe esistere davvero un'autorita' interna gia' generata, magari per un altro progetto, e in quel caso non c'e' nulla da creare e la strada e' gia' aperta.
+
+La distinzione si legge nei campi pubblici del certificato: se soggetto ed emittente coincidono e' autofirmato; se esiste un certificato marcato come autorita' di certificazione, allora un'autorita' c'e'. La ricognizione si fa con `scripts/ispeziona-tls.sh`, che stampa quei campi e non tocca mai le chiavi private.
 
 ## Cosa resta aperto
 
