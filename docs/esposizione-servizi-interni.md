@@ -505,6 +505,28 @@ Se lo e', esiste un patrimonio da non buttare, cioe' un'installazione gia' fatta
 
 Il dato si legge sulla postazione, fra i certificati di autorita' attendibili della macchina e dell'utente, ed e' una lettura che non modifica nulla.
 
+### La misura del 01/09/2026: l'autorita' e' installata, e questo sposta la decisione
+
+Sulla postazione dell'IT Manager l'autorita' risulta presente **in entrambi gli archivi**, quello della macchina e quello dell'utente, con la stessa impronta. La duplicazione non fa danno ed e' anzi il segno di un'installazione deliberata piu' che accidentale: qualcuno l'ha messa dove serviva e poi anche dove poteva servire.
+
+Il certificato di autorita' e' valido fino al **marzo 2036**, cioe' dieci anni dalla generazione, e vale la pena notare la differenza rispetto al certificato di servizio che firma, valido poco piu' di due anni. Non e' un'incongruenza ma la pratica corretta: un'autorita' dura a lungo perche' sostituirla significa reinstallarla ovunque, mentre i certificati che emette durano poco perche' sostituirli non costa niente. Chi ha generato questa autorita' conosceva la materia.
+
+Ne discende che un patrimonio esiste. Quanto grande, pero', non e' ancora noto, ed e' il numero che decide: **su quante postazioni sia installata**. La verifica e' stata fatta su una sola, quella di chi amministra, che e' anche la piu' probabile ad averla a prescindere da come sia stata distribuita.
+
+### La decisione, e i due numeri che la determinano
+
+Le due strade restano quelle gia' descritte, ma ora hanno un costo confrontabile e non piu' teorico.
+
+Adottare l'autorita' esistente costa **zero installazioni** dove e' gia' presente, ma richiede di mettere in sicurezza una chiave di cui oggi non si conosce collocazione ne' custodia, cioe' di prendersi la responsabilita' di qualcosa che non si e' creato. Si accetta inoltre che l'ancora di fiducia dell'intera azienda porti per dieci anni il nome di un progetto applicativo.
+
+Crearne una aziendale costa **una installazione per postazione**, piu' la generazione, che e' questione di minuti. In cambio la custodia della chiave e la procedura di emissione nascono documentate, il nome e' quello giusto, e i certificati si emettono secondo lo schema di nomi che va comunque deciso per M25.
+
+Il confronto si riduce quindi a due numeri. Il primo e' **quante postazioni hanno gia' l'autorita'**: se sono poche, il vantaggio di riusarla e' piccolo e si riduce ogni giorno che passa, perche' piu' si aspetta piu' l'installazione cresce e piu' cambiare costa. Il secondo e' **quanto costa mettere in sicurezza la chiave esistente**: se la chiave e' su una macchina nota, protetta e con un accesso circoscritto, il costo e' basso; se e' in una cartella di lavoro senza passphrase, metterla in sicurezza equivale a rigenerarla, e allora tanto vale rigenerarla con il nome giusto.
+
+Il progetto non raccomanda l'una o l'altra finche' quei due numeri mancano, ma segnala l'asimmetria temporale: **la strada del riuso diventa piu' conveniente con il tempo, quella della sostituzione meno**, quindi l'unica scelta che si puo' rimandare senza costo e' nessuna delle due.
+
+
+
 ## Cosa resta aperto
 
 La seconda passata su tutti e quattro i livelli, sulle sette macchine gia' raggiungibili: e' la sola cosa che possa dire dove esistano davvero restrizioni, e la prima domanda a cui deve rispondere e' dove viva quella della VM 204.
