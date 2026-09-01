@@ -1,5 +1,19 @@
 # Work-log
 
+## 2026-09-01 (3) — Trovata la chiave della CA, e due decisioni architetturali: ADR-024 e ADR-025
+
+Commit: PENDING (da fare manualmente) File toccati (tracciati): `.claude/memory/decisions.md` (ADR-024 e ADR-025); `docs/esposizione-servizi-interni.md`; `docs/infrastructure-timeline/GAP-TBC.md` (#179); `docs/infrastructure-timeline/2026-switch-piano-terra.md`; `scripts/trova-ca.sh` (percorsi estesi e limite dichiarato); **nuovo** `scripts/trova-ca-container.sh`.
+
+**Avevo concluso che la chiave non fosse sulla macchina, e sbagliavo.** L'IT Manager ha dubitato della conclusione e aveva ragione: chiedendo al contenitore da dove legge il certificato, la chiave e' saltata fuori in un comando, in una cartella dell'host che il mio script non attraversava. Quarto errore della stessa famiglia in una settimana, e il piu' istruttivo perche' riguarda uno strumento: una ricerca per contenuto vale quanto i percorsi che attraversa, e un esito negativo significa "non trovato dove ho guardato". Ho esteso i percorsi e scritto il limite dentro lo script, perche' un limite dichiarato nello strumento sopravvive a chi lo scopre.
+
+**Custodia misurata, esito misto.** Permessi corretti, catena completa e standard — il che e' una buona notizia, perche' significa che creare l'autorita' aziendale sara' ripetere una procedura gia' praticata in casa. Ma la chiave **non ha passphrase**, verificato sull'intestazione del file, e la macchina che la ospita non ha filtri, espone SSH a tutta la LAN e condivide credenziali. Il file e' la chiave.
+
+**ADR-024, i nomi**: i servizi interni sotto un sottodominio del dominio aziendale. Rischio di collisione nullo perche' il dominio e' gia' dell'azienda; interno ed esterno distinguibili nel nome; strada aperta a certificati pubblici se mai servissero. Scartato il suffisso di scoperta locale per conflitto tecnico con il servizio multicast attivo su piu' macchine. I nomi si scelgono per ruolo del servizio e non per macchina, cosi' sopravvivono allo spostamento che la segmentazione fara'.
+
+**ADR-025, la custodia**: chiave della nuova autorita' fuori linea e con passphrase, su nessuna macchina. Ragionamento quantitativo: pochi certificati all'anno, quindi il passaggio manuale costa poco e il beneficio e' permanente. Ed e' l'unica misura che rompe la catena di #169 e #179, dove la sicurezza di una chiave dipende da quella di un host.
+
+**Una sequenza controintuitiva da non sbagliare**: prima l'autorita', poi il certificato del gestore delle password, poi il deposito della passphrase dentro il gestore. La passphrase non puo' stare nel gestore prima che il gestore funzioni, e il gestore non funziona senza certificato.
+
 ## 2026-09-01 (2) — La ricognizione TLS rovescia #160, trova due servizi non censiti e un'autorita' interna
 
 Commit: PENDING (da fare manualmente) File toccati (tracciati): **nuovo** `scripts/sonda-tls.sh`; `scripts/ispeziona-tls.sh` (sezione sui contenitori); `scripts/Invoke-HostCensus.ps1` (parametro `-Argomenti`); `docs/esposizione-servizi-interni.md`; `docs/infrastructure-timeline/GAP-TBC.md` (#160 riformulato, #178 e #179 nuovi, riepilogo a 179); `docs/infrastructure-timeline/2026-switch-piano-terra.md`.

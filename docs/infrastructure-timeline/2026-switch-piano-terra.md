@@ -1139,3 +1139,25 @@ Nella stessa sessione il driver di ricognizione ha guadagnato due parametri. Il 
 
 E' nato anche `scripts/sonda-tls.sh`, che interroga un endpoint dalla rete invece di guardare dentro la macchina. La ragione non e' soltanto che l'immagine del contenitore non portava gli strumenti: e' che la domanda giusta era un'altra. Cio' che determina se un utente vedra' un avviso non e' il file su disco, e' il certificato che il server **presenta** al client, e l'unico modo di saperlo con certezza e' chiederlo da fuori.
 
+## 01/09/2026 (3) - Trovata la chiave dell'autorita', e prese due decisioni architetturali
+
+### La chiave era sulla macchina, e la prima ricerca aveva sbagliato
+
+La voce precedente registrava che la ricerca per contenuto non avesse trovato alcuna autorita' sull'host di IntraLino, e ne concludeva che la chiave stesse altrove. L'IT Manager ha dubitato della conclusione osservando che la chiave doveva stare dentro la macchina, e aveva ragione: chiedendo al contenitore da dove legga il proprio certificato, la risposta e' arrivata in un comando. Certificato e chiave sono innestati in sola lettura da una cartella dell'host dedicata proprio alle autorita', che la prima ricerca non aveva attraversato perche' non era nel suo elenco di percorsi.
+
+E' il quarto errore della stessa famiglia in una settimana ed e' il piu' istruttivo, perche' riguarda uno strumento e non un ragionamento: **una ricerca per contenuto vale quanto l'elenco di percorsi che attraversa**, e un esito negativo significa "non trovato dove ho guardato", mai "non esiste". La correzione e' doppia e la seconda meta' e' quella che conta: l'elenco e' stato esteso, e il limite e' stato scritto in testa allo strumento, perche' un limite dichiarato dentro lo strumento sopravvive a chi lo ha scoperto. Ne resta anche un metodo: quando un servizio **presenta** un certificato, la chiave esiste per definizione, e la via piu' diretta non e' cercarla sul disco ma chiedere al servizio da dove la legge.
+
+### La custodia, misurata: permessi giusti, contesto sbagliato, nessuna passphrase
+
+La cartella contiene la catena completa e corretta: certificato dell'autorita' e sua chiave, file dei numeri di serie, e per il servizio richiesta di firma, file delle estensioni, certificato e chiave. Vale la pena leggerlo come indizio di metodo prima che come inventario, perche' significa che **una procedura esiste ed e' quella standard**: creare l'autorita' aziendale sara' ripetere qualcosa gia' praticato in casa, non inventare.
+
+I permessi sono corretti, con le chiavi leggibili dal solo amministratore. Il contesto pero' li vanifica in buona parte: la macchina non ha filtri, espone l'accesso remoto a tutta la LAN piatta, ammette l'autenticazione con password e condivide credenziali con altre, quindi chi ne ottenesse l'amministrazione otterrebbe la chiave. E la verifica finale ha tolto l'ultima attenuante: l'intestazione del file dichiara una chiave privata semplice e non cifrata, quindi **la chiave non e' protetta da passphrase** e il file e' la chiave.
+
+### Due decisioni architetturali, ADR-024 e ADR-025
+
+Sui **nomi**, la scelta e' un sottodominio del dominio che l'azienda gia' possiede. Le ragioni in ordine di peso: il dominio e' gia' dell'azienda quindi il rischio di collisione e' nullo per costruzione, a differenza di un suffisso inventato che nessuno standard riserva; la distinzione fra nome interno ed esterno dello stesso servizio diventa leggibile nel nome; e se un giorno servisse un certificato riconosciuto pubblicamente la strada resterebbe aperta. Scartato il suffisso di scoperta locale per una ragione tecnica e non di stile, cioe' che su questa rete piu' macchine eseguono il servizio di scoperta multicast che se lo riserva. Conseguenza operativa: la risoluzione va fatta funzionare prima di emettere i certificati, ed e' la parte minima di M25; e i nomi vanno scelti per **ruolo del servizio** e non per macchina, cosi' che sopravvivano a uno spostamento, che e' esattamente cio' che la segmentazione fara'.
+
+Sulla **custodia**, la chiave della nuova autorita' vive fuori linea e protetta da passphrase, su nessun server, nessuna macchina virtuale e nessuna postazione. Il ragionamento e' quantitativo prima che di principio: un'autorita' emette pochi certificati all'anno, quindi il costo del passaggio manuale e' irrilevante rispetto alla frequenza mentre il beneficio e' permanente. Ed e' l'unica misura che rompe la catena descritta in #169 e #179, dove la sicurezza di una chiave dipende da quella di un host: una chiave che non sta su nessuna macchina non si ottiene compromettendo una macchina.
+
+Ne discende una sequenza obbligata che vale la pena scrivere perche' e' controintuitiva: prima l'autorita', poi il certificato del gestore delle password, poi il deposito della passphrase dentro il gestore stesso. La passphrase non puo' stare nel gestore prima che il gestore funzioni, e il gestore non funziona prima di avere un certificato.
+

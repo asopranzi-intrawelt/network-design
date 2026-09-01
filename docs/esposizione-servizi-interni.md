@@ -527,13 +527,29 @@ Il progetto non raccomanda l'una o l'altra finche' quei due numeri mancano, ma s
 
 
 
-## Dove sta la chiave dell'autorita': non sul server che la usa
+## Dove sta la chiave dell'autorita', e un errore di metodo da non ripetere
 
-La ricerca per contenuto sull'host di IntraLino, eseguita il 01/09/2026, **non ha trovato alcun certificato di autorita'**. Le uniche due chiavi private presenti sono estranee: quella predefinita di un pacchetto di sviluppo e quella autogenerata dall'installazione del sistema, entrambe senza rapporto con il certificato che il servizio presenta.
+La prima ricerca, eseguita per contenuto sull'host di IntraLino il 01/09/2026, non aveva trovato alcun certificato di autorita', e questa scheda ne aveva concluso che la chiave non fosse sul server e si trovasse presumibilmente altrove. **La conclusione era sbagliata**, e l'IT Manager ha avuto ragione a dubitarne osservando che la chiave doveva stare dentro la macchina.
 
-Il fatto va letto per quello che e', perche' e' piu' scomodo di quanto sembri. Il servizio **presenta** un certificato valido, quindi il certificato esiste e la chiave che lo ha firmato e' esistita; ma sul server che lo usa non c'e'. Restano tre possibilita': il certificato e' incorporato nell'immagine del contenitore, arriva da un volume del motore dei contenitori, oppure da una cartella dell'host innestata nel contenitore e non compresa nella ricerca. In tutti e tre i casi resta separata la domanda su dove sia la **chiave dell'autorita'**, che serve solo al momento di emettere e non al momento di servire: puo' benissimo trovarsi su una macchina diversa, tipicamente quella di chi ha costruito il progetto.
+L'esame di dove il contenitore prenda il proprio certificato l'ha localizzata subito: il contenitore di inoltro riceve certificato e chiave da due innesti in sola lettura provenienti da una cartella dell'host dedicata proprio a questo, `/var/lib/ca/`. Era li' dall'inizio. La prima ricerca non l'ha vista perche' il suo elenco di percorsi non comprendeva quella cartella.
 
-Ne discende un aggravamento di #179 e non un'attenuazione. Non e' che la chiave sia custodita male: **non si sa dove sia**, il che e' la forma peggiore di custodia perche' non e' nemmeno verificabile. L'ancora di fiducia che sta gia' su almeno una postazione aziendale, e che vi restera' fino al 2036, e' garantita da una chiave di cui l'azienda non conosce la collocazione.
+L'errore e' il quarto della stessa famiglia in una settimana, ed e' il piu' istruttivo perche' riguarda uno strumento e non un ragionamento: **una ricerca per contenuto vale quanto l'elenco di percorsi che attraversa**, e un esito negativo significa sempre "non trovato dove ho guardato", mai "non esiste". La correzione applicata e' doppia: l'elenco dei percorsi e' stato esteso, e soprattutto lo script porta ora scritto in testa il proprio limite, perche' un limite dichiarato dentro lo strumento sopravvive a chi lo ha scoperto.
+
+Ne discende anche la lezione operativa che vale piu' della correzione: quando un servizio **presenta** un certificato, la chiave esiste per definizione, e la via piu' diretta per trovarla non e' cercarla sul disco ma chiedere al servizio da dove la legge. E' il metodo che ha funzionato in un comando dopo che l'altro aveva fallito.
+
+Il difetto #179 e' quindi meno grave di come era stato riscritto: la chiave e' sulla macchina, in una cartella dedicata. Restano da valutare la sua custodia effettiva, cioe' permessi, proprietario e protezione con passphrase, che e' la verifica ancora da fare.
+
+## La custodia della chiave, misurata il 01/09/2026
+
+La cartella dedicata contiene sette file, e il loro insieme dice piu' di quanto direbbe la chiave da sola. Ci sono il certificato dell'autorita' e la sua chiave privata, il file dei numeri di serie che l'autorita' usa per non emettere due certificati con lo stesso identificativo, e per il servizio la richiesta di firma, il file delle estensioni che porta i nomi alternativi, il certificato emesso e la sua chiave.
+
+Vale la pena leggerlo come indizio di metodo prima che come inventario: **c'e' una procedura, ed e' quella standard**. Chi ha creato questa autorita' non ha improvvisato un certificato, ha costruito la catena completa nel modo in cui la si costruisce. Ne discende che creare l'autorita' aziendale non sara' inventare qualcosa di nuovo ma ripetere una procedura gia' praticata in casa, il che abbassa il rischio dell'operazione.
+
+Sulla custodia, due dati opposti. I permessi sono corretti: la chiave dell'autorita' e quella del servizio sono leggibili dal solo amministratore, mentre i certificati, che sono pubblici per costruzione, sono leggibili da tutti. Nessuno ha lasciato la chiave in una cartella condivisa.
+
+Il contesto intorno pero' vanifica in buona parte quei permessi, ed e' il punto che conta. La chiave e' leggibile dall'amministratore di quella macchina, e quella macchina non ha alcun filtro (#159), espone il servizio di accesso remoto a tutta la LAN piatta, ammette l'autenticazione con password (#172) e condivide credenziali con altre macchine (#170). Chi ottiene l'amministrazione di quella macchina ottiene la chiave, e con la chiave puo' emettere certificati validi per qualunque nome che tutte le postazioni accetteranno. La protezione della chiave non e' quindi piu' forte della protezione di quella singola macchina, che e' esattamente lo stesso ragionamento gia' fatto in #169 per l'hypervisor.
+
+Resta un dato da verificare che cambia il peso di tutto il resto: **se la chiave sia protetta da una passphrase**. Se lo e', chi legge il file non ottiene nulla senza conoscerla, e la custodia diventa ragionevole. Se non lo e', il file e' la chiave. La dimensione del file suggerisce una chiave lunga il doppio di quella del servizio e verosimilmente non cifrata, ma e' un'inferenza dalla lunghezza e non una misura, quindi va confermata leggendo la prima riga del file, che dichiara il tipo ed e' pubblica per costruzione.
 
 ## La decisione, presa il 01/09/2026: si crea un'autorita' aziendale
 
