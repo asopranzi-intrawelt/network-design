@@ -527,6 +527,36 @@ Il progetto non raccomanda l'una o l'altra finche' quei due numeri mancano, ma s
 
 
 
+## Dove sta la chiave dell'autorita': non sul server che la usa
+
+La ricerca per contenuto sull'host di IntraLino, eseguita il 01/09/2026, **non ha trovato alcun certificato di autorita'**. Le uniche due chiavi private presenti sono estranee: quella predefinita di un pacchetto di sviluppo e quella autogenerata dall'installazione del sistema, entrambe senza rapporto con il certificato che il servizio presenta.
+
+Il fatto va letto per quello che e', perche' e' piu' scomodo di quanto sembri. Il servizio **presenta** un certificato valido, quindi il certificato esiste e la chiave che lo ha firmato e' esistita; ma sul server che lo usa non c'e'. Restano tre possibilita': il certificato e' incorporato nell'immagine del contenitore, arriva da un volume del motore dei contenitori, oppure da una cartella dell'host innestata nel contenitore e non compresa nella ricerca. In tutti e tre i casi resta separata la domanda su dove sia la **chiave dell'autorita'**, che serve solo al momento di emettere e non al momento di servire: puo' benissimo trovarsi su una macchina diversa, tipicamente quella di chi ha costruito il progetto.
+
+Ne discende un aggravamento di #179 e non un'attenuazione. Non e' che la chiave sia custodita male: **non si sa dove sia**, il che e' la forma peggiore di custodia perche' non e' nemmeno verificabile. L'ancora di fiducia che sta gia' su almeno una postazione aziendale, e che vi restera' fino al 2036, e' garantita da una chiave di cui l'azienda non conosce la collocazione.
+
+## La decisione, presa il 01/09/2026: si crea un'autorita' aziendale
+
+L'IT Manager ha aggiunto il dato che mancava: **tutta l'azienda usera' IntraLino via browser**. Non e' un dettaglio di adozione, e' l'informazione che chiude la scelta, e vale la pena mostrare perche' la ribalta.
+
+Il ragionamento fino a quel momento contrapponeva il costo di distribuire un'autorita' nuova su tutte le postazioni al vantaggio di riusarne una gia' installata. Ma se tutta l'azienda usera' IntraLino, allora **l'autorita' dovra' comunque essere installata su tutte le postazioni**, perche' oggi lo e' solo su quella di chi amministra. La distribuzione capillare non e' un costo della strada nuova: e' un costo di entrambe, gia' messo in conto dal progetto applicativo.
+
+Ne discende che il confronto si semplifica. Se la distribuzione avviene con l'autorita' esistente, l'azienda si lega per dieci anni a un'ancora di fiducia che porta il nome di un progetto e la cui chiave non si sa dove sia. Se avviene con un'autorita' aziendale creata adesso, la stessa identica distribuzione produce un impianto con la custodia documentata e il nome giusto. **Il costo e' lo stesso, il risultato no.**
+
+C'e' anche una finestra che si chiude. Oggi l'autorita' esistente e' installata, per quanto misurato, su una sola postazione: sostituirla costa una disinstallazione. Dopo il rilascio di IntraLino sarebbe su tutte, e sostituirla costerebbe quanto la distribuzione stessa. E' l'asimmetria temporale gia' segnalata, che qui smette di essere teorica e ha una data.
+
+### Che cosa comporta, e su chi ricade
+
+Per questo progetto: generare l'autorita' aziendale, documentarne la custodia, definire lo schema dei nomi interni con M25 ed emettere i certificati.
+
+Per il progetto IntraLino: **riemettere il proprio certificato** dall'autorita' nuova e aggiornare la propria configurazione e il proprio repository, come l'IT Manager ha fatto notare. Non e' lavoro di rete e non si fa da qui: e' un intervento su un altro progetto, con un proprio versionamento sulla macchina, ed e' esattamente il tipo di dipendenza che questo repository non risolve ma dichiara. Va comunicato con un documento di consegna nelle radici sorvegliate, secondo il protocollo delle fonti, perche' altrimenti resta una decisione presa qui e ignorata la'.
+
+L'ordine conta e ha una sola sequenza sensata: prima lo schema dei nomi, poi l'autorita', poi i certificati nuovi, poi la distribuzione dell'autorita' sulle postazioni **contestuale** al rilascio di IntraLino, che e' l'occasione in cui qualcuno tocchera' comunque tutte le postazioni. Fare la distribuzione due volte e' l'unico errore veramente costoso di questa materia.
+
+### Cio' che resta dell'autorita' esistente
+
+Non va cancellata subito. Finche' il certificato di IntraLino non e' riemesso, quell'autorita' e' cio' che rende il servizio utilizzabile senza avvisi su almeno una postazione. Va disinstallata quando l'ultimo certificato che ha firmato e' stato sostituito, e va comunque **trovata la sua chiave** anche solo per distruggerla consapevolmente: una chiave di autorita' che resta in giro, e la cui autorita' e' ancora attendibile su qualche postazione dimenticata, e' un modo per firmare identita' che qualcuno continuera' ad accettare.
+
 ## Cosa resta aperto
 
 La seconda passata su tutti e quattro i livelli, sulle sette macchine gia' raggiungibili: e' la sola cosa che possa dire dove esistano davvero restrizioni, e la prima domanda a cui deve rispondere e' dove viva quella della VM 204.
