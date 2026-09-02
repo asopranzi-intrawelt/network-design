@@ -36,10 +36,12 @@ Secondo **ADR-018**, presa il 30/07/2026, i servizi interni si chiamano sotto **
 
 | Servizio | Nome interno | Stato |
 |---|---|---|
-| Gestore delle password | `vault.int.intrawelt.com` | deciso il 01/09/2026, da attuare |
-| Portale asset | `asset.int.intrawelt.com` | deciso il 01/09/2026, sostituisce il nome con il vecchio suffisso |
-| IntraLino | da assegnare | riemissione a carico del progetto IntraLino |
+| Gestore delle password | `vault.int.intrawelt.com` | deciso il 01/09/2026 |
+| Portale asset | `asset.int.intrawelt.com` | deciso il 01/09/2026, sostituisce il nome con il vecchio suffisso; avra' anche un nome pubblico, vedi sotto |
+| IntraLino | `intralino.int.intrawelt.com` | deciso il 02/09/2026; riemissione del certificato a carico del progetto IntraLino |
 | Proxy inverso della DMZ | da assegnare | quando M6-M9 lo creeranno |
+
+Sul significato del suffisso vale la pena essere espliciti, perche' si presta a un equivoco che si e' verificato: **`int` sta per interno**, non per il nome di un progetto. E' il pezzo che distingue un nome che vive soltanto dentro la rete da uno pubblicabile, ed e' per questo che compare fra il nome del servizio e il dominio e non altrove.
 
 Due regole che accompagnano lo schema e che valgono piu' del suffisso.
 
@@ -47,13 +49,33 @@ I nomi si scelgono per **ruolo del servizio** e non per macchina. Un nome legato
 
 Un nome interno non si pubblica mai nel sistema dei nomi pubblico. Il sottodominio esiste solo dentro la rete: chi lo interroga da Internet non deve ottenere risposta, perche' altrimenti l'elenco dei servizi interni diventerebbe leggibile da chiunque.
 
+## Il servizio che sara' raggiungibile da dentro e da fuori: il caso del portale asset
+
+L'IT Manager ha osservato il 02/09/2026 che il portale asset dovra' anche essere pubblicato all'esterno tramite la DMZ. E' il caso piu' interessante dello schema dei nomi, perche' e' l'unico in cui il nome interno non basta, e conviene affrontarlo adesso invece che al momento della pubblicazione.
+
+Il nodo e' che **un'autorita' interna non serve a chi sta fuori**. Il certificato firmato dall'autorita' aziendale sara' accettato senza avvisi da ogni postazione dell'azienda, perche' su quelle postazioni l'autorita' e' installata; sara' rifiutato con un avviso da chiunque arrivi da Internet, perche' nel suo navigatore quell'autorita' non c'e' e non ci sara' mai. Non e' un difetto della soluzione: e' la definizione di autorita' interna.
+
+Ne discendono tre strade, con costi diversi.
+
+La prima e' **due nomi e due certificati**: `asset.int.intrawelt.com` firmato dall'autorita' interna per chi arriva da dentro, e un nome pubblico firmato da un'autorita' riconosciuta per chi arriva da fuori. E' la soluzione piu' pulita e la piu' laboriosa, perche' il servizio deve presentare l'uno o l'altro a seconda di chi bussa, cosa che il proxy inverso della DMZ sa fare ma va configurata.
+
+La seconda e' **un nome solo, quello pubblico, con certificato pubblico**, usato anche da chi sta dentro. E' la piu' semplice da configurare e ha uno svantaggio di percorso: il traffico degli utenti interni esce verso l'indirizzo pubblico e rientra, attraversando il firewall due volte invece di restare dentro. Su una rete piccola e' spesso accettabile e va misurato invece che temuto; sulla linea di questa azienda, dove l'uscita e' a un gigabit contro una dorsale interna a dieci, non lo e' se il servizio movimenta file.
+
+La terza e' **un nome solo, quello pubblico, risolto in modo diverso da dentro e da fuori**, cioe' l'orizzonte separato applicato allo stesso nome: il resolver interno risponde con l'indirizzo del segmento interno, quello pubblico con l'indirizzo pubblico. Un solo certificato, quello pubblico, valido per entrambi i percorsi, e nessun giro esterno. E' la soluzione che le organizzazioni adottano piu' spesso, e in questa infrastruttura e' anche la piu' economica perche' il resolver interno lo stiamo configurando adesso e sa gia' fare esattamente questo.
+
+La scelta non e' urgente perche' la DMZ non esiste ancora, ma va fatta **prima** di emettere il certificato interno del portale, altrimenti si emette un certificato per un nome che poi verra' sostituito. Nel frattempo il nome interno resta quello deciso, ed e' comunque necessario per collegare il portale.
+
 ## Chi risolve i nomi: il firewall, e il resolver esisteva gia'
+
+La materia della risoluzione dei nomi ha una scheda propria, `docs/risoluzione-nomi-interni.md`, che spiega come un nome diventa un indirizzo, perche' su questa rete molti nomi funzionino oggi senza essere scritti da nessuna parte, e perche' la segmentazione li rompera' tutti insieme. Qui se ne riprende soltanto quanto serve alla catena dei certificati.
 
 Perche' un nome funzioni qualcuno deve tradurlo in un indirizzo. Su questa rete la risposta e' meno lontana di quanto il progetto abbia creduto a lungo, ed e' una delle affermazioni che questo repository ha dovuto correggere: **un resolver interno esiste gia', ed e' il firewall**. La verifica dell'ambito DHCP del 30/07/2026 mostra che il primo server dei nomi distribuito ai client della LAN principale e' il firewall stesso, mentre secondo e terzo non sono impostati.
 
 Manca quindi soltanto il contenuto. Il firewall oggi lavora da puro inoltratore verso resolver pubblici e non ospita alcun record di indirizzo proprio, come la lettura della sua configurazione ha confermato correggendo un'ipotesi opposta: le risposte che si ottenevano interrogando il nome di un NAS non venivano da lui, venivano dal client che risolveva in multicast per conto proprio. Ne discende che pubblicare i nomi interni non richiede di introdurre un servizio nuovo ne' di toccare gli endpoint della LAN principale, che gia' interrogano il posto giusto: richiede di creare i record.
 
 L'intervento e' tracciato come **R12** in `docs/interventi-robustezza.md` ed e' scelto dall'IT Manager il 01/09/2026 come strada da percorrere, in alternativa al ripiego dei file degli host.
+
+La lettura della pagina di configurazione, il 02/09/2026, conferma il quadro nel dettaglio e aggiunge un elemento. Le tabelle dei record di indirizzo e degli alias sono **entrambe vuote**, quindi non esiste nulla da conservare o da riconciliare: si parte da zero, che e' la condizione piu' semplice. Gli inoltri di zona sono tre, due definiti a mano verso altrettanti resolver pubblici e uno predefinito, tutti su zona `*`, cioe' applicati a qualunque nome. Ne discende la sola domanda tecnica dell'intervento, cioe' se un record locale prevalga su un inoltro che dichiara di applicarsi a tutto: prevale, perche' il servizio consulta le proprie tabelle prima di inoltrare, ma e' un'affermazione da confermare con una interrogazione dopo il primo record e non da dare per buona.
 
 ### Tre avvertenze che l'intervento porta con se'
 
