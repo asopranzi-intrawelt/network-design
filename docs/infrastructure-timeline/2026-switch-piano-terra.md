@@ -1161,3 +1161,43 @@ Sulla **custodia**, la chiave della nuova autorita' vive fuori linea e protetta 
 
 Ne discende una sequenza obbligata che vale la pena scrivere perche' e' controintuitiva: prima l'autorita', poi il certificato del gestore delle password, poi il deposito della passphrase dentro il gestore stesso. La passphrase non puo' stare nel gestore prima che il gestore funzioni, e il gestore non funziona prima di avere un certificato.
 
+## 02/09/2026 - I nomi interni: il resolver del firewall, e perche' oggi molti nomi non sono scritti da nessuna parte
+
+Giornata nata da una domanda dell'IT Manager che sembrava di dettaglio e non lo era: se il certificato di IntraLino contiene gia' il nome corto, perche' quel nome non compare nella tabella dei record del firewall. La risposta ha aperto una materia che il progetto aveva toccato tre volte senza mai spiegarla, e le ha dedicato una scheda propria, `docs/risoluzione-nomi-interni.md`.
+
+### Le due domande che un navigatore fa, e che si confondono in una
+
+Quando si digita un indirizzo il navigatore fa due domande separate a due sistemi indipendenti. Dove sta, cioe' come si trasforma un nome in un indirizzo, e risponde la risoluzione dei nomi. Ed e' davvero lui, cioe' chi risponde a quel nome e' chi dice di essere, e risponde il certificato. Uno puo' funzionare senza l'altro: un nome che risolve e mostra l'avviso, oppure un certificato perfetto per un nome che nessuno risolve.
+
+Il nome corto di IntraLino non e' nella tabella del firewall perche' **la prima domanda oggi non passa dal firewall**. Quel nome non e' configurato da nessuna parte: viene risolto in multicast sul segmento, cioe' la postazione chiede a voce alta sulla rete chi si chiami cosi' e la macchina risponde. Funziona perche' nessuno lo ha mai configurato, il che e' precisamente il motivo per cui nessuno sa che esiste.
+
+### Perche' la segmentazione li rompera' tutti insieme
+
+Un pacchetto a domanda diffusa non attraversa i confini di rete: viene consegnato a tutti gli apparati del proprio dominio di broadcast e si ferma li'. Non e' una limitazione configurabile ma il modo in cui funziona l'inoltro, perche' un apparato che propagasse quel traffico fra due segmenti li renderebbe un segmento solo.
+
+Su questa rete il difetto non si vede perche' **la LAN e' piatta**: c'e' un unico dominio di broadcast e la domanda arriva sempre. Ne discende che il giorno in cui la segmentazione separera' i servizi dalle postazioni tutti i nomi che vivono sul broadcast smetteranno di risolvere insieme, senza che nessuno li abbia toccati, e il guasto si presentera' come "l'applicazione non funziona dopo l'intervento sulla rete", mandando la diagnosi nel posto sbagliato. E' la quarta forma della stessa trappola gia' incontrata dal progetto.
+
+### Il difetto di sicurezza che nessuno aveva registrato, #180
+
+Scrivendo il meccanismo e' emersa una conseguenza che la fragilita' non esaurisce: **in un meccanismo a domanda diffusa non esiste alcuna verifica di chi risponde**. La postazione chiede e crede alla prima risposta, quindi un apparato qualunque del segmento puo' rispondere a una domanda che non lo riguarda, farsi credere il servizio cercato e ricevere i tentativi di autenticazione destinati a quello vero, che su una rete Windows contengono materiale riutilizzabile. L'attacco e' automatizzato da strumenti pubblici e non richiede di violare nulla.
+
+Tre condizioni gia' documentate lo rendono qui efficace: il segmento e' uno solo e comprende tutto, alcune credenziali sono condivise fra piu' macchine, e le postazioni non hanno filtri. Il rimedio ha due tempi obbligati: prima pubblicare i nomi sul resolver e distribuire il suffisso di ricerca, poi disattivare quei meccanismi, perche' spegnerli prima romperebbe cio' che oggi funziona.
+
+### La configurazione letta, e lo stato per chi chiede
+
+La pagina del servizio dei nomi sul firewall conferma il quadro: le tabelle dei record e degli alias sono **entrambe vuote**, quindi si parte da zero, e gli inoltri sono tre, tutti su zona generica verso resolver pubblici. Ne discende la sola domanda tecnica dell'intervento, cioe' se un record locale prevalga su un inoltro che dichiara di applicarsi a tutto: prevale, ma va confermato con una interrogazione dopo il primo record.
+
+Il censimento di chi interroga chi ha prodotto due righe che valgono l'intervento. I dispositivi sulla Wi-Fi del personale ricevono due resolver pubblici e non il firewall, quindi dopo R12 i nomi interni funzioneranno dal cavo e non dal Wi-Fi: e' il sintomo che manderebbe la diagnosi ovunque tranne che nell'ambito DHCP di una VLAN, e va corretto contestualmente. I dispositivi sulla Wi-Fi ospiti ricevono anch'essi resolver pubblici, e li' va lasciato com'e': un ospite non ha ragione di risolvere i nomi dei servizi interni, e la risoluzione e' il primo passo di qualunque ricognizione.
+
+### Il suffisso di ricerca, che salva i nomi corti
+
+Il nodo pratico e' che le persone digitano nomi corti mentre il servizio dei nomi lavora con nomi completi. Si risolve distribuendo nell'ambito DHCP un suffisso di ricerca: la postazione che cerca un nome corto ci attacca il suffisso e interroga il firewall, quindi il nome corto continua a funzionare **ma cambia chi risponde**, e smette di dipendere dal broadcast.
+
+Una precisazione che serve ai certificati e che e' causa di equivoci: il completamento avviene solo per la risoluzione, mentre il navigatore verifica il certificato contro cio' che l'utente ha digitato. Ne discende che un certificato deve contenere entrambe le forme del nome se si vuole che entrambe funzionino senza avvisi, ed e' il motivo per cui i certificati di questo progetto porteranno il nome completo e quello corto insieme. E' anche la risposta alla preoccupazione dell'IT Manager di dover migrare segnalibri e configurazioni: non deve migrare nulla.
+
+### Nomi assegnati
+
+`vault.int.intrawelt.com` per il gestore delle password, `asset.int.intrawelt.com` per il portale asset, `intralino.int.intrawelt.com` per IntraLino. Sciolto anche un equivoco sul suffisso: `int` sta per interno e non per il nome di un progetto.
+
+Sul portale asset l'IT Manager ha sollevato il caso piu' interessante dello schema, cioe' che dovra' essere raggiungibile anche da fuori tramite la DMZ. Un'autorita' interna non serve a chi sta fuori, perche' nel suo navigatore non e' installata e non lo sara' mai: le strade sono tre, due nomi con due certificati, un nome pubblico usato anche da dentro con il traffico che esce e rientra, oppure lo stesso nome risolto in modo diverso da dentro e da fuori, che e' la piu' economica qui perche' il resolver interno lo stiamo configurando adesso. La scelta non e' urgente ma va fatta prima di emettere il certificato del portale.
+

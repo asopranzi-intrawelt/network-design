@@ -91,6 +91,7 @@ docs/livello-fisico-ed-elettrico.md  armadi, alimentazione, catena fisica WAN, m
 docs/virtualizzazione-proxmox-e-bridge.md  come il server Gen10 e' attaccato alla rete: cinque cavi, quattro bridge, misurato vs dedotto
 docs/esposizione-servizi-interni.md  matrice delle porte in ascolto per macchina virtuale e stato della protezione host-based
 docs/autorita-certificazione-interna.md  nomi dei servizi interni, autorita' di certificazione, procedura di emissione
+docs/risoluzione-nomi-interni.md  come un nome diventa un indirizzo, perche' oggi dipende dal broadcast e cosa lo rompera'
 ```
 
 Regole modulari caricate su necessita', sotto `.claude/rules/`.
