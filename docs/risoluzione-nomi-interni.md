@@ -54,6 +54,54 @@ La risposta viene da un servizio designato e non da chiunque passi, quindi l'att
 
 Su questa rete il servizio esiste gia' e nessuno lo sapeva. La verifica dell'ambito DHCP del 30/07/2026 mostra che le postazioni della LAN principale ricevono come primo server dei nomi **il firewall stesso**. Manca solo il contenuto: la lettura della sua configurazione, il 02/09/2026, conferma che la tabella dei record di indirizzo e' vuota e che il firewall si limita a inoltrare ogni domanda a due resolver pubblici.
 
+## L'esempio completo: IntraLino, prima e dopo, passo per passo
+
+Le tre situazioni si capiscono meglio seguendo un singolo pacchetto. La postazione dell'IT Manager sta nella classe delle postazioni, il servizio sta su una macchina virtuale nella classe dei server, e per come e' fatta oggi la rete quelle due classi **non sono due reti**: la maschera `/19` le comprende entrambe, quindi sono lo stesso segmento con due fasce di indirizzi diverse. E' un punto che vale la pena fissare perche' e' la radice di tutto: nella LAN piatta la separazione fra postazioni e server e' una convenzione di numerazione, non un confine.
+
+### Oggi: il nome funziona, e nessuno sa perche'
+
+L'utente digita l'indirizzo del servizio con il nome corto. Il sistema operativo cerca nella propria memoria e non trova nulla, poi nel file degli host e non trova nulla, poi interroga il servizio dei nomi configurato, che e' il firewall, il quale non ha alcun record di indirizzo e inoltra la domanda a un resolver pubblico, che risponde correttamente che quel nome non esiste su Internet.
+
+A questo punto tutti i meccanismi ordinati hanno fallito, e il sistema operativo passa all'ultima risorsa: spedisce sul segmento una domanda diffusa. Quel pacchetto raggiunge ogni apparato del dominio di broadcast, e siccome la LAN e' piatta il dominio comprende anche la macchina virtuale del servizio, che risponde con il proprio indirizzo. La connessione parte e la pagina si apre.
+
+Tre osservazioni su questa sequenza, tutte importanti. Il nome non e' scritto **da nessuna parte**: non c'e' un record, non c'e' una riga in un file, non c'e' una configurazione. Il firewall e' stato interrogato e ha risposto che il nome non esiste, quindi non e' lui a farlo funzionare. E il meccanismo che lo fa funzionare e' l'unico dei quattro che dipende dal fatto che chi chiede e chi risponde stiano nello stesso segmento.
+
+### Dopo la segmentazione, senza aver fatto nulla: il nome smette di funzionare
+
+Si supponga che la segmentazione abbia spostato le postazioni in un segmento proprio e i servizi applicativi interni in un altro, come prevede il piano. Sono ora due domini di broadcast distinti, separati da un apparato che instrada fra loro.
+
+L'utente digita lo stesso indirizzo di sempre. Le prime tre fasi vanno esattamente come prima e falliscono esattamente come prima. Il sistema operativo passa alla domanda diffusa, e qui cambia tutto: il pacchetto viene consegnato a ogni apparato del **suo** segmento, cioe' alle altre postazioni, e si ferma li'. La macchina virtuale del servizio sta in un altro segmento e quel pacchetto non lo vede mai, quindi non risponde. Dopo qualche secondo il navigatore dichiara che il sito non e' raggiungibile.
+
+Ed ecco la parte che rende il guasto insidioso, e che vale piu' di tutto il resto di questa sezione: **la rete funziona perfettamente**. L'instradamento fra i due segmenti c'e', le regole del firewall permettono il passaggio, e se qualcuno prova a raggiungere il servizio **per indirizzo** la pagina si apre normalmente. Non e' caduto niente: e' caduto soltanto il modo in cui quel nome veniva tradotto in indirizzo.
+
+Ne discende il percorso tipico della diagnosi sbagliata. L'utente dice che l'applicazione non funziona. Chi verifica prova per indirizzo, vede che risponde, e conclude che la rete e' a posto e il problema e' del navigatore o dell'applicazione. Nel frattempo la stessa cosa capita a ogni altro nome che viveva sul broadcast, quindi il sintomo e' diffuso e sembra ancora meno legato a un intervento sugli switch. Nella documentazione di questo progetto la stessa trappola compare gia' tre volte in forme diverse, ed e' sempre stata riconosciuta a posteriori.
+
+### Con il nome sul firewall: la domanda ha un destinatario, quindi viaggia
+
+Con il record pubblicato, la sequenza cambia alla terza fase e non arriva mai alla quarta.
+
+L'utente digita l'indirizzo. Il sistema operativo interroga il servizio dei nomi configurato, cioe' il firewall, e questa volta il firewall ha il record e risponde con l'indirizzo della macchina virtuale. Il sistema operativo apre la connessione verso quell'indirizzo, che essendo in un altro segmento viene instradata attraverso il firewall come qualunque altro traffico e sottoposta alle regole. La pagina si apre.
+
+La differenza che fa funzionare tutto e' in una parola: la domanda al firewall e' un pacchetto **indirizzato**, con un destinatario preciso, quindi viene instradata fra i segmenti come qualunque altro traffico. La domanda diffusa non ha un destinatario e per questo non viene instradata. Non e' una questione di permessi o di configurazione: sono due tipi di traffico con destini diversi per costruzione.
+
+### Il secondo guadagno, che si vede solo il giorno dello spostamento
+
+C'e' un beneficio che al momento della configurazione non si nota e che si manifesta la prima volta che un servizio cambia indirizzo, cosa che la segmentazione fara' per piu' servizi.
+
+| Meccanismo | Attraversa i segmenti | Se il servizio cambia indirizzo |
+|---|---|---|
+| Domanda diffusa | no | si aggiorna da sola, ma tanto non funziona piu' |
+| File degli host sulle postazioni | si' | va corretto su **ogni** postazione, una per una |
+| Record sul servizio dei nomi | si' | si corregge **una riga**, e vale per tutti |
+
+E' la stessa asimmetria del difetto #171 sugli indirizzi scritti a mano dentro le configurazioni dei servizi, vista dal lato dei client invece che da quello dei server: un dato ripetuto in molti posti si rompe in molti posti, un dato in un posto solo si corregge in un posto solo.
+
+### Che cosa succede al nome corto in tutto questo
+
+Nell'esempio sopra il nome corto continua a essere digitato dall'utente. Perche' la terza fase lo risolva senza che nessuno cambi abitudini serve il suffisso di ricerca descritto nella sezione seguente: la postazione lo attacca al nome corto e domanda al firewall il nome completo, ottiene la risposta, e l'utente non si accorge di nulla se non del fatto che adesso funziona anche da un altro segmento.
+
+Senza il suffisso il nome corto arriverebbe comunque alla quarta fase e continuerebbe a dipendere dalla domanda diffusa, quindi si romperebbe con la segmentazione come prima: il record da solo non basta, servono il record **e** il suffisso.
+
 ## Il suffisso di ricerca, cioe' come far sopravvivere i nomi corti
 
 Resta un problema pratico. Un servizio dei nomi lavora con nomi completi, del tipo `intralino.int.intrawelt.com`, mentre le persone digitano nomi corti come `intralino`. Se il nome corto smette di funzionare, ogni segnalibro e ogni configurazione vanno aggiornati, che e' esattamente il lavoro che si vuole evitare.
