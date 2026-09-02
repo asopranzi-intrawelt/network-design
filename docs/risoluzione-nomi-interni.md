@@ -122,6 +122,26 @@ L'IT Manager ha mostrato il proprio file degli host, ed e' il documento piu' ist
 
 Ne discende la ragione per cui questo reperto conta piu' del suo contenuto. Questo e' il file di **una** postazione, quella di chi amministra la rete. Le altre ne hanno di propri, scritti in momenti diversi da mani diverse, e nessuno sa cosa contengano: non esiste inventario, non esiste procedura, non esiste modo di sapere quante postazioni dirottino un nome pubblico verso un indirizzo interno. E' la meta' mancante del difetto #119, che registrava la stessa pratica per il pilota del portale asset, e diventa la ragione operativa piu' concreta per completare M25: non tanto pubblicare i nomi, quanto **poterli togliere dai file**.
 
+### Censire i file degli host di tutte le postazioni: si puo', ma non da qui
+
+L'IT Manager ha chiesto il 02/09/2026 di censire il contenuto del file degli host di ogni endpoint gestito. E' la domanda giusta, perche' e' l'unico dato che dice quante postazioni dirottino un nome e verso dove, e nessuna delle fonti automatiche di questo progetto lo possiede. Va pero' chiarito **chi** puo' ottenerlo, perche' la risposta tocca un confine che il progetto si e' dato per iscritto.
+
+Il dato non e' in nessuno snapshot esistente. La gestione remota degli endpoint espone interrogazioni predefinite su sistemi operativi, hardware, interfacce di rete, antivirus e utenti collegati, e nessuna di queste comprende il contenuto di un file. Per ottenerlo bisogna **eseguire un comando sull'endpoint**, che e' un'operazione di natura diversa dalla lettura di un inventario.
+
+Qui il termine "sola lettura" si sdoppia, e conviene tenerne separati i due sensi. Leggere un file **sull'endpoint** e' un'operazione che non modifica nulla: e' lettura in senso pieno. Ma per farla eseguire dalla gestione remota bisogna creare o lanciare uno script **dentro la piattaforma**, e questa e' un'operazione di scrittura sulla piattaforma, oltre che l'esecuzione di codice su postazioni di lavoro altrui. ADR-017 stabilisce che questo progetto interroghi quella piattaforma **solo in lettura e solo come fotografia**, con credenziali di ambito di sola osservazione che appartengono al fornitore che la gestisce: con quelle credenziali l'operazione non e' semplicemente sconsigliata, non e' proprio autorizzata.
+
+Ne discende che la strada non passa dagli script di questo repository. Passa dall'IT Manager, che alla console di quella piattaforma puo' lanciare un comando sugli endpoint Windows e raccoglierne l'esito, e dal quale il progetto riceve il risultato come riceve uno screenshot: un dato da ingerire, non un dato da andare a prendere. E' la stessa distinzione gia' applicata alla interfaccia del firewall, che resta una fonte di classe E proprio perche' si legge solo tramite una persona.
+
+Il comando da lanciare li' e' una riga, e va ricordato che l'esito contiene nomi host e indirizzi reali di ogni postazione, quindi appartiene a `_notes/` e non a un file tracciato.
+
+```powershell
+Get-Content $env:SystemRoot\System32\drivers\etc\hosts | Where-Object { $_.Trim() -and $_ -notmatch '^\s*#' }
+```
+
+Il filtro toglie righe vuote e commenti, che su un file appena installato sono la quasi totalita' del contenuto: senza di esso il risultato sarebbe illeggibile e coprirebbe cio' che interessa. Vale la pena notare che il filtro esclude anche le righe **commentate**, che come si e' visto possono contenere dirottamenti disattivati ma pronti: su un censimento generale e' il compromesso giusto per la leggibilita', ma se dal risultato emergessero postazioni interessanti quelle andrebbero riguardate senza filtro.
+
+Tre cose da cercare nel risultato, in ordine di gravita'. I nomi sotto il dominio pubblico dell'azienda che puntino a indirizzi interni, perche' impediscono a quella postazione di raggiungere la versione pubblica e nessuno lo collegherebbe mai a un file di sistema. Gli indirizzi che non corrispondono piu' a nulla, cioe' voci rimaste da servizi dismessi, che oggi non fanno danno e diventeranno guasti quando quegli indirizzi verranno riassegnati. E le convenzioni di nome in uso, che dicono quali abitudini vadano sostituite dai record e quante persone andranno avvisate.
+
 ### Che cosa farne, e in quale ordine
 
 Non vanno cancellati subito, e la ragione e' la stessa che vale per l'autorita' di certificazione esistente: finche' i record sul firewall non esistono e non sono verificati, quelle righe sono cio' che fa funzionare i servizi.
