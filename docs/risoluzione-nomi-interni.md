@@ -58,19 +58,25 @@ Su questa rete il servizio esiste gia' e nessuno lo sapeva. La verifica dell'amb
 
 Le tre situazioni si capiscono meglio seguendo un singolo pacchetto. La postazione dell'IT Manager sta nella classe delle postazioni, il servizio sta su una macchina virtuale nella classe dei server, e per come e' fatta oggi la rete quelle due classi **non sono due reti**: la maschera `/19` le comprende entrambe, quindi sono lo stesso segmento con due fasce di indirizzi diverse. E' un punto che vale la pena fissare perche' e' la radice di tutto: nella LAN piatta la separazione fra postazioni e server e' una convenzione di numerazione, non un confine.
 
-### Oggi: il nome funziona, e nessuno sa perche'
+### Oggi: due postazioni, due meccanismi diversi, e nessuno lo sa
 
-L'utente digita l'indirizzo del servizio con il nome corto. Il sistema operativo cerca nella propria memoria e non trova nulla, poi nel file degli host e non trova nulla, poi interroga il servizio dei nomi configurato, che e' il firewall, il quale non ha alcun record di indirizzo e inoltra la domanda a un resolver pubblico, che risponde correttamente che quel nome non esiste su Internet.
+Qui va fatta una distinzione che il primo tentativo di scrivere questa scheda aveva mancato, e che l'IT Manager ha corretto mostrando il proprio file degli host. **Non tutte le postazioni risolvono quel nome allo stesso modo**, e la differenza determina come si romperanno.
 
-A questo punto tutti i meccanismi ordinati hanno fallito, e il sistema operativo passa all'ultima risorsa: spedisce sul segmento una domanda diffusa. Quel pacchetto raggiunge ogni apparato del dominio di broadcast, e siccome la LAN e' piatta il dominio comprende anche la macchina virtuale del servizio, che risponde con il proprio indirizzo. La connessione parte e la pagina si apre.
+Su una postazione **senza** una voce per quel nome nel proprio file degli host, la sequenza e' quella descritta piu' sopra. Memoria: niente. File degli host: niente. Servizio dei nomi, cioe' il firewall: non ha record, inoltra a un resolver pubblico, che risponde correttamente che quel nome su Internet non esiste. Tutti i meccanismi ordinati hanno fallito, e il sistema operativo passa all'ultima risorsa, la domanda diffusa: il pacchetto raggiunge ogni apparato del dominio di broadcast, che essendo la LAN piatta comprende anche la macchina del servizio, la quale risponde. La pagina si apre.
 
-Tre osservazioni su questa sequenza, tutte importanti. Il nome non e' scritto **da nessuna parte**: non c'e' un record, non c'e' una riga in un file, non c'e' una configurazione. Il firewall e' stato interrogato e ha risposto che il nome non esiste, quindi non e' lui a farlo funzionare. E il meccanismo che lo fa funzionare e' l'unico dei quattro che dipende dal fatto che chi chiede e chi risponde stiano nello stesso segmento.
+Su una postazione **con** quella voce, e la postazione di chi amministra la rete e' in questo caso, la sequenza si ferma alla seconda fase: il nome e' scritto nel file, il sistema legge l'indirizzo e apre la connessione. **Il firewall non viene nemmeno interrogato**, e la domanda diffusa non parte mai.
+
+Ne discende un fatto operativo che va tenuto presente durante l'intervento, perche' altrimenti fa perdere tempo e induce a conclusioni sbagliate: **dopo aver creato il record sul firewall, una postazione che abbia quel nome nel proprio file degli host continuera' a usare il file**, perche' viene prima nell'ordine. Per collaudare il record bisogna quindi commentare la riga corrispondente, oppure collaudare con il nome completo, che nel file non c'e'.
+
+Ne discende anche che le due popolazioni di postazioni si romperanno per **ragioni diverse** al momento della segmentazione, ed e' una distinzione che conta per la diagnosi. Chi risolve per domanda diffusa smettera' di risolvere perche' il grido non attraversa il confine. Chi risolve per file degli host continuera' a risolvere benissimo, ma **verso un indirizzo che non e' piu' quello del servizio**, perche' la segmentazione lo avra' cambiato: il nome portera' quindi da nessuna parte, e il sintomo sara' un tempo di attesa che scade invece di un nome non trovato. Sono due guasti diversi, con due messaggi diversi, sulla stessa rete e nello stesso momento.
 
 ### Dopo la segmentazione, senza aver fatto nulla: il nome smette di funzionare
 
 Si supponga che la segmentazione abbia spostato le postazioni in un segmento proprio e i servizi applicativi interni in un altro, come prevede il piano. Sono ora due domini di broadcast distinti, separati da un apparato che instrada fra loro.
 
 L'utente digita lo stesso indirizzo di sempre. Le prime tre fasi vanno esattamente come prima e falliscono esattamente come prima. Il sistema operativo passa alla domanda diffusa, e qui cambia tutto: il pacchetto viene consegnato a ogni apparato del **suo** segmento, cioe' alle altre postazioni, e si ferma li'. La macchina virtuale del servizio sta in un altro segmento e quel pacchetto non lo vede mai, quindi non risponde. Dopo qualche secondo il navigatore dichiara che il sito non e' raggiungibile.
+
+Sulla postazione che ha la voce nel file degli host il guasto e' diverso e arriva un momento dopo: il nome continua a risolvere, ma verso il vecchio indirizzo, che dopo lo spostamento non risponde piu'. Il sistema non dice che il nome non esiste, dice che non riesce a raggiungerlo.
 
 Ed ecco la parte che rende il guasto insidioso, e che vale piu' di tutto il resto di questa sezione: **la rete funziona perfettamente**. L'instradamento fra i due segmenti c'e', le regole del firewall permettono il passaggio, e se qualcuno prova a raggiungere il servizio **per indirizzo** la pagina si apre normalmente. Non e' caduto niente: e' caduto soltanto il modo in cui quel nome veniva tradotto in indirizzo.
 
@@ -101,6 +107,28 @@ E' la stessa asimmetria del difetto #171 sugli indirizzi scritti a mano dentro l
 Nell'esempio sopra il nome corto continua a essere digitato dall'utente. Perche' la terza fase lo risolva senza che nessuno cambi abitudini serve il suffisso di ricerca descritto nella sezione seguente: la postazione lo attacca al nome corto e domanda al firewall il nome completo, ottiene la risposta, e l'utente non si accorge di nulla se non del fatto che adesso funziona anche da un altro segmento.
 
 Senza il suffisso il nome corto arriverebbe comunque alla quarta fase e continuerebbe a dipendere dalla domanda diffusa, quindi si romperebbe con la segmentazione come prima: il record da solo non basta, servono il record **e** il suffisso.
+
+## Il file degli host di una postazione reale, letto il 02/09/2026
+
+L'IT Manager ha mostrato il proprio file degli host, ed e' il documento piu' istruttivo incontrato su questa materia, perche' mostra in venti righe tutto cio' che la mancanza di un servizio dei nomi produce nel tempo. Vale la pena leggerlo come reperto e non come elenco.
+
+**Cinque convenzioni di nome convivono nello stesso file.** Ci sono nomi corti a un'etichetta sola, per i NAS e per un paio di servizi. C'e' un nome sul suffisso riservato alla scoperta multicast, per l'applicativo di pianificazione. C'e' un nome sul suffisso inventato `.lan`, per il portale asset. Ci sono nomi sotto il dominio pubblico dell'azienda, per un servizio interno. E c'e' un nome di fabbrica di una macchina Windows, quello generato dall'installazione e mai cambiato. Nessuna delle cinque e' sbagliata in se': il problema e' che sono cinque, che nessuna e' dichiarata da nessuna parte, e che chi arriva domani non ha modo di sapere quale usare. E' esattamente la situazione che ADR-018 aveva rilevato a luglio e che ADR-024 chiude.
+
+**Una voce e' ripetuta due volte**, con lo stesso nome e lo stesso indirizzo, in due punti diversi del file. Non fa danno e proprio per questo e' significativa: un file che nessuno rilegge accumula duplicati senza che nessuno se ne accorga, ed e' il segno che quel file cresce per aggiunte successive e non viene mai manutenuto.
+
+**Il nome sul suffisso della scoperta multicast e' una collisione in attesa.** Quel suffisso e' riservato per convenzione al meccanismo in multicast, e su questa rete quel meccanismo e' attivo: scrivere una voce statica per un nome che finisce cosi' significa avere due sistemi che rivendicano la stessa risposta, con l'esito che dipende dall'ordine di consultazione del singolo sistema operativo. Funziona finche' funziona, e quando smette la causa e' fra le piu' difficili da trovare.
+
+**La voce piu' significativa e' pero' un'altra**, ed e' un nome sotto il dominio pubblico dell'azienda che punta a un indirizzo interno. E' un orizzonte separato fatto a mano su una singola postazione: da quella macchina quel nome porta al servizio interno, da qualunque altra porta dove lo manda il sistema dei nomi pubblico. Se il nome esiste anche pubblicamente, quella postazione non potra' mai raggiungere la versione pubblica, e nessuno collegherebbe il sintomo a una riga scritta anni prima in un file di sistema. Nello stesso file, commentate, ci sono due righe che facevano la stessa cosa con **il dominio principale dell'azienda** e con il suo nome canonico, dirottandoli entrambi su una macchina interna: sono disattivate, ma sono li', e basta togliere un carattere.
+
+Ne discende la ragione per cui questo reperto conta piu' del suo contenuto. Questo e' il file di **una** postazione, quella di chi amministra la rete. Le altre ne hanno di propri, scritti in momenti diversi da mani diverse, e nessuno sa cosa contengano: non esiste inventario, non esiste procedura, non esiste modo di sapere quante postazioni dirottino un nome pubblico verso un indirizzo interno. E' la meta' mancante del difetto #119, che registrava la stessa pratica per il pilota del portale asset, e diventa la ragione operativa piu' concreta per completare M25: non tanto pubblicare i nomi, quanto **poterli togliere dai file**.
+
+### Che cosa farne, e in quale ordine
+
+Non vanno cancellati subito, e la ragione e' la stessa che vale per l'autorita' di certificazione esistente: finche' i record sul firewall non esistono e non sono verificati, quelle righe sono cio' che fa funzionare i servizi.
+
+L'ordine e': creare i record per i nomi decisi, verificarli **commentando temporaneamente** la riga corrispondente sulla postazione di prova, distribuire il suffisso di ricerca, e solo allora rimuovere le voci dai file, una categoria per volta, verificando dopo ciascuna. Le due righe commentate che dirottano il dominio principale vanno invece rimosse subito: non servono a nulla oggi e sono l'unica cosa in quel file che possa produrre un guasto grave se qualcuno le riattivasse per errore.
+
+Resta fuori da questo intervento, e va posto come domanda all'IT Manager, quali altre postazioni abbiano voci e quali: e' un dato che nessuno snapshot possiede e che si ottiene soltanto leggendo quei file, cosa che la gestione remota degli endpoint puo' fare.
 
 ## Il suffisso di ricerca, cioe' come far sopravvivere i nomi corti
 
