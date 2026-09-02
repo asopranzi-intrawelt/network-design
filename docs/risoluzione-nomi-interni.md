@@ -142,6 +142,56 @@ Il filtro toglie righe vuote e commenti, che su un file appena installato sono l
 
 Tre cose da cercare nel risultato, in ordine di gravita'. I nomi sotto il dominio pubblico dell'azienda che puntino a indirizzi interni, perche' impediscono a quella postazione di raggiungere la versione pubblica e nessuno lo collegherebbe mai a un file di sistema. Gli indirizzi che non corrispondono piu' a nulla, cioe' voci rimaste da servizi dismessi, che oggi non fanno danno e diventeranno guasti quando quegli indirizzi verranno riassegnati. E le convenzioni di nome in uso, che dicono quali abitudini vadano sostituite dai record e quante persone andranno avvisate.
 
+### L'esito del censimento, 02/09/2026: diciotto postazioni, e il quadro e' piu' grande del previsto
+
+L'automazione e' stata lanciata su venticinque postazioni e diciotto hanno risposto; le altre erano spente e l'esecuzione resta in coda. Gli esiti sono stati raccolti in sola lettura dal registro delle attivita' con `scripts/Get-NinjaScriptOutput.ps1`, che restituisce il testo **intero** mentre il pannello della console lo tronca.
+
+Il conteggio complessivo e' di **ottanta nomi distinti** su diciotto file, con una distribuzione molto disuguale: si va da una postazione con una sola riga a una con cinquantatre. Non e' un parco configurato in modo uniforme, e' una sedimentazione.
+
+#### Il dato che serviva, e conferma il timore
+
+**`intralino` compare in tutti e diciotto i file.** Non su qualcuno: su tutti. Ne discende che il record che stiamo per pubblicare sul firewall sarebbe oscurato su ogni postazione del parco, perche' il file viene prima. Il record da solo non cambierebbe nulla per nessuno, e senza il censimento lo avremmo scoperto interrogando una macchina a caso e concludendo che il firewall non funziona.
+
+Seguono per diffusione il nome di un NAS, presente in quindici file, e il nome di fabbrica del server Windows, presente in undici. Sono i tre nomi da pubblicare per primi, perche' sono quelli su cui la rimozione delle righe romperebbe piu' gente.
+
+#### Trenta domini pubblici dirottati su indirizzi interni
+
+E' il ritrovamento piu' importante, e non riguarda la risoluzione dei nomi ma il governo dei dati. Su alcune postazioni sono presenti **circa trenta nomi di dominio pubblici dell'azienda**, quelli dei siti dei servizi di traduzione, tutti dirottati verso un **unico indirizzo interno**. Su altre postazioni compaiono altri tre domini pubblici, fra cui uno di dimostrazione e uno di un cliente, dirottati verso un secondo indirizzo interno. E c'e' il nome gia' noto del gestionale, dirottato su sei postazioni.
+
+Due postazioni portano inoltre il dominio principale dell'azienda e il suo nome canonico dirottati verso un indirizzo **pubblico** diverso da quello attuale, verosimilmente un hosting precedente.
+
+Ne discendono tre problemi distinti, e conviene separarli perche' hanno rimedi diversi.
+
+Il primo e' che quelle postazioni **non possono raggiungere la versione pubblica** di quei siti. Chi ci lavora vede sempre e solo la copia interna, anche quando vuole controllare cosa vedono i clienti, e non ha modo di accorgersene se non sospettandolo.
+
+Il secondo e' che il dirottamento **sopravvive alla ragione per cui fu fatto**. Erano quasi certamente prove di migrazione o di anteprima: si punta il dominio alla macchina di collaudo, si verifica, e si dovrebbe rimettere a posto. Le righe sono rimaste, e nessuno sa piu' quali siano ancora volute.
+
+Il terzo si manifestera' con la segmentazione: quegli indirizzi interni cambieranno, e le righe continueranno a puntare al vecchio, quindi quelle postazioni raggiungeranno un indirizzo morto o, peggio, una macchina diversa che nel frattempo lo avra' ereditato.
+
+Tracciato come difetto #181.
+
+#### Voci che reindirizzano a se stessi i servizi di attivazione di alcuni programmi
+
+Su alcune postazioni compaiono voci che puntano all'indirizzo di *loopback*, cioe' alla postazione stessa, i domini di **attivazione, aggiornamento e telemetria** di alcuni programmi commerciali, piu' tre indirizzi pubblici nudi. L'effetto tecnico e' che quei programmi non riescono a contattare il proprio produttore.
+
+Il fatto va riportato per quello che e', senza inferenze: questo progetto non sa perche' quelle righe siano state scritte. Va pero' segnalato che il rimedio ha comunque due conseguenze da valutare a prescindere dal motivo. La prima e' che **un programma che non raggiunge il proprio produttore non riceve nemmeno le correzioni di sicurezza**, quindi resta alla versione installata per sempre; e' un difetto di manutenzione che vale anche se il blocco fosse stato messo per ridurre la telemetria. La seconda e' che la configurazione delle licenze dei programmi in uso non e' nel perimetro tecnico di questo progetto ma appartiene al governo degli asset, e va guardata da chi ne risponde.
+
+Tracciato come difetto #182, con la riserva esplicita che la causa non e' accertata.
+
+#### Un refuso propagato, che chiude una domanda vecchia
+
+Il nome di fabbrica del server Windows compare in due grafie diverse: undici postazioni ne portano una, due postazioni una variante che ha **un carattere in meno**. E' lo stesso refuso registrato come difetto #106, che il progetto aveva rilevato in un documento sorgente e non sapeva se fosse un errore di trascrizione o due macchine diverse. Ora si sa: e' un refuso, ed e' stato copiato in due file degli host, presumibilmente per copia-incolla da quel documento.
+
+Su quelle due postazioni il nome sbagliato risolve comunque, perche' e' scritto nel loro file e punta all'indirizzo giusto. Il guasto e' l'opposto e piu' sottile: **il nome corretto, su quelle due macchine, non risolve**, perche' li' non c'e'. Finche' tutti usano il nome sbagliato funziona; il giorno in cui qualcuno usa quello giusto, non funziona su due macchine su diciotto e nessuno capisce perche'.
+
+#### Altre incoerenze minori, tutte della stessa famiglia
+
+Tre nomi di NAS compaiono in maiuscolo su alcune postazioni e in minuscolo su altre, il che tecnicamente non fa differenza ma segnala che le righe sono state scritte in momenti diversi da persone diverse copiando l'una dall'altra in modo impreciso.
+
+Le voci che il programma di contenitori aggiunge da se' contengono **l'indirizzo della postazione stessa scritto a mano**, e risultano con tre indirizzi diversi su tre macchine. Una di esse porta un indirizzo che non appartiene alla rete aziendale, segno di un portatile configurato mentre era su un'altra rete: su quella macchina quelle voci sono gia' sbagliate adesso.
+
+Ne discende la conclusione generale che vale piu' dei singoli casi: **un file degli host non ha scadenza, non ha proprietario e non ha revisione**. Cresce per aggiunte, conserva per sempre decisioni prese per mezz'ora, e nessuno lo rilegge finche' qualcosa non si rompe. E' esattamente il motivo per cui la risoluzione centralizzata non e' un miglioramento di comodita' ma di governo.
+
 ### Che cosa farne, e in quale ordine
 
 Non vanno cancellati subito, e la ragione e' la stessa che vale per l'autorita' di certificazione esistente: finche' i record sul firewall non esistono e non sono verificati, quelle righe sono cio' che fa funzionare i servizi.
