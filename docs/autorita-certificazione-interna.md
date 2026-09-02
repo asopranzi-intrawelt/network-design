@@ -37,9 +37,14 @@ Secondo **ADR-018**, presa il 30/07/2026, i servizi interni si chiamano sotto **
 | Servizio | Nome interno | Stato |
 |---|---|---|
 | Gestore delle password | `vault.int.intrawelt.com` | deciso il 01/09/2026 |
-| Portale asset | `asset.int.intrawelt.com` | deciso il 01/09/2026, sostituisce il nome con il vecchio suffisso; avra' anche un nome pubblico, vedi sotto |
+| Portale asset | `asset.int.intrawelt.com` | deciso il 01/09/2026; il vecchio nome sul suffisso `.lan` resta pubblicato in parallelo per non rompere chi lo usa; avra' anche un nome pubblico, vedi sotto |
 | IntraLino | `intralino.int.intrawelt.com` | deciso il 02/09/2026; riemissione del certificato a carico del progetto IntraLino |
+| Rilevazione presenze | `presenze.int.intrawelt.com` | deciso il 02/09/2026; oggi raggiunto per indirizzo, il nome esiste perche' sopravviva alla segmentazione |
+| Secondo applicativo sulla stessa macchina | `timewalker.int.intrawelt.com` | come sopra |
+| Applicativo di pianificazione | `gantttool.int.intrawelt.com` | deciso il 02/09/2026; sostituisce il nome sul suffisso della scoperta multicast, ed e' l'unico caso che richiede di avvisare gli utenti |
 | Proxy inverso della DMZ | da assegnare | quando M6-M9 lo creeranno |
+
+Va notato che piu' nomi possono puntare allo stesso indirizzo senza alcun conflitto: e' la situazione normale di una macchina che ospita piu' applicazioni, ed e' il motivo per cui il server Windows ne riceve due oltre al proprio nome di compatibilita'.
 
 Sul significato del suffisso vale la pena essere espliciti, perche' si presta a un equivoco che si e' verificato: **`int` sta per interno**, non per il nome di un progetto. E' il pezzo che distingue un nome che vive soltanto dentro la rete da uno pubblicabile, ed e' per questo che compare fra il nome del servizio e il dominio e non altrove.
 
