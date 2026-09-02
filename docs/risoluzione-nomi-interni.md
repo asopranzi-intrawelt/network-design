@@ -192,6 +192,99 @@ Le voci che il programma di contenitori aggiunge da se' contengono **l'indirizzo
 
 Ne discende la conclusione generale che vale piu' dei singoli casi: **un file degli host non ha scadenza, non ha proprietario e non ha revisione**. Cresce per aggiunte, conserva per sempre decisioni prese per mezz'ora, e nessuno lo rilegge finche' qualcosa non si rompe. E' esattamente il motivo per cui la risoluzione centralizzata non e' un miglioramento di comodita' ma di governo.
 
+### La regola che garantisce zero telefonate, e la sola eccezione
+
+La domanda posta dall'IT Manager il 02/09/2026 e' la piu' importante di tutto l'intervento: dopo la pubblicazione dei record, qualcuno dovra' cambiare i propri collegamenti? La risposta e' **no**, e vale la pena mostrare perche', perche' non e' ovvia e perche' regge solo se si rispetta una regola.
+
+La regola e' questa: **per ogni nome che si toglie da un file degli host deve esistere un equivalente che risolva allo stesso modo**. Se l'equivalente c'e', la rimozione e' invisibile; se manca, quella riga in meno e' un servizio irraggiungibile per chi la aveva. Non ci sono vie di mezzo, e non e' un rischio da valutare caso per caso: e' una verifica meccanica da fare prima di ogni rimozione.
+
+Applicata ai nomi trovati dal censimento, la regola produce tre categorie.
+
+I **nomi corti** sono coperti dal suffisso di ricerca. Chi digita un nome a un'etichetta sola vede la postazione completarlo con il suffisso e interrogare il firewall, che risponde. L'utente digita quello di sempre e ottiene lo stesso indirizzo di sempre: nessun collegamento da aggiornare, nessun segnalibro da rifare, nessuna telefonata. E' il caso della grande maggioranza delle voci censite.
+
+I **nomi gia' qualificati** non ricevono il suffisso, perche' il sistema li considera gia' completi. Per questi la copertura si ottiene pubblicando **lo stesso identico nome** come record, cosa che per un nome ordinario non pone alcun problema: si aggiunge una riga in piu' e la rimozione dal file resta invisibile. E' il caso del nome del portale asset sul vecchio suffisso, che va quindi pubblicato tale e quale accanto al nome nuovo.
+
+L'unico nome per cui la copertura **non e' ottenibile** e' quello dell'applicativo di pianificazione, che vive sul suffisso riservato alla scoperta multicast: pubblicarlo tale e quale sul firewall non sarebbe affidabile, perche' quel suffisso e' rivendicato anche dal meccanismo in multicast e l'esito dipenderebbe dall'ordine di consultazione di ciascun sistema operativo.
+
+Va pero' detto con precisione che cosa ne discende, perche' il primo istinto porta alla conclusione sbagliata. **Non ne discende che tre persone debbano cambiare qualcosa.** Ne discende che quella singola riga, su quelle tre postazioni, **non si rimuove**: resta dov'e' e continua a funzionare esattamente come oggi. La regola non e' stata violata, e' stata applicata — l'equivalente manca, quindi la riga non si tocca.
+
+L'intervento e' percio' trasparente per **tutti**, senza eccezioni: nessuno cambia collegamenti, nessuno cambia abitudini, nessuno riceve comunicazioni. La differenza fra quel nome e gli altri e' soltanto che gli altri, un domani, si potranno anche ripulire dai file, mentre quello no finche' qualcuno non decidera' di far passare tre persone al nome nuovo. E' una scelta futura e facoltativa, non un passo di questo intervento.
+
+### I servizi raggiunti per indirizzo, che oggi non cambiano e domani si'
+
+L'IT Manager ha segnalato che sulla macchina del server Windows convivono altri due applicativi web, raggiunti per **indirizzo** e non per nome. Il fatto e' importante per due ragioni opposte.
+
+Oggi non cambia nulla per loro, perche' un collegamento scritto con l'indirizzo non passa dalla risoluzione dei nomi: ignora sia i file degli host sia il firewall. Sono quindi fuori dall'ambito di questo intervento e nessuno dovra' toccare quei collegamenti adesso.
+
+Domani cambia tutto, ed e' il motivo per cui vanno affrontati ora e non poi. Quando la segmentazione spostera' quella macchina, il suo indirizzo cambiera' e **ogni collegamento scritto con l'indirizzo smettera' di funzionare insieme**, senza che nessuno li abbia toccati, e senza che esista un modo per sapere quanti siano e chi li abbia. Un nome invece si aggiorna in un punto solo.
+
+Ne discende un'aggiunta all'intervento che costa nulla adesso e risparmia il giro delle postazioni dopo: **pubblicare fin da subito un nome per ciascuno di quei servizi**, scelto per ruolo, e cominciare a usarlo al posto dell'indirizzo. Piu' nomi possono puntare allo stesso indirizzo: non c'e' alcun conflitto, e' la situazione normale di un server che ospita piu' applicazioni. Chi vuole continuare con l'indirizzo lo puo' fare finche' quell'indirizzo esiste, ma da quel momento esiste anche l'alternativa, ed e' quella che sopravvivera'.
+
+Va notato che questo e' l'unico punto dell'intervento in cui si chiede a qualcuno di cambiare abitudine, e lo si chiede senza scadenza e senza rompere nulla nel frattempo: la vecchia strada resta aperta finche' la segmentazione non la chiude da se'.
+
+## Le due voci verso indirizzi pubblici, verificate il 02/09/2026
+
+Il censimento aveva lasciato aperte due voci che puntavano a indirizzi **pubblici** invece che interni, e per le quali non si poteva dire se fossero valide o residue. La verifica consiste nel chiedere a un resolver pubblico che cosa risponda oggi per quei nomi e confrontare.
+
+Il **dominio principale dell'azienda** risulta oggi risolto, attraverso un alias, verso un indirizzo che differisce di **una sola cifra** da quello scritto nei file degli host di due postazioni. Non e' quindi lo stesso indirizzo, ed e' verosimilmente una macchina adiacente dello stesso fornitore, o la precedente. Ne discende che quelle due voci sono **residui e vanno rimosse**: quelle postazioni oggi raggiungono un indirizzo che non e' quello del sito aziendale, e nessuno se ne e' accorto perche' probabilmente risponde comunque qualcosa. La vicinanza fra i due numeri e' la ragione per cui l'errore e' passato inosservato: a occhio sembrano lo stesso indirizzo.
+
+Il nome del **portale documentale** risulta invece risolto verso esattamente l'indirizzo scritto nel file. Quella voce e' quindi **corretta ma inutile**: duplica cio' che il sistema dei nomi pubblico gia' risponde. Non fa danno oggi, ma condivide il difetto di tutte le voci scritte a mano, cioe' che il giorno in cui quel fornitore cambiera' indirizzo le due postazioni continueranno a puntare al vecchio mentre tutte le altre seguiranno il cambiamento. Si rimuove senza alcuna precauzione, perche' l'equivalente esiste gia' ed e' il resolver pubblico.
+
+E' un esempio istruttivo della regola dell'equivalente applicata a un caso che non riguarda i nomi interni: l'equivalente non deve necessariamente essere un record che creiamo noi, puo' essere una risposta che qualcun altro gia' da'.
+
+## Perche' nessun utente deve cambiare nulla: la dimostrazione caso per caso
+
+La domanda e' stata posta due volte dall'IT Manager, ed e' quella giusta: se si pubblicano nomi nuovi, chi usa quei servizi dovra' essere avvisato? La risposta e' no, e non e' una rassicurazione ma una conseguenza che si dimostra. Vale la pena scriverla per intero, perche' e' l'affermazione su cui si regge la decisione di procedere senza comunicazione preventiva a tutta l'azienda.
+
+Il fondamento e' uno solo: **pubblicare un record e' un'operazione additiva**. Non rimuove niente, non sostituisce niente, non modifica il comportamento di nulla che gia' funzioni. Aggiunge una risposta possibile a una domanda che oggi trova risposta altrove o non la trova affatto. Da questo discendono i quattro casi, che coprono ogni utente e ogni servizio.
+
+**Primo caso, chi usa un nome che ha nel proprio file degli host.** E' la situazione della maggioranza, e per il nome di IntraLino e' la situazione di tutti e diciotto i file censiti. Il file viene consultato **prima** del servizio dei nomi: finche' quella riga esiste, la risposta arriva da li' e il firewall non viene nemmeno interrogato. Non c'e' quindi neanche un cambiamento teorico: la strada nuova esiste ma nessuno la percorre.
+
+**Secondo caso, chi usa un nome che nel proprio file non c'e'.** Oggi quel nome si risolve per domanda diffusa, e funziona perche' la rete e' piatta. Da adesso si risolvera' per interrogazione al firewall, che risponde con lo stesso identico indirizzo. L'utente digita quello di sempre e arriva dove arrivava prima: cambia il meccanismo, non il risultato. E' l'unico caso in cui qualcosa cambia davvero, ed e' invisibile per costruzione.
+
+**Terzo caso, chi usa un indirizzo invece di un nome.** E' la situazione dei due applicativi web sul server Windows e di ogni collegamento scritto con i numeri. Un indirizzo non passa dalla risoluzione dei nomi: ignora sia i file sia il firewall. Non cambia nulla, oggi ne' domani, finche' quell'indirizzo esiste.
+
+**Quarto caso, un servizio che ne chiama un altro dal proprio codice o dalla propria configurazione.** Se lo chiama per indirizzo vale il terzo caso e non cambia nulla. Se lo chiama per nome valgono il primo o il secondo, a seconda che sulla macchina che lo esegue quel nome sia scritto in un file oppure no. In entrambe le forme il risultato e' lo stesso indirizzo di prima.
+
+Ne discende la conclusione, che vale la pena enunciare come regola generale e non come esito di questo intervento: **finche' ci si limita ad aggiungere record, non esiste un modo per rompere qualcosa**. Il rischio nasce solo con la rimozione delle righe dai file, che e' un'operazione diversa, successiva, facoltativa, e governata dalla regola dell'equivalente descritta sopra.
+
+## Perche' il servizio dei nomi serve ai passi successivi, e non e' un fine in se'
+
+Il secondo chiarimento chiesto dall'IT Manager riguarda il senso dell'operazione: perche' costruire un servizio dei nomi interno se oggi tutto funziona senza. La risposta e' che quattro lavori gia' pianificati lo richiedono, e nessuno dei quattro puo' procedere senza.
+
+**I certificati.** Un certificato certifica un nome e il navigatore lo verifica contro il nome digitato. Senza nomi risolvibili non si possono emettere certificati utilizzabili, quindi resta bloccato il collegamento del gestore delle password, che oggi non e' raggiungibile affatto, e resta bloccata la riemissione del certificato di IntraLino dalla nuova autorita' aziendale. E' la dipendenza che ha fatto scoprire tutto il resto.
+
+**La segmentazione.** Quando i servizi cambieranno segmento cambieranno indirizzo. Con un servizio dei nomi si corregge un record e vale per tutti; senza, si tocca ogni postazione una per una. E soprattutto i nomi che oggi vivono sulla domanda diffusa smetteranno di risolvere del tutto, tutti insieme e senza che nessuno li abbia toccati.
+
+**La zona di pubblicazione.** Un proxy inverso smista le richieste in base al **nome** richiesto, non alla porta. Senza nomi si puo' solo pubblicare per porta, che e' esattamente cio' che oggi rende difficile governare IntraLino con i suoi quattro servizi su quattro porte diverse: ogni porta e' una regola in piu' da aprire in ogni filtro futuro.
+
+**La pulizia dei file degli host.** Non si possono togliere quelle righe finche' non esiste un equivalente che risolva allo stesso modo. Il servizio dei nomi **e'** quell'equivalente: senza, i file restano dove sono, con tutto cio' che il censimento vi ha trovato dentro.
+
+Ne discende che questo intervento non e' un miglioramento facoltativo di comodita' ma il primo anello di una catena: e' il pezzo che i tre lavori successivi presuppongono, ed e' anche il piu' economico dei quattro perche' il resolver esisteva gia' e mancava solo il contenuto.
+
+## Lo stato al 02/09/2026: diciassette record pubblicati
+
+I record sono stati creati sul firewall dall'IT Manager. La pagina non ha un pulsante di conferma separato: le voci si applicano al salvataggio di ciascuna.
+
+| Nome | Serve | Nota |
+|---|---|---|
+| `intralino.int.intrawelt.com` | IntraLino | presente in tutti e diciotto i file censiti |
+| `nas-intra2.int.intrawelt.com` | NAS | in quindici file |
+| `win-v712i9qhqt9.int.intrawelt.com` | server Windows | nome di fabbrica, tenuto per compatibilita' |
+| `presenze.int.intrawelt.com` | rilevazione presenze | nome di ruolo nuovo, oggi il servizio si raggiunge per indirizzo |
+| `timewalker.int.intrawelt.com` | secondo applicativo sulla stessa macchina | come sopra |
+| `egetrad.int.intrawelt.com` | gestionale precedente | |
+| `nas-intra3.int.intrawelt.com`, `nas-intra.int.intrawelt.com`, `nas-hero.int.intrawelt.com` | i tre NAS | |
+| `convertitore-ruolini.int.intrawelt.com` | convertitore | |
+| `gantttool.int.intrawelt.com` | pianificazione | sostituisce il nome sul suffisso della scoperta multicast |
+| `vault.int.intrawelt.com` | gestore delle password | prerequisito del suo collegamento |
+| `asset.int.intrawelt.com` e `asset.intrawelt.lan` | portale asset | il secondo per non rompere chi usa il nome vecchio |
+| `sito-staging.int.intrawelt.com` | ambiente del sito | |
+| `analyst.int.intrawelt.com` | macchina di analisi | |
+| `ollama.int.intrawelt.com` | host di inferenza | |
+
+Non sono stati creati, su indicazione dell'IT Manager: il nome della condivisione documenti e quello del servizio di trasferimento file, che non esistono piu'; il nome del sistema di ticket, la cui natura non e' nota a chi amministra pur essendo il servizio in ascolto sulla macchina del gestore delle password, il che rinforza il difetto #178; il nome del server di licenze e quello del secondo server applicativo, dismessi.
+
 ### Che cosa farne, e in quale ordine
 
 Non vanno cancellati subito, e la ragione e' la stessa che vale per l'autorita' di certificazione esistente: finche' i record sul firewall non esistono e non sono verificati, quelle righe sono cio' che fa funzionare i servizi.
