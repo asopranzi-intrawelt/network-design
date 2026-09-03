@@ -228,7 +228,23 @@ Il censimento aveva lasciato aperte due voci che puntavano a indirizzi **pubblic
 
 Il **dominio principale dell'azienda** risulta oggi risolto, attraverso un alias, verso un indirizzo che differisce di **una sola cifra** da quello scritto nei file degli host di due postazioni. Non e' quindi lo stesso indirizzo, ed e' verosimilmente una macchina adiacente dello stesso fornitore, o la precedente. Ne discende che quelle due voci sono **residui e vanno rimosse**: quelle postazioni oggi raggiungono un indirizzo che non e' quello del sito aziendale, e nessuno se ne e' accorto perche' probabilmente risponde comunque qualcosa. La vicinanza fra i due numeri e' la ragione per cui l'errore e' passato inosservato: a occhio sembrano lo stesso indirizzo.
 
-Il nome del **portale documentale** risulta invece risolto verso esattamente l'indirizzo scritto nel file. Quella voce e' quindi **corretta ma inutile**: duplica cio' che il sistema dei nomi pubblico gia' risponde. Non fa danno oggi, ma condivide il difetto di tutte le voci scritte a mano, cioe' che il giorno in cui quel fornitore cambiera' indirizzo le due postazioni continueranno a puntare al vecchio mentre tutte le altre seguiranno il cambiamento. Si rimuove senza alcuna precauzione, perche' l'equivalente esiste gia' ed e' il resolver pubblico.
+L'IT Manager ha inoltre chiarito il 02/09/2026 che il sito aziendale **non e' piu' ospitato dove quelle righe puntavano**, perche' il rifacimento in corso vive su una macchina virtuale dedicata: quelle voci non hanno quindi piu' alcuna funzione neanche potenziale, e la risoluzione pubblica e' l'unica corretta per chiunque.
+
+Il nome del **portale documentale** risulta invece risolto verso esattamente l'indirizzo scritto nel file, quindi la voce duplica cio' che il sistema dei nomi pubblico gia' risponde e sarebbe innocua. La prova pero' non si e' fermata alla risoluzione, ed e' andata bene che sia stato cosi'.
+
+### Un guasto trovato mentre se ne cercava un altro: il portale documentale non risponde
+
+Interrogato da un navigatore, il portale documentale restituisce un errore di tempo scaduto. Il fatto va separato con cura da tutto il resto di questa scheda, perche' e' facile attribuirlo all'intervento in corso e non c'entra nulla.
+
+Che non sia un problema di risoluzione e' dimostrato: il nome risolve, e risolve verso lo stesso indirizzo che risponde il sistema dei nomi pubblico. La traduzione da nome a indirizzo funziona; e' il passo successivo, cioe' raggiungere quell'indirizzo, che fallisce.
+
+Il **modo** in cui fallisce e' informativo, ed e' il genere di dettaglio che distingue due cause opposte. Un tempo scaduto significa che i pacchetti partono e non torna nulla, quindi qualcosa li scarta silenziosamente lungo il percorso: un filtro, una rotta che non arriva, un tunnel caduto. Se il servizio fosse semplicemente fermo sulla macchina di destinazione, la risposta sarebbe un rifiuto immediato e non un'attesa. Vale la pena tenerlo a mente come regola di lettura generale: attesa che scade significa percorso, rifiuto immediato significa servizio.
+
+Ne discendono tre ipotesi, da distinguere in quest'ordine perche' ciascuna e' meno probabile della precedente. Il percorso passa per il tunnel cifrato verso il fornitore esterno e il tunnel e' caduto. Il servizio filtra per indirizzo di provenienza e l'indirizzo pubblico dell'azienda non e' piu' fra quelli ammessi. Il servizio e' stato fermato dal fornitore.
+
+Il fatto va letto insieme al difetto #117, che registra dal luglio 2026 la perdita della configurazione cifrata su quel medesimo portale e il ripristino sul solo canale in chiaro: e' lo stesso servizio, gia' fragile, e vale la pena chiedersi se sia un seguito di quell'incidente mai chiuso del tutto. Tracciato come #183.
+
+Non appartiene a questo intervento e non lo blocca: la voce nel file degli host va rimossa comunque, perche' la sua presenza o assenza non cambia nulla dell'esito.
 
 E' un esempio istruttivo della regola dell'equivalente applicata a un caso che non riguarda i nomi interni: l'equivalente non deve necessariamente essere un record che creiamo noi, puo' essere una risposta che qualcun altro gia' da'.
 
