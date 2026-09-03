@@ -248,6 +248,34 @@ Non appartiene a questo intervento e non lo blocca: la voce nel file degli host 
 
 E' un esempio istruttivo della regola dell'equivalente applicata a un caso che non riguarda i nomi interni: l'equivalente non deve necessariamente essere un record che creiamo noi, puo' essere una risposta che qualcun altro gia' da'.
 
+### Come si distribuisce il suffisso su questo firewall, che non ha il campo per farlo
+
+Dettaglio operativo registrato il 03/09/2026, perche' e' il genere di cosa che fa perdere mezz'ora a chi lo rifara'. Sull'apparato in uso **non esiste un campo chiamato nome di dominio** nelle impostazioni dell'ambito DHCP: chi lo cerca non lo trova, e la prima conclusione naturale, cioe' che l'apparato non sappia farlo, e' sbagliata.
+
+La ragione e' che il costruttore espone come campi propri soltanto le informazioni piu' usate fra quelle che un server DHCP distribuisce, cioe' indirizzo, maschera, gateway, server dei nomi e durata, e lascia tutte le altre a una tabella di **opzioni estese** dove ciascuna si indica con il proprio numero invece che con il proprio nome. Non e' una funzione mancante: e' la stessa funzione raggiunta per un'altra strada.
+
+Le informazioni che un server DHCP distribuisce sono infatti numerate da uno standard, e il nome di dominio e' la **quindicesima**. Nella tabella delle opzioni estese si aggiunge quindi una voce con opzione definita dall'utente, un'etichetta libera che serve solo a chi legge, il numero quindici, il tipo testuale e come valore il suffisso scelto. Il sistema operativo delle postazioni la riceve come suffisso della connessione, ed e' precisamente quel valore che usa per completare i nomi corti prima di interrogare il servizio dei nomi.
+
+Due avvertenze pratiche. Le opzioni estese sono **per interfaccia** e non si ereditano, quindi la stessa voce va ripetuta su ogni ambito DHCP che debba distribuire il suffisso: nel caso di questa rete la LAN principale e la rete Wi-Fi del personale, e non quella degli ospiti. E la modifica richiede **due conferme in sequenza**, quella della finestra dell'interfaccia e quella della pagina, perche' fino alla seconda la riga resta solo a schermo; l'apparato la segnala con un contrassegno sulle celle modificate, che e' facile non notare.
+
+### La rete Wi-Fi del personale interrogava resolver pubblici, e perche' era ragionevole
+
+La correzione applicata il 03/09/2026 sull'ambito della rete Wi-Fi del personale merita una spiegazione, perche' altrimenti sembra la correzione di una svista e non lo e'.
+
+Quell'ambito distribuiva come server dei nomi due resolver pubblici invece del firewall. Quando fu creato, nel luglio 2026, era la scelta giusta: sul firewall non esisteva alcun record interno, quindi indicarlo come server dei nomi avrebbe aggiunto un passaggio senza aggiungere una risposta, e i due resolver pubblici facevano lo stesso lavoro con un salto in meno. La scelta e' diventata sbagliata nel momento in cui i record sono stati creati, cioe' pochi giorni fa, e non lo era prima. E' il tipo di configurazione che invecchia per un cambiamento avvenuto altrove, ed e' anche il motivo per cui va corretta contestualmente e non dopo: dimenticandola, i nomi interni funzionerebbero dal cavo e non dal Wi-Fi, e il sintomo manderebbe la diagnosi ovunque tranne che nell'ambito DHCP di una rete virtuale.
+
+Sulla maschera va notato che il campo del server dei nomi e' un **menu a scelta**, non una casella di testo. Le voci disponibili comprendono l'apparato stesso e la definizione manuale di un indirizzo; scegliendo la prima la casella accanto sparisce, perche' non c'e' piu' nessun indirizzo da indicare. Scrivere il nome dell'apparato dentro la casella della definizione manuale non funziona, perche' quel campo attende un indirizzo.
+
+### Perche' il secondo server dei nomi va lasciato vuoto
+
+La domanda nasce spontanea: perche' non tenere un resolver pubblico come secondo, per sicurezza? La risposta e' che qui quel ripiego non copre nulla, e in cambio introduce un difetto.
+
+Un secondo server protegge dal caso in cui il primo non risponda. Il primo, qui, e' il firewall, che di quella rete e' **anche il gateway**: se il firewall non risponde, i dispositivi di quella rete non raggiungono comunque nulla, perche' ogni pacchetto diretto fuori dal proprio segmento passa da lui. Il ripiego coprirebbe quindi esattamente lo scenario in cui e' inutile.
+
+In cambio introdurrebbe un comportamento non deterministico. In certe condizioni il sistema operativo interroga anche il secondo server, che per un nome interno risponde in modo corretto e definitivo che quel nome non esiste, e quella risposta negativa puo' restare in memoria per un intervallo. Il sintomo sarebbe un nome interno che funziona quasi sempre e ogni tanto no, senza una regolarita' riproducibile, che e' fra i guasti piu' difficili da diagnosticare perche' non si riesce a farlo accadere quando si guarda.
+
+Ne discende la scelta di lasciarlo vuoto, che e' anche quella gia' in uso sulla LAN principale: una sola fonte di verita' per i nomi, e nessuna seconda voce che possa contraddirla.
+
 ## Perche' nessun utente deve cambiare nulla: la dimostrazione caso per caso
 
 La domanda e' stata posta due volte dall'IT Manager, ed e' quella giusta: se si pubblicano nomi nuovi, chi usa quei servizi dovra' essere avvisato? La risposta e' no, e non e' una rassicurazione ma una conseguenza che si dimostra. Vale la pena scriverla per intero, perche' e' l'affermazione su cui si regge la decisione di procedere senza comunicazione preventiva a tutta l'azienda.
@@ -300,6 +328,30 @@ I record sono stati creati sul firewall dall'IT Manager. La pagina non ha un pul
 | `ollama.int.intrawelt.com` | host di inferenza | |
 
 Non sono stati creati, su indicazione dell'IT Manager: il nome della condivisione documenti e quello del servizio di trasferimento file, che non esistono piu'; il nome del sistema di ticket, la cui natura non e' nota a chi amministra pur essendo il servizio in ascolto sulla macchina del gestore delle password, il che rinforza il difetto #178; il nome del server di licenze e quello del secondo server applicativo, dismessi.
+
+## Esposto e in chiaro sono due cose diverse: il caso del portale documentale
+
+L'IT Manager ha obiettato il 03/09/2026, e l'obiezione e' giusta: quel portale **deve** essere raggiungibile da fuori, perche' i traduttori esterni hanno bisogno delle memorie di traduzione e non sono dentro l'azienda. Ne discende che l'esposizione su Internet non e' un difetto da eliminare ma un requisito da soddisfare, e qualunque proposta che la riduca e' una proposta che rompe il lavoro.
+
+La correzione riguarda un altro punto, e vale la pena isolarla perche' e' la confusione piu' comune di tutta la materia. **Chi puo' raggiungere un servizio e se il traffico sia leggibile sono due proprieta' indipendenti.** Un servizio puo' essere pubblico e cifrato, pubblico e in chiaro, interno e cifrato, interno e in chiaro: sono quattro combinazioni, e la scelta sulla prima non determina la seconda.
+
+Il difetto #117 riguarda **solo la seconda**. Ripararlo significa aggiungere la cifratura, non togliere l'accesso: i traduttori esterni continuerebbero a raggiungere lo stesso servizio, allo stesso indirizzo, con le stesse credenziali, cambiando una sola lettera nell'indirizzo che digitano — e nella maggior parte dei casi nemmeno quella, perche' il navigatore ci arriva da solo. Non c'e' alcun compromesso da valutare fra sicurezza e operativita': in questo caso non si toccano.
+
+Ne discende anche la risposta alla domanda implicita sul perche' insistere. Non si insiste perche' il servizio sia esposto, cosa corretta e voluta, ma perche' oggi le credenziali dei responsabili di progetto e il contenuto scambiato, cioe' memorie di traduzione e documenti dei clienti, attraversano otto passaggi di rete pubblica in una forma che chiunque stia su uno di quei passaggi puo' leggere.
+
+### Le due proposte dell'IT Manager, valutate
+
+La prima e' che gli accessi **dall'interno** passino per il tunnel cifrato invece che per la rete pubblica. E' corretta, e' realizzabile con quello che gia' esiste, e questo progetto ha appena costruito il pezzo che serviva.
+
+Oggi non succede per una ragione semplice: il tunnel verso il fornitore trasporta la rete privata remota, mentre il portale viene raggiunto per il suo **indirizzo pubblico**, e un indirizzo pubblico viene instradato verso l'uscita Internet come qualunque altro. Il tunnel c'e' ma quel traffico non lo imbocca, perche' nessuno gli ha detto di farlo.
+
+Il modo per dirglielo e' pubblicare sul resolver interno un record per quel nome che punti all'**indirizzo privato** della macchina dentro la rete remota. Da quel momento le postazioni interne risolvono quel nome verso un indirizzo che il tunnel trasporta, e il traffico ci passa dentro. E' un orizzonte separato applicato a un nome pubblico: dall'interno porta al tunnel, dall'esterno all'indirizzo pubblico, e il certificato resta valido in entrambi i casi perche' certifica il **nome** e non l'indirizzo.
+
+Va dichiarata la controindicazione, perche' esiste. Oggi, se il tunnel cade, gli utenti interni non se ne accorgono: raggiungono comunque il portale dalla via pubblica. Con il record interno quella via di ripiego sparisce, e una caduta del tunnel diventa un'interruzione del servizio per tutti gli interni. Non e' un motivo per non farlo, e' un motivo per accorgersi quando il tunnel cade, cosa che oggi non e' presidiata.
+
+La seconda proposta e' far passare **anche i traduttori esterni** per un tunnel, verso un segmento dedicato del firewall. E' tecnicamente possibile e concettualmente elegante, ma il conto va fatto per intero. Ogni collaboratore esterno avrebbe bisogno di credenziali di accesso remoto, di un programma da installare e di assistenza quando non funziona, per un rapporto che spesso e' occasionale; e un collaboratore dentro il tunnel e' dentro il perimetro, quindi la sua postazione, che l'azienda non amministra, diventa un ingresso alla rete invece che un utente di un servizio. Per un applicativo web usato da esterni la strada consolidata e' l'opposta: lasciarlo pubblico, cifrarlo, e irrobustire l'autenticazione, per esempio con un secondo fattore.
+
+Va notato infine il punto che rende la scelta meno urgente di quanto sembri: **la cifratura serve in tutti e tre gli scenari**. Se il portale resta pubblico serve perche' il traffico attraversa Internet. Se gli interni passano dal tunnel serve lo stesso, perche' gli esterni continuano a non passarci. E se passassero tutti dal tunnel servirebbe comunque, perche' un tunnel protegge il tratto fra due punti e non l'applicazione. Non e' quindi un'alternativa alle due proposte: e' il presupposto di entrambe, ed e' il motivo per cui va fatta per prima a prescindere da come si decida il resto.
 
 ### Che cosa farne, e in quale ordine
 
