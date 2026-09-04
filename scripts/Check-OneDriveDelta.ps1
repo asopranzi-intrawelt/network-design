@@ -108,7 +108,19 @@ $relevantPatterns = @(
     'zyxel', 'nebula', 'firewall', 'switch', '\bvpn\b', '\bvlan\b',
     'qnap', '\bnas\b', 'proxmox', '\bilo\b', 'seeweb', 'groupshare',
     'mappatura porte', 'architettura server', 'network', 'diagramma di rete',
-    '\bups\b', 'access point', 'stampant', 'printer', 'scanner', 'ninja'
+    '\bups\b', 'access point', 'stampant', 'printer', 'scanner', 'ninja',
+    # Aggiunti il 04/09/2026 dopo un difetto del filtro trovato durante il triage del delta.
+    # "STATO RETE INTRAWELT.docx", il documento piu' importante arrivato al progetto in tutto
+    # il 2026 -- catena fisica dalla WAN al firewall, mappa porta-apparato, alimentazione dei
+    # due armadi -- non corrispondeva a NESSUNO dei pattern qui sopra: non contiene 'network',
+    # non contiene 'diagramma di rete', non nomina un apparato ne' un fornitore. Il 06/08/2026
+    # fu notato solo perche' cadeva per caso fra le prime venticinque voci in ordine alfabetico
+    # dell'elenco troncato. E' la stessa famiglia del difetto del 03/08 sulla cartella esclusa:
+    # non si sbaglia su cio' che si conosce, si sbaglia su cio' che non si e' previsto.
+    # 'backup' e 'crittograf' entrano perche' continuita' e dati a riposo sono ambiti su cui il
+    # progetto ha difetti aperti; 'intervista' e 'censiment' perche' sono le forme in cui
+    # arrivano le fonti prodotte da altre sessioni di lavoro.
+    '\brete\b', 'stato rete', 'topologia', 'backup', 'crittograf', 'intervista', 'censiment'
 )
 function Test-Relevant([string]$relPath) {
     foreach ($p in $relevantPatterns) { if ($relPath -imatch $p) { return $true } }

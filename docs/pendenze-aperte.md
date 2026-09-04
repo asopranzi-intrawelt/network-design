@@ -53,6 +53,10 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Domanda | Come si chiude | Dove e' tracciato |
 |---|---|---|
 | La console VNC della VM602 Intralino e' davvero attiva sulla LAN piatta, e ha una password di display? | `qm showcmd 602` sul nodo, piu' verifica della password | SRV-006 (#141) |
+| La copia fuori sede dei backup del NAS-HERO verso lo spazio a blocchi e quella verso lo spazio cloud scaduto sono **due repliche distinte o la stessa descritta due volte**? Dalla risposta dipende se una copia fuori sede esista ancora oppure nessuna | lettura dei job di backup ibrido sul NAS, non deduzione dai documenti | STOR-002 (#186) |
+| Lo spazio cloud nella regione di **Milano**, attivato col rinnovo del 04/09/2026, e' uno spazio **nuovo** o il precedente di Francoforte migrato? Se e' nuovo nasce vuoto, e la copia fuori sede dei dati storici torna a esistere solo a primo caricamento completo | pannello del fornitore, oppure stato del job sul NAS | STOR-002 (#186) |
+| Il computer con Windows 11 Home su cui la crittografia del disco non e' attivabile **appartiene al parco gestito**? | domanda all'IT Manager; il documento del 01/09/2026 non lo dice, e dedurlo sarebbe un'inferenza | triage del delta del 04/09/2026, `ingestion-checklist.md` |
+| La **scansione verso cartella** del multifunzione funziona ancora dopo l'aggiornamento del firmware del 25/08/2026? | prova reale di scansione, non lettura della configurazione | voce di timeline del 04/09/2026 |
 | Il file di credenziali in chiaro nella home dell'utente della VM207 | ispezione e rimozione | SRV-005 (#120) |
 | Che cosa espone la OpenAPI per il firewall **assegnato a un sito** in Cloud Monitoring Mode | assegnarlo e rileggere; oggi in stato `Unused` espone la sola anagrafica | `.claude/rules/fonti-e-riallineamento.md` §Fonte automatica pianificata |
 | Perche' le porte di fonia hanno due generazioni di configurazione | change log di configurazione degli apparati su NCC | NET-019 (#143) |

@@ -238,7 +238,7 @@ Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/SubResponsabili Intr
 | Zyxel / Nebula | Firewall, switch, AP (cloud mgmt Nebula) | Config rete, log, IP/MAC | AWS Irlanda + repliche | 2027 (rinnovo annuale; sottoscritto 2020) |
 | RWS Holdings plc (Chalfont St Peter, UK) | Trados, GroupShare, Language Weaver | File da tradurre, TM, glossari, metadati | EU + UK (adequacy EU→UK val. 27/12/2031) | 2027 (rinnovo annuale) |
 | Odoo SA (Ramillies, BE) | ERP/CRM, fatturazione, contratti | Dati aziendali, clienti, fatture | Data center EU (BE, FR) | 2028 (rinnovo triennale; sottoscritto 19/09/2019) |
-| QNAP Cloud | NAS cloud backup | File, log, config, accessi remoti | Data center globali (13 sedi, incluse EU e USA) | 2027 (rinnovo annuale) |
+| QNAP Cloud | NAS cloud backup | File, log, config, accessi remoti | Data center globali (13 sedi, incluse EU e USA); lo spazio in uso e' in **Italia (Milano)** dal rinnovo del 04/09/2026, prima era in Germania (Francoforte) | 2027 (rinnovo annuale) |
 | Seeweb Srl (Frosinone, IT) | Hosting, cloud server, housing | Dati di sistema, backup, config | Italia e Svizzera | N/A (sottoscritto 26/09/2014, in corso) |
 | Openforce Srls (Pedaso FM, IT) | Implementazione/personalizzazione Odoo ERP | Dati contabili, ordini, fatture, CRM | Server cloud EU (Odoo Enterprise) | 2027 (rinnovo annuale; sottoscritto 24/05/2018) |
 | Punto Informatica SNC (Porto San Giorgio, IT) | Vendita HW/SW, assistenza tecnica | Dati cliente, ordini, fatture | Server locali/gestionali interni | 2026 (rinnovo annuale; sottoscritto 01/02/2025) |

@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="3930" viewBox="0 0 1060 3930" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="3930" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4218" viewBox="0 0 1060 4218" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="4218" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,24 +15,24 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">149 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 07/08/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">161 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 04/09/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
-<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(13)</tspan></text>
+<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(14)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(37)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
-<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(14)</tspan></text>
+<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(15)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
-<text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(11)</tspan></text>
+<text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(17)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(11)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
-<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(25)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(33)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#e6ede9"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#0e5c62" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">2024</text>
@@ -2429,7 +2429,199 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="3914" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-150" class="ev-block has-detail" transform="translate(0,3884)">
+<g class="ev-summary" onclick="toggleEv('ev-150')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">24/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Il livello di virtualizzazione entra nella mappa, e con esso quattro difetti che nessuno aveva … <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-150-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">24/08/2026 &#8212; Il livello di virtualizzazione entra nella mappa, e con esso quattro difetti che nessuno aveva scritto</p>
+<p>Fino a questa data il progetto descriveva il server come un apparato solo: un riquadro con dentro dieci macchine. La mappa interattiva ha ricevuto il livello di virtualizzazione, cioe' i quattro bridge Linux dell'host e le macchine attestate su ciascuno, letti dall'API Proxmox in sola lettura, piu' la matrice completa delle porte dei due switch gestiti estratta dallo snapshot Nebula. Il progetto conosceva ventisei porte su ottantaquattro, e solo come etichetta di collegamento.</p><p>Ne sono usciti quattro difetti, e la ratio per cui contano e' la stessa per tutti e quattro: erano affermazioni corrette diventate false, oppure fatti mai messi per iscritto, non contraddizioni che qualcuno avesse potuto notare leggendo. Il #152 registra che i quattro bridge hanno l'aspetto di una segregazione e non lo sono, perche' nessuno e' VLAN-aware, nessuna macchina porta un tag e i quattro cavi terminano nello stesso dominio di broadcast. Il #153 registra che la corrispondenza fra i nomi delle schede nel sistema operativo, le prese sul telaio e le porte dello switch non era mai stata confrontata, ed era il prerequisito bloccante del micro-step M4. Il #156 registra otto porte che negoziano a 10 Mb/s su hardware gigabit e vedono zero indirizzi. Il #157, il piu' pesante, registra che l'indirizzo con cui si amministra l'hypervisor attraversa lo switch QNAP non gestito, il che rende inapplicabile il piano DMZ scritto il 05/06/2026.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-151" class="ev-block has-detail" transform="translate(0,3908)">
+<g class="ev-summary" onclick="toggleEv('ev-151')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">25/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Il ramo del server spiegato per intero, e la porta 7 confermata dallo switch stesso <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-151-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">25/08/2026 &#8212; Il ramo del server spiegato per intero, e la porta 7 confermata dallo switch stesso</p>
+<p>Giornata di documentazione e di misura, nata da una domanda dell'IT Manager sul modo in cui il server e' attaccato alla rete, e proseguita chiedendo conto di ogni termine usato nella risposta. L'esito documentale e' la scheda docs/virtualizzazione-proxmox-e-bridge.md, che tiene insieme il deep-dive tecnico e il fondamento didattico e che va letta insieme a questa voce.</p><p class="sub">Perche' il censimento delle porte e il lavoro sui bridge sono due binari, e la correzione di sequenza</p><p>La prima proposta metteva in fila il censimento delle porte prima del lavoro sulla DMZ, con l'argomento di scendere in armadio una volta sola. L'IT Manager ha osservato che i due non hanno alcuna dipendenza reciproca, e aveva ragione: il binario dei bridge ha un solo prerequisito, la conferma su quale porta esca vmbr1, e il censimento delle postazioni non vi entra. La sequenza e' stata corretta e le due tracce procedono in parallelo. Vale come lezione di metodo: un ordine giustificato da un'economia di spostamenti non e' un ordine giustificato da una dipendenza tecnica, e i due non vanno confusi.</p><p class="sub">Nove porte identificate senza scendere in armadio</p><p>Incrociando la tabella MAC dei due switch, che dice quale indirizzo fisico si vede su quale porta, con l'inventario delle interfacce di rete di NinjaOne, che dice a quale computer appartiene ciascun indirizzo, si attribuiscono nove porte fino a ieri anonime: la 25, la 26, la 32 e la 34 del 54HP, e la 5, la 8, la 10, la 16 e la 20 del 30HP. Nessuna delle due fonti sapeva da sola la cosa dell'altra. Lo snapshot dell'RMM e' stato rinfrescato lo stesso giorno prima dell'incrocio, perche' un indirizzo fisico cambia quando una postazione viene sostituita e un dato di ventisei giorni prima avrebbe potuto attribuire una porta al computer sbagliato. La corrispondenza con nomi host e indirizzi reali vive in _notes/censimento-porte-2026-08-25.md, non versionato.</p><p>Nella stessa verifica la scheda del livello fisico e la fonte della mappa sono state confrontate riga per riga: sul 54HP coincidono esattamente su diciannove porte, sul 30HP la scheda ne descrive tre in piu'. Non si contraddicono in nessun punto, hanno copertura diversa, ed e' una distinzione che vale la pena reg… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-152" class="ev-block has-detail" transform="translate(0,3932)">
+<g class="ev-summary" onclick="toggleEv('ev-152')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">28/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Il censimento M27-7 rovescia una premessa: la difesa host-based non esiste <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-152-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">28/08/2026 &#8212; Il censimento M27-7 rovescia una premessa: la difesa host-based non esiste</p>
+<p>Il 25/08 l'IT Manager aveva indicato il firewall di sistema delle singole macchine Linux come il livello che oggi protegge i servizi interni, e su quella base era stato aperto il micro-step M27-7 con l'argomento che, prima di scrivere una regola di rete, bisogna sapere che cosa ciascun host permette, per non togliere un accesso funzionante. Il censimento ha misurato l'opposto di cio' che cercava: su sette macchine ispezionate ufw non e' installato su sei, e sulla settima e' installato e dichiara stato inattivo.</p><p>La ratio per cui questo conta piu' di un dettaglio di configurazione e' che cambia il ruolo del lavoro in corso. Cio' che oggi impedisce a un host qualunque della LAN piatta di raggiungere una qualunque porta in ascolto e' soltanto il fatto che nessuno ci prova, piu' l'autenticazione che ciascuna applicazione si porta dietro. Ne discende che il firewall di rete previsto dalla segmentazione non sara' un secondo strato di difesa ma il primo, e che il timore di rompere con una regola una configurazione host-based esistente non ha oggetto: non c'e' nulla da preservare a quel livello, c'e' tutto da costruire. Il vincolo dell'IT Manager sull'accesso interno resta valido e va rispettato, ma ora si applica con una matrice in mano invece che a memoria.</p><p>Otto difetti nuovi, dal #159 al #166. Il piu' grave e' il gestore delle password della VM 202, che risponde sulla porta 80 e non ha nessun ascolto sulla 443: il deposito delle credenziali aziendali viaggia in chiaro su una rete dove ogni apparato e' adiacente a ogni altro, e la password principale vi transita a ogni accesso. Il secondo e' PostgreSQL della VM 209, in ascolto su tutte le interfacce: non e' solo un'esposizione ma anche una contraddizione con cio' che il progetto affermava, cioe' che quel database vivesse sulla sola rete interna dei container, e la fonte della mappa e' stata corretta di conseguenza. Il terzo riguarda due macchine su cui non si entra piu' per credenziali perdute, la 205 e la 208, e pesa perche' la 208 e' il portale asset, cioe' proprio il servizio che la segmentazione deve spostare per primo: il micro-step M22d ha oggi un blocco che non e' di rete. Seguono gli ambienti di prova esposti ac… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-153" class="ev-block has-detail" transform="translate(0,3956)">
+<g class="ev-summary" onclick="toggleEv('ev-153')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">31/08/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">La conclusione del censimento viene corretta: un filtro puo' vivere a quattro livelli, ne era s… <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-153-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">31/08/2026 &#8212; La conclusione del censimento viene corretta: un filtro puo' vivere a quattro livelli, ne era stato guardato uno</p>
+<p>La voce del 28/08 registrava che il censimento M27-7 aveva misurato l'assenza di ufw su tutte le macchine interne e ne concludeva che "la protezione dei servizi interni non e' affidata a nulla". L'IT Manager ha corretto la conclusione portando un controesempio puntuale: sulla VM 204, che ospita il convertitore dei ruolini, l'accesso e' ristretto per indirizzo e sono ammessi soltanto la sua postazione e due indirizzi della fascia .70. Quella restrizione esiste, funziona, e ufw status non la vede.</p><p>La ratio della correzione, che vale piu' del singolo caso. Fra il pacchetto che arriva sul cavo e la risposta dell'applicazione ci sono almeno quattro punti in cui qualcuno puo' aver deciso di negare l'accesso: il filtro di pacchetti del kernel, che ufw amministra ma che si scrive anche con iptables o nftables senza che ufw ne sappia nulla; il server web davanti all'applicazione, dove una restrizione per indirizzo si scrive con direttive di ammissione; l'applicazione stessa, che puo' controllare il chiamante nel proprio codice e non lascia traccia in nessun comando di sistema; e i contenitori, che inseriscono regole valutate prima di quelle di ufw. Il censimento ne aveva interrogato uno e aveva concluso sull'insieme, il che e' scambiare l'assenza di una prova per la prova di un'assenza. La forma della VM 204 e' peraltro coerente con il secondo livello: due processi Python in ascolto sul solo loopback e due porte pubbliche servite da quello che ha l'aspetto di un server web.</p><p>Il fatto che sopravvive alla correzione e' piu' stretto e piu' utile: il livello host-based non e' governato in modo uniforme ne' ispezionabile centralmente. Alcune macchine hanno restrizioni, altre no, nessuno sa quali senza leggerle una per una in posti diversi, e nulla segnala se una viene rimossa. Il difetto #159 e' stato riformulato in questi termini.</p><p>Ne discende una conseguenza sul piano di segmentazione opposta a quella scritta il 28/08, e piu' onerosa. Una lista di indirizzi ammessi si rompe quando gli indirizzi cambiano, e la segmentazione cambia gli indirizzi: se una delle postazioni ammesse sulla VM 204 finisse in un segmento diverso, il convertitore la rifiuterebbe, e lo farebbe in modo sile… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-154" class="ev-block has-detail" transform="translate(0,3980)">
+<g class="ev-summary" onclick="toggleEv('ev-154')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">31/08/2026 (2)</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Dismessa la VM 206, e messo in piedi il registro delle credenziali locali <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-154-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">31/08/2026 (2) &#8212; Dismessa la VM 206, e messo in piedi il registro delle credenziali locali</p>
+<p>Due fatti operativi nella stessa giornata in cui la conclusione del censimento veniva corretta.</p><p class="sub">La VM 206 non esiste piu'</p><p>L'IT Manager ha spento e distrutto la VM 206 intrasite con qm destroy 206 --purge, dichiarando che per il momento non serve. Era la copia uno a uno del rifacimento del sito commissionato all'agenzia, tenuta come riferimento di contenuto e di marchio, e stava su vmbr2 insieme alla VM 209.</p><p>Il presupposto e' stato verificato invece che riferito: sul NAS, sotto Backup/dump, esistono copie vzdump-qemu-206 del 16/06, 26/07, 23/08, 29/08, 30/08 e 31/08/2026 alle 06:44, ciascuna di circa venti gigabyte, ciascuna con il proprio file di annotazioni. La copia piu' recente e' dello stesso giorno, presa poche ore prima della dismissione. Il dettaglio vale la pena di essere scritto perche' e' cio' che distingue una dismissione da una perdita di dati, e perche' fra sei mesi nessuno ricordera' che il backup c'era.</p><p>Sull'opzione --purge una precisazione che serve alle prossime volte: senza di essa Proxmox rimuove la macchina ma lascia i riferimenti che le fanno gli altri oggetti della configurazione, in particolare i job di backup e le regole di replica, che continuano a puntare a una macchina inesistente e falliscono a ogni esecuzione. Con --purge quei riferimenti se ne vanno insieme ai dischi, il che rende l'operazione piu' pulita e insieme piu' definitiva: il ripristino non e' un annullamento ma un lavoro a se', perche' cio' che stava fuori dal disco va rifatto a mano.</p><p>Aggiornati nella stessa sessione tutti i luoghi in cui la macchina compariva: la fonte della mappa, che scende a cinquantacinque nodi e settantuno collegamenti, la matrice dell'esposizione, il diagramma sotto .claude/context/diagrams/, la scheda dei bridge e quella della segmentazione. E' il punto in cui una documentazione comincia a mentire senza che nessuno lo faccia apposta: basta toglierla da un posto solo.</p><p class="sub">Il registro delle credenziali locali, e un difetto che non era stato visto</p><p>L'IT Manager ha verificato una per una le password locali delle macchine virtuali e ne manca una sola, quella dell'utente della VM 208. La verifica in se' chiude gran parte di #162, ma nel farla e' emerso il difetto p… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-155" class="ev-block has-detail" transform="translate(0,4004)">
+<g class="ev-summary" onclick="toggleEv('ev-155')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#1baf7a"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">31/08/2026 (3)</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Una DMZ o due segmenti: la domanda che rimette in ordine il piano, e il censimento che la corro… <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">FW/VPN</tspan></text>
+</g>
+<foreignObject id="ev-155-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">31/08/2026 (3) &#8212; Una DMZ o due segmenti: la domanda che rimette in ordine il piano, e il censimento che la corrobora</p>
+<p>Giornata in cui il lavoro sulla segmentazione ha guadagnato sia il criterio di progetto che gli mancava sia i primi dati misurati su cui applicarlo.</p><p class="sub">La domanda dell'IT Manager, e l'equivoco di linguaggio che ha sciolto</p><p>La domanda era duplice: la DMZ non deve togliere i servizi interni agli endpoint della LAN, che devono continuare a raggiungerli; e forse allora serve un segmento distinto per i servizi che Intrawelt eroga verso l'esterno, come il portale asset.</p><p>La prima meta' ha smascherato un'ambiguita' nel modo in cui questa documentazione si era espressa fino a quel momento. "Togliere i servizi dalla LAN piatta" non significa renderli irraggiungibili: significa che il traffico fra una postazione e un servizio, che oggi passa da uno switch senza che nessuno lo esamini, dopo la segmentazione attraversa il firewall, che lo lascia passare se una regola lo prevede. La differenza non e' se il collegamento funziona, ma chi ha deciso che funzioni. Oggi funziona perche' non esiste nulla che lo impedisca, ed e' la stessa ragione per cui funzionerebbe un collegamento che nessuno vuole. Ne discende che il vincolo posto il 25/08 e' pienamente compatibile con la segmentazione, a una condizione operativa: le regole che permettono gli accessi legittimi vanno scritte contestualmente allo spostamento, non dopo.</p><p>La seconda meta' era gia' prevista dalla roadmap ma senza un criterio esplicito, e il criterio istintivo porta fuori strada. Non e' chi usa il servizio a determinarne il segmento, altrimenti tutto cio' che serve ai dipendenti starebbe dentro. E' da dove puo' arrivare una connessione non richiesta. Un servizio raggiungibile da Internet puo' ricevere connessioni da chiunque senza che nessuno lo sappia, quindi e' il candidato a cadere per primo e va nella DMZ, VLAN 201, il cui senso e' negare per impostazione predefinita la direzione DMZ verso LAN. Un servizio raggiungibile solo dall'interno va nella VLAN 50 dei servizi applicativi interni, gia' prevista da M22d, il cui senso non e' proteggersi da Internet ma impedire che una postazione compromessa raggiunga senza filtro ogni servizio, e simmetricamente che un servizio compromesso raggiunga ogni postazione e ogni NAS.</p><p>Il portal… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-156" class="ev-block has-detail" transform="translate(0,4028)">
+<g class="ev-summary" onclick="toggleEv('ev-156')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">01/09/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Chiuso il censimento su dieci host, e la scelta fra certificato autofirmato e autorita' interna <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-156-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">01/09/2026 &#8212; Chiuso il censimento su dieci host, e la scelta fra certificato autofirmato e autorita' interna</p>
+<p class="sub">M27-7 chiuso nella parte di raccolta</p><p>Con la VM 205 e la VM 100 il censimento dell'esposizione copre tutti e dieci gli host. Il quadro complessivo e' che nessuna macchina ha un filtro al primo livello, una sola ha una restrizione al secondo, cioe' le direttive di ammissione per indirizzo nella configurazione del server web della VM 204, e il server Windows, che e' il piu' esposto del parco con piu' servizi in ascolto di tutte le altre messe insieme, ha il firewall disattivato su tutti e tre i profili. Resta da compilare la matrice dei flussi, che nessuna misura puo' produrre da sola.</p><p>La diagnosi della VM 205 merita di essere ricordata per come e' andata: cinque ipotesi plausibili cadute una dopo l'altra e nessuna causa accertata. L'ultima, un nome utente sbagliato nella configurazione della postazione, era nata da una prova mal fatta, cioe' un comando lanciato senza specificare l'utente, che ne aveva quindi usato uno predefinito della postazione: la prova misurava se stessa e non la macchina. L'unica spiegazione compatibile con le misure e' che il tempo scaduto del 31/08 fosse transitorio, e il progetto lo dichiara invece di attribuirlo a una causa scelta a posteriori.</p><p class="sub">La domanda sui certificati, e perche' la risposta e' un'autorita' interna</p><p>Prima di aggiungere HTTPS al gestore delle password l'IT Manager ha osservato che su alcune macchine un certificato esiste gia', prodotto dalla macchina stessa, e ha chiesto se non fosse quella la strada. La risposta e' no, e la ragione non e' tecnica ma aritmetica.</p><p>Un certificato fa due cose che il linguaggio comune confonde: cifra il traffico, e per questo basta un certificato qualunque, e dimostra l'identita' di chi risponde, e per questo serve la firma di qualcuno che il navigatore gia' consideri attendibile. Un certificato autofirmato afferma la propria identita' appellandosi a se stesso, ed e' per questo che il navigatore protesta: l'avviso non e' un fastidio tecnico, e' la descrizione corretta della situazione. Il rischio di conviverci e' che un utente abituato a superare l'avviso lo superera' anche il giorno in cui l'avviso e' vero.</p><p>Con certificati autofirmati per servizio le installazioni sulle postazioni crescono come il… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-157" class="ev-block has-detail" transform="translate(0,4052)">
+<g class="ev-summary" onclick="toggleEv('ev-157')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">01/09/2026 (2)</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">La ricognizione TLS rovescia il difetto che doveva risolvere, e trova due servizi che nessuno c… <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-157-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">01/09/2026 (2) &#8212; La ricognizione TLS rovescia il difetto che doveva risolvere, e trova due servizi che nessuno censiva</p>
+<p>La ricognizione doveva rispondere a una domanda di dettaglio, cioe' come aggiungere il traffico cifrato al gestore delle password. Ha risposto a tre domande diverse, e la prima annulla il presupposto da cui era partita.</p><p class="sub">Il gestore delle password non e' esposto: non e' collegato</p><p>Il difetto #160 affermava che il gestore fosse servito in chiaro a tutta la LAN e che la password principale vi transitasse a ogni accesso. La misura lo esclude in tre modi indipendenti. Il contenitore dichiara la propria porta senza pubblicarla verso l'host, distinzione che nella lettura di un elenco si perde e che qui e' decisiva: una porta scritta con una corrispondenza verso l'host e' offerta alla rete, una porta scritta da sola e' usata solo all'interno del contenitore. Gli host virtuali attivi del server web sono due e nessuno riguarda il gestore. E il modulo di inoltro non e' caricato, quindi quel server non sarebbe nemmeno tecnicamente capace di raggiungerlo.</p><p>Il difetto e' stato riformulato: il gestore e' installato e non collegato, e cio' che manca per usarlo e' l'intera catena, cioe' modulo di inoltro, modulo cifrato, host virtuale, certificato e nome. La gravita' scende da alta a media perche' non c'e' esposizione, ma un lavoro da fare prima dell'adozione. E' anche la spiegazione tecnica di quanto l'IT Manager aveva riferito lo stesso giorno, cioe' che il gestore non fosse ancora in uso: non lo e' perche' non e' mai stato collegato.</p><p>E' il terzo errore dello stesso tipo in una settimana, dopo la conclusione che non esistessero filtri, tratta da una misura su un solo livello, e quella che il firewall del server Windows fosse attivo, tratta dalla documentazione del prodotto invece che dalla macchina. I tre hanno la stessa forma: una conclusione plausibile tratta da una misura parziale, senza fare la misura che l'avrebbe confermata o smentita. La lezione, registrata come schema e non come episodio: quando due fatti veri suggeriscono un collegamento, il collegamento e' un terzo fatto e va misurato a parte.</p><p class="sub">Due servizi che esistevano e che nessun inventario conteneva</p><p>Sulla porta in chiaro della macchina del gestore risponde in realta' un applicativo di gestione dei ticket di assistenza, c… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-158" class="ev-block has-detail" transform="translate(0,4076)">
+<g class="ev-summary" onclick="toggleEv('ev-158')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">01/09/2026 (3)</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Trovata la chiave dell'autorita', e prese due decisioni architetturali <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-158-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">01/09/2026 (3) &#8212; Trovata la chiave dell'autorita', e prese due decisioni architetturali</p>
+<p class="sub">La chiave era sulla macchina, e la prima ricerca aveva sbagliato</p><p>La voce precedente registrava che la ricerca per contenuto non avesse trovato alcuna autorita' sull'host di IntraLino, e ne concludeva che la chiave stesse altrove. L'IT Manager ha dubitato della conclusione osservando che la chiave doveva stare dentro la macchina, e aveva ragione: chiedendo al contenitore da dove legga il proprio certificato, la risposta e' arrivata in un comando. Certificato e chiave sono innestati in sola lettura da una cartella dell'host dedicata proprio alle autorita', che la prima ricerca non aveva attraversato perche' non era nel suo elenco di percorsi.</p><p>E' il quarto errore della stessa famiglia in una settimana ed e' il piu' istruttivo, perche' riguarda uno strumento e non un ragionamento: una ricerca per contenuto vale quanto l'elenco di percorsi che attraversa, e un esito negativo significa "non trovato dove ho guardato", mai "non esiste". La correzione e' doppia e la seconda meta' e' quella che conta: l'elenco e' stato esteso, e il limite e' stato scritto in testa allo strumento, perche' un limite dichiarato dentro lo strumento sopravvive a chi lo ha scoperto. Ne resta anche un metodo: quando un servizio presenta un certificato, la chiave esiste per definizione, e la via piu' diretta non e' cercarla sul disco ma chiedere al servizio da dove la legge.</p><p class="sub">La custodia, misurata: permessi giusti, contesto sbagliato, nessuna passphrase</p><p>La cartella contiene la catena completa e corretta: certificato dell'autorita' e sua chiave, file dei numeri di serie, e per il servizio richiesta di firma, file delle estensioni, certificato e chiave. Vale la pena leggerlo come indizio di metodo prima che come inventario, perche' significa che una procedura esiste ed e' quella standard: creare l'autorita' aziendale sara' ripetere qualcosa gia' praticato in casa, non inventare.</p><p>I permessi sono corretti, con le chiavi leggibili dal solo amministratore. Il contesto pero' li vanifica in buona parte: la macchina non ha filtri, espone l'accesso remoto a tutta la LAN piatta, ammette l'autenticazione con password e condivide credenziali con altre, quindi chi ne ottenesse l'amministrazione otterrebbe la chiave… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-159" class="ev-block has-detail" transform="translate(0,4100)">
+<g class="ev-summary" onclick="toggleEv('ev-159')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#1baf7a"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">02/09/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">I nomi interni: il resolver del firewall, e perche' oggi molti nomi non sono scritti da nessuna… <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">FW/VPN</tspan></text>
+</g>
+<foreignObject id="ev-159-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">02/09/2026 &#8212; I nomi interni: il resolver del firewall, e perche' oggi molti nomi non sono scritti da nessuna parte</p>
+<p>Giornata nata da una domanda dell'IT Manager che sembrava di dettaglio e non lo era: se il certificato di IntraLino contiene gia' il nome corto, perche' quel nome non compare nella tabella dei record del firewall. La risposta ha aperto una materia che il progetto aveva toccato tre volte senza mai spiegarla, e le ha dedicato una scheda propria, docs/risoluzione-nomi-interni.md.</p><p class="sub">Le due domande che un navigatore fa, e che si confondono in una</p><p>Quando si digita un indirizzo il navigatore fa due domande separate a due sistemi indipendenti. Dove sta, cioe' come si trasforma un nome in un indirizzo, e risponde la risoluzione dei nomi. Ed e' davvero lui, cioe' chi risponde a quel nome e' chi dice di essere, e risponde il certificato. Uno puo' funzionare senza l'altro: un nome che risolve e mostra l'avviso, oppure un certificato perfetto per un nome che nessuno risolve.</p><p>Il nome corto di IntraLino non e' nella tabella del firewall perche' la prima domanda oggi non passa dal firewall. Quel nome non e' configurato da nessuna parte: viene risolto in multicast sul segmento, cioe' la postazione chiede a voce alta sulla rete chi si chiami cosi' e la macchina risponde. Funziona perche' nessuno lo ha mai configurato, il che e' precisamente il motivo per cui nessuno sa che esiste.</p><p class="sub">Perche' la segmentazione li rompera' tutti insieme</p><p>Un pacchetto a domanda diffusa non attraversa i confini di rete: viene consegnato a tutti gli apparati del proprio dominio di broadcast e si ferma li'. Non e' una limitazione configurabile ma il modo in cui funziona l'inoltro, perche' un apparato che propagasse quel traffico fra due segmenti li renderebbe un segmento solo.</p><p>Su questa rete il difetto non si vede perche' la LAN e' piatta: c'e' un unico dominio di broadcast e la domanda arriva sempre. Ne discende che il giorno in cui la segmentazione separera' i servizi dalle postazioni tutti i nomi che vivono sul broadcast smetteranno di risolvere insieme, senza che nessuno li abbia toccati, e il guasto si presentera' come "l'applicazione non funziona dopo l'intervento sulla rete", mandando la diagnosi nel posto sbagliato. E' la quarta forma della stessa trappola gia' incontrata dal progetto.</p><p class="sub">Il difetto di sicurez… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-160" class="ev-block has-detail" transform="translate(0,4124)">
+<g class="ev-summary" onclick="toggleEv('ev-160')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">02-03/09/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Il servizio dei nomi interno: venti record, il suffisso, e la scoperta che nessuno lo interroga… <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-160-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">02-03/09/2026 &#8212; Il servizio dei nomi interno: venti record, il suffisso, e la scoperta che nessuno lo interrogava</p>
+<p>Due giornate sull'intervento R12, che il 01/09 era stato promosso da miglioramento facoltativo a prerequisito della segmentazione e dei certificati.</p><p class="sub">Che cosa e' stato fatto</p><p>Diciassette record di indirizzo pubblicati sul resolver del firewall, scelti dal censimento dei file degli host di diciotto postazioni e non a intuito: i nomi piu' diffusi per primi, con le stesse etichette che le persone gia' usano e il solo suffisso aggiunto, cosi' che nessuno debba cambiare abitudine. Due nomi di ruolo nuovi per i due applicativi web del server Windows, oggi raggiunti per indirizzo, perche' abbiano un nome prima che la segmentazione cambi quell'indirizzo. Il suffisso di ricerca distribuito sull'ambito DHCP della LAN principale e della rete Wi-Fi del personale, e su quest'ultima la correzione del server dei nomi, che puntava a resolver pubblici.</p><p>Sul firewall il campo per il suffisso non esiste: si ottiene con l'opzione DHCP numero quindici nella tabella delle opzioni estese, che va ripetuta per interfaccia perche' non si eredita. Il dettaglio e' registrato perche' e' il genere di cosa che fa perdere mezz'ora a chi lo rifara'.</p><p class="sub">La verifica, e il pezzo mancante che ha trovato</p><p>La prova sulla postazione dell'IT Manager e' riuscita su tutti i passaggi: il nome completo risolve dal firewall, il nome corto risolve grazie al suffisso una volta tolta la riga dal file degli host, i nomi pubblici continuano a essere inoltrati, e il servizio si apre senza avvisi sul certificato perche' il nome digitato e' fra quelli che il certificato dichiara.</p><p>Per arrivarci pero' e' emerso il fatto piu' importante delle due giornate. Il comando per rinnovare l'indirizzo ha risposto che nessuna scheda era in uno stato che lo consentisse, che e' quanto Windows dice quando l'indirizzo non e' stato ottenuto chiedendo ma scritto a mano. La verifica si e' allora spostata sull'intero parco, e l'inventario delle interfacce di rete dice che su venticinque macchine nessuna indica il firewall come server dei nomi: tutte puntano a resolver pubblici, e quattro portano ancora indirizzi di una rete domestica.</p><p>Ne discende che i record pubblicati sono corretti e verificati ma non ancora usati da nessuno, e che il suffisso di… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-161" class="ev-block has-detail" transform="translate(0,4148)">
+<g class="ev-summary" onclick="toggleEv('ev-161')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">04/09/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Il triage del delta trova una copia fuori sede scaduta da sei settimane, e un filtro che non l'… <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-161-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">04/09/2026 &#8212; Il triage del delta trova una copia fuori sede scaduta da sei settimane, e un filtro che non l'avrebbe vista</p>
+<p>Sessione aperta con il solo riallineamento e con il triage del delta documentale, arretrato di trentadue giorni. Il numero grezzo diceva 453 voci nuove sulla libreria tecnica, e come le due volte precedenti era ingannevole: 830 delle 859 variazioni sono lo spostamento di percorso di un corpus di ricerca gia' escluso dal 15/07/2026. Il nuovo vero era un pugno di file, e la prima cosa da misurare e' stata perche' il delta fosse arretrato: la baseline non era stata riallineata dopo il triage del 06/08, che si era chiuso in attesa di una conferma mai data. Un triage senza il comando che lo accetta non e' finito, e il costo del passo saltato e' un mese di doppioni.</p><p class="sub">Il fatto: lo spazio cloud che teneva la seconda copia dei backup e' scaduto il 26/07 e ha una data di cancellazione</p><p>Due avvisi del fornitore, entrambi del 25/08/2026 e inoltrati dall'IT Manager nella cartella di scambio con l'annotazione che quello spazio serve alla doppia copia dei backup del NAS-HERO degli ultimi due anni. L'abbonamento da tre terabyte nella regione di Francoforte, attivo dal 19/02/2025, e' scaduto il 26/07/2026; il periodo di grazia di trenta giorni e' finito il 25/08/2026; e alla scadenza la capacita' e' tornata a quella del piano gratuito, sedici gigabyte, contro un'occupazione dichiarata di 1,65 terabyte.</p><p>Le conseguenze le enuncia il fornitore e non sarebbero deducibili altrimenti: finche' l'occupazione resta sopra il limite non si depositano file nuovi, non si sincronizza e non si carica nulla tramite gli strumenti di backup ibrido del NAS, e nemmeno si modificano i file gia' presenti; trascorsi sessanta giorni sopra il limite il contenuto viene cancellato fino a rientrare nel piano gratuito. Il campo della data di cancellazione nell'avviso e' vuoto: sessanta giorni dalla fine della grazia cadono nell'ultima decade di ottobre 2026, ed e' un calcolo e non un valore letto.</p><p>Restano due domande che questo progetto non risolve e non deve fingere di sapere. Da quando il flusso e' fermo, cioe' se il blocco sia scattato alla scadenza di luglio o alla fine della grazia di agosto, che e' la differenza fra sei settimane e due di copie mancanti. E quale flusso sia fermo: la scheda di continuita' d… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="4202" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2584,7 +2776,19 @@
   {id:'ev-146',type:'event',h:24},
   {id:'ev-147',type:'event',h:24},
   {id:'ev-148',type:'event',h:24},
-  {id:'ev-149',type:'event',h:24}
+  {id:'ev-149',type:'event',h:24},
+  {id:'ev-150',type:'event',h:24},
+  {id:'ev-151',type:'event',h:24},
+  {id:'ev-152',type:'event',h:24},
+  {id:'ev-153',type:'event',h:24},
+  {id:'ev-154',type:'event',h:24},
+  {id:'ev-155',type:'event',h:24},
+  {id:'ev-156',type:'event',h:24},
+  {id:'ev-157',type:'event',h:24},
+  {id:'ev-158',type:'event',h:24},
+  {id:'ev-159',type:'event',h:24},
+  {id:'ev-160',type:'event',h:24},
+  {id:'ev-161',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2625,7 +2829,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 3930').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 4218').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
