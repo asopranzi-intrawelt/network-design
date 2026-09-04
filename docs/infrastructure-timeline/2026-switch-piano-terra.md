@@ -1201,3 +1201,31 @@ Una precisazione che serve ai certificati e che e' causa di equivoci: il complet
 
 Sul portale asset l'IT Manager ha sollevato il caso piu' interessante dello schema, cioe' che dovra' essere raggiungibile anche da fuori tramite la DMZ. Un'autorita' interna non serve a chi sta fuori, perche' nel suo navigatore non e' installata e non lo sara' mai: le strade sono tre, due nomi con due certificati, un nome pubblico usato anche da dentro con il traffico che esce e rientra, oppure lo stesso nome risolto in modo diverso da dentro e da fuori, che e' la piu' economica qui perche' il resolver interno lo stiamo configurando adesso. La scelta non e' urgente ma va fatta prima di emettere il certificato del portale.
 
+## 02-03/09/2026 - Il servizio dei nomi interno: venti record, il suffisso, e la scoperta che nessuno lo interrogava
+
+Due giornate sull'intervento R12, che il 01/09 era stato promosso da miglioramento facoltativo a prerequisito della segmentazione e dei certificati.
+
+### Che cosa e' stato fatto
+
+Diciassette record di indirizzo pubblicati sul resolver del firewall, scelti dal censimento dei file degli host di diciotto postazioni e non a intuito: i nomi piu' diffusi per primi, con le stesse etichette che le persone gia' usano e il solo suffisso aggiunto, cosi' che nessuno debba cambiare abitudine. Due nomi di ruolo nuovi per i due applicativi web del server Windows, oggi raggiunti per indirizzo, perche' abbiano un nome prima che la segmentazione cambi quell'indirizzo. Il suffisso di ricerca distribuito sull'ambito DHCP della LAN principale e della rete Wi-Fi del personale, e su quest'ultima la correzione del server dei nomi, che puntava a resolver pubblici.
+
+Sul firewall il campo per il suffisso **non esiste**: si ottiene con l'opzione DHCP numero quindici nella tabella delle opzioni estese, che va ripetuta per interfaccia perche' non si eredita. Il dettaglio e' registrato perche' e' il genere di cosa che fa perdere mezz'ora a chi lo rifara'.
+
+### La verifica, e il pezzo mancante che ha trovato
+
+La prova sulla postazione dell'IT Manager e' riuscita su tutti i passaggi: il nome completo risolve dal firewall, il nome corto risolve grazie al suffisso una volta tolta la riga dal file degli host, i nomi pubblici continuano a essere inoltrati, e il servizio si apre senza avvisi sul certificato perche' il nome digitato e' fra quelli che il certificato dichiara.
+
+Per arrivarci pero' e' emerso il fatto piu' importante delle due giornate. Il comando per rinnovare l'indirizzo ha risposto che nessuna scheda era in uno stato che lo consentisse, che e' quanto Windows dice quando l'indirizzo non e' stato ottenuto chiedendo ma **scritto a mano**. La verifica si e' allora spostata sull'intero parco, e l'inventario delle interfacce di rete dice che su venticinque macchine **nessuna** indica il firewall come server dei nomi: tutte puntano a resolver pubblici, e quattro portano ancora indirizzi di una rete domestica.
+
+Ne discende che i record pubblicati sono corretti e verificati ma **non ancora usati da nessuno**, e che il suffisso distribuito via DHCP non raggiunge nessuno perche' quasi nessuno usa il DHCP. Il servizio dei nomi interno esiste e resta incompiuto finche' i client non vi vengono puntati. Tracciato come difetto #184.
+
+La conseguenza piu' pesante non riguarda pero' i nomi. Con l'indirizzamento scritto a mano su ogni postazione, spostare le postazioni in un segmento diverso non e' un lavoro sugli apparati di rete ma un lavoro **su ogni singola postazione**: la stima di impegno di M22 va rifatta su questa base.
+
+### La correzione applicata, e il vincolo dell'IT Manager
+
+L'IT Manager ha posto un vincolo netto: gli indirizzi statici restano. E' compatibile con l'obiettivo, e la ragione va detta perche' era stata confusa anche nella conversazione: nelle impostazioni di rete l'indirizzo della macchina e il server dei nomi a cui chiedere sono **due impostazioni distinte e indipendenti**. Si puo' avere indirizzo scritto a mano e chiedere i nomi al firewall. Sulla postazione di prova sono stati quindi cambiati due soli valori, il server dei nomi e il suffisso della connessione, senza toccare l'indirizzo.
+
+### Un errore diagnostico da ricordare
+
+Durante la prova lo strumento di interrogazione diagnostica ha dichiarato inesistente il nome corto, mentre lo stesso nome funzionava da programma. Quello strumento **non usa il risolutore del sistema**: parla direttamente al servizio dei nomi, quindi non guarda la memoria, non legge il file degli host e non applica il suffisso. Serve a sapere che cosa risponde il server, non che cosa fara' un programma. La distinzione e' registrata nella scheda insieme alla tabella dei sintomi e degli anelli corrispondenti.
+
