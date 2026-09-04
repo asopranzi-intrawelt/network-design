@@ -6,34 +6,36 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 32deebb (25/08/2026, scheda didattica sul ramo del server Gen10)
-Data snapshot:         2026-08-25 (riallineamento dopo il push; commit precedenti di riferimento: 6862979, 4782336)
+Commit di riferimento: 6750252 (04/09/2026, triage del delta 06/08-04/09 e difetto 186)
+Data snapshot:         2026-09-04, dopo il riallineamento di fine sessione
+Commit precedenti:     e2ab201, 516d740, 32deebb, 4782336
 ```
 
-Nota di stato al momento della chiusura: il lavoro documentale del 03/08 (chiusura di R8, allineamento schede, resume prompt) e' **su disco ma non ancora committato** — commit e push restano manuali dell'utente secondo i vincoli di team. Alla ripresa, se `git status` mostra modifiche non committate, sono quelle.
+Al momento della scrittura restano su disco e **non committate** le modifiche del difetto **#187**, cioe' lo spazio cloud nuovo che nasce vuoto, piu' questo riallineamento. Commit e push restano manuali dell'utente: alla ripresa, se `git status` mostra modifiche, sono quelle.
 
-Nota di riallineamento: questo file era rimasto fermo a `PENDING-FIRST-COMMIT` dal 2026-06-22 nonostante piu' commit successivi. Il riferimento va aggiornato a ogni sessione che tocca schede o memoria, non solo alla prima.
+## La regola del bump, che vale piu' del valore corrente
 
-## Nota sul frontmatter delle schede (aggiornata il 06/08/2026, bump eseguito)
+Il `last-verified` di una scheda e' l'hash del commit che **include** le sue modifiche, quindi il bump e' un passo separato subito successivo al commit e non va rimandato: e' il passo che a luglio 2026 si perse per sei settimane, con il risultato che questo file dichiarava un drift che nessuno chiudeva. E il corollario, imparato il 06/08: anche questa nota e' uno stato che invecchia, e va riletta dai file invece che ricopiata di sessione in sessione.
 
-Il bump e' stato **fatto** dopo il commit `4782336`: tutte e sei le schede di `.claude/context/` portano ora quell'hash. La nota che questo file conteneva fino a stamattina diceva che tutte portavano `347f79c`, e non era piu' vero da due bump: era stata copiata di sessione in sessione invece di essere riletta dai file.
+Ne discende una seconda regola, applicata il 04/09/2026 e da rispettare d'ora in avanti: **il bump non si fa in blocco**. L'hash dichiara che la scheda e' stata verificata a quel commit, quindi bumparla senza averla riletta scrive un'affermazione falsa nel posto esatto in cui il progetto va a cercare la verita'. Si bumpa la scheda che si e' effettivamente riverificata, e le altre restano indietro dichiarando su cosa.
 
-Ne discende la regola, che vale piu' del valore corrente. Il `last-verified` corretto e' l'hash del commit che **include** le modifiche, quindi il bump e' un passo separato subito successivo al commit e non va rimandato: e' il passo che a luglio si e' perso per sei settimane, con il risultato che questo file dichiarava un drift che nessuno chiudeva. E il corollario imparato oggi: anche questa nota e' uno stato che invecchia, e va riletta dai file invece che ricopiata.
+## Un limite noto della skill `sync-context`
+
+Le schede di questo progetto **non hanno il campo `covers-paths`** nel frontmatter, che porta il solo `last-verified`. La skill calcola il drift con `git diff` sui percorsi coperti, quindi su questo progetto quel confronto **non e' calcolabile** e ricade nel caso "non applicabile": lo stato delle schede va stabilito leggendole, come e' stato fatto il 04/09. Aggiungere `covers-paths` a ciascuna scheda e' un lavoro piccolo che renderebbe meccanico cio' che oggi e' manuale, ed e' registrato qui perche' non venga riscoperto ogni volta.
 
 ## Stato di verifica delle schede
 
-Tutte a `4782336` nel frontmatter dopo il bump del 06/08/2026. La colonna che conta e' la terza: l'hash dice quando la scheda e' stata dichiarata verificata, non che il contenuto sia allineato.
+Aggiornato il 04/09/2026 leggendo i file, non ricopiando la tabella precedente. La colonna che conta e' la terza: l'hash dice quando la scheda e' stata dichiarata verificata, non che il contenuto sia allineato.
 
 | Scheda | last-verified | Stato del contenuto |
 |---|---|---|
-| STACK.md | 4782336 | **da riverificare**: e' la piu' indietro. Non conosce `Get-NinjaSnapshot.ps1`, `New-ScanFolderShortcut.ps1`, `Set-ProjectSecret.ps1`, `Test-Anonymization.py` ne' il ruolo di `Get-NebulaSnapshot.ps1` nel censimento |
-| deployment.md | 4782336 | **da riverificare**: non conosce l'esecuzione degli script nuovi, i vincoli sulle credenziali dell'RMM (ADR-017) ne' i tre file privati che ora alimentano gli script |
-| design-and-security.md | 4782336 | allineata al 03/08; da estendere con il livello elettrico (A.7.11) e con TEL-005 |
-| dev-testing.md | 4782336 | allineata al 03/08 |
-| current-work.md | 4782336 | allineata al 03/08; la feature attiva e' ora la sessione 1, da riscrivere |
-| roadmap.md | 4782336 | allineata al 06/08: M13c-1..9, M22a-e, M25, **M26** (mappa interattiva), registro dei micro-interventi |
-| interventi-robustezza.md (docs/) | non applicabile | registro operativo, allineato al 03/08: R1-R19 |
-
+| STACK.md | **6750252** | **riverificata il 04/09/2026** contro il contenuto reale di `scripts/`: la tabella dei componenti ne elencava cinque su ventuno ed e' stata resa esaustiva, con le famiglie nuove (catena della mappa, guard-rail, autorita' di certificazione, scrittura verso gli apparati). Corretta anche la sezione dell'infrastruttura con la corrispondenza misurata fra bridge e porte e con la dismissione della VM 206 |
+| deployment.md | 4782336 | **da riverificare**: non conosce l'esecuzione degli script nati fra agosto e settembre, ne' i vincoli sulle credenziali dell'RMM (ADR-017), ne' la regola per cui i tre script della catena della mappa si automatizzano in modo diverso a seconda che leggano il disco o interroghino un fornitore |
+| design-and-security.md | 32deebb | allineata al 25/08; non conosce l'esito del censimento dell'esposizione (M27-7), l'autorita' di certificazione interna (#179), le decisioni ADR-024 e ADR-025, ne' i difetti #186 e #187 sulla copia fuori sede |
+| dev-testing.md | 4782336 | **da riverificare**: non conosce i guard-rail nati dopo il 06/08, cioe' la riconciliazione della mappa e la verifica della convenzione Markdown, ne' i casi limite degli script di ricognizione |
+| current-work.md | 4782336 | **la piu' indietro**: dichiara come feature attiva una sessione conclusa da un mese. Va riscritta sul lavoro reale, cioe' R12, l'incidente #185 e la generazione dell'autorita' |
+| roadmap.md | 4782336 | **da riverificare**: non conosce M27-7 e M27-8, ne' lo stato reale di M26, ne' i micro-interventi R12 e R13 |
+| interventi-robustezza.md (docs/) | non applicabile | registro operativo, non porta frontmatter |
 ## Punto di ripresa
 
 **07/08/2026 — la sessione successiva e' il montaggio dell'access point esterno (M13c), e si apre da `_notes/RESUME_PROMPT.md`**, riscritto per quello scopo; la versione precedente e' archiviata accanto. La domanda da porre per prima e' scritta li' e non va saltata: l'IT Manager ha chiesto "un access point esterno **per irrigazione e inverter**", ma entrambe quelle utenze **sono cablate** al GS-105B, quindi la formulazione ammette tre letture molto diverse — sostituire lo switch non gestito, sostituire l'access point EOL, oppure passare via radio due utenze oggi cablate, che sarebbe un peggioramento. Cablaggio, alimentazione e collaudo cambiano a seconda della risposta.
