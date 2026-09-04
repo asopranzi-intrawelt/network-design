@@ -1,5 +1,21 @@
 # Work-log
 
+## 2026-09-03 — Il servizio dei nomi interno funziona, e la Wi-Fi si e' rotta provandolo
+
+Commit: PENDING (da fare manualmente) File toccati (tracciati): `docs/risoluzione-nomi-interni.md` (catena dei sette passaggi, esito della fase D, correzione sul secondo DNS); `docs/infrastructure-timeline/GAP-TBC.md` (#184 e #185 nuovi, #184 corretto, riepilogo a 185); `docs/infrastructure-timeline/2026-switch-piano-terra.md` (voce 02-03/09); `data/network-topology.json`; `docs/network-map.html`; `.claude/context/diagrams/network-topology.mmd`; `scripts/censimento-host.sh`. Non tracciati: `_notes/RESUME_PROMPT.md` riscritto.
+
+**La catena funziona, verificata su tutti e sette i passaggi.** Sulla postazione dell'IT Manager: nome completo risolto dal firewall, nome corto risolto grazie al suffisso una volta commentata la riga nel file degli host, nomi pubblici inoltrati, e servizio aperto senza avvisi sul certificato. La scheda ora contiene la catena passo per passo e una tabella che associa ogni sintomo all'anello corrispondente, perche' e' l'unico modo per sapere dove intervenire.
+
+**Il pezzo mancante, trovato dalla prova stessa.** Il comando di rinnovo dell'indirizzo ha risposto che nessuna scheda era in uno stato che lo consentisse, cioe' che l'indirizzo e' scritto a mano. Verificato sull'intero parco: su venticinque macchine **nessuna** indica il firewall come server dei nomi. I record pubblicati sono corretti e non ancora usati da nessuno. Difetto #184.
+
+**Un allarme mio, ridimensionato dopo l'obiezione dell'IT Manager.** Avevo scritto che l'indirizzamento manuale rende la segmentazione un lavoro su ogni postazione. Vale solo se si spostano le postazioni, e non e' necessario: si segmenta portando via gli altri — server, stampanti, dispositivi di impianto — e la rete attuale diventa il segmento delle postazioni per sottrazione, senza che nessun endpoint cambi indirizzo. #184 e' stato corretto di conseguenza.
+
+**L'incidente #185, e l'errore di ragionamento che lo ha causato.** Puntando la Wi-Fi del personale al firewall come server dei nomi, i dispositivi hanno perso la risoluzione. Ripristinato in pochi minuti rimettendo i resolver pubblici. La prima ipotesi, che la tabella di controllo del servizio non ammettesse quella zona, e' stata verificata e **smentita**: ammette qualunque zona. Restano da verificare la politica di sicurezza verso l'apparato stesso e quale indirizzo l'apparato distribuisca come proprio.
+
+L'errore che ha trasformato un difetto in un'interruzione e' mio ed e' di ragionamento: avevo raccomandato di togliere il secondo server dei nomi sostenendo che fosse inutile perche' il firewall e' anche il gateway. Sull'apparato pero' convivono servizi distinti, e qui l'instradamento funzionava mentre la risoluzione no. La raccomandazione e' stata corretta in scheda: sulle reti servite da un solo resolver interno si tiene un secondo server pubblico.
+
+**Scritto il prompt di ripresa** in `_notes/RESUME_PROMPT.md`, con una sezione dedicata alle **cinque affermazioni smentite** in queste giornate e al filo comune che le lega, cioe' una conclusione plausibile tratta da una misura parziale senza fare la misura che l'avrebbe confermata.
+
 ## 2026-09-01 (3) — Trovata la chiave della CA, e due decisioni architetturali: ADR-024 e ADR-025
 
 Commit: PENDING (da fare manualmente) File toccati (tracciati): `.claude/memory/decisions.md` (ADR-024 e ADR-025); `docs/esposizione-servizi-interni.md`; `docs/infrastructure-timeline/GAP-TBC.md` (#179); `docs/infrastructure-timeline/2026-switch-piano-terra.md`; `scripts/trova-ca.sh` (percorsi estesi e limite dichiarato); **nuovo** `scripts/trova-ca-container.sh`.
