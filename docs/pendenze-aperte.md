@@ -31,7 +31,7 @@ Non sono opzionali e non sono rimandabili al dopo: se saltano, l'intervento a cu
 | Stringere la porta 4 del 30HP quando M22c porta il ramo del tetto nel segmento IoT/OT | NET-020 (#144) | La 4 e' l'unica via verso irrigazione, inverter e access point EOL, e il collaudo di quel ramo e' un ciclo di irrigazione reale. La porta **3** non e' piu' da identificare: e' il master Suprema, vedi NET-021 |
 | **Intervento di fine agosto 2026 al Piano Terra**, confermato dall'IT Manager: installare il gruppo di continuita' sullo switch 30HP e inventariare il terminale Suprema nella stessa uscita | ELE-004 (#148), NET-021 (#149), ELE-001 (#145); M13c-6 | La domanda "cosa deve alimentare" ha una risposta: lo switch prima di tutto, e con lui telefoni, reception, access point, timbracartellini e tratta esterna. Dimensionare sul consumo reale del 30HP **compreso il budget PoE**. Prendere la scheda SNMP, altrimenti nasce il quarto apparato muto. Il Suprema si inventaria in quella occasione perche' e' l'unica in cui qualcuno e' fisicamente davanti all'apparato |
 | Risoluzione dei nomi interni prima della segmentazione | M25; R12, R13; NET-014 (#131) | Unita' mappate, destinazioni e servizi interni dipendono oggi da nomi risolti per broadcast o per file `hosts` |
-| Snapshot Proxmox v5 completo, lanciato dall'IT Manager | M18 | Cadenza mensile scaduta: l'ultimo e' dell'08/07. Il MCP non vede job di backup, pool, regole firewall, dischi fisici, SDN, HA e snapshot |
+| Snapshot Proxmox completo, lanciato dall'IT Manager | M18 | **Riga corretta il 04/09/2026**: diceva che l'ultimo era dell'08/07, ma in `output/` c'e' uno snapshot del **24/08/2026**, quindi la cadenza mensile non e' scaduta e scade a fine settembre. Resta vero il motivo per cui serve lo script e non il MCP: quest'ultimo non vede job di backup, pool, regole firewall, dischi fisici, SDN, HA e snapshot. Da rilanciare comunque prima di affermare l'inventario delle VM, perche' lo snapshot attuale precede la dismissione della VM 206 del 31/08 |
 
 ## Da presidiare nel tempo
 
@@ -45,6 +45,7 @@ Cose che non si "fanno" una volta: scadono, e il segnale di scadenza e' debole o
 | Chiave pre-condivisa del tunnel PSE-SEEWEB: verificare se e' ancora quella del 2018 e in caso ruotarla **prima** di occuparsi dei file | aperta | SEC-023 (#138); FW-006, M14 |
 | Access key AWS amministrativa mai ruotata | aperta | SEC-012 |
 | Binding HTTPS di GroupShare, oggi servito in chiaro | aperta | SEC-015 (#117); ADR-013 |
+| **Primo caricamento completo sul nuovo spazio cloud di Milano, 1,65 TB.** Finche' non finisce, la copia fuori sede degli anni storici e' solo quella congelata su Francoforte, che ha una data di cancellazione | **~24/10/2026** (calcolata: sessanta giorni dalla fine della grazia; il campo nell'avviso e' vuoto) | STOR-003 (#187) |
 
 ## Verifiche aperte, cioe' domande senza risposta
 
@@ -54,7 +55,8 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 |---|---|---|
 | La console VNC della VM602 Intralino e' davvero attiva sulla LAN piatta, e ha una password di display? | `qm showcmd 602` sul nodo, piu' verifica della password | SRV-006 (#141) |
 | La copia fuori sede dei backup del NAS-HERO verso lo spazio a blocchi e quella verso lo spazio cloud scaduto sono **due repliche distinte o la stessa descritta due volte**? Dalla risposta dipende se una copia fuori sede esista ancora oppure nessuna | lettura dei job di backup ibrido sul NAS, non deduzione dai documenti | STOR-002 (#186) |
-| Lo spazio cloud nella regione di **Milano**, attivato col rinnovo del 04/09/2026, e' uno spazio **nuovo** o il precedente di Francoforte migrato? Se e' nuovo nasce vuoto, e la copia fuori sede dei dati storici torna a esistere solo a primo caricamento completo | pannello del fornitore, oppure stato del job sul NAS | STOR-002 (#186) |
+| A che punto e' il primo caricamento sul nuovo spazio di Milano, e quando finisce? La stima va confrontata con la data di cancellazione dello spazio vecchio | avanzamento del job sul NAS, non stima di banda a tavolino | STOR-003 (#187) |
+| Dallo spazio scaduto di Francoforte si puo' ancora **ripristinare**, o solo constatare che il contenuto c'e'? Gli avvisi vietano caricamento, sincronizzazione e modifica, ma non dicono nulla sul ripristino | prova di ripristino di un singolo file dal pannello del fornitore | STOR-003 (#187) |
 | Il computer con Windows 11 Home su cui la crittografia del disco non e' attivabile **appartiene al parco gestito**? | domanda all'IT Manager; il documento del 01/09/2026 non lo dice, e dedurlo sarebbe un'inferenza | triage del delta del 04/09/2026, `ingestion-checklist.md` |
 | La **scansione verso cartella** del multifunzione funziona ancora dopo l'aggiornamento del firmware del 25/08/2026? | prova reale di scansione, non lettura della configurazione | voce di timeline del 04/09/2026 |
 | Il file di credenziali in chiaro nella home dell'utente della VM207 | ispezione e rimozione | SRV-005 (#120) |
