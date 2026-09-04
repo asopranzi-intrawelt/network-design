@@ -6,6 +6,24 @@
 >
 > Convenzione. Nomi di servizio e suffissi sono reali. Gli indirizzi seguono i segnaposto di `.claude/rules/anonymization.md`.
 
+## La stessa materia in tre minuti, per chi arriva adesso
+
+Questa sezione dice in forma semplice cio' che il resto della scheda dice con precisione. Serve a chi deve capire il senso dell'intervento senza leggere venti pagine, e usa una similitudine che regge fino in fondo: l'azienda come un ufficio grande.
+
+**Prima: i foglietti.** Ogni postazione ha un foglietto attaccato al monitor con scritto che un certo nome corrisponde a una certa stanza. Funziona. Ma sono venticinque foglietti scritti a mano in momenti diversi da persone diverse, nessuno sa cosa ci sia scritto su quelli degli altri, e se una stanza cambia numero bisogna girare venticinque scrivanie. E' il file degli host.
+
+**E le urla.** Se sul foglietto quel nome non c'e', la postazione urla in corridoio chiedendo chi si chiami cosi', e qualcuno risponde. Funziona soltanto perche' siamo tutti nello stesso corridoio. Il giorno in cui si alzano i muri, cioe' con la segmentazione, le urla non passano piu'. E chiunque puo' rispondere a un'urlata che non lo riguarda, che e' il difetto #180.
+
+**Cio' che si e' fatto: la rubrica in portineria.** I record sul firewall sono una rubrica unica. Da adesso una postazione puo' chiedere in portineria invece di urlare, e la portineria risponde anche attraverso i muri, perche' la domanda ha un destinatario e viene consegnata. Se una stanza cambia numero si corregge una riga invece di venticinque foglietti.
+
+**Il suffisso e' il cognome.** In rubrica i nomi sono scritti per esteso. Le persone pero' dicono il nome corto. Il suffisso e' l'istruzione data alle postazioni: quando senti un nome corto, aggiungici il cognome e poi chiedi in portineria. Cosi' nessuno deve cambiare il modo in cui chiede.
+
+**Indicare l'apparato come server dei nomi e' dire dov'e' la portineria.** I dispositivi sulla rete Wi-Fi del personale chiedevano a un ufficio informazioni fuori dall'edificio, che i nomi interni non li conosce e non puo' conoscerli.
+
+**Un solo server dei nomi, perche' due portinerie si contraddicono.** Indicandone due, ogni tanto la postazione chiederebbe a quella esterna, che risponderebbe correttamente che quel nome non esiste, e ricorderebbe quella risposta per un intervallo. Il risultato sarebbe un nome che funziona quasi sempre e ogni tanto no: peggio di uno che non funziona mai, perche' non si riesce a riprodurlo quando lo si osserva.
+
+**E i foglietti restano dove sono.** La postazione guarda prima il foglietto e poi la portineria, quindi finche' il foglietto c'e' vince lui. E' esattamente il motivo per cui **oggi non e' cambiato niente per nessuno**. La rubrica serve per dopo: per quando i foglietti si toglieranno, e per quando arriveranno i muri.
+
 ## Che cosa succede davvero quando digiti un nome
 
 Un computer non sa parlare con i nomi: sa parlare solo con gli indirizzi. Quando digiti `https://intralino/login`, prima che parta un solo pacchetto verso quel servizio, il sistema operativo deve trasformare la parola `intralino` in un indirizzo numerico. Quella trasformazione si chiama *risoluzione*, e avviene prima di tutto il resto.
@@ -274,7 +292,13 @@ Un secondo server protegge dal caso in cui il primo non risponda. Il primo, qui,
 
 In cambio introdurrebbe un comportamento non deterministico. In certe condizioni il sistema operativo interroga anche il secondo server, che per un nome interno risponde in modo corretto e definitivo che quel nome non esiste, e quella risposta negativa puo' restare in memoria per un intervallo. Il sintomo sarebbe un nome interno che funziona quasi sempre e ogni tanto no, senza una regolarita' riproducibile, che e' fra i guasti piu' difficili da diagnosticare perche' non si riesce a farlo accadere quando si guarda.
 
-Ne discende la scelta di lasciarlo vuoto, che e' anche quella gia' in uso sulla LAN principale: una sola fonte di verita' per i nomi, e nessuna seconda voce che possa contraddirla.
+Ne discendeva la scelta di lasciarlo vuoto, che era anche quella gia' in uso sulla LAN principale.
+
+**Questa raccomandazione e' stata smentita dai fatti il 03/09/2026 e va considerata sbagliata.** Applicata alla rete Wi-Fi del personale ha prodotto un'interruzione: i dispositivi hanno perso la risoluzione dei nomi e con essa l'uso della rete, ed e' il difetto #185.
+
+L'argomento aveva un buco che vale la pena isolare, perche' e' un errore di ragionamento e non un errore di configurazione. Diceva che un ripiego fosse inutile perche' il firewall e' anche il gateway, quindi se non risponde non c'e' comunque rete. Ma **sull'apparato convivono servizi distinti**: l'instradamento e la risoluzione dei nomi sono due funzioni separate che si guastano in modo indipendente, e in questo caso l'instradamento funzionava perfettamente mentre la risoluzione no. Trattare i due come una cosa sola ha trasformato un difetto di configurazione in un'interruzione di servizio.
+
+La raccomandazione corretta e' l'opposta: **sulle reti servite da un solo resolver interno si tiene un secondo server pubblico**. Il ripiego non e' ridondanza inutile ma copertura di un guasto reale e distinto, e il difetto teorico che si temeva — risposte negative dalla fonte pubblica per i nomi interni — e' un inconveniente minore rispetto a un'interruzione.
 
 ## Perche' nessun utente deve cambiare nulla: la dimostrazione caso per caso
 
@@ -352,6 +376,82 @@ Va dichiarata la controindicazione, perche' esiste. Oggi, se il tunnel cade, gli
 La seconda proposta e' far passare **anche i traduttori esterni** per un tunnel, verso un segmento dedicato del firewall. E' tecnicamente possibile e concettualmente elegante, ma il conto va fatto per intero. Ogni collaboratore esterno avrebbe bisogno di credenziali di accesso remoto, di un programma da installare e di assistenza quando non funziona, per un rapporto che spesso e' occasionale; e un collaboratore dentro il tunnel e' dentro il perimetro, quindi la sua postazione, che l'azienda non amministra, diventa un ingresso alla rete invece che un utente di un servizio. Per un applicativo web usato da esterni la strada consolidata e' l'opposta: lasciarlo pubblico, cifrarlo, e irrobustire l'autenticazione, per esempio con un secondo fattore.
 
 Va notato infine il punto che rende la scelta meno urgente di quanto sembri: **la cifratura serve in tutti e tre gli scenari**. Se il portale resta pubblico serve perche' il traffico attraversa Internet. Se gli interni passano dal tunnel serve lo stesso, perche' gli esterni continuano a non passarci. E se passassero tutti dal tunnel servirebbe comunque, perche' un tunnel protegge il tratto fra due punti e non l'applicazione. Non e' quindi un'alternativa alle due proposte: e' il presupposto di entrambe, ed e' il motivo per cui va fatta per prima a prescindere da come si decida il resto.
+
+## La Fase D non e' fallita: ha trovato il pezzo mancante
+
+La prova del 03/09/2026 doveva verificare che le postazioni ricevessero il suffisso e interrogassero il firewall. Ha invece scoperto che **non lo faranno mai**, e la scoperta vale piu' della verifica che doveva sostituire.
+
+Il primo segnale e' stato un messaggio che sembrava un intoppo: il comando per rinnovare l'indirizzo ha risposto che nessuna scheda si trova in uno stato che lo consenta. E' cio' che Windows dice quando non c'e' nessun indirizzo da rinnovare, perche' non e' stato ottenuto chiedendo ma **scritto a mano**. Da li' la verifica si e' spostata dalla singola postazione all'intero parco, usando l'inventario gia' disponibile.
+
+L'esito: su venticinque macchine, **nessuna** indica il firewall come server dei nomi. Tutte puntano a resolver pubblici, e quattro portano ancora indirizzi di una rete domestica, segno di portatili configurati altrove e mai riportati. Solo due hanno un indirizzo compreso nell'intervallo distribuito dal firewall.
+
+### Che cosa e' comunque stato verificato, e non e' poco
+
+La rubrica funziona. Interrogando il firewall in modo esplicito, i nomi interni rispondono con gli indirizzi giusti e i nomi pubblici vengono inoltrati correttamente. La domanda tecnica che restava aperta — se un record locale prevalesse su inoltri dichiarati per qualunque nome — ha risposta affermativa e misurata.
+
+Quindi il lavoro fatto e' corretto e resta valido. Semplicemente **non e' ancora utilizzato da nessuno**, perche' manca il passo che dice ai client dove chiedere.
+
+### Perche' l'indirizzamento manuale non e' una stranezza, e perche' va superato
+
+Va detto che la scelta ha con ogni probabilita' una ragione. Le liste di ammissione scritte dentro le configurazioni dei servizi, quelle del difetto #171, contengono indirizzi letterali: perche' funzionino, quegli indirizzi non devono cambiare. Fissarli sulla macchina e' il modo piu' diretto per ottenerlo, ed e' quello che chiunque farebbe senza pensarci troppo.
+
+Il costo pero' si paga altrove, e si paga tutto insieme. Ogni impostazione decisa centralmente — il server dei nomi, il suffisso, e domani l'indirizzo del nuovo segmento — non arriva, perche' non c'e' nessun canale che la porti: va scritta a mano su ogni macchina. Non esiste registro di chi abbia quale indirizzo, quindi nessuna protezione contro l'assegnazione doppia. E ogni macchina nuova e' un intervento manuale che qualcuno deve ricordarsi di fare bene.
+
+La conseguenza piu' pesante non riguarda i nomi ma la **segmentazione**. Spostare le postazioni in un segmento proprio significa cambiare il loro indirizzo: con l'indirizzamento manuale non e' un lavoro sugli apparati di rete, e' un lavoro su ogni singola postazione, una per una, con qualcuno che ci mette le mani. La stima di impegno di M22 va rifatta su questa base, ed e' registrato come difetto #184.
+
+### Le due strade, che non sono alternative ma una sequenza
+
+La prima e' **puntare i client al firewall con la gestione endpoint**, che raggiunge tutte le macchine gestite in una sola operazione senza cambiare l'indirizzamento. Rende immediatamente utilizzabile quanto gia' fatto e non pregiudica nulla. Il suffisso, non potendo arrivare dal DHCP, si imposta nello stesso passaggio.
+
+La seconda e' **passare a indirizzi assegnati dal firewall con riserva per macchina**. Una riserva associa un indirizzo fisso a una scheda specifica: la macchina continua ad avere sempre lo stesso indirizzo, quindi le liste di ammissione di #171 continuano a funzionare, ma lo **chiede** invece di averlo scritto dentro. Da quel momento ogni impostazione futura arriva da sola, e la segmentazione torna a essere un lavoro sugli apparati invece che sulle scrivanie.
+
+La prima si fa in un pomeriggio, la seconda e' un progetto. Farle in quest'ordine ha senso perche' la prima non complica la seconda: quando le macchine passeranno a chiedere l'indirizzo, riceveranno anche il server dei nomi e il suffisso, e la configurazione manuale spinta oggi diventera' semplicemente ridondante.
+
+## La catena completa, verificata il 03/09/2026 sulla postazione dell'IT Manager
+
+La prova e' riuscita su tutti i passaggi. Vale la pena ripercorrere che cosa succede, componente per componente, quando qualcuno digita l'indirizzo di un servizio interno: non per completezza descrittiva, ma perche' e' l'unico modo per sapere **dove mettere le mani** quando qualcosa non funziona. Ogni anello della catena si rompe in un modo diverso e produce un sintomo diverso.
+
+### I sette passaggi
+
+**Uno. Il programma isola il nome.** Il navigatore prende dall'indirizzo digitato la sola parte che identifica la macchina, scartando il protocollo e il percorso. Da questo momento in poi il nome viene trattato da solo, e il resto dell'indirizzo tornera' utile soltanto alla fine.
+
+**Due. Il programma chiede al risolutore del sistema.** Non risolve da se': passa il nome al componente di Windows che si occupa di questo per tutti i programmi. E' un dettaglio che sembra pedante e non lo e', perche' e' la ragione per cui lo strumento diagnostico piu' usato mente, come si vede piu' avanti.
+
+**Tre. Il risolutore guarda nella propria memoria.** Se ha risolto lo stesso nome di recente riusa la risposta senza chiedere a nessuno. E' il motivo per cui, dopo ogni modifica, va svuotata: altrimenti si misura il passato.
+
+**Quattro. Il risolutore legge il file degli host.** Se il nome e' scritto li', la risposta esce da li' e la catena **si ferma**. Nessuna interrogazione parte, e nessun record sul firewall viene consultato. E' il passaggio che rende invisibile tutto il lavoro fatto sul firewall finche' quelle righe esistono, ed e' anche il motivo per cui aggiungere record non puo' rompere nulla.
+
+**Cinque. Il risolutore interroga il servizio dei nomi.** Qui succedono due cose in una. Poiche' il nome digitato e' corto, cioe' senza punti, il risolutore vi aggiunge il **suffisso della connessione** e interroga il nome completo. E lo chiede all'indirizzo indicato nelle impostazioni della scheda di rete, che ora e' il firewall. Se il suffisso mancasse, chiederebbe il nome nudo e il firewall risponderebbe che non esiste, perche' in rubrica i nomi sono scritti per esteso.
+
+**Sei. Il firewall risponde o inoltra.** Consulta la propria tabella: se il nome c'e' risponde con l'indirizzo, se non c'e' inoltra la domanda ai resolver pubblici e restituisce cio' che ottiene. E' il comportamento che rende compatibili le due cose, cioe' i nomi interni e tutto il resto di Internet, e che e' stato verificato interrogando un nome pubblico e ottenendo l'indirizzo pubblico.
+
+**Sette. Il programma si collega, e il certificato viene verificato.** Aperta la connessione cifrata, il server presenta il proprio certificato e il navigatore confronta l'elenco dei nomi che vi sono scritti con **il nome che l'utente ha digitato**, non con quello completo usato per la risoluzione. E' la ragione per cui un certificato deve contenere entrambe le forme se si vuole che entrambe funzionino senza avvisi.
+
+### Perche' lo strumento diagnostico piu' usato ha dato un risultato sbagliato
+
+Durante la prova il comando di interrogazione diagnostica ha dichiarato che il nome corto non esisteva, mentre il nome corto funzionava perfettamente da programma. Non e' una contraddizione ed e' un caso che merita di essere registrato, perche' fa sbagliare diagnosi di continuo.
+
+Quel comando **non usa il risolutore del sistema**: parla direttamente al servizio dei nomi, saltando i passaggi tre, quattro e la prima meta' del cinque. Non guarda la memoria, non legge il file degli host e non applica il suffisso. Chiede il nome esattamente come glielo si scrive, e ottiene la risposta corretta per quella domanda, che pero' non e' la domanda che fa un programma.
+
+Ne discende una regola pratica: quel comando serve a interrogare **il server**, e va usato quando si vuole sapere che cosa il server risponde. Per sapere che cosa fara' un programma servono i comandi che passano dal risolutore, cioe' quello di risoluzione nativo e la verifica di raggiungibilita'.
+
+### Dove intervenire, a seconda del sintomo
+
+| Sintomo | Anello rotto | Dove si guarda |
+|---|---|---|
+| Il nome non si risolve affatto | cinque | impostazioni della scheda: quale server dei nomi e quale suffisso |
+| Il nome completo funziona, quello corto no | cinque, prima meta' | manca il suffisso sulla connessione |
+| Si risolve verso l'indirizzo sbagliato | quattro o tre | riga nel file degli host, oppure memoria non svuotata |
+| Il nome corretto risponde, uno simile no | sei | il record non e' in rubrica, o e' scritto diversamente |
+| I nomi interni funzionano, Internet no | sei | il firewall non inoltra, oppure non raggiunge i resolver pubblici |
+| Si risolve ma non si collega | oltre la catena | non e' un problema di nomi: instradamento, filtro o servizio fermo |
+| Compare un avviso sul certificato | sette | il nome digitato non e' fra quelli scritti nel certificato |
+
+### Lo stato in cui resta la postazione di prova
+
+A prova conclusa il file degli host e' stato ripristinato. Ne discende che su quella macchina il nome corto continua a essere risolto **dal file**, cioe' dall'anello quattro, e la strada nuova resta disponibile ma non percorsa per quel nome. E' esattamente la condizione in cui si trovano tutte le altre postazioni, con una differenza sola: quella dell'IT Manager ora chiede al firewall per tutto il resto, mentre le altre continuano a chiedere a resolver pubblici che i nomi interni non li conoscono.
+
+La modifica applicata riguarda due impostazioni della sola scheda Ethernet di quella macchina, il server dei nomi e il suffisso della connessione. **L'indirizzo della macchina non e' stato toccato** e resta assegnato a mano, come su tutto il parco: era il punto posto dall'IT Manager, ed e' compatibile con quanto fatto perche' indirizzo e server dei nomi sono impostazioni distinte e indipendenti.
 
 ### Che cosa farne, e in quale ordine
 

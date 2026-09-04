@@ -1,8 +1,8 @@
 {
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-08-28",
-  "revisione": 8,
+  "aggiornato": "2026-08-31",
+  "revisione": 9,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
   "fonti": [
@@ -18,7 +18,8 @@
    "STATO_DELL_ARTE_2026-08-21.md, letto sulla VM 209 il 24/08/2026 (stato del sito, runtime e persistenza)",
    "lldpcli sull'host Proxmox, 25/08/2026 (conferma diretta della corrispondenza vmbr1 - porta 7)",
    "Snapshot NinjaOne del 25/08/2026 (incrocio tabella MAC / endpoint gestiti, nove porte attribuite)",
-   "Censimento M27-7 della protezione host-based, 25-28/08/2026 (porte in ascolto sulle macchine Linux)"
+   "Censimento M27-7 della protezione host-based, 25-28/08/2026 (porte in ascolto sulle macchine Linux)",
+   "Dismissione della VM 206 comunicata dall'IT Manager il 31/08/2026, con backup verificato sul NAS"
   ]
  },
  "vlan": [
@@ -608,7 +609,7 @@
    "tipo": "bridge",
    "livello": "servizi",
    "contenitore": "rack-dx",
-   "note": "Bridge Linux sulla porta eno3, senza indirizzo sull'host. Vi sono attestate la VM 206 e la VM 209, cioe' entrambi gli ambienti del sito. Bridge puro, non VLAN-aware, nessun tag sulle macchine: le due stanno sulla stessa LAN piatta di tutto il resto dell'azienda.",
+   "note": "Bridge Linux sulla porta eno3, senza indirizzo sull'host. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla porta 9 del 54HP, che la mappa fisica chiama eth3. **Aggiornato il 31/08/2026**: vi era attestata anche la VM 206, dismessa in quella data; resta la sola VM 209. Bridge puro, non VLAN-aware, nessun tag sulle macchine: la macchina sta sulla stessa LAN piatta di tutto il resto dell'azienda.",
    "alimentazione": null
   },
   {
@@ -632,15 +633,6 @@
     "NET-024",
     "NET-027"
    ]
-  },
-  {
-   "id": "vm206",
-   "nome": "VM 206 intrasite",
-   "tipo": "server",
-   "livello": "servizi",
-   "contenitore": "rack-dx",
-   "note": "Copia uno a uno del rifacimento commissionato all'agenzia: stack WordPress in container con Caddy, MariaDB e PHP, servito in LAN su 10.61.20.23 con certificato autofirmato e risoluzione forzata dal file hosts della postazione. Vale come riferimento di contenuto e di marchio per il sito nuovo e non va toccata.",
-   "alimentazione": null
   },
   {
    "id": "vm208",
@@ -1182,15 +1174,6 @@
     1
    ],
    "note": "Staging del sito nuovo, indirizzo statico nella LAN piatta."
-  },
-  {
-   "da": "vmbr2",
-   "a": "vm206",
-   "mezzo": "logico",
-   "vlan": [
-    1
-   ],
-   "note": "Riferimento WordPress dell'agenzia, servito in LAN."
   },
   {
    "da": "vmbr0",
