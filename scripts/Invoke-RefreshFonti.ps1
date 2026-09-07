@@ -60,7 +60,12 @@ param(
 $ErrorActionPreference = 'Stop'
 $radice     = Split-Path -Parent $PSScriptRoot
 $cartellaOut = Join-Path $radice 'output'
-$impostazioni = Join-Path $radice '.claude\settings.local.json'
+# Join-Path annidato e non una stringa con separatore: su Linux la barra rovesciata e'
+# un carattere valido in un nome di file, quindi '.claude\settings.local.json' non e' un
+# percorso di due livelli ma un nome unico bizzarro, e lo script cerca un file che non
+# esistera' mai. Il guasto si manifesta solo fuori da Windows, cioe' quando nessuno lo sta
+# guardando.
+$impostazioni = Join-Path (Join-Path $radice '.claude') 'settings.local.json'
 $registro   = Join-Path $cartellaOut 'refresh-log.txt'
 $stampo     = Get-Date -Format 'yyyyMMdd-HHmmss'
 

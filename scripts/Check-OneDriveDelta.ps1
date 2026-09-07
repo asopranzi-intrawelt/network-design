@@ -46,14 +46,89 @@ param(
 # cui uno sul dimensionamento di una VM che questo progetto documenta come asset di rete.
 # La cartella e' rumorosa e in gran parte estranea alla rete: e' il filtro delle voci
 # rilevanti a renderla utilizzabile, non la lettura integrale del suo delta.
-$defaultTargets = @(
-    @{ Label = "Documenti - IT"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest.json" },
-    @{ Label = "IT + Administration - Documenti"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\IT + Administration - Documenti"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest-admin.json" },
-    @{ Label = "File di chat di Microsoft Teams"; Folder = "C:\Users\Utente\OneDrive - Intrawelt S.a.s\File di chat di Microsoft Teams"; BaselinePath = "$PSScriptRoot\..\_notes\.onedrive-manifest-teams.json" }
+# Radice della libreria aziendale: si RISOLVE, non si scrive. Fino al 07/09/2026 le tre
+# righe qui sotto portavano un percorso assoluto con lettera di unita' e nome utente, quindi
+# questo script tracciato funzionava su una macchina sola. L'ordine di risoluzione va dal
+# piu' esplicito al piu' generico, e il primo che esiste vince.
+#
+# 1. ONEDRIVE_ROOT nell'ambiente, che e' la via da usare quando la libreria sta in un posto
+#    non convenzionale o quando si vuole puntare a una copia di prova.
+# 2. Le variabili che il client OneDrive imposta da se': OneDriveCommercial per la libreria
+#    aziendale, OneDrive per quella predefinita.
+# 3. Una ricerca sotto il profilo utente di una cartella "OneDrive - *", che e' la forma che
+#    il client crea per una libreria aziendale. Se ne trova piu' di una si prende la prima in
+#    ordine alfabetico e lo si dichiara, perche' un doppio aggancio della stessa libreria
+#    produce copie divergenti ed e' un problema noto di questo progetto.
+#
+# Su una macchina senza OneDrive nessuna delle tre riesce: lo script lo dice e prosegue senza
+# quelle radici, invece di fallire, perche' le altre fonti del progetto restano interrogabili.
+function Resolve-OneDriveRoot([string[]]$Attese) {
+    # Non si crede a una variabile d'ambiente: si VERIFICA che la radice candidata contenga
+    # davvero almeno una delle librerie sorvegliate. La ragione e' un difetto misurato il
+    # 07/09/2026 su questa macchina: `OneDriveCommercial` punta al doppio aggancio
+    # "OneDrive - <societa> (1)", che di quelle librerie non ha nessuna, ed e' un problema
+    # noto e documentato del progetto. Una risoluzione che si fida della prima variabile
+    # disponibile e' peggio di un percorso cablato, perche' sembra portabile e non lo e'.
+    #
+    # I candidati si raccolgono in ordine di intenzionalita' decrescente e si validano tutti;
+    # vince il primo valido. Se piu' di uno e' valido lo si dichiara, perche' due radici che
+    # contengono le stesse librerie sono due copie che divergeranno.
+    $candidati = @()
+    if ($env:ONEDRIVE_ROOT) { $candidati += $env:ONEDRIVE_ROOT }
+    foreach ($v in @($env:OneDriveCommercial, $env:OneDrive)) { if ($v) { $candidati += $v } }
+    $profilo = if ($env:USERPROFILE) { $env:USERPROFILE } else { $HOME }
+    if ($profilo -and (Test-Path -LiteralPath $profilo)) {
+        Get-ChildItem -LiteralPath $profilo -Directory -Filter "OneDrive*" -ErrorAction SilentlyContinue |
+            Sort-Object Name | ForEach-Object { $candidati += $_.FullName }
+    }
+
+    $validi = @()
+    foreach ($c in ($candidati | Select-Object -Unique)) {
+        if (-not (Test-Path -LiteralPath $c)) { continue }
+        $quante = @($Attese | Where-Object { Test-Path -LiteralPath (Join-Path $c $_) }).Count
+        if ($quante -gt 0) { $validi += [pscustomobject]@{ Percorso = $c; Trovate = $quante } }
+    }
+    if ($validi.Count -eq 0) { return $null }
+
+    $migliore = ($validi | Sort-Object -Property Trovate -Descending | Select-Object -First 1)
+    if ($validi.Count -gt 1) {
+        Write-Output ("AVVISO: {0} radici contengono le librerie sorvegliate. Uso quella con piu' corrispondenze ({1} su {2}); un doppio aggancio della stessa libreria produce copie divergenti. Per fissarne una, impostare ONEDRIVE_ROOT." -f $validi.Count, $migliore.Trovate, $Attese.Count)
+    }
+    if ($migliore.Trovate -lt $Attese.Count) {
+        Write-Output ("AVVISO: sotto la radice scelta si trovano {0} librerie su {1}: le mancanti verranno segnalate qui sotto." -f $migliore.Trovate, $Attese.Count)
+    }
+    return $migliore.Percorso
+}
+
+# I nomi delle tre librerie sorvegliate. Questi restano scritti perche' sono l'identita' di
+# cio' che si sorveglia, non un dettaglio di macchina: cambiarli cambia il perimetro.
+$librerie = @(
+    @{ Label = "Documenti - IT";                     Sotto = "Documenti - IT";                     Manifest = ".onedrive-manifest.json" },
+    @{ Label = "IT + Administration - Documenti";    Sotto = "IT + Administration - Documenti";    Manifest = ".onedrive-manifest-admin.json" },
+    @{ Label = "File di chat di Microsoft Teams";    Sotto = "File di chat di Microsoft Teams";    Manifest = ".onedrive-manifest-teams.json" }
 )
 
+$radiceProgetto = Split-Path -Parent $PSScriptRoot
+$notes = Join-Path $radiceProgetto '_notes'
+$oneDriveRoot = Resolve-OneDriveRoot -Attese ($librerie | ForEach-Object { $_.Sotto })
+
+$defaultTargets = @()
+if ($oneDriveRoot) {
+    foreach ($l in $librerie) {
+        $defaultTargets += @{
+            Label        = $l.Label
+            Folder       = (Join-Path $oneDriveRoot $l.Sotto)
+            BaselinePath = (Join-Path $notes $l.Manifest)
+        }
+    }
+} else {
+    Write-Output "AVVISO: nessuna libreria OneDrive individuata su questa macchina."
+    Write-Output "  Il controllo del delta documentale e' quindi saltato: le altre fonti del progetto restano interrogabili."
+    Write-Output "  Per abilitarlo, impostare ONEDRIVE_ROOT sul percorso della libreria aziendale."
+}
+
 if ($Folder) {
-    $bp = if ($BaselinePath) { $BaselinePath } else { "$PSScriptRoot\..\_notes\.onedrive-manifest-custom.json" }
+    $bp = if ($BaselinePath) { $BaselinePath } else { Join-Path (Join-Path (Split-Path -Parent $PSScriptRoot) '_notes') '.onedrive-manifest-custom.json' }
     $targets = @(@{ Label = $Folder; Folder = $Folder; BaselinePath = $bp })
 } else {
     $targets = $defaultTargets

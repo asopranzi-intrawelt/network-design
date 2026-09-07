@@ -77,18 +77,51 @@ PHONE = re.compile(r"\b(?:0734\s?\d{6}|\+39\s?\d{9,10})\b")
 MONEY = re.compile(r"(?:€\s?[\d.,]+|\b[\d.]+[,.]\d{2}\s?(?:€|euro|EUR)\b|\b\d+(?:[.,]\d+)?\s?euro\b)", re.I)
 IBAN = re.compile(r"\bIT\d{2}[A-Z0-9]{20,25}\b")
 PIVA = re.compile(r"\b(?:P\.?\s?IVA|partita iva|cod\.?\s?fisc|codice fiscale)\b[^\n]{0,40}\d{11,16}", re.I)
-# Segnaposto legittimi per la posta: persona-a@, referente-vianova-1@, e simili.
+# Domini riservati alla documentazione da RFC 2606: non esistono, non sono registrabili
+# e non possono appartenere a nessuno, quindi una casella su di essi e' un esempio e non il
+# dato di una persona. E' la stessa ammissione per costruzione che vale per i blocchi di
+# indirizzi di RFC 5737, e la sua assenza era un'asimmetria: senza di essa ogni documento
+# che usa un indirizzo di esempio produce un riscontro bloccante, e chi scrive documentazione
+# impara a ignorare l'esito del controllo.
+DOMINI_DOC = ("example.com", "example.org", "example.net", "example.edu", ".example")
+
+# Segnaposto legittimi per la posta: persona-a@, referente-esempio-1@, e simili.
 MAIL_PLACEHOLDER = re.compile(r"^(persona|referente|collaboratore|consulente|tirocinante)-", re.I)
 
 
-def carica_pattern():
-    if not os.path.exists(PATTERNS_FILE):
+def trova_radice(partenza=None):
+    """Risale fino alla radice del repository partendo dalla posizione di questo file.
+
+    Perche' dalla posizione del file e non dalla cartella corrente. La cartella corrente
+    dipende da chi invoca, e chi invoca puo' essere una sessione interattiva, un hook, una
+    attivita' pianificata o un altro script: sono quattro cartelle diverse per lo stesso
+    comando, e il messaggio d'errore che ne segue parla d'altro. La posizione del file
+    invece e' un fatto. Il criterio funziona identico su Windows e su Linux perche' non
+    guarda separatori ne' lettere di unita'.
+
+    `.git` si cerca sia come cartella sia come file, perche' in un worktree o in un
+    sottomodulo e' un file che punta altrove: trattarla come sola cartella e' un difetto
+    che si manifesta soltanto in quei due casi, cioe' tardi.
+    """
+    corrente = os.path.abspath(partenza or os.path.dirname(os.path.abspath(__file__)))
+    while True:
+        candidata = os.path.join(corrente, ".git")
+        if os.path.isdir(candidata) or os.path.isfile(candidata):
+            return corrente
+        genitore = os.path.dirname(corrente)
+        if genitore == corrente:
+            return None
+        corrente = genitore
+
+
+def carica_pattern(percorso=PATTERNS_FILE):
+    if not os.path.exists(percorso):
         sys.stderr.write(
             "File dei pattern non trovato: %s\n"
             "Serve per sapere che cosa cercare, e non e' versionato perche' contiene i valori\n"
-            "reali. Ricostruirlo da _notes/.anonymization-map.md.\n" % PATTERNS_FILE)
+            "reali. Ricostruirlo da _notes/.anonymization-map.md.\n" % percorso)
         sys.exit(2)
-    with io.open(PATTERNS_FILE, encoding="utf-8") as fh:
+    with io.open(percorso, encoding="utf-8") as fh:
         return json.load(fh)
 
 
@@ -171,7 +204,10 @@ def analizza(pat, files):
             for m in EMAIL.finditer(riga):
                 mail = m.group(0)
                 locale = mail.split("@")[0]
-                if mail.lower() in mail_ok or MAIL_PLACEHOLDER.match(locale):
+                dominio = mail.split("@")[-1].lower()
+                if (mail.lower() in mail_ok
+                        or MAIL_PLACEHOLDER.match(locale)
+                        or dominio.endswith(DOMINI_DOC)):
                     continue
                 aggiungi("EMAIL PERSONALE", f, ln, riga, mail, origine)
 
@@ -202,13 +238,24 @@ def main():
     ap.add_argument("--max", type=int, default=40, help="righe stampate per categoria")
     ap.add_argument("--tutti", action="store_true",
                     help="include anche i file ignorati (_notes/, output/): riscontri non bloccanti")
+    ap.add_argument("--radice", default=None,
+                    help="radice del repository (default: risalita dalla posizione dello script)")
+    ap.add_argument("--patterns", default=PATTERNS_FILE,
+                    help="percorso del file di pattern (default: %s)" % PATTERNS_FILE)
     args = ap.parse_args()
 
-    if not os.path.isdir(".git"):
-        sys.stderr.write("Eseguire dalla radice del repository.\n")
+    radice = args.radice or trova_radice()
+    if not radice:
+        sys.stderr.write(
+            "Radice del repository non trovata risalendo da %s.\n"
+            "Indicarla con --radice, oppure eseguire lo strumento da dentro il repository.\n"
+            % os.path.dirname(os.path.abspath(__file__)))
         return 2
+    # Si entra nella radice: da qui in avanti ogni percorso relativo, compresi quelli
+    # che git restituisce, e' interpretabile senza sapere da dove si e' partiti.
+    os.chdir(radice)
 
-    pat = carica_pattern()
+    pat = carica_pattern(args.patterns)
     files = file_perimetro(args.tutti)
     trovati, saltati = analizza(pat, files)
     conteggio = collections.Counter(origine for _, origine in files)

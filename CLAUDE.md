@@ -60,6 +60,38 @@ Legge `data/scadenze.json`, tracciato, che porta i dati: le scadenze con il loro
 
 `scripts/Invoke-RefreshFonti.ps1` rinfresca Nebula e Proxmox da un'attivita' pianificata, ed e' l'altra meta' di ADR-026: **supera** la regola che teneva manuale il rinfresco degli snapshot. Rispetta tre guardie. La misura buona non si sovrascrive mai, perche' il risultato si scrive in una cartella temporanea, si valida e solo allora si promuove; valido significa che contiene dispositivi, e il criterio viene dal fallimento reale del 05/08/2026, quando l'organizzazione declassata a Base Pack produsse uno snapshot valido e vuoto che avrebbe cancellato l'ultima misura completa. Un rinfresco fallito lascia un marcatore in `output/` che il controllo di allineamento riporta in rosso, e che sparisce da solo al primo rinfresco riuscito. Le credenziali restano nel blocco `env` di `.claude/settings.local.json` secondo ADR-021 e non vengono duplicate in variabili d'ambiente di utente. La gestione endpoint resta fuori e resta manuale, perche' le sue credenziali appartengono al provider MSP (ADR-017).
 
+## Portabilita' su un'altra macchina, Windows o Linux
+
+Irrobustita il 07/09/2026. Il criterio adottato e' che **nessun file tracciato contenga un percorso di macchina**, e che cio' che resta specifico viva nei tre posti che per questo progetto non sono versionati: il blocco `env` e gli hook di `.claude/settings.local.json`, il layer privato `_notes/`, e gli output in `output/`.
+
+Cosa e' stato reso indipendente dalla macchina, e come. I due controlli Python **risalgono alla radice del repository dalla posizione del proprio file** invece di fidarsi della cartella corrente, cercando `.git` sia come cartella sia come file perche' in un worktree e' un file che punta altrove; accettano `--radice` per i casi in cui la risalita non basti, e `Test-Anonymization.py` accetta `--patterns` per un layer privato organizzato diversamente. La ragione del cambio e' che la cartella corrente dipende da chi invoca, e chi invoca puo' essere una sessione, un hook, un'attivita' pianificata o un altro script: quattro cartelle diverse per lo stesso comando. Prima quello strumento si rifiutava perfino di partire se non lo si lanciava dalla radice.
+
+Negli script PowerShell i percorsi si compongono con `Join-Path` annidato e non con stringhe che contengono la barra rovesciata, perche' su Linux quella barra e' un carattere valido in un nome di file: `'.claude\settings.local.json'` non e' un percorso di due livelli ma un nome unico bizzarro, e il guasto si manifesta solo fuori da Windows, cioe' quando nessuno lo sta guardando.
+
+La radice della libreria documentale **si risolve e si valida**, non si scrive. L'ordine dei candidati va da `ONEDRIVE_ROOT` nell'ambiente alle variabili che il client imposta da se', fino a una ricerca sotto il profilo utente; ogni candidato viene poi verificato controllando che contenga davvero almeno una delle tre librerie sorvegliate. La validazione non e' zelo: su questa macchina la variabile `OneDriveCommercial` punta al **doppio aggancio** con il suffisso numerico, che di quelle librerie non ha nessuna, ed e' un problema noto e documentato del progetto. Una risoluzione che si fida della prima variabile disponibile e' peggio di un percorso cablato, perche' sembra portabile e non lo e'. Se piu' radici risultano valide lo script lo dichiara, perche' due copie della stessa libreria divergono.
+
+I comandi dell'hook di avvio usano `$CLAUDE_PROJECT_DIR`, che Claude Code espande, quindi `settings.local.json` si copia su un'altra macchina senza riscrivere quattro percorsi. Restano da adattare le sole **credenziali** del blocco `env`, che e' come deve essere.
+
+L'unica differenza irriducibile fra i due sistemi e' il **nome dell'interprete**, e va dichiarata invece di essere scoperta: su Windows sono `powershell` e `python`, su Linux `pwsh` e `python3`. E' l'unico elemento da sostituire nei comandi dell'hook quando il progetto si sposta.
+
+### Il rinfresco pianificato, nelle due forme
+
+Su Windows e' l'attivita' pianificata di ADR-026, e va creata con le condizioni sulla batteria disattivate: le predefinite di Windows impediscono l'avvio a batteria, ed e' la ragione per cui la prima versione dell'attivita' non e' mai partita per tre giorni senza che nulla lo dicesse.
+
+Su Linux l'equivalente e' una voce di `crontab -e`, con PowerShell 7 installato. Il `cd` non e' cosmetico: serve perche' gli script scrivono in `output/` relativo alla radice.
+
+```
+30 7 * * * cd /percorso/di/network-design && pwsh -NoProfile -File ./scripts/Invoke-RefreshFonti.ps1 >> output/cron.log 2>&1
+```
+
+In entrambi i casi il presidio non e' lo scheduler ma il controllo di allineamento, che sorveglia l'eta' del registro del rinfresco con cadenza di due giorni: se l'attivita' si spegne, per qualunque ragione e su qualunque sistema, la cosa si vede al primo avvio di sessione utile e non alla prossima scadenza della fonte.
+
+### Cosa verificare al primo avvio su una macchina nuova, e cosa non e' provato
+
+Nell'ordine: che `python` e `powershell` rispondano con i nomi giusti per quel sistema; che `_notes/` contenga il file dei pattern, la mappa dei segnaposto e le tre baseline, che non essendo versionati vanno portati a mano; che il blocco `env` di `settings.local.json` porti le credenziali di quella macchina; e che `python scripts/Test-Allineamento.py` giri, perche' e' il controllo che dichiara da se' cosa manca.
+
+Va detto con onesta' cio' che **non e' stato provato**: tutto quanto sopra e' verificato su Windows, e la portabilita' verso Linux e' stata ottenuta togliendo i costrutti che la impedivano, non eseguendola la'. Gli script di snapshot dichiarano di gestire entrambe le versioni di PowerShell e `Get-ProxmoxSnapshot.ps1` ha effettivamente il ramo con `-SkipCertificateCheck` per PowerShell 7, ma nessuno li ha ancora eseguiti su Linux. Fino a quella prova la riga corretta e' "non risultano ostacoli noti", non "funziona".
+
 ## Guard-rail di anonimizzazione
 
 `scripts/Test-Anonymization.py` passa i file del repository e riporta indirizzi reali, MAC reali, nomi propri di persona, caselle di posta personali, importi, numeri di telefono, IBAN, partite IVA e i segreti letterali gia' noti. Esce con codice diverso da zero se trova qualcosa nelle categorie bloccanti, e va eseguito prima di ogni commit che tocchi documentazione: `python scripts/Test-Anonymization.py`. Lo script e' versionato e non contiene nessun valore reale, perche' cio' che deve cercare vive in `_notes/.anonymization-patterns.json`, ignorato da git accanto alla mappa dei segnaposto; se quel file manca lo script si ferma invece di dare un verde non calcolato. Il primo passaggio, il 06/08/2026, ha trovato centoquarantotto riscontri su ottantanove file, nessuno introdotto di proposito: il controllo va fatto sull'intero albero e non sui soli file toccati, perche' un residuo non si introduce, si eredita.
