@@ -27,6 +27,12 @@ Trappola nota su questa classe: il frontmatter `last-verified` va bumpato all'ha
 
 Autorevoli su: lo stato reale degli apparati. Vanno interrogate, non ricordate. Nessuna notifica quando qualcosa cambia.
 
+**Aggiornamento del 04/09/2026 (ADR-026): due di queste fonti non vanno piu' interrogate a mano.** Nebula e Proxmox si rinfrescano da un'attivita' pianificata che esegue `scripts/Invoke-RefreshFonti.ps1`. La regola che questo documento portava fino a ieri, cioe' che il rinfresco restasse manuale, e' superata: delle sue quattro ragioni tre reggono e sono attuate come guardie dello script, mentre la quarta — che rinfrescando da soli il confronto non potrebbe piu' dire "questa misura e' vecchia" — va rovesciata, perche' se le misure sono sempre fresche ogni scostamento diventa senza ambiguita' un documento sbagliato, che e' il caso che interessa. La **gestione endpoint resta manuale**: le sue credenziali appartengono al provider MSP (ADR-017) e non stanno in questo repository.
+
+Le tre guardie, che sono la ragione per cui esiste uno script invece di due comandi dentro un'attivita' pianificata. La misura buona non si sovrascrive mai: si scrive in una cartella temporanea, si valida, e solo allora si promuove; valido significa che contiene dispositivi, criterio che viene dal 05/08/2026, quando l'organizzazione declassata produsse uno snapshot formalmente corretto e **vuoto** che avrebbe cancellato l'ultima misura completa. Un rinfresco fallito lascia un marcatore in `output/` che il controllo di allineamento riporta in rosso, perche' un'automazione che fallisce in silenzio sostituisce un dubbio con una fiducia mal riposta. E le credenziali restano nel solo posto dove ADR-021 le mette, senza una seconda copia.
+
+Ne discende che la colonna della cadenza qui sotto cambia significato per quelle due righe: non e' piu' un impegno di chi lavora, e' il limite oltre il quale `scripts/Test-Allineamento.py` dichiara vecchia la misura e quindi, implicitamente, segnala che l'automazione non sta girando.
+
 | Fonte | Come si legge | Autorevole su | Cadenza |
 |---|---|---|---|
 | Nebula OpenAPI | `scripts/Get-NebulaSnapshot.ps1` → `output/nebula-*` | porte, PVID, VLAN ammesse, tabella MAC, access point | settimanale, e prima di ogni task su porte, VLAN o access point. **Dipende dalla licenza**: vedi §La fonte che si e' spenta e riaccesa |
@@ -153,6 +159,8 @@ Confermate dall'IT Manager il 03/08/2026. La riga del delta era rimasta in sospe
 | GUI firewall | su necessita', con screenshot | confermata |
 | Domanda "cosa e' cambiato fuori da qui" | ogni sessione, in apertura | confermata |
 | Handoff dalle altre sessioni | li scrive chi opera altrove, in una delle tre radici sorvegliate | confermata |
+
+Dal 04/09/2026 la sorveglianza di queste cadenze non dipende piu' dalla memoria di nessuno: `scripts/Test-Allineamento.py` gira all'avvio di sessione e riporta, per ogni fonte di questa tabella, l'eta' della misura contro la cadenza dichiarata. E' rumoroso e non blocca, per decisione dell'IT Manager. Con esso vengono riportate anche le scadenze di licenza e di contratto raccolte in `data/scadenze.json`, che prima vivevano sparse nella prosa dei documenti e non erano guardate da nessun meccanismo: erano sedici, e ogni incidente che in questo progetto ha fatto danno era una di quelle date.
 
 ## Punti ciechi dichiarati
 

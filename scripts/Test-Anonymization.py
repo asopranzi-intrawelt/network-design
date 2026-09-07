@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Guard-rail di anonimizzazione sui file tracciati da git.
+Guard-rail di anonimizzazione sui file del repository.
 
 Perche' esiste. Il repository e' pubblico: tutto cio' che entra in un file tracciato e'
 visibile a chiunque, per sempre, anche dopo una correzione successiva. La regola che
@@ -15,8 +15,29 @@ vivono in `_notes/.anonymization-patterns.json`, che e' ignorato da git accanto 
 dei segnaposto. Se quel file manca, lo script lo dice e si ferma invece di dare un esito
 verde che non ha calcolato.
 
+Il perimetro, e perche' dal 07/09/2026 non e' piu' soltanto cio' che git traccia. Fino a
+quella data lo script passava `git ls-files`, cioe' i soli file gia' tracciati, e ne
+derivava una lacuna precisa: un file **nuovo**, scritto e non ancora aggiunto all'indice,
+era invisibile al controllo proprio nel momento in cui serviva guardarlo, cioe' prima di
+pubblicarlo. E' accaduto il 04/09/2026 con tre file nuovi, e il difetto e' della stessa
+famiglia degli altri due gia' corretti in questo progetto, la cartella esclusa del delta e
+i pattern di rilevanza: non si sbaglia su cio' che si conosce, si sbaglia sul confine.
+
+Il perimetro predefinito e' percio' **cio' che sta per essere pubblicato**: i file tracciati
+piu' quelli non tracciati e non ignorati, che sono esattamente i candidati al prossimo
+commit. I riscontri di entrambi i gruppi sono bloccanti, perche' entrambi i gruppi finiscono
+in pubblico.
+
+Con `--tutti` entrano anche i file **ignorati**, cioe' `_notes/` e `output/`. Quelli
+contengono valori reali **per costruzione e per decisione**: sono il layer narrativo locale e
+gli output degli script, ed e' il motivo per cui git li ignora. I loro riscontri vengono
+quindi elencati a parte e **non sono bloccanti**: servono a sapere che cosa vive sul disco, non
+a dichiarare un difetto. Confonderli con i primi renderebbe lo script inutile, perche'
+fallirebbe sempre e nessuno lo guarderebbe piu'.
+
 Uso, dalla radice del progetto:
-    python scripts/Test-Anonymization.py
+    python scripts/Test-Anonymization.py             # tracciati + non tracciati non ignorati
+    python scripts/Test-Anonymization.py --tutti     # anche il layer privato, non bloccante
     python scripts/Test-Anonymization.py --quiet     # solo il conteggio e l'esito
     python scripts/Test-Anonymization.py --max 20    # limita le righe stampate per categoria
 
@@ -35,7 +56,15 @@ import subprocess
 import sys
 
 PATTERNS_FILE = os.path.join("_notes", ".anonymization-patterns.json")
-SKIP_EXT = {".png", ".jpg", ".jpeg", ".gif", ".pdf", ".xlsx", ".docx", ".zip", ".ico", ".drawio"}
+SKIP_EXT = {".png", ".jpg", ".jpeg", ".gif", ".pdf", ".xlsx", ".docx", ".zip", ".ico", ".drawio",
+            # aggiunte il 07/09/2026 con l'allargamento del perimetro: entrando anche i file
+            # non tracciati e, con --tutti, quelli ignorati, si incontrano archivi ed eseguibili
+            # in cui una ricerca per riga non ha alcun senso e costa solo tempo.
+            ".7z", ".rar", ".msi", ".exe", ".dll", ".pyc", ".bin", ".db", ".sqlite", ".qdff",
+            ".mp4", ".mov", ".xlsm", ".pptx", ".doc", ".xls", ".vsdx", ".eml", ".msg"}
+# Un file molto grande in un layer privato e' tipicamente uno storico o un dump: leggerlo
+# riga per riga costa minuti e non aggiunge segnale. Si dichiara di averlo saltato.
+LIMITE_BYTE = 5 * 1024 * 1024
 
 # Categorie che fanno fallire il controllo: sono valori reali, non ambiguita'.
 BLOCCANTI = {"IP REALE", "MAC REALE", "NOME PROPRIO", "SEGRETO LETTERALE",
@@ -63,16 +92,41 @@ def carica_pattern():
         return json.load(fh)
 
 
-def file_tracciati():
-    out = subprocess.run(["git", "ls-files"], capture_output=True, text=True).stdout
+def _git(*argomenti):
+    out = subprocess.run(["git"] + list(argomenti), capture_output=True, text=True,
+                         encoding="utf-8", errors="replace").stdout
     return [f for f in out.split("\n") if f.strip()]
 
 
-def analizza(pat, files):
-    trovati = collections.defaultdict(list)
+def file_perimetro(includi_ignorati):
+    """Restituisce [(percorso, origine)] con origine tracciato/non tracciato/ignorato.
 
-    def aggiungi(cat, path, ln, riga, hit):
-        trovati[cat].append((path, ln, hit, riga.strip()[:190]))
+    L'ordine conta: prima cio' che e' gia' pubblico, poi cio' che sta per diventarlo, poi
+    il layer privato. E' anche l'ordine di gravita' con cui i riscontri vanno letti.
+    """
+    elenco = [(f, "tracciato") for f in _git("ls-files")]
+    elenco += [(f, "non tracciato") for f in _git("ls-files", "--others", "--exclude-standard")]
+    if includi_ignorati:
+        elenco += [(f, "ignorato") for f in _git("ls-files", "--others", "--ignored",
+                                                 "--exclude-standard")]
+    visti = set()
+    unici = []
+    for f, origine in elenco:
+        if f not in visti:
+            visti.add(f)
+            unici.append((f, origine))
+    return unici
+
+
+def analizza(pat, files):
+    """`files` e' una lista di coppie (percorso, origine). L'origine viaggia con il
+    riscontro fino alla stampa, perche' lo stesso valore reale ha significato opposto a
+    seconda di dove sta: in un file tracciato e' un leak, in `_notes/` e' il dato."""
+    trovati = collections.defaultdict(list)
+    saltati = []
+
+    def aggiungi(cat, path, ln, riga, hit, origine="tracciato"):
+        trovati[cat].append((path, ln, hit, riga.strip()[:190], origine))
 
     doc_nets = tuple(pat["reti_documentali_ammesse"])
     ip_ok = set(pat["ip_ammessi"])
@@ -83,10 +137,13 @@ def analizza(pat, files):
     nomi_ctx = pat.get("nomi_ammessi_in_contesto", [])
     segreti = pat.get("segreti_letterali", [])
 
-    for f in files:
+    for f, origine in files:
         if os.path.splitext(f)[1].lower() in SKIP_EXT:
             continue
         try:
+            if os.path.getsize(f) > LIMITE_BYTE:
+                saltati.append(f)
+                continue
             with io.open(f, encoding="utf-8", errors="replace") as fh:
                 contenuto = fh.read()
         except (IOError, OSError):
@@ -99,33 +156,33 @@ def analizza(pat, files):
                 if base in ip_ok or base.startswith(doc_nets):
                     continue
                 if base.startswith(reali):
-                    aggiungi("IP REALE", f, ln, riga, ip)
+                    aggiungi("IP REALE", f, ln, riga, ip, origine)
                 elif base.startswith(("10.", "192.168.", "172.")):
-                    aggiungi("IP privato fuori schema", f, ln, riga, ip)
+                    aggiungi("IP privato fuori schema", f, ln, riga, ip, origine)
                 else:
-                    aggiungi("IP pubblico da valutare", f, ln, riga, ip)
+                    aggiungi("IP pubblico da valutare", f, ln, riga, ip, origine)
 
             for m in MAC.finditer(riga):
                 mac = m.group(0).upper()
                 if mac.startswith(mac_ok):
                     continue
-                aggiungi("MAC REALE", f, ln, riga, mac)
+                aggiungi("MAC REALE", f, ln, riga, mac, origine)
 
             for m in EMAIL.finditer(riga):
                 mail = m.group(0)
                 locale = mail.split("@")[0]
                 if mail.lower() in mail_ok or MAIL_PLACEHOLDER.match(locale):
                     continue
-                aggiungi("EMAIL PERSONALE", f, ln, riga, mail)
+                aggiungi("EMAIL PERSONALE", f, ln, riga, mail, origine)
 
             for regex, cat in ((PHONE, "TELEFONO"), (MONEY, "IMPORTO"),
                                (IBAN, "IBAN"), (PIVA, "PIVA/CF")):
                 for m in regex.finditer(riga):
-                    aggiungi(cat, f, ln, riga, m.group(0)[:60])
+                    aggiungi(cat, f, ln, riga, m.group(0)[:60], origine)
 
             for s in segreti:
                 if s in riga:
-                    aggiungi("SEGRETO LETTERALE", f, ln, riga, "<valore oscurato>")
+                    aggiungi("SEGRETO LETTERALE", f, ln, riga, "<valore oscurato>", origine)
 
             bassa = riga.lower()
             for n in nomi:
@@ -134,15 +191,17 @@ def analizza(pat, files):
                 # un nome dentro la ragione sociale legale e' ammesso per decisione
                 if any(c.lower() in bassa for c in nomi_ctx):
                     continue
-                aggiungi("NOME PROPRIO", f, ln, riga, n)
+                aggiungi("NOME PROPRIO", f, ln, riga, n, origine)
 
-    return trovati
+    return trovati, saltati
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Guard-rail di anonimizzazione sui file tracciati.")
+    ap = argparse.ArgumentParser(description="Guard-rail di anonimizzazione sui file del repository.")
     ap.add_argument("--quiet", action="store_true", help="stampa solo il riepilogo")
     ap.add_argument("--max", type=int, default=40, help="righe stampate per categoria")
+    ap.add_argument("--tutti", action="store_true",
+                    help="include anche i file ignorati (_notes/, output/): riscontri non bloccanti")
     args = ap.parse_args()
 
     if not os.path.isdir(".git"):
@@ -150,8 +209,9 @@ def main():
         return 2
 
     pat = carica_pattern()
-    files = file_tracciati()
-    trovati = analizza(pat, files)
+    files = file_perimetro(args.tutti)
+    trovati, saltati = analizza(pat, files)
+    conteggio = collections.Counter(origine for _, origine in files)
 
     ordine = ["IP REALE", "MAC REALE", "SEGRETO LETTERALE", "NOME PROPRIO", "EMAIL PERSONALE",
               "TELEFONO", "IBAN", "PIVA/CF", "IMPORTO",
@@ -159,28 +219,65 @@ def main():
 
     bloccanti = 0
     da_guardare = 0
+    privati = 0
     for cat in ordine:
-        voci = trovati.get(cat, [])
-        if not voci:
+        tutte = trovati.get(cat, [])
+        if not tutte:
+            continue
+        # La separazione e' il cuore dell'allargamento del perimetro: un valore reale in un
+        # file pubblicabile e' un difetto, lo stesso valore in `_notes/` e' il dato per cui
+        # `_notes/` esiste. Contarli insieme farebbe fallire lo script sempre.
+        pubbliche = [v for v in tutte if v[4] != "ignorato"]
+        riservate = [v for v in tutte if v[4] == "ignorato"]
+        privati += len(riservate)
+        if not pubbliche:
             continue
         if cat in BLOCCANTI:
-            bloccanti += len(voci)
+            bloccanti += len(pubbliche)
         else:
-            da_guardare += len(voci)
+            da_guardare += len(pubbliche)
         if args.quiet:
             continue
         etichetta = "BLOCCANTE" if cat in BLOCCANTI else "da valutare"
         print("\n" + "=" * 78)
-        print("%s  [%s]  -  %d riscontri" % (cat, etichetta, len(voci)))
+        print("%s  [%s]  -  %d riscontri" % (cat, etichetta, len(pubbliche)))
         print("=" * 78)
-        for path, ln, hit, testo in voci[:args.max]:
-            print("  %s:%s  [%s]" % (path, ln, hit))
+        for path, ln, hit, testo, origine in pubbliche[:args.max]:
+            marca = "" if origine == "tracciato" else "  <-- NON TRACCIATO, sta per essere pubblicato"
+            print("  %s:%s  [%s]%s" % (path, ln, hit, marca))
             print("      %s" % testo)
-        if len(voci) > args.max:
-            print("  ... e altri %d (usare --max)" % (len(voci) - args.max))
+        if len(pubbliche) > args.max:
+            print("  ... e altri %d (usare --max)" % (len(pubbliche) - args.max))
 
-    print("\n%d file tracciati esaminati." % len(files))
-    print("Riscontri bloccanti: %d.  Da valutare a mano: %d." % (bloccanti, da_guardare))
+    if args.tutti and privati and not args.quiet:
+        print("\n" + "=" * 78)
+        print("LAYER PRIVATO  [non bloccante]  -  %d riscontri in file ignorati da git" % privati)
+        print("=" * 78)
+        per_file = collections.Counter()
+        for cat in ordine:
+            for path, ln, hit, testo, origine in trovati.get(cat, []):
+                if origine == "ignorato":
+                    per_file[path] += 1
+        for path, quanti in per_file.most_common(args.max):
+            print("  %5d  %s" % (quanti, path))
+        if len(per_file) > args.max:
+            print("  ... e altri %d file (usare --max)" % (len(per_file) - args.max))
+        print("\n  Questi file contengono valori reali per costruzione: sono il layer narrativo")
+        print("  locale e gli output degli script, ed e' la ragione per cui git li ignora. Il")
+        print("  numero serve a sapere che cosa vive sul disco. Diventa un problema solo se uno")
+        print("  di questi percorsi venisse tracciato, e in quel caso comparirebbe qui sopra")
+        print("  come NON TRACCIATO, cioe' fra i bloccanti.")
+
+    print("\n%d file esaminati: %d tracciati, %d non tracciati, %d ignorati." % (
+        len(files), conteggio.get("tracciato", 0), conteggio.get("non tracciato", 0),
+        conteggio.get("ignorato", 0)))
+    if saltati:
+        print("%d file saltati perche' oltre %d MB." % (len(saltati), LIMITE_BYTE // (1024 * 1024)))
+    if not args.tutti:
+        print("Layer privato (_notes/, output/) NON esaminato: usare --tutti per contarlo.")
+    print("Riscontri bloccanti: %d.  Da valutare a mano: %d.%s" % (
+        bloccanti, da_guardare,
+        ("  Nel layer privato, non bloccanti: %d." % privati) if args.tutti else ""))
     if bloccanti:
         print("ESITO: FALLITO. Bonificare i riscontri bloccanti prima del commit.")
         return 1

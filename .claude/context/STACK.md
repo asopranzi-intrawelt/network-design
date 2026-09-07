@@ -1,5 +1,5 @@
 ---
-last-verified: 6750252
+last-verified: eced60e
 ---
 
 # Stack e struttura del progetto
@@ -54,6 +54,8 @@ Guard-rail e igiene, da eseguire prima di ogni commit che tocchi documentazione.
 | `scripts/Check-SecurityAnomalies.ps1` | Verifica le anomalie note di GAP-TBC e del runbook; gli indirizzi si passano come parametri, non sono cablati |
 | `scripts/Set-ProjectSecret.ps1` | Scrive o ruota un segreto nel blocco `env` di `settings.local.json`, unico posto dove vivono i token (ADR-021) |
 | `tools/md-unwrap.py` | Attua la convenzione di una riga sorgente per paragrafo; `--check` esce diverso da zero se qualche file non la rispetta |
+| `scripts/Test-Allineamento.py` | Dice quali affermazioni stanno invecchiando: scadenze, freschezza delle fonti, invarianti strutturali, asserzioni umane scadute (ADR-026, hook SessionStart) |
+| `scripts/Invoke-RefreshFonti.ps1` | Rinfresca Nebula e Proxmox da attivita' pianificata, senza mai promuovere una misura peggiore di quella in essere (ADR-026) |
 
 Scrittura verso gli apparati, l'unica famiglia che non e' di sola lettura. Gira in prova per impostazione predefinita e richiede `-Apply` piu' una conferma testuale (ADR-010).
 
@@ -122,7 +124,7 @@ Tre script in fila, e la ragione della fila e' l'anonimizzazione. `Export-PortMa
 
 Il file intermedio esiste per un motivo preciso e non per comodita': lo snapshot vive in `output/`, ignorato da git perche' porta MAC e nomi host reali, mentre la mappa e' pubblica. Se il generatore leggesse lo snapshot, la mappa non sarebbe piu' rigenerabile da un clone e l'anonimizzazione dipenderebbe da un passaggio invisibile dentro il generatore. Con un intermedio tracciato, invece, cio' che finisce in pubblico si legge, si controlla con il guard-rail insieme a tutto il resto, e si diffa fra due revisioni.
 
-Dei tre, **solo la riconciliazione e' automatizzata** sull'hook di avvio, e la ragione va tenuta: legge tre file gia' sul disco, non scrive niente, non apre connessioni e non usa credenziali. Gli script che rinfrescano gli snapshot restano manuali per scelta, perche' fanno chiamate autenticate al fornitore e perche' se si rinfrescassero da soli il confronto non potrebbe piu' dire "questa misura e' vecchia", che e' meta' del suo valore.
+Dei tre, la riconciliazione e' quella che gira sull'hook di avvio, e la ragione va tenuta: legge tre file gia' sul disco, non scrive niente, non apre connessioni e non usa credenziali. **Corretto il 04/09/2026, poche ore dopo essere stato scritto**: questa sezione proseguiva dicendo che gli script di rinfresco restassero manuali, e **ADR-026** lo ha superato in giornata. Nebula e Proxmox si rinfrescano da un'attivita' pianificata con `scripts/Invoke-RefreshFonti.ps1`, che promuove una misura nuova solo se valida; la gestione endpoint resta manuale perche' le sue credenziali sono del provider MSP. Vale la pena lasciare traccia del fatto che questa scheda si e' contraddetta con se' stessa nel giro di una mattina, perche' e' la dimostrazione in scala ridotta del difetto che ADR-026 esiste per combattere: un'affermazione corretta quando viene scritta non ha alcun meccanismo che la avvisi quando smette di esserlo.
 
 ## Gli script dell'autorita' di certificazione (ADR-024, ADR-025, dal 01/09/2026)
 
