@@ -1,0 +1,175 @@
+{
+  "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
+  "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
+  "revisione": 2,
+  "aggiornato": "2026-09-07",
+
+  "scadenze": [
+    {
+      "id": "NEB-54HP",
+      "cosa": "Licenza Nebula Professional dello switch XGS2220-54HP, la piu' vicina delle co-terminate",
+      "data": "2027-11-22",
+      "preavviso_giorni": 90,
+      "rompe": "Il livello dell'organizzazione e' il minimo fra i suoi dispositivi: uno scoperto la fa scendere a Base e la OpenAPI smette di autorizzare. La fonte di classe B su porte, VLAN e access point si spegne per tutti",
+      "dove": "ADR-022; docs/vendor-management.md scheda Zyxel"
+    },
+    {
+      "id": "NEB-FLEX500",
+      "cosa": "Licenza Nebula Professional dell'USG FLEX 500",
+      "data": "2027-11-25",
+      "preavviso_giorni": 90,
+      "rompe": "Come sopra: concorre al minimo dell'organizzazione",
+      "dove": "ADR-022"
+    },
+    {
+      "id": "NEB-30HP",
+      "cosa": "Licenza Nebula Professional dello switch XGS2220-30HP",
+      "data": "2027-11-27",
+      "preavviso_giorni": 90,
+      "rompe": "Come sopra: concorre al minimo dell'organizzazione",
+      "dove": "ADR-022"
+    },
+    {
+      "id": "NEB-AP-NWA130BE",
+      "cosa": "Licenze Nebula Professional dei tre access point NWA130BE",
+      "data": "2027-12-08",
+      "preavviso_giorni": 90,
+      "rompe": "Come sopra. Sono gli apparati che il 21/07/2026 entrarono senza licenza e causarono il declassamento del 05/08",
+      "dove": "ADR-022; NEB-002 (#140)"
+    },
+    {
+      "id": "ZYX-GOLD",
+      "cosa": "Gold Security Pack dell'USG FLEX 500, licenza di servizio distinta da quella Nebula",
+      "data": "2026-12-19",
+      "preavviso_giorni": 60,
+      "rompe": "I servizi di sicurezza del firewall, non la gestione cloud: e' una licenza con ciclo proprio e va presidiata a parte",
+      "dove": "docs/vendor-management.md scheda Zyxel; ADR-022"
+    },
+    {
+      "id": "QNAP-FRANCOFORTE",
+      "cosa": "Cancellazione del contenuto sullo spazio cloud scaduto di Francoforte, unica copia fuori sede degli anni storici finche' il caricamento su Milano non e' completo",
+      "data": "2026-10-24",
+      "preavviso_giorni": 45,
+      "rompe": "Se il primo caricamento sul nuovo spazio non e' finito entro questa data, si apre un intervallo senza alcuna copia fuori sede dei dati storici. La data e' CALCOLATA, sessanta giorni dalla fine della grazia: il campo nell'avviso del fornitore e' vuoto",
+      "dove": "STOR-003 (#187); docs/business-continuity-disaster-recovery.md"
+    }
+  ],
+
+  "freschezza": [
+    {
+      "id": "automazione-rinfresco",
+      "cosa": "L'attivita' pianificata del rinfresco e' viva: eta' dell'ultima riga scritta nel proprio registro, a prescindere dall'esito",
+      "percorso": "output/refresh-log.txt",
+      "cadenza_giorni": 2,
+      "dove": "ADR-026. Questa voce esiste per un difetto trovato il 07/09/2026: l'attivita' pianificata era stata creata il 04/09 e non era mai partita, e nessun controllo lo diceva perche' l'eta' dello snapshot era ancora dentro la cadenza settimanale. Un'automazione morta resta invisibile finche' la cadenza della fonte non scade, cioe' fino a una settimana: questa voce la scopre in due giorni, perche' il registro del rinfresco si aggiorna a ogni esecuzione, riuscita o fallita"
+    },
+    {
+      "id": "nebula",
+      "cosa": "Snapshot Nebula: porte, PVID, VLAN ammesse, tabella MAC, access point",
+      "percorso": "output/nebula-snapshot.json",
+      "cadenza_giorni": 7,
+      "dove": ".claude/rules/fonti-e-riallineamento.md, classe B"
+    },
+    {
+      "id": "proxmox",
+      "cosa": "Snapshot Proxmox: macchine virtuali, storage, bridge, job di backup",
+      "percorso": "output/proxmox-snapshot.json",
+      "cadenza_giorni": 30,
+      "dove": ".claude/rules/fonti-e-riallineamento.md, classe B"
+    },
+    {
+      "id": "ninjaone",
+      "cosa": "Snapshot della gestione endpoint: dispositivi, policy, interfacce di rete",
+      "percorso": "output/ninjaone-snapshot.json",
+      "cadenza_giorni": 30,
+      "dove": ".claude/rules/fonti-e-riallineamento.md, classe B. La cadenza dichiarata e' 'prima di ogni intervento massivo': i trenta giorni qui sono un limite di guardia, non la regola"
+    },
+    {
+      "id": "onedrive-it",
+      "cosa": "Baseline del delta OneDrive, libreria tecnica",
+      "percorso": "_notes/.onedrive-manifest.json",
+      "campo_data": "created",
+      "cadenza_giorni": 7,
+      "dove": ".claude/rules/fonti-e-riallineamento.md, classe C. Arretrare di piu' di qualche giorno impone il triage prima di ogni altro lavoro"
+    },
+    {
+      "id": "onedrive-admin",
+      "cosa": "Baseline del delta OneDrive, libreria amministrativa",
+      "percorso": "_notes/.onedrive-manifest-admin.json",
+      "campo_data": "created",
+      "cadenza_giorni": 7,
+      "dove": ".claude/rules/fonti-e-riallineamento.md, classe C"
+    },
+    {
+      "id": "onedrive-teams",
+      "cosa": "Baseline del delta OneDrive, cartella di scambio delle chat",
+      "percorso": "_notes/.onedrive-manifest-teams.json",
+      "campo_data": "created",
+      "cadenza_giorni": 7,
+      "dove": ".claude/rules/fonti-e-riallineamento.md, classe C. E' il canale con cui la classe D lascia traccia"
+    }
+  ],
+
+  "asserzioni_umane": [
+    {
+      "id": "QNAP-RIPRISTINO",
+      "afferma": "Dallo spazio cloud scaduto di Francoforte si puo' ancora ripristinare, non solo constatare che il contenuto c'e'",
+      "stato": "MAI VERIFICATA",
+      "verificata_il": null,
+      "validita_giorni": 30,
+      "domanda": "Scaricare un singolo file dallo spazio scaduto dal pannello del fornitore: riesce o no?",
+      "a_chi": "IT Manager",
+      "dove": "STOR-003 (#187)"
+    },
+    {
+      "id": "QNAP-SEEDING",
+      "afferma": "Il job di backup punta al nuovo spazio di Milano ed e' partito",
+      "stato": "MAI VERIFICATA",
+      "verificata_il": null,
+      "validita_giorni": 7,
+      "domanda": "Sul NAS: il job punta al nuovo spazio? A che percentuale e' il primo caricamento, e quando finisce?",
+      "a_chi": "IT Manager",
+      "dove": "STOR-003 (#187)"
+    },
+    {
+      "id": "COPIE-FUORI-SEDE",
+      "afferma": "La replica verso lo spazio a blocchi e quella verso lo spazio cloud sono due copie fuori sede distinte",
+      "stato": "NON DETERMINATA",
+      "verificata_il": null,
+      "validita_giorni": 30,
+      "domanda": "Leggere i job di backup ibrido sul NAS: sono due job distinti verso due destinazioni, o uno solo descritto due volte nella documentazione?",
+      "a_chi": "IT Manager",
+      "dove": "STOR-002 (#186), STOR-003 (#187), docs/business-continuity-disaster-recovery.md"
+    },
+    {
+      "id": "MFP-SCANSIONE",
+      "afferma": "La scansione verso cartella del multifunzione funziona dopo l'aggiornamento del firmware del 25/08/2026",
+      "stato": "MAI VERIFICATA",
+      "verificata_il": null,
+      "validita_giorni": 30,
+      "domanda": "Fare una scansione reale verso cartella e verificare che il file arrivi sul NAS",
+      "a_chi": "IT Manager",
+      "dove": "voce di timeline del 04/09/2026"
+    },
+    {
+      "id": "CRITTOGRAFIA-W11HOME",
+      "afferma": "Il computer con Windows 11 Home privo di crittografia del disco non appartiene al parco gestito",
+      "stato": "NON DETERMINATA",
+      "verificata_il": null,
+      "validita_giorni": 14,
+      "domanda": "Di quale macchina parla il documento del 01/09/2026? Se e' del parco gestito diventa un difetto di sicurezza dei dati a riposo",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/ingestion-checklist.md, triage del 04/09/2026"
+    },
+    {
+      "id": "PSK-SEEWEB",
+      "afferma": "La chiave pre-condivisa del tunnel verso il fornitore di hosting e' ancora quella del 2018",
+      "stato": "SOSPETTA, NON VERIFICATA",
+      "verificata_il": null,
+      "validita_giorni": 30,
+      "domanda": "Sulla GUI del firewall: la chiave pre-condivisa del tunnel e' stata ruotata dopo il 2018?",
+      "a_chi": "IT Manager",
+      "dove": "SEC-023 (#138); FW-006, M14"
+    }
+  ]
+}

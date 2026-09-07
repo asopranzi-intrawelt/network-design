@@ -24,17 +24,28 @@ La traduzione placeholder -> valore reale non si scrive mai in un file tracciato
 
 ## Il controllo automatico, e perche' non basta la buona volonta'
 
-Dal 06/08/2026 esiste `scripts/Test-Anonymization.py`, che passa **tutti** i file tracciati da git e riporta indirizzi reali, MAC reali, nomi propri di persona, caselle di posta personali, importi, numeri di telefono, IBAN, partite IVA e i segreti letterali gia' noti. Si lancia dalla radice del progetto, esce con codice diverso da zero se trova qualcosa nelle categorie bloccanti, e va eseguito **prima di ogni commit** che tocchi documentazione.
+Dal 06/08/2026 esiste `scripts/Test-Anonymization.py`, che riporta indirizzi reali, MAC reali, nomi propri di persona, caselle di posta personali, importi, numeri di telefono, IBAN, partite IVA e i segreti letterali gia' noti. Si lancia dalla radice del progetto, esce con codice diverso da zero se trova qualcosa nelle categorie bloccanti, e va eseguito **prima di ogni commit** che tocchi documentazione. Il perimetro su cui passa e' cambiato il 07/09/2026 ed e' descritto nella sezione qui sotto: non e' piu' l'insieme dei file tracciati, ma quello dei file che stanno per essere pubblicati.
 
 ```powershell
 python scripts/Test-Anonymization.py
+python scripts/Test-Anonymization.py --tutti    # include il layer privato, non bloccante
 ```
+
+### Il perimetro del controllo, allargato il 07/09/2026
+
+Fino a quella data lo script passava i soli file **tracciati**, e ne derivava una lacuna che si vedeva solo guardandola dal verso giusto: un file **nuovo**, scritto e non ancora aggiunto all'indice, era invisibile al controllo proprio nel momento in cui serviva guardarlo, cioe' prima di pubblicarlo. E' accaduto il 04/09/2026 con tre file nuovi, che sono passati puliti ma per fortuna e non per verifica. Il difetto e' della stessa famiglia degli altri due gia' corretti in questo progetto, la cartella esclusa dal delta e i pattern di rilevanza: non si sbaglia su cio' che si conosce, si sbaglia sul confine.
+
+Il perimetro predefinito e' ora **cio' che sta per essere pubblicato**, cioe' i file tracciati piu' quelli non tracciati e non ignorati, che sono esattamente i candidati al prossimo commit. I riscontri di entrambi i gruppi sono bloccanti, perche' entrambi i gruppi finiscono in pubblico, e quelli del secondo gruppo vengono marcati a video con un avviso esplicito.
+
+Con `--tutti` entrano anche i file **ignorati**, cioe' `_notes/` e `output/`. Quei file contengono valori reali **per costruzione e per decisione**, ed e' il motivo per cui git li ignora: sono il layer narrativo locale e gli output degli script. I loro riscontri vengono percio' elencati a parte, aggregati per file, e **non sono bloccanti**. La distinzione non e' una comodita': confonderli con i primi farebbe fallire il controllo a ogni esecuzione, e un controllo che fallisce sempre smette di essere letto. La misura del 07/09/2026 lo rende evidente, ed e' il numero che spiega la scelta: **10.844** riscontri nel layer privato, su centonovantuno file ignorati, contro **zero** bloccanti nel perimetro pubblico. Fra i file piu' densi c'e' `_notes/.anonymization-map.md` con trecento riscontri, che e' la mappa dei segnaposto e per definizione contiene tutti i valori reali del progetto: se quei riscontri fossero bloccanti, il controllo fallirebbe per il solo fatto di esistere.
+
+Ne discende la sola cosa che va ricordata usandolo: un percorso del layer privato diventa un problema **nel momento in cui viene tracciato**, e in quel momento non compare piu' fra i riscontri privati ma fra i bloccanti, con la marca di file non tracciato. Il controllo cambia da solo la propria valutazione quando cambia lo stato del file, che e' il comportamento corretto e la ragione per cui il perimetro si definisce sulla pubblicabilita' e non su uno stato di git.
 
 Lo script e' versionato e non contiene nessun valore reale: cio' che deve cercare vive in `_notes/.anonymization-patterns.json`, ignorato da git accanto alla mappa dei segnaposto. Se quel file manca lo script si ferma e lo dichiara, invece di restituire un esito verde che non ha calcolato. Quando la mappa cresce, cresce anche quel file: sono due facce dello stesso dato.
 
 La ragione per cui questo controllo esiste, e va usato, e' un numero. Il primo passaggio, il 06/08/2026, ha trovato **centoquarantotto riscontri** su ottantanove file tracciati, di cui una trentina erano valori reali veri: indirizzi cablati dentro tre script, MAC di switch dentro due script di scrittura, indirizzi pubblici di macchine virtuali di progetto, caselle di posta personali di dipendenti e referenti, importi contrattuali, e un caso che vale da solo la regola, cioe' una voce di work-log che pubblicava **la corrispondenza fra un segnaposto e la persona reale**, che e' il dato piu' sensibile di tutta la materia perche' rende reversibile ogni altra anonimizzazione. Nessuno di quei residui era stato introdotto di proposito, e nessuno apparteneva alla sessione che li ha scoperti.
 
-Ne discende la regola operativa: il controllo si fa sull'**intero albero tracciato**, non sui soli file toccati dalla sessione. Un residuo non si introduce, si eredita, e restare puliti sui propri file non dice niente sul repository.
+Ne discende la regola operativa: il controllo si fa sull'**intero perimetro pubblicabile**, non sui soli file toccati dalla sessione. Un residuo non si introduce, si eredita, e restare puliti sui propri file non dice niente sul repository. Dal 07/09/2026 quel perimetro comprende anche i file non ancora tracciati, che sono quelli su cui la sessione corrente ha piu' probabilita' di sbagliare proprio perche' li ha appena scritti.
 
 Due cose che lo script non puo' fare e restano umane. Non distingue un falso positivo da un leak quando il valore e' ambiguo, per esempio un numero di versione che somiglia a un indirizzo: quei riscontri finiscono nelle categorie non bloccanti e vanno guardati. E non conosce il contesto: un nome dentro la ragione sociale legale e' ammesso, lo stesso nome in una frase narrativa no, e la lista delle eccezioni di contesto va tenuta aggiornata a mano nel file dei pattern.
 
