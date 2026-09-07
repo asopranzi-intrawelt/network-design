@@ -64,6 +64,7 @@ Scrittura verso gli apparati, l'unica famiglia che non e' di sola lettura. Gira 
 | `scripts/Set-NebulaWifiVlan.ps1` | Assegna la VLAN Wi-Fi alle porte degli access point e la propaga sui trunk (M13a) |
 | `scripts/Set-ApTestIsolation.ps1` | Spegne e riaccende il PoE degli access point per isolarne uno durante una prova di connessione |
 | `scripts/New-ScanFolderShortcut.ps1` | Distribuito dall'RMM: crea sul desktop il collegamento alla cartella di scansione sul NAS (R8) |
+| `scripts/Set-BitlockerEscrow.ps1` | Distribuito dall'RMM: deposita nel campo personalizzato del dispositivo la password di ripristino BitLocker del volume di sistema, creando il protettore se assente e senza mai stampare la chiave (SEC-044) |
 
 Fonti e artefatti che non sono script.
 

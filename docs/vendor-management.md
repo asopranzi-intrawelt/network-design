@@ -95,10 +95,10 @@ Due migrazioni distinte verso lo stesso fornitore, in due fasi separate: la line
 
 | Campo | Valore |
 |-------|--------|
-| Prodotto | GravityZone Business Security Enterprise |
+| Prodotto | GravityZone, abbonamento mensile MSP, tipo di prodotto Endpoint Security, modello di protezione "a la carte" (verificato in console il 07/09/2026; le diciture "Business Security Enterprise" qui e "Business Security Premium" in `infrastructure-timeline/2025-q3-q4.md` erano entrambe errate) |
 | Funzionalità attive | AV, EDR, XDR, exploit defense, network attack defense |
 | Funzionalità pianificate | Risk Management + Patch Management (modulo VA interno) |
-| Licenze | [TBC] – tutte le postazioni Windows + server |
+| Licenze | Trenta posti totali, ventotto riservati utilizzati, due disponibili (console GravityZone, 07/09/2026) |
 | Console | GravityZone cloud console |
 | Integrazione | NinjaOne RMM |
 
