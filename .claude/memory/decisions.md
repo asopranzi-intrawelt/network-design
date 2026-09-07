@@ -2,6 +2,28 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-027 — Il confine con gli altri repository si apre in una direzione sola: la risalita di una capacita' al template
+
+Data: 2026-09-07 Stato: attiva. **Deroga circoscritta** al vincolo di `CLAUDE.md` §Confine con E:\projects, che resta valido per tutto il resto.
+
+Contesto. Il vincolo diceva, e per buone ragioni, che questo repository non scrive mai fuori dal proprio albero: la direzione di lettura e' invertita, e se un altro progetto vuole un artefatto di questo se lo prende per conto proprio. La ragione era evitare che un progetto di documentazione di rete si mettesse a spingere file dentro repository di cui non risponde.
+
+Il 07/09/2026 e' emerso un caso che quel vincolo non aveva previsto e che, applicato alla lettera, produce il difetto opposto. Allargando il perimetro del guard-rail di anonimizzazione si e' constatato che la capacita' intera — regola, strumento e file di pattern privato — **esiste solo qui e non nel template da cui questo progetto discende**, e che l'analogo del template, uno scanner di segreti, ha la stessa famiglia di difetto appena corretto qui, cioe' un perimetro definito su uno stato di git invece che sulla pubblicabilita'. Lasciare la correzione solo qui significa che il prossimo progetto istanziato dal template nasce con il difetto, e che la lezione pagata una volta va ripagata.
+
+Decisione, autorizzata esplicitamente dall'IT Manager il 07/09/2026 come autorizzazione permanente e non caso per caso: quando si scopre che una capacita' di questo progetto **manca o e' fragile nel template di provenienza**, l'agente verifica il template e vi porta la capacita', aggiornando il version control di quel progetto.
+
+I limiti della deroga, che la rendono una porta e non un'apertura.
+
+La direzione e' una sola. Si scrive nel **template**, cioe' nel progetto da cui questo discende, e per la sola risalita di una capacita' generalizzabile. Non si scrive in nessun altro repository, e in particolare resta intatto il vincolo verso il sito dei progetti personali: se quello vuole un artefatto di qui, se lo legge da se'.
+
+Cio' che risale e' la **capacita' generalizzata**, mai il file di questo progetto. La regola del template e' uno scheletro con segnaposto, non la copia di quella di qui, che porta nomi di fornitori, date e riferimenti a difetti numerati; lo strumento va spogliato di cio' che vi era cablato, e nel primo caso reale erano il percorso del file di pattern e un prefisso telefonico italiano. Il criterio di verifica e' meccanico: una ricerca dei nomi del progetto di origine dentro i file portati deve dare zero riscontri.
+
+Il lavoro risale su un **ramo dedicato** e il commit resta manuale dell'utente, coerentemente con il vincolo di team che vale qui. La ragione non e' simmetria formale: quel repository ha un'altra identita' git e un altro remoto, e un commit fatto senza che l'utente lo veda passerebbe da una macchina condivisa con la firma sbagliata, che e' precisamente il rischio che `.claude/rules/git-identity-and-repo.md` esiste per prevenire.
+
+Cio' che risale va **provato la'**, non solo qui. Nel primo caso reale la prova sul template ha trovato due difetti che la prova su questo progetto non poteva trovare: i due percorsi di errore del file di pattern non erano mai stati esercitati, e il README del pacchetto conteneva un indirizzo concreto di esempio, cioe' proprio cio' che la regola che accompagna vieta. Lo strumento ha trovato un difetto nel documento che lo descrive, il che e' la migliore prova che funzioni.
+
+Conseguenze. Il paragrafo del confine in `CLAUDE.md` va aggiornato per dichiarare la deroga, e lo e': un vincolo che la pratica viola in silenzio e' peggio di un vincolo assente, perche' fa credere che una difesa esista. E ogni risalita va registrata nel work-log con che cosa e' stato portato e che cosa e' stato generalizzato, perche' altrimenti fra sei mesi nessuno sapra' piu' se la versione del template e quella di qui siano divergenti o allineate.
+
 ## ADR-026 — Nessuna affermazione senza verifica o scadenza, e il rinfresco delle fonti diventa automatico
 
 Data: 2026-09-04 Stato: attiva. **Supera** la regola di `.claude/rules/fonti-e-riallineamento.md` che teneva manuale il rinfresco degli snapshot.
