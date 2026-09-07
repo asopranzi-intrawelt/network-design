@@ -195,12 +195,29 @@ $relevantPatterns = @(
     # 'backup' e 'crittograf' entrano perche' continuita' e dati a riposo sono ambiti su cui il
     # progetto ha difetti aperti; 'intervista' e 'censiment' perche' sono le forme in cui
     # arrivano le fonti prodotte da altre sessioni di lavoro.
-    '\brete\b', 'stato rete', 'topologia', 'backup', 'crittograf', 'intervista', 'censiment'
+    '\brete\b', 'stato rete', 'topologia', 'backup', 'crittograf', 'intervista', 'censiment',
+    # Mancati il 07/09/2026 su un delta piccolo, dove ormai non contano perche' sotto soglia
+    # si elenca tutto; restano utili quando il delta e' grande. `eter` e' il fornitore del
+    # sistema biometrico di rilevazione presenze, che e' un asset di rete su LAN piatta
+    # (NET-021); `\bdev\b` e `\blan\b` perche' il documento mancato descriveva un server di
+    # sviluppo in ascolto su tutte le interfacce.
+    '\beter\b', 'biometric', 'suprema', 'presenze', 'timbracartellin',
+    '\bdev\b', '\blan\b', 'systemd', 'payload'
 )
 function Test-Relevant([string]$relPath) {
     foreach ($p in $relevantPatterns) { if ($relPath -imatch $p) { return $true } }
     return $false
 }
+
+# Sotto questa soglia il filtro NON si applica e si elenca tutto. La ragione e' che il filtro
+# esiste per rendere leggibile un delta grande, non per giudicare: il 03/08/2026 il delta
+# aveva ottocento voci e quelle che contavano erano due, invisibili in un elenco troncato.
+# Con poche decine di voci quel problema non esiste, l'elenco si legge in mezzo minuto, e il
+# filtro non aggiunge nulla mentre continua a poter sbagliare -- e ha sbagliato tre volte in
+# una settimana, l'ultima nascondendo due voci rilevanti su tre in un delta di ventitre'.
+# Il numero e' generoso di proposito: il costo di leggere quaranta righe in piu' e' nullo, il
+# costo di non vedere la riga che conta lo si e' misurato.
+$sogliaElencoIntegrale = 40
 
 function Invoke-DeltaCheck($target, $maxList, $updateBaseline) {
     $folder = $target.Folder
@@ -269,11 +286,29 @@ function Invoke-DeltaCheck($target, $maxList, $updateBaseline) {
             }
     }
 
-    $relevant = @($all | Where-Object { Test-Relevant $_.Path })
-    if ($relevant.Count -gt 0) {
+    if ($all.Count -le $sogliaElencoIntegrale -and $all.Count -gt 0) {
+        # Delta piccolo: si elenca tutto e il filtro non entra nel merito. Le voci che il
+        # filtro avrebbe marcato restano segnate, cosi' l'occhio ci cade sopra per primo,
+        # ma nessuna viene esclusa dall'elenco.
         Write-Output ""
-        Write-Output "*** RILEVANTI PER LA RETE: $($relevant.Count) voci - elenco integrale, NON troncato ***"
-        $relevant | Sort-Object Path | ForEach-Object { Write-Output ("  [{0}] {1}" -f $_.Kind, $_.Path) }
+        Write-Output "*** DELTA PICCOLO ($($all.Count) voci, soglia $sogliaElencoIntegrale): elenco INTEGRALE, il filtro di rilevanza non si applica ***"
+        Write-Output "    Sotto soglia il filtro non serve e puo' solo sbagliare: si legge tutto. Le voci che il filtro avrebbe marcato portano <<."
+        $all | Sort-Object Path | ForEach-Object {
+            $marca = if (Test-Relevant $_.Path) { "  <<" } else { "" }
+            Write-Output ("  [{0}] {1}{2}" -f $_.Kind, $_.Path, $marca)
+        }
+    }
+    else {
+        $relevant = @($all | Where-Object { Test-Relevant $_.Path })
+        if ($relevant.Count -gt 0) {
+            Write-Output ""
+            Write-Output "*** RILEVANTI PER LA RETE: $($relevant.Count) voci su $($all.Count) - elenco integrale, NON troncato ***"
+            $relevant | Sort-Object Path | ForEach-Object { Write-Output ("  [{0}] {1}" -f $_.Kind, $_.Path) }
+        }
+        Write-Output ""
+        Write-Output "NOTA: delta oltre la soglia di $sogliaElencoIntegrale voci, quindi il blocco qui sopra e' filtrato."
+        Write-Output "  Il filtro ha avuto punti ciechi tre volte: se il delta e' dominato da una cartella estranea,"
+        Write-Output "  conviene guardare il riepilogo per cartella e aprire l'elenco completo della sola cartella dubbia."
     }
 
     foreach ($pair in @(@('NUOVI', $new), @('MODIFICATI', $modified), @('ELIMINATI', $deleted))) {

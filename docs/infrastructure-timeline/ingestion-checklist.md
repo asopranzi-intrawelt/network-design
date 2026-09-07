@@ -616,3 +616,45 @@ Delta grezzo di 453 nuovi, 3 modificati e 403 eliminati, e per la terza volta co
 - [-] `Studio-tecnologico-rifacimento-intrawelt.com.docx`, `intrawelt-saas-access-plan.md`, `intrawelt-saas-team-access-summary.md`, `PERCHE_QUESTI_FILE.md`, `intrawelt-frontend.zip`, `ENI.7z`, i documenti LEGAMI e i sette screenshot — sito pubblico, progetto SaaS, dati grezzi e conformita': categorie gia' decise, nessuna riguarda la rete
 
 Baseline riallineata al 04/09/2026 su tutte e tre le librerie con `-UpdateBaseline`, subito dopo la scrittura di questa sezione, cosi' che il prossimo avvio parta pulito e non si ripeta l'accumulo di un mese.
+
+## Triage del delta 04/09 -> 07/09/2026 (tre giorni, chiuso il 07/09)
+
+Delta piccolo e per la prima volta triagiato in giornata, non dopo settimane. Il fatto che vale piu' del contenuto e' pero' un altro: **il filtro delle voci rilevanti non ha marcato nulla in nessuna delle tre radici, e due delle tre voci che contavano erano la'**. Il silenzio del filtro non era un esito, ed e' la terza volta in una settimana. La correzione applicata non e' un altro giro di pattern ma strutturale, e sta piu' sotto.
+
+### Documenti - IT
+
+Venti nuovi, tre modificati, diciotto eliminati, tutti sotto `SCENIA/`. Due movimenti distinti e nessuno dei due riguarda la rete.
+
+- [-] `SCENIA/Documentazione scenia/Documentazione aggiornata/` (4 nuovi, 2 modificati, 2 eliminati) — i manuali utente del prodotto rinominati dall'inglese all'italiano (`Scenia_User_Manual_*` diventa `Manuale_Utente_Scenia_*`) con l'aggiunta delle versioni PDF. Documentazione di prodotto del progetto SaaS, perimetro escluso da ADR-015
+- [-] `SCENIA/Ricerca Unimc/.../Materiale_per_dataset/` (16 nuovi, 16 eliminati) — **quarta occorrenza** dello stesso spostamento: il corpus di ricerca passa da `Testi_source/` a `Testi_source_100_samples/`, con la sottocartella `Med/` rinominata `Pharma-med/`. In SKIP dal 15/07/2026, nessun contenuto nuovo. Vale la pena notare che questa singola cartella ha prodotto da sola la maggior parte del rumore di quattro delta consecutivi
+- [-] `SCENIA/Ricerca Unimc/.../DATASET_ANALISI.xlsx` (modificato) — analisi del benchmark di traduzione, fuori scope
+
+### IT + Administration - Documenti
+
+Otto nuovi e sette eliminati, tutti sotto `Eter/`, e la lettura ridimensiona l'attesa. Sette degli otto nuovi sono i sette eliminati: la cartella del fornitore e' stata **riorganizzata in sottocartelle per anno**, `2025/` e `2026/`, con gli stessi nomi di file. Il nuovo vero e' **uno**.
+
+- [x] `Eter/2026/7817954.pdf` (nuovo) — **aperto perche' Eter e' il fornitore del sistema biometrico di rilevazione presenze**, cioe' del terminale Suprema che questo progetto ha aperto come NET-021 (#149) e che l'intervento di fine agosto al Piano Terra doveva inventariare. L'attesa era quindi che potesse contenere un intervento o un apparato. **Non e' cosi'**: e' un promemoria di pagamento di una fattura scaduta, materia puramente contabile. Nessun fatto tecnico, e nessuna riga del suo contenuto puo' entrare in un file tracciato, perche' porta importo, numero di documento e IBAN, tutte categorie bloccanti. Registrato per chiudere l'attesa, non per il contenuto
+- [-] `Eter/2025/` (7 nuovi che sono i 7 eliminati da `Eter/`) — riorganizzazione per anno, stessi file. Fatture, conferme d'ordine e l'ordine di assistenza annuale, tutti gia' verificati e non ingeriti nel triage del 15/07/2026
+
+### File di chat di Microsoft Teams
+
+Quattro nuovi, tre dei quali screenshot. Il quarto e' il ritrovamento del triage.
+
+- [x] `aggiornamento-intrawelt-dev (per server dev in LAN) - 04092026.docx` (04/09/2026) — **e' un handoff di classe D e corrobora #155 da una fonte indipendente**. Descrive la procedura per rimettere in servizio il server di sviluppo del sito nuovo, e non e' un difetto nuovo: che quel server sia in ascolto su tutte le interfacce alla porta 3000, e quindi raggiungibile da tutta la LAN piatta, e' esattamente cio' che NET-024 registra dal 24/08/2026 leggendo un'altra fonte sulla stessa macchina. Aggiunge tre dettagli operativi che #155 non aveva, riportati nel gap: il servizio e' una **unita' systemd di utente** chiamata `intrawelt-dev`, creata il 24/08 proprio perche' il 21/08 il processo lanciato a mano era morto; la rimessa in servizio ha **tre passi distinti** con dipendenze diverse, cioe' l'aggiornamento del codice sempre obbligatorio, l'allineamento dello schema del database solo quando arrivano migrazioni nuove, e il riavvio del processo; e la ricompilazione automatica non copre i file aggiunti, che e' la ragione per cui il riavvio serve dopo un aggiornamento ampio. **Non ingerito come documento**: il fatto di rete e' gia' in #155 e li' e' stato integrato
+- [-] `screenshot_30.png`, `screenshot_31 1.png`, `screenshot_32 2.png` — catture senza contesto testuale
+
+### Il difetto del guard-rail trovato leggendo quel documento, ed e' il piu' grave del triage
+
+Quel documento contiene l'indirizzo reale del server di sviluppo, e passandolo al guard-rail di anonimizzazione e' risultato nella categoria **non bloccante** "IP privato fuori schema" invece che fra gli indirizzi reali: il prefisso di quella subnet **non era fra i ventisei censiti** nel file dei pattern. Ne discende che, per quella subnet, il controllo avrebbe segnalato una fuga vera come ambiguita' da valutare a mano.
+
+Il prefisso e' stato aggiunto al file privato dei pattern nella direzione prudente, ed e' ora bloccante, verificato. Va pero' **confermato dall'IT Manager** perche' e' un'inferenza e non una misura: si appoggia a due corrispondenze, cioe' il terzo ottetto identico a quello del segnaposto usato dalle schede per la stessa subnet, e l'ultimo ottetto uguale al numero della macchina virtuale che ospita il sito. Se l'inferenza fosse sbagliata il costo e' solo qualche blocco non necessario su quel prefisso; se fosse giusta e non l'avessimo aggiunto, il costo sarebbe una fuga classificata come dubbio. La nota di conferma sta dentro il file dei pattern e va rimossa quando la risposta arriva.
+
+### La correzione strutturale del filtro, invece del quarto giro di pattern
+
+Il filtro ha avuto un punto cieco tre volte in una settimana: il 03/08 una cartella esclusa che nel frattempo aveva cambiato uso, il 04/09 il documento piu' importante arrivato al progetto nel 2026 che non corrispondeva a nessun termine, e oggi due voci rilevanti su tre in un delta di ventitre'. Allungare la lista e' la correzione che si ripete e non converge, perche' il difetto non e' quali termini contenga: e' che **il filtro enumera cio' che si sa gia' contare**.
+
+La correzione parte da a che cosa serve. Serve a rendere leggibile un delta **grande**, dove le voci che contano annegano in centinaia di righe di un altro progetto: era il caso del 03/08, ottocento voci di cui due contavano. Sotto una certa dimensione quel problema non esiste, l'elenco si legge tutto in mezzo minuto, e il filtro non aggiunge niente mentre continua a poter sbagliare. Da oggi, quindi, **sotto le quaranta voci il filtro non si applica e si elenca tutto**, dichiarandolo; le voci che il filtro avrebbe marcato restano segnate cosi' l'occhio ci cade sopra per primo, ma nessuna viene esclusa. Sopra soglia il filtro resta, e accanto al blocco filtrato compare l'avviso che quel blocco e' filtrato e che conviene guardare il riepilogo per cartella.
+
+I termini mancati oggi sono stati aggiunti comunque, perche' sotto soglia non servono ma sopra sì: il nome del fornitore del sistema biometrico, i termini della rilevazione presenze, e quelli che descrivono un server di sviluppo in ascolto.
+
+Baseline riallineata al 07/09/2026 su tutte e tre le librerie subito dopo la scrittura di questa sezione.
