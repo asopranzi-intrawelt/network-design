@@ -6,12 +6,14 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 6750252 (04/09/2026, triage del delta 06/08-04/09 e difetto 186)
-Data snapshot:         2026-09-04, dopo il riallineamento di fine sessione
-Commit precedenti:     e2ab201, 516d740, 32deebb, 4782336
+Commit di riferimento: 2d4eda5 (08/09/2026, R20 e R21, difetto 194 dalla rete ospiti, freschezza del diario)
+Data snapshot:         2026-09-08, riscritto alla ripresa dopo il crash della sessione precedente
+Commit precedenti:     030f33e, 20d4863, 0f7eca2, 8a51761, 8b33101, 6f8974c
 ```
 
-Al momento della scrittura restano su disco e **non committate** le modifiche del difetto **#187**, cioe' lo spazio cloud nuovo che nasce vuoto, piu' questo riallineamento. Commit e push restano manuali dell'utente: alla ripresa, se `git status` mostra modifiche, sono quelle.
+Al momento della scrittura restano su disco e **non committate** la chiusura del difetto **#195**, cioe' il volume BitLocker a protezione sospesa, con la rinumerazione che ne discende, piu' questo riallineamento. Commit e push restano manuali dell'utente: alla ripresa, se `git status` mostra modifiche, sono quelle.
+
+**Perche' questo blocco era arretrato di quattro giorni, ed e' la cosa da imparare piu' del valore corrente.** Fra il 04 e l'08/09/2026 sono atterrati sei commit e questo file non ne ha visto nessuno, quindi la ripresa dell'08/09 e' partita da uno snapshot che dichiarava come non committato un lavoro committato da giorni e come punto di ripresa una sessione del 07/08. Ha funzionato solo perche' `progress.md` e i controlli di avvio dicevano il vero: lo snapshot e' stato ricostruito leggendo quelli, non fidandosi di se stesso. Ne discende che **questo blocco si riscrive nella stessa sessione in cui si committa**, non alla successiva, perche' e' il primo file che si legge e quindi il primo che puo' mentire.
 
 ## La regola del bump, che vale piu' del valore corrente
 
@@ -25,18 +27,26 @@ Le schede di questo progetto **non hanno il campo `covers-paths`** nel frontmatt
 
 ## Stato di verifica delle schede
 
-Aggiornato il 04/09/2026 leggendo i file, non ricopiando la tabella precedente. La colonna che conta e' la terza: l'hash dice quando la scheda e' stata dichiarata verificata, non che il contenuto sia allineato.
+Aggiornato l'08/09/2026 leggendo i file e il frontmatter reale, non ricopiando la tabella precedente: la versione del 04/09 dichiarava per STACK.md un hash che il file non porta piu'. La colonna che conta e' la terza, perche' l'hash dice quando la scheda e' stata dichiarata verificata e non che il contenuto sia allineato. Tutte e sei le schede dichiarano oggi `8a51761` mentre il contenuto e' stato allineato in `20d4863` e, per `current-work.md`, in `0f7eca2`: e' il bump che ha un commit di ritardo, non contenuto arretrato, e la ragione sta nel blocco del punto di ripresa.
 
 | Scheda | last-verified | Stato del contenuto |
 |---|---|---|
-| STACK.md | **6750252** | **riverificata il 04/09/2026** contro il contenuto reale di `scripts/`: la tabella dei componenti ne elencava cinque su ventuno ed e' stata resa esaustiva, con le famiglie nuove (catena della mappa, guard-rail, autorita' di certificazione, scrittura verso gli apparati). Corretta anche la sezione dell'infrastruttura con la corrispondenza misurata fra bridge e porte e con la dismissione della VM 206 |
-| deployment.md | 4782336 | **da riverificare**: non conosce l'esecuzione degli script nati fra agosto e settembre, ne' i vincoli sulle credenziali dell'RMM (ADR-017), ne' la regola per cui i tre script della catena della mappa si automatizzano in modo diverso a seconda che leggano il disco o interroghino un fornitore |
-| design-and-security.md | 32deebb | allineata al 25/08; non conosce l'esito del censimento dell'esposizione (M27-7), l'autorita' di certificazione interna (#179), le decisioni ADR-024 e ADR-025, ne' i difetti #186 e #187 sulla copia fuori sede |
-| dev-testing.md | 4782336 | **da riverificare**: non conosce i guard-rail nati dopo il 06/08, cioe' la riconciliazione della mappa e la verifica della convenzione Markdown, ne' i casi limite degli script di ricognizione |
-| current-work.md | 4782336 | **la piu' indietro**: dichiara come feature attiva una sessione conclusa da un mese. Va riscritta sul lavoro reale, cioe' R12, l'incidente #185 e la generazione dell'autorita' |
-| roadmap.md | 4782336 | **da riverificare**: non conosce M27-7 e M27-8, ne' lo stato reale di M26, ne' i micro-interventi R12 e R13 |
+| STACK.md | 8a51761 | **allineata**: riverificata il 04/09/2026 contro il contenuto reale di `scripts/`, dove la tabella dei componenti ne elencava cinque su ventuno, e ribumpata il 07/09 dopo la verifica che tutti e ventotto gli script sono citati. L'invariante di `Test-Allineamento.py` lo ricalcola a ogni avvio |
+| deployment.md | 8a51761 | **allineata l'08/09/2026** in `20d4863`: porta la distinzione che e' la sostanza di ADR-026, cioe' che si automatizza la verifica e non la misura, con i tre comandi pre-commit e l'ordine delle catene di script |
+| design-and-security.md | 8a51761 | **allineata l'08/09/2026** in `20d4863`: A.8.13 passa da Documentato a Parziale perche' affermava una replica fuori sede che non esiste, e A.8.24 registra insieme il peggioramento della copia non cifrata e il miglioramento di ADR-024 con ADR-025. Non conosce ancora #193, #194 e #195 |
+| dev-testing.md | 8a51761 | **allineata l'08/09/2026** in `20d4863`: porta quattro lezioni dai controlli scritti fra il 4 e l'8 settembre, fra cui che un criterio di validita' si prende da un guasto reale e non si inventa |
+| current-work.md | 0f7eca2 (dichiara 8a51761) | **riscritta l'08/09/2026**, non piu' la scheda piu' indietro del progetto: dichiara il filo dei nomi, R12 sbloccato, #185 chiuso, l'autorita' non eseguita e #192. Non conosce #193, #194 e #195, che sono nati dopo la sua riscrittura |
+| roadmap.md | 8a51761 | **allineata l'08/09/2026** in `20d4863`: la Fase B passa da rimandabile a fondata, nasce la Fase 6 per l'impianto di allineamento, e il punto sul backup della Fase 4 porta i tre fatti misurati di #192. Corretto l'08/09 il richiamo a un difetto inesistente sulla riga di M16 |
 | interventi-robustezza.md (docs/) | non applicabile | registro operativo, non porta frontmatter |
+
 ## Punto di ripresa
+
+**08/09/2026 — la sessione successiva si apre su #193, e la domanda da porre prima di tutto e' quella di classe E.** Il filo dei nomi ha smesso di essere il lavoro piu' urgente: con la chiusura di #185 e' emerso che l'interfaccia di amministrazione del firewall e la VPN a portale sono raggiungibili da qualunque indirizzo di Internet (#193), e chi entra nel configuratore di un firewall perimetrale riscrive le regole che proteggono tutto il resto, quindi quel difetto non si somma agli altri, li contiene. Subito dopo viene #194, il desktop remoto ammesso dalla rete ospiti verso la LAN per ordine delle regole. Entrambi richiedono la GUI del firewall, quindi richiedono l'IT Manager con uno screenshot, e per entrambi il rimedio va scritto **restringendo** e non rimuovendo alla cieca, perche' non e' accertato se e da chi quei percorsi siano usati.
+
+Il lavoro pronto e non bloccato e' invece **R12 sulle ventiquattro postazioni**, sbloccato dalla diagnosi di #185: `LAN1_to_Device` e' in permesso, quindi la modifica non tocca le politiche e non e' la stessa cosa che ha rotto la Wi-Fi. Restano indipendenti da tutto **l'autorita' di certificazione**, scritta e mai eseguita, e **#117**, fermo da sette settimane per nessuna ragione tecnica.
+
+Tre cose da non perdere in apertura. La prima e' la domanda di classe E, cioe' che cosa e' cambiato sulla rete fuori da qui, e in questa fase non e' una formalita': il 07/09 un commit di un'altra sessione e' atterrato sullo stesso registro dei difetti, e la collisione di numerazione chiusa l'08/09 nasce da due sessioni che hanno scritto la stessa voce lo stesso giorno. La seconda e' che **nessun controllo verifica l'unicita' dei numeri del registro**, e l'invariante manca in `Test-Allineamento.py`. La terza e' che l'invariante sul frontmatter resta giallo per costruzione: confronta `last-verified` con il commit in cui la scheda e' stata modificata per ultima, e il bump e' esso stesso una modifica, quindi il rimedio non e' bumpare ma **ignorare le modifiche al solo frontmatter** nel calcolo. Fino a quel giorno il giallo sulle sei schede va letto come atteso e non come arretrato di contenuto: il contenuto e' stato allineato in `20d4863`.
+
 
 **07/08/2026 — la sessione successiva e' il montaggio dell'access point esterno (M13c), e si apre da `_notes/RESUME_PROMPT.md`**, riscritto per quello scopo; la versione precedente e' archiviata accanto. La domanda da porre per prima e' scritta li' e non va saltata: l'IT Manager ha chiesto "un access point esterno **per irrigazione e inverter**", ma entrambe quelle utenze **sono cablate** al GS-105B, quindi la formulazione ammette tre letture molto diverse — sostituire lo switch non gestito, sostituire l'access point EOL, oppure passare via radio due utenze oggi cablate, che sarebbe un peggioramento. Cablaggio, alimentazione e collaudo cambiano a seconda della risposta.
 
