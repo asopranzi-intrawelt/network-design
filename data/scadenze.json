@@ -151,30 +151,30 @@
     {
       "id": "MFP-SCANSIONE",
       "afferma": "La scansione verso cartella del multifunzione funziona dopo l'aggiornamento del firmware del 25/08/2026",
-      "stato": "MAI VERIFICATA",
-      "verificata_il": null,
-      "validita_giorni": 30,
+      "stato": "VERIFICATA 08/09/2026 dall'IT Manager: la scansione verso cartella funziona dopo l'aggiornamento del firmware",
+      "verificata_il": "2026-09-08",
+      "validita_giorni": 180,
       "domanda": "Fare una scansione reale verso cartella e verificare che il file arrivi sul NAS",
       "a_chi": "IT Manager",
       "dove": "voce di timeline del 04/09/2026"
     },
     {
       "id": "CRITTOGRAFIA-W11HOME",
-      "afferma": "Il computer con Windows 11 Home privo di crittografia del disco non appartiene al parco gestito",
-      "stato": "NON DETERMINATA",
-      "verificata_il": null,
-      "validita_giorni": 14,
-      "domanda": "Di quale macchina parla il documento del 01/09/2026? Se e' del parco gestito diventa un difetto di sicurezza dei dati a riposo",
+      "afferma": "La postazione senza cifratura del disco e' una macchina personale di un commerciale, non aziendale, ma e' gestita nell'RMM",
+      "stato": "RISPOSTA 08/09/2026, e la risposta non chiude la questione ma la sposta: la macchina e' **personale** e non appartiene al parco aziendale, ma e' stata inserita come tracciata nella gestione endpoint. Non e' quindi un difetto di cifratura su un asset aziendale, ed e' invece un dispositivo non aziendale dentro il perimetro gestito",
+      "verificata_il": "2026-09-08",
+      "validita_giorni": 30,
+      "domanda": "Le domande che restano sono tre e nessuna riguarda la cifratura: quali dati aziendali risiedono su quella macchina, che cosa accade al suo contenuto e alla sua gestione quando quella persona cessa il rapporto, e se esista una regola scritta su quali dispositivi non aziendali possano entrare nella gestione endpoint",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/ingestion-checklist.md, triage del 04/09/2026. Da leggere insieme al filone BitLocker aperto da un'altra sessione il 07/09/2026 (#188 SEC-044, #189 SEC-045, #190 SEC-046): quel lavoro riguarda macchine Windows 11 **Pro**, quindi NON risponde a questa domanda, che e' su una Home dove BitLocker non esiste per edizione. Le due cose vanno tenute distinte e insieme: chi sta censendo la copertura della cifratura e' la persona che puo' dire in un minuto se quella macchina sia del parco gestito"
     },
     {
       "id": "PSK-SEEWEB",
       "afferma": "La chiave pre-condivisa del tunnel verso il fornitore di hosting e' ancora quella del 2018",
-      "stato": "SOSPETTA, NON VERIFICATA",
-      "verificata_il": null,
-      "validita_giorni": 30,
-      "domanda": "Sulla GUI del firewall: la chiave pre-condivisa del tunnel e' stata ruotata dopo il 2018?",
+      "stato": "RISPOSTA 08/09/2026: l'IT Manager dichiara di **non sapere** se sia mai stata ruotata. Ai fini operativi la risposta e' equivalente a un no, perche' una chiave la cui ultima rotazione nessuno puo' datare va trattata come mai ruotata: e' il 2018 fino a prova contraria",
+      "verificata_il": "2026-09-08",
+      "validita_giorni": 45,
+      "domanda": "La rotazione va pianificata: procedura in docs/firewall-zyxel-usg-flex-500.md, sezione sulla rotazione della chiave del tunnel",
       "a_chi": "IT Manager",
       "dove": "SEC-023 (#138); FW-006, M14"
     }
