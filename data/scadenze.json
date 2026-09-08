@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 2,
+  "revisione": 3,
   "aggiornato": "2026-09-07",
 
   "scadenze": [
@@ -112,6 +112,16 @@
 
   "asserzioni_umane": [
     {
+      "id": "BITDEFENDER-POSTI",
+      "afferma": "L'abbonamento di protezione endpoint ha ancora posti liberi sufficienti per le postazioni nuove",
+      "stato": "MISURATA IL 07/09/2026: trenta posti, ventotto usati, due liberi",
+      "verificata_il": "2026-09-07",
+      "validita_giorni": 60,
+      "domanda": "In console: quanti posti liberi ci sono adesso? Con due su trenta, l'inserimento di tre postazioni esaurisce la copertura e la terza resta scoperta senza che nessuno lo dica",
+      "a_chi": "IT Manager",
+      "dove": "docs/vendor-management.md scheda Bitdefender, misurato da un'altra sessione il 07/09/2026. NON e' una scadenza: e' un abbonamento mensile MSP, quindi non esiste una data annuale da presidiare e non va aggiunta al blocco scadenze. Cio' che invecchia qui e' la capacita' residua, non il tempo"
+    },
+    {
       "id": "QNAP-RIPRISTINO",
       "afferma": "Dallo spazio cloud scaduto di Francoforte si puo' ancora ripristinare, non solo constatare che il contenuto c'e'",
       "stato": "MAI VERIFICATA",
@@ -159,7 +169,7 @@
       "validita_giorni": 14,
       "domanda": "Di quale macchina parla il documento del 01/09/2026? Se e' del parco gestito diventa un difetto di sicurezza dei dati a riposo",
       "a_chi": "IT Manager",
-      "dove": "docs/infrastructure-timeline/ingestion-checklist.md, triage del 04/09/2026"
+      "dove": "docs/infrastructure-timeline/ingestion-checklist.md, triage del 04/09/2026. Da leggere insieme al filone BitLocker aperto da un'altra sessione il 07/09/2026 (#188 SEC-044, #189 SEC-045, #190 SEC-046): quel lavoro riguarda macchine Windows 11 **Pro**, quindi NON risponde a questa domanda, che e' su una Home dove BitLocker non esiste per edizione. Le due cose vanno tenute distinte e insieme: chi sta censendo la copertura della cifratura e' la persona che puo' dire in un minuto se quella macchina sia del parco gestito"
     },
     {
       "id": "PSK-SEEWEB",

@@ -297,6 +297,57 @@ def controlla_invarianti(esito):
     else:
         esito.ok("nessun difetto richiamato oltre il massimo definito (#%d)" % massimo)
 
+    # 3c-bis. La mappa dei segnaposto e il file dei pattern devono coprire le stesse cose.
+    #
+    # La regola di anonimizzazione dichiara che sono "due facce dello stesso dato", ed era
+    # un'affermazione senza verifica: il 07/09/2026 si e' scoperto che divergevano su dodici
+    # prefissi reali, fra cui le due LAN principali, quindi per quelle subnet il guard-rail
+    # classificava un valore reale come ambiguita' da valutare a mano invece che come fuga.
+    # Nessuno se n'era accorto perche' nessuno confrontava i due file.
+    #
+    # Non stampa mai un valore, solo quanti: entrambi i file vivono nel layer privato e
+    # l'uscita di questo controllo finisce sotto gli occhi di chiunque guardi la sessione.
+    mappa = testo_di('_notes/.anonymization-map.md')
+    if not mappa:
+        esito.nota("      mappa dei segnaposto assente: il confronto con i pattern non e' calcolabile")
+    else:
+        try:
+            pat = leggi_json('_notes/.anonymization-patterns.json') or {}
+        except Exception:
+            pat = {}
+        if not pat:
+            esito.grave("file dei pattern assente o illeggibile: il guard-rail di anonimizzazione non e' giudicabile")
+        else:
+            noti = set(pat.get('prefissi_reali', []))
+            # Un'esclusione decisa da una persona va dichiarata nel file dove sta la decisione,
+            # non subita come avviso perpetuo: un controllo che segnala sempre la stessa cosa
+            # insegna a ignorarlo, che e' il modo in cui muore.
+            esclusi = set(pat.get('prefissi_esclusi_per_decisione', []))
+            doc = tuple(pat.get('reti_documentali_ammesse', []))
+            amm = set(pat.get('ip_ammessi', []))
+            scoperti = set()
+            for trovato in re.finditer(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', mappa):
+                indirizzo = trovato.group(0)
+                prefisso = indirizzo.rsplit('.', 1)[0] + '.'
+                if indirizzo in amm or prefisso in noti or prefisso in esclusi:
+                    continue
+                if doc and prefisso.startswith(doc):
+                    continue
+                if indirizzo.startswith(('127.', '255.', '0.', '224.')) or indirizzo.split('.')[0] in ('255', '0'):
+                    continue
+                scoperti.add(prefisso)
+            if scoperti:
+                esito.avviso("%d prefissi compaiono nella mappa dei segnaposto e in nessuna lista dei pattern"
+                             % len(scoperti))
+                esito.nota("      la regola dichiara che i due file sono due facce dello stesso dato: se un")
+                esito.nota("      prefisso reale manca ai pattern, il guard-rail non lo cerca. Valori non stampati")
+                esito.nota("      di proposito: vanno guardati aprendo i due file in `_notes/`")
+            else:
+                coda = ""
+                if esclusi:
+                    coda = " (%d esclusi per decisione dichiarata)" % len(esclusi)
+                esito.ok("mappa dei segnaposto e file dei pattern coprono gli stessi prefissi" + coda)
+
     # 3d. Il last-verified delle schede deve stare a HEAD, altrimenti dichiara il ritardo.
     head = git('rev-parse', '--short', 'HEAD')
     cartella = os.path.join(RADICE, '.claude', 'context')

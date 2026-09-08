@@ -1,5 +1,5 @@
 ---
-last-verified: eced60e
+last-verified: 6f8974c
 ---
 
 # Stack e struttura del progetto
@@ -64,7 +64,7 @@ Scrittura verso gli apparati, l'unica famiglia che non e' di sola lettura. Gira 
 | `scripts/Set-NebulaWifiVlan.ps1` | Assegna la VLAN Wi-Fi alle porte degli access point e la propaga sui trunk (M13a) |
 | `scripts/Set-ApTestIsolation.ps1` | Spegne e riaccende il PoE degli access point per isolarne uno durante una prova di connessione |
 | `scripts/New-ScanFolderShortcut.ps1` | Distribuito dall'RMM: crea sul desktop il collegamento alla cartella di scansione sul NAS (R8) |
-| `scripts/Set-BitlockerEscrow.ps1` | Distribuito dall'RMM: deposita nel campo personalizzato del dispositivo la password di ripristino BitLocker del volume di sistema, creando il protettore se assente e senza mai stampare la chiave (SEC-044) |
+| `scripts/Set-BitlockerEscrow.ps1` | Distribuito dall'RMM: deposita nel campo personalizzato del dispositivo la password di ripristino BitLocker del volume di sistema, creando il protettore se assente e senza mai stampare la chiave (SEC-044). Con `-SoloVerifica` non scrive nulla e restituisce il censimento di stato cifratura, protettore di ripristino e WinRE, riga per macchina (SEC-046) |
 | `scripts/Get-BitlockerReadiness.ps1` | Distribuito dall'RMM: diagnostica in sola lettura del perche' BitLocker non si attiva su un endpoint (edizione, TPM, Secure Boot, WinRE, partizione di ripristino, policy FVE) |
 
 Fonti e artefatti che non sono script.
