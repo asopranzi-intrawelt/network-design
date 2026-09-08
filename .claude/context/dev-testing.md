@@ -1,5 +1,5 @@
 ---
-last-verified: 4782336
+last-verified: 8a51761
 ---
 
 # Verifica output snapshot e casi limite
@@ -86,6 +86,20 @@ Tre lanci consecutivi falliti su tre difetti diversi hanno insegnato che rilanci
 La tecnica adottata, molto piu' rapida, e' un banco di prova che **estrae dal file dello script il codice vero** — le funzioni di normalizzazione e il blocco di filtro, delimitati dai commenti di sezione — e lo esegue su dati sintetici costruiti per riprodurre i casi limite noti. Nel caso del filtro per organizzazione i casi che contano sono tre: un dispositivo appartenente a un'altra organizzazione, una entita' non-dispositivo che porta lo stesso campo di appartenenza (una *location*), e un id di quella entita' che **collide** con l'id di un dispositivo di terzi, che e' esattamente il difetto che si era manifestato in produzione. Il banco verifica poi che nessuna riga di terzi sopravviva al filtro.
 
 Il vantaggio non e' solo la velocita': testando il codice estratto dal file, e non una sua copia riscritta nel test, si prova quello che verra' eseguito davvero.
+
+## Quattro lezioni dai controlli scritti fra il 4 e l'8 settembre 2026
+
+**Un criterio di validita' si prende da un guasto reale, non si inventa.** `Invoke-RefreshFonti.ps1` promuove uno snapshot solo se contiene almeno un dispositivo, e quella soglia viene dal 05/08/2026, quando l'organizzazione declassata produsse un JSON formalmente corretto con zero siti e zero dispositivi. Un validatore scritto a tavolino avrebbe controllato che il JSON fosse interpretabile, e quel file lo era.
+
+**Il codice di uscita deve distinguere cio' che invecchia da cio' che e' rotto.** `Test-Allineamento.py` esce con zero sul giallo e con uno sul rosso. La ragione e' comportamentale e non tecnica: un controllo che marca come fallito ogni avvio di sessione smette di essere letto in due settimane, ed e' il difetto da cui quello script nasce.
+
+**I colori si accendono solo su un terminale vero.** Lo stesso script gira dentro un hook e dentro una pipe, dove le sequenze di colore non vengono interpretate e comparirebbero come spazzatura in mezzo al testo. Un avviso illeggibile e' un avviso che non viene letto.
+
+**Un'eccezione deliberata va dichiarata, non subita.** L'invariante che confronta i pattern con la mappa dei segnaposto lasciava un avviso giallo permanente su un prefisso escluso per decisione. Le esclusioni si dichiarano ora nel file dei pattern con la loro ragione accanto, e l'invariante le conta a parte: un'eccezione dichiarata resta visibile come eccezione, una subita diventa rumore.
+
+## Eseguire uno strumento da fuori dalla radice, che e' il caso normale
+
+I due controlli Python risalgono alla radice del repository dalla posizione del proprio file, cercando `.git` sia come cartella **sia come file** perche' in un worktree o in un sottomodulo e' un file che punta altrove. Il caso da provare non e' quello comodo: si prova lanciandoli da una cartella estranea, perche' quello e' il modo in cui li invocano un hook, un'attivita' pianificata e un altro script, e sono tre cartelle correnti diverse dalla quarta.
 
 ## Encoding
 
