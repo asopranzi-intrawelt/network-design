@@ -1,5 +1,5 @@
 ---
-last-verified: 4782336
+last-verified: 8a51761
 ---
 
 # Roadmap e fasi del progetto
@@ -144,11 +144,31 @@ Riscrittura della storia git: pianificata **una sola volta**, dopo che anche la 
 
 **Deroga puntuale (17/07/2026, ADR-011)**: la voce Fibercop/Referente-Fibercop-1 e' uscita dal round unico per richiesta esterna del CIRST Fibercop e va eseguita come round di riscrittura storia a se', prima del resto della Fase B. Non re-includerla nel round finale, e' gia' rimossa a parte.
 
+### Stato della Fase B all'08/09/2026, e perche' e' cambiata di fondatezza
+
+Aggiornamento sostanziale, dal difetto **#191**. Il file di sostituzioni preparato per la riscrittura era **incompleto e non si sapeva**: per la sola subnet dei server copriva due indirizzi su diciotto presenti nella storia. La riscrittura si sarebbe eseguita su un elenco parziale con la convinzione di aver finito, che su un'operazione irreversibile e' il modo peggiore di fallire.
+
+La causa e' che il file dei pattern del guard-rail e la mappa dei segnaposto **erano divergenti su dodici prefissi reali**, fra cui le due LAN principali, e nessuno confrontava i due file perche' non esisteva il modo di farlo. Il guard-rail non mentiva: non stava cercando.
+
+Corretto lo stesso giorno. Il file di sostituzioni passa da cinquantaquattro a **centonove** regole con copertura totale sui prefissi noti; i nove prefissi aziendali mancanti sono entrati nel guard-rail, e con il controllo cosi' irrobustito **l'intero perimetro tracciato passa ancora con zero riscontri bloccanti**, il che dice che le bonifiche manuali di luglio e agosto erano fatte bene e che cio' che mancava era la verifica automatica della pulizia. Da oggi `scripts/Test-Allineamento.py` confronta i due file a ogni avvio di sessione.
+
+Ne discende che la Fase B non cambia stato ma cambia **fondatezza**: prima si sarebbe potuta eseguire in qualunque momento sbagliando, ora l'elenco e' completo sui prefissi noti oggi. Resta la disciplina: quando la mappa cresce, crescono insieme il file dei pattern e quello delle sostituzioni.
+
+## Fase 6 - Impianto di allineamento (ATTIVA dal 04/09/2026, ADR-026 e ADR-027)
+
+Non era in programma ed e' nata da una misura: il 04/09/2026 sono state trovate tre obsolescenze nella stessa mattina, nessuna delle quali era una contraddizione visibile a un lettore attento. Il principio e' che ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata dopo la quale torna a stato non verificata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta e la persona a cui porla. Non esiste un quarto caso.
+
+Cosa esiste e gira. Il registro `data/scadenze.json`, tracciato, con scadenze, cadenze delle fonti e asserzioni umane con la loro validita'. Il controllo `scripts/Test-Allineamento.py` sull'hook di avvio, rumoroso e non bloccante, con cinque invarianti strutturali. Il rinfresco delle fonti vive su attivita' pianificata con tre guardie, verificato partire da solo l'08/09/2026. E la deroga di ADR-027 che fa risalire al template una capacita' che la' manchi, con la prima risalita gia' fatta.
+
+Cosa ha trovato in cinque giorni, che e' la ragione per cui questa fase esiste: una copia di backup ferma da sei settimane che ogni documento dava per esistente, una scheda dello stack che elencava cinque script su ventuno, dodici prefissi reali che il guard-rail non cercava, un'automazione che non era mai partita, e una replica fuori sede documentata che non esiste fra i lavori attivi.
+
+Cosa resta. Portare al template il pacchetto di allineamento, come e' stato fatto per quello di anonimizzazione. Aggiungere `covers-paths` al frontmatter delle schede, perche' senza quel campo la skill di sincronizzazione non puo' calcolare il drift e lo stato va stabilito leggendo.
+
 ## Fase 4 - Piano interventi futuri residui (DA PIANIFICARE)
 
 Steps non coperti dalla Fase 3, da pianificare dopo la chiusura dei micro-step sopra:
 1. Patch management documentato (Proxmox, switch Nebula, firewall, NAS firmware)
-2. Procedure backup e disaster recovery formali
+2. Procedure backup e disaster recovery formali. **Non e' piu' un titolo generico dall'08/09/2026**: la misura sull'interfaccia del NAS ha prodotto tre fatti concreti da cui la procedura deve partire, tracciati come #192. La copia fuori sede e' **una sola** e non due come la scheda di continuita' affermava; copre `Documenti/2025` e `2026` mentre quella locale copre anche il `2024`, quindi un anno esiste in due copie entrambe in sede; nessuno dei tre lavori ha la cifratura lato client attiva; e nessuno dei tre ha mai eseguito la verifica di integrita', quindi la restorabilita' di tutte le copie e' ignota. Il primo passo della procedura e' il piu' economico: eseguire quella verifica
 3. Inventario sistematico NAS fleet (RAID, capacita', firmware)
 4. Ripresa dell'ingestione della cartella OneDrive IT (sospesa su richiesta esplicita dell'utente per dare priorita' alla Fase 3; vedi nota di riallineamento in `ingestion-checklist.md`)
 
@@ -170,6 +190,8 @@ Steps:
 | Fase 1 | COMPLETATA | Alta |
 | Fase 2 | COMPLETATA il 10/07/2026 (NAS fleet e gap analysis ISO27001 Annex A chiusi) | Alta |
 | Fase 1bis | Sostanzialmente completata il 10/07/2026 — residuano solo nota PORT-TAGGING e fonte IntraLino su VM (entrambe in attesa dell'utente) | Alta |
-| Fase 3 | Attiva dal 27/07/2026 — 30 micro-step tracciati; M1 chiuso, M2/M11/M12 parziali, M13a chiuso per decisione (ADR-014), M13b con hardware consegnato e da installare; **M22 e' il filone attivo, con design aperto e cinque sotto-step M22a-M22e**; M23/M24 nuovi dalla ricognizione VM | Critica |
+| Fase 3 | Attiva; aggiornata l'08/09/2026. Il filone in corso e' **R12**, il servizio dei nomi interno: record pubblicati e catena verificata su sette passaggi, e resta da portare le due impostazioni sulle altre ventiquattro postazioni. **Bloccato da #185**, l'incidente sulla Wi-Fi del personale, che va diagnosticato prima di ripetere la stessa modifica in scala. M22 resta il filone successivo e M26 e' chiuso con la mappa interattiva in servizio | Critica |
+| Fase 3bis | Fase A completata; Fase B non eseguita ma **fondata**: elenco di sostituzioni completato l'08/09/2026 da 54 a 109 regole, e la divergenza fra pattern e mappa che la rendeva parziale e' ora sorvegliata da un invariante | Alta |
+| Fase 6 | ATTIVA dal 04/09/2026: impianto di allineamento, ADR-026 e ADR-027. Registro delle scadenze, controllo sull'hook, rinfresco pianificato verificato l'08/09. Resta la risalita del pacchetto al template e i `covers-paths` sulle schede | Alta | |
 | Fase 4 | Da pianificare | Media |
 | Fase 5 | Da pianificare | Media |
