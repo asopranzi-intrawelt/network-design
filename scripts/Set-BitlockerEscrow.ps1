@@ -28,6 +28,15 @@
     pianificato, non un effetto collaterale di uno script di inventario. In quel caso
     esce con codice 1 e lo dichiara.
 
+    Trappola da conoscere, perche' e' costata un'esposizione il 08/09/2026. Il cmdlet
+    Add-BitLockerKeyProtector stampa la password di ripristino appena creata sul
+    flusso di AVVISO, non su quello di successo: `| Out-Null` non la ferma, perche'
+    Out-Null sopprime il solo flusso di successo. Servono -WarningAction
+    SilentlyContinue e la redirezione del flusso 3, ed e' il motivo per cui la
+    chiamata qui sotto li porta entrambi. Chi semplificasse quella riga
+    reintrodurrebbe il difetto senza accorgersene, perche' tutto continuerebbe a
+    funzionare.
+
     La password di ripristino non viene mai scritta sull'output standard, nel flusso
     di errore o in un file temporaneo: finirebbe nel registro attivita' della console,
     che e' leggibile da chiunque abbia accesso al pannello e non e' il posto dove una
@@ -39,6 +48,13 @@
     Nome del campo personalizzato NinjaOne su cui depositare. Default 'bitlockerKey',
     che e' quello gia' in uso sui venti dispositivi conformi: cambiarlo creerebbe un
     secondo deposito parallelo, che e' peggio di nessun deposito.
+.PARAMETER SoloVerifica
+    Non scrive nulla: riporta lo stato di cifratura del volume, la presenza di un
+    protettore di ripristino e lo stato dell'ambiente di ripristino WinRE, e ne ricava
+    una riga sintetica per il censimento. E' la modalita' da lanciare su tutta la
+    flotta prima di dichiarare un perimetro, perche' il campo personalizzato prova il
+    deposito e non la cifratura, e i due stati vanno misurati e non dedotti l'uno
+    dall'altro.
 .PARAMETER NonCreareProtettore
     Se il volume e' cifrato ma privo di un protettore di tipo RecoveryPassword non ne
     crea uno e si limita a segnalarlo. Senza questo interruttore il protettore viene
@@ -58,7 +74,8 @@
 param(
     [string] $Unita = 'C:',
     [string] $NomeCampo = 'bitlockerKey',
-    [switch] $NonCreareProtettore
+    [switch] $NonCreareProtettore,
+    [switch] $SoloVerifica
 )
 
 $ErrorActionPreference = 'Stop'
@@ -104,6 +121,17 @@ try {
     Write-Output "Percentuale       : $($volume.EncryptionPercentage)"
     Write-Output "Protettori        : $(($volume.KeyProtector | ForEach-Object { $_.KeyProtectorType }) -join ', ')"
 
+    if ($SoloVerifica) {
+        $conRipristino = @($volume.KeyProtector | Where-Object { $_.KeyProtectorType -eq 'RecoveryPassword' }).Count -gt 0
+        $winre = (& (Join-Path $env:SystemRoot "System32\reagentc.exe") /info) 2>&1 | Out-String
+        $winreAttivo = $winre -match 'Enabled|Abilitato'
+        Write-Output "WinRE             : $(if ($winreAttivo) { 'abilitato' } else { 'NON abilitato' })"
+        Write-Output ''
+        Write-Output ("CENSIMENTO;{0};{1};{2};{3};{4};{5}" -f $env:COMPUTERNAME, $volume.ProtectionStatus, $volume.VolumeStatus, $volume.EncryptionMethod, $(if ($conRipristino) { 'RP-si' } else { 'RP-no' }), $(if ($winreAttivo) { 'WinRE-si' } else { 'WinRE-no' }))
+        Write-Output 'ESITO: sola verifica, nessuna modifica e nessuna scrittura sul campo.'
+        if ($volume.ProtectionStatus -eq 'On' -and $conRipristino) { exit 0 } else { exit 1 }
+    }
+
     if ($volume.ProtectionStatus -ne 'On') {
         Write-Output 'ESITO: BitLocker non e'' attivo su questo volume. Nessuna chiave da depositare.'
         Write-Output 'L''attivazione non viene eseguita da questo script: e'' una modifica da pianificare.'
@@ -118,7 +146,7 @@ try {
             exit 1
         }
         Write-Output 'Nessun protettore RecoveryPassword presente: ne viene aggiunto uno (operazione additiva).'
-        Add-BitLockerKeyProtector -MountPoint $Unita -RecoveryPasswordProtector | Out-Null
+        Add-BitLockerKeyProtector -MountPoint $Unita -RecoveryPasswordProtector -WarningAction SilentlyContinue 3>$null | Out-Null
         $volume = Get-BitLockerVolume -MountPoint $Unita
         $recupero = @($volume.KeyProtector | Where-Object { $_.KeyProtectorType -eq 'RecoveryPassword' })
         if ($recupero.Count -eq 0) { throw 'Creazione del protettore RecoveryPassword non riuscita.' }

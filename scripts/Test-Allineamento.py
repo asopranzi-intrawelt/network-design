@@ -348,22 +348,57 @@ def controlla_invarianti(esito):
                     coda = " (%d esclusi per decisione dichiarata)" % len(esclusi)
                 esito.ok("mappa dei segnaposto e file dei pattern coprono gli stessi prefissi" + coda)
 
-    # 3d. Il last-verified delle schede deve stare a HEAD, altrimenti dichiara il ritardo.
-    head = git('rev-parse', '--short', 'HEAD')
+    # 3d. Il frontmatter di una scheda deve dichiarare il commit in cui la scheda e' stata
+    # modificata per l'ultima volta.
+    #
+    # NON si confronta con HEAD, ed e' una correzione del 08/09/2026. Confrontare con HEAD
+    # segnalava tutte le schede dopo qualunque commit, anche uno che non le riguardava: un
+    # giallo perpetuo, cioe' il difetto che questo impianto esiste per evitare. Nasceva da una
+    # circolarita': la regola prescrive di bumpare dopo il commit, ma il bump e' esso stesso
+    # una modifica da committare, quindi l'allineamento con HEAD e' irraggiungibile per
+    # costruzione. Confrontando invece con il commit che ha toccato la scheda per ultimo si
+    # misura la cosa che conta, cioe' se qualcuno l'ha modificata senza bumparne il
+    # frontmatter, e si tace quando il repository avanza per ragioni estranee a quella scheda.
     cartella = os.path.join(RADICE, '.claude', 'context')
-    indietro = []
-    if head and os.path.isdir(cartella):
+    # Il percorso si estrae separando sul primo spazio, non tagliando a posizione fissa: il
+    # taglio a posizione fissa si e' rotto l'08/09/2026 perche' l'helper normalizza l'output e
+    # lo spazio iniziale della prima riga spariva, sfasando quella sola riga di un carattere.
+    # Nel caso di una rinomina la porcelain scrive "vecchio -> nuovo": interessa il nuovo.
+    sporche = set()
+    for riga in git('status', '--porcelain').split('\n'):
+        riga = riga.strip()
+        if not riga:
+            continue
+        pezzi = riga.split(None, 1)
+        if len(pezzi) < 2:
+            continue
+        percorso = pezzi[1].strip().strip('"')
+        if ' -> ' in percorso:
+            percorso = percorso.split(' -> ', 1)[1].strip().strip('"')
+        sporche.add(percorso)
+    disallineate = []
+    quante = 0
+    if os.path.isdir(cartella):
         for nome in sorted(n for n in os.listdir(cartella) if n.endswith('.md')):
-            corpo = testo_di('.claude/context/' + nome)
+            rel = '.claude/context/' + nome
+            corpo = testo_di(rel)
             trovato = re.search(r'^last-verified:\s*(\S+)', corpo, re.M)
-            if trovato and not trovato.group(1).startswith(head[:7]):
-                indietro.append((nome, trovato.group(1)))
-        if indietro:
-            esito.avviso("%d schede con last-verified dietro a HEAD (%s)" % (len(indietro), head))
-            for nome, hash_scheda in indietro:
-                esito.nota("      %-26s %s" % (nome, hash_scheda))
+            if not trovato:
+                continue
+            quante += 1
+            dichiarato = trovato.group(1)
+            if rel in sporche:
+                # Modificata e non ancora committata: il bump si valuta al commit, non ora.
+                continue
+            ultimo = git('log', '-1', '--format=%h', '--', rel)
+            if ultimo and not (dichiarato.startswith(ultimo[:7]) or ultimo.startswith(dichiarato[:7])):
+                disallineate.append((nome, dichiarato, ultimo))
+        if disallineate:
+            esito.avviso("%d schede modificate senza che il frontmatter sia stato bumpato" % len(disallineate))
+            for nome, dichiarato, ultimo in disallineate:
+                esito.nota("      %-26s dichiara %s, ultima modifica in %s" % (nome, dichiarato, ultimo))
         else:
-            esito.ok("tutte le schede di .claude/context/ sono a HEAD (%s)" % head)
+            esito.ok("il frontmatter delle %d schede corrisponde al commit che le ha toccate per ultimo" % quante)
 
 
 # ---------------------------------------------------------------------------
