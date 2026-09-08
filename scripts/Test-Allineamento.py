@@ -297,6 +297,63 @@ def controlla_invarianti(esito):
     else:
         esito.ok("nessun difetto richiamato oltre il massimo definito (#%d)" % massimo)
 
+    # 3c-ter. Nel registro dei difetti un numero non si assegna due volte.
+    #
+    # Invariante nato l'08/09/2026 da una collisione reale: il difetto del guard-rail di
+    # anonimizzazione e quello del volume BitLocker a protezione sospesa erano entrambi #191 e
+    # SEC-047, scritti lo stesso giorno da due sessioni di lavoro diverse su un file che
+    # nessuna delle due sapeva di condividere. La collisione e' arrivata in un commit senza
+    # che nulla la dichiarasse, ed e' stata trovata da una persona che leggeva il registro per
+    # altro. Non e' un difetto di forma: il numero e' il modo in cui ogni scheda si riferisce a
+    # un difetto, quindi due voci allo stesso numero rendono ambiguo ogni richiamo esistente e
+    # ogni richiamo futuro. E' il punto cieco di classe D di .claude/rules/fonti-e-riallineamento.md
+    # nella sua forma piu' banale, cioe' due mani sullo stesso file.
+    #
+    # Il numero non ammette eccezioni e la sua collisione e' quindi rossa. L'identificatore ne
+    # ammette due, dichiarate, ed e' la ragione per cui il suo esito e' un avviso: una riga di
+    # aggiornamento che porta il parentetico nella cella, come "TEL-002 (aggiornamento)", e una
+    # riga di seguito numerata con un suffisso di lettera, come 136b che continua 136. Fuori da
+    # questi due casi due voci con lo stesso identificatore sono due difetti diversi che si
+    # presentano con lo stesso nome, che e' la stessa ambiguita' un livello piu' in basso.
+    if not gap:
+        esito.grave("registro dei difetti non leggibile: l'unicita' dei numeri non e' verificabile")
+    else:
+        righe = re.findall(r'^\|\s*(\d+[a-z]?)\s*\|\s*([^|]*)\|', gap, re.M)
+        per_numero = {}
+        per_id = {}
+        for numero, cella in righe:
+            per_numero.setdefault(numero, 0)
+            per_numero[numero] += 1
+            cella = cella.strip()
+            # La cella con un parentetico e' una continuazione dichiarata e non una collisione.
+            if '(' in cella:
+                continue
+            trovato = re.match(r'^\*{0,2}([A-Z]{2,6}-\d+[a-z]*)', cella)
+            if trovato:
+                per_id.setdefault(trovato.group(1), []).append(numero)
+        ripetuti = sorted((n for n, quanti in per_numero.items() if quanti > 1),
+                          key=lambda n: (int(re.match(r'\d+', n).group()), n))
+        if ripetuti:
+            esito.grave("%d numeri assegnati a piu' di una voce del registro: %s"
+                        % (len(ripetuti), ', '.join('#' + n for n in ripetuti)))
+            esito.nota("      un numero vale per una voce sola: ogni richiamo a un numero doppio e' ambiguo")
+            esito.nota("      si rinumera la voce piu' recente, che e' quella con meno richiami da rompere")
+        else:
+            esito.ok("i %d numeri del registro dei difetti sono tutti distinti" % len(per_numero))
+        # Un suffisso di lettera sullo stesso numero e' una riga di seguito: 136b continua 136.
+        collisi = []
+        for identificativo, numeri in sorted(per_id.items()):
+            radici = set(re.match(r'\d+', n).group() for n in numeri)
+            if len(numeri) > 1 and len(radici) > 1:
+                collisi.append((identificativo, sorted(numeri, key=lambda n: (int(re.match(r'\d+', n).group()), n))))
+        if collisi:
+            esito.avviso("%d identificatori portati da voci diverse del registro" % len(collisi))
+            for identificativo, numeri in collisi:
+                esito.nota("      %-12s su %s" % (identificativo, ', '.join('#' + n for n in numeri)))
+            esito.nota("      due difetti distinti con lo stesso nome: da guardare, non da rinominare a scatola chiusa")
+        else:
+            esito.ok("nessun identificatore e' portato da due voci distinte")
+
     # 3c-bis. La mappa dei segnaposto e il file dei pattern devono coprire le stesse cose.
     #
     # La regola di anonimizzazione dichiara che sono "due facce dello stesso dato", ed era

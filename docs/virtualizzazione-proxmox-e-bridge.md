@@ -221,7 +221,7 @@ La prima riguarda la continuita'. Lo switch non gestito e' un punto di guasto si
 
 La seconda riguarda la diagnosi. Quando la console Proxmox non risponde, oggi non esiste modo di sapere se il problema e' quel tratto: niente contatori, niente log, niente tabella MAC interrogabile. Si diagnostica staccando cavi, cioe' con un'interruzione di servizio.
 
-La terza riguarda l'esposizione dei servizi. Tre difetti aperti sono manifestazioni diverse dello stesso fatto strutturale, cioe' che le macchine virtuali stanno sulla LAN piatta senza niente in mezzo: il portale asset della VM 208 che pubblica su 80 e 443 verso l'intero dominio di broadcast (#121, NET-011), il pannello di amministrazione del CMS di staging sulla VM 209 raggiungibile da qualunque host con la sola autenticazione applicativa a difenderlo (#155, NET-024), e la DMZ progettata da tre mesi che non esiste e che ha gia' un inquilino in attesa (#154, FW-014). Nessuno dei tre si risolve sul singolo servizio: si risolvono con M22 e con il segmento 201.
+La terza riguarda l'esposizione dei servizi. Tre difetti aperti sono manifestazioni diverse dello stesso fatto strutturale, cioe' che le macchine virtuali stanno sulla LAN piatta senza niente in mezzo: il portale asset della VM 208 che pubblica su 80 e 443 verso l'intero dominio di broadcast (#121, NET-011), il pannello di amministrazione del CMS di staging sulla VM 209 raggiungibile da qualunque host con la sola autenticazione applicativa a difenderlo (#155, NET-024), e la DMZ progettata da tre mesi che non esiste e che ha gia' un inquilino in attesa (#154, FW-015). Nessuno dei tre si risolve sul singolo servizio: si risolvono con M22 e con il segmento 201.
 
 ## Rilevanza ISO27001
 
