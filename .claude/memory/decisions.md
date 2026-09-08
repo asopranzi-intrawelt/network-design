@@ -2,6 +2,22 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-028 - Una lezione appresa risale al template nel momento in cui la si impara, con il perche'
+
+Data: 2026-09-08 Stato: attiva. **Estende ADR-027**, che copriva la sola risalita di una capacita' mancante.
+
+Contesto. ADR-027 aveva aperto il confine verso il template per un caso preciso: una capacita' che la' manca o e' fragile. L'08/09/2026 l'IT Manager ha allargato il mandato, e la ragione che ha dato e' operativa e non teorica: quel template viene **ciclato periodicamente su progetti vecchi e nuovi**, quindi ogni lezione che resta soltanto qui e' una lezione che ogni progetto futuro dovra' ripagare.
+
+Decisione: **quando questo progetto impara una lezione, la lezione risale al template nel momento in cui la si impara**, e vi risale insieme al motivo per cui e' stata imparata. Non alla fine di una fase, non quando si ha tempo, non solo quando manca una capacita' intera: nel momento in cui si capisce qualcosa che valga anche fuori da qui.
+
+Che cosa vale come lezione, perche' non tutto lo e'. Vale un difetto di **metodo** che si ripeterebbe altrove: un criterio di validita' preso da un guasto reale invece che inventato, un controllo che segnala sempre e quindi smette di essere letto, un perimetro definito su uno stato di git invece che sulla pubblicabilita'. Vale un **bug di forma** che qualunque riuso incontrerebbe: un taglio a posizione fissa su un output normalizzato, i colori accesi quando l'uscita non e' un terminale. Non vale un fatto di questa rete, un nome di apparato, una data di questo progetto: quelli restano qui e nel template diventerebbero rumore.
+
+Il **perche' e' parte della cosa che risale**, e non un ornamento. Una regola senza la sua ragione viene applicata dove non serve e disapplicata dove serve, perche' chi la legge non ha modo di giudicare se il suo caso somigli a quello che l'ha generata. Nel template la ragione si scrive in forma generalizzata, cioe' con i numeri della misura ma senza gli identificatori del progetto di origine, ed e' la stessa disciplina che ADR-027 impone al codice.
+
+Vincoli, che restano quelli di ADR-027. Direzione unica verso il template e nessun altro repository. Ramo dedicato e commit manuale dell'utente, perche' quel repository ha un'altra identita' git. E cio' che risale va provato **la'**: nel primo caso reale la prova sul template trovo' due difetti che la prova qui non poteva trovare, fra cui un indirizzo concreto di esempio dentro il documento che vietava gli indirizzi concreti di esempio.
+
+Conseguenza operativa, ed e' la parte che rende la decisione eseguibile invece che buona: ogni voce di work-log che registra una lezione dichiara **se sia risalita**, e in caso contrario perche' no. Senza quel campo la regola dipende dalla memoria, che e' precisamente cio' che ADR-026 ha smesso di accettare.
+
 ## ADR-027 — Il confine con gli altri repository si apre in una direzione sola: la risalita di una capacita' al template
 
 Data: 2026-09-07 Stato: attiva. **Deroga circoscritta** al vincolo di `CLAUDE.md` §Confine con E:\projects, che resta valido per tutto il resto.
