@@ -304,16 +304,7 @@ Ordine corretto per non scollegare un AP live prima che il resto sia pronto (ver
 
 1. **Fatto 16/07/2026.** Interfaccia `vlan40` creata sul firewall via GUI (Base Port lan1, IP 10.61.40.1/24), zona dedicata `WIFI_STAFF` creata e assegnata (spostata dalla zona di default LAN1). DHCP configurato nella stessa sessione (era rimasto su "None" al primo giro, corretto prima di proseguire): pool 10.61.40.10-209, DNS 8.8.8.8/1.1.1.1, lease 2 giorni.
 2. **Fatto 16/07/2026.** Security policy create: `WIFI_STAFF_to_LAN1_deny` (priorita' 1) e `WIFI_STAFF_Outgoing` (priorita' 2, allow verso WAN/altre zone) — ordine corretto con "Move" dopo un primo tentativo invertito, verificato prima di Apply. In parallelo, pulizia di 9 secure-policy disattivate non piu' necessarie (vedi §NAT e virtual server, Disallineamento risolto).
-3. **Tentato e ripristinato 16/07/2026.** `Set-NebulaWifiVlan.ps1 -Only
-   Access -ApName <nome> -Apply` eseguito una porta alla volta, ciascuna
-   verificata correttamente lato switch (portVid/allowedVLAN, tabella MAC
-   L2) — ma entro pochi minuti l'SSID ha smesso di essere trasmesso dai
-   tre AP, confermato con due dispositivi diversi. Rollback immediato
-   (`-VlanId 1 -Apply`) e servizio Wi-Fi confermato tornato. Dettaglio
-   completo, ipotesi di causa e conseguenze per la roadmap in
-   `runbook-anomalie.md` §NET-005 "Incidente 16/07/2026". La configurazione
-   di questo file (passi 1-2) resta applicata e valida per un nuovo
-   tentativo.
+3. **Tentato e ripristinato 16/07/2026.** `Set-NebulaWifiVlan.ps1 -Only Access -ApName <nome> -Apply` eseguito una porta alla volta, ciascuna verificata correttamente lato switch (portVid/allowedVLAN, tabella MAC L2) — ma entro pochi minuti l'SSID ha smesso di essere trasmesso dai tre AP, confermato con due dispositivi diversi. Rollback immediato (`-VlanId 1 -Apply`) e servizio Wi-Fi confermato tornato. Dettaglio completo, ipotesi di causa e conseguenze per la roadmap in `runbook-anomalie.md` §NET-005 "Incidente 16/07/2026". La configurazione di questo file (passi 1-2) resta applicata e valida per un nuovo tentativo.
 4. Da rifare con procedura piu' prudente (presenza fisica a un AP alla volta, finestra di osservazione piu' lunga, eventuale power-cycle manuale) oppure con un meccanismo che non tocchi il PVID della porta AP (es. `Layer 2 Isolation` del firewall, non ancora esplorato) prima di poter completare i passi seguenti.
 5. Verificare che un client sulla Wi-Fi raggiunga Internet ma non un host noto della LAN1 (es. non risponda a un ping verso 10.61.10.1).
 6. Aggiornare `network-diagram.md`, `GAP-TBC.md` (NET-005) e la timeline; registrare il commit come singolo micro-step (M13a) secondo `.claude/rules/git-commands-format.md`.
@@ -383,6 +374,37 @@ Backup schedulato: generazione automatica alle 06:00 con invio via mail. File: s
 
 ---
 
+## Rotazione della chiave pre-condivisa di un tunnel IPsec, e perche' non e' una modifica come le altre
+
+Scritta l'08/09/2026 rispondendo a una domanda diretta dell'IT Manager, che ha dichiarato di **non sapere** se la chiave del tunnel verso il fornitore di hosting sia mai stata ruotata dal 2018. Ai fini operativi quel "non lo so" vale come un no, perche' una chiave la cui ultima rotazione nessuno puo' datare va trattata come mai ruotata: e' del 2018 fino a prova contraria. La procedura sta qui e non in un difetto perche' e' riutilizzabile su qualunque tunnel, non solo su questo (SEC-023, #138).
+
+### Il fatto che governa tutta la procedura
+
+Una chiave pre-condivisa e' **simmetrica**: lo stesso valore vive sui due estremi del tunnel, e i due estremi appartengono a due organizzazioni diverse. Ne discendono tre conseguenze che rendono questa modifica diversa da tutte le altre di questo documento.
+
+La prima e' che **non esiste un momento in cui la chiave e' cambiata da un lato solo e il tunnel funziona**. Appena si scrive il valore nuovo su un estremo, la negoziazione con l'altro estremo fallisce, e il tunnel resta giu' finche' anche l'altro lato non ha il valore nuovo. Il tempo di interruzione non e' quello che serve a scrivere la chiave: e' quello che passa fra la prima e la seconda scrittura, e quel secondo tempo non e' sotto il nostro controllo.
+
+La seconda e' che serve un **canale per consegnare il valore nuovo** al fornitore, e quel canale non puo' essere il tunnel stesso, ne' una casella di posta in chiaro, ne' un allegato. Una chiave consegnata male vanifica la rotazione, perche' il valore vecchio era compromesso solo in ipotesi mentre quello nuovo lo sarebbe di fatto.
+
+La terza e' che l'operazione va **concordata con una data e un'ora**, non annunciata. Un fornitore che riceve la richiesta di cambiare una chiave e la esegue quando gli capita produce esattamente la finestra di interruzione che si voleva contenere.
+
+### La procedura, nell'ordine in cui va eseguita
+
+Primo, si stabilisce **che cosa passa da quel tunnel e chi se ne accorge se cade**. Su questo tunnel passano i file di un progetto ospitato, quindi la caduta e' visibile a chi ci lavora: la finestra va quindi fuori orario, e chi ci lavora va avvisato prima e non dopo.
+
+Secondo, si genera il valore nuovo. Va generato con un generatore casuale e non scelto, lungo, e **non va scritto in nessun file di questo repository** ne' in una chat: il posto dove vive e' il gestore delle password, e questa e' una delle ragioni per cui completare il gestore ha una precedenza operativa e non solo di igiene. Fino a quando il gestore non e' collegato, il valore vive nel gestore locale della postazione di chi amministra e da nessun'altra parte.
+
+Terzo, si concorda con il fornitore la finestra e il canale di consegna. Il canale corretto e' uno solo dei due estremi che digita e l'altro che conferma per telefono, oppure uno scambio su un canale cifrato indipendente dal tunnel. Se il fornitore propone la posta elettronica, la risposta e' no, e la ragione va detta invece di girarci intorno.
+
+Quarto, nella finestra concordata si scrive il valore nuovo sul gateway del tunnel, sul firewall: `Configuration` -> `VPN` -> `IPsec VPN`, si apre il **VPN Gateway** che descrive quel peer, e la chiave sta nella sezione dell'autenticazione. **Percorso da confermare sulla GUI al momento dell'intervento**: questa sezione lo riporta dalla struttura del menu visibile negli screenshot dell'08/09/2026 e non da un'esecuzione reale, e su un apparato di questa classe il nome esatto della voce cambia fra versioni di firmware.
+
+Quinto, si verifica che il tunnel **risalga** e non solo che la configurazione sia stata accettata: sono due cose diverse, e una chiave scritta correttamente su un solo lato produce una configurazione valida e un tunnel giu'. La verifica e' lo stato del tunnel piu' una prova di traffico reale attraverso di esso, non il solo stato.
+
+Sesto, si annota la data. Il difetto da cui questa procedura nasce non e' che la chiave fosse vecchia: e' che **nessuno potesse dire quando fosse stata cambiata l'ultima volta**. Una rotazione che non lascia una data scritta ricrea lo stesso difetto il giorno dopo. La data va nel registro degli interventi e la scadenza successiva nel registro delle scadenze, `data/scadenze.json`, cosi' che il controllo di allineamento la riporti da solo quando si avvicina.
+
+### Cosa non fare
+
+Non si ruota una chiave pre-condivisa "per provare se funziona" in orario di lavoro, perche' l'esito peggiore non e' che non funzioni ma che funzioni a metà: il tunnel giu' con il fornitore non raggiungibile fino al giorno dopo. E non si sostituisce questa procedura con la migrazione a certificati, che e' la soluzione migliore nel merito ma e' un progetto a se': una chiave del 2018 va ruotata adesso e migrata quando ci sara' il tempo, non ruotata quando ci sara' il tempo di migrarla.
 ## Anomalie e TBC aperti
 
 | ID | Descrizione | Stato |
