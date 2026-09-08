@@ -3,7 +3,6 @@
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
   "revisione": 3,
   "aggiornato": "2026-09-07",
-
   "scadenze": [
     {
       "id": "NEB-54HP",
@@ -54,7 +53,6 @@
       "dove": "STOR-003 (#187); docs/business-continuity-disaster-recovery.md"
     }
   ],
-
   "freschezza": [
     {
       "id": "automazione-rinfresco",
@@ -109,7 +107,6 @@
       "dove": ".claude/rules/fonti-e-riallineamento.md, classe C. E' il canale con cui la classe D lascia traccia"
     }
   ],
-
   "asserzioni_umane": [
     {
       "id": "BITDEFENDER-POSTI",
@@ -124,8 +121,8 @@
     {
       "id": "QNAP-RIPRISTINO",
       "afferma": "Dallo spazio cloud scaduto di Francoforte si puo' ancora ripristinare, non solo constatare che il contenuto c'e'",
-      "stato": "MAI VERIFICATA",
-      "verificata_il": null,
+      "stato": "VERIFICATA 08/09/2026: lo spazio vecchio e' ancora leggibile, il pannello vieta la scrittura e non la lettura",
+      "verificata_il": "2026-09-08",
       "validita_giorni": 30,
       "domanda": "Scaricare un singolo file dallo spazio scaduto dal pannello del fornitore: riesce o no?",
       "a_chi": "IT Manager",
@@ -134,8 +131,8 @@
     {
       "id": "QNAP-SEEDING",
       "afferma": "Il job di backup punta al nuovo spazio di Milano ed e' partito",
-      "stato": "MAI VERIFICATA",
-      "verificata_il": null,
+      "stato": "VERIFICATA 08/09/2026: lavoro configurato ed eseguito, ultima corsa riuscita il 07/09 alle 23:23, pianificazione giornaliera",
+      "verificata_il": "2026-09-08",
       "validita_giorni": 7,
       "domanda": "Sul NAS: il job punta al nuovo spazio? A che percentuale e' il primo caricamento, e quando finisce?",
       "a_chi": "IT Manager",
@@ -144,9 +141,9 @@
     {
       "id": "COPIE-FUORI-SEDE",
       "afferma": "La replica verso lo spazio a blocchi e quella verso lo spazio cloud sono due copie fuori sede distinte",
-      "stato": "NON DETERMINATA",
-      "verificata_il": null,
-      "validita_giorni": 30,
+      "stato": "RISOLTA 08/09/2026, ROVESCIATA: la copia fuori sede e' UNA sola. La replica verso lo spazio a blocchi non esiste fra i lavori attivi, era documentazione obsoleta",
+      "verificata_il": "2026-09-08",
+      "validita_giorni": 180,
       "domanda": "Leggere i job di backup ibrido sul NAS: sono due job distinti verso due destinazioni, o uno solo descritto due volte nella documentazione?",
       "a_chi": "IT Manager",
       "dove": "STOR-002 (#186), STOR-003 (#187), docs/business-continuity-disaster-recovery.md"
