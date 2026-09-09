@@ -1,5 +1,17 @@
 # Work-log
 
+## 2026-09-09 (2) - Il runbook dell'intervento, e il vincolo fisico che l'acquisto non poteva conoscere
+
+Commit: PENDING (da fare manualmente) File toccati: **nuovo** `docs/runbook-intervento-tratta-esterna.md`; `CLAUDE.md` (indice dei file tracciati); `.claude/context/roadmap.md` (M13c-10 rimanda al runbook, piu' il bump del frontmatter a `08fadb1` insieme a `current-work.md`); `.claude/memory/progress.md`.
+
+**Perche' un runbook e non una riga di roadmap.** La roadmap dice dove siamo, il runbook dice come si fa, e questo intervento ha tre punti in cui l'ordine dei fatti e' la differenza fra un collaudo e un guasto: la misura da prendere prima di ordinare, lo spostamento dei rami uno alla volta dal meno critico al piu' critico, e il punto di non ritorno dichiarato prima di attraversarlo, cioe' la rimozione del GS-105B e del vecchio access point solo dopo i tre collaudi. Il criterio di lettura della diagnostica del cavo e' scritto **prima** di guardare il risultato, cosi' non lo si interpreta a posteriori: due coppie significa terminazione a quattro fili e ri-terminazione nella stessa uscita, quattro coppie con 100 Mb/s significa che l'ipotesi di #196 va corretta invece di essere difesa.
+
+**Il vincolo che nessuna scheda tecnica di rete rende evidente, ed e' il motivo per cui l'acquisto dello switch resta indeterminato.** Il GS-105B sta alla **derivazione sul tetto**, `0-9-1`, non nel locale caldaia, perche' e' li' che convergono i tre cavi. Il suo sostituto sta nello stesso posto, quindi la domanda che governa l'acquisto non e' quante porte servono ma **in che posizione fisica** stia quella derivazione: dentro un vano tecnico riparato, oppure esposta. Le due strade sono uno switch da interno in un contenitore esterno con gestione termica, che sposta il rischio sul contenitore, oppure uno switch con intervallo di temperatura esteso, che costa piu' e non richiede nulla intorno. L'access point non ha questo problema perche' e' un apparato da esterno per costruzione.
+
+**Un requisito che non serve, e vale dirlo per non pagarlo.** Porte a 2,5 o 10 Gb/s sull'uplink non servono finche' la tratta negozia 100 Mb/s, e se la ri-terminazione la porta a 1 Gb/s il limite successivo diventa il cavo in categoria 6 verso l'irrigazione. La spesa utile e' il PoE in 802.3at con bilancio confermato dal fornitore e la gestione Nebula, che e' l'unica ragione per cui la sostituzione ha senso: senza quella si sostituisce un apparato cieco con un altro apparato cieco.
+
+**Frontmatter bumpato dopo il commit `08fadb1`**, che e' il passo di firma: `current-work.md` e `roadmap.md` dichiarano ora il commit che contiene il loro contenuto, e l'invariante e' verde. E' la prima volta che il ciclo scrivi-committa-firma si chiude nella stessa sessione con la semantica nuova.
+
 ## 2026-09-09 - La tratta esterna: il GS-105B lascia il posto a uno switch gestito, e i conti delle porte decidono l'architettura
 
 Commit: PENDING (da fare manualmente) File toccati: `.claude/memory/decisions.md` (**ADR-029**); `.claude/context/roadmap.md` (M13c-3 deciso, M13c-5 misurato, M13c-6 ampliato, M13c-9 raddoppiato, **M13c-10** nuovo); `docs/infrastructure-timeline/GAP-TBC.md` (#196 NET-031, addendum a #136b, totale a 196); `docs/livello-fisico-ed-elettrico.md` (porta 4 e una domanda aperta chiusa); `docs/mappatura-porte-fisiche.md` (`0-9-1`); `data/scadenze.json` (revisione 5, asserzione sulle due licenze); `data/port-matrix.json` (rigenerata dallo snapshot delle 07:30); `.claude/context/current-work.md`; `.claude/memory/index.md`.
