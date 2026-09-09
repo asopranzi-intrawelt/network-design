@@ -20,6 +20,14 @@ Quattro porte in servizio come minimo, cioe' uplink verso la porta 4 piu' i tre 
 
 Un requisito che non serve, e vale dirlo per non pagarlo: porte a 2,5 o 10 Gb/s sull'uplink non servono finche' la tratta negozia 100 Mb/s, e se la ri-terminazione la porta a 1 Gb/s il limite diventa il cavo in categoria 6 verso l'irrigazione, non lo switch.
 
+## Il testo della richiesta di preventivo, pronto da inoltrare
+
+Scritto il 09/09/2026, dopo la chiusura di M13c-5 e l'accettazione consapevole di #196. Segue la procedura di M13b, cioe' preventivo dal fornitore abituale, e va inoltrato insieme alla richiesta di conferma dell'ordine dell'access point del 31/07, che nessuna fonte del progetto risulta confermato.
+
+> Serve uno **switch gestito con PoE** per sostituire uno switch non gestito a cinque porte che oggi dirama tre utenze in un punto tecnico raggiunto da una dorsale in categoria 6a. Requisiti: da cinque a otto porte, di cui almeno una che eroga **PoE 802.3at** per alimentare un access point da esterno che dichiara 24 W, con indicazione del **bilancio PoE totale** dell'apparato e non del solo numero di porte alimentate; **gestione cloud Nebula**, perche' l'apparato deve entrare nella stessa organizzazione che gia' gestisce gli altri switch e access point; alimentazione da presa di rete locale; e **intervallo di temperatura operativa dichiarato**, perche' l'apparato vive in un punto tecnico non climatizzato. Non servono porte a 2,5 o 10 Gb/s: la tratta negozia cento megabit e resta cosi'. Serve inoltre la **licenza Nebula Professional** per questo apparato e per l'access point, **co-terminata al 22/11/2027** per allinearla alle licenze in essere. Se disponibile, quotare anche un contenitore di protezione adeguato al punto di installazione.
+
+Due note che stanno nella richiesta per una ragione e non per completezza. Il **bilancio PoE** si chiede perche' un apparato con quattro porte alimentate e un bilancio da 30 W alimenta un access point e nient'altro, e su quella derivazione le utenze sono cresciute due volte senza preavviso. L'**intervallo di temperatura** si chiede perche' l'access point del preventivo dichiara 0-50 gradi, che in un punto esterno esposto significa fuori specifica nelle notti d'inverno: e' la ragione per cui il contenitore protettivo non e' un accessorio estetico, e lo stesso vincolo vale per lo switch che gli sta accanto.
+
 ## Passo zero, prima di ordinare: la diagnostica del cavo
 
 Da fare adesso, perche' decide se l'intervento comprende anche una ri-terminazione e perche' costa un clic. Nei pannelli Nebula, sul dettaglio della porta, la funzione **Cable diagnostic** manda un impulso e riporta lo stato coppia per coppia con la lunghezza stimata, con un errore dichiarato di circa dieci metri.
@@ -27,6 +35,14 @@ Da fare adesso, perche' decide se l'intervento comprende anche una ri-terminazio
 Il criterio di lettura e' scritto prima di guardare il risultato, cosi' non lo si interpreta a posteriori. Se le coppie risultano **due**, la dorsale in categoria 6a e' terminata a quattro fili e il limite e' la terminazione: va ri-terminata, e conviene farlo nella stessa uscita in cui si monta il contenitore, perche' l'elettricista e' gia' sul posto. Se le coppie risultano **quattro** e la velocita' resta 100 Mb/s, il limite e' altrove e il candidato successivo e' la qualita' della singola tratta o un apparato che forza la velocita', e in quel caso l'ipotesi di #196 va corretta invece di essere difesa. Se una coppia risulta interrotta a una distanza intermedia, quella distanza dice dove guardare.
 
 Due avvertenze operative. La diagnostica **fa cadere il collegamento** per qualche secondo, quindi non si lancia durante un ciclo di irrigazione ne' mentre l'inverter sta comunicando dati che qualcuno sta guardando. E va lanciata su **entrambe** le porte 3 e 4, perche' il sintomo e' identico su due tratte posate nello stesso lavoro e una sola misura non distingue una coincidenza da una pratica di posa.
+
+## Esito del passo zero, misurato il 09/09/2026
+
+La diagnostica ha risposto: quattro coppie in stato `OK`, nessuna distanza di guasto, **Pair-A e Pair-B a 54,00 metri, Pair-C e Pair-D a 0,00**. Ne segue che la lunghezza non e' la causa del ripiego a 100 Mb/s, perche' cinquantaquattro metri stanno larghi dentro i cento ammessi, e che non c'e' un guasto localizzato, perche' una coppia interrotta a metà tratta avrebbe popolato la distanza di guasto. Lo stato `OK` con lunghezza zero e' la firma di una coppia non rilevata.
+
+L'ipotesi delle due coppie non attestate e' quindi sostenuta e non dimostrata, e la ragione dell'ambiguita' va tenuta presente perche' e' dello strumento e non del cavo: con il collegamento attivo a 100 Mb/s soltanto due coppie trasportano segnale, e il riflettometro puo' non misurare quelle inattive. Il discriminante e' ripetere la misura con il collegamento **caduto**, quando il riflettometro misura i conduttori fisici a prescindere dall'uso, oppure aprire i due frutti di `0-8-1` e `0-9-1` e contare i fili attestati. La seconda verifica va fatta comunque durante l'intervento, quindi la prima serve solo a decidere **prima** se mettere la ri-terminazione nel preventivo dell'elettricista.
+
+Resta da confermare il **numero della porta**: la pagina di dettaglio da cui viene la misura porta gli stessi contatori letti mezz'ora prima, e le porte 3 e 4 hanno lo stesso sintomo.
 
 ## L'esecuzione, in un ordine in cui ogni passo e' reversibile
 
