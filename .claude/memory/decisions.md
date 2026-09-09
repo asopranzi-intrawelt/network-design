@@ -2,6 +2,23 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-029 - La tratta verso l'esterno passa da un apparato non gestito a uno gestito e PoE
+
+Data: 2026-09-09 Stato: attiva. Determina M13c-3 e apre M13c-10; chiude per sostituzione il punto cieco di NET-017 (#136/#136b).
+
+Contesto. Fra la porta 4 del XGS2220-30HP e le utenze esterne vive uno **Zyxel GS-105B v5**, cinque porte, non gestito e non PoE, interposto dagli elettricisti durante il montaggio dell'inverter fotovoltaico per diramare tre utenze da un cavo che prima era unico. Da li' escono la centrale di irrigazione, l'access point esterno Ubiquiti fuori supporto e l'inverter. L'apparato non compare in nessun inventario, e la sua unica impronta misurabile e' la tabella MAC della porta 4: nessuna interrogazione automatica lo avrebbe mai rivelato, ed e' stato scoperto perche' quattro indirizzi su una porta che doveva averne uno sono la firma di uno switch.
+
+Il piano precedente prevedeva di sostituire il solo access point. Due fatti misurati il 09/09/2026 lo rendono insufficiente. Il primo e' aritmetico: dal GS-105B escono **tre** rami, mentre l'access point del preventivo porta un uplink piu' **una** sola porta LAN, quindi una delle due utenze cablate resterebbe senza porta e finirebbe via radio, cioe' un impianto che oggi non dipende da una passphrase comincerebbe a dipenderne. Il secondo e' che **M13c-8 non e' eseguibile con un apparato non gestito**: portare irrigazione e inverter nella VLAN 60 richiede qualcosa che sappia taggare, e con un GS-105B il segmento IoT/OT si fermerebbe a monte della tratta esterna.
+
+Decisione, dell'IT Manager: **il GS-105B viene sostituito da uno switch gestito e PoE, collegato alla porta 4 del 30HP, e l'access point nuovo pende da quello in PoE**. Lo switch entra nella stessa organizzazione Nebula che gia' gestisce gli altri apparati.
+
+Motivazione, in cio' che la sostituzione chiude e che il solo cambio di access point lasciava aperto. L'apparato interposto diventa un dispositivo **inventariato e leggibile** dalla stessa fonte automatica con cui questo progetto verifica porte, PVID e VLAN, quindi cessa di essere un punto in cui i tag possono essere scartati o propagati senza controllo. La tratta esterna diventa **taggabile**, che e' la precondizione del segmento IoT/OT. Le due utenze cablate **restano cablate**. E la catena di alimentazione torna coerente: il PoE della porta 4 e' attivo e oggi lo interrompe proprio il GS-105B, che non e' PoE.
+
+Conseguenze. L'intervento cambia baricentro e non e' piu' la sostituzione di un access point: nasce il sotto-passo M13c-10 per la sostituzione fisica dell'apparato di diramazione e la ricostruzione dei tre rami. Gli apparati che entrano in organizzazione diventano **due**, quindi **due licenze** entro quindici giorni ciascuna, co-terminate al 22/11/2027: un solo apparato scoperto fa scendere l'intera organizzazione a Base Pack e con essa muore la OpenAPI, ed e' esattamente cio' che e' accaduto il 05/08/2026 (NEB-002, ADR-022). Lo switch nuovo va alimentato dalla presa che oggi alimenta il GS-105B, quindi l'alimentazione della tratta esterna resta una dipendenza da presa locale e non diventa interamente PoE. A intervento concluso vanno aggiornati `data/network-topology.json` e `docs/livello-fisico-ed-elettrico.md`, e la mappa si rigenera.
+
+Vincolo che resta e non va perso: la chiave Nebula in uso e' di sola lettura per scelta (ADR-009) e il canale di scrittura verso gli switch si e' dimostrato inaffidabile (ADR-010, NEB-001). La configurazione del nuovo switch si fa dai pannelli, non da questo repository.
+
+---
 ## ADR-028 - Una lezione appresa risale al template nel momento in cui la si impara, con il perche'
 
 Data: 2026-09-08 Stato: attiva. **Estende ADR-027**, che copriva la sola risalita di una capacita' mancante.

@@ -1,8 +1,8 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 4,
-  "aggiornato": "2026-09-08",
+  "revisione": 5,
+  "aggiornato": "2026-09-09",
   "scadenze": [
     {
       "id": "NEB-54HP",
@@ -184,6 +184,16 @@
       "domanda": "La rotazione va pianificata: procedura in docs/firewall-zyxel-usg-flex-500.md, sezione sulla rotazione della chiave del tunnel",
       "a_chi": "IT Manager",
       "dove": "SEC-023 (#138); FW-006, M14"
+    },
+    {
+      "id": "M13C-LICENZE-TRATTA-ESTERNA",
+      "afferma": "I due apparati nuovi della tratta esterna, lo switch gestito e l'access point, sono licenziati entro quindici giorni dall'adozione in organizzazione",
+      "stato": "APERTA AL 09/09/2026: ADR-029 decide la sostituzione del GS-105B con uno switch gestito piu' l'access point, quindi gli apparati che entrano in organizzazione sono due. Nessuno dei due e' ancora stato adottato. Finche' l'intervento non e' eseguito questa voce torna a video, perche' la grazia corre in silenzio e l'unico segnale e' una mail automatica",
+      "verificata_il": "2026-09-09",
+      "validita_giorni": 14,
+      "domanda": "Gli apparati della tratta esterna sono stati adottati in organizzazione Nebula? Se si', in che data ciascuno, e la licenza Professional e' stata applicata entro quindici giorni e co-terminata al 22/11/2027?",
+      "a_chi": "IT Manager",
+      "dove": "roadmap.md M13c-9 e M13c-10; ADR-029; ADR-022 e NEB-002 per l'incidente del 05/08/2026"
     }
   ]
 }
