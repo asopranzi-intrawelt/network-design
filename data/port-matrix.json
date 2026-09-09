@@ -1,7 +1,7 @@
 {
   "meta": {
     "titolo": "Matrice delle porte degli switch gestiti",
-    "misura-del": "2026-09-09T07:30:07",
+    "misura-del": "2026-09-09T14:49:33",
     "estratto-da": "output/nebula-snapshot.json (ignorato da git)",
     "generatore": "scripts/Export-PortMatrix.py",
     "avvertenza": "File derivato e tracciato. Non si modifica a mano: si rilancia lo snapshot Nebula e poi questo script. Contiene solo dati di configurazione delle porte piu' due aggregati della tabella MAC, cioe' il numero di stazioni distinte viste e le VLAN in cui si vedono. Gli indirizzi MAC non escono da qui per costruzione, e un controllo lo verifica prima di scrivere.",
@@ -254,7 +254,10 @@
           ],
           "poe": true,
           "collegamento": "100 Mb/s",
-          "stazioni": 0
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 19,
@@ -265,8 +268,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": null,
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 20,
@@ -328,8 +334,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 25,
@@ -418,8 +427,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 32,
@@ -430,8 +442,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": null,
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 33,
@@ -448,8 +463,7 @@
           "stazioni": 1,
           "vlan-viste": [
             1,
-            40,
-            90
+            40
           ]
         },
         {
@@ -461,8 +475,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 35,
@@ -485,8 +502,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": null,
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 37,
@@ -551,7 +571,7 @@
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 1,
+          "stazioni": 5,
           "vlan-viste": [
             1
           ]
@@ -693,7 +713,7 @@
             "all"
           ],
           "collegamento": "10 Gb/s",
-          "stazioni": 14,
+          "stazioni": 24,
           "vlan-viste": [
             1,
             2,
@@ -709,7 +729,7 @@
             "all"
           ],
           "collegamento": "10 Gb/s",
-          "stazioni": 8,
+          "stazioni": 12,
           "vlan-viste": [
             1
           ]
@@ -755,7 +775,7 @@
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 2,
+          "stazioni": 5,
           "vlan-viste": [
             1,
             40
@@ -800,7 +820,7 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "100 Mb/s",
+          "collegamento": "1 Gb/s",
           "stazioni": 3,
           "vlan-viste": [
             1
@@ -815,8 +835,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 6,
@@ -854,8 +877,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 9,
@@ -893,8 +919,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 12,
@@ -905,8 +934,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 13,
@@ -959,8 +991,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 17,
@@ -983,8 +1018,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 19,
@@ -1007,8 +1045,11 @@
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 21,
@@ -1119,12 +1160,11 @@
             "90"
           ],
           "collegamento": "10 Gb/s",
-          "stazioni": 26,
+          "stazioni": 36,
           "vlan-viste": [
             1,
             2,
-            40,
-            90
+            40
           ]
         },
         {

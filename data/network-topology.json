@@ -1,8 +1,8 @@
 {
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-08-31",
-  "revisione": 9,
+  "aggiornato": "2026-09-09",
+  "revisione": 10,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
   "fonti": [
@@ -428,6 +428,20 @@
    "gap": [
     "NET-021",
     "NET-020"
+   ]
+  },
+  {
+   "id": "ap-esterno",
+   "nome": "Access point esterno",
+   "nebula": "AP esterno",
+   "tipo": "ap",
+   "livello": "distribuzione",
+   "contenitore": "esterno",
+   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. Eroga la rete radio della tratta esterna su VLAN 1, sola banda 2,4 GHz, senza isolamento e senza etichetta che ne limiti l'erogazione: NET-032. Sostituisce l'apparato Ubiquiti fuori supporto, che resta in servizio fino al collaudo.",
+   "alimentazione": "poe-sw30",
+   "gap": [
+    "SEC-051",
+    "NET-032"
    ]
   },
   {
@@ -1036,8 +1050,14 @@
    "a": "gs105b",
    "mezzo": "rame",
    "porta-a": "4",
-   "velocita": "100 Mb/s",
-   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Il limite a 100 Mbps e' quasi certamente il cavo, non l'apparato. La porta accetta qualunque tag."
+   "velocita": "1 Gb/s",
+   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Misurato 1 Gb/s il 09/09/2026 dopo il montaggio dell'access point nuovo: i 100 Mb/s di tutte le misure precedenti erano dell'apparato che chiudeva la tratta, non del cavo (NET-031, chiuso e rovesciato). La porta accetta qualunque tag."
+  },
+  {
+   "da": "gs105b",
+   "a": "ap-esterno",
+   "mezzo": "rame",
+   "criticita": "Collegamento del 09/09/2026. Da rifare in M13c-10 quando il GS-105B lascia il posto allo switch gestito, che alimentera' l'access point in PoE."
   },
   {
    "da": "gs105b",
