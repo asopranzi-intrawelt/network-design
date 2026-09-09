@@ -1,5 +1,19 @@
 # Work-log
 
+## 2026-09-09 (10) - La porta 4 negozia un gigabit, e la mia ipotesi sul cavo era sbagliata
+
+Commit: PENDING (da fare manualmente) File toccati: `docs/infrastructure-timeline/GAP-TBC.md` (#196 chiuso e rovesciato, risolti a 15); `data/network-topology.json` (revisione 10: nodo dell'access point esterno, collegamento, velocita' della tratta corretta); `docs/network-map.html` (rigenerata); `data/port-matrix.json` (misura delle 14:49); `.claude/memory/progress.md`.
+
+**La misura.** Snapshot Nebula rilanciato alle 14:49 con l'apparato nuovo in servizio: la porta 4 negozia **1 Gb/s**, contro i 100 Mb/s di tutte le misure precedenti compresa quella delle 07:30 dello stesso giorno. La dorsale ha quindi tutte e quattro le coppie funzionanti, e l'ipotesi della terminazione a quattro fili era **sbagliata**.
+
+**Perche' l'errore non ha fatto danno, ed e' l'unica cosa che vale conservare.** Il criterio di lettura della diagnostica era stato scritto **prima** della misura, e prevedeva esplicitamente questo caso: se le coppie fossero risultate quattro, l'ipotesi andava corretta invece di difesa. Le due coppie a lunghezza zero erano cio' che la nota di quella misura dichiarava come possibile, cioe' un limite dello strumento che a collegamento attivo su 100 Mb/s non misura le coppie inattive, e non una prova di assenza. Se avessi scritto "terminazione a quattro fili confermata" la ri-terminazione sarebbe finita nel preventivo dell'elettricista e nessuno avrebbe mai saputo che non serviva.
+
+**Che cosa imponeva i 100 Mb/s, allora.** L'apparato che chiudeva la tratta e non il rame: il vecchio access point, oppure un contatto marginale su un frutto o un cordone, rimesso a posto durante il montaggio di oggi. Un contatto marginale su una coppia produce esattamente 100 Mb/s puliti senza errori, perche' l'autonegoziazione ripiega invece di sbagliare, ed e' la ragione per cui zero errori non significava zero problemi.
+
+**Due ricadute.** La capacita' accettata stamattina come dichiarata e non erogata **c'e'**, quindi l'apparato nuovo non e' strozzato e la spesa non e' sprecata. E la porta **3** resta a 100 Mb/s: il sintomo non era sistematico dei due rami come si era dedotto dal confronto, quindi quella tratta va guardata a se' senza riusare questa conclusione.
+
+**La mappa si e' aggiornata al primo intervento utile, che era la prova del modello di M26.** La riconciliazione ha segnalato da se' lo scostamento giusto — un apparato gestito esistente in Nebula che nessun nodo della fonte rivendicava — e dopo l'aggiunta del nodo, del collegamento e della velocita' corretta e' tornata allineata su trentanove confronti. Il difetto che il modello doveva evitare, cioe' una mappa che disegna la verita' di ieri con la stessa sicurezza di prima, non si e' verificato.
+
 ## 2026-09-09 (9) - Il cappotto e' montato, la centralina si riaggancia da se', e il pannello delle licenze smentisce tre affermazioni del progetto
 
 Commit: PENDING (da fare manualmente) File toccati: `docs/infrastructure-timeline/GAP-TBC.md` (**#199 NEB-003**, addendum a #136b, totale a 199); `data/scadenze.json` (revisione 8: scadenza dei quindici giorni chiusa, vincolo dell'organizzazione corretto, due asserzioni nuove); `.claude/memory/progress.md`.
