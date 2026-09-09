@@ -1,5 +1,5 @@
 ---
-last-verified: 8a51761
+last-verified: 20d4863
 ---
 
 # Esecuzione script e aggiornamento snapshot

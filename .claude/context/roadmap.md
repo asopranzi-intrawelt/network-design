@@ -1,5 +1,5 @@
 ---
-last-verified: 8a51761
+last-verified: 6f0f339
 ---
 
 # Roadmap e fasi del progetto

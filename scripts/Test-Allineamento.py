@@ -118,6 +118,40 @@ def git(*argomenti):
         return ''
 
 
+def solo_frontmatter(commit, rel):
+    """Vero se quel commit, su quel file, ha toccato il solo campo `last-verified`.
+
+    Serve al confronto del frontmatter: un commit di firma non e' una modifica della scheda,
+    e contarlo come tale rende l'allineamento irraggiungibile. Si guardano le sole righe di
+    diff, quindi un commit che aggiunge una riga di contenuto e ribumpa insieme conta come
+    modifica di contenuto, che e' il verso prudente dell'errore.
+    """
+    diff = git('show', '--format=', '-U0', commit, '--', rel)
+    if not diff:
+        return False
+    cambiate = [r for r in diff.split(chr(10))
+                if (r.startswith('+') or r.startswith('-'))
+                and not r.startswith('+++') and not r.startswith('---')]
+    if not cambiate:
+        return False
+    return all(re.match(r'^[-+]last-verified:', r) for r in cambiate)
+
+
+def ultima_modifica_di_contenuto(rel):
+    """L'hash pieno del commit piu' recente che ha cambiato il contenuto del file.
+
+    Risale la storia del solo file e salta i commit di firma. Si ferma al primo commit utile,
+    quindi nel caso normale costa una o due invocazioni di git per scheda.
+    """
+    storia = [c for c in git('log', '--format=%H', '--', rel).split(chr(10)) if c]
+    for commit in storia:
+        if not solo_frontmatter(commit, rel):
+            return commit
+    # Ogni commit del file e' di firma: caso teorico (una scheda nata col solo frontmatter),
+    # e in quel caso il piu' antico e' la sua nascita.
+    return storia[-1] if storia else ''
+
+
 class Esito(object):
     def __init__(self):
         self.righe = []
@@ -405,24 +439,35 @@ def controlla_invarianti(esito):
                     coda = " (%d esclusi per decisione dichiarata)" % len(esclusi)
                 esito.ok("mappa dei segnaposto e file dei pattern coprono gli stessi prefissi" + coda)
 
-    # 3d. Il frontmatter di una scheda deve dichiarare il commit in cui la scheda e' stata
-    # modificata per l'ultima volta.
+    # 3d. Il frontmatter di una scheda deve dichiarare un commit a partire dal quale il
+    # contenuto della scheda non e' piu' cambiato.
     #
-    # NON si confronta con HEAD, ed e' una correzione del 08/09/2026. Confrontare con HEAD
-    # segnalava tutte le schede dopo qualunque commit, anche uno che non le riguardava: un
-    # giallo perpetuo, cioe' il difetto che questo impianto esiste per evitare. Nasceva da una
-    # circolarita': la regola prescrive di bumpare dopo il commit, ma il bump e' esso stesso
-    # una modifica da committare, quindi l'allineamento con HEAD e' irraggiungibile per
-    # costruzione. Confrontando invece con il commit che ha toccato la scheda per ultimo si
-    # misura la cosa che conta, cioe' se qualcuno l'ha modificata senza bumparne il
-    # frontmatter, e si tace quando il repository avanza per ragioni estranee a quella scheda.
+    # Due correzioni, entrambe dell'08/09/2026, e la seconda e' quella che rende il controllo
+    # raggiungibile invece che soltanto giusto.
+    #
+    # La prima: NON si confronta con HEAD. Confrontare con HEAD segnalava tutte le schede dopo
+    # qualunque commit, anche uno che non le riguardava, cioe' un giallo perpetuo.
+    #
+    # La seconda: non si confronta nemmeno con il commit che ha toccato la scheda per ultimo,
+    # perche' quel confronto conserva la circolarita' che il primo aveva soltanto ridotto. La
+    # regola prescrive di bumpare dopo il commit, ma il bump scrive dentro la scheda, quindi
+    # crea un commit nuovo che tocca la scheda e riporta il confronto in giallo: l'allineamento
+    # resta irraggiungibile per costruzione, e la sessione che bumpa in buona fede si ritrova
+    # segnalata proprio per averlo fatto. Il fatto che conta non e' quando la scheda e' stata
+    # scritta ma quando ne e' cambiato il CONTENUTO: un commit che tocca il solo campo
+    # `last-verified` non e' una modifica della scheda, e' la sua firma.
+    #
+    # Il confronto e' quindi di discendenza e non di uguaglianza: la scheda e' allineata se il
+    # commit dichiarato e' quello dell'ultima modifica di contenuto oppure un suo discendente.
+    # Cosi' resta verde anche chi rilegge una scheda immutata a una data successiva e ribumpa
+    # in avanti, che e' esattamente cio' che la regola del bump chiede di fare.
     cartella = os.path.join(RADICE, '.claude', 'context')
     # Il percorso si estrae separando sul primo spazio, non tagliando a posizione fissa: il
     # taglio a posizione fissa si e' rotto l'08/09/2026 perche' l'helper normalizza l'output e
     # lo spazio iniziale della prima riga spariva, sfasando quella sola riga di un carattere.
     # Nel caso di una rinomina la porcelain scrive "vecchio -> nuovo": interessa il nuovo.
     sporche = set()
-    for riga in git('status', '--porcelain').split('\n'):
+    for riga in git('status', '--porcelain').split(chr(10)):
         riga = riga.strip()
         if not riga:
             continue
@@ -434,6 +479,7 @@ def controlla_invarianti(esito):
             percorso = percorso.split(' -> ', 1)[1].strip().strip('"')
         sporche.add(percorso)
     disallineate = []
+    illeggibili = []
     quante = 0
     if os.path.isdir(cartella):
         for nome in sorted(n for n in os.listdir(cartella) if n.endswith('.md')):
@@ -447,15 +493,30 @@ def controlla_invarianti(esito):
             if rel in sporche:
                 # Modificata e non ancora committata: il bump si valuta al commit, non ora.
                 continue
-            ultimo = git('log', '-1', '--format=%h', '--', rel)
-            if ultimo and not (dichiarato.startswith(ultimo[:7]) or ultimo.startswith(dichiarato[:7])):
-                disallineate.append((nome, dichiarato, ultimo))
+            contenuto = ultima_modifica_di_contenuto(rel)
+            if not contenuto:
+                continue
+            pieno = git('rev-parse', '--verify', dichiarato + '^{commit}')
+            if not pieno:
+                # Un hash che non risolve non e' un disallineamento ma un riferimento rotto:
+                # o e' stato scritto a mano sbagliato, o la storia e' stata riscritta sotto.
+                illeggibili.append((nome, dichiarato))
+                continue
+            discende = subprocess.run(['git', 'merge-base', '--is-ancestor', contenuto, pieno],
+                                      cwd=RADICE, capture_output=True).returncode == 0
+            if not discende:
+                disallineate.append((nome, dichiarato, contenuto[:7]))
+        if illeggibili:
+            esito.grave("%d schede dichiarano un commit che non esiste nella storia" % len(illeggibili))
+            for nome, dichiarato in illeggibili:
+                esito.nota("      %-26s dichiara %s, che non risolve" % (nome, dichiarato))
         if disallineate:
-            esito.avviso("%d schede modificate senza che il frontmatter sia stato bumpato" % len(disallineate))
-            for nome, dichiarato, ultimo in disallineate:
-                esito.nota("      %-26s dichiara %s, ultima modifica in %s" % (nome, dichiarato, ultimo))
-        else:
-            esito.ok("il frontmatter delle %d schede corrisponde al commit che le ha toccate per ultimo" % quante)
+            esito.avviso("%d schede il cui contenuto e' cambiato dopo il commit dichiarato" % len(disallineate))
+            for nome, dichiarato, contenuto in disallineate:
+                esito.nota("      %-26s dichiara %s, contenuto cambiato in %s" % (nome, dichiarato, contenuto))
+            esito.nota("      il bump va fatto dopo aver riletto la scheda, non in blocco: l'hash dichiara una rilettura")
+        if not disallineate and not illeggibili:
+            esito.ok("il frontmatter delle %d schede copre l'ultima modifica di contenuto" % quante)
 
 
 # ---------------------------------------------------------------------------
