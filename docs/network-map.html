@@ -4,7 +4,7 @@
   Fonte:      data/network-topology.json
   Generatore: scripts/Build-NetworkMap.ps1
   Decisione:  ADR-023, micro-step M26
-  Generato il 31/08/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
+  Generato il 09/09/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
   e soprattutto crea una seconda verita' accanto alla fonte: correggere la fonte.
 -->
 <html lang="it">
@@ -287,8 +287,8 @@ footer li{margin-bottom:3px}
 <script type="application/json" id="topo">{
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-08-31",
-  "revisione": 9,
+  "aggiornato": "2026-09-09",
+  "revisione": 10,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
   "fonti": [
@@ -714,6 +714,20 @@ footer li{margin-bottom:3px}
    "gap": [
     "NET-021",
     "NET-020"
+   ]
+  },
+  {
+   "id": "ap-esterno",
+   "nome": "Access point esterno",
+   "nebula": "AP esterno",
+   "tipo": "ap",
+   "livello": "distribuzione",
+   "contenitore": "esterno",
+   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. Eroga la rete radio della tratta esterna su VLAN 1, sola banda 2,4 GHz, senza isolamento e senza etichetta che ne limiti l'erogazione: NET-032. Sostituisce l'apparato Ubiquiti fuori supporto, che resta in servizio fino al collaudo.",
+   "alimentazione": "poe-sw30",
+   "gap": [
+    "SEC-051",
+    "NET-032"
    ]
   },
   {
@@ -1322,8 +1336,14 @@ footer li{margin-bottom:3px}
    "a": "gs105b",
    "mezzo": "rame",
    "porta-a": "4",
-   "velocita": "100 Mb/s",
-   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Il limite a 100 Mbps e' quasi certamente il cavo, non l'apparato. La porta accetta qualunque tag."
+   "velocita": "1 Gb/s",
+   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Misurato 1 Gb/s il 09/09/2026 dopo il montaggio dell'access point nuovo: i 100 Mb/s di tutte le misure precedenti erano dell'apparato che chiudeva la tratta, non del cavo (NET-031, chiuso e rovesciato). La porta accetta qualunque tag."
+  },
+  {
+   "da": "gs105b",
+   "a": "ap-esterno",
+   "mezzo": "rame",
+   "criticita": "Collegamento del 09/09/2026. Da rifare in M13c-10 quando il GS-105B lascia il posto allo switch gestito, che alimentera' l'access point in PoE."
   },
   {
    "da": "gs105b",
@@ -1815,7 +1835,7 @@ footer li{margin-bottom:3px}
 <script type="application/json" id="porte">{
   "meta": {
     "titolo": "Matrice delle porte degli switch gestiti",
-    "misura-del": "2026-08-24T11:23:45",
+    "misura-del": "2026-09-09T14:49:33",
     "estratto-da": "output/nebula-snapshot.json (ignorato da git)",
     "generatore": "scripts/Export-PortMatrix.py",
     "avvertenza": "File derivato e tracciato. Non si modifica a mano: si rilancia lo snapshot Nebula e poi questo script. Contiene solo dati di configurazione delle porte piu' due aggregati della tabella MAC, cioe' il numero di stazioni distinte viste e le VLAN in cui si vedono. Gli indirizzi MAC non escono da qui per costruzione, e un controllo lo verifica prima di scrivere.",
@@ -1924,7 +1944,7 @@ footer li{margin-bottom:3px}
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 1,
+          "stazioni": 2,
           "vlan-viste": [
             1
           ]
@@ -1954,7 +1974,7 @@ footer li{margin-bottom:3px}
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 3,
+          "stazioni": 2,
           "vlan-viste": [
             1
           ]
@@ -1981,7 +2001,7 @@ footer li{margin-bottom:3px}
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 3,
+          "stazioni": 5,
           "vlan-viste": [
             1
           ]
@@ -2082,8 +2102,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": null,
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 20,
@@ -2145,8 +2168,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 25,
@@ -2157,11 +2183,8 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "1 Gb/s",
-          "stazioni": 1,
-          "vlan-viste": [
-            1
-          ]
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
         },
         {
           "n": 26,
@@ -2199,8 +2222,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": null,
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 29,
@@ -2235,8 +2261,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 32,
@@ -2268,8 +2297,7 @@ footer li{margin-bottom:3px}
           "stazioni": 1,
           "vlan-viste": [
             1,
-            40,
-            90
+            40
           ]
         },
         {
@@ -2308,8 +2336,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": null,
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 37,
@@ -2374,10 +2405,9 @@ footer li{margin-bottom:3px}
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 2,
+          "stazioni": 5,
           "vlan-viste": [
-            1,
-            40
+            1
           ]
         },
         {
@@ -2478,8 +2508,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 49,
@@ -2514,7 +2547,7 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "collegamento": "10 Gb/s",
-          "stazioni": 19,
+          "stazioni": 24,
           "vlan-viste": [
             1,
             2,
@@ -2530,7 +2563,7 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "collegamento": "10 Gb/s",
-          "stazioni": 9,
+          "stazioni": 12,
           "vlan-viste": [
             1
           ]
@@ -2576,7 +2609,7 @@ footer li{margin-bottom:3px}
           ],
           "poe": true,
           "collegamento": "1 Gb/s",
-          "stazioni": 4,
+          "stazioni": 5,
           "vlan-viste": [
             1,
             40
@@ -2591,8 +2624,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 3,
@@ -2618,7 +2654,7 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "100 Mb/s",
+          "collegamento": "1 Gb/s",
           "stazioni": 3,
           "vlan-viste": [
             1
@@ -2663,7 +2699,7 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "100 Mb/s",
+          "collegamento": null,
           "stazioni": 0
         },
         {
@@ -2717,8 +2753,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 12,
@@ -2729,8 +2768,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 13,
@@ -2810,8 +2852,11 @@ footer li{margin-bottom:3px}
             "all"
           ],
           "poe": true,
-          "collegamento": "10 Mb/s",
-          "stazioni": 0
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
         },
         {
           "n": 19,
@@ -2949,12 +2994,11 @@ footer li{margin-bottom:3px}
             "90"
           ],
           "collegamento": "10 Gb/s",
-          "stazioni": 32,
+          "stazioni": 36,
           "vlan-viste": [
             1,
             2,
-            40,
-            90
+            40
           ]
         },
         {
@@ -4481,7 +4525,7 @@ function schedaArco(l){
   [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
    ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
    ['Sorgenti elettriche', String(PWR.length)], ['Difetti', String((D.gap||[]).length)],
-   ['Generato', '31/08/2026']].forEach(function(p){
+   ['Generato', '09/09/2026']].forEach(function(p){
     var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
   });
   document.getElementById('perim').textContent = D.meta.perimetro || '';
