@@ -1,48 +1,48 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 8,
-  "aggiornato": "2026-09-09",
+  "revisione": 10,
+  "aggiornato": "2026-09-10",
   "scadenze": [
     {
       "id": "NEB-54HP",
-      "cosa": "Licenza Nebula Professional dello switch di piano 2: NON e' piu' la piu' vicina. Misurato il 09/09/2026 dal pannello Licenze: il minimo fra i dispositivi e' l'access point esterno all'08/08/2027, e l'organizzazione dichiara a se' stante una scadenza al 19/12/2026",
-      "data": "2027-11-22",
+      "cosa": "Licenza Nebula Professional dello switch di piano 2 (rack): MISURATO IL 10/09/2026 dal pannello Licenze, e' tornata a essere la piu' vicina fra i dispositivi con licenza Nebula Professional in uso, davanti allo switch di piano terra e ai quattro access point. L'access point esterno, misurato piu' vicino appena il giorno prima, oggi risulta invece il piu' lontano dei sette: la lettura del 09/09 e quella di oggi divergono di 155 giorni sullo stesso apparato, scostamento non spiegato e da tenere presente leggendo il pannello in futuro",
+      "data": "2027-12-23",
       "preavviso_giorni": 90,
-      "rompe": "Il livello dell'organizzazione e' il minimo fra i suoi dispositivi, quindi il presidio va sulla data piu' vicina e non su questa. Voce conservata perche' resta una data da rinnovare, ma non e' il vincolo",
-      "dove": "ADR-022; docs/vendor-management.md scheda Zyxel"
+      "rompe": "Il livello dell'organizzazione e' il minimo fra i suoi dispositivi con licenza Nebula Professional attiva, esclusi il firewall (oggi Unused, licenza differita) e il Gold Security Pack (prodotto di sicurezza separato, non concorre a questo livello): il presidio va su questa data",
+      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026; ADR-022"
     },
     {
       "id": "NEB-FLEX500",
-      "cosa": "Licenza Nebula Professional dell'USG FLEX 500",
+      "cosa": "Licenza Nebula Professional dell'USG FLEX 500. Il pannello, misurato il 10/09/2026, non esprime piu' questa licenza come data assoluta ma come conto alla rovescia differito ('341 days (Deferred)', dispositivo Unused): la data qui sotto resta quella misurata in precedenza e non e' ricalcolabile dal conto alla rovescia senza sapere da quale evento parte (vedi asserzione NEB-FW-DEFERRED)",
       "data": "2027-11-25",
       "preavviso_giorni": 90,
-      "rompe": "Come sopra: concorre al minimo dell'organizzazione",
-      "dove": "ADR-022"
+      "rompe": "Come sopra: concorrerebbe al minimo dell'organizzazione se il firewall fosse in uso; finche' resta differita e Unused non e' il vincolo attivo",
+      "dove": "ADR-022; asserzione NEB-FW-DEFERRED"
     },
     {
       "id": "NEB-30HP",
-      "cosa": "Licenza Nebula Professional dello switch XGS2220-30HP",
-      "data": "2027-11-27",
+      "cosa": "Licenza Nebula Professional dello switch XGS2220-30HP piano terra: MISURATO IL 10/09/2026, seconda piu' vicina dopo lo switch di piano 2",
+      "data": "2027-12-28",
       "preavviso_giorni": 90,
       "rompe": "Come sopra: concorre al minimo dell'organizzazione",
-      "dove": "ADR-022"
+      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026; ADR-022"
     },
     {
       "id": "NEB-AP-NWA130BE",
-      "cosa": "Licenze Nebula Professional dei tre access point NWA130BE",
-      "data": "2027-12-08",
+      "cosa": "Licenze Nebula Professional dei tre access point NWA130BE: MISURATO IL 10/09/2026, le tre scadenze non coincidono piu' esattamente (piano terra 2028-01-08, Piano 1 e Piano 2 entrambi 2028-01-09); qui si tiene la piu' vicina delle tre. Sono gli apparati che il 21/07/2026 entrarono senza licenza e causarono il declassamento del 05/08",
+      "data": "2028-01-08",
       "preavviso_giorni": 90,
-      "rompe": "Come sopra. Sono gli apparati che il 21/07/2026 entrarono senza licenza e causarono il declassamento del 05/08",
-      "dove": "ADR-022; NEB-002 (#140)"
+      "rompe": "Come sopra. Sono ormai i piu' lontani fra gli apparati con licenza attiva insieme all'access point esterno, quindi non sono il vincolo dell'organizzazione oggi",
+      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026; ADR-022; NEB-002 (#140)"
     },
     {
       "id": "ZYX-GOLD",
-      "cosa": "Gold Security Pack dell'USG FLEX 500, licenza di servizio distinta da quella Nebula — MISURATO IL 09/09/2026: la stessa data compare nel pannello come scadenza del **tipo di organizzazione** (Professional Pack, Expiring on 2026-12-19), quindi non e' soltanto una licenza di servizio del firewall e va presidiata come data dell'organizzazione",
-      "data": "2026-12-19",
+      "cosa": "Gold Security Pack dell'USG FLEX 500, licenza di servizio distinta da quella Nebula. MISURATO IL 10/09/2026 dal pannello: la scadenza letta oggi e' 2027-12-20, un anno esatto dopo la lettura del 09/09/2026 (2026-12-19), che a sua volta era stata descritta come coincidente con la scadenza del tipo di organizzazione. Le due letture non si riconciliano da sole: puo' essere un rinnovo intervenuto nel mezzo, oppure una delle due letture era sbagliata. Non si assume quale; resta da confermare rileggendo il pannello o chiedendo al fornitore",
+      "data": "2027-12-20",
       "preavviso_giorni": 60,
-      "rompe": "I servizi di sicurezza del firewall, non la gestione cloud: e' una licenza con ciclo proprio e va presidiata a parte",
-      "dove": "docs/vendor-management.md scheda Zyxel; ADR-022"
+      "rompe": "I servizi di sicurezza del firewall, non la gestione cloud: e' una licenza con ciclo proprio e va presidiata a parte. Finche' il salto di un anno non e' spiegato, la data qui sotto e' quella dell'ultima misura ma non va trattata come definitiva",
+      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026 (letto in precedenza il 09/09/2026 con valore diverso); docs/vendor-management.md scheda Zyxel; ADR-022"
     },
     {
       "id": "QNAP-FRANCOFORTE",
@@ -54,19 +54,19 @@
     },
     {
       "id": "QNAP-CESTINO",
-      "cosa": "Svuotamento automatico del cestino dello spazio cloud scaduto: ultimo giorno utile per recuperare la copia fuori sede degli anni storici, cancellata il 09/09/2026 alle 11:57",
+      "cosa": "Svuotamento automatico del cestino dello spazio cloud scaduto: NON E' PIU' UN RISCHIO per decisione dell'IT Manager del 09/09/2026, che dichiara i dati presenti su Milano e sul NAS. La riga resta come promemoria che il cestino occupa ancora i 16 GB del livello gratuito finche' non e' svuotato, che era lo scopo dell'operazione",
       "data": "2026-10-09",
-      "preavviso_giorni": 30,
-      "rompe": "Passata questa data la copia storica non esiste piu' in nessuna forma recuperabile, e resta soltanto cio' che il nuovo spazio ha davvero ricevuto. Finche' non e' dimostrato con un ripristino di campione che gli anni storici stanno sul nuovo spazio, questa e' la finestra entro cui l'errore e' ancora reversibile. Se il cestino e' stato svuotato a mano il 09/09, la finestra e' gia' chiusa e la voce va corretta",
+      "preavviso_giorni": 5,
+      "rompe": "Nulla, secondo la risposta dell'IT Manager. Lo svuotamento a mano anticipa il recupero dello spazio; l'automatismo lo fa comunque a questa data",
       "dove": "STOR-003 (#187) e STOR-004 (#192); docs/business-continuity-disaster-recovery.md"
     },
     {
       "id": "NEB-AP-ESTERNO",
-      "cosa": "Licenza Nebula Professional dell'access point esterno: e' la piu' vicina fra i dispositivi e quindi la data che vincola il livello dell'organizzazione",
-      "data": "2027-08-08",
+      "cosa": "Licenza Nebula Professional dell'access point esterno: ROVESCIATA IL 10/09/2026. Misurata come la piu' vicina fra i sette dispositivi il 09/09 (08/08/2027); rimisurata il giorno dopo a 2028-01-10, la piu' lontana di tutte. Il balzo di 155 giorni sullo stesso apparato in ventiquattro ore non e' spiegato: non e' escluso un errore di lettura in una delle due sessioni. Non e' piu' la data che vincola il livello dell'organizzazione, vedi NEB-54HP",
+      "data": "2028-01-10",
       "preavviso_giorni": 90,
-      "rompe": "Il livello dell'organizzazione e' il minimo fra i suoi dispositivi: quando questa scade, l'organizzazione scende e la OpenAPI si spegne, a prescindere dalle date degli altri sei apparati",
-      "dove": "Pannello Licenze e inventario, misurato il 09/09/2026; roadmap.md M13c-9; ADR-022"
+      "rompe": "Non vincola piu' il minimo dell'organizzazione, che oggi e' NEB-54HP. Voce conservata perche' resta una data da rinnovare",
+      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026 (misurato in precedenza il 09/09/2026 con valore diverso); roadmap.md M13c-9; ADR-022"
     }
   ],
   "freschezza": [
@@ -204,20 +204,20 @@
     {
       "id": "QNAP-MILANO-COMPLETO",
       "afferma": "Il caricamento sul nuovo spazio cloud di Milano e' completo sugli anni storici, quindi la cancellazione del contenuto sullo spazio scaduto non ha rimosso l'unica copia di nulla",
-      "stato": "APERTA AL 09/09/2026, ED E' LA DOMANDA PIU' URGENTE DEL PROGETTO. Misurato l'08/09: il lavoro verso Milano e' configurato e l'ultima corsa e' riuscita. NON misurato: che il deposito iniziale degli anni storici sia finito. #192 aggiunge che la sola copia fuori sede copre due anni su tre e che la sua integrita' non e' mai stata verificata",
+      "stato": "RISPOSTA DELL'IT MANAGER IL 09/09/2026: i dati stanno su Milano e sul NAS, quindi la cancellazione dello spazio di Francoforte e' pulizia e non perdita, e il suo scopo e' liberare i 16 GB del livello gratuito. Il ripristino di campione non viene fatto per decisione. Resta scritto in #192, e non si ripete qui, che gli anni anteriori al 2024 non risultano coperti da nessuno dei tre lavori letti l'08/09: e' una misura sui lavori attivi, non una smentita di questa risposta",
       "verificata_il": "2026-09-09",
-      "validita_giorni": 7,
-      "domanda": "Sul nuovo spazio di Milano esiste il contenuto degli anni storici? La prova richiesta non e' l'elenco delle cartelle ma il RIPRISTINO DI UN CAMPIONE: un file di un anno storico ripreso dal nuovo spazio e riaperto. Da fare entro il 09/10/2026, finche' il cestino dello spazio vecchio conserva la copia",
+      "validita_giorni": 180,
+      "domanda": "Se e quando si riprendera' il tema della copia storica: gli anni anteriori al 2024 stanno su un archivio statico del NAS o su un lavoro attivo? La domanda vive in #192 e non richiede altra verifica adesso",
       "a_chi": "IT Manager",
       "dove": "STOR-003 (#187), STOR-004 (#192), scadenza QNAP-CESTINO"
     },
     {
       "id": "NEB-CNP-ROSSO",
       "afferma": "Tutti i dispositivi dell'organizzazione Nebula hanno le licenze in regola",
-      "stato": "SMENTITA DAL PANNELLO IL 09/09/2026: la pagina di riepilogo delle licenze riporta in verde NCC, Security e Secure WiFi, e in ROSSO la voce CNP con la dizione 'Device(s) expired or unlicensed'. Quale dispositivo e quale conseguenza non e' determinato: il pannello offre un collegamento 'Check license issue' che non e' stato ancora aperto",
+      "stato": "CHIUSA IL 09/09/2026: il filtro del pannello dice licenseStateCnp=UNLICENSED su quattro apparati su sette, cioe' i quattro access point. CNP e' una sottoscrizione opzionale per access point, distinta dal pacchetto di gestione, mai acquistata: non incide su livello dell'organizzazione, OpenAPI ne' funzionamento degli apparati. Lo stato rosso e' inteso e dichiarato, perche' il pannello colora allo stesso modo una licenza scaduta e una mai sottoscritta",
       "verificata_il": "2026-09-09",
-      "validita_giorni": 7,
-      "domanda": "Aprire 'Check license issue' nel pannello Licenze: quale dispositivo risulta scaduto o senza licenza sulla voce CNP, e che cosa smette di funzionare senza quella licenza?",
+      "validita_giorni": 365,
+      "domanda": "Solo se si volessero le funzioni di sicurezza sull'apparato radio: vale la spesa di CNP sui quattro access point, a partire da quello esterno?",
       "a_chi": "IT Manager",
       "dove": "Pannello Licenze e inventario, riepilogo dell'organizzazione"
     },
