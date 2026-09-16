@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 15,
+  "revisione": 16,
   "aggiornato": "2026-09-16",
   "scadenze": [
     {
@@ -273,11 +273,11 @@
     },
     {
       "id": "PVE-LETTURA-LENTA",
-      "afferma": "Il crollo di lettura del backup della VM 100 e' spiegato dallo strato fra vzdump e il volume sottile, non dall'hardware",
-      "stato": "MISURATA IL 16/09/2026 sera, e il dispositivo a blocchi e' assolto. La lettura diretta con dd iflag=direct sul volume della VM 100 da' 930-1100 MB/s PIATTI agli offset 0, 20, 40, 60 e 80 GB, e 9,6 GB/s oltre i 100 GB perche' li' il volume sottile non e' allocato e torna zeri senza toccare il disco. Contro i 20 MiB/s misurati da vzdump sullo stesso volume e' un fattore QUARANTASETTE: nessun gradino, nessuna regione lenta, quindi cio' che rallenta sta sopra il dispositivo. Tre candidati aperti e nessuno escluso: il bus ide0 del disco, che per una macchina ACCESA conta perche' il backup passa dallo strato a blocchi di QEMU e un dispositivo IDE non ammette iothread; la compressione, CADUTA la sera stessa perche' il compressore dichiarato su tutti i lavori e' zstd e non gzip, quindi multi-thread e capace di centinaia di MB/s; e la scrittura verso la destinazione di rete. Configurazione letta il 16/09/2026: ide0 confermato, scsihw gia' virtio-scsi-single, boot order su ide0, e l'immagine SPP rimasta montata su ide2",
+      "afferma": "Il crollo di velocita' del backup della VM 100 e' spiegato dalla scrittura verso il deposito, non dal server",
+      "stato": "RISOLTA IL 16/09/2026 sera. Una scrittura sequenziale non bufferizzata di 4 GiB verso NAS_INTRA ha impiegato 408 secondi a 10,5 MB/s costanti, cioe' 84 Mbit/s, che e' l'89 per cento del tetto di un Fast Ethernet a cento megabit tenuto per quasi sette minuti. Il tetto e' la scrittura verso la destinazione e ide0 scende a comprimario. Quattro ipotesi cadute nella stessa giornata, cioe' cache, batteria, dischi e compressione; la quinta, il bus, confermata come configurazione ma non piu' principale. Il seguito e' il difetto #204 e l'asserzione PVE-NAS-LINK",
       "verificata_il": "2026-09-16",
-      "validita_giorni": 14,
-      "domanda": "Le due prove che restano: una scrittura sequenziale di prova verso la destinazione di rete, e un backup della VM 100 su storage LOCALE invece che di rete. Se il secondo vola la colpa e' della destinazione, se arranca uguale e' del percorso di lettura e quindi del bus ide0",
+      "validita_giorni": 90,
+      "domanda": "Chiusa lato server. Il seguito e' in PVE-NAS-LINK",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; M28-6 in .claude/context/roadmap.md"
     },
@@ -310,6 +310,26 @@
       "domanda": "Il pulsante 'Show: Guests Without Backup Job' della pagina dei lavori che cosa elenca? E per quelle scoperte, vanno salvate, con che frequenza e verso quale destinazione, tenendo conto che ogni lavoro nuovo entra in una catena seriale gia' satura?",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/GAP-TBC.md #203 (STOR-006); M28-7; docs/business-continuity-disaster-recovery.md"
+    },
+    {
+      "id": "PVE-NAS-LINK",
+      "afferma": "Il deposito di backup principale e' collegato a 1 Gb/s come il resto della rete",
+      "stato": "DUBBIA E PROBABILMENTE FALSA, aperta il 16/09/2026. La scrittura misurata e' 10,5 MB/s costanti su 408 secondi, cioe' 84 Mbit/s, che e' l'89 per cento del tetto di un collegamento a cento megabit: e' un profilo di link saturo e non di apparato lento. La rete ha gia' quel difetto altrove, sette porte a 100 Mb/s censite fra i due switch il 09/09/2026 piu' due a 10 Mb/s, e la famiglia e' gia' registrata in NET-016, NET-025 e #196. Non e' pero' dimostrato, perche' una scrittura non bufferizzata verso una condivisione di rete e' un caso pessimo e potrebbe sottostimare. Va tenuto presente che le schede di rete dell'apparato dichiarate nella topologia sono DUE, quindi un aggregato mal configurato o una sola scheda viva darebbero lo stesso sintomo",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 7,
+      "domanda": "Leggere DAL deposito invece che scriverci: se anche la lettura sta a 10,5 MB/s il collegamento e' tappato simmetricamente, se legge a cento e piu' MB/s il problema e' nella scrittura dell'apparato. Poi: che velocita' negozia la porta dello switch, e che cosa dichiara l'apparato sulle sue due schede?",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #204 (STOR-007); M28-8; data/port-matrix.json"
+    },
+    {
+      "id": "PVE-BACKUP-ORARI",
+      "afferma": "I dieci lavori di backup notturni stanno dentro la notte",
+      "stato": "FALSA PER COSTRUZIONE, dichiarata il 16/09/2026. La catena e' passata da sette a dieci lavori la sera stessa, per coprire le tre macchine che non avevano nessun backup (#203), e la destinazione scrive a 10,5 MB/s (#204). Esiste inoltre una collisione di orario NUOVA alle 04:30 fra il lavoro della 208 e il secondo backup della VM 100, identica a quella che il rimedio del mattino aveva rimosso dalle 00:30. Coprire le tre macchine era giusto e non si discute; il dimensionamento va rifatto DOPO aver sanato il collegamento, non prima",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 7,
+      "domanda": "La collisione delle 04:30 e' stata sciolta spostando la 208? E a che ora finisce l'ultimo dei dieci lavori nella prima notte completa?",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #203 e #204; M28-7 e M28-8"
     }
   ]
 }
