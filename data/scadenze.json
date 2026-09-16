@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 14,
+  "revisione": 15,
   "aggiornato": "2026-09-16",
   "scadenze": [
     {
@@ -274,10 +274,10 @@
     {
       "id": "PVE-LETTURA-LENTA",
       "afferma": "Il crollo di lettura del backup della VM 100 e' spiegato dallo strato fra vzdump e il volume sottile, non dall'hardware",
-      "stato": "MISURATA IL 16/09/2026 sera, e il dispositivo a blocchi e' assolto. La lettura diretta con dd iflag=direct sul volume della VM 100 da' 930-1100 MB/s PIATTI agli offset 0, 20, 40, 60 e 80 GB, e 9,6 GB/s oltre i 100 GB perche' li' il volume sottile non e' allocato e torna zeri senza toccare il disco. Contro i 20 MiB/s misurati da vzdump sullo stesso volume e' un fattore QUARANTASETTE: nessun gradino, nessuna regione lenta, quindi cio' che rallenta sta sopra il dispositivo. Tre candidati aperti e nessuno escluso: il bus ide0 del disco, che per una macchina ACCESA conta perche' il backup passa dallo strato a blocchi di QEMU e un dispositivo IDE non ammette iothread; la compressione mono-thread, la cui resa su quel processore coincide con il numero osservato; e la scrittura verso la destinazione di rete",
+      "stato": "MISURATA IL 16/09/2026 sera, e il dispositivo a blocchi e' assolto. La lettura diretta con dd iflag=direct sul volume della VM 100 da' 930-1100 MB/s PIATTI agli offset 0, 20, 40, 60 e 80 GB, e 9,6 GB/s oltre i 100 GB perche' li' il volume sottile non e' allocato e torna zeri senza toccare il disco. Contro i 20 MiB/s misurati da vzdump sullo stesso volume e' un fattore QUARANTASETTE: nessun gradino, nessuna regione lenta, quindi cio' che rallenta sta sopra il dispositivo. Tre candidati aperti e nessuno escluso: il bus ide0 del disco, che per una macchina ACCESA conta perche' il backup passa dallo strato a blocchi di QEMU e un dispositivo IDE non ammette iothread; la compressione, CADUTA la sera stessa perche' il compressore dichiarato su tutti i lavori e' zstd e non gzip, quindi multi-thread e capace di centinaia di MB/s; e la scrittura verso la destinazione di rete. Configurazione letta il 16/09/2026: ide0 confermato, scsihw gia' virtio-scsi-single, boot order su ide0, e l'immagine SPP rimasta montata su ide2",
       "verificata_il": "2026-09-16",
       "validita_giorni": 14,
-      "domanda": "Il backup di una macchina SPENTA, per esempio la 203, va veloce o arranca alla stessa velocita'? E' il discriminante: veloce accusa il percorso QEMU della macchina accesa e quindi il bus ide0, lento accusa compressione o destinazione. Nello stesso passaggio: che cosa dicono qm config 100 su bus, cache e aio, quale compressore e' dichiarato nei lavori di backup, e a che velocita' scrive una prova verso la destinazione",
+      "domanda": "Le due prove che restano: una scrittura sequenziale di prova verso la destinazione di rete, e un backup della VM 100 su storage LOCALE invece che di rete. Se il secondo vola la colpa e' della destinazione, se arranca uguale e' del percorso di lettura e quindi del bus ide0",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; M28-6 in .claude/context/roadmap.md"
     },
@@ -300,6 +300,16 @@
       "domanda": "Sopralluogo al retro dell'armadio: i due alimentatori sono cablati a due linee distinte, e almeno una passa da un gruppo di continuita'?",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/GAP-TBC.md #202 (ELE-005); ELE-001 (#145); ELE-003 (#147)"
+    },
+    {
+      "id": "PVE-COPERTURA-BACKUP",
+      "afferma": "Tutte le macchine virtuali del nodo sono coperte da un lavoro di backup",
+      "stato": "DUBBIA, aperta il 16/09/2026. I sette lavori attivi selezionano il pool Programmazione e poi per identificativo 100, 202, 204, 205 e 810; 207, 208 e 209 non compaiono, e la 602 e' presumibilmente coperta dal pool ma va letto. Nessuno ha mai verificato la copertura: e' un buco di continuita' e non una lentezza",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 7,
+      "domanda": "Il pulsante 'Show: Guests Without Backup Job' della pagina dei lavori che cosa elenca? E per quelle scoperte, vanno salvate, con che frequenza e verso quale destinazione, tenendo conto che ogni lavoro nuovo entra in una catena seriale gia' satura?",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #203 (STOR-006); M28-7; docs/business-continuity-disaster-recovery.md"
     }
   ]
 }
