@@ -1,5 +1,5 @@
 ---
-last-verified: 08fadb1
+last-verified: beccead
 ---
 
 # Roadmap e fasi del progetto
