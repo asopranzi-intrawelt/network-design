@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4218" viewBox="0 0 1060 4218" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="4218" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4242" viewBox="0 0 1060 4242" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="4242" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">161 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 10/09/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">162 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 16/09/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -28,7 +28,7 @@
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
-<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(17)</tspan></text>
+<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(18)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(11)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
@@ -2621,7 +2621,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="4202" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-162" class="ev-block has-detail" transform="translate(0,4172)">
+<g class="ev-summary" onclick="toggleEv('ev-162')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#008300"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/09/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Due backup notturni falliscono per attesa scaduta, e sotto c'e' un controller RAID senza cache <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">STOR</tspan></text>
+</g>
+<foreignObject id="ev-162-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">16/09/2026 &#8212; Due backup notturni falliscono per attesa scaduta, e sotto c'e' un controller RAID senza cache</p>
+<p>Evento notturno sul nodo Proxmox, ricostruito da una sessione di lavoro parallela e consegnato a questo progetto come handoff. Due lavori di backup su otto, quelli della VM 203 e della VM 205, terminano con un errore di attesa scaduta sul lock di vzdump rispettivamente alle 03:30 e alle 04:30, cioe' esattamente centottanta minuti dopo l'orario di ciascuno: centottanta e' il valore predefinito dell'attesa massima, quindi gli orari sono la firma del meccanismo. Su un nodo Proxmox gira un solo backup per volta con un lock globale che vale anche fra destinazioni diverse, quindi gli otto lavori sono una catena seriale in cui il ritardo di uno diventa l'attesa di tutti quelli a valle. Il ritardo viene da un solo guest, la VM 100, passata da sessantaquattro a duecentotrentatre minuti senza che l'archivio prodotto cambi di dimensione. La lettura del registro di avanzamento sposta il problema dal backup allo storage: la velocita' crolla nello stesso identico punto anche nelle notti buone, da circa duecento a una ventina di MiB/s, e in quella rotta a meno di dieci, con il letto sempre pari allo scritto, quindi il limite e' la lettura dal disco sorgente e non la compressione ne' la rete. Il registro del kernel dichiara sul volume logico del controller HPE Smart Array la cache in lettura e in scrittura disabilitata, condizione che su quei controller si presenta da se' quando il modulo di batteria o condensatore che protegge la cache e' guasto o scarico. La causa resta pero' dedotta e non letta, perche' lo strumento del produttore non era installabile in quell'ambiente: e' la ragione per cui la voce nasce aperta come difetto #200 e come domanda datata nel registro delle scadenze, invece che come diagnosi chiusa. Rimedio applicato la mattina stessa e dichiarato come cerotto: attesa massima sul lock portata a ventiquattro ore su tutti e otto i lavori e collisione di orario delle 00:30 rimossa spostando alle 04:30 il secondo backup della VM 100, senza cancellare nessun lavoro, senza cambiare destinazioni e senza toccare la frequenza giornaliera. I backup ora completano e restano lenti, e poiche' la notifica scatta solo sul fallimento il rimedio ha spento anche l'unico segnale… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="4226" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2788,7 +2804,8 @@
   {id:'ev-158',type:'event',h:24},
   {id:'ev-159',type:'event',h:24},
   {id:'ev-160',type:'event',h:24},
-  {id:'ev-161',type:'event',h:24}
+  {id:'ev-161',type:'event',h:24},
+  {id:'ev-162',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2829,7 +2846,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 4218').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 4242').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
