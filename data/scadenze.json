@@ -1,8 +1,8 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 10,
-  "aggiornato": "2026-09-10",
+  "revisione": 11,
+  "aggiornato": "2026-09-16",
   "scadenze": [
     {
       "id": "NEB-54HP",
@@ -230,6 +230,36 @@
       "domanda": "Confermare sul pannello o col fornitore da quale evento partono i 341 giorni differiti del firewall: assegnazione a un sito, primo collegamento, o attivazione manuale?",
       "a_chi": "IT Manager",
       "dove": ".claude/rules/fonti-e-riallineamento.md, sezione sullo USG FLEX su Nebula; pannello Licenze e inventario"
+    },
+    {
+      "id": "PVE-CACHE-RAID",
+      "afferma": "La cache del controller RAID del nodo Proxmox e' disabilitata perche' il modulo che la protegge, batteria o condensatore FBWC, e' guasto o scarico",
+      "stato": "INFERENZA NON CONFERMATA, 16/09/2026. Il registro del kernel dichiara cache in lettura e scrittura disabilitate: quello e' misurato. La CAUSA e' dedotta dal comportamento noto dei controller di quella famiglia e non e' stata letta da nessuno strumento, perche' ssacli non e' installato, i repository del produttore non sono raggiungibili da quell'ambiente e dell'immagine SPP montata si e' visto il solo pacchetto rpm senza avere di che estrarlo. E' la voce su cui poggia l'intera diagnosi di #200 e l'unica che giustifica una finestra di spegnimento del nodo: finche' non e' confermata, la spesa e il fermo non sono giustificati da una misura",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 14,
+      "domanda": "E' stato recuperato ssacli, e che cosa dichiarano 'ctrl all show status' e le righe Cache Status e Battery/Capacitor Status? Nello stesso passaggio: i dischi fisici sono meccanici o a stato solido, e il controller e' davvero su hpsa o dovrebbe stare su smartpqi su questo modello di server?",
+      "a_chi": "IT Manager, oppure la sessione di lavoro che ha prodotto il handoff",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200 (STOR-005); copia integrale del handoff in _notes/HANDOFF-pve-backup-lock-timeout.md. Misura di classe D del 16/09/2026, mai ripetuta da questo progetto"
+    },
+    {
+      "id": "PVE-BACKUP-COMPLETI",
+      "afferma": "Da quando l'attesa massima sul lock e' a ventiquattro ore, tutti e otto i lavori di backup notturni completano, e nessuno sfora oltre la mattinata",
+      "stato": "NON VERIFICATA: il rimedio e' stato applicato il 16/09/2026 e nessuna corsa successiva e' stata letta da qui. E' l'affermazione con la vita piu' breve del registro, perche' la notifica per posta scatta solo sul fallimento e quel fallimento e' stato reso quasi impossibile dal rimedio stesso: da oggi il silenzio non e' piu' una buona notizia e va sostituito da una lettura",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 7,
+      "domanda": "Nella pagina dei task del nodo: gli otto lavori dell'ultima notte risultano tutti riusciti, e a che ora ha finito l'ultimo? Se l'ultimo finisce dentro l'orario di lavoro, il backup sta contendendo I/O agli utenti ed e' un secondo problema oltre a quello del disco",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; docs/business-continuity-disaster-recovery.md sezione Storage e backup"
+    },
+    {
+      "id": "PVE-RIPRISTINO-TEMPO",
+      "afferma": "Il tempo di ripristino di una macchina virtuale dal deposito su NAS INTRA e' quello che la scheda di continuita' lascia intendere",
+      "stato": "NON VERIFICABILE OGGI, dichiarata il 16/09/2026: nessuno ha mai cronometrato un ripristino, e con la cache del controller disabilitata il ripristino riscrive su uno storage lento quanto quello che lo rallenta in lettura. La scheda di continuita' dichiara la procedura come gia' verificata funzionante, che e' cosa diversa dal conoscerne la durata: funzionante risponde a 'si puo' fare', non a 'in quanto tempo'",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 90,
+      "domanda": "Si puo' ripristinare una macchina piccola e spenta, per esempio la 203, cronometrando? E' la sola misura che trasforma il tempo di ripristino da stima in dato, e va rifatta dopo la riparazione del controller per avere i due numeri a confronto",
+      "a_chi": "IT Manager",
+      "dove": "docs/business-continuity-disaster-recovery.md sezione Piano di Disaster Recovery; GAP-TBC.md #200"
     }
   ]
 }
