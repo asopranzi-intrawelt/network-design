@@ -2,6 +2,25 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-030 - La riparazione del nodo si decide su una lettura, non su una deduzione, e la lettura si prende dall'iLO
+
+Data: 2026-09-16 Stato: attiva. Apre M28 e i suoi quattro sotto-passi; determina l'esito di #200 (STOR-005); chiude SRV-003 (#108).
+
+Contesto. Il 16/09/2026 un handoff di classe D consegna a questo progetto il difetto #200: due lavori di backup su otto falliscono per attesa scaduta sul lock, e sotto c'e' un crollo cronico della velocita' di lettura dello storage del nodo. La diagnosi consegnata attribuiva il crollo alla cache del controller HPE Smart Array, dichiarata disabilitata dal registro del kernel, e ne deduceva un guasto del modulo che la protegge. Quella deduzione e' arrivata qui gia' con l'etichetta di inferenza non confermata, perche' `ssacli` non era installabile in quell'ambiente, e la sera dello stesso giorno l'IT Manager ha chiesto di ordinare il pezzo e programmare la sostituzione.
+
+Tre fatti raccolti nel giro di un'ora hanno cambiato la domanda invece di rispondere a quella posta. Il primo e' che l'iLO, data per irraggiungibile all'indirizzo documentato, risponde a un altro indirizzo: i due non erano un'ambiguita' da chiarire ma una successione nel tempo, l'indirizzo di fabbrica del primo avvio e quello configurato subito dopo, e nel file di corosync e' sopravvissuto il primo. Il secondo e' che il controller e' un P408i-a SR Gen10 con due gigabyte di cache, e che su questa generazione il modulo con condensatori per controller non esiste piu': la protezione e' una batteria di telaio venduta a parte e condivisa. Il terzo, ed e' quello che conta, e' che il profilo di velocita' gia' in mano contraddice la diagnosi che si stava per pagare. Una cache disabilitata e' un limite uniforme, che rallenta dal primo byte all'ultimo; cio' che il registro di avanzamento descrive e' un gradino riproducibile sempre allo stesso punto, che e' la firma di una regione di supporto che risponde male e non di un parametro globale del controller.
+
+Decisione. La sequenza di M28 mette la **lettura prima dell'ordine e l'ordine prima della finestra**, e nessuno dei tre passi puo' scavalcare il precedente. Si legge dall'iLO via Redfish, in sola lettura e a macchina accesa, lo stato di ogni disco fisico, quello del volume logico, il registro hardware IML e lo stato di cache e batteria; sull'host si misura la lettura grezza del volume a offset crescenti, che e' la prova che separa i due sospetti perche' un pavimento piatto accusa il controller e un crollo a un offset preciso accusa il supporto. Solo a quel punto si ordina, e cio' che si ordina dipende dall'esito: un disco, la batteria di telaio, o il controller intero.
+
+Motivazione. L'ordine inverso era difendibile e lo si era quasi preso: il pezzo costa poche decine di euro, la finestra serviva comunque per altre due cose, e aspettare una conferma che nessuno sapeva come ottenere avrebbe lasciato il difetto aperto a tempo indeterminato. Cio' che lo rende sbagliato non e' la spesa ma il fermo. Una finestra di spegnimento su questo nodo ferma tutte le macchine virtuali e va letta insieme a ELE-003, cioe' un solo alimentatore: e' la risorsa scarsa dell'intervento, e spenderla per sostituire un pezzo sano lascia il guasto dov'era e brucia la sola occasione programmata per toccarlo. Vale inoltre la regola che questo progetto si e' gia' dato altrove: il costo di una verifica va confrontato con il costo di sbagliare, non con la fatica di farla. Qui la verifica costa una chiamata autenticata e non ferma niente, mentre sbagliare costa un fermo totale e un difetto che resta.
+
+Conseguenze. Il difetto #200 non si chiude con il rimedio del mattino, che resta dichiarato per quello che e', cioe' un cerotto che ha spento l'unico segnale che qualcuno riceveva. L'asserzione `PVE-CACHE-RAID` cambia di segno e retrocede da inferenza forte a spiegazione residua, valida solo se i dischi risultano sani; nasce `PVE-SSB-ORDINE`, sospesa in attesa della lettura. SRV-003 (#108) si chiude come effetto collaterale, e restano da correggere le tre schede che riportano il vecchio indirizzo come corrente. Si acquisisce infine, e va conservata perche' e' controintuitiva e ha gia' fatto sbagliare una volta, la correzione secondo cui una cache *flash-backed* ha comunque bisogno della batteria: la sigla dice dove finisce il contenuto della cache, non da dove viene l'energia per portarcelo.
+
+
+Verifica del 16/09/2026 pomeriggio, aggiunta lo stesso giorno perche' e' il motivo per cui questa voce vale piu' della decisione che registra. Le letture sono state fatte e **il pezzo non era guasto**: batteria presente, carica al novantanove per cento, salute buona, e controller che dichiara la sorgente di alimentazione di riserva presente. Se l'ordine fosse partito al mattino, come stava per partire, sarebbe arrivato un ricambio per un guasto inesistente e si sarebbe programmata una finestra di spegnimento di tutte le macchine virtuali per sostituire un componente sano, senza che il problema si spostasse di un millimetro. Anche la seconda ipotesi, quella dei dischi, e' caduta: sono tre unita' a stato solido tutte sane, e su memoria a stato solido il ragionamento che le accusava non ha fondamento. La decisione resta percio' attiva non per il suo esito ma per la sua forma: **entrambe** le ipotesi hardware che si sono susseguite in una sola giornata erano sbagliate, e cio' che le ha smontate non e' stato un ragionamento migliore ma una lettura che costava trenta secondi e nessun fermo. Ne discende la formulazione generale che vale oltre questo caso: quando esiste una misura a costo nullo che puo' falsificare una diagnosi, farla e' un dovere e non una diligenza, e la fretta di riparare e' il modo in cui una deduzione plausibile diventa una spesa.
+
+Da ultimo, una conseguenza che nessuno cercava: le due scoperte piu' importanti della giornata sono **incidentali** all'indagine e non sue figlie, cioe' l'eta' reale del server (#201) e il numero dei suoi alimentatori (#202), entrambe uscite da comandi lanciati per altro. Vale come argomento a favore dell'interrogare una fonte viva invece di rileggere una scheda: la fonte risponde anche a domande che non le sono state poste.
+---
 ## ADR-029 - La tratta verso l'esterno passa da un apparato non gestito a uno gestito e PoE
 
 Data: 2026-09-09 Stato: attiva. Determina M13c-3 e apre M13c-10; chiude per sostituzione il punto cieco di NET-017 (#136/#136b).
@@ -19,20 +38,34 @@ Conseguenze. L'intervento cambia baricentro e non e' piu' la sostituzione di un 
 Vincolo che resta e non va perso: la chiave Nebula in uso e' di sola lettura per scelta (ADR-009) e il canale di scrittura verso gli switch si e' dimostrato inaffidabile (ADR-010, NEB-001). La configurazione del nuovo switch si fa dai pannelli, non da questo repository.
 
 ---
-## ADR-028 - Una lezione appresa risale al template nel momento in cui la si impara, con il perche'
-
-Data: 2026-09-08 Stato: attiva. **Estende ADR-027**, che copriva la sola risalita di una capacita' mancante.
-
-Contesto. ADR-027 aveva aperto il confine verso il template per un caso preciso: una capacita' che la' manca o e' fragile. L'08/09/2026 l'IT Manager ha allargato il mandato, e la ragione che ha dato e' operativa e non teorica: quel template viene **ciclato periodicamente su progetti vecchi e nuovi**, quindi ogni lezione che resta soltanto qui e' una lezione che ogni progetto futuro dovra' ripagare.
-
-Decisione: **quando questo progetto impara una lezione, la lezione risale al template nel momento in cui la si impara**, e vi risale insieme al motivo per cui e' stata imparata. Non alla fine di una fase, non quando si ha tempo, non solo quando manca una capacita' intera: nel momento in cui si capisce qualcosa che valga anche fuori da qui.
-
-Che cosa vale come lezione, perche' non tutto lo e'. Vale un difetto di **metodo** che si ripeterebbe altrove: un criterio di validita' preso da un guasto reale invece che inventato, un controllo che segnala sempre e quindi smette di essere letto, un perimetro definito su uno stato di git invece che sulla pubblicabilita'. Vale un **bug di forma** che qualunque riuso incontrerebbe: un taglio a posizione fissa su un output normalizzato, i colori accesi quando l'uscita non e' un terminale. Non vale un fatto di questa rete, un nome di apparato, una data di questo progetto: quelli restano qui e nel template diventerebbero rumore.
-
-Il **perche' e' parte della cosa che risale**, e non un ornamento. Una regola senza la sua ragione viene applicata dove non serve e disapplicata dove serve, perche' chi la legge non ha modo di giudicare se il suo caso somigli a quello che l'ha generata. Nel template la ragione si scrive in forma generalizzata, cioe' con i numeri della misura ma senza gli identificatori del progetto di origine, ed e' la stessa disciplina che ADR-027 impone al codice.
-
-Vincoli, che restano quelli di ADR-027. Direzione unica verso il template e nessun altro repository. Ramo dedicato e commit manuale dell'utente, perche' quel repository ha un'altra identita' git. E cio' che risale va provato **la'**: nel primo caso reale la prova sul template trovo' due difetti che la prova qui non poteva trovare, fra cui un indirizzo concreto di esempio dentro il documento che vietava gli indirizzi concreti di esempio.
-
+## ADR-028 - Una lezione appresa risale al template nel momento in cui la si impara, con il perche'
+
+
+
+Data: 2026-09-08 Stato: attiva. **Estende ADR-027**, che copriva la sola risalita di una capacita' mancante.
+
+
+
+Contesto. ADR-027 aveva aperto il confine verso il template per un caso preciso: una capacita' che la' manca o e' fragile. L'08/09/2026 l'IT Manager ha allargato il mandato, e la ragione che ha dato e' operativa e non teorica: quel template viene **ciclato periodicamente su progetti vecchi e nuovi**, quindi ogni lezione che resta soltanto qui e' una lezione che ogni progetto futuro dovra' ripagare.
+
+
+
+Decisione: **quando questo progetto impara una lezione, la lezione risale al template nel momento in cui la si impara**, e vi risale insieme al motivo per cui e' stata imparata. Non alla fine di una fase, non quando si ha tempo, non solo quando manca una capacita' intera: nel momento in cui si capisce qualcosa che valga anche fuori da qui.
+
+
+
+Che cosa vale come lezione, perche' non tutto lo e'. Vale un difetto di **metodo** che si ripeterebbe altrove: un criterio di validita' preso da un guasto reale invece che inventato, un controllo che segnala sempre e quindi smette di essere letto, un perimetro definito su uno stato di git invece che sulla pubblicabilita'. Vale un **bug di forma** che qualunque riuso incontrerebbe: un taglio a posizione fissa su un output normalizzato, i colori accesi quando l'uscita non e' un terminale. Non vale un fatto di questa rete, un nome di apparato, una data di questo progetto: quelli restano qui e nel template diventerebbero rumore.
+
+
+
+Il **perche' e' parte della cosa che risale**, e non un ornamento. Una regola senza la sua ragione viene applicata dove non serve e disapplicata dove serve, perche' chi la legge non ha modo di giudicare se il suo caso somigli a quello che l'ha generata. Nel template la ragione si scrive in forma generalizzata, cioe' con i numeri della misura ma senza gli identificatori del progetto di origine, ed e' la stessa disciplina che ADR-027 impone al codice.
+
+
+
+Vincoli, che restano quelli di ADR-027. Direzione unica verso il template e nessun altro repository. Ramo dedicato e commit manuale dell'utente, perche' quel repository ha un'altra identita' git. E cio' che risale va provato **la'**: nel primo caso reale la prova sul template trovo' due difetti che la prova qui non poteva trovare, fra cui un indirizzo concreto di esempio dentro il documento che vietava gli indirizzi concreti di esempio.
+
+
+
 Conseguenza operativa, ed e' la parte che rende la decisione eseguibile invece che buona: ogni voce di work-log che registra una lezione dichiara **se sia risalita**, e in caso contrario perche' no. Senza quel campo la regola dipende dalla memoria, che e' precisamente cio' che ADR-026 ha smesso di accettare.
 
 ## ADR-027 — Il confine con gli altri repository si apre in una direzione sola: la risalita di una capacita' al template

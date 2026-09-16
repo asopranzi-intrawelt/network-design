@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 11,
+  "revisione": 14,
   "aggiornato": "2026-09-16",
   "scadenze": [
     {
@@ -233,13 +233,13 @@
     },
     {
       "id": "PVE-CACHE-RAID",
-      "afferma": "La cache del controller RAID del nodo Proxmox e' disabilitata perche' il modulo che la protegge, batteria o condensatore FBWC, e' guasto o scarico",
-      "stato": "INFERENZA NON CONFERMATA, 16/09/2026. Il registro del kernel dichiara cache in lettura e scrittura disabilitate: quello e' misurato. La CAUSA e' dedotta dal comportamento noto dei controller di quella famiglia e non e' stata letta da nessuno strumento, perche' ssacli non e' installato, i repository del produttore non sono raggiungibili da quell'ambiente e dell'immagine SPP montata si e' visto il solo pacchetto rpm senza avere di che estrarlo. E' la voce su cui poggia l'intera diagnosi di #200 e l'unica che giustifica una finestra di spegnimento del nodo: finche' non e' confermata, la spesa e il fermo non sono giustificati da una misura",
+      "afferma": "La cache del controller RAID del nodo Proxmox e' disabilitata, ed e' questa la causa del crollo di lettura che rallenta i backup",
+      "stato": "SMENTITA E CHIUSA IL 16/09/2026 pomeriggio, con misura diretta. La batteria di telaio e' presente, modello 875241-B21, carica al 99 per cento, salute OK e stato Enabled; il controller P408i-a SR Gen10 dichiara salute OK e sorgente di alimentazione di riserva Present. Il meccanismo che disabilita la cache si arma solo quando quella sorgente manca o e' guasta, quindi non e' scattato. La riga del kernel era un artefatto di riporto, cioe' cio' che Linux stampa quando lo Smart Array non gli espone la pagina di caching SCSI. Caduta anche la seconda ipotesi, quella dei dischi: sono tre SSD SATA da 1,92 TB in RAID 5, tutti OK, nessuna ricostruzione, nessun evento di disco nel registro hardware dopo aprile 2025. Nessun pezzo da ordinare e nessuna finestra di spegnimento per questo motivo. Resta da spiegare il gradino di velocita', che con supporto a stato solido non puo' essere una regione malata: la ricerca si sposta sullo strato fra vzdump e il volume sottile",
       "verificata_il": "2026-09-16",
-      "validita_giorni": 14,
-      "domanda": "E' stato recuperato ssacli, e che cosa dichiarano 'ctrl all show status' e le righe Cache Status e Battery/Capacitor Status? Nello stesso passaggio: i dischi fisici sono meccanici o a stato solido, e il controller e' davvero su hpsa o dovrebbe stare su smartpqi su questo modello di server?",
-      "a_chi": "IT Manager, oppure la sessione di lavoro che ha prodotto il handoff",
-      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200 (STOR-005); copia integrale del handoff in _notes/HANDOFF-pve-backup-lock-timeout.md. Misura di classe D del 16/09/2026, mai ripetuta da questo progetto"
+      "validita_giorni": 90,
+      "domanda": "Chiusa: non c'e' piu' una domanda hardware. Il seguito e' la lettura grezza del volume della VM 100 a offset crescenti, che vive in PVE-LETTURA-LENTA",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200 (STOR-005), secondo aggiornamento del 16/09; ADR-030; micro-step M28-2 in .claude/context/roadmap.md"
     },
     {
       "id": "PVE-BACKUP-COMPLETI",
@@ -260,6 +260,46 @@
       "domanda": "Si puo' ripristinare una macchina piccola e spenta, per esempio la 203, cronometrando? E' la sola misura che trasforma il tempo di ripristino da stima in dato, e va rifatta dopo la riparazione del controller per avere i due numeri a confronto",
       "a_chi": "IT Manager",
       "dove": "docs/business-continuity-disaster-recovery.md sezione Piano di Disaster Recovery; GAP-TBC.md #200"
+    },
+    {
+      "id": "PVE-SSB-ORDINE",
+      "afferma": "Il pezzo da ordinare per il nodo Proxmox e' la HPE Smart Storage Battery da 96 W, part number P01366-B21",
+      "stato": "ANNULLATA IL 16/09/2026: non si ordina niente. La batteria installata e' la 875241-B21, di cui la P01366-B21 individuata al mattino e' il successore a catalogo, ed e' sana e carica al 99 per cento. Il ricambio era quello giusto; il guasto non c'era. Voce conservata e non cancellata perche' il registro e' append-only e perche' documenta un ordine evitato da una lettura di trenta secondi",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 365,
+      "domanda": "Nessuna: chiusa senza ordine",
+      "a_chi": "IT Manager",
+      "dove": "ADR-030; M28-2 e M28-3; docs/infrastructure-timeline/GAP-TBC.md #200"
+    },
+    {
+      "id": "PVE-LETTURA-LENTA",
+      "afferma": "Il crollo di lettura del backup della VM 100 e' spiegato dallo strato fra vzdump e il volume sottile, non dall'hardware",
+      "stato": "MISURATA IL 16/09/2026 sera, e il dispositivo a blocchi e' assolto. La lettura diretta con dd iflag=direct sul volume della VM 100 da' 930-1100 MB/s PIATTI agli offset 0, 20, 40, 60 e 80 GB, e 9,6 GB/s oltre i 100 GB perche' li' il volume sottile non e' allocato e torna zeri senza toccare il disco. Contro i 20 MiB/s misurati da vzdump sullo stesso volume e' un fattore QUARANTASETTE: nessun gradino, nessuna regione lenta, quindi cio' che rallenta sta sopra il dispositivo. Tre candidati aperti e nessuno escluso: il bus ide0 del disco, che per una macchina ACCESA conta perche' il backup passa dallo strato a blocchi di QEMU e un dispositivo IDE non ammette iothread; la compressione mono-thread, la cui resa su quel processore coincide con il numero osservato; e la scrittura verso la destinazione di rete",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 14,
+      "domanda": "Il backup di una macchina SPENTA, per esempio la 203, va veloce o arranca alla stessa velocita'? E' il discriminante: veloce accusa il percorso QEMU della macchina accesa e quindi il bus ide0, lento accusa compressione o destinazione. Nello stesso passaggio: che cosa dicono qm config 100 su bus, cache e aio, quale compressore e' dichiarato nei lavori di backup, e a che velocita' scrive una prova verso la destinazione",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; M28-6 in .claude/context/roadmap.md"
+    },
+    {
+      "id": "SRV-ETA-SERVER",
+      "afferma": "Il server Proxmox e' un asset del 2025, con il ciclo di vita e la garanzia che ne discendono",
+      "stato": "SMENTITA IL 16/09/2026: la scheda madre e' datata 20/02/2018 e il registro eventi porta guasti di disco del 2018 e del 2019 con orologio verificato corretto, cioe' la storia del proprietario precedente. Il server e' stato acquistato usato; del 2025 e' la fornitura, non l'hardware. Gli SSD sono invece recenti",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 30,
+      "domanda": "Il numero di serie dello chassis, inserito nel portale di supporto del costruttore, che stato di garanzia restituisce e con quale data di spedizione? E la fornitura del 2025 dichiarava l'hardware come usato o ricondizionato?",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #201 (SRV-009); numero di serie in _notes/, non nei file tracciati"
+    },
+    {
+      "id": "SRV-ALIMENTATORI",
+      "afferma": "Il server Proxmox ha un solo alimentatore, come dichiara ELE-003 (#147)",
+      "stato": "SMENTITA E CONFERMATA SULL'INVENTARIO IL 16/09/2026. Non e' piu' una lettura di sensori: l'inventario dei componenti elenca due unita' fisiche distinte, PSU 1 e PSU 2, stesso codice 865414-B21, 800 W ciascuna, numeri di serie diversi, entrambe sane. ELE-003 (#147) e' smentito come fatto hardware. Resta aperta la sola cosa che nessun inventario puo' dire, cioe' se i due alimentatori siano cablati a due linee distinte: due alimentatori sulla stessa presa danno ridondanza di apparato e non di alimentazione, e la differenza e' tutta li'",
+      "verificata_il": "2026-09-16",
+      "validita_giorni": 30,
+      "domanda": "Sopralluogo al retro dell'armadio: i due alimentatori sono cablati a due linee distinte, e almeno una passa da un gruppo di continuita'?",
+      "a_chi": "IT Manager",
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #202 (ELE-005); ELE-001 (#145); ELE-003 (#147)"
     }
   ]
 }
