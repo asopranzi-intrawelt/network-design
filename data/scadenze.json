@@ -1,8 +1,8 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 17,
-  "aggiornato": "2026-09-16",
+  "revisione": 18,
+  "aggiornato": "2026-09-22",
   "scadenze": [
     {
       "id": "NEB-54HP",
@@ -243,21 +243,21 @@
     },
     {
       "id": "PVE-BACKUP-COMPLETI",
-      "afferma": "Da quando l'attesa massima sul lock e' a ventiquattro ore, tutti e otto i lavori di backup notturni completano, e nessuno sfora oltre la mattinata",
-      "stato": "NON VERIFICATA: il rimedio e' stato applicato il 16/09/2026 e nessuna corsa successiva e' stata letta da qui. E' l'affermazione con la vita piu' breve del registro, perche' la notifica per posta scatta solo sul fallimento e quel fallimento e' stato reso quasi impossibile dal rimedio stesso: da oggi il silenzio non e' piu' una buona notizia e va sostituito da una lettura",
+      "afferma": "Da quando l'attesa massima sul lock e' a ventiquattro ore, tutti e dieci i lavori di backup completano, e nessuno sfora oltre la mattinata",
+      "stato": "NON VERIFICATA e SUPERATA NEL NUMERO il 16/09/2026: il rimedio sul lock era stato applicato quando i lavori erano otto; la sera stessa ne sono stati aggiunti tre per sanare #203, portando la catena da sette a dieci e creando una collisione alle 04:30. Nessuna corsa completa successiva e' stata letta da qui. La notifica per posta scatta solo sul fallimento e quel fallimento e' stato reso quasi impossibile dal rimedio stesso: il silenzio non e' una buona notizia e va sostituito da una lettura",
       "verificata_il": "2026-09-16",
       "validita_giorni": 7,
-      "domanda": "Nella pagina dei task del nodo: gli otto lavori dell'ultima notte risultano tutti riusciti, e a che ora ha finito l'ultimo? Se l'ultimo finisce dentro l'orario di lavoro, il backup sta contendendo I/O agli utenti ed e' un secondo problema oltre a quello del disco",
+      "domanda": "La collisione delle 04:30 e' stata sciolta? Nella pagina dei task del nodo: i dieci lavori dell'ultima notte risultano tutti riusciti, e a che ora ha finito l'ultimo? Se l'ultimo finisce dentro l'orario di lavoro, il backup sta contendendo I/O agli utenti ed e' un secondo problema oltre alla lentezza del deposito",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; docs/business-continuity-disaster-recovery.md sezione Storage e backup"
     },
     {
       "id": "PVE-RIPRISTINO-TEMPO",
       "afferma": "Il tempo di ripristino di una macchina virtuale dal deposito su NAS INTRA e' quello che la scheda di continuita' lascia intendere",
-      "stato": "NON VERIFICABILE OGGI, dichiarata il 16/09/2026: nessuno ha mai cronometrato un ripristino, e con la cache del controller disabilitata il ripristino riscrive su uno storage lento quanto quello che lo rallenta in lettura. La scheda di continuita' dichiara la procedura come gia' verificata funzionante, che e' cosa diversa dal conoscerne la durata: funzionante risponde a 'si puo' fare', non a 'in quanto tempo'",
+      "stato": "NON VERIFICABILE OGGI, dichiarata il 16/09/2026 e corretta il 22/09/2026 dopo la chiusura di #200: nessuno ha mai cronometrato un ripristino. Il controller e lo storage locale sono sani; il limite misurato e' il deposito NAS, lento sia in scrittura sia in lettura. La scheda di continuita' dichiara la procedura come gia' verificata funzionante, che e' cosa diversa dal conoscerne la durata: funzionante risponde a 'si puo' fare', non a 'in quanto tempo'",
       "verificata_il": "2026-09-16",
       "validita_giorni": 90,
-      "domanda": "Si puo' ripristinare una macchina piccola e spenta, per esempio la 203, cronometrando? E' la sola misura che trasforma il tempo di ripristino da stima in dato, e va rifatta dopo la riparazione del controller per avere i due numeri a confronto",
+      "domanda": "Si puo' ripristinare una macchina piccola e spenta, per esempio la 203, cronometrando? E' la sola misura che trasforma il tempo di ripristino da stima in dato, e va rifatta dopo il risanamento del NAS per avere i due numeri a confronto",
       "a_chi": "IT Manager",
       "dove": "docs/business-continuity-disaster-recovery.md sezione Piano di Disaster Recovery; GAP-TBC.md #200"
     },
