@@ -55,14 +55,18 @@ param(
 #    non convenzionale o quando si vuole puntare a una copia di prova.
 # 2. Le variabili che il client OneDrive imposta da se': OneDriveCommercial per la libreria
 #    aziendale, OneDrive per quella predefinita.
-# 3. Una ricerca sotto il profilo utente di una cartella "OneDrive - *", che e' la forma che
+# 3. I percorsi registrati nelle baseline locali gia' validate. Una baseline non prova che la
+#    sorgente esista ancora, quindi il percorso viene riusato solo se esiste e il nome della
+#    libreria coincide con uno di quelli attesi. Questo recupera anche le librerie SharePoint
+#    montate fuori dalla radice indicata dalle variabili automatiche di OneDrive.
+# 4. Una ricerca sotto il profilo utente di una cartella "OneDrive - *", che e' la forma che
 #    il client crea per una libreria aziendale. Se ne trova piu' di una si prende la prima in
 #    ordine alfabetico e lo si dichiara, perche' un doppio aggancio della stessa libreria
 #    produce copie divergenti ed e' un problema noto di questo progetto.
 #
 # Su una macchina senza OneDrive nessuna delle tre riesce: lo script lo dice e prosegue senza
 # quelle radici, invece di fallire, perche' le altre fonti del progetto restano interrogabili.
-function Resolve-OneDriveRoot([string[]]$Attese) {
+function Resolve-OneDriveRoot([string[]]$Attese, [string]$NotesPath) {
     # Non si crede a una variabile d'ambiente: si VERIFICA che la radice candidata contenga
     # davvero almeno una delle librerie sorvegliate. La ragione e' un difetto misurato il
     # 07/09/2026 su questa macchina: `OneDriveCommercial` punta al doppio aggancio
@@ -76,6 +80,23 @@ function Resolve-OneDriveRoot([string[]]$Attese) {
     $candidati = @()
     if ($env:ONEDRIVE_ROOT) { $candidati += $env:ONEDRIVE_ROOT }
     foreach ($v in @($env:OneDriveCommercial, $env:OneDrive)) { if ($v) { $candidati += $v } }
+    if ($NotesPath -and (Test-Path -LiteralPath $NotesPath)) {
+        Get-ChildItem -LiteralPath $NotesPath -File -Filter '.onedrive-manifest*.json' -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                try {
+                    $manifest = Get-Content -Raw -LiteralPath $_.FullName -Encoding UTF8 | ConvertFrom-Json
+                    $cartellaRegistrata = [string]$manifest.folder
+                    if ($cartellaRegistrata -and
+                        ((Split-Path -Leaf $cartellaRegistrata) -in $Attese) -and
+                        (Test-Path -LiteralPath $cartellaRegistrata)) {
+                        $candidati += (Split-Path -Parent $cartellaRegistrata)
+                    }
+                } catch {
+                    # Una baseline illeggibile non diventa una radice: verra' segnalata dal
+                    # controllo ordinario se una sorgente valida viene trovata in altro modo.
+                }
+            }
+    }
     $profilo = if ($env:USERPROFILE) { $env:USERPROFILE } else { $HOME }
     if ($profilo -and (Test-Path -LiteralPath $profilo)) {
         Get-ChildItem -LiteralPath $profilo -Directory -Filter "OneDrive*" -ErrorAction SilentlyContinue |
@@ -110,7 +131,7 @@ $librerie = @(
 
 $radiceProgetto = Split-Path -Parent $PSScriptRoot
 $notes = Join-Path $radiceProgetto '_notes'
-$oneDriveRoot = Resolve-OneDriveRoot -Attese ($librerie | ForEach-Object { $_.Sotto })
+$oneDriveRoot = Resolve-OneDriveRoot -Attese ($librerie | ForEach-Object { $_.Sotto }) -NotesPath $notes
 
 $defaultTargets = @()
 if ($oneDriveRoot) {
