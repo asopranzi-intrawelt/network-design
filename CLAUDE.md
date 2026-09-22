@@ -8,7 +8,7 @@ Progetto di documentazione e progettazione della rete Intrawelt. Raccoglie la st
 
 ## Procedura di ripresa in una sessione nuova
 
-Leggere per primo `.claude/memory/index.md` (branch, commit di riferimento, stato schede, punto di ripresa). Leggere poi `.claude/context/current-work.md` se c'e' una feature attiva. Seguire il protocollo di `.claude/rules/fonti-e-riallineamento.md`: il repository e' una sola delle cinque classi di fonti e le altre quattro non notificano, quindi vanno interrogate — in particolare va letto per intero il blocco `RILEVANTI PER LA RETE` dell'output del delta, e va chiesto all'IT Manager che cosa e' cambiato sulla rete in altre sessioni di lavoro o per intervento manuale. Invocare la skill `sync-context` per verificare il drift tra schede e codice. Leggere solo le schede pertinenti al task, mai tutte insieme. Per documenti Word voluminosi usare la skill `docx-ingest` che applica la disclosure progressiva (livello 1: TOC, livello 2: sezioni chiave, livello 3: sezione completa su richiesta).
+Eseguire prima `python tools/verifica-agent-bridge.py`, che rende visibile una divergenza fra le skill scoperte da Claude Code e quelle scoperte da Codex. Invocare poi la skill `riprendi`, che esegue `python tools/verifica-ripresa.py` e verifica il file di ripresa prima di fidarsene. Leggere quindi `.claude/memory/index.md` (branch, commit di riferimento, stato schede, punto di ripresa) e `.claude/context/current-work.md` se c'e' una feature attiva. Seguire il protocollo di `.claude/rules/fonti-e-riallineamento.md`: il repository e' una sola delle cinque classi di fonti e le altre quattro non notificano, quindi vanno interrogate — in particolare va letto per intero il blocco `RILEVANTI PER LA RETE` dell'output del delta, e va chiesto all'IT Manager che cosa e' cambiato sulla rete in altre sessioni di lavoro o per intervento manuale. Invocare la skill `sync-context` per verificare il drift tra schede e codice. Leggere solo le schede pertinenti al task, mai tutte insieme. Per documenti Word voluminosi usare la skill `docx-ingest` che applica la disclosure progressiva (livello 1: TOC, livello 2: sezioni chiave, livello 3: sezione completa su richiesta). A fine sessione, dopo i commit manuali dell'utente e l'aggiornamento di `_notes/RESUME_PROMPT.md`, registrare l'impronta con `python tools/verifica-ripresa.py --registra`.
 
 ## Due layer documentali
 
@@ -152,10 +152,13 @@ Skill richiamabili, sotto `.claude/skills/`.
 
 ```
 .claude/skills/sync-context/    verifica drift schede vs codice; usare a inizio sessione
+.claude/skills/riprendi/        verifica il resume contro commit e working tree prima di leggerlo
 .claude/skills/repo-status/     riepilogo branch, commit recenti, diff non committato
 .claude/skills/git-sync/        aggiorna contesto dopo un git pull o merge
 .claude/skills/docx-ingest/     ingestione progressiva di documenti Word voluminosi
 ```
+
+Codex scopre le stesse skill tramite adapter sottili e versionati sotto `.agents/skills/`. La logica resta soltanto in `.claude/skills/`; `tools/verifica-agent-bridge.py` impedisce che i due cataloghi divergano.
 
 Agent specializzati, sotto `.claude/agents/`.
 
