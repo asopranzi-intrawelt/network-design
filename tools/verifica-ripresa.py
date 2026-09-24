@@ -315,7 +315,7 @@ def self_test():
     def repo():
         d = tempfile.mkdtemp(prefix="verifica-ripresa-")
         git("init", "-q", radice=d)
-        git("config", "user.email", "prova@esempio.invalid", radice=d)
+        git("config", "user.email", "prova", radice=d)  # Identita sintetica del repository di prova
         git("config", "user.name", "Prova", radice=d)
         os.makedirs(os.path.join(d, "_notes"))
         os.makedirs(os.path.join(d, ".claude", "memory"))

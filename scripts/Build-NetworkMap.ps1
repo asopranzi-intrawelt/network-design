@@ -59,9 +59,9 @@ function Get-Prop($obj, [string]$name) {
 $here = $PSScriptRoot
 if (-not $here) { $here = Split-Path -Parent $MyInvocation.MyCommand.Path }
 $root = Split-Path -Parent $here
-if (-not $SourcePath)   { $SourcePath   = Join-Path $root 'data\network-topology.json' }
-if (-not $TemplatePath) { $TemplatePath = Join-Path $here 'templates\network-map.template.html' }
-if (-not $OutputPath)   { $OutputPath   = Join-Path $root 'docs\network-map.html' }
+if (-not $SourcePath)   { $SourcePath   = Join-Path (Join-Path $root 'data') 'network-topology.json' }
+if (-not $TemplatePath) { $TemplatePath = Join-Path (Join-Path $here 'templates') 'network-map.template.html' }
+if (-not $OutputPath)   { $OutputPath   = Join-Path (Join-Path $root 'docs') 'network-map.html' }
 
 if (-not (Test-Path -LiteralPath $SourcePath))   { Fail "Fonte non trovata: $SourcePath" }
 if (-not (Test-Path -LiteralPath $TemplatePath)) { Fail "Template non trovato: $TemplatePath" }
@@ -74,18 +74,28 @@ $raw = Get-Content -Raw -Encoding UTF8 -LiteralPath $SourcePath
 try   { $topo = $raw | ConvertFrom-Json }
 catch { Fail "La fonte non e' JSON valido: $($_.Exception.Message)" }
 
-foreach ($campo in 'meta','vlan','livelli','nodi','collegamenti','alimentazione') {
+foreach ($campo in 'meta','vlan','livelli','contenitori','nodi','collegamenti','alimentazione','gap') {
     if (-not ($topo.PSObject.Properties.Name -contains $campo)) { Fail "Campo obbligatorio mancante nella fonte: $campo" }
 }
 
-$idNodi = @{}
-foreach ($n in $topo.nodi) {
-    if (-not $n.id)   { Fail "Nodo senza id: $($n | ConvertTo-Json -Compress)" }
-    if ($idNodi.ContainsKey($n.id)) { Fail "Id di nodo duplicato: $($n.id)" }
-    $idNodi[$n.id] = $n
+function Index-Items($items, [string]$kind) {
+    $index = @{}
+    foreach ($item in $items) {
+        $id = [string](Get-Prop $item 'id')
+        if ([string]::IsNullOrWhiteSpace($id)) { Fail "$kind senza id" }
+        if ($id -notmatch '^[A-Za-z0-9][A-Za-z0-9_-]*$') { Fail "$kind con id non valido: $id" }
+        if ($index.ContainsKey($id)) { Fail "$kind con id duplicato: $id" }
+        $index[$id] = $item
+    }
+    return $index
 }
-$idLivelli = @{}; foreach ($l in $topo.livelli) { $idLivelli[$l.id] = $true }
-$idPwr = @{};     foreach ($p in $topo.alimentazione) { $idPwr[$p.id] = $true }
+$idNodi = Index-Items $topo.nodi 'Nodo'
+$idLivelli = Index-Items $topo.livelli 'Livello'
+$idPwr = Index-Items $topo.alimentazione 'Alimentazione'
+$idCont = Index-Items $topo.contenitori 'Contenitore'
+$idVlan = Index-Items $topo.vlan 'VLAN'
+$idGap = Index-Items $topo.gap 'Difetto'
+if ($idNodi.Count -eq 0) { Fail 'La topologia non contiene nodi' }
 
 $problemi = New-Object System.Collections.Generic.List[string]
 
@@ -96,14 +106,31 @@ foreach ($n in $topo.nodi) {
     if ($al -and -not $idPwr.ContainsKey($al)) { $problemi.Add("Nodo '$($n.id)': sorgente di alimentazione sconosciuta '$al'") }
     $al2 = Get-Prop $n 'alimentazione-2'
     if ($al2 -and -not $idPwr.ContainsKey($al2)) { $problemi.Add("Nodo '$($n.id)': seconda sorgente sconosciuta '$al2'") }
+    $cont = Get-Prop $n 'contenitore'
+    if ($cont -and -not $idCont.ContainsKey($cont)) { $problemi.Add("Nodo '$($n.id)': contenitore sconosciuto '$cont'") }
 }
 foreach ($c in $topo.collegamenti) {
     if (-not $idNodi.ContainsKey($c.da)) { $problemi.Add("Collegamento con estremo 'da' sconosciuto: '$($c.da)'") }
     if (-not $idNodi.ContainsKey($c.a))  { $problemi.Add("Collegamento con estremo 'a' sconosciuto: '$($c.a)'") }
+    if ($c.da -eq $c.a) { $problemi.Add("Collegamento di '$($c.da)' verso se stesso") }
+    foreach ($v in @(Get-Prop $c 'vlan')) {
+        if ($null -ne $v -and -not $idVlan.ContainsKey([string]$v)) { $problemi.Add("Collegamento '$($c.da)' -> '$($c.a)': VLAN sconosciuta '$v'") }
+    }
+}
+foreach ($item in @($topo.nodi) + @($topo.alimentazione)) {
+    foreach ($gap in @(Get-Prop $item 'gap')) {
+        if ($gap -and -not $idGap.ContainsKey($gap)) { $problemi.Add("Elemento '$($item.id)': difetto sconosciuto '$gap'") }
+    }
 }
 foreach ($p in $topo.alimentazione) {
     $up = Get-Prop $p 'alimentato-da'
     if ($up -and -not $idPwr.ContainsKey($up)) { $problemi.Add("Sorgente '$($p.id)': monte sconosciuto '$up'") }
+    $seen = @{}; $cur = $p.id
+    while ($cur -and $idPwr.ContainsKey($cur)) {
+        if ($seen.ContainsKey($cur)) { $problemi.Add("Ciclo di alimentazione dalla sorgente '$($p.id)'"); break }
+        $seen[$cur] = $true
+        $cur = Get-Prop $idPwr[$cur] 'alimentato-da'
+    }
 }
 
 if ($problemi.Count -gt 0) {
@@ -115,10 +142,13 @@ if ($problemi.Count -gt 0) {
 # --- 2. Iniezione nel template ----------------------------------------------
 $stamp = Get-Date -Format 'dd/MM/yyyy'
 $html  = Get-Content -Raw -Encoding UTF8 -LiteralPath $TemplatePath
+foreach ($marker in '__TOPOLOGY_DATA__','__PORTMATRIX_DATA__','__GENERATED_AT__') {
+    if (-not $html.Contains($marker)) { Fail "Template incompleto: manca $marker" }
+}
 
 # Il JSON entra dentro un tag <script type="application/json">: l'unica sequenza che
 # lo chiuderebbe in anticipo e' "</script", quindi si neutralizza quella e basta.
-$jsonInline = $raw -replace '</script', '<\/script'
+$jsonInline = $raw.Replace('<', '\u003c').Replace('>', '\u003e').Replace('&', '\u0026')
 
 $html = $html.Replace('__TOPOLOGY_DATA__', $jsonInline)
 $html = $html.Replace('__GENERATED_AT__', $stamp)
@@ -127,9 +157,12 @@ $html = $html.Replace('__GENERATED_AT__', $stamp)
 # da scripts/Export-PortMatrix.py. E' facoltativa di proposito: un clone che non
 # l'ha ancora generata deve poter costruire la mappa lo stesso, con una vista in
 # meno invece che con un errore.
-$matricePath = Join-Path $root 'data\port-matrix.json'
+$matricePath = Join-Path (Join-Path $root 'data') 'port-matrix.json'
 if (Test-Path -LiteralPath $matricePath) {
-    $matrice = (Get-Content -Raw -Encoding UTF8 -LiteralPath $matricePath) -replace '</script', '<\/script'
+    $matriceRaw = Get-Content -Raw -Encoding UTF8 -LiteralPath $matricePath
+    try { $matrixObject = $matriceRaw | ConvertFrom-Json } catch { Fail 'La matrice delle porte non e JSON valido' }
+    if (-not (Get-Prop $matrixObject 'meta') -or -not (Get-Prop $matrixObject 'switch')) { Fail 'Matrice delle porte incompleta' }
+    $matrice = $matriceRaw.Replace('<', '\u003c').Replace('>', '\u003e').Replace('&', '\u0026')
     Write-Host "  Matrice delle porte agganciata da data\port-matrix.json" -ForegroundColor DarkGray
 } else {
     $matrice = 'null'
@@ -188,5 +221,5 @@ $nPwr  = @($topo.alimentazione).Count
 $nGap  = @($topo.nodi | Where-Object { (Get-Prop $_ 'gap') }).Count
 
 Write-Host "Mappa: $risolto ($kb KB)" -ForegroundColor Green
-Write-Host "  $nNodi nodi, $nColl collegamenti, $nPwr sorgenti di alimentazione, $nGap nodi con difetti aperti"
+Write-Host "  $nNodi nodi, $nColl collegamenti, $nPwr sorgenti di alimentazione, $nGap nodi con voci di rischio o verifica"
 Write-Host "  Autoconsistente: nessuna dipendenza esterna. Si apre con un doppio clic."

@@ -1,5 +1,17 @@
 # Checklist Ingestion Documenti IT – Intrawelt
 
+## Triage del 23/09/2026
+
+Letti per intero i blocchi rilevanti del delta sulle tre librerie, rispetto alle baseline del 07/09/2026. L'IT Manager conferma che dal riallineamento del 22/09 non ci sono modifiche esterne alla rete. Il triage classifica la coda; non equivale all'ingestione dei contenuti e non aggiorna le baseline.
+
+| Gruppo | Esito del triage | Seguito |
+|---|---|---|
+| Libreria tecnica: 122 nuovi, 14 modificati, 113 eliminati | Delta dominato dalle risorse di governance; coppie di percorsi suggeriscono riorganizzazioni, non interventi sulla rete | Rileggere il documento di istruzioni della raccolta CERT modificato; non promuoverlo a evidenza di configurazione |
+| Libreria amministrativa: 57 nuovi, 29 eliminati | Materiale di allineamento licenze, preventivo hardware e documenti di assistenza; presenti apparenti rinomine di cartelle | Priorita' alta alla verifica delle nuove scadenze Zyxel, poi al preventivo e al contratto di assistenza. Dati economici e riferimenti commerciali restano privati |
+| Cartella di scambio: 25 nuovi | Runbook di ripristino NAS/Veeam e note sugli ambienti applicativi pertinenti; screenshot e documenti di valutazione da attribuire | Ingerire il runbook per distinguere procedura descritta da ripristino realmente provato; confrontare le note sugli ambienti con la scheda sviluppo |
+
+Lo snapshot documentale del 23/09 dichiara questa coda fra i limiti di copertura. Nessuna nuova scadenza, installazione o prova di ripristino viene dedotta dai soli nomi dei file.
+
 Cartelle sorgente (due librerie OneDrive distinte, entrambe monitorate dal 09/07/2026):
 - `C:\Users\Utente\OneDrive - Intrawelt S.a.s\Documenti - IT` (tecnica, perimetro principale)
 - `C:\Users\Utente\OneDrive - Intrawelt S.a.s\IT + Administration - Documenti` (amministrativa/fornitori, 742 file — scoperta il 09/07/2026 tramite un collegamento `.lnk` dentro ARCHITETTURA SERVER-CLOUD-LINEE, sezione dedicata piu' sotto)
@@ -666,4 +678,3 @@ Il documento non e' arrivato dal delta ma dalla cartella dei download dell'IT Ma
 - [x] `HANDOFF-pve-backup-lock-timeout.md` (16/09/2026) — **e' il primo handoff di classe D che porta un difetto nuovo invece di corroborarne uno esistente.** Documenta il fallimento di due lavori di backup vzdump sul nodo Proxmox nella notte fra il 15 e il 16/09, la catena diagnostica che dal sintomo arriva al disco, e la causa radice dedotta, cioe' la cache del controller RAID disabilitata con ogni probabilita' per il guasto del modulo che la protegge. Ingerito per intero come **#200 (STOR-005)**, con ricaduta su `business-continuity-disaster-recovery.md` (la catena di backup delle macchine virtuali, che questo progetto citava in una riga e non aveva mai descritto), su `.claude/context/design-and-security.md` (A.8.13 e A.8.16) e su `data/scadenze.json`, dove le tre affermazioni che il documento lascia aperte sono state scritte come domande datate invece che come conclusioni. Copia integrale in `_notes/HANDOFF-pve-backup-lock-timeout.md`, che e' dove restano i valori reali: indirizzi dei NAS, identificativi dei lavori di backup e i tre destinatari delle notifiche, di cui uno esterno all'azienda
 - La qualita' del documento merita una nota, perche' e' la ragione per cui l'ingestione e' costata mezz'ora e non una giornata: **etichetta ogni affermazione** come verificata, inferita o speculativa, elenca le azioni gia' eseguite con i comandi esatti, dichiara quelle rifiutate e perche', e registra in chiaro una **correzione di se' stesso**, cioe' un'ipotesi intermedia sbagliata sul bus del disco poi smentita. E' esattamente cio' che questo progetto chiede alle proprie voci, arrivato da fuori: quando un handoff e' scritto cosi', l'ingestione e' una traduzione e non un'indagine
 - La cosa che non funziona, e va detta perche' e' strutturale: se quel file fosse rimasto nei download di una macchina, nessun meccanismo di questo progetto lo avrebbe mai visto. Il canale resta quello dichiarato, cioe' depositarlo in una delle tre radici sorvegliate; la consegna a mano ha funzionato una volta e non e' un canale
-
