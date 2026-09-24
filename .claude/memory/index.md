@@ -6,12 +6,12 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 8fbe3c2 (22/09/2026, riallineamento dello stato e supporto Codex)
-Data snapshot:         2026-09-24, riletto dopo 8fbe3c2 e durante il lavoro sulla documentazione
-Commit precedenti:     441c21b, d7481b5, 07a181b, 142f925, 61860b9, f12031d, beccead
+Commit di riferimento: 1206134 (24/09/2026, documentazione e topologia verificata)
+Data snapshot:         2026-09-24, riletto dopo il commit manuale 1206134
+Commit precedenti:     8fbe3c2, 441c21b, d7481b5, 07a181b, 142f925, 61860b9, f12031d, beccead
 ```
 
-I commit successivi a `beccead` hanno rovesciato la diagnosi che questo file continuava a presentare come corrente. `61860b9` ha assolto batteria, controller e SSD; `142f925` ha assolto la compressione e aperto la verifica della copertura; `07a181b` ha identificato il deposito NAS come collo di bottiglia e sanato la copertura delle VM; `d7481b5` ha chiuso definitivamente #200, assolto anche `ide0` e ritrattato l'ipotesi del collegamento a 100 Mb/s; `441c21b` e `163a667` hanno firmato e poi riparato la codifica di `roadmap.md`. Lo stato operativo corrente e' quindi **#204 / STOR-007**, non la sostituzione di un componente del server. Le modifiche della sessione del 22/09 sono nel commit 8fbe3c2. La sessione documentale del 24/09 e' nel working tree e attende il commit manuale dell'utente; commit e push restano manuali.
+I commit successivi a `beccead` hanno rovesciato la diagnosi che questo file continuava a presentare come corrente. `61860b9` ha assolto batteria, controller e SSD; `142f925` ha assolto la compressione e aperto la verifica della copertura; `07a181b` ha identificato il deposito NAS come collo di bottiglia e sanato la copertura delle VM; `d7481b5` ha chiuso definitivamente #200, assolto anche `ide0` e ritrattato l'ipotesi del collegamento a 100 Mb/s; `441c21b` e `163a667` hanno firmato e poi riparato la codifica di `roadmap.md`. Lo stato operativo corrente e' quindi **#204 / STOR-007**, non la sostituzione di un componente del server. Le modifiche della sessione del 22/09 sono nel commit 8fbe3c2. La sessione documentale del 24/09 e' nel commit manuale 1206134, gia' su `origin/main`. Questa chiusura aggiorna il meta-stato dopo il commit; commit e push restano manuali.
 
 **Il bump di `roadmap.md` e' stato rifatto il 22/09/2026 a `163a667`.** Il commit `441c21b` aveva firmato `d7481b5`, ma la riparazione della doppia codifica in `163a667` era una modifica di contenuto successiva e il controllo la segnalava correttamente. La scheda e' stata riletta contro quel diff e la firma ora coincide con l'ultimo contenuto committato. `current-work.md` e' stata inclusa nel commit 8fbe3c2 e riletta il 24/09: il frontmatter ora firma quel commit. La scheda non viene modificata nel contenuto durante la sessione documentale.
 
@@ -43,7 +43,7 @@ Riletto dal frontmatter e dai diff reali il **22/09/2026**. La colonna che conta
 
 ## Punto di ripresa
 
-Il 24/09/2026 e' stata preparata nel working tree una riorganizzazione documentale e la revisione 11 della topologia, con verifica dei riferimenti e correzioni su alimentazione del server, NAS e access point esterno. L'IT Manager ha confermato il 23/09 che non ci sono state modifiche esterne dal 22/09. Per lo stato della sessione e il seguito leggere `_notes/RESUME_PROMPT.md`; i fatti pubblicabili sono in `docs/snapshot-infrastruttura.md` e `docs/README.md`. L'impronta di ripresa si registra solo dopo i commit manuali dell'utente.
+Il commit 1206134 del 24/09/2026 contiene la riorganizzazione documentale e la revisione 11 della topologia, con verifica dei riferimenti e correzioni su alimentazione del server, NAS e access point esterno. L'IT Manager ha confermato il 23/09 che non ci sono state modifiche esterne dal 22/09. Per lo stato della sessione e il seguito leggere `_notes/RESUME_PROMPT.md`; i fatti pubblicabili sono in `docs/snapshot-infrastruttura.md` e `docs/README.md`. Dopo il commit sono stati aggiornati questo indice e il work-log: la loro modifica locale sara' inclusa nell'impronta di ripresa.
 
 **22/09/2026 - il server e il collegamento sono assolti; il collo di bottiglia e' il NAS principale.** #200 e' chiuso e non richiede ne' un ricambio ne' una finestra di spegnimento. #203 e' chiuso sul fronte della copertura: le VM 207, 208 e 209 hanno ora un lavoro, mentre la 203 e' un template; restano la collisione delle 04:30 e il dimensionamento della catena di dieci lavori. Il seguito e' **M28-8 / #204 (STOR-007)**: il NAS principale scrive a 10,5 MB/s e legge a 15,8 MB/s, mentre l'altro deposito scrive a 110 MB/s dallo stesso nodo e sulla stessa sottorete. Va letto il pannello dell'apparato prima di formulare un altro rimedio: stato dell'insieme e dei dischi, ricostruzioni o verifiche, carico e lavori a bordo, firmware, versione massima di SMB, velocita' e aggregazione delle due interfacce. SMB 2.1 e' un indizio, non una causa dimostrata.
 
