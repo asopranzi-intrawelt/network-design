@@ -217,7 +217,7 @@ Il candidato corretto e' `vmbr1`, che e' sulla porta 7 di uno switch gestito, e'
 
 ## Le tre conseguenze che questo ramo porta con se'
 
-La prima riguarda la continuita'. Lo switch non gestito e' un punto di guasto singolo sulla via di amministrazione in banda dell'hypervisor, e va verificato da quale sorgente elettrica dipende. Si somma al fatto accertato il 06/08/2026 che il server ha un solo alimentatore, collegato alla Ciabatta 2 DX: non e' una ridondanza da sistemare, e' una ridondanza che non esiste e che va dichiarata nel piano di continuita' invece di essere data per scontata dal fatto che l'apparato sta sotto gruppo. E' il difetto #147 (ELE-003).
+La prima riguarda la continuita'. Lo switch non gestito e' un punto di guasto singolo sulla via di amministrazione in banda dell'hypervisor, e va verificato da quale sorgente elettrica dipende. L'inventario hardware del 16/09/2026 ha smentito il conteggio del 06/08: il server ha due alimentatori sani. La fonte fisica colloca PS2 sulla Ciabatta 2 DX, ma non documenta la sorgente di PS1; l'indipendenza elettrica resta da verificare sul posto in #202 (ELE-005). Il #147 (ELE-003) resta pertinente al NAS-HERO, i cui due alimentatori dipendono dallo stesso gruppo.
 
 La seconda riguarda la diagnosi. Quando la console Proxmox non risponde, oggi non esiste modo di sapere se il problema e' quel tratto: niente contatori, niente log, niente tabella MAC interrogabile. Si diagnostica staccando cavi, cioe' con un'interruzione di servizio.
 
@@ -225,7 +225,7 @@ La terza riguarda l'esposizione dei servizi. Tre difetti aperti sono manifestazi
 
 ## Rilevanza ISO27001
 
-I fatti di questa scheda toccano quattro controlli dell'Annex A, e sono gia' registrati nel registro dei gap con il codice corrispondente. A.8.22, segregazione delle reti, e' il controllo centrale: la riga della scheda `design-and-security.md` che descriveva la situazione come "segmentazione fisica tramite bridge separati" e' stata corretta il 25/08/2026, perche' la misura mostra che i quattro bridge non segregano. A.8.20, sicurezza delle reti, e' toccato dal tratto non gestito sulla via di amministrazione. A.8.9, gestione delle configurazioni, era il controllo del difetto #153, ora risolto. A.8.14, ridondanza degli impianti, riguarda l'alimentatore unico e l'assenza di aggregazione delle schede.
+I fatti di questa scheda toccano quattro controlli dell'Annex A, e sono gia' registrati nel registro dei gap con il codice corrispondente. A.8.22, segregazione delle reti, e' il controllo centrale: la riga della scheda `design-and-security.md` che descriveva la situazione come "segmentazione fisica tramite bridge separati" e' stata corretta il 25/08/2026, perche' la misura mostra che i quattro bridge non segregano. A.8.20, sicurezza delle reti, e' toccato dal tratto non gestito sulla via di amministrazione. A.8.9, gestione delle configurazioni, era il controllo del difetto #153, ora risolto. A.8.14, ridondanza degli impianti, riguarda la sorgente non ancora verificata del secondo alimentatore e l'assenza di aggregazione delle schede.
 
 ## Cosa resta da verificare
 

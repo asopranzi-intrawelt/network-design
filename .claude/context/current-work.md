@@ -1,5 +1,5 @@
 ---
-last-verified: beccead
+last-verified: 8fbe3c2
 ---
 
 ## Direttiva permanente: cinque livelli di tracciamento (dal 16/07/2026)

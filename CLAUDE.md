@@ -127,6 +127,9 @@ Schede tecniche, sotto `.claude/context/`, con frontmatter di riconciliazione.
 Documentazione strutturata, sotto `docs/`.
 
 ```
+docs/README.md                    indice della documentazione e percorsi di lettura
+docs/snapshot-infrastruttura.md   fotografia documentale datata: fonti, topologia, limiti e pendenze
+docs/network-diagram.md          guida alla mappa; la ricostruzione precedente e' in docs/archivio/
 docs/infrastructure-timeline/     storia cronologica degli interventi di rete
 docs/pendenze-aperte.md           vista consolidata di cio' che resta da sanare; non e' una fonte, punta ai registri
 docs/livello-fisico-ed-elettrico.md  armadi, alimentazione, catena fisica WAN, mappa porta-apparato, censimento NAS
