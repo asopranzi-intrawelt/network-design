@@ -40,6 +40,14 @@ header.testa{background:var(--carta);border-bottom:1px solid var(--filo);padding
 header.testa h1{margin:0;font-size:24px;font-weight:500;letter-spacing:-.01em}
 header.testa .sotto{margin-top:4px;color:var(--tenue);font-size:13px;max-width:110ch}
 header.testa .meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--tenue);font-size:11px;text-transform:uppercase;letter-spacing:var(--iw-track)}
+.orientamento{padding:10px 24px;background:var(--carta);border-bottom:1px solid var(--filo);font-size:12px}
+.orientamento p{margin:4px 0}
+.orientamento a{color:var(--accento);margin-right:16px}
+.orientamento summary{cursor:pointer;color:var(--accento)}
+#stato-verifica[data-scaduta="true"]{color:var(--iw-error)}
+.guida-vista{padding:8px 24px;margin:0;color:var(--tenue);font-size:12px;border-bottom:1px solid var(--filo)}
+button:focus-visible,a:focus-visible,.nodo:focus-visible .box{outline:2px solid var(--accento);outline-offset:3px}
+.nodo.incerto .box{stroke-dasharray:2 4;stroke:var(--accento)}
 
 /* ---------- barra comandi ---------- */
 .barra{position:sticky;top:0;z-index:30;background:var(--carta);border-bottom:1px solid var(--filo);
@@ -108,7 +116,8 @@ aside p:last-child{margin-bottom:0}
 .grav.alta{color:var(--iw-error)}
 .grav.media{color:var(--iw-purple)}
 .grav.bassa{color:var(--tenue)}
-:root[data-tema="scuro"] .grav.media,@media (prefers-color-scheme:dark){:root:not([data-tema="chiaro"]) .grav.media{color:var(--iw-lblue)}}
+:root[data-tema="scuro"] .grav.media{color:var(--iw-lblue)}
+@media (prefers-color-scheme:dark){:root:not([data-tema="chiaro"]) .grav.media{color:var(--iw-lblue)}}
 .catena{list-style:none;margin:0;padding:0;font-size:12.5px}
 .catena li{padding:4px 0 4px 16px;position:relative}
 .catena li::before{content:"";position:absolute;left:3px;top:12px;width:8px;height:1px;background:var(--filo-forte)}
@@ -192,7 +201,8 @@ footer li{margin-bottom:3px}
 @media print{
   .barra,.filtri,.hud,aside{display:none!important}
   main{height:auto;display:block}
-  #tela{overflow:visible;height:auto}
+  #tela{overflow:visible;height:70vh;min-height:480px}
+  #grafo{position:relative;height:100%}
   body{background:#fff}
 }
 @media (max-width:1100px){
@@ -210,6 +220,12 @@ footer li{margin-bottom:3px}
   <div class="meta" id="metariga"></div>
 </header>
 
+<section class="orientamento" aria-label="Stato dello snapshot">
+  <nav aria-label="Documentazione"><a href="README.md">Indice documentale</a><a href="snapshot-infrastruttura.md">Snapshot completo</a><a href="network-diagram.md">Guida alla topologia</a></nav>
+  <p id="stato-verifica"></p>
+  <details><summary>Copertura e limiti della verifica</summary><div id="limiti-verifica"></div></details>
+</section>
+
 <div class="barra">
   <div class="gruppo" id="viste">
     <button data-vista="logica" aria-pressed="true">Logica</button>
@@ -218,13 +234,14 @@ footer li{margin-bottom:3px}
     <button data-vista="elettrica" aria-pressed="false">Elettrica</button>
     <button data-vista="porte" aria-pressed="false">Porte</button>
   </div>
-  <input class="campo" id="cerca" type="search" placeholder="Cerca apparato, porta, nota&hellip;" autocomplete="off">
-  <button class="mini" id="btn-difetti" aria-pressed="false">Solo con difetti</button>
-  <button class="mini" id="btn-progetto" aria-pressed="true">Mostra il pianificato</button>
+  <input class="campo" id="cerca" type="search" aria-label="Cerca apparato, porta o nota" placeholder="Cerca apparato, porta, nota&hellip;" autocomplete="off">
+  <button class="mini" id="btn-difetti" aria-pressed="false">Solo con voci</button>
+  <button class="mini" id="btn-progetto" aria-pressed="false">Mostra il pianificato</button>
   <button class="mini" id="btn-porte" aria-pressed="true">Etichette di porta</button>
   <div class="sep"></div>
   <button class="mini" id="btn-tema">Tema</button>
   <button class="mini" id="btn-stampa">Stampa</button>
+  <button class="mini" id="btn-reset">Ripristina vista</button>
 </div>
 
 <div class="nastro" id="nastro">
@@ -240,9 +257,10 @@ footer li{margin-bottom:3px}
   <div class="fila" id="f-cont"><span class="et">Luogo</span></div>
 </div>
 
+<p class="guida-vista" id="guida-vista" aria-live="polite"></p>
 <main>
   <div id="tela">
-    <svg id="grafo" xmlns="http://www.w3.org/2000/svg"><g id="mondo"></g></svg>
+    <svg id="grafo" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Topologia interattiva: seleziona un nodo per i dettagli"><g id="mondo"></g></svg>
     <div class="vuoto" id="vuoto">Nessun apparato risponde ai filtri attivi.</div>
     <div class="hud">
       <button id="z-meno" title="Riduci">&minus;</button>
@@ -269,7 +287,7 @@ footer li{margin-bottom:3px}
     <div class="corpo-fis"><ul id="fonti"></ul></div>
   </details>
   <details class="fisarmonica">
-    <summary>Difetti aperti <span class="conteggio" id="c-gap"></span></summary>
+    <summary>Rischi, difetti e verifiche <span class="conteggio" id="c-gap"></span></summary>
     <div class="corpo-fis"><div id="gaplista"></div></div>
   </details>
 
@@ -350,7 +368,7 @@ function icona(tipo){ return IC[tipo] || 'M4 6h16v12H4Z'; }
 var S = {
   vista:'logica',
   mezzi:{}, vlan:{}, cont:{},
-  soloDifetti:false, mostraProgetto:true, mostraPorte:true,
+  soloDifetti:false, mostraProgetto:false, mostraPorte:true,
   cerca:'', sel:null, hover:null,
   vb:{x:0,y:0,w:1000,h:700}, fitCache:{}, iso:null
 };
@@ -388,12 +406,13 @@ LINK.forEach(function(l,i){
    traffico, non l'intera azienda. Discendenti per chiusura in avanti sugli archi,
    antenati per chiusura all'indietro: i primi sono il ramo, i secondi sono il
    contesto e si disegnano attenuati, perche' non sono l'oggetto dell'intervento. */
-var GIU = {}, SU = {};
-LINK.forEach(function(l){
-  (GIU[l.da] = GIU[l.da] || []).push(l.a);
-  (SU[l.a] = SU[l.a] || []).push(l.da);
-});
 function isolamento(id){
+  var GIU = {}, SU = {};
+  LINK.forEach(function(l){
+    if(l.stato === 'progetto' && !S.mostraProgetto) return;
+    (GIU[l.da] = GIU[l.da] || []).push(l.a);
+    (SU[l.a] = SU[l.a] || []).push(l.da);
+  });
   var dentro = {}, disc = {}, ant = {};
   dentro[id] = 1;
   var coda = [id], g = 0;
@@ -1120,6 +1139,15 @@ function adattaBarra(){
 
 function ridisegna(){
   adattaBarra();
+  var guide = {
+    logica:'Percorso documentato da accesso a servizi. Trascina per esplorare, usa Inquadra per la vista completa; seleziona un nodo per i dettagli.',
+    fisica:'Apparati raggruppati per luogo. Le linee rappresentano collegamenti censiti, non percorsi alternativi provati.',
+    segmenti:'Compaiono soltanto i collegamenti con VLAN dichiarata nella fonte. Un arco senza VLAN non prova che sia sulla VLAN nativa.',
+    elettrica:'Catene elettriche censite dalla presa ai dispositivi. Una seconda alimentazione senza sorgente nota resta fuori dal disegno.',
+    porte:'Matrice delle porte derivata dallo snapshot Nebula, con data di misura distinta dalla revisione topologica.'
+  };
+  document.getElementById('guida-vista').textContent = guide[S.vista] || '';
+  if(S.vista === 'porte' && MATRICE && MATRICE.meta) document.getElementById('guida-vista').textContent += ' Misura: ' + (MATRICE.meta['misura-del'] || 'data ignota') + '.';
   if(S.vista === 'porte') return disegnaPorte();
   var G = disponi(costruisciGrafo(S.vista));
   Gcur = G;
@@ -1185,7 +1213,7 @@ function ridisegna(){
     var pts = puntiArco(e);
     var d = percorso(pts);
     var cls = 'arco' + (l.stato === 'progetto' ? ' progetto' : '');
-    var p = el('path', {d:d, 'class':cls, stroke:colore, 'stroke-dasharray': (l.stato==='progetto' ? '6 4' : cm.d)});
+    var p = el('path', {d:d, 'class':cls, stroke:colore, 'stroke-dasharray': (l.stato==='progetto' ? '6 4' : (l.verifica === 'da-verificare' ? '2 5' : cm.d))});
     gArchi.appendChild(p);
     var hit = el('path', {d:d, 'class':'arco-hit'});
     hit.addEventListener('click', function(ev){
@@ -1220,9 +1248,10 @@ function ridisegna(){
     var r = n.rif;
     var cls = 'nodo';
     if(r.stato === 'progetto') cls += ' progetto';
+    if(r.verifica === 'da-verificare') cls += ' incerto';
     if(S.iso && S.iso.ant[n.id]) cls += ' contesto';
     if(S.iso && S.iso.radice === n.id) cls += ' radice';
-    var g = el('g', {'class':cls, transform:'translate('+n.x+','+n.y+')'});
+    var g = el('g', {'class':cls, transform:'translate('+n.x+','+n.y+')', tabindex:'0', role:'button', 'aria-label':r.nome + (r.verifica === 'da-verificare' ? ', presenza da verificare' : '')});
     RIF_NODI[n.id] = g;
     g.appendChild(el('rect', {'class':'box', x:0, y:0, width:n.w, height:n.h}));
     var accento = coloreAccento(r);
@@ -1248,6 +1277,7 @@ function ridisegna(){
     g.addEventListener('mouseenter', function(){ S.hover = n.id; applicaEvidenza(); });
     g.addEventListener('mouseleave', function(){ if(S.hover === n.id){ S.hover = null; applicaEvidenza(); } });
     g.addEventListener('click', function(ev){ ev.stopPropagation(); S.sel = {tipo:'nodo', id:n.id, rif:r}; scheda(); applicaEvidenza(); });
+    g.addEventListener('keydown', function(ev){ if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); S.sel = {tipo:'nodo', id:n.id, rif:r}; scheda(); applicaEvidenza(); } });
     if(!r._pwr){
       g.addEventListener('dblclick', function(ev){
         ev.stopPropagation(); ev.preventDefault();
@@ -1261,7 +1291,7 @@ function ridisegna(){
   piazzaEtichettePorta();
   mondo.setAttribute('transform', 'translate(70,56)');
   applicaEvidenza();
-  if(!S.fitCache[S.vista]){ inquadra(0.62); S.fitCache[S.vista] = 1; }
+  if(!S.fitCache[S.vista]){ inquadra(0.85); S.fitCache[S.vista] = 1; }
   else applicaVB();
 }
 
@@ -1269,6 +1299,7 @@ function sottotitolo(r){
   if(r._pwr) return r.tipo;
   var parti = [];
   if(r.stato === 'progetto') parti.push('progetto');
+  if(r.verifica === 'da-verificare') parti.push('da verificare');
   if(r.contenitore && CONT[r.contenitore]) parti.push(CONT[r.contenitore].nome);
   else parti.push(r.tipo);
   return parti.join(' · ');
@@ -1276,6 +1307,7 @@ function sottotitolo(r){
 function coloreAccento(r){
   if(r._pwr) return r.tipo === 'ups' ? '#AFD100' : (r.tipo === 'parete' ? '#4D11A7' : '#ACB0CD');
   if(r.stato === 'progetto') return '#ACB0CD';
+  if(r.verifica === 'da-verificare') return '#c08a3e';
   var vs = vlanDi(r.id);
   if(S.vista === 'segmenti' && vs.length) return COL_VLAN[vs[0]] || null;
   var perLivello = {internet:'#57CCF6', fornitore:'#8CE1FF', perimetro:'#E7000B', core:'#4D11A7',
@@ -1537,7 +1569,7 @@ function scheda(){
     sa.appendChild(b2);
     var quanti = Object.keys(isolamento(r.id).disc).length;
     sa.appendChild(h('div','dett', quanti
-      ? ('A valle di questo apparato dipendono ' + quanti + (quanti === 1 ? ' altro nodo.' : ' altri nodi.') + ' Doppio clic sul disegno fa la stessa cosa.')
+      ? ('Il ramo documentato raggiunge ' + quanti + (quanti === 1 ? ' altro nodo.' : ' altri nodi.') + ' Non e una simulazione di guasto o failover. Doppio clic per isolare.')
       : 'Nessun apparato dipende da questo: e\' una foglia della topologia.'));
     sa.querySelector('.dett').style.marginTop = '8px';
     sa.querySelector('.dett').style.color = 'var(--tenue)';
@@ -1550,6 +1582,7 @@ function scheda(){
   function kv(k, v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
   kv('Identificatore', r.id.replace(/^pwr:/,''));
   kv('Tipo', r.tipo);
+  if(r.verifica === 'da-verificare') kv('Verifica', 'Presenza o collegamento da confermare');
   if(!r._pwr){
     kv('Corsia', LIVNOME[r.livello] || r.livello);
     kv('Luogo', r.contenitore && CONT[r.contenitore] ? CONT[r.contenitore].nome + ' — ' + CONT[r.contenitore].sito : 'non collocato');
@@ -1560,6 +1593,7 @@ function scheda(){
   s1.appendChild(dl); pannello.appendChild(s1);
 
   if(r.note){ var sn = sezione('Nota'); sn.appendChild(h('p',null,r.note)); pannello.appendChild(sn); }
+  if(r['alimentazione-note']){ var sp = sezione('Limite del rilievo elettrico'); sp.appendChild(h('p',null,r['alimentazione-note'])); pannello.appendChild(sp); }
 
   if(!r._pwr){
     var inc = INC[r.id] || [];
@@ -1770,7 +1804,7 @@ function schedaArco(l){
   kv('Porta destinazione', l['porta-b']);
   kv('Velocita', l.velocita);
   kv('VLAN', l.vlan && l.vlan.length ? l.vlan.map(function(v){ return v + (VLAN[v] ? ' (' + VLAN[v].nome + ')' : ''); }).join(', ') : undefined);
-  kv('Stato', l.stato === 'progetto' ? 'pianificato, non realizzato' : 'in esercizio');
+  kv('Stato', l.stato === 'progetto' ? 'pianificato, non realizzato' : (l.verifica === 'da-verificare' ? 'collegamento da confermare' : 'collegamento documentato'));
   s.appendChild(dl); pannello.appendChild(s);
   if(l.note){ var sn = sezione('Nota'); sn.appendChild(h('p',null,l.note)); pannello.appendChild(sn); }
   if(l.criticita){ var sc2 = sezione('Criticita'); var p = h('p',null,l.criticita); p.style.color = 'var(--iw-error)'; sc2.appendChild(p); pannello.appendChild(sc2); }
@@ -1782,10 +1816,22 @@ function schedaArco(l){
 (function intestazione(){
   document.getElementById('tit').textContent = D.meta.titolo || 'Topologia di rete';
   document.getElementById('sotto').textContent = 'Ogni elemento del disegno nasce da data/network-topology.json. Il file non si modifica a mano: si corregge la fonte e si rigenera.';
+  var verifica = D.meta.verifica || {}, oggi = new Date();
+  var dataVerifica = verifica.data ? new Date(verifica.data + 'T00:00:00Z') : null;
+  var eta = dataVerifica ? Math.floor((oggi - dataVerifica) / 86400000) : Infinity;
+  var scaduta = eta < 0 || eta > (verifica['validita-giorni'] || 0);
+  var stato = document.getElementById('stato-verifica');
+  stato.dataset.scaduta = String(scaduta);
+  stato.textContent = scaduta
+    ? 'Verifica scaduta o assente. La mappa e una fotografia documentale del ' + (D.meta.aggiornato || 'giorno non dichiarato') + '; rileggere le fonti vive.'
+    : 'Verifica ' + verifica.data + ': ' + verifica.esito + '. Perimetro: ' + verifica.ambito;
+  var limiti = document.getElementById('limiti-verifica');
+  if(verifica['conferma-umana']) limiti.appendChild(h('p',null,verifica['conferma-umana']));
+  (verifica.limiti || []).forEach(function(l){ limiti.appendChild(h('p',null,l)); });
   var m = document.getElementById('metariga');
   [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
    ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
-   ['Sorgenti elettriche', String(PWR.length)], ['Difetti', String((D.gap||[]).length)],
+   ['Sorgenti elettriche', String(PWR.length)], ['Voci di rischio', String((D.gap||[]).length)],
    ['Generato', '__GENERATED_AT__']].forEach(function(p){
     var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
   });
@@ -1795,7 +1841,7 @@ function schedaArco(l){
   document.getElementById('c-fonti').textContent = (D.meta.fonti||[]).length + ' fonti dichiarate';
   document.getElementById('c-perim').textContent = 'cosa entra nella mappa e cosa no';
   var alti = (D.gap||[]).filter(function(g){ return g.gravita === 'alta'; }).length;
-  document.getElementById('c-gap').textContent = (D.gap||[]).length + ' aperti, di cui ' + alti + ' ad alta gravita';
+  document.getElementById('c-gap').textContent = (D.gap||[]).length + ' voci censite, di cui ' + alti + ' ad alta gravita';
   document.getElementById('avvertenza').textContent = D.meta.avvertenza || '';
   var gl = document.getElementById('gaplista');
   (D.gap||[]).slice().sort(function(a,b){
@@ -1815,8 +1861,9 @@ function schedaArco(l){
     s.appendChild(i); s.appendChild(document.createTextNode(COL_MEZZO[k].et)); lm.appendChild(s);
   });
   var ls = document.getElementById('legstato');
-  [['Tratto continuo, riquadro pieno', 'in esercizio'],
+  [['Tratto continuo, riquadro pieno', 'collegamento censito'],
    ['Tratteggio e riquadro tratteggiato', 'pianificato, non realizzato'],
+   ['Tratteggio corto', 'presenza o collegamento da confermare'],
    ['Pallino rosso sul riquadro', 'numero di difetti aperti sull’apparato']].forEach(function(p){
     var s = document.createElement('span'); s.textContent = p[0] + ': ' + p[1]; ls.appendChild(s);
   });
@@ -1866,6 +1913,7 @@ function interruttore(id, chiave){
   var b = document.getElementById(id);
   b.addEventListener('click', function(){
     S[chiave] = !S[chiave];
+    if(chiave === 'mostraProgetto' && S.iso){ S.iso = isolamento(S.iso.radice); aggiornaNastro(); }
     b.setAttribute('aria-pressed', S[chiave] ? 'true' : 'false');
     ridisegna();
   });
@@ -1884,6 +1932,17 @@ document.getElementById('z-piu').addEventListener('click', function(){ zoom(1.25
 document.getElementById('z-meno').addEventListener('click', function(){ zoom(1/1.25); });
 document.getElementById('z-fit').addEventListener('click', function(){ inquadra(); });
 document.getElementById('btn-stampa').addEventListener('click', function(){ inquadra(); setTimeout(function(){ window.print(); }, 80); });
+document.getElementById('btn-reset').addEventListener('click', function(){
+  S.vista = 'logica'; S.sel = null; S.iso = null; S.hover = null; S.soloDifetti = false; S.mostraProgetto = false; S.mostraPorte = true; S.cerca = ''; S.fitCache = {};
+  Object.keys(S.mezzi).forEach(function(k){ S.mezzi[k] = true; });
+  Object.keys(S.vlan).forEach(function(k){ S.vlan[k] = true; });
+  Object.keys(S.cont).forEach(function(k){ S.cont[k] = true; });
+  document.getElementById('cerca').value = ''; invalidaRicerca(); INSIEME_RIC = null;
+  [['btn-difetti',false],['btn-progetto',false],['btn-porte',true]].forEach(function(p){ document.getElementById(p[0]).setAttribute('aria-pressed', String(p[1])); });
+  [].forEach.call(document.querySelectorAll('#viste button'), function(b){ b.setAttribute('aria-pressed', String(b.dataset.vista === 'logica')); });
+  [].forEach.call(document.querySelectorAll('.tag'), function(b){ b.setAttribute('aria-pressed','true'); });
+  aggiornaNastro(); scheda(); ridisegna(); inquadra();
+});
 document.getElementById('btn-tema').addEventListener('click', function(){
   var cur = document.documentElement.getAttribute('data-tema');
   var scuroSistema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -1902,7 +1961,7 @@ document.addEventListener('keydown', function(ev){
   }
   if(ev.key === 'f' && !/input|textarea/i.test(document.activeElement.tagName)) inquadra();
 });
-window.addEventListener('resize', function(){ inquadra(0.62); });
+window.addEventListener('resize', function(){ inquadra(0.85); });
 
 /* Il frammento dell'indirizzo sceglie cosa aprire: una vista fra #fisica,
    #segmenti, #elettrica, oppure un ramo isolato con #isola=<identificatore>, e le
@@ -1929,7 +1988,7 @@ var ISO_INIZIALE = null;
 
 if(ISO_INIZIALE){ S.iso = isolamento(ISO_INIZIALE); aggiornaNastro(); }
 ridisegna();
-inquadra(ISO_INIZIALE ? 0.45 : 0.62);
+inquadra(ISO_INIZIALE ? 0.45 : 0.85);
 </script>
 </body>
 </html>

@@ -6,14 +6,14 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 163a667 (16/09/2026, diagnosi backup chiusa e codifica roadmap riparata)
-Data snapshot:         2026-09-22, ricostruito dai commit e dai registri dopo sei giorni di deriva del meta-stato
+Commit di riferimento: 8fbe3c2 (22/09/2026, riallineamento dello stato e supporto Codex)
+Data snapshot:         2026-09-24, riletto dopo 8fbe3c2 e durante il lavoro sulla documentazione
 Commit precedenti:     441c21b, d7481b5, 07a181b, 142f925, 61860b9, f12031d, beccead
 ```
 
-I commit successivi a `beccead` hanno rovesciato la diagnosi che questo file continuava a presentare come corrente. `61860b9` ha assolto batteria, controller e SSD; `142f925` ha assolto la compressione e aperto la verifica della copertura; `07a181b` ha identificato il deposito NAS come collo di bottiglia e sanato la copertura delle VM; `d7481b5` ha chiuso definitivamente #200, assolto anche `ide0` e ritrattato l'ipotesi del collegamento a 100 Mb/s; `441c21b` e `163a667` hanno firmato e poi riparato la codifica di `roadmap.md`. Lo stato operativo corrente e' quindi **#204 / STOR-007**, non la sostituzione di un componente del server. Le modifiche della sessione del 22/09 sono nel working tree e attendono il commit manuale dell'utente; commit e push restano manuali.
+I commit successivi a `beccead` hanno rovesciato la diagnosi che questo file continuava a presentare come corrente. `61860b9` ha assolto batteria, controller e SSD; `142f925` ha assolto la compressione e aperto la verifica della copertura; `07a181b` ha identificato il deposito NAS come collo di bottiglia e sanato la copertura delle VM; `d7481b5` ha chiuso definitivamente #200, assolto anche `ide0` e ritrattato l'ipotesi del collegamento a 100 Mb/s; `441c21b` e `163a667` hanno firmato e poi riparato la codifica di `roadmap.md`. Lo stato operativo corrente e' quindi **#204 / STOR-007**, non la sostituzione di un componente del server. Le modifiche della sessione del 22/09 sono nel commit 8fbe3c2. La sessione documentale del 24/09 e' nel working tree e attende il commit manuale dell'utente; commit e push restano manuali.
 
-**Il bump di `roadmap.md` e' stato rifatto il 22/09/2026 a `163a667`.** Il commit `441c21b` aveva firmato `d7481b5`, ma la riparazione della doppia codifica in `163a667` era una modifica di contenuto successiva e il controllo la segnalava correttamente. La scheda e' stata riletta contro quel diff e la firma ora coincide con l'ultimo contenuto committato. `current-work.md` viene invece modificata in questa sessione e non puo' essere firmata a `163a667`, perche' quell'hash non contiene il riallineamento: il suo bump va fatto al commit che includera' queste modifiche.
+**Il bump di `roadmap.md` e' stato rifatto il 22/09/2026 a `163a667`.** Il commit `441c21b` aveva firmato `d7481b5`, ma la riparazione della doppia codifica in `163a667` era una modifica di contenuto successiva e il controllo la segnalava correttamente. La scheda e' stata riletta contro quel diff e la firma ora coincide con l'ultimo contenuto committato. `current-work.md` e' stata inclusa nel commit 8fbe3c2 e riletta il 24/09: il frontmatter ora firma quel commit. La scheda non viene modificata nel contenuto durante la sessione documentale.
 
 **Perche' questo blocco era arretrato di quattro giorni, ed e' la cosa da imparare piu' del valore corrente.** Fra il 04 e l'08/09/2026 sono atterrati sei commit e questo file non ne ha visto nessuno, quindi la ripresa dell'08/09 e' partita da uno snapshot che dichiarava come non committato un lavoro committato da giorni e come punto di ripresa una sessione del 07/08. Ha funzionato solo perche' `progress.md` e i controlli di avvio dicevano il vero: lo snapshot e' stato ricostruito leggendo quelli, non fidandosi di se stesso. Ne discende che **questo blocco si riscrive nella stessa sessione in cui si committa**, non alla successiva, perche' e' il primo file che si legge e quindi il primo che puo' mentire.
 
@@ -29,7 +29,7 @@ Le schede di questo progetto **non hanno il campo `covers-paths`** nel frontmatt
 
 ## Stato di verifica delle schede
 
-Riletto dal frontmatter e dai diff reali il **22/09/2026**. La colonna che conta e' la terza, perche' l'hash dice quando la scheda e' stata dichiarata verificata e non che il contenuto sia allineato. `roadmap.md` e' firmata sul contenuto committato corrente; `current-work.md` e' riallineata nel working tree e attende il commit che potra' firmarla.
+Riletto dal frontmatter e dai diff reali il **22/09/2026**. La colonna che conta e' la terza, perche' l'hash dice quando la scheda e' stata dichiarata verificata e non che il contenuto sia allineato. `roadmap.md` e' firmata sul contenuto committato corrente; `current-work.md` e' stata committata in 8fbe3c2 e firmata dopo la rilettura del 24/09.
 
 | Scheda | last-verified | Stato del contenuto |
 |---|---|---|
@@ -37,11 +37,13 @@ Riletto dal frontmatter e dai diff reali il **22/09/2026**. La colonna che conta
 | deployment.md | `20d4863` | **allineata l'08/09/2026** in `20d4863`: porta la distinzione che e' la sostanza di ADR-026, cioe' che si automatizza la verifica e non la misura, con i tre comandi pre-commit e l'ordine delle catene di script |
 | design-and-security.md | `beccead` | **allineata il 16/09/2026**: A.8.13 acquisisce la catena di backup delle macchine virtuali e il caso in cui un controllo torna verde mentre la condizione peggiora, A.8.16 acquisisce il criterio mancante, cioe' che si notifica un esito binario e non una soglia. La sezione Storage e backup correggeva nove lavori a otto e un orario che non e' piu' quello. Non conosce ancora #193, #194 e #195 |
 | dev-testing.md | `20d4863` | **allineata l'08/09/2026** in `20d4863`: porta quattro lezioni dai controlli scritti fra il 4 e l'8 settembre, fra cui che un criterio di validita' si prende da un guasto reale e non si inventa |
-| current-work.md | `beccead` | **riallineata nel working tree il 22/09/2026**: #200 e' chiuso, #203 e' sanato con due code operative e #204 e' il seguito corrente; M13c distingue la parte eseguita dalla sostituzione dello switch ancora aperta. Attende il commit e il bump al commit che conterra' questo testo |
+| current-work.md | `8fbe3c2` | **allineata dopo rilettura il 24/09/2026**: il commit 8fbe3c2 contiene il riallineamento di #200, #203, #204 e M13c; la firma e' stata portata a quel commit |
 | roadmap.md | `163a667` | **allineata il 22/09/2026**: riletti i commit da `beccead` a `163a667`, compresa la riparazione di codifica che rendeva insufficiente la firma precedente a `d7481b5` |
 | interventi-robustezza.md (docs/) | non applicabile | registro operativo, non porta frontmatter |
 
 ## Punto di ripresa
+
+Il 24/09/2026 e' stata preparata nel working tree una riorganizzazione documentale e la revisione 11 della topologia, con verifica dei riferimenti e correzioni su alimentazione del server, NAS e access point esterno. L'IT Manager ha confermato il 23/09 che non ci sono state modifiche esterne dal 22/09. Per lo stato della sessione e il seguito leggere `_notes/RESUME_PROMPT.md`; i fatti pubblicabili sono in `docs/snapshot-infrastruttura.md` e `docs/README.md`. L'impronta di ripresa si registra solo dopo i commit manuali dell'utente.
 
 **22/09/2026 - il server e il collegamento sono assolti; il collo di bottiglia e' il NAS principale.** #200 e' chiuso e non richiede ne' un ricambio ne' una finestra di spegnimento. #203 e' chiuso sul fronte della copertura: le VM 207, 208 e 209 hanno ora un lavoro, mentre la 203 e' un template; restano la collisione delle 04:30 e il dimensionamento della catena di dieci lavori. Il seguito e' **M28-8 / #204 (STOR-007)**: il NAS principale scrive a 10,5 MB/s e legge a 15,8 MB/s, mentre l'altro deposito scrive a 110 MB/s dallo stesso nodo e sulla stessa sottorete. Va letto il pannello dell'apparato prima di formulare un altro rimedio: stato dell'insieme e dei dischi, ricostruzioni o verifiche, carico e lavori a bordo, firmware, versione massima di SMB, velocita' e aggregazione delle due interfacce. SMB 2.1 e' un indizio, non una causa dimostrata.
 

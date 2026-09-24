@@ -1,8 +1,8 @@
 {
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-09-09",
-  "revisione": 10,
+  "aggiornato": "2026-09-24",
+  "revisione": 11,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
   "fonti": [
@@ -19,8 +19,24 @@
    "lldpcli sull'host Proxmox, 25/08/2026 (conferma diretta della corrispondenza vmbr1 - porta 7)",
    "Snapshot NinjaOne del 25/08/2026 (incrocio tabella MAC / endpoint gestiti, nove porte attribuite)",
    "Censimento M27-7 della protezione host-based, 25-28/08/2026 (porte in ascolto sulle macchine Linux)",
-   "Dismissione della VM 206 comunicata dall'IT Manager il 31/08/2026, con backup verificato sul NAS"
-  ]
+   "Dismissione della VM 206 comunicata dall'IT Manager il 31/08/2026, con backup verificato sul NAS",
+   "Snapshot Nebula e Proxmox del 23/09/2026: Test-TopologyDrift.py, 39 confronti e zero scostamenti",
+   "Registro GAP-TBC, aggiornamenti del 16/09/2026: due alimentatori sul server (#202), lentezza del deposito NAS (#204)"
+  ],
+  "verifica": {
+   "data": "2026-09-23",
+   "validita-giorni": 7,
+   "esito": "39 confronti automatici, zero scostamenti",
+   "ambito": "Porte e inventario Nebula; bridge e attestazioni delle VM Proxmox. Le sette VM aggregate non hanno un nodo individuale.",
+   "conferma-umana": "IT Manager, 23/09/2026: nessuna modifica esterna dal riallineamento del 22/09.",
+   "limiti": [
+    "La verifica automatica non collauda policy firewall, applicazioni, backup o continuita elettrica.",
+    "La catena WAN conserva attestazioni ripetute sulla P2 del router principale: cablaggio da verificare sul posto.",
+    "La presenza residua del vecchio access point e il cablaggio della seconda alimentazione del server non sono confermati.",
+    "Il delta documentale esterno e triagiato ma non completamente ingerito: vedere ingestion-checklist.",
+    "Il GS-105B non eroga PoE: la fonte non documenta la sorgente che alimenta oggi il WBE530."
+   ]
+  }
  },
  "vlan": [
   {
@@ -275,14 +291,14 @@
    "tipo": "server",
    "livello": "distribuzione",
    "contenitore": "rack-dx",
-   "note": "Nodo Proxmox, dieci macchine virtuali. Quattro interfacce: eth2, eth3 ed eth4 sul 54HP, eth1 sul QNAP. Alimentatore unico.",
+   "note": "Nodo Proxmox con dieci guest censiti, incluso un template. Quattro interfacce dati: eth2, eth3 ed eth4 sul 54HP, eth1 sul QNAP; iLO su cavo dedicato. Inventario del 16/09/2026: due alimentatori da 800 W presenti e sani. La fonte fisica documenta PS2 sulla Ciabatta 2 DX; la sorgente di PS1 resta da verificare sul posto (#202).",
    "alimentazione": "ciabatta-2-dx",
    "gap": [
-    "ELE-003",
+    "ELE-005",
     "NET-022",
-    "NET-023",
     "NET-026"
-   ]
+   ],
+   "alimentazione-note": "Secondo alimentatore presente; sorgente non documentata. Il disegno mostra soltanto la tratta conosciuta e non prova indipendenza elettrica."
   },
   {
    "id": "ilo",
@@ -321,8 +337,11 @@
    "tipo": "storage",
    "livello": "distribuzione",
    "contenitore": "rack-dx",
-   "note": "Due schede di rete sulle porte 2 e 4 dello stesso switch: ridondanza di scheda, non di apparato. Share Backup e dump delle VM.",
-   "alimentazione": "ciabatta-2-dx"
+   "note": "Due schede di rete sulle porte 2 e 4 dello stesso switch: ridondanza di scheda, non di apparato. Share Backup e dump delle VM. Misure del 16/09/2026: scrittura 10,5 MB/s, lettura 15,8 MB/s; altro deposito a 110 MB/s dallo stesso nodo. Il problema e specifico di questo deposito o della sua attestazione; la causa resta da diagnosticare (#204). La lettura supera il tetto di un collegamento a 100 Mb/s.",
+   "alimentazione": "ciabatta-2-dx",
+   "gap": [
+    "STOR-007"
+   ]
   },
   {
    "id": "nas-intra2",
@@ -437,12 +456,13 @@
    "tipo": "ap",
    "livello": "distribuzione",
    "contenitore": "esterno",
-   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. Eroga la rete radio della tratta esterna su VLAN 1, sola banda 2,4 GHz, senza isolamento e senza etichetta che ne limiti l'erogazione: NET-032. Sostituisce l'apparato Ubiquiti fuori supporto, che resta in servizio fino al collaudo.",
-   "alimentazione": "poe-sw30",
+   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. Eroga la rete radio della tratta esterna su VLAN 1, sola banda 2,4 GHz, senza isolamento e senza etichetta che ne limiti l'erogazione: NET-032. E stato montato al posto dell'apparato precedente, ma la rimozione o la permanenza di quest'ultimo non e confermata.",
+   "alimentazione": null,
    "gap": [
     "SEC-051",
     "NET-032"
-   ]
+   ],
+   "alimentazione-note": "Il GS-105B non eroga PoE e interrompe il PoE dello switch Piano Terra. La fonte disponibile non documenta con quale alimentazione il WBE530 sia in servizio; verificare sul posto."
   },
   {
    "id": "gs105b",
@@ -453,7 +473,6 @@
    "note": "Cinque porte, non gestito, non PoE. Interposto dagli elettricisti durante il montaggio del fotovoltaico, mai censito dall'IT. Taglia il PoE che la porta 4 erogava.",
    "alimentazione": null,
    "gap": [
-    "NET-017",
     "NET-020"
    ]
   },
@@ -487,12 +506,13 @@
    "tipo": "ap-eol",
    "livello": "utenze",
    "contenitore": "esterno",
-   "note": "Generazione 2011-2013, Debian 7, fuori supporto dal 2018, credenziali perdute. A cosa serva oggi e' la domanda che decide se sostituirlo o rimuoverlo.",
+   "note": "Apparato fuori supporto censito prima della sostituzione con WBE530 del 09/09/2026. Rimozione fisica non confermata nelle fonti disponibili: presenza residua da verificare, non attestazione di esercizio attuale.",
    "alimentazione": null,
    "gap": [
     "SEC-018",
     "NET-020"
-   ]
+   ],
+   "verifica": "da-verificare"
   },
   {
    "id": "tel-1",
@@ -1072,7 +1092,9 @@
   {
    "da": "gs105b",
    "a": "ap-eol",
-   "mezzo": "rame"
+   "mezzo": "rame",
+   "verifica": "da-verificare",
+   "note": "Collegamento storico: permanenza dopo il montaggio del WBE530 da confermare."
   },
   {
    "da": "sw30",
@@ -1176,7 +1198,7 @@
    "mezzo": "logico",
    "porta-a": "9",
    "porta-b": "eno3",
-   "note": "Bridge dell'host sulla terza porta, eno3. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla **porta 9 del 54HP**, che la mappa fisica chiama eth3. Qui stanno i due ambienti del sito, la VM 206 e la VM 209."
+   "note": "Bridge su eno3, corrispondente alla porta 9 del 54HP secondo la tabella MAC del 24/08/2026. Dopo la dismissione della VM 206 il 31/08/2026 resta attestata la VM 209."
   },
   {
    "da": "srv-gen10",
@@ -1460,14 +1482,8 @@
    "gravita": "media"
   },
   {
-   "id": "NET-017",
-   "titolo": "Apparato di commutazione non documentato sulla tratta esterna",
-   "numero": 136,
-   "gravita": "media"
-  },
-  {
    "id": "NET-018",
-   "titolo": "MikroTik e iniettore PoE non censiti",
+   "titolo": "MikroTik e iniettore censiti: proprieta e gestione da chiarire",
    "numero": 137,
    "gravita": "media"
   },
@@ -1491,7 +1507,7 @@
   },
   {
    "id": "SEC-018",
-   "titolo": "Access point fuori supporto sulla LAN piatta",
+   "titolo": "Vecchio access point fuori supporto: presenza residua da verificare",
    "numero": 124,
    "gravita": "alta"
   },
@@ -1520,12 +1536,6 @@
    "gravita": "alta"
   },
   {
-   "id": "NET-023",
-   "titolo": "Corrispondenza fra bridge, porte del server e porte dello switch — RISOLTA il 24/08/2026 incrociando i MAC",
-   "numero": 153,
-   "gravita": "bassa"
-  },
-  {
    "id": "FW-014",
    "titolo": "Il segmento DMZ 201 resta progettato e non attivo, con un consumatore in attesa",
    "numero": 154,
@@ -1541,6 +1551,36 @@
    "id": "NET-026",
    "titolo": "L'indirizzo di gestione dell'hypervisor passa da uno switch non gestito",
    "numero": 157,
+   "gravita": "alta"
+  },
+  {
+   "id": "NET-027",
+   "titolo": "Database del sito di staging pubblicato su tutta la LAN",
+   "numero": 161,
+   "gravita": "alta"
+  },
+  {
+   "id": "SEC-051",
+   "titolo": "Access point per interni installato fuori: rischio ambientale residuo",
+   "numero": 197,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-032",
+   "titolo": "Rete radio esterna su VLAN 1 senza isolamento; ambito di erogazione da verificare",
+   "numero": 198,
+   "gravita": "alta"
+  },
+  {
+   "id": "ELE-005",
+   "titolo": "Due alimentatori server presenti: indipendenza delle sorgenti da verificare",
+   "numero": 202,
+   "gravita": "alta"
+  },
+  {
+   "id": "STOR-007",
+   "titolo": "Deposito NAS principale lento: causa da diagnosticare",
+   "numero": 204,
    "gravita": "alta"
   }
  ]
