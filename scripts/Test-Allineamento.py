@@ -297,6 +297,21 @@ def controlla_invarianti(esito):
         else:
             esito.ok("tutti i %d script di scripts/ sono citati in STACK.md" % len(presenti))
 
+    # La roadmap ISO e' una vista generata: una modifica manuale o una generazione
+    # dimenticata devono emergere al primo avvio.
+    try:
+        roadmap = subprocess.run(
+            [sys.executable, os.path.join(RADICE, 'scripts', 'IsoRoadmap.py'), 'check'],
+            cwd=RADICE, capture_output=True, text=True, encoding='utf-8', errors='replace',
+        )
+        if roadmap.returncode == 0:
+            esito.ok("roadmap ISO 27001 allineata al registro degli interventi")
+        else:
+            esito.grave("roadmap ISO 27001 non allineata al registro degli interventi")
+            esito.nota("      eseguire python scripts/IsoRoadmap.py build")
+    except OSError:
+        esito.grave("controllo della roadmap ISO 27001 non eseguibile")
+
     # 3b. Ogni ADR richiamato deve esistere nel registro delle decisioni.
     decisioni = testo_di('.claude/memory/decisions.md')
     definiti = set(re.findall(r'^##\s+(ADR-\d+)', decisioni, re.M))

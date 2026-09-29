@@ -1,8 +1,8 @@
 {
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-09-24",
-  "revisione": 11,
+  "aggiornato": "2026-09-28",
+  "revisione": 12,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
   "fonti": [
@@ -34,7 +34,7 @@
     "La catena WAN conserva attestazioni ripetute sulla P2 del router principale: cablaggio da verificare sul posto.",
     "La presenza residua del vecchio access point e il cablaggio della seconda alimentazione del server non sono confermati.",
     "Il delta documentale esterno e triagiato ma non completamente ingerito: vedere ingestion-checklist.",
-    "Il GS-105B non eroga PoE: la fonte non documenta la sorgente che alimenta oggi il WBE530."
+    "Correzione IT Manager 28/09/2026: la porta 4 raggiunge il WBE530, la centralina usa il suo Wi-Fi e l'inverter la seconda porta Ethernet dell'AP. Il GS-105B appartiene alla topologia storica e non e' nel percorso attivo. La sorgente elettrica del WBE530 resta da confermare."
    ]
   }
  },
@@ -456,25 +456,13 @@
    "tipo": "ap",
    "livello": "distribuzione",
    "contenitore": "esterno",
-   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. Eroga la rete radio della tratta esterna su VLAN 1, sola banda 2,4 GHz, senza isolamento e senza etichetta che ne limiti l'erogazione: NET-032. E stato montato al posto dell'apparato precedente, ma la rimozione o la permanenza di quest'ultimo non e confermata.",
+   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. La centralina si connette via Wi-Fi; l'inverter usa la seconda porta Ethernet dell'AP (IT Manager, 28/09/2026). Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. La rete radio e' su VLAN 1, sola banda 2,4 GHz, senza isolamento: NET-032. La presenza fisica residua dei vecchi apparati e' da verificare, ma non sono nel percorso attivo descritto dall'IT Manager.",
    "alimentazione": null,
    "gap": [
     "SEC-051",
     "NET-032"
    ],
-   "alimentazione-note": "Il GS-105B non eroga PoE e interrompe il PoE dello switch Piano Terra. La fonte disponibile non documenta con quale alimentazione il WBE530 sia in servizio; verificare sul posto."
-  },
-  {
-   "id": "gs105b",
-   "nome": "Zyxel GS-105B v5",
-   "tipo": "switch-non-gestito",
-   "livello": "distribuzione",
-   "contenitore": "esterno",
-   "note": "Cinque porte, non gestito, non PoE. Interposto dagli elettricisti durante il montaggio del fotovoltaico, mai censito dall'IT. Taglia il PoE che la porta 4 erogava.",
-   "alimentazione": null,
-   "gap": [
-    "NET-020"
-   ]
+   "alimentazione-note": "La porta 4 del 30HP risulta configurata per erogare PoE, ma la sorgente che alimenta effettivamente il WBE530 va confermata sul posto."
   },
   {
    "id": "irrigazione",
@@ -482,7 +470,7 @@
    "tipo": "ot",
    "livello": "utenze",
    "contenitore": "esterno",
-   "note": "Cablata con cavo di categoria 6, non servita via radio. Il collaudo di questo ramo e' un ciclo di irrigazione reale, non un ping.",
+   "note": "Usa il Wi-Fi del WBE530 secondo l'IT Manager (28/09/2026). Il collaudo e' un ciclo di irrigazione reale, non un ping. La vecchia attribuzione del cavo di categoria 6 alla centralina e' superata.",
    "alimentazione": null,
    "gap": [
     "NET-020"
@@ -1067,34 +1055,23 @@
   },
   {
    "da": "sw30",
-   "a": "gs105b",
+   "a": "ap-esterno",
    "mezzo": "rame",
    "porta-a": "4",
    "velocita": "1 Gb/s",
-   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Misurato 1 Gb/s il 09/09/2026 dopo il montaggio dell'access point nuovo: i 100 Mb/s di tutte le misure precedenti erano dell'apparato che chiudeva la tratta, non del cavo (NET-031, chiuso e rovesciato). La porta accetta qualunque tag."
+   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Misurato 1 Gb/s il 09/09/2026 dopo il montaggio dell'AP. La porta accetta qualunque tag; alimentazione PoE effettiva da confermare."
   },
   {
-   "da": "gs105b",
-   "a": "ap-esterno",
-   "mezzo": "rame",
-   "criticita": "Collegamento del 09/09/2026. Da rifare in M13c-10 quando il GS-105B lascia il posto allo switch gestito, che alimentera' l'access point in PoE."
-  },
-  {
-   "da": "gs105b",
+   "da": "ap-esterno",
    "a": "irrigazione",
-   "mezzo": "rame"
+   "mezzo": "radio",
+   "note": "Connessione Wi-Fi confermata dall'IT Manager il 28/09/2026."
   },
   {
-   "da": "gs105b",
+   "da": "ap-esterno",
    "a": "inverter",
-   "mezzo": "rame"
-  },
-  {
-   "da": "gs105b",
-   "a": "ap-eol",
    "mezzo": "rame",
-   "verifica": "da-verificare",
-   "note": "Collegamento storico: permanenza dopo il montaggio del WBE530 da confermare."
+   "note": "Seconda porta Ethernet del WBE530, confermata dall'IT Manager il 28/09/2026."
   },
   {
    "da": "sw30",

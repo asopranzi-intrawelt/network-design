@@ -42,6 +42,7 @@ Generazione di artefatti derivati, e loro riconciliazione.
 |---|---|
 | `scripts/Build-TimelineSvg.ps1` | Timeline SVG anonimizzata dai md della timeline (hook SessionStart) |
 | `scripts/Build-NetworkMap.ps1` | Mappa di rete interattiva in `docs/network-map.html` da `data/network-topology.json` piu' il template (M26, ADR-023) |
+| `scripts/IsoRoadmap.py` | Registro operativo ISO 27001: valida `data/iso27001-interventi.json` e il glossario dei codici, registra avanzamenti e genera sempre la vista Markdown di progetto; esporta l'HTML sul Desktop solo su richiesta, con CSS e JavaScript incorporati e logo da configurazione privata |
 | `scripts/Export-PortMatrix.py` | Configurazione delle porte dei due switch dallo snapshot Nebula a `data/port-matrix.json`, **tracciato**; nessun MAC in uscita |
 | `scripts/Test-TopologyDrift.py` | Confronta la fonte della mappa con snapshot Nebula e Proxmox e riporta gli scostamenti; non aggiorna e non decide (hook SessionStart) |
 
@@ -73,6 +74,9 @@ Fonti e artefatti che non sono script.
 |---|---|
 | `data/network-topology.json` | Fonte strutturata della mappa, scritta a mano, tracciata |
 | `data/port-matrix.json` | Matrice delle porte, derivata dallo snapshot Nebula, tracciata |
+| `data/iso27001-interventi.json` | Fonte unica degli interventi ISO 27001, inclusi stato, prove, dipendenze e forniture; `docs/roadmap-iso27001-operativa.md` e' generato |
+| `data/iso27001-glossario.json` | Spiegazioni brevi dei riferimenti ISO e dei codici interni riportati nell'HTML; il generatore rifiuta nuovi codici senza spiegazione |
+| `scripts/iso-roadmap-style.css`, `scripts/iso-roadmap-interactions.js` | Aspetto e navigazione offline dell'export HTML, incorporati nel singolo file generato |
 | `.claude/context/diagrams/network-topology.mmd` | Diagramma Mermaid della topologia |
 | `docs/infrastructure-timeline/` | Storia cronologica degli interventi di rete |
 | `_notes/` | Layer narrativo locale, ignorato da git |
