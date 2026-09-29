@@ -184,7 +184,7 @@ Questo ramo merita un'osservazione di postura. Il QNAP e' uno switch non gestito
 |---|---|---|---|---|
 | 1 | access point Zyxel NWA130BE, Piano Terra | 1 | 1, 40, 90 | trunk multi-SSID |
 | 3 | terminale timbracartellini Suprema, unita' master | 1 | tutte | identificato il 06/08/2026, NET-021 |
-| 4 | tratta verso l'esterno: presa 0-8-1, ponte 0-9-1, GS-105B non gestito | 1 | tutte | 100 Mbps con zero errori (#196, NET-031); PoE attivo sulla porta, interrotto dal GS-105B che non e' PoE; in sostituzione con switch gestito e PoE per ADR-029, M13c-10 |
+| 4 | tratta verso l'esterno: presa 0-8-1, ponte 0-9-1, WBE530; GS-105B storico da verificare | 1 | tutte | Dopo il montaggio del WBE530 e' tornata a 1 Gb/s (#196, NET-031). La centralina usa il Wi-Fi dell'AP e l'inverter la sua seconda porta Ethernet (IT Manager, 28/09/2026). Nessuno switch nuovo da comprare; presenza fisica residua del GS-105B e alimentazione AP da verificare sul posto. |
 | 6 | multifunzione Kyocera TASKalfa 2552ci | 1 | — | |
 | 13 | telefono IP Yealink | 2 | tutte | NET-019 |
 | 19 | nessun link | 90 | — | residuo del test del 22/07, R5 |
@@ -228,7 +228,7 @@ Elenco pensato per essere portato in un sopralluogo e compilato sul posto, non d
 | Alimentazione | quante prese IEC restano libere su ciascun gruppo, dato che serve per decidere l'UPS del Piano Terra |
 | Armadi | occupazione per unita' rack, lato di ingresso dei cavi, porte libere del patch panel, percorso della fibra della dorsale |
 | Rete | il media converter della catena dell'antenna, citato dall'IT Manager e non descritto in nessuna fonte |
-| Rete | ~~che cosa sia oggi l'apparato in fondo alla porta 4 del 30HP, e come e' alimentato dopo l'inserimento del GS-105B~~ — **chiusa il 09/09/2026**: l'apparato e' il GS-105B stesso (NET-017, #136b) e viene sostituito da uno switch gestito e PoE alimentato dalla presa che oggi alimenta il GS-105B (ADR-029). Resta da leggere durante l'intervento l'anagrafica dell'inverter del fotovoltaico |
+| Rete | **Riaperta il 28/09/2026 dopo correzione dell'IT Manager:** il GS-105B era nella configurazione storica, ma non serve un nuovo switch. L'inverter e' sulla seconda porta Ethernet del WBE530. Verificare se il GS-105B sia ancora fisicamente presente e come sia alimentato il WBE530; leggere anche l'anagrafica dell'inverter. |
 | Rete | funzione, modello e alimentazione del NAS-INTRA3; esistenza di un quinto NAS |
 | Rete | come sono configurate lato NAS-INTRA le due schede attestate sulle porte 2 e 4 del 54HP |
 | Fonia | su quale segmento sta davvero il citofono, vedi la nota di contraddizione in `docs/telefono-pbx-voip.md` |
