@@ -1,0 +1,1099 @@
+{
+  "versione": 1,
+  "data_base": "2026-09-28",
+  "aggiornato": "2026-09-28",
+  "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
+  "fasi": [
+    {
+      "id": "urgente",
+      "titolo": "1. Esposizioni e ripristino",
+      "orizzonte": "entro due settimane"
+    },
+    {
+      "id": "rete",
+      "titolo": "2. Segmentazione e accessi",
+      "orizzonte": "ottobre-novembre 2026"
+    },
+    {
+      "id": "presidi",
+      "titolo": "3. Controlli ripetibili",
+      "orizzonte": "dicembre 2026-gennaio 2027"
+    },
+    {
+      "id": "sgsi",
+      "titolo": "4. Sistema di gestione e audit",
+      "orizzonte": "da avviare subito; chiusura entro marzo 2027"
+    }
+  ],
+  "interventi": [
+    {
+      "id": "ISO-01",
+      "fase": "urgente",
+      "titolo": "HTTPS del portale GroupShare",
+      "azione": "Installare certificato pubblico e binding TLS; provare l'accesso interno ed esterno; reindirizzare HTTP senza togliere l'accesso ai collaboratori.",
+      "verifica": "Connessione TLS valida da due reti, credenziali non trasmesse in HTTP, rinnovo del certificato provato.",
+      "responsabile": "IT Manager e gestore del servizio",
+      "fonti": [
+        "GAP-TBC #117",
+        "docs/risoluzione-nomi-interni.md"
+      ],
+      "controlli": [
+        "A.8.24",
+        "A.8.21"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "stato_nota": "Il portale risulta ancora servito in chiaro secondo la misura del 03/09/2026."
+    },
+    {
+      "id": "ISO-02",
+      "fase": "urgente",
+      "titolo": "Accesso Internet al firewall",
+      "azione": "Leggere i servizi delle regole WAN verso l'apparato, preparare accesso di recupero, limitare la GUI alle origini amministrative e la VPN a portale alle provenienze necessarie.",
+      "verifica": "Prove da origini ammesse e negate, log, screenshot della policy e rollback collaudato.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "GAP-TBC #193"
+      ],
+      "controlli": [
+        "A.8.2",
+        "A.8.20",
+        "A.5.15"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "stato_nota": "L'avviso del firewall e' misurato; il contenuto preciso del gruppo servizi va riletto in GUI."
+    },
+    {
+      "id": "ISO-03",
+      "fase": "urgente",
+      "titolo": "Desktop remoto dalla rete ospiti",
+      "azione": "Verificare uso e motivo della regola, poi eliminarla o limitarla a sorgente e destinazione esplicite; correggere l'ordine rispetto al diniego.",
+      "verifica": "Tentativo RDP dalla rete ospiti negato salvo eventuale eccezione approvata e circoscritta.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "GAP-TBC #194",
+        "docs/interventi-robustezza.md R21"
+      ],
+      "controlli": [
+        "A.8.22",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-04",
+      "fase": "urgente",
+      "titolo": "Firewall della VM Windows 100",
+      "azione": "Inventariare i flussi in uso e le eccezioni, quindi attivare gradualmente Windows Firewall sui tre profili e limitare RDP, amministrazione e condivisioni.",
+      "verifica": "Servizi aziendali funzionanti e connessioni non autorizzate negate da una postazione di prova.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/esposizione-servizi-interni.md sezione VM 100",
+        "GAP-TBC #175"
+      ],
+      "controlli": [
+        "A.8.20",
+        "A.8.9"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-05",
+      "fase": "urgente",
+      "titolo": "Database della VM 209",
+      "azione": "Cambiare la pubblicazione del contenitore PostgreSQL da tutte le interfacce al solo loopback; verificare che l'applicazione continui a connettersi.",
+      "verifica": "Connessione applicativa riuscita e porta del database non raggiungibile dalla LAN.",
+      "responsabile": "Responsabile applicativo",
+      "fonti": [
+        "docs/esposizione-servizi-interni.md sezione VM 209"
+      ],
+      "controlli": [
+        "A.8.3",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-06",
+      "fase": "urgente",
+      "titolo": "Servizio Ollama esposto alla LAN",
+      "azione": "Togliere l'ascolto dell'istanza non autenticata dalla LAN o metterla dietro un accesso autenticato e ristretto.",
+      "verifica": "Client applicativo autorizzato funziona; host non autorizzato non raggiunge l'API.",
+      "responsabile": "Responsabile del servizio",
+      "fonti": [
+        "docs/esposizione-servizi-interni.md sezione host Ollama",
+        "GAP-TBC #173"
+      ],
+      "controlli": [
+        "A.8.3",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-07",
+      "fase": "urgente",
+      "titolo": "Credenziali e accessi amministrativi delle VM",
+      "azione": "Censire password condivise e SSH con password, assegnare credenziali individuali o chiavi, eliminare file di credenziali in chiaro e rivedere VNC/RDP aperti.",
+      "verifica": "Matrice accessi approvata, vecchie credenziali revocate, test degli accessi consentiti e negati.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/esposizione-servizi-interni.md",
+        "GAP-TBC #120, #170, #172"
+      ],
+      "controlli": [
+        "A.5.16",
+        "A.5.17",
+        "A.8.2"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-08",
+      "fase": "urgente",
+      "titolo": "Diagnosi del NAS principale dei backup",
+      "azione": "Leggere RAID, dischi, carico, firmware, SMB, negoziazione e aggregazione delle due NIC; ripetere le misure prima e dopo il rimedio.",
+      "verifica": "Causa documentata e throughput di lettura/scrittura e durata dei backup nuovamente misurati.",
+      "responsabile": "IT Manager e fornitore NAS",
+      "fonti": [
+        "GAP-TBC #204",
+        "docs/pendenze-aperte.md"
+      ],
+      "controlli": [
+        "A.8.13",
+        "A.8.6"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Dischi, NIC, firmware o assistenza NAS solo se la diagnosi li identifica come causa",
+        "decisione": "Nessun ordine prima della misura sull'apparato"
+      },
+      "stato_iniziale": "da_fare",
+      "stato_nota": "Misurati 10,5 MB/s in scrittura e 15,8 MB/s in lettura; il server e' stato assolto."
+    },
+    {
+      "id": "ISO-09",
+      "fase": "urgente",
+      "titolo": "Collisione e allarmi dei dieci backup VM",
+      "azione": "Spostare il job della VM 208 dalle 04:30, mantenendo frequenza giornaliera e destinazioni; aggiungere soglie per durata, mancata partenza, spazio e fine oltre la notte.",
+      "verifica": "Sette notti con dieci esiti registrati, nessuna collisione e allarme di degrado ricevuto.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "GAP-TBC #200, #203, #204",
+        "docs/pendenze-aperte.md"
+      ],
+      "controlli": [
+        "A.8.13",
+        "A.8.16"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "La copertura giornaliera e' stata sanata; collisione e misura delle durate restano aperte."
+    },
+    {
+      "id": "ISO-10",
+      "fase": "urgente",
+      "titolo": "Prove di ripristino VM e documenti",
+      "azione": "Ripristinare una VM piccola cronometrando; avviare la verifica di integrita' dei lavori NAS e recuperare un campione locale e fuori sede.",
+      "verifica": "Verbale con dati aperti, tempi effettivi, errori e azioni correttive.",
+      "responsabile": "IT Manager e responsabili dei dati",
+      "fonti": [
+        "docs/business-continuity-disaster-recovery.md",
+        "GAP-TBC #192, #204"
+      ],
+      "controlli": [
+        "A.8.13",
+        "A.5.30"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-11",
+      "fase": "urgente",
+      "titolo": "Copertura e cifratura della copia fuori sede",
+      "azione": "Verificare completamento del caricamento a Milano e anni coperti; definire la copertura mancante; valutare cifratura lato client insieme alla custodia della chiave.",
+      "verifica": "Elenco delle cartelle coperte, ripristino campione e decisione approvata sulla cifratura.",
+      "responsabile": "IT Manager e RSGSI",
+      "fonti": [
+        "GAP-TBC #192",
+        "data/scadenze.json"
+      ],
+      "controlli": [
+        "A.8.13",
+        "A.8.24",
+        "A.5.23"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Capacita' o servizio cloud aggiuntivo solo se la misura dimostra che il piano attuale non copre il perimetro approvato",
+        "decisione": "Definire prima perimetro e ritenzione"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "Esiste una sola copia fuori sede misurata; copertura e integrita' non sono ancora dimostrate."
+    },
+    {
+      "id": "ISO-12",
+      "fase": "urgente",
+      "titolo": "Chiave precondivisa del tunnel verso il fornitore",
+      "azione": "Concordare una finestra con il peer, ruotare la chiave di eta' ignota e verificare il ristabilimento del tunnel.",
+      "verifica": "Nuova chiave attiva su entrambi i peer, vecchia revocata e test dei servizi sul tunnel.",
+      "responsabile": "IT Manager e fornitore hosting",
+      "fonti": [
+        "GAP-TBC #138",
+        "roadmap M14"
+      ],
+      "controlli": [
+        "A.5.17",
+        "A.8.21"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-13",
+      "fase": "urgente",
+      "titolo": "Vecchie configurazioni e segreti sincronizzati",
+      "azione": "Dopo la rotazione, censire le copie storiche di configurazione, spostarle in deposito protetto o cifrarle e limitare gli accessi alla libreria.",
+      "verifica": "Inventario delle copie, permessi verificati e nessuna credenziale ancora attiva nei file esposti.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "GAP-TBC #138",
+        "docs/pendenze-aperte.md"
+      ],
+      "controlli": [
+        "A.5.17",
+        "A.8.24"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-12"
+      ]
+    },
+    {
+      "id": "ISO-14",
+      "fase": "rete",
+      "titolo": "Chiusura delle vecchie destinazioni di scansione",
+      "azione": "Verificare che la credenziale NAS sia permanente sulle sette postazioni, rimuovere le vecchie share dei PC e le credenziali memorizzate nelle multifunzione.",
+      "verifica": "Scansioni verso tutte le destinazioni NAS riuscite e vecchie condivisioni non piu' utilizzabili.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/interventi-robustezza.md R8, R9",
+        "GAP-TBC #126"
+      ],
+      "controlli": [
+        "A.5.14",
+        "A.8.3"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "Nuove share e rubriche sono state provate; restano rimozione delle vecchie share e verifica della persistenza."
+    },
+    {
+      "id": "ISO-15",
+      "fase": "rete",
+      "titolo": "Hardening delle multifunzione",
+      "azione": "Cambiare credenziali di fabbrica, limitare l'amministrazione, disabilitare servizi inutili, richiedere conferma destinatario e convertire gli indirizzi a riserve DHCP.",
+      "verifica": "Stampa e scansione funzionanti dopo ogni modifica; accesso amministrativo negato dalle postazioni non IT.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/interventi-robustezza.md R1-R7, R11",
+        "GAP-TBC #125"
+      ],
+      "controlli": [
+        "A.8.9",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-16",
+      "fase": "rete",
+      "titolo": "DNS interno su endpoint e Wi-Fi staff",
+      "azione": "Distribuire le impostazioni verificate alle 24 postazioni; aggiungere la regola dalla Wi-Fi staff verso il solo DNS del firewall prima di cambiare il DHCP.",
+      "verifica": "Nomi interni risolti da cavo e Wi-Fi staff; rete ospiti esclusa; servizi raggiungibili.",
+      "responsabile": "IT Manager e gestore RMM",
+      "fonti": [
+        "docs/interventi-robustezza.md R12, R20",
+        "docs/risoluzione-nomi-interni.md"
+      ],
+      "controlli": [
+        "A.8.21",
+        "A.8.22"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "Diciassette record verificati su una postazione; distribuzione e regola Wi-Fi da confermare."
+    },
+    {
+      "id": "ISO-17",
+      "fase": "rete",
+      "titolo": "CA interna e HTTPS del gestore password",
+      "azione": "Generare la chiave CA fuori linea con passphrase, distribuire la sola radice, emettere il certificato e configurare Apache sulla 443 con rinvio da HTTP.",
+      "verifica": "Accesso TLS senza avvisi, rinnovo e revoca documentati, chiave privata assente dalla rete.",
+      "responsabile": "IT Manager e RSGSI",
+      "fonti": [
+        "docs/autorita-certificazione-interna.md",
+        "docs/esposizione-servizi-interni.md"
+      ],
+      "controlli": [
+        "A.8.24",
+        "A.5.17"
+      ],
+      "fornitura": {
+        "stato": "da_verificare",
+        "dettaglio": "Disponibilita' di un supporto rimovibile dedicato e custodito per la chiave CA",
+        "decisione": "Usare un supporto esistente idoneo o procurarne uno"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-16"
+      ]
+    },
+    {
+      "id": "ISO-18",
+      "fase": "rete",
+      "titolo": "Primo segmento: stampanti VLAN 30",
+      "azione": "Completare matrice dei flussi e code; configurare gateway, DHCP e policy; ammettere VLAN 30 su entrambi i trunk previsti; migrare una porta per volta con rollback.",
+      "verifica": "Stampa e scansione riuscite, SMB solo verso NAS dedicato, traffico stampanti verso PC negato.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/segmentazione-lan-m22.md",
+        "roadmap M22b"
+      ],
+      "controlli": [
+        "A.8.22",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-14",
+        "ISO-15",
+        "ISO-16"
+      ]
+    },
+    {
+      "id": "ISO-19",
+      "fase": "rete",
+      "titolo": "Ramo esterno e segmento IoT/OT VLAN 60",
+      "azione": "Censire inverter, irrigazione, controllo presenze, UPS e AP; documentare la centralina via Wi-Fi sul WBE530 e l'inverter sulla seconda porta Ethernet dell'AP; verificare l'alimentazione dell'AP; progettare VLAN 60 e policy mirate senza ordinare uno switch per questa tratta.",
+      "verifica": "Collegamenti fisici e radio verificati, inventario apparati, alimentazione AP nota, ciclo reale d'irrigazione e flussi non autorizzati negati.",
+      "responsabile": "IT Manager e fornitore rete",
+      "fonti": [
+        "correzione IT Manager 28/09/2026",
+        "roadmap M13c-10, M22c",
+        "docs/mappatura-porte-fisiche.md"
+      ],
+      "controlli": [
+        "A.8.22",
+        "A.7.8"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "Il WBE530 serve la centralina via Wi-Fi e l'inverter sulla seconda porta Ethernet; nessuno switch da acquistare per la tratta. VLAN 60 e alimentazione dell'AP restano aperte.",
+      "dipende_da": [
+        "ISO-18"
+      ]
+    },
+    {
+      "id": "ISO-20",
+      "fase": "rete",
+      "titolo": "Segmento dei servizi applicativi VLAN 50",
+      "azione": "Rendere VLAN-aware il bridge previsto senza spostare i cavi; migrare VM 208 e servizi interni con policy e rollback per macchina.",
+      "verifica": "Servizi raggiungibili dagli utenti autorizzati e movimenti laterali non autorizzati negati.",
+      "responsabile": "IT Manager e responsabili applicativi",
+      "fonti": [
+        "roadmap M22d",
+        "docs/virtualizzazione-proxmox-e-bridge.md"
+      ],
+      "controlli": [
+        "A.8.22"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-16",
+        "ISO-18"
+      ]
+    },
+    {
+      "id": "ISO-21",
+      "fase": "rete",
+      "titolo": "Segmenti postazioni, server e management",
+      "azione": "Decidere il segmento gestione; migrare postazioni e server dopo il censimento degli statici; spostare la gestione switch/iLO per ultima con console alternativa pronta.",
+      "verifica": "Matrice dei flussi soddisfatta, servizi invariati e gestione accessibile solo da postazioni IT.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "roadmap M22e",
+        "docs/segmentazione-lan-m22.md"
+      ],
+      "controlli": [
+        "A.8.22",
+        "A.8.2"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Eventuali porte gestite o apparati aggiuntivi soltanto se il censimento delle porte mostra insufficienza",
+        "decisione": "Usare la capacita' esistente prima di acquistare"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-18",
+        "ISO-19",
+        "ISO-20"
+      ]
+    },
+    {
+      "id": "ISO-22",
+      "fase": "rete",
+      "titolo": "DHCP Guard e pulizia delle porte switch",
+      "azione": "Attivare protezioni livello 2 per segmento, fidandosi solo dei trunk DHCP legittimi; correggere porte 19 e 21 del 30HP e restringere le VLAN delle porte fonia dopo il riscontro fisico.",
+      "verifica": "DHCP legittimo funziona, risposta di server abusivo scartata, porte campione coerenti con la matrice.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "GAP-TBC #122, #123, #134, #143",
+        "docs/pendenze-aperte.md"
+      ],
+      "controlli": [
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-18"
+      ]
+    },
+    {
+      "id": "ISO-23",
+      "fase": "rete",
+      "titolo": "DMZ e prima pubblicazione controllata",
+      "azione": "Usare il bridge su switch gestito indicato dalla ricognizione; applicare VLAN 201, policy di ingresso e uscita, poi pubblicare il primo proxy in finestra reversibile.",
+      "verifica": "Servizio esterno raggiungibile, DMZ verso LAN negato salvo flussi dichiarati e rollback provato.",
+      "responsabile": "IT Manager e responsabile applicativo",
+      "fonti": [
+        "roadmap M4-M9",
+        "docs/virtualizzazione-proxmox-e-bridge.md"
+      ],
+      "controlli": [
+        "A.8.22",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-20"
+      ]
+    },
+    {
+      "id": "ISO-24",
+      "fase": "rete",
+      "titolo": "Firewall Proxmox con regole efficaci",
+      "azione": "Definire regole per host, bridge e VM, provarle su una macchina pilota e solo dopo attivare policy predefinita di blocco.",
+      "verifica": "Flag firewall e regole realmente applicati; flussi autorizzati vivi e tentativi negati registrati.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "roadmap M15",
+        "docs/virtualizzazione-proxmox-e-bridge.md"
+      ],
+      "controlli": [
+        "A.8.20",
+        "A.8.22"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-23"
+      ]
+    },
+    {
+      "id": "ISO-25",
+      "fase": "rete",
+      "titolo": "VPN moderne e failover WAN",
+      "azione": "Pianificare IKEv2 e parametri correnti, chiarire profili duplicati, rivedere rotte e interfacce obsolete dopo backup configurazione e prova di failover.",
+      "verifica": "Tunnel ristabiliti e servizi operativi con ciascuna tratta di riserva testata.",
+      "responsabile": "IT Manager e fornitori di connettivita'",
+      "fonti": [
+        "roadmap M14, M7",
+        "GAP-TBC FW-004, FW-006, FW-007"
+      ],
+      "controlli": [
+        "A.8.21",
+        "A.8.14"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Intervento del fornitore di connettivita' se le modifiche ai peer o al failover non sono gestibili internamente",
+        "decisione": "Confermare responsabilita' e condizioni del servizio"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-12"
+      ]
+    },
+    {
+      "id": "ISO-26",
+      "fase": "rete",
+      "titolo": "Revisione delle policy Wi-Fi staff e guest",
+      "azione": "Dopo la segmentazione, sostituire l'accesso pieno della Wi-Fi staff con la matrice dei flussi; verificare isolamento ospiti e DNS separato.",
+      "verifica": "Test da staff e ospiti verso servizi consentiti e vietati, con log del firewall.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/segmentazione-lan-m22.md",
+        "ADR-014",
+        "GAP-TBC #194"
+      ],
+      "controlli": [
+        "A.8.22",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-21"
+      ]
+    },
+    {
+      "id": "ISO-27",
+      "fase": "presidi",
+      "titolo": "Patch e configurazioni di riferimento",
+      "azione": "Censire versioni di firewall, switch, AP, NAS, Proxmox e VM; fissare finestre, priorita', eccezioni e verifica post aggiornamento.",
+      "verifica": "Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/vendor-management.md",
+        "docs/design-and-security.md",
+        "roadmap Fase 4"
+      ],
+      "controlli": [
+        "A.8.8",
+        "A.8.9",
+        "A.8.32"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario",
+        "decisione": "Aprire proposta distinta per ogni asset non aggiornabile"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-28",
+      "fase": "presidi",
+      "titolo": "Remediation del vulnerability assessment",
+      "azione": "Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.",
+      "verifica": "Ogni chiusura ha output o verbale; i rilievi critici e alti sono riprovati.",
+      "responsabile": "RSGSI e IT Manager",
+      "fonti": [
+        "docs/vulnerability-assessment-nov2025.md",
+        "docs/design-and-security.md"
+      ],
+      "controlli": [
+        "A.8.8",
+        "A.5.36"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi",
+        "decisione": "Definire perimetro della verifica prima dell'incarico"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-29",
+      "fase": "presidi",
+      "titolo": "Cifratura endpoint e dispositivo personale in RMM",
+      "azione": "Misurare cifratura, TPM, protezioni e chiavi per dispositivo; definire trattamento del PC personale gestito dall'RMM e delle eccezioni.",
+      "verifica": "Esportazione datata per la flotta e decisione documentata sui dispositivi fuori criterio.",
+      "responsabile": "IT Manager e RSGSI",
+      "fonti": [
+        "docs/design-and-security.md",
+        "GAP-TBC #113"
+      ],
+      "controlli": [
+        "A.8.1",
+        "A.5.9"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato",
+        "decisione": "Confrontare il requisito con le funzioni RMM gia' disponibili"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-30",
+      "fase": "presidi",
+      "titolo": "Log e allarmi di rete e infrastruttura",
+      "azione": "Definire eventi, soglie, destinatari e ritenzione per firewall, switch, VPN, Proxmox, NAS e UPS; generare un evento di prova per categoria.",
+      "verifica": "Evento ricevuto, letto e preso in carico entro il tempo stabilito.",
+      "responsabile": "IT Manager e RSGSI",
+      "fonti": [
+        "docs/design-and-security.md",
+        "GAP-TBC #200"
+      ],
+      "controlli": [
+        "A.8.15",
+        "A.8.16"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Schede SNMP per UPS o piattaforma di raccolta log solo se le funzioni presenti non coprono gli allarmi definiti",
+        "decisione": "Definire prima eventi e ritenzione"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-31",
+      "fase": "presidi",
+      "titolo": "UPS dello switch Piano Terra",
+      "azione": "Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.",
+      "verifica": "Switch, telefoni e AP del piano restano alimentati nel test controllato; autonomia registrata.",
+      "responsabile": "IT Manager e fornitore elettrico",
+      "fonti": [
+        "GAP-TBC #148",
+        "docs/livello-fisico-ed-elettrico.md"
+      ],
+      "controlli": [
+        "A.7.11",
+        "A.8.14"
+      ],
+      "fornitura": {
+        "stato": "da_verificare",
+        "dettaglio": "UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata",
+        "decisione": "Confermare disponibilita' prima di ordinare"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-32",
+      "fase": "presidi",
+      "titolo": "Indipendenza delle alimentazioni del server",
+      "azione": "Rilevare la presa di PS1 e PS2, verificare se arrivano a sorgenti distinte e correggere il cablaggio solo dopo la misura.",
+      "verifica": "Schema elettrico firmato e prova controllata delle due sorgenti.",
+      "responsabile": "IT Manager e fornitore elettrico",
+      "fonti": [
+        "GAP-TBC #202",
+        "docs/livello-fisico-ed-elettrico.md"
+      ],
+      "controlli": [
+        "A.7.11",
+        "A.8.14"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Intervento elettrico o distribuzione di alimentazione solo se le due sorgenti risultano comuni",
+        "decisione": "Sopralluogo al retro dell'armadio"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-33",
+      "fase": "presidi",
+      "titolo": "Licenze di sicurezza e gestione apparati",
+      "azione": "Rileggere pannello Nebula e Gold Security Pack, riconciliare date discordanti e assegnare responsabile e preavviso per ogni rinnovo.",
+      "verifica": "Schermate datate, registro scadenze corretto e servizi di sicurezza attivi verificati.",
+      "responsabile": "IT Manager e fornitore licenze",
+      "fonti": [
+        "data/scadenze.json",
+        "ADR-022"
+      ],
+      "controlli": [
+        "A.5.22",
+        "A.8.20"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Rinnovo di licenze soltanto alla scadenza confermata dal pannello; nessun nuovo acquisto dedotto dalla vecchia pendenza AP",
+        "decisione": "Risolvere lo scostamento fra le letture del 09 e 10/09/2026"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "La misura del 10/09 indica l'AP esterno licenziato; alcune date lette il giorno prima divergono."
+    },
+    {
+      "id": "ISO-34",
+      "fase": "presidi",
+      "titolo": "Esercitazione di continuita' operativa",
+      "azione": "Concordare RTO e RPO per servizio, simulare perdita NAS, VM, connettivita' e alimentazione, aggiornare runbook con i tempi reali.",
+      "verifica": "Verbali di prova, deviazioni dai tempi attesi e azioni correttive assegnate.",
+      "responsabile": "RSGSI e responsabili di servizio",
+      "fonti": [
+        "docs/business-continuity-disaster-recovery.md"
+      ],
+      "controlli": [
+        "A.5.29",
+        "A.5.30"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-10",
+        "ISO-31",
+        "ISO-32"
+      ]
+    },
+    {
+      "id": "ISO-35",
+      "fase": "presidi",
+      "titolo": "Inventario fisico ed elettrico completo",
+      "azione": "Chiudere censimento di NAS, inverter, switch non gestiti, UPS, prese, porte a 10 Mb/s e apparati residui; riconciliare mappa e sopralluogo.",
+      "verifica": "Inventario con proprietario, funzione, posizione, alimentazione e data di verifica per ogni apparato.",
+      "responsabile": "IT Manager",
+      "fonti": [
+        "docs/pendenze-aperte.md",
+        "docs/livello-fisico-ed-elettrico.md"
+      ],
+      "controlli": [
+        "A.5.9",
+        "A.7.8",
+        "A.7.12"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "Mappa strutturata disponibile; restano verifiche sul posto e apparati non censiti."
+    },
+    {
+      "id": "ISO-36",
+      "fase": "sgsi",
+      "titolo": "Perimetro del sistema di gestione",
+      "azione": "Confermare servizi, sedi, rete, VM, SaaS, fornitori, interfacce ed esclusioni, assegnando un responsabile a ogni confine.",
+      "verifica": "Documento di ambito approvato dalla direzione e coerente con asset e contratti.",
+      "responsabile": "Direzione e RSGSI",
+      "fonti": [
+        "docs/business-continuity-disaster-recovery.md sezione PSGSI",
+        "ISO/IEC 27001:2022"
+      ],
+      "controlli": [
+        "4.3",
+        "4.4"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "La PSGSI del 2025 dichiara un ambito; va riconciliato con servizi e fornitori attuali."
+    },
+    {
+      "id": "ISO-37",
+      "fase": "sgsi",
+      "titolo": "Contesto, parti interessate e clima",
+      "azione": "Aggiornare dipendenze da fornitori, energia, meteo, connettivita' e dati dei clienti; registrare se il cambiamento climatico e' rilevante per l'ambito.",
+      "verifica": "Analisi approvata con bisogni delle parti interessate e decisione motivata sul clima.",
+      "responsabile": "Direzione e RSGSI",
+      "fonti": [
+        "ISO/IEC 27001:2022/Amd 1:2024",
+        "docs/business-continuity-disaster-recovery.md"
+      ],
+      "controlli": [
+        "4.1",
+        "4.2"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-36"
+      ]
+    },
+    {
+      "id": "ISO-38",
+      "fase": "sgsi",
+      "titolo": "Metodo e registro dei rischi",
+      "azione": "Definire criteri di impatto e probabilita'; per ogni gap registrare scenario, asset, proprietario, rischio iniziale, trattamento, residuo e accettazione.",
+      "verifica": "Registro approvato che copre almeno tutti gli interventi critici di questa roadmap.",
+      "responsabile": "RSGSI e proprietari dei rischi",
+      "fonti": [
+        "docs/infrastructure-timeline/GAP-TBC.md",
+        "ISO/IEC 27001:2022"
+      ],
+      "controlli": [
+        "6.1.2",
+        "6.1.3"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-36"
+      ]
+    },
+    {
+      "id": "ISO-39",
+      "fase": "sgsi",
+      "titolo": "Statement of Applicability dei 93 controlli",
+      "azione": "Riconciliare la checklist locale con misure attuali; motivare applicabilita', esclusioni, implementazione, responsabile e prova per ogni controllo.",
+      "verifica": "SoA approvato, nessun 'Fatto' privo di evidenza, numerazione Annex A 2022 corretta.",
+      "responsabile": "RSGSI",
+      "fonti": [
+        "Checklist ISO27001 rev4 locale",
+        "docs/design-and-security.md"
+      ],
+      "controlli": [
+        "6.1.3"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "stato_nota": "La checklist contiene 93 controlli e nessuna prova compilata.",
+      "dipende_da": [
+        "ISO-38"
+      ]
+    },
+    {
+      "id": "ISO-40",
+      "fase": "sgsi",
+      "titolo": "Obiettivi e indicatori misurabili",
+      "azione": "Fissare metriche e soglie per backup, ripristino, patch, esposizioni, revisioni accessi e allarmi, con frequenza e proprietario.",
+      "verifica": "Serie di misure datate e riesame delle deviazioni.",
+      "responsabile": "RSGSI e IT Manager",
+      "fonti": [
+        "ISO/IEC 27001:2022",
+        "data/scadenze.json"
+      ],
+      "controlli": [
+        "6.2",
+        "9.1"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-38"
+      ]
+    },
+    {
+      "id": "ISO-41",
+      "fase": "sgsi",
+      "titolo": "Procedure operative e gestione dei cambi",
+      "azione": "Formalizzare accessi e revoche, firewall/VLAN, backup, ripristino, patch, segreti, certificati e fornitori; usare ticket, prova e rollback per i cambi.",
+      "verifica": "Una esecuzione documentata o esercizio per ciascuna procedura critica.",
+      "responsabile": "IT Manager e RSGSI",
+      "fonti": [
+        "docs/runbook-anomalie.md",
+        "roadmap Fase 5"
+      ],
+      "controlli": [
+        "A.5.37",
+        "A.8.32",
+        "8.1"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "in_corso",
+      "stato_nota": "Esistono runbook puntuali; manca una procedura unificata applicata a tutte le classi di cambio."
+    },
+    {
+      "id": "ISO-42",
+      "fase": "sgsi",
+      "titolo": "Risposta agli incidenti",
+      "azione": "Definire ruoli, escalation, decisione sugli eventi, raccolta prove e comunicazioni; esercitare uno scenario pertinente al phishing gia' documentato.",
+      "verifica": "Esercitazione con tempi, decisioni, verbale e miglioramenti assegnati.",
+      "responsabile": "RSGSI e Comitato di crisi",
+      "fonti": [
+        "docs/cybersecurity-governance.md",
+        "docs/business-continuity-disaster-recovery.md"
+      ],
+      "controlli": [
+        "A.5.24",
+        "A.5.25",
+        "A.5.26",
+        "A.5.28",
+        "A.6.8"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-43",
+      "fase": "sgsi",
+      "titolo": "Fornitori, cloud e servizi esterni",
+      "azione": "Rivedere responsabilita', accessi, incidenti, continuita' e cessazione per hosting, RMM, backup, connettivita' e SaaS; chiedere prove contrattuali e operative.",
+      "verifica": "Schede fornitore con rischio, proprietario, ultima revisione e azioni aperte.",
+      "responsabile": "RSGSI e responsabile acquisti",
+      "fonti": [
+        "docs/vendor-management.md",
+        "ISO/IEC 27001:2022"
+      ],
+      "controlli": [
+        "A.5.19",
+        "A.5.20",
+        "A.5.21",
+        "A.5.22",
+        "A.5.23"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-44",
+      "fase": "sgsi",
+      "titolo": "Revisione accessi e formazione",
+      "azione": "Rivedere account privilegiati, accessi di collaboratori e fornitori, revoche e consapevolezza del personale su phishing e segnalazione eventi.",
+      "verifica": "Elenco accessi approvato dai proprietari, revoche eseguite e registri di formazione.",
+      "responsabile": "RSGSI e responsabili di servizio",
+      "fonti": [
+        "docs/cybersecurity-governance.md",
+        "ISO/IEC 27001:2022"
+      ],
+      "controlli": [
+        "A.5.18",
+        "A.6.3",
+        "A.6.8"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Formazione esterna solo se il programma interno non copre le competenze richieste",
+        "decisione": "Valutare competenze e materiale esistenti"
+      },
+      "stato_iniziale": "da_fare"
+    },
+    {
+      "id": "ISO-45",
+      "fase": "sgsi",
+      "titolo": "Audit interno indipendente",
+      "azione": "Pianificare audit su clausole 4-10 e controlli applicabili, con auditor indipendente dal lavoro verificato; registrare rilievi e correzioni.",
+      "verifica": "Piano, rapporto di audit, non conformita' e prove delle azioni correttive.",
+      "responsabile": "Direzione e RSGSI",
+      "fonti": [
+        "ISO/IEC 27001:2022"
+      ],
+      "controlli": [
+        "9.2",
+        "10.1"
+      ],
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Auditor esterno se non esiste una persona interna sufficientemente indipendente e competente",
+        "decisione": "Verificare indipendenza e competenza prima dell'incarico"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-39",
+        "ISO-41"
+      ]
+    },
+    {
+      "id": "ISO-46",
+      "fase": "sgsi",
+      "titolo": "Riesame della direzione e azioni correttive",
+      "azione": "Presentare rischi, obiettivi, misure, incidenti, audit e risorse; assegnare decisioni, scadenze e verifica dell'efficacia dei correttivi.",
+      "verifica": "Verbale di riesame, registro azioni e verifica successiva dell'efficacia.",
+      "responsabile": "Direzione",
+      "fonti": [
+        "ISO/IEC 27001:2022",
+        "docs/business-continuity-disaster-recovery.md"
+      ],
+      "controlli": [
+        "9.3",
+        "10.1",
+        "10.2"
+      ],
+      "fornitura": {
+        "stato": "nessuna"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-45"
+      ]
+    },
+    {
+      "id": "ISO-47",
+      "fase": "sgsi",
+      "titolo": "Audit di certificazione",
+      "azione": "Selezionare organismo accreditato, concordare ambito e calendario Stage 1/Stage 2 e presentare SGSI con prove operative e azioni correttive chiuse.",
+      "verifica": "Contratto e programma di audit, esiti delle due fasi e trattamento di eventuali rilievi.",
+      "responsabile": "Direzione e RSGSI",
+      "fonti": [
+        "obiettivo di progetto marzo 2027",
+        "ISO/IEC 27001:2022"
+      ],
+      "controlli": [
+        "4-10"
+      ],
+      "fornitura": {
+        "stato": "necessaria",
+        "dettaglio": "Servizio dell'organismo di certificazione accreditato per audit Stage 1 e Stage 2",
+        "decisione": "Richiedere proposta su ambito approvato e calendario realistico"
+      },
+      "stato_iniziale": "da_fare",
+      "dipende_da": [
+        "ISO-45",
+        "ISO-46"
+      ]
+    }
+  ],
+  "eventi": [
+    {
+      "id": "ISO-19",
+      "data": "2026-09-28",
+      "stato": "in_corso",
+      "nota": "Correzione IT Manager 28/09/2026: centralina via Wi-Fi del WBE530; inverter sulla seconda porta Ethernet dell'AP. Il GS-105B non e' nel percorso attivo. Fornitura dello switch annullata; da verificare alimentazione AP, presenza fisica residua del GS-105B e segmentazione VLAN 60.",
+      "fornitura": {
+        "stato": "nessuna"
+      }
+    }
+  ]
+}

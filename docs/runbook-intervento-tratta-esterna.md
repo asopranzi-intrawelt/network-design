@@ -1,8 +1,10 @@
-# Runbook dell'intervento sulla tratta esterna (M13c)
+# Runbook storico dell'intervento sulla tratta esterna (M13c)
 
-> Runbook operativo di un intervento **pianificato**, distinto da `runbook-anomalie.md` che raccoglie le procedure di diagnosi di un guasto. Nasce il 09/09/2026 dopo ADR-029, che sposta il baricentro di M13c dalla sostituzione dell'access point a quella dell'apparato di diramazione. Serve a eseguire l'intervento in un ordine in cui ogni passo e' verificabile e ogni punto di non ritorno e' dichiarato. Lo stato di avanzamento dei singoli passi vive in `.claude/context/roadmap.md` (M13c-1..M13c-10), non qui: questo documento dice **come**, la roadmap dice **dove siamo**.
+> **PIANO DI ACQUISTO SUPERATO IL 28/09/2026. Non inviare la richiesta di preventivo per lo switch contenuta sotto e non eseguire la procedura di sostituzione.** L'IT Manager ha corretto l'assetto: la centralina usa il Wi-Fi del WBE530 e l'inverter la seconda porta Ethernet del WBE530; non serve uno switch nuovo sulla tratta. Il GS-105B v5 appartiene alla ricostruzione precedente e non e' nel percorso attivo; la sua presenza fisica residua va verificata sul posto. Le misure del 09/09 restano storia dell'intervento e la porta 4 e' successivamente tornata a 1 Gb/s. La licenza dell'AP va letta da `data/scadenze.json`, non dalla vecchia richiesta di preventivo. Per le attivita' aperte seguire ISO-19 e M13c-10 aggiornati.
 
-## Che cosa c'e' oggi, in una figura sola
+> Documento storico del piano formulato il 09/09/2026 dopo ADR-029. La decisione e' stata superata il 28/09/2026: i passi di acquisto, ricablaggio e licenza dello switch sotto non sono piu' eseguibili. Lo stato operativo vive in `.claude/context/roadmap.md` (M13c-1..M13c-10) e in ISO-19.
+
+## Ricostruzione del 09/09/2026, oggi superata
 
 Dalla porta 4 del XGS2220-30HP parte la tratta verso l'esterno: presa a parete `0-8-1` nel locale caldaia, ponte verso la derivazione `0-9-1` sul tetto, e li' uno **Zyxel GS-105B v5**, cinque porte, non gestito e non PoE, interposto dagli elettricisti durante il montaggio dell'inverter fotovoltaico per diramare tre utenze da un cavo che prima ne serviva una. I tre rami sono la **centrale di irrigazione** (cavo di categoria 6 proprio), l'**access point esterno** Ubiquiti fuori supporto, e l'**inverter del fotovoltaico**.
 

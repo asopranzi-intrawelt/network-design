@@ -23,7 +23,9 @@ Da ultimo, una conseguenza che nessuno cercava: le due scoperte piu' importanti 
 ---
 ## ADR-029 - La tratta verso l'esterno passa da un apparato non gestito a uno gestito e PoE
 
-Data: 2026-09-09 Stato: attiva. Determina M13c-3 e apre M13c-10; chiude per sostituzione il punto cieco di NET-017 (#136/#136b).
+Data: 2026-09-09 Stato: **superata il 28/09/2026** dalla correzione dell'IT Manager. La decisione qui sotto resta come storia della valutazione; non autorizza acquisti o interventi.
+
+**Esito corretto:** la dorsale raggiunge il WBE530, la centralina di irrigazione usa il suo Wi-Fi e l'inverter e' collegato alla seconda porta Ethernet dell'AP. Il GS-105B v5 non e' nel percorso attivo; la sua eventuale presenza fisica residua resta da verificare. La necessita' di uno switch gestito PoE e della relativa licenza decade. M13c-10 e ISO-19 sono stati riformulati come verifica dell'alimentazione, inventario dell'inverter e segmentazione, senza fornitura di switch.
 
 Contesto. Fra la porta 4 del XGS2220-30HP e le utenze esterne vive uno **Zyxel GS-105B v5**, cinque porte, non gestito e non PoE, interposto dagli elettricisti durante il montaggio dell'inverter fotovoltaico per diramare tre utenze da un cavo che prima era unico. Da li' escono la centrale di irrigazione, l'access point esterno Ubiquiti fuori supporto e l'inverter. L'apparato non compare in nessun inventario, e la sua unica impronta misurabile e' la tabella MAC della porta 4: nessuna interrogazione automatica lo avrebbe mai rivelato, ed e' stato scoperto perche' quattro indirizzi su una porta che doveva averne uno sono la firma di uno switch.
 

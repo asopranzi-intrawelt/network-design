@@ -201,6 +201,8 @@ Dopo la dismissione completa della connettività TIM (luglio 2025), rimangono co
 
 ## AP-001: Access Point con Debian 7 (EOL), NON gestiti da Nebula
 
+> **Stato aggiornato 28/09/2026 per la tratta esterna:** il WBE530 e' in servizio; la centralina usa il suo Wi-Fi e l'inverter la seconda porta Ethernet dell'AP. Il GS-105B v5 non e' nel percorso attivo e non serve comprare uno switch. I ragionamenti e preventivi datati luglio e agosto sotto restano cronaca dell'indagine e non sono istruzioni operative. Per lo stato corrente usare M13c-10, ISO-19 e la mappa revisione 12.
+
 **Severity**: ALTA **Origine**: VA Onova nov 2025; smentita ipotesi Nebula confermata il 14/07/2026 **Stato**: APERTO
 
 ### Contesto
