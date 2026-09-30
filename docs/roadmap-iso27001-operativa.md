@@ -2,13 +2,15 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-28. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-30. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
 - Aprire questa lista per scegliere il prossimo intervento. Ogni voce specifica azione, prova di chiusura, responsabile, dipendenze e fornitura.
+- **Stati:** da fare = non iniziato; in corso = avviato ma senza prova di chiusura; bloccato = in attesa di un prerequisito; completato = chiuso con evidenza datata; non applicabile = esclusione motivata.
+- **Forniture:** necessaria = serve un acquisto o servizio; condizionata = solo se diagnosi o decisione lo richiedono; da verificare = controllare prima se esiste gia'; nessuna = non prevista.
 - Per ogni avanzamento comunicato o realizzato, l'agente aggiorna il registro nella stessa sessione: azione, stato, fornitura e nota datata. Il comando `advance` rigenera questa vista nel progetto, senza richiedere azioni all'utente.
-- L'HTML sul Desktop e' una copia di sola lettura: si esporta solo su richiesta con `python scripts/IsoRoadmap.py build --desktop`. Puo' essere piu' vecchio del registro; non va modificato a mano.
+- L'HTML e' una copia di sola lettura: si esporta solo su richiesta con `python scripts/IsoRoadmap.py build --desktop`, che aggiorna insieme Desktop e cartella ISO OneDrive configurata privatamente. Puo' essere piu' vecchio del registro; non va modificato a mano.
 - Nell'HTML le sigle aprono una vista interna allo stesso file. Le spiegazioni vivono in `data/iso27001-glossario.json`; quelle dei controlli ISO sono parafrasi operative, non il testo della norma.
 - Una voce si chiude solo con una prova datata (`--evidenza`); non trascrivere dati reali o segreti nel registro pubblico.
 - Cambiamenti fisici non ancora comunicati o misurabili non possono essere rilevati dal registro: in quel caso la voce resta da verificare fino a sopralluogo o evidenza.
@@ -16,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-28. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 38, in corso 9, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 36, in corso 11, bloccati 0, completati 0, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -29,7 +31,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-28. Obie
 
 ### Fornitura condizionata
 
-- **ISO-08 - Diagnosi del NAS principale dei backup:** Dischi, NIC, firmware o assistenza NAS solo se la diagnosi li identifica come causa. Decisione: Nessun ordine prima della misura sull'apparato.
+- **ISO-08 - Diagnosi del NAS principale dei backup:** NAS sostitutivo preventivato; dischi, NIC, firmware o assistenza solo se la diagnosi identifica il componente da sostituire. Decisione: Confrontare capacita', ritenzione e ripristino prima di qualsiasi ordine o migrazione.
 - **ISO-11 - Copertura e cifratura della copia fuori sede:** Capacita' o servizio cloud aggiuntivo solo se la misura dimostra che il piano attuale non copre il perimetro approvato. Decisione: Definire prima perimetro e ritenzione.
 - **ISO-21 - Segmenti postazioni, server e management:** Eventuali porte gestite o apparati aggiuntivi soltanto se il censimento delle porte mostra insufficienza. Decisione: Usare la capacita' esistente prima di acquistare.
 - **ISO-25 - VPN moderne e failover WAN:** Intervento del fornitore di connettivita' se le modifiche ai peer o al failover non sono gestibili internamente. Decisione: Confermare responsabilita' e condizioni del servizio.
@@ -95,19 +97,21 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-28. Obie
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.5.16, A.5.17, A.8.2.
   - **Fonti:** docs/esposizione-servizi-interni.md, GAP-TBC #120, #170, #172.
 
-- **ISO-08 | Diagnosi del NAS principale dei backup** - **Da fare**; FORNITURA CONDIZIONATA. Dischi, NIC, firmware o assistenza NAS solo se la diagnosi li identifica come causa.
+- **ISO-08 | Diagnosi del NAS principale dei backup** - **Da fare**; FORNITURA CONDIZIONATA. NAS sostitutivo preventivato; dischi, NIC, firmware o assistenza solo se la diagnosi identifica il componente da sostituire.
   - **Azione:** Leggere RAID, dischi, carico, firmware, SMB, negoziazione e aggregazione delle due NIC; ripetere le misure prima e dopo il rimedio.
   - **Chiusura verificabile:** Causa documentata e throughput di lettura/scrittura e durata dei backup nuovamente misurati.
   - **Responsabile:** IT Manager e fornitore NAS. **Dipendenze:** nessuna. **Controlli:** A.8.13, A.8.6.
   - **Fonti:** GAP-TBC #204, docs/pendenze-aperte.md.
-  - **Ultimo stato (2026-09-28):** Misurati 10,5 MB/s in scrittura e 15,8 MB/s in lettura; il server e' stato assolto.
+  - **Ultimo stato (2026-09-30):** 30/09: causa del deposito NAS ancora da misurare sul pannello. Il preventivo del 22/09 propone un NAS rack a quattro dischi e porte multigigabit, ma non prova acquisto o messa in servizio; non sostituisce la diagnosi. Restano le misure 10,5 MB/s in scrittura e 15,8 MB/s in lettura.
+  - **Evidenza:** Preventivo fornitore 22/09/2026 nella libreria amministrativa; GAP-TBC #204
 
 - **ISO-09 | Collisione e allarmi dei dieci backup VM** - **In corso**; Nessuna fornitura prevista.
-  - **Azione:** Spostare il job della VM 208 dalle 04:30, mantenendo frequenza giornaliera e destinazioni; aggiungere soglie per durata, mancata partenza, spazio e fine oltre la notte.
-  - **Chiusura verificabile:** Sette notti con dieci esiti registrati, nessuna collisione e allarme di degrado ricevuto.
+  - **Azione:** Correggere il job della VM 207 che fallisce per timeout del lock: verificare e impostare l'attesa sui tre job aggiunti per 207, 208 e 209, oggi privi di lockwait=1440; poi spostare il job della VM 208 dalle 04:30, mantenendo frequenza giornaliera e destinazioni. Aggiungere soglie per fallimento, durata, mancata partenza, spazio e fine oltre la finestra concordata.
+  - **Chiusura verificabile:** Sette notti con dieci esiti OK, nessuna collisione, fine entro la finestra concordata e prova di ricezione dell'allarme di degrado.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.13, A.8.16.
   - **Fonti:** GAP-TBC #200, #203, #204, docs/pendenze-aperte.md.
-  - **Ultimo stato (2026-09-28):** La copertura giornaliera e' stata sanata; collisione e misura delle durate restano aperte.
+  - **Ultimo stato (2026-09-30):** 30/09: letti i task Proxmox delle ultime tre notti. Nove job OK su dieci; il job VM 207 delle 03:45 fallisce ogni notte per timeout del lock. I tre job aggiunti per 207, 208 e 209 non hanno lockwait=1440, presente sugli altri sette. Ultimo job alle 08:15, doppia partenza alle 04:30 ancora presente. Correggere configurazione e misurare sette notti.
+  - **Evidenza:** API task Proxmox 28-30/09/2026; snapshot Proxmox 30/09/2026; docs/business-continuity-disaster-recovery.md
 
 - **ISO-10 | Prove di ripristino VM e documenti** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Ripristinare una VM piccola cronometrando; avviare la verifica di integrita' dei lavori NAS e recuperare un campione locale e fuori sede.
@@ -219,17 +223,19 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-28. Obie
 
 ### 3. Controlli ripetibili - dicembre 2026-gennaio 2027
 
-- **ISO-27 | Patch e configurazioni di riferimento** - **Da fare**; FORNITURA CONDIZIONATA. Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario.
+- **ISO-27 | Patch e configurazioni di riferimento** - **In corso**; FORNITURA CONDIZIONATA. Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario.
   - **Azione:** Censire versioni di firewall, switch, AP, NAS, Proxmox e VM; fissare finestre, priorita', eccezioni e verifica post aggiornamento.
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/vendor-management.md, docs/design-and-security.md, roadmap Fase 4.
+  - **Ultimo stato (2026-09-29):** Conferma IT Manager 29/09: server VA storico del gestionale ritirato dopo migrazione; snapshot Proxmox odierno coerente con assenza del vecchio guest. VM 810 TESTNEWEGETRADBOOT e successore candidato da verificare via SSH e prossimo censimento.
 
-- **ISO-28 | Remediation del vulnerability assessment** - **Da fare**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
+- **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
   - **Chiusura verificabile:** Ogni chiusura ha output o verbale; i rilievi critici e alti sono riprovati.
   - **Responsabile:** RSGSI e IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.5.36.
   - **Fonti:** docs/vulnerability-assessment-nov2025.md, docs/design-and-security.md.
+  - **Ultimo stato (2026-09-29):** Perimetro VA aggiornato: escluso il vecchio host del gestionale, ritirato dopo migrazione (conferma IT Manager 29/09). Non trasferire i plugin Ubuntu/Tomcat al successore. VM 810 TESTNEWEGETRADBOOT e successore candidato; accesso SSH odierno non verificato, quindi serve censimento del nuovo sistema prima della chiusura.
 
 - **ISO-29 | Cifratura endpoint e dispositivo personale in RMM** - **Da fare**; FORNITURA CONDIZIONATA. Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato.
   - **Azione:** Misurare cifratura, TPM, protezioni e chiavi per dispositivo; definire trattamento del PC personale gestito dall'RMM e delle eccezioni.

@@ -172,6 +172,8 @@ Blocco schermo automatico dopo **5 minuti** di inattività.
 | VPN-001 | PSE-SEEWEB IKEv1 aggressive mode | MEDIA | Da valutare upgrade IKEv2 |
 | FW-003 | Virtual server inutilizzati attivi (7 disabilitati) | BASSA | Aperto |
 
+**Lettura aggiornata al 29/09/2026:** la tabella sopra conserva i rilievi e gli indirizzi del VA e non rappresenta lo stato corrente di ciascun host. Lo scope IP riportato dal VA e' storico e non identifica host o gateway attuali; la topologia documenta invece la rete ospiti sulla VLAN ID 90. La somiglianza dei numeri non implica che gli indirizzi del vecchio scan siano ancora in uso. Il management dei due switch Nebula e' stato verificato fuori dalla VLAN ospiti il 23/07 e i tre AP legacy sono stati sostituiti nel percorso attivo; la web card dell'UPS non rispondeva il 21/07, senza prova che il rischio sia risolto. Citofono e domotica non risultavano piu' nella rete ospiti ma richiedono localizzazione e nuovo VA. `#193` (amministrazione firewall da Internet) e `#194` (RDP ospiti verso LAN) restano aperti. La riconciliazione per host e' nell'HTML Onova privato e la sintesi verificabile in `docs/vulnerability-assessment-nov2025.md`.
+
 ---
 
 ## Protezione phishing e spoofing
