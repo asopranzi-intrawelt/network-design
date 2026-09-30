@@ -1,5 +1,5 @@
 ---
-last-verified: 8a51761
+last-verified: 0ca70f8
 ---
 
 # Stack e struttura del progetto

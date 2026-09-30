@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-30. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 36, in corso 11, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 35, in corso 12, bloccati 0, completati 0, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -38,7 +38,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-30. Obie
 - **ISO-27 - Patch e configurazioni di riferimento:** Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario. Decisione: Aprire proposta distinta per ogni asset non aggiornabile.
 - **ISO-28 - Remediation del vulnerability assessment:** Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi. Decisione: Definire perimetro della verifica prima dell'incarico.
 - **ISO-29 - Cifratura endpoint e dispositivo personale in RMM:** Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato. Decisione: Confrontare il requisito con le funzioni RMM gia' disponibili.
-- **ISO-30 - Log e allarmi di rete e infrastruttura:** Schede SNMP per UPS o piattaforma di raccolta log solo se le funzioni presenti non coprono gli allarmi definiti. Decisione: Definire prima eventi e ritenzione.
+- **ISO-30 - Log e allarmi di rete e infrastruttura:** VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme. Decisione: Verificare capacita' Proxmox e NAS e misurare volumi e ritenzione prima di acquistare.
 - **ISO-32 - Indipendenza delle alimentazioni del server:** Intervento elettrico o distribuzione di alimentazione solo se le due sorgenti risultano comuni. Decisione: Sopralluogo al retro dell'armadio.
 - **ISO-33 - Licenze di sicurezza e gestione apparati:** Rinnovo di licenze soltanto alla scadenza confermata dal pannello; nessun nuovo acquisto dedotto dalla vecchia pendenza AP. Decisione: Risolvere lo scostamento fra le letture del 09 e 10/09/2026.
 - **ISO-44 - Revisione accessi e formazione:** Formazione esterna solo se il programma interno non copre le competenze richieste. Decisione: Valutare competenze e materiale esistenti.
@@ -243,11 +243,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-30. Obie
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.1, A.5.9.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #113.
 
-- **ISO-30 | Log e allarmi di rete e infrastruttura** - **Da fare**; FORNITURA CONDIZIONATA. Schede SNMP per UPS o piattaforma di raccolta log solo se le funzioni presenti non coprono gli allarmi definiti.
+- **ISO-30 | Log e allarmi di rete e infrastruttura** - **In corso**; FORNITURA CONDIZIONATA. VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme.
   - **Azione:** Definire eventi, soglie, destinatari e ritenzione per firewall, switch, VPN, Proxmox, NAS e UPS; generare un evento di prova per categoria.
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
-  - **Fonti:** docs/design-and-security.md, GAP-TBC #200.
+  - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md.
+  - **Ultimo stato (2026-09-30):** Il progetto collegato D:/log-collector ha versionato il primo componente e definito il disegno della futura VM; al 30/09 la VM e le sorgenti non risultano ancora attive. Alla creazione verificare rete, SSH, flussi e prove di ricezione/allarme prima di dichiarare copertura. Riferimento: docs/log-collector-integrazione.md.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
