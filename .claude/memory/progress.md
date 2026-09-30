@@ -1,5 +1,9 @@
 # Work-log
 
+## 2026-09-30 - Collegato il progetto log-collector e preparato l'accesso SSH futuro
+
+Registrato `D:/log-collector` come fonte di classe D. Durante la verifica e' arrivato un nuovo commit: riconciliato da `c913760` a `c7d9af6`, che chiude la scelta degli account personali per i due amministratori e conferma indirizzi fissi sulle loro postazioni. Il progetto sorgente ha scelto VMID e nome DNS, ma l'indirizzo e la scelta della VLAN sono ancora aperti; la VM `ads-collector` non compare nello snapshot Proxmox del 30/09. `data/scadenze.json` e `Test-Allineamento.py` confrontano automaticamente il commit corrente con quello esaminato nell'hook di avvio e avvisano quando la VM compare nello snapshot senza SSH Windows configurato. `docs/log-collector-integrazione.md` definisce il passaggio dei fatti di rete e la configurazione SSH Windows da completare dopo la creazione della VM. ISO-30 e' in corso per la progettazione, senza attribuire log ricevuti o allarmi testati. Nessuna VM, regola firewall o configurazione SSH e' stata creata in questa sessione.
+
 ## 2026-09-30 - Ripristinato il comando di chiusura del template
 
 La funzione PowerShell `chiudi` era installata, ma il repository non conteneva `tools/chiudi-sessione.ps1`: proporre comandi Git manuali separati non rispettava il flusso ordinario del template. Istanziato lo script dal template, adattando solo il nome del file di ripresa privato usato in questo progetto; aggiunto a `STACK.md` e indicato il flusso in `CLAUDE.md` e nella regola Git. La prima esecuzione di `chiudi -SoloControlli` ha scoperto cinque Markdown storici fuori dalla convenzione `md-unwrap`; normalizzate solo 31 interruzioni di riga con l'oracolo di rendering attivo. La seconda esecuzione ha restituito controlli verdi. Preparato `_notes/COMMIT-MSG.txt` per il commit e push che l'utente confermera' lanciando `chiudi`.
