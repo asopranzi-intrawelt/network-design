@@ -84,17 +84,9 @@ La libreria aziendale OneDrive contiene **diciannove radici di primo livello** (
 | `IT + Administration - Documenti` | ~750 file | amministrativa | **preventivi, documenti di trasporto, contratti firmati** |
 | `File di chat di Microsoft Teams` | ~220 file | scambio | **gli handoff condivisi in chat**, che non atterrano nelle altre due |
 
-Le sedici fuori perimetro, per trasparenza: `AI adoption`, `App`, `Attachments`, `Desktop`,
-`Documenti - Certificazioni`, `Documenti - Projects`, `Documenti condivisi - Resources`,
-`Documenti`, `File chat di Microsoft Copilot`, `Immagini`, `Marketing`, `Microsoft Teams Chat
-Files`, `Registrazioni`, `Riunioni`, `Scansioni`, `Whiteboards`. Due meritano un pensiero se il
-perimetro si allarga: `Documenti - Certificazioni` quando comincera' la Fase 5 ISO27001, e
-`Scansioni` se il servizio di scansione dovesse cambiare destinazione.
+Le sedici fuori perimetro, per trasparenza: `AI adoption`, `App`, `Attachments`, `Desktop`, `Documenti - Certificazioni`, `Documenti - Projects`, `Documenti condivisi - Resources`, `Documenti`, `File chat di Microsoft Copilot`, `Immagini`, `Marketing`, `Microsoft Teams Chat Files`, `Registrazioni`, `Riunioni`, `Scansioni`, `Whiteboards`. Due meritano un pensiero se il perimetro si allarga: `Documenti - Certificazioni` quando comincera' la Fase 5 ISO27001, e `Scansioni` se il servizio di scansione dovesse cambiare destinazione.
 
-Esistono inoltre sul disco altre due librerie montate, `OneDrive` personale e `OneDrive -
-Intrawelt S.a.s (1)`, che sembra un doppio aggancio della stessa libreria aziendale: nessuna
-delle due e' sorvegliata, e la seconda va chiarita perche' un doppio mount produce copie
-divergenti.
+Esistono inoltre sul disco altre due librerie montate, `OneDrive` personale e `OneDrive - Intrawelt S.a.s (1)`, che sembra un doppio aggancio della stessa libreria aziendale: nessuna delle due e' sorvegliata, e la seconda va chiarita perche' un doppio mount produce copie divergenti.
 
 La seconda libreria e' quella che il progetto sottovalutava. Un preventivo e un documento di trasporto non sembrano documentazione tecnica, ma sono l'unico posto dove compare un apparato nuovo prima che entri in rete, e sono l'unico posto dove si legge che un contratto e' stato firmato. I tre ritrovamenti del 03/08/2026 vengono tutti da li'.
 

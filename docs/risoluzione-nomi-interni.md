@@ -351,6 +351,8 @@ I record sono stati creati sul firewall dall'IT Manager. La pagina non ha un pul
 | `analyst.int.intrawelt.com` | macchina di analisi | |
 | `ollama.int.intrawelt.com` | host di inferenza | |
 
+**Aggiornamento 29/09/2026 sul gestionale.** L'IT Manager conferma che il server Ubuntu/Tomcat del VA e' stato ritirato dopo la migrazione del gestionale. I rilievi specifici del vecchio host non vanno conteggiati come esposizioni di un server ancora in servizio ne' trasferiti automaticamente al successore. La VM 810 `TESTNEWEGETRADBOOT` risulta avviata nello snapshot Proxmox di oggi e il censimento precedente la associa al nome `ubuntegetrad`, quindi e' la destinazione candidata. L'IT Manager conferma che le VM sono raggiungibili via SSH da questa macchina; gli alias SSH attualmente configurati non includono `ubuntegetrad`, percio' i tentativi con quel nome non attestano un guasto di connettivita'. Prima di dichiarare verificato il mapping di `egetrad`, confermare sulla VM il servizio e il record che lo indirizza usando l'alias SSH effettivo; includere la destinazione nel prossimo VA.
+
 Non sono stati creati, su indicazione dell'IT Manager: il nome della condivisione documenti e quello del servizio di trasferimento file, che non esistono piu'; il nome del sistema di ticket, la cui natura non e' nota a chi amministra pur essendo il servizio in ascolto sulla macchina del gestore delle password, il che rinforza il difetto #178; il nome del server di licenze e quello del secondo server applicativo, dismessi.
 
 ## Esposto e in chiaro sono due cose diverse: il caso del portale documentale

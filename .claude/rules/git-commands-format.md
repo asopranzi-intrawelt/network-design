@@ -8,6 +8,8 @@ I comandi git restano sempre manuali dell'utente. Quando l'agente li presenta, l
 
 ## Formato richiesto
 
+Per una milestone completa, la via ordinaria e' `chiudi` dal PowerShell dell'utente nella radice del repository, quando `tools/chiudi-sessione.ps1` e' istanziato. Prima della consegna l'agente prepara `_notes/COMMIT-MSG.txt` e prova `chiudi -SoloControlli`; l'utente lancia `chiudi`, rilegge stato, autore e messaggio, quindi conferma commit e push. I comandi Git separati qui sotto sono la via di riserva quando lo script non e' presente o il commit richiede solo una parte del working tree. Questa regola segue la sezione "Milestone" della fonte canonica in `E:/template-claude-developing/.claude/rules/git-commands-format.md`.
+
 ```powershell
 git add "percorso/file-uno" "percorso/file-due" "percorso/file-tre"
 git commit -m "Messaggio sintetico del commit"

@@ -114,18 +114,7 @@ interface vlan30
   ip dhcp-pool PRINT30_POOL start 10.61.30.10 count 100 lease 2
 ```
 
-L'applicazione reale avviene via GUI, non in SSH, per la stessa ragione documentata in
-M13a: il firewall non espone API REST in modalita' standalone e l'accesso SSH ha 2FA che
-richiede un umano a ogni sessione. Il percorso e' `Configuration > Network > Interface >
-VLAN > Add`, con la porta base `lan1` (tutte le porte fisiche sono gia' assegnate, quindi
-il segmento nasce come interfaccia taggata sullo stesso cavo della LAN) e i parametri
-DHCP dietro `Show Advanced Settings > DHCP Setting`, che e' un link non espanso di
-default. Sul campo `Interface Type` la scelta va motivata invece di essere copiata:
-`internal` porta con se' il mascheramento automatico verso la WAN, e per un segmento
-stampanti che nella matrice non ha uscita su Internet, `general` sarebbe piu' coerente con
-il principio del minimo privilegio — a costo di dover dichiarare esplicitamente tutto
-quello che deve funzionare, come e' successo alla guest. La decisione va presa
-consapevolmente al momento della creazione e annotata nella scheda firewall.
+L'applicazione reale avviene via GUI, non in SSH, per la stessa ragione documentata in M13a: il firewall non espone API REST in modalita' standalone e l'accesso SSH ha 2FA che richiede un umano a ogni sessione. Il percorso e' `Configuration > Network > Interface > VLAN > Add`, con la porta base `lan1` (tutte le porte fisiche sono gia' assegnate, quindi il segmento nasce come interfaccia taggata sullo stesso cavo della LAN) e i parametri DHCP dietro `Show Advanced Settings > DHCP Setting`, che e' un link non espanso di default. Sul campo `Interface Type` la scelta va motivata invece di essere copiata: `internal` porta con se' il mascheramento automatico verso la WAN, e per un segmento stampanti che nella matrice non ha uscita su Internet, `general` sarebbe piu' coerente con il principio del minimo privilegio — a costo di dover dichiarare esplicitamente tutto quello che deve funzionare, come e' successo alla guest. La decisione va presa consapevolmente al momento della creazione e annotata nella scheda firewall.
 
 Le regole seguono la forma delle `secure-policy` gia' applicate, con il numero da scegliere come primo libero *prima* di qualunque regola generica di uscita, perche' il motore si ferma alla prima corrispondenza (la lezione di FW-001).
 

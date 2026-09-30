@@ -38,11 +38,7 @@ Operativamente, quando un passo si puo fare con codice lo si fa con codice e se 
 
 Alcune abitudini operative tagliano il consumo senza installare nulla.
 
-Il comando `/compact` va lanciato proattivamente quando il contesto raggiunge il 40-60%, non
-aspettando il limite automatico. Puo essere guidato con istruzioni esplicite: `/compact focus on
-the database schema decisions and API endpoints we agreed on`. La soglia di compattazione
-automatica si anticipa con la variabile `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` (valori da 1 a 100),
-utile per evitare che la compattazione scatti a freddo sul contesto gia degradato.
+Il comando `/compact` va lanciato proattivamente quando il contesto raggiunge il 40-60%, non aspettando il limite automatico. Puo essere guidato con istruzioni esplicite: `/compact focus on the database schema decisions and API endpoints we agreed on`. La soglia di compattazione automatica si anticipa con la variabile `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` (valori da 1 a 100), utile per evitare che la compattazione scatti a freddo sul contesto gia degradato.
 
 Prima di ogni `/clear` o di chiudere una sessione su un task non ancora concluso, si fa scrivere a Claude un file `HANDOFF.md` con le decisioni prese, i pattern stabiliti e i file toccati. La sessione successiva parte da quel file invece che da zero, recuperando il contesto senza rileggere l'intera conversazione.
 

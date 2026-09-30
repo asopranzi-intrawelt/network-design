@@ -9,9 +9,10 @@ Uso:
   python scripts/IsoRoadmap.py check
   python scripts/IsoRoadmap.py check --desktop
 
-`advance` aggiorna sempre la fonte e la vista nel progetto. L'HTML sul Desktop
-e' un export di sola lettura, aggiornato solo con `build --desktop` o con
-`advance --desktop` esplicitamente richiesto.
+`advance` aggiorna sempre la fonte e la vista nel progetto. L'HTML e' un
+export di sola lettura, aggiornato solo con `build --desktop` o con
+`advance --desktop` esplicitamente richiesto; ogni export scrive Desktop
+e copia nella cartella ISO configurata nel livello privato.
 """
 
 from __future__ import annotations
@@ -172,8 +173,10 @@ def render_markdown(data: dict) -> str:
         "## Come si usa",
         "",
         "- Aprire questa lista per scegliere il prossimo intervento. Ogni voce specifica azione, prova di chiusura, responsabile, dipendenze e fornitura.",
+        "- **Stati:** da fare = non iniziato; in corso = avviato ma senza prova di chiusura; bloccato = in attesa di un prerequisito; completato = chiuso con evidenza datata; non applicabile = esclusione motivata.",
+        "- **Forniture:** necessaria = serve un acquisto o servizio; condizionata = solo se diagnosi o decisione lo richiedono; da verificare = controllare prima se esiste gia'; nessuna = non prevista.",
         "- Per ogni avanzamento comunicato o realizzato, l'agente aggiorna il registro nella stessa sessione: azione, stato, fornitura e nota datata. Il comando `advance` rigenera questa vista nel progetto, senza richiedere azioni all'utente.",
-        "- L'HTML sul Desktop e' una copia di sola lettura: si esporta solo su richiesta con `python scripts/IsoRoadmap.py build --desktop`. Puo' essere piu' vecchio del registro; non va modificato a mano.",
+        "- L'HTML e' una copia di sola lettura: si esporta solo su richiesta con `python scripts/IsoRoadmap.py build --desktop`, che aggiorna insieme Desktop e cartella ISO OneDrive configurata privatamente. Puo' essere piu' vecchio del registro; non va modificato a mano.",
         "- Nell'HTML le sigle aprono una vista interna allo stesso file. Le spiegazioni vivono in `data/iso27001-glossario.json`; quelle dei controlli ISO sono parafrasi operative, non il testo della norma.",
         "- Una voce si chiude solo con una prova datata (`--evidenza`); non trascrivere dati reali o segreti nel registro pubblico.",
         "- Cambiamenti fisici non ancora comunicati o misurabili non possono essere rilevati dal registro: in quel caso la voce resta da verificare fino a sopralluogo o evidenza.",
@@ -235,6 +238,7 @@ def render_markdown(data: dict) -> str:
 def render_html(data: dict, logo_uri: str = "", exported_on: str | None = None) -> str:
     states = current(data)
     counts = Counter(value["stato"] for value in states.values())
+    supply_counts = Counter(item["fornitura"]["stato"] for item in data["interventi"])
     catalog = glossary(data)
     related = {code: [] for code in catalog}
     for item in data["interventi"]:
@@ -280,10 +284,20 @@ def render_html(data: dict, logo_uri: str = "", exported_on: str | None = None) 
         f"<p class='lead'>Fonte del progetto: data/iso27001-interventi.json · Fotografia {e(data['data_base'])} · Ultimo avanzamento {e(data['aggiornato'])} · Obiettivo marzo 2027</p>"
         f"<p class='export-note'>Copia di sola lettura esportata il {exported_on or date.today().isoformat()}. Lo stato di riferimento vive nel progetto; questa pagina si rigenera su richiesta.</p>"
         "<p class='reference-note'>Le sigle sottolineate aprono una scheda rapida in questa pagina. Le descrizioni ISO sono parafrasi operative, non il testo della norma.</p></div>"
+        "<section class='reading-guide' aria-labelledby='reading-guide-title'>"
+        "<p class='eyebrow'>Guida rapida</p><h2 id='reading-guide-title'>Come leggere questa pagina</h2>"
+        "<ol class='reading-steps'>"
+        "<li><b>1. Scegli cosa vedere</b><span><strong>Solo aperti</strong> mostra gli interventi non chiusi; <strong>Solo forniture</strong> mostra quelli che richiedono un acquisto o una verifica di disponibilita'.</span></li>"
+        "<li><b>2. Leggi una scheda dall'alto</b><span>ID e titolo identificano l'intervento. Poi leggi stato e fornitura; sotto trovi azione, prova necessaria per chiudere, responsabile e dipendenze.</span></li>"
+        "<li><b>3. Apri le sigle sottolineate</b><span><code>ISO-xx</code> identifica un intervento del progetto; <code>A.x.x</code> un controllo Annex A; <code>#...</code> un rilievo. Clicca una sigla per la spiegazione rapida e gli interventi collegati.</span></li>"
+        "</ol><div class='reading-legends'>"
+        "<p><b>Stato:</b> Da fare = non iniziato; In corso = avviato ma senza prova di chiusura; Bloccato = in attesa di un prerequisito; Completato = chiuso con evidenza datata.</p>"
+        "<p><b>Fornitura:</b> Necessaria = serve un acquisto o servizio; Condizionata = solo se una diagnosi o decisione lo richiede; Da verificare = controllare prima se esiste gia'; Nessuna = non prevista.</p>"
+        "</div><p class='reading-export'>Questa pagina e' una fotografia di sola lettura: la data di esportazione e' indicata sopra. Gli avanzamenti si registrano nel progetto; quando vuoi la copia aggiornata, chiedi <strong>Aggiorna l'HTML ISO</strong>.</p></section>"
         "<div class='summary'><b>Stato del programma</b><ul>"
         f"<li>{len(states)} interventi: {counts['da_fare']} da fare, {counts['in_corso']} in corso, {counts['bloccato']} bloccati, {counts['completato']} completati.</li>"
-        "<li>Rosso = fornitura necessaria; arancione = possibile acquisto dopo diagnosi; giallo = disponibilita' da accertare.</li>"
-        "<li>Una voce si chiude soltanto con una prova datata. La copia sul Desktop fotografa il registro al momento dell'esportazione.</li>"
+        f"<li>Forniture: {supply_counts['necessaria']} necessarie, {supply_counts['condizionata']} condizionate, {supply_counts['da_verificare']} da verificare; le altre non ne prevedono.</li>"
+        "<li>Il riquadro dettagliato di ogni intervento indica cosa fare e quale prova serve per chiuderlo.</li>"
         "</ul></div><nav class='filters' aria-label='Viste della roadmap'><button type='button' data-filter='tutti' class='active'>Tutti</button><button type='button' data-filter='forniture'>Solo forniture</button><button type='button' data-filter='aperti'>Solo aperti</button><a class='nav-link' href='#glossario'>Glossario dei codici</a></nav>"
         + "".join(cards)
         + "</div><section id='glossary-view' class='glossary-page' hidden><nav class='back-links'><a href='#roadmap'>← Torna alla roadmap</a></nav><p class='eyebrow'>Guida rapida</p><h1>Glossario dei codici</h1><p>Seleziona una sigla per leggere il suo significato. Tutte le voci sono incorporate in questo file.</p><label for='glossary-search'>Cerca per codice o parola</label><input id='glossary-search' type='search' autocomplete='off'><ul id='glossary-list' class='glossary-list'></ul></section>"
@@ -310,12 +324,32 @@ def desktop_path() -> Path:
     return folder / DESKTOP_NAME
 
 
+def archive_path() -> Path:
+    override = os.environ.get("ISO_ROADMAP_ARCHIVE_DIR")
+    if override:
+        folder = Path(override).expanduser()
+    elif PRIVATE_BRAND.exists():
+        config = json.loads(PRIVATE_BRAND.read_text(encoding="utf-8"))
+        if not config.get("archive_dir"):
+            raise ValueError("Cartella ISO OneDrive non configurata nel livello privato")
+        folder = Path(config["archive_dir"])
+    else:
+        raise ValueError("Cartella ISO OneDrive non configurata nel livello privato")
+    if not folder.is_dir():
+        raise FileNotFoundError(f"Cartella ISO OneDrive non trovata: {folder}")
+    return folder / DESKTOP_NAME
+
+
 def build(data: dict, desktop: bool) -> None:
     write_if_changed(MARKDOWN, render_markdown(data))
     print(f"Progetto aggiornato: {MARKDOWN}")
     if desktop:
         path = desktop_path()
-        write_if_changed(path, render_html(data, brand_logo_uri()))
+        archive = archive_path()
+        page = render_html(data, brand_logo_uri())
+        write_if_changed(archive, page)
+        print("Copia ISO aggiornata nella cartella configurata")
+        write_if_changed(path, page)
         print(f"Desktop aggiornato: {path}")
 
 
@@ -349,10 +383,12 @@ def main() -> int:
             desktop = desktop_path()
             page = desktop.read_text(encoding="utf-8") if desktop.exists() else ""
             exported = re.search(r"Copia di sola lettura esportata il (\d{4}-\d{2}-\d{2})", page)
-            if not exported or page != render_html(data, brand_logo_uri(), exported.group(1)):
-                print("Copia sul Desktop diversa dalla fonte corrente: riesportare con build --desktop", file=sys.stderr)
+            archive = archive_path()
+            archived = archive.read_text(encoding="utf-8") if archive.exists() else ""
+            if not exported or page != render_html(data, brand_logo_uri(), exported.group(1)) or archived != page:
+                print("Export HTML diverso dalla fonte corrente o copie divergenti: riesportare con build --desktop", file=sys.stderr)
                 return 1
-            print("Roadmap ISO 27001: progetto ed export sul Desktop allineati")
+            print("Roadmap ISO 27001: progetto, Desktop e cartella ISO allineati")
             return 0
         print("Roadmap ISO 27001: vista di progetto allineata; export Desktop non verificato")
         return 0

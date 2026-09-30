@@ -1,8 +1,8 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 18,
-  "aggiornato": "2026-09-22",
+  "revisione": 19,
+  "aggiornato": "2026-09-30",
   "scadenze": [
     {
       "id": "NEB-54HP",
@@ -244,8 +244,8 @@
     {
       "id": "PVE-BACKUP-COMPLETI",
       "afferma": "Da quando l'attesa massima sul lock e' a ventiquattro ore, tutti e dieci i lavori di backup completano, e nessuno sfora oltre la mattinata",
-      "stato": "NON VERIFICATA e SUPERATA NEL NUMERO il 16/09/2026: il rimedio sul lock era stato applicato quando i lavori erano otto; la sera stessa ne sono stati aggiunti tre per sanare #203, portando la catena da sette a dieci e creando una collisione alle 04:30. Nessuna corsa completa successiva e' stata letta da qui. La notifica per posta scatta solo sul fallimento e quel fallimento e' stato reso quasi impossibile dal rimedio stesso: il silenzio non e' una buona notizia e va sostituito da una lettura",
-      "verificata_il": "2026-09-16",
+      "stato": "SMENTITA CON MISURA DIRETTA IL 30/09/2026: lette via API le ultime tre notti dei task vzdump. Nove dei dieci job per notte risultano OK; quello schedulato alle 03:45 per la VM 207 termina ogni notte alle 06:45 con 'unexpected status'. Il log della corsa del 30/09 dice 'can't acquire lock /var/run/vzdump.lock - got timeout'. Lo snapshot dei job dello stesso giorno mostra lockwait=1440 sui sette job precedenti e nessun lockwait sui tre job aggiunti per 207, 208 e 209: il rimedio non e' stato propagato. L'ultimo job finisce alle 08:15. La configurazione della copertura non prova l'esito dei backup",
+      "verificata_il": "2026-09-30",
       "validita_giorni": 7,
       "domanda": "La collisione delle 04:30 e' stata sciolta? Nella pagina dei task del nodo: i dieci lavori dell'ultima notte risultano tutti riusciti, e a che ora ha finito l'ultimo? Se l'ultimo finisce dentro l'orario di lavoro, il backup sta contendendo I/O agli utenti ed e' un secondo problema oltre alla lentezza del deposito",
       "a_chi": "IT Manager",
@@ -304,10 +304,10 @@
     {
       "id": "PVE-COPERTURA-BACKUP",
       "afferma": "Tutte le macchine virtuali del nodo sono coperte da un lavoro di backup",
-      "stato": "DUBBIA, aperta il 16/09/2026. I sette lavori attivi selezionano il pool Programmazione e poi per identificativo 100, 202, 204, 205 e 810; 207, 208 e 209 non compaiono, e la 602 e' presumibilmente coperta dal pool ma va letto. Nessuno ha mai verificato la copertura: e' un buco di continuita' e non una lentezza",
-      "verificata_il": "2026-09-16",
+      "stato": "VERIFICATA SULLA CONFIGURAZIONE IL 30/09/2026: snapshot Proxmox fresco con dieci job abilitati. Un job seleziona il pool Programmazione, che contiene la VM 602; gli altri selezionano esplicitamente 100, 202, 204, 205, 207, 208, 209 e 810, con un secondo job per 100. La VM 203 e' un template spento. Sono quindi coperte dalla pianificazione tutte le nove VM operative. Questa verifica non prova che le ultime corse siano riuscite: vedi PVE-BACKUP-COMPLETI e PVE-BACKUP-ORARI",
+      "verificata_il": "2026-09-30",
       "validita_giorni": 7,
-      "domanda": "Il pulsante 'Show: Guests Without Backup Job' della pagina dei lavori che cosa elenca? E per quelle scoperte, vanno salvate, con che frequenza e verso quale destinazione, tenendo conto che ogni lavoro nuovo entra in una catena seriale gia' satura?",
+      "domanda": "Al prossimo cambio del parco VM, confrontare automaticamente guest operativi, membri dei pool e selettori dei job; per l'esito delle corse leggere separatamente il registro dei task del nodo",
       "a_chi": "IT Manager",
       "dove": "docs/infrastructure-timeline/GAP-TBC.md #203 (STOR-006); M28-7; docs/business-continuity-disaster-recovery.md"
     },
@@ -324,8 +324,8 @@
     {
       "id": "PVE-BACKUP-ORARI",
       "afferma": "I dieci lavori di backup notturni stanno dentro la notte",
-      "stato": "FALSA PER COSTRUZIONE, dichiarata il 16/09/2026. La catena e' passata da sette a dieci lavori la sera stessa, per coprire le tre macchine che non avevano nessun backup (#203), e la destinazione scrive a 10,5 MB/s (#204). Esiste inoltre una collisione di orario NUOVA alle 04:30 fra il lavoro della 208 e il secondo backup della VM 100, identica a quella che il rimedio del mattino aveva rimosso dalle 00:30. Coprire le tre macchine era giusto e non si discute; il dimensionamento va rifatto DOPO aver sanato il collegamento, non prima",
-      "verificata_il": "2026-09-16",
+      "stato": "MISURATA IL 30/09/2026 via API Proxmox: la catena della notte precedente ha dieci task, uno fallito per timeout del lock (VM 207 delle 03:45), e l'ultimo termina alle 08:15. Le due partenze delle 04:30 persistono. Lo stesso profilo si ripete nelle notti del 28 e 29/09. La durata dentro l'orario lavorativo va confrontata con la finestra concordata; la sicurezza della copia resta compromessa dal job fallito",
+      "verificata_il": "2026-09-30",
       "validita_giorni": 7,
       "domanda": "La collisione delle 04:30 e' stata sciolta spostando la 208? E a che ora finisce l'ultimo dei dieci lavori nella prima notte completa?",
       "a_chi": "IT Manager",

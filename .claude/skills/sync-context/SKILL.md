@@ -33,12 +33,7 @@ Prima del confronto di drift, gestire il caso del progetto appena inizializzato.
 Per ciascuna scheda presente in `.claude/context/`:
 
 - Leggere `last-verified-commit` e `covers-paths` dal frontmatter (con `Read` se non già visibile sopra).
-- Se `covers-paths` è una lista vuota (`[]`), la scheda non è ancora mappata a nessuna area del
-  codice (tipicamente una scheda "da popolare" appena istanziata dal template): classificarla come
-  non applicabile al confronto di drift, senza eseguire alcun `git diff`. Un `git diff --name-only
-  <last-verified-commit>..HEAD --` senza percorsi dopo il `--` confronta l'intero repository, non
-  "niente": trattarlo come tale farebbe risultare stale ogni scheda non ancora popolata, anche se
-  nessuna area di sua competenza è mai stata definita.
+- Se `covers-paths` è una lista vuota (`[]`), la scheda non è ancora mappata a nessuna area del codice (tipicamente una scheda "da popolare" appena istanziata dal template): classificarla come non applicabile al confronto di drift, senza eseguire alcun `git diff`. Un `git diff --name-only <last-verified-commit>..HEAD --` senza percorsi dopo il `--` confronta l'intero repository, non "niente": trattarlo come tale farebbe risultare stale ogni scheda non ancora popolata, anche se nessuna area di sua competenza è mai stata definita.
 - Altrimenti eseguire `git diff --name-only <last-verified-commit>..HEAD -- <covers-paths>`, usando i `covers-paths` della scheda come argomenti dopo il `--`.
 - Classificare:
   - aggiornata: nessun file coperto è cambiato.
