@@ -106,11 +106,14 @@ Su questa macchina convivono piu' installazioni dell'assistente, ciascuna con i 
 | `D:/sviluppo-ninjaOne/*` | automazioni sull'RMM che governa gli endpoint e ruota le password locali |
 | `D:/getrad-migration` | le VM TESTNEWEGETRAD del nodo Proxmox |
 | `D:/API_intrawelt` | servizi interni esposti sulla LAN |
+| `D:/log-collector` | collettore dei log degli accessi amministrativi, futura VM Proxmox e nuovi flussi da firewall, switch, NAS e host |
 | `E:/lettore-doc` | pipeline documentale con vault Obsidian, sorgente di note |
 | Claude sulla VM207 | installazione sull'host stesso, con i propri progetti |
 | App claude.ai (altro account) | nessuna traccia leggibile su disco da qui |
 
 Il canale che esiste e' il file di handoff, e funziona quando viene scritto e messo dove il delta lo vede. Il progetto ne ha gia' ingeriti tre per questa via, sul GroupShare, sul certificato HTTPS e su un intervento di postazione.
+
+Per `D:/log-collector`, `scripts/Test-Allineamento.py` confronta a ogni avvio il commit Git corrente con `data/scadenze.json` (`progetti_collegati`). Un commit nuovo richiede di leggere il diff e trasferire qui soltanto le novita' che cambiano topologia, sorgenti, accessi, regole, backup o stato ISO. Aggiornare il commit riconciliato solo dopo il triage; le modifiche non ancora committate nell'altro repository restano sviluppo in corso. Il punto di integrazione e la connessione SSH futura sono in `docs/log-collector-integrazione.md`.
 
 Il caso che dimostra il difetto, scoperto il 03/08/2026: due documenti di handoff sul dimensionamento della VM207, datati 13/07/2026, con i valori reali di memoria, processori, disco e bridge di una macchina che questo progetto documenta come asset di rete, piu' un `CLAUDE.md` di progetto, si trovavano dentro una cartella che la lista di esclusione del delta scartava come "mirror di siti esterni". L'esclusione era corretta quando fu scritta, nel luglio 2026; poi un'altra sessione ha usato quella cartella per altro. Erano invisibili per costruzione, non per distrazione. Correzione applicata: i file il cui nome contiene `handoff` e i `CLAUDE.md` non vengono mai esclusi in base alla cartella, e compaiono nel blocco delle voci rilevanti.
 

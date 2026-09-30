@@ -3,6 +3,17 @@
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
   "revisione": 19,
   "aggiornato": "2026-09-30",
+  "progetti_collegati": [
+    {
+      "id": "log-collector",
+      "percorso_locale": "D:/log-collector",
+      "commit_riconciliato": "c7d9af6d1f39904c9c1e074fcd30da1ab5e20f79",
+      "riconciliato_il": "2026-09-30",
+      "vm_nome_previsto": "ads-collector",
+      "ssh_windows_stato": "da_configurare",
+      "dove": "docs/log-collector-integrazione.md"
+    }
+  ],
   "scadenze": [
     {
       "id": "NEB-54HP",

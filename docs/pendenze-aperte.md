@@ -19,6 +19,8 @@ Interventi che non richiedono una finestra di manutenzione, non toccano il piano
 
 ## Prerequisiti di interventi gia' pianificati
 
+Il collettore dei log amministrativi e' ancora in sviluppo: alla creazione della VM servono VMID, indirizzo/nome stabile, VLAN e ACL verificate, account personale e chiave SSH sulla postazione Windows, poi prova dei flussi e degli allarmi. Il registro operativo e' `ISO-30`; la sequenza e il monitoraggio dei commit sono in `docs/log-collector-integrazione.md`.
+
 Non sono opzionali e non sono rimandabili al dopo: se saltano, l'intervento a cui appartengono fallisce in modo silenzioso o si scopre irreversibile.
 
 | Cosa | Dove e' tracciato | Perche' viene prima |

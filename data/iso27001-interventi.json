@@ -680,7 +680,8 @@
       "responsabile": "IT Manager e RSGSI",
       "fonti": [
         "docs/design-and-security.md",
-        "GAP-TBC #200"
+        "GAP-TBC #200",
+        "docs/log-collector-integrazione.md"
       ],
       "controlli": [
         "A.8.15",
@@ -688,8 +689,8 @@
       ],
       "fornitura": {
         "stato": "condizionata",
-        "dettaglio": "Schede SNMP per UPS o piattaforma di raccolta log solo se le funzioni presenti non coprono gli allarmi definiti",
-        "decisione": "Definire prima eventi e ritenzione"
+        "dettaglio": "VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme",
+        "decisione": "Verificare capacita' Proxmox e NAS e misurare volumi e ritenzione prima di acquistare"
       },
       "stato_iniziale": "da_fare"
     },
@@ -1124,6 +1125,17 @@
         "stato": "condizionata",
         "dettaglio": "NAS sostitutivo preventivato; dischi, NIC, firmware o assistenza solo se la diagnosi identifica il componente da sostituire",
         "decisione": "Confrontare capacita', ritenzione e ripristino prima di qualsiasi ordine o migrazione"
+      }
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-09-30",
+      "stato": "in_corso",
+      "nota": "Il progetto collegato D:/log-collector ha versionato il primo componente e definito il disegno della futura VM; al 30/09 la VM e le sorgenti non risultano ancora attive. Alla creazione verificare rete, SSH, flussi e prove di ricezione/allarme prima di dichiarare copertura. Riferimento: docs/log-collector-integrazione.md.",
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme",
+        "decisione": "Verificare capacita' Proxmox e NAS e misurare volumi e ritenzione prima di acquistare"
       }
     }
   ]

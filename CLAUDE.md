@@ -12,6 +12,8 @@ Eseguire prima `python tools/verifica-agent-bridge.py`, che rende visibile una d
 
 ## Due layer documentali
 
+`D:/log-collector` e' una fonte collegata di classe D. `Test-Allineamento.py`, gia' eseguito all'avvio, confronta il suo HEAD con il commit riconciliato in `data/scadenze.json`. Se cambia, leggere il diff e aggiornare i fatti di rete pertinenti secondo `docs/log-collector-integrazione.md` prima di avanzare la baseline. La VM prevista e il suo accesso SSH Windows restano da configurare alla creazione effettiva della macchina.
+
 Il layer narrativo vive in `_notes/`, ignorato da git: contiene spiegazioni dettagliate, diario operativo, resoconto esteso, trascrizioni e materiale grezzo. Non va in git perche' e' narrativo, personale e spesso voluminoso.
 
 Il layer tecnico vive in `.claude/context/` e `docs/`, versionato: contiene le schede strutturate con frontmatter di riconciliazione, i diagrammi, la timeline degli interventi in formato Markdown, la documentazione ISO27001. E' la fonte di verita' recuperabile da un clone.

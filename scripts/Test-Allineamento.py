@@ -254,6 +254,44 @@ def controlla_freschezza(reg, esito):
         else:
             esito.ok("misura di %d giorni, cadenza %d  %s" % (eta, cadenza, nome))
 
+    # I repository collegati sono fonti di classe D. Confrontare soltanto il
+    # commit: il working tree puo' contenere uno sviluppo ancora in corso e non
+    # e' una baseline da recepire. La lettura di Git non accede ai file privati.
+    for voce in reg.get('progetti_collegati', []):
+        nome = voce.get('id', 'progetto collegato')
+        radice = voce.get('percorso_locale', '')
+        riferimento = voce.get('commit_riconciliato', '')
+        if not radice or not riferimento:
+            esito.grave("baseline incompleta per %s" % nome)
+            continue
+        try:
+            risposta = subprocess.run(
+                ['git', '-C', radice, 'rev-parse', 'HEAD'], capture_output=True,
+                text=True, encoding='utf-8', errors='replace', timeout=5)
+            corrente = risposta.stdout.strip() if risposta.returncode == 0 else ''
+        except (OSError, subprocess.TimeoutExpired):
+            corrente = ''
+        if not corrente:
+            esito.avviso("%s non leggibile: verificare il percorso locale" % nome)
+        elif corrente != riferimento:
+            esito.avviso("%s ha nuovi commit: baseline %s, HEAD %s" %
+                         (nome, riferimento[:7], corrente[:7]))
+            esito.nota("      riconciliare i cambiamenti pertinenti e poi aggiornare commit_riconciliato")
+        else:
+            esito.ok("%s allineato al commit %s" % (nome, corrente[:7]))
+
+        vm_prevista = voce.get('vm_nome_previsto')
+        if vm_prevista and voce.get('ssh_windows_stato') != 'configurato':
+            try:
+                snapshot = leggi_json('output/proxmox-snapshot.json') or {}
+            except (OSError, ValueError):
+                snapshot = {}
+            presente = any(vm.get('type') == 'qemu' and vm.get('name') == vm_prevista
+                           for vm in snapshot.get('resources', []))
+            if presente:
+                esito.avviso("%s: VM presente nello snapshot Proxmox, configurare SSH Windows" % nome)
+                esito.nota("      verificare IP/FQDN, utenza personale, chiave e fingerprint; poi aggiornare ssh_windows_stato")
+
 
 # ---------------------------------------------------------------------------
 # 3. Invarianti: la logica sta qui, non nel registro, perche' sono strutturali
