@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-09-28",
+  "aggiornato": "2026-09-30",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -185,8 +185,8 @@
       ],
       "fornitura": {
         "stato": "condizionata",
-        "dettaglio": "Dischi, NIC, firmware o assistenza NAS solo se la diagnosi li identifica come causa",
-        "decisione": "Nessun ordine prima della misura sull'apparato"
+        "dettaglio": "NAS sostitutivo preventivato; dischi, NIC, firmware o assistenza solo se la diagnosi identifica il componente da sostituire",
+        "decisione": "Confrontare capacita', ritenzione e ripristino prima di qualsiasi ordine o migrazione"
       },
       "stato_iniziale": "da_fare",
       "stato_nota": "Misurati 10,5 MB/s in scrittura e 15,8 MB/s in lettura; il server e' stato assolto."
@@ -195,8 +195,8 @@
       "id": "ISO-09",
       "fase": "urgente",
       "titolo": "Collisione e allarmi dei dieci backup VM",
-      "azione": "Spostare il job della VM 208 dalle 04:30, mantenendo frequenza giornaliera e destinazioni; aggiungere soglie per durata, mancata partenza, spazio e fine oltre la notte.",
-      "verifica": "Sette notti con dieci esiti registrati, nessuna collisione e allarme di degrado ricevuto.",
+      "azione": "Correggere il job della VM 207 che fallisce per timeout del lock: verificare e impostare l'attesa sui tre job aggiunti per 207, 208 e 209, oggi privi di lockwait=1440; poi spostare il job della VM 208 dalle 04:30, mantenendo frequenza giornaliera e destinazioni. Aggiungere soglie per fallimento, durata, mancata partenza, spazio e fine oltre la finestra concordata.",
+      "verifica": "Sette notti con dieci esiti OK, nessuna collisione, fine entro la finestra concordata e prova di ricezione dell'allarme di degrado.",
       "responsabile": "IT Manager",
       "fonti": [
         "GAP-TBC #200, #203, #204",
@@ -1093,6 +1093,37 @@
       "nota": "Correzione IT Manager 28/09/2026: centralina via Wi-Fi del WBE530; inverter sulla seconda porta Ethernet dell'AP. Il GS-105B non e' nel percorso attivo. Fornitura dello switch annullata; da verificare alimentazione AP, presenza fisica residua del GS-105B e segmentazione VLAN 60.",
       "fornitura": {
         "stato": "nessuna"
+      }
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-09-29",
+      "stato": "in_corso",
+      "nota": "Conferma IT Manager 29/09: server VA storico del gestionale ritirato dopo migrazione; snapshot Proxmox odierno coerente con assenza del vecchio guest. VM 810 TESTNEWEGETRADBOOT e successore candidato da verificare via SSH e prossimo censimento."
+    },
+    {
+      "id": "ISO-28",
+      "data": "2026-09-29",
+      "stato": "in_corso",
+      "nota": "Perimetro VA aggiornato: escluso il vecchio host del gestionale, ritirato dopo migrazione (conferma IT Manager 29/09). Non trasferire i plugin Ubuntu/Tomcat al successore. VM 810 TESTNEWEGETRADBOOT e successore candidato; accesso SSH odierno non verificato, quindi serve censimento del nuovo sistema prima della chiusura."
+    },
+    {
+      "id": "ISO-09",
+      "data": "2026-09-30",
+      "stato": "in_corso",
+      "nota": "30/09: letti i task Proxmox delle ultime tre notti. Nove job OK su dieci; il job VM 207 delle 03:45 fallisce ogni notte per timeout del lock. I tre job aggiunti per 207, 208 e 209 non hanno lockwait=1440, presente sugli altri sette. Ultimo job alle 08:15, doppia partenza alle 04:30 ancora presente. Correggere configurazione e misurare sette notti.",
+      "evidenza": "API task Proxmox 28-30/09/2026; snapshot Proxmox 30/09/2026; docs/business-continuity-disaster-recovery.md"
+    },
+    {
+      "id": "ISO-08",
+      "data": "2026-09-30",
+      "stato": "da_fare",
+      "nota": "30/09: causa del deposito NAS ancora da misurare sul pannello. Il preventivo del 22/09 propone un NAS rack a quattro dischi e porte multigigabit, ma non prova acquisto o messa in servizio; non sostituisce la diagnosi. Restano le misure 10,5 MB/s in scrittura e 15,8 MB/s in lettura.",
+      "evidenza": "Preventivo fornitore 22/09/2026 nella libreria amministrativa; GAP-TBC #204",
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "NAS sostitutivo preventivato; dischi, NIC, firmware o assistenza solo se la diagnosi identifica il componente da sostituire",
+        "decisione": "Confrontare capacita', ritenzione e ripristino prima di qualsiasi ordine o migrazione"
       }
     }
   ]

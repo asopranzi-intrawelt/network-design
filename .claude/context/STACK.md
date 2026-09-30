@@ -42,7 +42,8 @@ Generazione di artefatti derivati, e loro riconciliazione.
 |---|---|
 | `scripts/Build-TimelineSvg.ps1` | Timeline SVG anonimizzata dai md della timeline (hook SessionStart) |
 | `scripts/Build-NetworkMap.ps1` | Mappa di rete interattiva in `docs/network-map.html` da `data/network-topology.json` piu' il template (M26, ADR-023) |
-| `scripts/IsoRoadmap.py` | Registro operativo ISO 27001: valida `data/iso27001-interventi.json` e il glossario dei codici, registra avanzamenti e genera sempre la vista Markdown di progetto; esporta l'HTML sul Desktop solo su richiesta, con CSS e JavaScript incorporati e logo da configurazione privata |
+| `scripts/IsoRoadmap.py` | Registro operativo ISO 27001: valida `data/iso27001-interventi.json` e il glossario dei codici, registra avanzamenti e genera sempre la vista Markdown di progetto; su richiesta esporta copie HTML identiche sul Desktop e nella cartella ISO privata di OneDrive, con CSS e JavaScript incorporati |
+| `scripts/Build-OnovaReconciliation.py` | Riconciliazione datata della checklist VA privata con i fatti del progetto: anteprima in `output/`, originale conservato, aggiornamento e controllo della sezione aggiunta; percorsi e indirizzi solo nella configurazione privata |
 | `scripts/Export-PortMatrix.py` | Configurazione delle porte dei due switch dallo snapshot Nebula a `data/port-matrix.json`, **tracciato**; nessun MAC in uscita |
 | `scripts/Test-TopologyDrift.py` | Confronta la fonte della mappa con snapshot Nebula e Proxmox e riporta gli scostamenti; non aggiorna e non decide (hook SessionStart) |
 
@@ -55,6 +56,7 @@ Guard-rail e igiene, da eseguire prima di ogni commit che tocchi documentazione.
 | `scripts/Check-SecurityAnomalies.ps1` | Verifica le anomalie note di GAP-TBC e del runbook; gli indirizzi si passano come parametri, non sono cablati |
 | `scripts/Set-ProjectSecret.ps1` | Scrive o ruota un segreto nel blocco `env` di `settings.local.json`, unico posto dove vivono i token (ADR-021) |
 | `tools/md-unwrap.py` | Attua la convenzione di una riga sorgente per paragrafo; `--check` esce diverso da zero se qualche file non la rispetta |
+| `tools/chiudi-sessione.ps1` | Procedura Windows del template per stato, controlli, commit e push confermati dall'utente, verifica remota e impronta di ripresa; il comando breve e' `chiudi` nel profilo PowerShell |
 | `scripts/Test-Allineamento.py` | Dice quali affermazioni stanno invecchiando: scadenze, freschezza delle fonti, invarianti strutturali, asserzioni umane scadute (ADR-026, hook SessionStart) |
 | `scripts/Invoke-RefreshFonti.ps1` | Rinfresca Nebula e Proxmox da attivita' pianificata, senza mai promuovere una misura peggiore di quella in essere (ADR-026) |
 

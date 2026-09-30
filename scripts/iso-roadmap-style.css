@@ -36,6 +36,15 @@ p { margin: 10px 0; }
 .hero { padding-bottom: 44px; border-bottom: 1px solid var(--border); }
 .export-note { margin-top: 19px; padding: 11px 15px; width: fit-content; max-width: 100%; border-left: 3px solid var(--purple); background: var(--purple-soft); font-size: .84rem; }
 .reference-note { max-width: 72ch; color: var(--muted); font-size: .9rem; }
+.reading-guide { background: var(--paper); border: 1px solid var(--border); border-left: 5px solid var(--purple); border-radius: 8px; padding: 25px 30px; margin: 28px 0; box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 10px 34px rgba(0,0,0,.04); }
+.reading-guide h2 { font-size: 1.55rem; margin: 5px 0 18px; }
+.reading-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.reading-steps li { display: flex; flex-direction: column; gap: 7px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+.reading-steps b { color: var(--purple); }
+.reading-steps span, .reading-legends, .reading-export { color: #414141; font-size: .88rem; }
+.reading-legends { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 4px 22px; margin-top: 12px; }
+.reading-legends p { margin: 8px 0; }
+.reading-export { border-top: 1px solid var(--border); margin: 12px 0 0; padding-top: 12px; }
 .summary, .phase { background: var(--paper); border: 1px solid var(--border); border-radius: 8px; padding: 30px 34px; margin: 34px 0; box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 10px 34px rgba(0,0,0,.055); }
 .summary > b { display: block; margin-bottom: 15px; font-size: .73rem; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); }
 .summary ul { margin: 0; padding-left: 21px; }
@@ -100,7 +109,7 @@ p { margin: 10px 0; }
   .brand-logo { width: 168px; }
   .header-label { font-size: .62rem; }
   main { padding: 38px 20px 65px; }
-  .summary, .phase { padding: 22px 18px; }
+  .summary, .phase, .reading-guide { padding: 22px 18px; }
   .top { align-items: flex-start; }
   .top h3 { flex-basis: calc(100% - 85px); }
 }

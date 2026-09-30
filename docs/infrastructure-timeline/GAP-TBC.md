@@ -643,6 +643,10 @@ Fonte comune: `STATO RETE INTRAWELT.docx`, scritto dall'IT Manager e comparso ne
 
 ---
 
+### Riscontro del 30/09/2026 sul seguito di #200 e #203
+
+Lo snapshot Proxmox del giorno mostra dieci job abilitati che selezionano tutti i nove guest operativi; il job per pool include la VM 602. La lettura diretta dei task delle notti del 28, 29 e 30/09 mostra tuttavia ogni notte **nove esiti OK e un fallimento**: il job delle 03:45 per la VM 207 aspetta il lock globale e termina alle 06:45. Il log del 30/09 dice `can't acquire lock /var/run/vzdump.lock - got timeout`. I sette job precedenti hanno `lockwait=1440`, i tre aggiunti per 207, 208 e 209 non hanno quel parametro: il rimedio di #200 non ha coperto i nuovi job di #203. L'ultimo job termina alle 08:15 e le due partenze delle 04:30 sono ancora configurate. **#203 e' chiuso solo come copertura di configurazione, non come copia riuscita**; #200 resta aperto sul fallimento ricorrente e sulla durata. Seguito in ISO-09: correggere l'attesa del lock sui tre job, sfalsare gli orari, verificare sette notti e provare gli allarmi. Nessuna configurazione Proxmox e' stata modificata durante la verifica.
+
 ## Due scoperte incidentali dell'indagine sul nodo: l'eta' vera del server e il numero degli alimentatori (16/09/2026)
 
 | # | ID | Descrizione | Fonte |
