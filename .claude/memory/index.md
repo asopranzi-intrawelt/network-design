@@ -6,12 +6,12 @@
 
 ```
 Branch attivo:         main
-Commit di riferimento: 0ca70f8 (30/09/2026, ultimo commit manuale osservato)
-Data snapshot:         2026-09-30, log-collector registrato; nuove modifiche locali da committare manualmente
-Commit precedenti:     54716ab, f5f3b48, 1206134, 8fbe3c2, 441c21b, d7481b5, 07a181b, 142f925
+Commit di riferimento: c8472e2 (30/09/2026, ultimo commit manuale osservato)
+Data snapshot:         2026-09-30, integrazione log-collector committata dall'utente; solo firma di ripresa locale
+Commit precedenti:     0ca70f8, 54716ab, f5f3b48, 1206134, 8fbe3c2, 441c21b, d7481b5, 07a181b
 ```
 
-**Nuova integrazione del 30/09.** `D:/log-collector` e' fonte collegata al commit `c7d9af6`: ogni nuovo commit viene segnalato dal controllo generale finche' non e' stato triagiato. Il commit piu' recente ha deciso account personali per i due amministratori. La VM del collettore e la sua connessione SSH Windows sono pianificate e non attive; procedura e parametri mancanti in `docs/log-collector-integrazione.md`. Il commit `0ca70f8` ha chiuso la milestone ISO/VA precedente; questa integrazione e' ancora nel working tree.
+**Collettore in servizio dal 01-02/10.** `D:/log-collector` riconciliato a `64f3f78` il 02/10: VM 210 `ads-collector` presente nello snapshot, host Proxmox e firewall configurati come sorgenti e collaudati, modifiche sugli apparati nel changelog del firewall e in `docs/log-collector-integrazione.md`. Aperti: backup della VM 210, nome DNS, alias SSH Windows (`ssh_windows_stato` da_configurare), account generici e root SSH con password, due gateway, aggiornamenti dell'host; dettaglio in `docs/pendenze-aperte.md`.
 
 **Triage e misura live del 30/09.** Le tre baseline OneDrive sono state rinnovate dopo il triage documentato in docs/infrastructure-timeline/ingestion-checklist.md. Lo snapshot Proxmox copre nove VM operative con dieci job configurati, ma i task delle ultime tre notti mostrano un fallimento ricorrente sul lock della VM 207; lockwait=1440 manca sui tre job aggiunti. Ultimo task alle 08:15. La correzione live e sette notti di prova restano ISO-09; diagnosi NAS e caricamento Milano restano aperti. Export ISO e checklist Onova datata 30/09 aggiornati; nessun intervento Proxmox o commit eseguito.
 
