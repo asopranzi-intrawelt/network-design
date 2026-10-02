@@ -7,8 +7,8 @@
     {
       "id": "log-collector",
       "percorso_locale": "D:/log-collector",
-      "commit_riconciliato": "c7d9af6d1f39904c9c1e074fcd30da1ab5e20f79",
-      "riconciliato_il": "2026-09-30",
+      "commit_riconciliato": "64f3f7896af5b06bb8eb1357051876c96fec63f7",
+      "riconciliato_il": "2026-10-02",
       "vm_nome_previsto": "ads-collector",
       "ssh_windows_stato": "da_configurare",
       "dove": "docs/log-collector-integrazione.md"

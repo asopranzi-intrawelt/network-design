@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-30. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-02. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -248,7 +248,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-09-30. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md.
-  - **Ultimo stato (2026-09-30):** Il progetto collegato D:/log-collector ha versionato il primo componente e definito il disegno della futura VM; al 30/09 la VM e le sorgenti non risultano ancora attive. Alla creazione verificare rete, SSH, flussi e prove di ricezione/allarme prima di dichiarare copertura. Riferimento: docs/log-collector-integrazione.md.
+  - **Ultimo stato (2026-10-02):** Collettore dei log AdS in servizio: VM 210 ads-collector creata il 01/10/2026 e misurata nello snapshot del 02/10; sorgenti host Proxmox (TLS 6514) e firewall USG FLEX (syslog 514) collaudate il 02/10 con login riusciti e falliti; restano NAS, custodia esterna della prova e analisi
+  - **Evidenza:** docs/log-collector-integrazione.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

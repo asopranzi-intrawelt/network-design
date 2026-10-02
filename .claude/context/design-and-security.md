@@ -42,6 +42,7 @@ Nessun bridge e' VLAN-aware (la configurazione target di M5 non e' ancora applic
 | VM206 | intrasite | running | vmbr2 | .23 | Docker interno |
 | VM207 | websiteAnalyst | running | vmbr3 | .24 | 6 vCPU, 16 GB RAM, dischi 32G+96G su storage SERVIZI; ospita il progetto website-analyst. Nuova alla documentazione, non all'infrastruttura: il `ctime` del file di configurazione la data all'**08/02/2025**, mentre la prima verifica documentale e' del 13/07/2026 |
 | VM208 | portaleAsset | running | vmbr0, `firewall=1` | .25 | **Creata il 21/07/2026** (`ctime` del config), assente dallo snapshot v4: 4 core, 8 GB RAM con balloon a 4 GB, disco 100G su storage SERVIZI (`cache=writethrough`), `onboot=1`, guest agent attivo, VGA qxl con sessione grafica. Ospita il pilota interno LAN del progetto Portale Asset IT. Appartenenza al pool "Servizi" non verificata |
+| VM210 | ads-collector | running | vmbr0, nessun tag | .26 | **Creata il 01/10/2026** dal progetto `D:/log-collector`, misurata nello snapshot del 02/10/2026: 2 core, 2 GB fissi, OVMF con Secure Boot, `scsi0` 16G e `scsi1` 60G con `backup=0` su storage SERVIZI; collettore dei log degli accessi AdS; guest agent ristretto (`guest-exec` rifiutato); nessun job di backup la seleziona |
 | VM602 | Intralino | running | vmbr3 | — | Rinominata (era ITdeveloping); pool Programmazione, disco 200G su storage PROGRAMMAZIONE; no agent |
 | VM810 | TESTNEWEGETRADBOOT | running | vmbr0 | — | 260G; sostituisce la VM809 dei log di febbraio; no agent |
 
