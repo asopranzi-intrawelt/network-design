@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-09-30",
+  "aggiornato": "2026-10-02",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1137,6 +1137,13 @@
         "dettaglio": "VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme",
         "decisione": "Verificare capacita' Proxmox e NAS e misurare volumi e ritenzione prima di acquistare"
       }
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-02",
+      "stato": "in_corso",
+      "nota": "Collettore dei log AdS in servizio: VM 210 ads-collector creata il 01/10/2026 e misurata nello snapshot del 02/10; sorgenti host Proxmox (TLS 6514) e firewall USG FLEX (syslog 514) collaudate il 02/10 con login riusciti e falliti; restano NAS, custodia esterna della prova e analisi",
+      "evidenza": "docs/log-collector-integrazione.md"
     }
   ]
 }

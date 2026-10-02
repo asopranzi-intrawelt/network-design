@@ -19,7 +19,7 @@ Interventi che non richiedono una finestra di manutenzione, non toccano il piano
 
 ## Prerequisiti di interventi gia' pianificati
 
-Il collettore dei log amministrativi e' ancora in sviluppo: alla creazione della VM servono VMID, indirizzo/nome stabile, VLAN e ACL verificate, account personale e chiave SSH sulla postazione Windows, poi prova dei flussi e degli allarmi. Il registro operativo e' `ISO-30`; la sequenza e il monitoraggio dei commit sono in `docs/log-collector-integrazione.md`.
+Il collettore dei log amministrativi e' in servizio dal 01-02/10/2026 (VM 210, host Proxmox e firewall come sorgenti; stato in `docs/log-collector-integrazione.md`). Restano da decidere o sanare: il backup del disco di sistema della VM 210, che nessun job seleziona; il nome `ads-collector` da registrare nel DNS del firewall (M25); l'alias SSH Windows; il login SSH di root con password sull'host e gli account generici `admin` e `root` di firewall e host, che il collettore registra per postazione e non per persona; la ragione dei due gateway fra serie server e DHCP delle postazioni; i 242 pacchetti non aggiornati e il repository duplicato sull'host.
 
 Non sono opzionali e non sono rimandabili al dopo: se saltano, l'intervento a cui appartengono fallisce in modo silenzioso o si scopre irreversibile.
 
