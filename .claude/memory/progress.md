@@ -1,5 +1,17 @@
 # Work-log
 
+## 2026-10-05 - Chiuso il pilota della VM 204; strumenti per le VM in questo repository; M29
+
+Commit: PENDING (manuale dell'utente, con `chiudi`). File creati: `scripts/vm-health/` (presidi interni, generalizzati da quelli del repository del convertitore, che ora rimanda qui), `scripts/Install-VmHealth.ps1`, `scripts/Watch-VmHealth.ps1`. File toccati: `.claude/context/roadmap.md` (M29), `CLAUDE.md` (sezione sugli script delle VM), `docs/infrastructure-timeline/GAP-TBC.md` (#206 e #208 sanati sulla 204), `docs/log-collector-integrazione.md`, questo work-log. Privati: `_notes/vm-watch.json`, `output/vm-watch*`.
+
+Sulla VM 204, con i comandi lanciati dall'IT Manager sul nodo: snapshot `pre-disco-20261005`, controller `virtio-scsi-single` con `iothread` e `discard` al posto del predefinito e senza `cache=writethrough`, verificato prima che `virtio_scsi` fosse nel kernel e il disco montato per UUID; collaudo del watchdog con `echo c > /proc/sysrq-trigger`: ultimo evento del boot precedente alle 14:35:41, nuovo avvio alle 14:36:29. Il controllo esterno dalla postazione nasce da una richiesta dell'IT Manager di essere avvisato senza attendere il relay SMTP. Le prime prove hanno mostrato notifiche vere, una dozzina, e hanno rivelato tre difetti dello script, poi corretti: lo stderr di `ssh` diventava un'eccezione e una VM irraggiungibile fermava lo script invece di essere segnalata; una hashtable vuota annidata si serializzava con le sue proprieta' interne; una variabile locale sovrascriveva il parametro `-Stato` perche' PowerShell non distingue le maiuscole. Su indicazione dell'IT Manager la regola delle notifiche e' ora: solo cambi di stato, una notifica per giro, nessuna ripetizione mentre un problema dura, riepilogo giornaliero spento; provata in modalita' `-Silenzioso` su guasto nuovo, guasto persistente, rientro e riavvio. Decisione dell'IT Manager: gli script di utilita' vivono qui e i progetti li pescano. Snapshot da rimuovere dopo il primo backup notturno riuscito della VM 204 con `qm delsnapshot 204 pre-disco-20261005`.
+
+## 2026-10-05 - Tipo di CPU delle VM: senza istruzioni vettoriali la console della VM 204 era inutilizzabile (#208)
+
+Commit: PENDING (manuale dell'utente, con `chiudi`). File toccati: `docs/infrastructure-timeline/GAP-TBC.md` (#208, riepilogo a 208), `docs/log-collector-integrazione.md`, `docs/pendenze-aperte.md`, questo work-log.
+
+Dopo i riavvii della VM 204 la sua console Proxmox era quasi inutilizzabile mentre i servizi rispondevano. Dentro l'ospite tutto era a riposo, e il passaggio da 2 a 4 core non ha cambiato nulla: la prima diagnosi in quel senso era sbagliata. Il confronto `diff` fra le configurazioni della 204 e della 207 sul nodo ha isolato il tipo di CPU, `x86-64-v2-AES` contro `host`, e `/proc/cpuinfo` ha confermato che la 204 non vedeva AVX, AVX2 e FMA. Con `cpu: host` la console e' tornata usabile. Lo snapshot mostra lo stesso tipo di CPU su otto VM, fra cui la 202 e la 210 con desktop; registrato come #208 insieme alle differenze di controller e cache dei dischi, da uniformare a parte.
+
 ## 2026-10-05 - VM 204 bloccata per ventitre giorni: ripristino e monitoraggio delle VM affidato a log-collector
 
 Commit: PENDING (manuale dell'utente). File toccati: `docs/infrastructure-timeline/GAP-TBC.md` (#205-#207, riepilogo a 207), `docs/log-collector-integrazione.md` (sezione nuova sul monitoraggio delle macchine virtuali), `docs/pendenze-aperte.md`, questo work-log.
