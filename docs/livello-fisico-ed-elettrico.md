@@ -205,13 +205,13 @@ Il progetto nominava alcuni di questi apparati sparsi fra la scheda di continuit
 | NAS-HERO | QNAP ts-h1677xv-rp | QNAP QSW-1208-8c porta 1, fibra | doppio alimentatore, entrambi su Elsist | storage Proxmox; destinazione di backup |
 | NAS-INTRA | non documentato | XGS2220-54HP porte 2 e 4, due schede | Ciabatta 2 DX, Elsist | share `Backup`, dump delle VM |
 | NAS-INTRA2 | QNAP ts-435XeU | QNAP QSW-1208-8c porta 3, fibra | Ciabatta 2 DX, Elsist | destinazione delle scansioni dopo R8; share `utili` |
-| NAS-INTRA3 | non documentato | XGS2220-54HP porta 38, rame | non documentata | due schede di rete note dagli indirizzi; funzione non documentata |
+| NAS-INTRA3 | QNAP TS-210, QTS 4.2.6 build 20240618 | XGS2220-54HP porta 38, rame | non documentata | condivisioni montate come unita' di rete dai due amministratori interni, dichiarato il 05/10/2026; contenuti e log da verificare |
 
 Sono quattro, non cinque, e vale la pena dire da dove veniva il cinque perche' il modo in cui si scioglie e' istruttivo. Il conteggio a cinque nasce da una riga di `docs/business-continuity-disaster-recovery.md` che elenca "NAS fleet (HERO, INTRA, INTRA2, INTRA3, documenti)", dove l'ultima voce e' un indirizzo distinto dagli altri quattro. Quell'indirizzo pero' e' noto altrove come la share `utili`, cioe' un nome di condivisione e non necessariamente un apparato: la lista mescola quattro apparati e una destinazione, ed e' il tipo di elenco che si legge come inventario senza esserlo.
 
 Ne segue che la domanda giusta non e' "quanti NAS ci sono" ma "che cosa risponde a quell'indirizzo": se e' una share su uno dei quattro, l'inventario e' chiuso a quattro; se e' un apparato a se', il documento dell'IT Manager non lo descrive e va cercato. Si chiude con una lettura, non con un ragionamento.
 
-Tre lacune restano aperte su tutti e quattro: la finestra di backup di ciascuno, la funzione del NAS-INTRA3, e l'alimentazione del NAS-INTRA3 che non compare in nessuna delle due tabelle elettriche.
+Restano aperte la finestra di backup di ciascun NAS e l'alimentazione del NAS-INTRA3, che non compare in nessuna delle due tabelle elettriche. La sua funzione e' stata dichiarata il 05/10/2026 come unita' di rete per i due amministratori interni; contenuti e accessi effettivi restano da verificare sul dispositivo.
 
 ---
 

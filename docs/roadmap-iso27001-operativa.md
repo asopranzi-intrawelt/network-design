@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-02. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-12. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -10,7 +10,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-02. Obie
 - **Stati:** da fare = non iniziato; in corso = avviato ma senza prova di chiusura; bloccato = in attesa di un prerequisito; completato = chiuso con evidenza datata; non applicabile = esclusione motivata.
 - **Forniture:** necessaria = serve un acquisto o servizio; condizionata = solo se diagnosi o decisione lo richiedono; da verificare = controllare prima se esiste gia'; nessuna = non prevista.
 - Per ogni avanzamento comunicato o realizzato, l'agente aggiorna il registro nella stessa sessione: azione, stato, fornitura e nota datata. Il comando `advance` rigenera questa vista nel progetto, senza richiedere azioni all'utente.
-- L'HTML e' una copia di sola lettura: si esporta solo su richiesta con `python scripts/IsoRoadmap.py build --desktop`, che aggiorna insieme Desktop e cartella ISO OneDrive configurata privatamente. Puo' essere piu' vecchio del registro; non va modificato a mano.
+- A ogni avanzamento l'HTML privato in `output/` e le copie identiche su Desktop e nella cartella ISO OneDrive si aggiornano insieme. Non modificare le copie a mano.
 - Nell'HTML le sigle aprono una vista interna allo stesso file. Le spiegazioni vivono in `data/iso27001-glossario.json`; quelle dei controlli ISO sono parafrasi operative, non il testo della norma.
 - Una voce si chiude solo con una prova datata (`--evidenza`); non trascrivere dati reali o segreti nel registro pubblico.
 - Cambiamenti fisici non ancora comunicati o misurabili non possono essere rilevati dal registro: in quel caso la voce resta da verificare fino a sopralluogo o evidenza.
@@ -248,8 +248,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-02. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md.
-  - **Ultimo stato (2026-10-02):** Collettore dei log AdS in servizio: VM 210 ads-collector creata il 01/10/2026 e misurata nello snapshot del 02/10; sorgenti host Proxmox (TLS 6514) e firewall USG FLEX (syslog 514) collaudate il 02/10 con login riusciti e falliti; restano NAS, custodia esterna della prova e analisi
-  - **Evidenza:** docs/log-collector-integrazione.md
+  - **Ultimo stato (2026-10-09):** 09/10/2026: Nebula OpenAPI ha restituito tutti i cinque eventi AAA/authentication del 30HP gia osservati in GUI, con ora, account e IP; 125 eventi 30HP e 170 eventi 54HP nella finestra di 24 ore. Il poller sul collettore non e ancora installato. Restano token dedicato, retention, paginazione, offline e controllo dei buchi.
+  - **Evidenza:** D:/log-collector/docs/runbook-componente-3-nebula.md, prova OpenAPI 09/10/2026
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
@@ -281,7 +281,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-02. Obie
   - **Chiusura verificabile:** Inventario con proprietario, funzione, posizione, alimentazione e data di verifica per ogni apparato.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.5.9, A.7.8, A.7.12.
   - **Fonti:** docs/pendenze-aperte.md, docs/livello-fisico-ed-elettrico.md.
-  - **Ultimo stato (2026-09-28):** Mappa strutturata disponibile; restano verifiche sul posto e apparati non censiti.
+  - **Ultimo stato (2026-10-08):** Censite individualmente nella topologia le due multifunzione di rete: Kyocera Piano Terra su switch 30HP porta 6 verificata, Canon Piano 1 con porta switch ancora da attribuire. Mappa rigenerata a 57 nodi e 71 collegamenti; per entrambe restano proprietario, alimentazione e audit amministrativo da verificare.
+  - **Evidenza:** data/network-topology.json; docs/network-map.html; docs/livello-fisico-ed-elettrico.md; docs/log-collector-integrazione.md
 
 ### 4. Sistema di gestione e audit - da avviare subito; chiusura entro marzo 2027
 
@@ -322,7 +323,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-02. Obie
   - **Chiusura verificabile:** Una esecuzione documentata o esercizio per ciascuna procedura critica.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.5.37, A.8.32, 8.1.
   - **Fonti:** docs/runbook-anomalie.md, roadmap Fase 5.
-  - **Ultimo stato (2026-09-28):** Esistono runbook puntuali; manca una procedura unificata applicata a tutte le classi di cambio.
+  - **Ultimo stato (2026-10-12):** Client PowerShell Proxmox senza bypass TLS: CA, nome e pin verificati nel runtime 5.1; dry-run reale riuscito il 12/10, snapshot validato e non promosso. Restano task pianificato, PowerShell 7, revoca e guest-agent 403.
+  - **Evidenza:** docs/dossier-sicurezza-mcp-proxmox.md §10; docs/evidenze-sicurezza-mcp-proxmox.md SEC-PS-01..04
 
 - **ISO-42 | Risposta agli incidenti** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Definire ruoli, escalation, decisione sugli eventi, raccolta prove e comunicazioni; esercitare uno scenario pertinente al phishing gia' documentato.

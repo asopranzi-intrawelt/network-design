@@ -6,9 +6,9 @@
       proxmox-snapshot.json   dump strutturato completo (nodi, VM, LXC, storage, rete, cluster)
       proxmox-config.md       riepilogo Markdown leggibile, pronto per Claude Code
 
-    Le credenziali vengono chieste a runtime. Nessun segreto finisce su disco.
+    Il token viene letto dal file .env privato; senza token chiede un ticket a runtime.
+    La CA e le impronte TLS sono nel livello privato; ogni richiesta verifica il nodo.
     Compatibile con PowerShell 5.1 (Windows PowerShell) e PowerShell 7+.
-    Gestisce il certificato TLS self-signed di default di Proxmox VE.
 
     v3: aggiunta raccolta firewall (cluster + per-VM/LXC), dischi fisici, PCI devices,
         SDN (zone/vnet), pool risorse, backup schedules, HA resources, snapshot VM.
@@ -55,32 +55,31 @@ if (-not (Test-Path $OutputDir)) {
 Write-Host "Output verso: $OutputDir" -ForegroundColor Cyan
 
 # ---------------------------------------------------------------------------
-# 1. Bypass certificato TLS self-signed di Proxmox
-#    PS 5.1: TrustAllCertsPolicy globale
-#    PS 7+:  -SkipCertificateCheck per chiamata
+# 1. TLS autenticato per il solo client di questo script
+#    La CA pubblica e le impronte sono nel livello privato ignorato da Git.
+#    Il nome deve coincidere con URL, pin e SAN; nessun callback globale.
 # ---------------------------------------------------------------------------
-$isPSCore = $PSVersionTable.PSVersion.Major -ge 7
-
-if (-not $isPSCore) {
-    try {
-        Add-Type -TypeDefinition @"
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-public class TrustAllCertsPolicy : ICertificatePolicy {
-    public bool CheckValidationResult(
-        ServicePoint srvPoint, X509Certificate certificate,
-        WebRequest request, int certificateProblem) { return true; }
+. (Join-Path $PSScriptRoot 'Read-ProjectEnv.ps1')
+$projectRoot = Split-Path -Parent $PSScriptRoot
+$pinsPath = Join-Path $projectRoot '_notes\certs\proxmox-tls-pins.json'
+$caPath = Join-Path $projectRoot '_notes\certs\proxmox-root-ca.pem'
+if (-not (Test-Path -LiteralPath $pinsPath -PathType Leaf) -or
+    -not (Test-Path -LiteralPath $caPath -PathType Leaf)) {
+    throw 'CA o impronte TLS private assenti: snapshot interrotto prima di inviare credenziali.'
 }
-"@
-    } catch {
-        # Il tipo e' gia' definito in questa sessione: ignorare
-    }
-    [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-    Write-Host "Certificato self-signed: bypass attivato (PS 5.1)" -ForegroundColor DarkGray
-} else {
-    Write-Host "Certificato self-signed: -SkipCertificateCheck (PS 7+)" -ForegroundColor DarkGray
+$pins = Get-Content -LiteralPath $pinsPath -Raw | ConvertFrom-Json
+if ($pins.host -cne $ProxmoxHost -or [int]$pins.port -ne $Port) {
+    throw 'Nome o porta Proxmox diversi dalla configurazione TLS autenticata.'
 }
+$pem = [System.IO.File]::ReadAllText($caPath)
+$pemData = ($pem -replace '-----BEGIN CERTIFICATE-----', '' -replace '-----END CERTIFICATE-----', '' -replace '\s', '')
+$caBytes = [Convert]::FromBase64String($pemData)
+Add-Type -AssemblyName System.Net.Http
+if (-not ([System.Management.Automation.PSTypeName]'ProxmoxVerifiedHttp').Type) {
+    Add-Type -Path (Join-Path $PSScriptRoot 'ProxmoxVerifiedHttp.cs') -ReferencedAssemblies @('System.Net.Http', 'System.Security')
+}
+$verifiedClient = [ProxmoxVerifiedHttp]::new($ProxmoxHost, $Port, $caBytes, [string]$pins.ca_sha256, [string]$pins.leaf_sha256)
+Write-Host 'TLS: CA, nome e certificato vincolati al client Proxmox' -ForegroundColor DarkGray
 
 # ---------------------------------------------------------------------------
 # 2. Credenziali
@@ -90,17 +89,17 @@ public class TrustAllCertsPolicy : ICertificatePolicy {
 # hook: al 24/08/2026 lo snapshot sul disco aveva 47 giorni mentre quello Nebula,
 # che si autentica da variabile d'ambiente, era del giorno stesso. Non e' una
 # coincidenza, e' la conseguenza. Il token API di sola lettura di ADR-021 e' gia'
-# nel blocco env di settings.local.json per il server MCP: se c'e', si usa quello
+# nel file .env privato del progetto: se c'e', si usa quello
 # e lo script diventa eseguibile senza una persona davanti.
 $baseUrl = "https://${ProxmoxHost}:${Port}/api2/json"
-$tokenName  = $env:PROXMOX_TOKEN_NAME
-$tokenValue = $env:PROXMOX_TOKEN_VALUE
+$tokenName  = Get-ProjectSecret -Name 'PROXMOX_TOKEN_NAME' -ProjectRoot $projectRoot
+$tokenValue = Get-ProjectSecret -Name 'PROXMOX_TOKEN_VALUE' -ProjectRoot $projectRoot
 $usaToken   = $tokenName -and $tokenValue
 
 if ($usaToken) {
     # Formato dell'intestazione: PVEAPIToken=utente@realm!nome=valore
     $intestazioneToken = "PVEAPIToken=$tokenName=$tokenValue"
-    Write-Host "Autenticazione con token API di sola lettura (da variabile d'ambiente)" -ForegroundColor Green
+    Write-Host "Autenticazione con token API di sola lettura (da .env privato)" -ForegroundColor Green
 }
 
 if (-not $usaToken -and -not $Username) {
@@ -125,19 +124,10 @@ if (-not $usaToken) {
     [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
     Remove-Variable plainPwd -ErrorAction SilentlyContinue
 
-    $authParams = @{
-        Uri         = "$baseUrl/access/ticket"
-        Method      = 'POST'
-        Body        = $authBody
-        ContentType = 'application/x-www-form-urlencoded'
-    }
-    if ($isPSCore) { $authParams['SkipCertificateCheck'] = $true }
-
     try {
-        $authResp = Invoke-RestMethod @authParams
+        $authResp = $verifiedClient.Send("$baseUrl/access/ticket", 'POST', $null, $null, $authBody) | ConvertFrom-Json
     } catch {
-        Write-Error "Autenticazione fallita su ${ProxmoxHost}:${Port} - $_"
-        exit 1
+        throw "Autenticazione Proxmox fallita: $($_.Exception.Message)"
     }
 
     $ticket = $authResp.data.ticket
@@ -147,11 +137,8 @@ if (-not $usaToken) {
     }
     Write-Host "Autenticato come $Username su $ProxmoxHost" -ForegroundColor Green
 
-    # WebRequestSession con CookieContainer: unico modo affidabile in PS 5.1
-    # per passare il PVEAuthCookie (Invoke-RestMethod ignora l'header Cookie manuale)
-    $pveSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-    $pveCookie  = New-Object System.Net.Cookie("PVEAuthCookie", $ticket, "/", $ProxmoxHost)
-    $pveSession.Cookies.Add($pveCookie)
+    # Il client invia il cookie solo all'URL Proxmox verificato e non segue redirect.
+    $pveSession = $ticket
 }
 
 # ---------------------------------------------------------------------------
@@ -159,18 +146,15 @@ if (-not $usaToken) {
 # ---------------------------------------------------------------------------
 function Invoke-PVEGet {
     param([string]$Path)
-    $p = @{
-        Uri    = "$baseUrl$Path"
-        Method = 'GET'
-    }
-    if ($usaToken) { $p['Headers'] = @{ Authorization = $intestazioneToken } }
-    else           { $p['WebSession'] = $pveSession }
-    if ($isPSCore) { $p['SkipCertificateCheck'] = $true }
     try {
-        $r = Invoke-RestMethod @p
+        $authorization = if ($usaToken) { $intestazioneToken } else { $null }
+        $cookie = if ($usaToken) { $null } else { $pveSession }
+        $r = $verifiedClient.Send("$baseUrl$Path", 'GET', $authorization, $cookie, $null) | ConvertFrom-Json
         return $r.data
-    } catch {
-        Write-Warning "  [WARN] GET $Path : $_"
+    } catch [ProxmoxHttpStatusException] {
+        # Alcuni endpoint opzionali non esistono o non sono concessi su ogni nodo.
+        if ($_.Exception.StatusCode -notin @(403, 404)) { throw }
+        Write-Warning "  [WARN] GET $Path : stato HTTP $($_.Exception.StatusCode)"
         return $null
     }
 }
@@ -1009,3 +993,5 @@ $mdPath = Join-Path $OutputDir "proxmox-config.md"
 $lines | Out-File -FilePath $mdPath -Encoding utf8
 Write-Host "Markdown: $mdPath" -ForegroundColor Green
 Write-Host "`nSnapshot completato." -ForegroundColor Green
+
+$verifiedClient.Dispose()

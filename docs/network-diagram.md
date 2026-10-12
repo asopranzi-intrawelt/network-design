@@ -2,6 +2,8 @@
 
 La [mappa interattiva](network-map.html) rappresenta la topologia censita. La fonte modificabile e' [`data/network-topology.json`](../data/network-topology.json); [`scripts/Build-NetworkMap.ps1`](../scripts/Build-NetworkMap.ps1) rigenera la pagina HTML. Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) racconta in forma lineare che cosa mostra il grafico, quali parti sono state confrontate con misure e quali richiedono un riscontro umano. Il [diagramma storico](archivio/network-diagram-2026-08.md) conserva la ricostruzione precedente e non descrive lo stato corrente.
 
+Le due multifunzione sono nodi individuali dalla revisione 14 della fonte: `mfp-pt` e' collegata alla porta 6 dello switch del Piano Terra, `mfp-p1` compare senza arco perche' la sua porta fisica e' da attribuire. L'assenza dell'arco indica una verifica aperta, non un apparato scollegato.
+
 ## Percorso da leggere
 
 La vista *Logica* parte dai tre accessi Internet, attraversa gli apparati del fornitore, il firewall e il core del Piano 2, quindi raggiunge lo switch del Piano Terra, il ramo storage, il server, i bridge e i servizi. La fibra e' primaria, il ponte radio e' il primo backup e la VDSL il secondo. Il failover appartiene agli apparati del fornitore; il firewall riceve una sola consegna dati. Il ramo voce arriva dal fornitore allo switch core sulla VLAN 2 e non passa dal firewall.

@@ -2,6 +2,108 @@
 last-verified: 54716ab
 ---
 
+**Aggiornamento 12/10/2026.** Il 12/10/2026 il consumer PowerShell Proxmox è stato separatamente corretto: `TrustAllCertsPolicy` e `-SkipCertificateCheck` rimossi, client .NET per connessione con CA privata, nome, validità e pin della foglia. Un preflight TLS senza HTTP/token e i test offline positivi/negativi sono passati. Il primo dry-run reale ha trovato un corpo vuoto sulla GET dovuto alla conversione di `$null` da PowerShell a C#; il fix limita il corpo alle POST. Il secondo dry-run delle 09:36 CEST è riuscito, ha validato lo snapshot senza promuoverlo. Dieci endpoint opzionali guest-agent hanno risposto 403: quei dati possono mancare. Restano test del task pianificato, PowerShell 7, gestione del pin alla rotazione e revoca non verificata; MCP e script hanno evidenze distinte. Dettaglio e fonti in [dossier §10](docs/dossier-sicurezza-mcp-proxmox.md) e [registro evidenze](docs/evidenze-sicurezza-mcp-proxmox.md).
+
+## M30: barriera MCP da correggere, 09/10/2026
+
+Il 09/10/2026 e' stato provato `PROXMOX_ALLOW_DANGER=false` senza cambiare le credenziali: `initialize`, `tools/list` e `claude mcp list` sono riusciti, ma la singola chiamata read-only `list_nodes` ha fallito. La configurazione precedente e' stata ripristinata dal backup verificato SHA-256 `257a27c64ba8a76172801a601388974f4c675a01cfd277f0a98a6af60067a212`; con la baseline `list_nodes` e' tornato OK. Il codice installato usa una safety policy per i tool non confermati, e nella copia locale esaminata non compare il file `safety_policy.json`: questo spiega plausibilmente il blocco di `list_nodes`, ma va verificato sul pacchetto effettivamente avviato prima di correggerlo. `PROXMOX_ALLOW_DANGER=true` rimane quindi un rischio di configurazione SEC-025; il token `PVEAuditor` e' la barriera server-side di sola lettura. `PROXMOX_VERIFY_SSL=false` resta separatamente aperto: prima di abilitarne la verifica servono CA e nome certificato validi. Non copiare token in Claude, file tracciati o sulla VM del collettore.
+
+## Collettore: prova API Nebula, 09/10/2026
+
+Il 09/10/2026 una lettura read-only di 24 ore della Nebula OpenAPI, con chiave caricata da `.env` privato da PowerShell ordinaria, ha restituito 125 eventi del 30HP e 170 del 54HP. Tutti i cinque `AAA/authentication` del 30HP gia' osservati nella GUI NCC compaiono nella risposta: tre fallimenti, un login e un logout, con ora, dispositivo, account e IP nel messaggio. Il JSON grezzo e l'impronta sono nel livello privato di `D:/log-collector`; il risultato e' descritto nel runbook Nebula. Il collettore non interroga ancora l'API: prossimo passo e' progettare un poller HTTPS con token di servizio dedicato, checkpoint, finestra sovrapposta, deduplicazione e allarme sui buchi. Durata dello storico, paginazione, limiti e dispositivo offline restano da provare. La OpenAPI degli switch non dimostra i login del portale NCC. La migrazione delle chiavi a `.env` non isola i valori da Claude o altri processi dello stesso account Windows; protegge da commit accidentali e dall'iniezione automatica nei settings Claude.
+
+## M30: MCP attivo, rimozione vecchia copia pendente - 09/10/2026
+
+Launcher verificato con `list_nodes` reale; `.mcp.json` attivo sul nuovo percorso e `claude mcp list` connesso. Dry-run Nebula/Proxmox riuscito da PowerShell ordinaria senza promozione. Il JSON Claude conserva le quattro chiavi solo per rollback fino alla prova post-rimozione; non dichiarare M30 chiuso.
+
+## M30: cutover MCP verificato, 09/10/2026
+
+Il launcher MCP isolato ha completato `initialize`, `tools/list` e `list_nodes` in lettura sul Proxmox reale. Il dry-run del rinfresco da PowerShell ordinaria ha validato entrambe le fonti, Nebula e Proxmox, senza promuovere snapshot. Il vecchio `.mcp.json` (SHA-256 `495472595ca43471ea45e3641ded0b249b59df78729d72d60b4d8c1b6fed6203`) e' stato sostituito con il launcher (SHA-256 `257a27c64ba8a76172801a601388974f4c675a01cfd277f0a98a6af60067a212`); `claude mcp list` ha riportato `proxmox` connesso. Dopo il confronto in memoria di tutti e quattro i valori, le quattro chiavi sono state rimosse dal solo blocco `env` di `.claude/settings.local.json`, preservando `NETDESIGN_ENV_CANARY`, permessi e hook. Una seconda verifica CLI senza le quattro variabili ereditate ha confermato la connessione: `.env` e' ora la fonte locale dei quattro valori. Nessun token e' stato ruotato o copiato sulla VM del collettore. Restano da osservare la prossima esecuzione automatica del task e una nuova sessione Claude interattiva; il test CLI e la chiamata MCP diretta coprono il percorso di avvio e lettura. ISO-41 resta in corso fino al task pianificato; SEC-052 non e' chiuso.
+
+## M30 in staging, 09/10/2026
+
+`.env` privato creato con ACL ristretto; quattro valori confrontati senza esposizione. Consumer PowerShell e launcher Python installati, writer provato con valori finti e ACL conservato. `.mcp.json` attivo invariato; candidata e rollback in `_notes/m30-mcp/`. Restano i gate read-only reali, il rinfresco fuori da Claude e la nuova sessione MCP prima di togliere il blocco `env` precedente. Aggiornare timeline e ISO-41 a ogni gate.
+
+## M30: segreti locali indipendenti da Claude, 08/10/2026
+
+Design ADR-031 e runbook pronti; SEC-052 aperto. `.mcp.json`, JSON locale e script consumer non sono stati modificati. Prossimo gate: baseline reale read-only e prove isolate con valori finti, poi eventuale cutover con rollback. A ogni gate aggiornare timeline MD/SVG e ISO-41 con copie HTML.
+
+## Eventi AAA e fasi future del collettore, 08/10/2026
+
+NCC mostra cinque authentication del 30HP, quattro coincidenti con il log locale. Tool API richiesto in lettura; canale primario non ancora scelto. L'utente chiede poi hardening della VM e GUI web solo LAN per il sysadmin; perimetro registrato nel progetto collettore, nessuna configurazione avviata. ISO-30 in corso.
+
+## Tipi Syslog NCC e gate dei flussi, 08/10/2026
+
+Switch log e' separato dai log AP e firewall nel sito NCC. Nessuna configurazione applicata; prima dell'attivazione site-wide serve filtro sul collettore per i tecnici degli switch. Ricerca authentication nell'Event log NCC richiesta. ISO-30 in corso.
+
+## Login locale e Syslog switch Nebula, 08/10/2026
+
+Il 30HP registra localmente un login HTTPS riuscito e tre falliti, con ora UTC, account e IP. Export privato di 1.966 righe in D:/log-collector; dettagli nel runbook. Syslog locale OFF e senza server; NCC Reporting senza server. Chiesta apertura di Add, senza salvare. Nessuna raccolta remota verificata; ISO-30 in corso.
+
+## GUI locale 30HP, 08/10/2026
+
+Screenshot 258: login HTTPS locale raggiungibile, richiede Local credentials NCC. Nessun tentativo con password presunte; lettura in Site settings e login singolo richiesti. ISO-30 in corso.
+
+## Nebula System e 30HP, 08/10/2026
+
+Screenshot 247-248: 262 System su 6.533 eventi nel mese, CSV senza termini di accesso. Screenshot 252-255: 30HP firmware V5.00(ABXO.1), DHCP VLAN 1. Tool OpenAPI diagnostico presente in scripts, non nel collettore. Chiesta GUI HTTPS locale. ISO-30 in corso.
+
+## Event log switch Nebula, 08/10/2026
+
+Screenshot 241-243: 10 eventi link/STP nell'ultima ora, Category System/Interface/Switch/AAA/IP/Dropped. Nessun login amministrativo nel campione; richiesta ricerca System 30 giorni. ISO-30 in corso.
+
+## Login NCC nella vista personale, 08/10/2026
+
+Screenshot 223 dopo Logout/login: nuova riga del 08/10 13:35:15Z in Recent logins. Successo nella GUI verificato, fallimenti e acquisizione automatica non dimostrati. Chiesto Event log switch. ISO-30 in corso.
+
+## CSV Change log Nebula, 08/10/2026
+
+Export reale: 15 righe, nove colonne di modifica, zero etichette di login/logout nel campione. File e SHA nel livello privato del progetto collettore. Accessi NCC non raccolti, ISO-30 in corso.
+
+## Nebula: ricerca settembre e Export, 08/10/2026
+
+Screenshot 207: 15 modifiche di settembre, nessun login/logout nel campione. Screenshot 212: Export CSV/XML; CSV richiesto, non ancora letto. Accessi NCC non coperti; ISO-30 in corso.
+
+## Change log Nebula reale, 08/10/2026
+
+Screenshot 205: Export e colonne di modifica disponibili, zero record nel range 01-08/10, storico dal 12/09/2024. Richiesta ricerca su settembre. ISO-30 in corso.
+
+## Recent logins Nebula dopo refresh, 08/10/2026
+
+Screenshot 204: tabella invariata al 09/09 dopo F5, pie' di pagina Last login aggiornato a 15 minuti. Semantica non chiarita; Change log richiesto in sola lettura. ISO-30 in corso.
+
+## Recent logins Nebula sul tenant reale, 08/10/2026
+
+Screenshot 203 mostra una riga del 09/09 e pie' di pagina `Last login: 1 seconds ago`, senza account, esito o export visibili. F5 e nuovo screenshot richiesti. ISO-30 in corso.
+
+## Ricognizione Nebula NCC, 08/10/2026
+
+Recent logins e' una vista personale dell'account; Change log registra modifiche. Export centrale e fallimenti non dimostrati. Richiesta una schermata reale in sola lettura. ISO-30 in corso.
+
+## Ritenzione iLO eseguita sotto systemd, 08/10/2026
+
+Service eseguito alle 15:29:04 con status=ok, cutoff 11/07/2026, zero eliminati e filesystem al 44%; timer active, prossimo giro 09/10 alle 03:00 CEST. Resta l'allarme esterno di capienza. ISO-30 in corso.
+
+## Timer iLO attivo, service da collaudare, 08/10/2026
+
+Il timer della ritenzione tecnica e' enabled/active, prossimo giro 09/10/2026 03:00 CEST; LAST vuoto. Serve una esecuzione del service con journal. ISO-30 resta in corso.
+
+## Ritenzione iLO installata, 08/10/2026
+
+Script e unita' systemd installati sulla VM con hash verificati, dry-run cutoff 11/07/2026 e zero scaduti. Timer ancora `disabled`; attivazione in attesa. ISO-30 in corso.
+
+## Collaudo dei flussi iLO, 08/10/2026
+
+Browser login fallito, riuscito e logout post-cambio sono nel file AdS. Il test Syslog e' nel file tecnico una volta e nel file AdS zero volte. Restano gli altri canali iLO e il timer dei 90 giorni; ISO-30 in corso. Dettagli in `docs/log-collector-integrazione.md`.
+
+## Installazione iLO in verifica, 08/10/2026
+
+Il filtro rsyslog e' installato sulla VM reale: hash attivo e backup distinti e verificati, rsyslogd -N1 e riavvio riusciti. Mancano il test reale dei due percorsi dopo il cambio e l'installazione del timer tecnico di 90 giorni. ISO-30 resta `in_corso`; dettaglio nel runbook del progetto collegato.
+
+## Intervento collegato del 08/10/2026: stampanti e iLO
+
+La fonte topologica e la mappa generata contano 57 nodi. Le due multifunzione sono individuali; per la Canon Piano 1 manca ancora il collegamento fisico verificato. Il progetto `D:/log-collector` ha backup rsyslog verificato e candidata iLO validata, ma il filtro non e' ancora installato. ISO-35 e ISO-30 restano in corso. Dettaglio e prove in `docs/log-collector-integrazione.md`.
+
 ## Direttiva permanente: cinque livelli di tracciamento (dal 16/07/2026)
 
 L'utente ha fissato un obiettivo dichiarato: **certificazione ISO27001 entro marzo 2027** (vedi `roadmap.md` Fase 5). Da questa data, ogni interazione di questa sessione — non solo i micro-step espliciti — va tracciata su cinque livelli quando rilevante, non solo uno:

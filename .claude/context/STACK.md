@@ -54,7 +54,7 @@ Guard-rail e igiene, da eseguire prima di ogni commit che tocchi documentazione.
 | `scripts/Test-Anonymization.py` | Passa tutti i file tracciati in cerca di valori reali; i pattern vivono in `_notes/`, non nello script |
 | `scripts/Check-OneDriveDelta.ps1` | Delta delle tre radici OneDrive sorvegliate vs baseline locale (hook SessionStart) |
 | `scripts/Check-SecurityAnomalies.ps1` | Verifica le anomalie note di GAP-TBC e del runbook; gli indirizzi si passano come parametri, non sono cablati |
-| `scripts/Set-ProjectSecret.ps1` | Scrive o ruota un segreto nel blocco `env` di `settings.local.json`, unico posto dove vivono i token (ADR-021) |
+| `scripts/Set-ProjectSecret.ps1` | Scrive o ruota una delle quattro chiavi operative nel `.env` privato (ADR-031); ADR-021 descrive la configurazione storica |
 | `tools/md-unwrap.py` | Attua la convenzione di una riga sorgente per paragrafo; `--check` esce diverso da zero se qualche file non la rispetta |
 | `tools/chiudi-sessione.ps1` | Procedura Windows del template per stato, controlli, commit e push confermati dall'utente, verifica remota e impronta di ripresa; il comando breve e' `chiudi` nel profilo PowerShell |
 | `scripts/Test-Allineamento.py` | Dice quali affermazioni stanno invecchiando: scadenze, freschezza delle fonti, invarianti strutturali, asserzioni umane scadute (ADR-026, hook SessionStart) |
@@ -87,8 +87,8 @@ Fonti e artefatti che non sono script.
 ## Script Get-ProxmoxSnapshot.ps1
 
 - Linguaggio: PowerShell 5.1
-- Autenticazione: cookie PVEAuthCookie via WebRequestSession (workaround PS5.1)
-- TLS: TrustAllCertsPolicy via Add-Type (certificato self-signed Proxmox)
+- Autenticazione: token `PVEAuditor` da `.env` privato; fallback ticket interattivo via cookie sullo stesso client HTTPS verificato.
+- TLS: `scripts/ProxmoxVerifiedHttp.cs` verifica per connessione nome, validità, pin foglia, CA e catena; PEM e pin in `_notes/certs/`. Bypass globale e `-SkipCertificateCheck` rimossi il 12/10. Dry-run reale Windows PowerShell 5.1 riuscito; PowerShell 7 e task pianificato restano da osservare. Dettaglio nel dossier `docs/dossier-sicurezza-mcp-proxmox.md` §10.
 - Output: JSON completo + report Markdown in `output/`
 - Dati raccolti: nodi, reti, storage, VM QEMU, LXC, pool, firewall cluster e per-VM, SDN, backup schedules, HA, snapshot VM, dischi fisici, dispositivi PCI
 
