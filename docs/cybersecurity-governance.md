@@ -65,6 +65,13 @@ Nota di correzione (08/07/2026, confermata dall'utente): l'installazione di Bitd
 | 03/07/2026 | BitLocker attivo sugli endpoint (copertura non totale, vedi nota) | Cifratura full-disk XTS-AES 128 bit sui dischi principali delle macchine aziendali Windows 11 **Correzione del 07/09/2026**: la copertura non era totale. L'attivazione dell'automazione di cifratura su due postazioni Windows 11 Pro quel giorno ha riportato "cifratura avviata", e il pannello del dispositivo dichiarava lo stato BitLocker disabilitato: quei due dischi erano quindi **non cifrati**, non semplicemente privi di deposito della chiave. L'affermazione "tutti gli endpoint" era falsa almeno per loro. Il perimetro va dichiarato per misura e non per intenzione, e la misura va rifatta a cifratura completata, perche' fino ad allora lo stato di protezione resta Off (SEC-044, #188).; chiavi di ripristino in escrow centralizzato su NinjaOne, accesso riservato all'IT previa autenticazione per solo disaster recovery. |
 | 06-07/07/2026 | Revisione chiarimenti Cliente-1 RFQ del Cliente-1 | Due tornate di chiarimenti sulla Busta Tecnica (annex, checklist fornitori, DPA, SCC); dettaglio nella sezione Questionari B2B. |
 
+### 2026 – Q4
+
+| Data | Evento | Dettaglio |
+|------|--------|-----------|
+| 12/10/2026 | Falso positivo Bitdefender su uno script di prova | Bitdefender Endpoint Security Tools ha eliminato alla scansione all'accesso uno script PowerShell di prova del progetto integrità-docs come `Heur.BZC.PZQ.Boxter`, con richiesta di riavvio; non aggirato, sostituito da un'applicazione compilata. Esclusione o firma da chiedere all'MSP prima di un pilota. Dettaglio in [integrita-docs-integrazione.md](integrita-docs-integrazione.md). |
+| 12/10/2026 | Condivisione con WORM su NAS-HERO per il registro d'integrità Cliente-1 | Cartella `RegistroIntegrita` con WORM Enterprise (blocco dopo 10 minuti), accesso al solo account amministrativo; a servizio di una proposta non ancora approvata per le righe 139 e 168 dell'annex RFQ del Cliente-1. |
+
 ---
 
 ## SGSI – Politica della Sicurezza delle Informazioni (PSGSI)

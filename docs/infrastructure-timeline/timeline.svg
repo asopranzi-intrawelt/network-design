@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4626" viewBox="0 0 1060 4626" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="4626" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4794" viewBox="0 0 1060 4794" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="4794" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">178 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 12/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">185 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 12/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -24,11 +24,11 @@
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(37)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
-<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(16)</tspan></text>
+<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(22)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
-<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(18)</tspan></text>
+<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(19)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(17)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
@@ -2893,7 +2893,119 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="4610" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-179" class="ev-block has-detail" transform="translate(0,4580)">
+<g class="ev-summary" onclick="toggleEv('ev-179')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Poller HTTPS Nebula preparato localmente <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-179-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Poller HTTPS Nebula preparato localmente</p>
+<p>Nel repository collegato D:/log-collector sono preparati ads-nebula.py, configurazione JSON di esempio e unità systemd per istanza. Il campione reale anonimizzato produce cinque accessi e zero righe tecniche AdS; diario SQLite prima dell'append, deduplicazione, checkpoint e finestre sovrapposte sono provati. Suite Python Windows 100 passate e una POSIX saltata; Nebula Linux WSL 35/35. Tre mutazioni dei controlli di dedup, ripresa e TLS sono rilevate con ripristino SHA-256. Nessuna chiamata reale, chiave letta o sorgente installata. Retention, troncamenti, ritardi cloud, offline reale, notifica esterna e coordinamento D-1 restano gate prima del collaudo VM con credenziale distinta. Dettaglio e fonti ufficiali in D:/log-collector/docs/runbook-componente-3-nebula.md e nella decisione sul diario del poller del progetto collegato. ISO-30 rimane in_corso. Task Proxmox pianificato, PowerShell 7, dieci endpoint guest-agent 403 e audit retrospettivo delle fonti ADR restano aperti.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-180" class="ev-block has-detail" transform="translate(0,4604)">
+<g class="ev-summary" onclick="toggleEv('ev-180')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Campione Nebula ritrovato dopo oltre 90 ore <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-180-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Campione Nebula ritrovato dopo oltre 90 ore</p>
+<p>Il 12/10/2026 alle 09:24:33.688147 UTC la lettura di 120 ore dalla postazione ha ritrovato tutti i cinque accessi AAA del 30HP dell'08/10, identici nei sette campi al riferimento: tre fallimenti, login e logout. Età del più vecchio 90,51408 ore. Il grezzo privato contiene 370 eventi 30HP e 586 54HP, cinque e zero AAA, senza duplicati esatti o warning API; report ricalcolato e coincidente. Dettaglio, SHA e perimetro in D:/log-collector/docs/runbook-componente-3-nebula.md. Questa misura non dimostra retention massima, completezza o copertura AdS del 54HP. È preparato il confronto di una finestra unica e quattro segmenti per ciascuno switch nella finestra nota: dieci POST read-only ancora attesi. I 23 test locali e la prova PowerShell 5.1/Python con token finto passano. Nessun poller o token installato sulla VM; offline, ritardo cloud, notifica esterna e coordinamento D-1 ancora aperti. ISO-30 resta in_corso; task Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit retrospettivo delle fonti delle decisioni restano aperti.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-181" class="ev-block has-detail" transform="translate(0,4628)">
+<g class="ev-summary" onclick="toggleEv('ev-181')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Confronto reale delle finestre Nebula <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-181-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Confronto reale delle finestre Nebula</p>
+<p>Il 12/10 alle 10:40:39.310815 UTC l'operatore ha eseguito dieci POST read-only: nella finestra 08/10 14:50-15:10 UTC i cinque accessi 30HP coincidono nei sette campi fra risposta precedente filtrata, finestra unica e quattro segmenti, senza duplicati. Report ricalcolato dai grezzi e identico; SHA e registro di ogni passo in D:/log-collector/docs/runbook-componente-3-nebula.md. Il 54HP è vuoto nelle tre letture e non collaudato per AdS. La console mostrava solo il percorso: corretto inoltro esplicito di stdout e stderr privato, provato con token finto senza ripetere API; errore e codice di uscita conservati, mutazione rilevata. Preparata la prova di tre intervalli sugli estremi del primo accesso noto, ancora non eseguita. Trenta test locali verdi e mutazione del controllo vuoto rilevata con SHA originale ripristinato. Su richiesta dell'operatore ogni singolo passo di implementazione va registrato con motivo, file, verifica ed esito nel runbook, distinguendo prove locali e reali. Inclusività, retention massima, completezza, ritardi, offline, notifica esterna e coordinamento D-1 restano aperti; nessun poller o token sulla VM. ISO-30 resta in_corso. Restano aperti task Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit retrospettivo delle fonti ADR. Commit, push e deploy manuali.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-182" class="ev-block has-detail" transform="translate(0,4652)">
+<g class="ev-summary" onclick="toggleEv('ev-182')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Estremi Nebula misurati nel campione <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-182-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Estremi Nebula misurati nel campione</p>
+<p>Il 12/10 alle 12:15:07.880462 UTC la prova manuale del 30HP ha concluso tre POST: il primo fallimento noto dell'08/10 14:53:43 UTC compare identico nei sette campi nel controllo e su entrambi gli estremi. Report ricalcolato identico e payload identici nei byte; SHA e passi 13–18 in D:/log-collector/docs/runbook-componente-3-nebula.md. Il singolo record è disponibile dopo 93,356911 ore, senza stabilire retention massima o una garanzia generale Zyxel. Confini condivisi e deduplicazione del poller non cambiano. La milestone precedente è committata e pushata dall'utente in 48be07b; nuovo osservatore della pubblicazione preparato localmente, non eseguito: un solo login GUI locale dopo avvio, cinque minuti più richiesta in corso, pausa 15 secondi e budget 21 POST. Tempo apparente, offset e identità del candidato da verificare; vuoto o più candidati non danno successo. Otto nuovi test, 38/38 senza rete; verde forzato su risposte vuote rilevato e SHA ripristinato, Ruff e parser PowerShell puliti. Ogni passo documentato come richiesto dall'operatore. Limiti, ritardi, offline, copertura AdS 54HP, notifica esterna e coordinamento D-1 ancora aperti, nessun poller o token sulla VM. ISO-30 resta in_corso; Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit retrospettivo fonti ADR restano aperti. Commit, push e deploy manuali.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-183" class="ev-block has-detail" transform="translate(0,4676)">
+<g class="ev-summary" onclick="toggleEv('ev-183')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Pubblicazione Nebula inconcludente con login confermato <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-183-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Pubblicazione Nebula inconcludente con login confermato</p>
+<p>Il 12/10 la prima osservazione di pubblicazione 30HP, dalle 15:03:25 alle 15:08:25 locali, ha ricevuto venti array vuoti e zero candidati: ritardo non misurato. Ultimo estremo interrogato 15:08:18.655, circa 6,6 secondi prima del termine. L'operatore conferma anche un login locale riuscito nel browser durante la prova, senza ora esatta. Target/site coincidono con riferimento e snapshot XGS2220-30HP, metadati e ready verificati; SHA e passi 24-29 nel runbook D:/log-collector/docs/runbook-componente-3-nebula.md. Causa ancora aperta, senza attribuire il vuoto a login assente, clock o ritardo cloud. Preparata rilettura diagnostica sullo stesso accesso: due POST, vecchio evento di controllo e intervallo da due ore prima dell'avvio a ora corrente, nessun nuovo login. Sette nuovi casi, 45/45 senza rete; mutazione del controllo rilevata con SHA ripristinato, query distinta da idoneità al filtro, Ruff e parser verdi. Rilettura reale ancora attesa, nessun cambio a settle o overlap del poller. La FAQ Zyxel sul tempo generale di aggiornamento dei dispositivi non garantisce il ritardo dell'endpoint eventi. Ogni passo documentato; ISO-30 resta in_corso. Nessun poller o token sulla VM. Restano limiti, ritardi, offline, copertura AdS 54HP, notifica e D-1, Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit retrospettivo fonti ADR. Commit, push e deploy manuali.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-184" class="ev-block has-detail" transform="translate(0,4700)">
+<g class="ev-summary" onclick="toggleEv('ev-184')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#008300"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Condivisione RegistroIntegrita con WORM su NAS-HERO <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">STOR</tspan></text>
+</g>
+<foreignObject id="ev-184-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Condivisione RegistroIntegrita con WORM su NAS-HERO</p>
+<p>L'IT Manager ha creato su NAS-HERO la cartella condivisa RegistroIntegrita, separata da Documenti, per il registro dell'attestazione d'integrità dei documenti Cliente-1 proposta dal progetto collegato D:/integrità-docs (proposta non approvata). WORM Enterprise con blocco dopo 10 minuti dall'ultima scrittura e senza conservazione, quota 10 GB in thin provisioning, snapshot giornaliero con Smart Versioning, nessuna cifratura della cartella, scrittura al solo account amministrativo e nessun accesso agli altri utenti. Nello stesso giorno Bitdefender ha eliminato come Heur.BZC.PZQ.Boxter uno script di prova di quel progetto, che è passato a un'applicazione compilata; le marche temporali richiedono uscita verso TSA pubbliche. Dettaglio in [integrita-docs-integrazione.md](../integrita-docs-integrazione.md), decisione ADR-032.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-185" class="ev-block has-detail" transform="translate(0,4724)">
+<g class="ev-summary" onclick="toggleEv('ev-185')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Nuovo login Nebula osservato nel cloud <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-185-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Nuovo login Nebula osservato nel cloud</p>
+<p>Il 12/10 il proprietario esegue la prova del nuovo login locale 30HP con conferma umana registrata. Evento alle 17:24:38 locali, conferma alle 17:24:42,827975 e risposta positiva alle 17:25:16,030664: cinque richieste, quattro array vuoti e un login. Report ricalcolato identico dai grezzi senza rete, mapping e candidato verificati; account/IP coincidono con il login noto e restano privati. Ritardo apparente sul timestamp del record: ultima richiesta negativa a +22,549 secondi, risposta positiva a +38,030; 33,202689 secondi dopo la conferma umana. Il campione non stabilisce scarto degli orologi, istante esatto di pubblicazione o ritardo massimo. Screenshot 423, grezzi, SHA e passi 38-39 in D:/log-collector/docs/runbook-componente-3-nebula.md. Il vecchio candidato delle 15:12 resta non associato; nuovo tentativo riuscito senza reinterpretarlo. ISO-30 resta in_corso, nessun poller o token sulla VM e nessun parametro cambiato. Prossimo lavoro: ricognizione della GUI locale del 54HP e suo login controllato. Limiti, offline, copertura 54HP, notifica e D-1, Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit fonti ADR restano aperti. Preservate le modifiche precedenti, compreso il blocco integrità-docs; commit e push manuali.</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="4778" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3077,7 +3189,14 @@
   {id:'ev-175',type:'event',h:24},
   {id:'ev-176',type:'event',h:24},
   {id:'ev-177',type:'event',h:24},
-  {id:'ev-178',type:'event',h:24}
+  {id:'ev-178',type:'event',h:24},
+  {id:'ev-179',type:'event',h:24},
+  {id:'ev-180',type:'event',h:24},
+  {id:'ev-181',type:'event',h:24},
+  {id:'ev-182',type:'event',h:24},
+  {id:'ev-183',type:'event',h:24},
+  {id:'ev-184',type:'event',h:24},
+  {id:'ev-185',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3118,7 +3237,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 4626').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 4794').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
