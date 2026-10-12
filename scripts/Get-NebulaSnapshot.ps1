@@ -14,7 +14,7 @@
     docs/runbook-anomalie.md §AP-001).
 
     La chiave API non viene mai scritta su disco da questo script. Ordine di risoluzione:
-    parametro -ApiKey, poi variabile d'ambiente NEBULA_API_KEY, infine prompt a runtime
+    parametro -ApiKey, poi file privato .env, infine prompt a runtime
     (SecureString, mai in chiaro).
 
     Endpoint usati (verificati contro la documentazione ufficiale
@@ -36,7 +36,7 @@
     barra in alto di Nebula Control Center > "My devices & services" > scheda
     "NCC OpenAPI Key" > Generate. Richiede licenza Nebula Professional Pack
     sui dispositivi dell'organizzazione. Se il parametro e' omesso, si prova
-    la variabile d'ambiente NEBULA_API_KEY, poi si chiede a runtime.
+    il file privato .env, poi si chiede a runtime.
 .PARAMETER OrgId
     ID organizzazione specifico. Se omesso, lo script itera su tutte le organizzazioni
     visibili con quella chiave API.
@@ -74,10 +74,12 @@ Write-Host "Output verso: $OutputDir" -ForegroundColor Cyan
 # ---------------------------------------------------------------------------
 # 1. Chiave API: parametro -> variabile d'ambiente -> prompt runtime
 # ---------------------------------------------------------------------------
+. (Join-Path $PSScriptRoot 'Read-ProjectEnv.ps1')
 if (-not $ApiKey) {
-    if ($env:NEBULA_API_KEY) {
-        $ApiKey = $env:NEBULA_API_KEY
-        Write-Host "Chiave API letta da variabile d'ambiente NEBULA_API_KEY." -ForegroundColor DarkGray
+    $storedKey = Get-ProjectSecret -Name 'NEBULA_API_KEY' -ProjectRoot (Split-Path -Parent $PSScriptRoot)
+    if ($storedKey) {
+        $ApiKey = $storedKey
+        Write-Host "Chiave API letta dal file privato .env." -ForegroundColor DarkGray
     } else {
         $secureKey = Read-Host "Chiave API Nebula (Nebula Control Center > API Key Management)" -AsSecureString
         $bstr      = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureKey)

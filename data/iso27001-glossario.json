@@ -105,6 +105,7 @@
     "M22c": ["VLAN IoT/OT", "Censire i dispositivi e definire la VLAN 60. Per il WBE530 verificare capacità di isolamento fra Wi-Fi e seconda porta Ethernet."],
     "M22d": ["VLAN dei servizi applicativi", "Preparare il segmento dei servizi interni sulla VLAN 50 e migrare i servizi solo dopo le prove dei flussi."],
     "M22e": ["VLAN postazioni e server", "Separare postazioni e server, poi decidere il segmento di gestione degli apparati mantenendo un accesso alternativo."],
+    "M30": ["Custodia locale dei segreti", "Migrare le quattro chiavi operative della postazione a un file privato con ACL ristretto, loader esplicito per gli script e launcher MCP verificato con rollback."],
     "FW-004": ["Rotte statiche obsolete", "Alcune rotte dipendono da un router non monitorato su una rete in dismissione; verificarle prima di rimuoverle."],
     "FW-006": ["Parametri VPN datati", "Un tunnel IPsec usa una combinazione IKEv1 e algoritmi ormai da aggiornare in accordo con la controparte."],
     "FW-007": ["Profili IPsec duplicati da chiarire", "Due profili verso la stessa controparte potrebbero rappresentare una transizione o un residuo; verificare quale sia attivo."],

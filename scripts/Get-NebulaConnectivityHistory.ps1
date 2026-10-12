@@ -45,9 +45,11 @@ if (-not $OutputDir) {
 $OutputDir = [System.IO.Path]::GetFullPath($OutputDir)
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir | Out-Null }
 
+. (Join-Path $PSScriptRoot 'Read-ProjectEnv.ps1')
 if (-not $ApiKey) {
-    if ($env:NEBULA_API_KEY) {
-        $ApiKey = $env:NEBULA_API_KEY
+    $storedKey = Get-ProjectSecret -Name 'NEBULA_API_KEY' -ProjectRoot (Split-Path -Parent $PSScriptRoot)
+    if ($storedKey) {
+        $ApiKey = $storedKey
     } else {
         $secureKey = Read-Host "Chiave API Nebula" -AsSecureString
         $bstr      = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureKey)

@@ -46,7 +46,8 @@ $files = @(
     @{ Name = "2025-q2-migrazione-tim-vianova.md";Year = 2025 },
     @{ Name = "2025-q3-q4.md";                    Year = 2025 },
     @{ Name = "2025-storage-anni-vecchi.md";      Year = 2025 },
-    @{ Name = "2026-switch-piano-terra.md";       Year = 2026 }
+    @{ Name = "2026-switch-piano-terra.md";       Year = 2026 },
+    @{ Name = "2026-q4-segreti-e-collettore.md"; Year = 2026 }
 )
 
 $mesi = @{ "gennaio"=1; "febbraio"=2; "marzo"=3; "aprile"=4; "maggio"=5; "giugno"=6;
@@ -56,7 +57,7 @@ $mesi = @{ "gennaio"=1; "febbraio"=2; "marzo"=3; "aprile"=4; "maggio"=5; "giugno
 # validata (dataviz, light mode). Il match usa la prima categoria che scatta.
 $categorie = @(
     @{ Tag="AI";     Nome="AI e automazione";          Colore="#e87ba4"; Kw=@("intralino","scenia","ollama","rag ","n8n","qdrant","gpu","benchmark","tinker","thinking","unimc","aidapt","chroma","automazione","api odoo","export tm","power platform","app desktop","pyqt") },
-    @{ Tag="SEC";    Nome="Sicurezza e compliance";    Colore="#e34948"; Kw=@("phishing","bitdefender","iso 27001","gdpr","dpa","dpia","vulnerability","pentest","proelium","onova","cve","mfa","ssl","certificat","password","crittograf","audit","questionario","nis2","breach","ransomware","csrf","sicurezza","regolamento","2fa","cybersecurity","malware","spoofing") },
+    @{ Tag="SEC";    Nome="Sicurezza e compliance";    Colore="#e34948"; Kw=@("phishing","bitdefender","iso 27001","gdpr","dpa","dpia","vulnerability","pentest","proelium","onova","cve","mfa","ssl","certificat","password","segreti","credenzial","crittograf","audit","questionario","nis2","breach","ransomware","csrf","sicurezza","regolamento","2fa","cybersecurity","malware","spoofing") },
     @{ Tag="TEL";    Nome="Telefonia e linee";         Colore="#4a3aa7"; Kw=@("vianova","tim:","da tim","fibercop","ftto","centralino","voip","pbx","ivr","telefon","sip-","fonia","linea","linee","ponte radio","pec","disdetta") },
     @{ Tag="RETE";   Nome="Rete e switching";          Colore="#2a78d6"; Kw=@("vlan","switch","trunk","cablaggio","dorsale","sfp","wi-fi","dhcp","dns","tagging","porte","porta ","rack","10 gbps","scan-to-folder","scanner","stampant","nebula") },
     @{ Tag="FW/VPN"; Nome="Firewall e VPN";            Colore="#1baf7a"; Kw=@("firewall","vpn","zyxel","usg","tunnel","ipsec","dmz","seeweb","allow-",'allow->') },

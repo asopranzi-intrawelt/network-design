@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-02",
+  "aggiornato": "2026-10-12",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1144,6 +1144,290 @@
       "stato": "in_corso",
       "nota": "Collettore dei log AdS in servizio: VM 210 ads-collector creata il 01/10/2026 e misurata nello snapshot del 02/10; sorgenti host Proxmox (TLS 6514) e firewall USG FLEX (syslog 514) collaudate il 02/10 con login riusciti e falliti; restano NAS, custodia esterna della prova e analisi",
       "evidenza": "docs/log-collector-integrazione.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-07",
+      "stato": "in_corso",
+      "nota": "Raccolta degli accessi amministrativi verificata su Proxmox, firewall, NAS QNAP e iLO 5. Su NAS INTRA3 e iLO osservati login riusciti e falliti; sincronizzazione temporale confrontata con il collettore. Separazione D7 degli accessi NAS ordinari e degli eventi tecnici iLO ancora non installata; catena D-1 provata solo in locale; mancano monitoraggio automatico, TSA, WORM e nomina/elenco AdS approvati. Evidenze e limiti in docs/log-collector-integrazione.md e docs/design-and-security.md.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-3-nas.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Approvata ritenzione locale di 90 giorni per gli eventi iLO tecnici separati dagli accessi AdS. Preparati rotazione per file giornalieri, permessi root:root, job di scadenza e timer alle 03:00; prova WSL della soglia e prova Debian 13 Docker dei due flussi passate. Nessuna installazione sul collettore; avviso di capienza solo nel journal, senza presa in carico automatica. D7 NAS e custodia esterna restano aperti. Dettaglio in docs/log-collector-integrazione.md.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md; D:/log-collector/tests/test_ilo_other_retain.sh; D:/log-collector/tests/debian13/verifica-config.sh"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Preflight reale del flusso iLO tecnico: rsyslog attivo, configurazione corrente presente, directory tecnica ancora assente, /var/log al 44% con 8590400 KiB disponibili; candidata locale generata ma non installata. Restano hash e backup del file attivo, collaudo reale, misura del volume e monitoraggio della capienza.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Baseline SHA-256 del file rsyslog attivo acquisita; nuovo filtro iLO non installato. Perimetro esteso a 55/55 nodi della topologia, inclusi apparati del fornitore, telefoni, stampanti e OT, con esito per nodo. Restano collaudo dei canali Nebula, VM, endpoint e fornitori, filtri AdS e monitoraggio in esercizio.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/matrice-sorgenti-rete.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Verificati 18753 eventi Nebula di due switch: nessun messaggio login o auth nel campione. Due multifunzione fisiche documentate restano fuori dai 55 nodi del JSON e richiedono censimento e verifica dei log amministrativi. La candidata rsyslog iLO e ancora non installata.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/matrice-sorgenti-rete.md"
+    },
+    {
+      "id": "ISO-35",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Censite individualmente nella topologia le due multifunzione di rete: Kyocera Piano Terra su switch 30HP porta 6 verificata, Canon Piano 1 con porta switch ancora da attribuire. Mappa rigenerata a 57 nodi e 71 collegamenti; per entrambe restano proprietario, alimentazione e audit amministrativo da verificare.",
+      "evidenza": "data/network-topology.json; docs/network-map.html; docs/livello-fisico-ed-elettrico.md; docs/log-collector-integrazione.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Filtro rsyslog iLO installato sul collettore reale con backup SHA-256 verificato, candidata e configurazione completa validate da rsyslogd, servizio riavviato e attivo. Restano prova post-cambio degli eventi di accesso e tecnici, timer di ritenzione 90 giorni e monitoraggio in esercizio.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: filtro iLO installato; test Syslog della iLO fisica ricevuto nel file tecnico separato con scarto 0,283227 s e permessi verificati. Accessi AdS post-cambio e timer di ritenzione 90 giorni ancora da collaudare.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: filtro iLO collaudato sui messaggi Browser post-cambio: login fallito, login riuscito e logout nel file AdS; test Syslog una volta nel file tecnico e zero nel file AdS. Restano altri canali iLO, perdita possibile UDP e timer tecnico 90 giorni.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: flussi iLO Browser e tecnico verificati; preflight del timer tecnico 90 giorni sulla VM: directory e fuso corretti, tre target assenti, candidate e prova WSL pronte. Installazione e attivazione ancora aperte.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: ritenzione tecnica iLO di 90 giorni installata sulla VM con impronte verificate; dry-run reale cutoff 11/07/2026, zero file scaduti. Timer ancora disabilitato, attivazione e verifica pianificazione in attesa.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: timer ritenzione tecnica iLO di 90 giorni enabled e active, prossimo giro 09/10 alle 03:00 CEST. LAST vuoto; esecuzione del service e verifica journal ancora in attesa.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: ritenzione tecnica iLO di 90 giorni in esercizio; service systemd eseguito alle 15:29 con status=ok, cutoff 11/07, zero file eliminati e filesystem al 44%. Timer active per le 03:00; volume a 90 giorni e allarme esterno non verificati.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: avviata ricognizione Nebula NCC. Fonti Zyxel distinguono Recent logins del solo account da Change log organizzativo delle modifiche; export centrale dei login e fallimenti non dimostrati. Richiesta prova GUI sul tenant reale; nessuna sorgente Nebula attivata.",
+      "evidenza": "D:/log-collector/docs/matrice-sorgenti-rete.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: screenshot reale Nebula NCC Recent logins: una riga del 09/09 con IP/localita/ora UTC, pie di pagina con login pochi secondi prima; nessun account per riga, esito o export visibile. Refresh e seconda schermata richiesti; raccolta centrale login non dimostrata.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: F5 su Recent logins Nebula non aggiorna la tabella, ferma al 09/09, mentre il pie di pagina passa a login 15 minuti prima. Semantica non chiarita; richiesta Change log in sola lettura. Nessuna raccolta NCC in esercizio.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: Nebula Change log disponibile sul tenant con Export e campi ora UTC/Admin/pagina/valori; zero modifiche nel range 01-08/10, storico dichiarato dal 12/09/2024. Ricerca di settembre richiesta per un record reale; login NCC restano non raccolti.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Nebula NCC: ricerca Change log 01-30/09 con 15 modifiche reali e nessun login/logout nel campione; menu Export CSV/XML verificato. Campione CSV richiesto; raccolta automatica degli accessi NCC e degli apparati non ancora dimostrata.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Nebula NCC: CSV Change log reale esportato manualmente; 15 modifiche, nove colonne, zero etichette di login/logout nel campione. Gli accessi NCC e locali agli apparati non sono ancora raccolti; canale automatico da verificare.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Nebula NCC: Logout e login controllato hanno prodotto una nuova riga del 08/10 13:35:15Z in Recent logins. Successo visibile nella cronologia personale; fallimenti ed export centralizzato non dimostrati. CSV Change log manuale già verificato separatamente.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Nebula switch: Event log reale disponibile in NCC; ultimi 10 eventi dei due switch sono link/STP, nessun login amministrativo nel campione. Categorie System, Interface, Switch, AAA, IP, Dropped; ricerca System su 30 giorni in corso. Acquisizione AdS non collaudata.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Nebula: tool di rete esistente interroga via OpenAPI gli event-logs JSON dei due switch, ma non è un job del collettore e non esporta login NCC/Change log. CSV System di 262 eventi senza termini di accesso. 30HP locale HTTPS raggiungibile, login con Local credentials NCC ancora da collaudare.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Switch Nebula 30HP: GUI locale in Cloud Mode; export System Log con 1966 righe, quattro autenticazioni HTTPS (un successo e tre fallimenti) con ora UTC, account e IP. Syslog locale OFF e nessun server in Reporting NCC. Apertura modulo Add richiesta senza salvataggio; consegna a NCC/API e collettore ancora da collaudare. Prove e SHA nel runbook Nebula del progetto log-collector.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Nebula: modulo Syslog NCC verificato in sola lettura. Types distingue Switch log da AP e firewall; nessuna destinazione o tipo salvati. Collettore ammette UDP 514 dalla LAN ma il ruleset attuale mescolerebbe eventi tecnici switch nel flusso AdS: filtro necessario prima dell'attivazione site-wide. Chiesta ricerca authentication nell'Event log NCC per valutare l'API.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "Il registro Nebula NCC mostra cinque eventi AAA/authentication del 30HP: tre fallimenti e un successo coincidono con il System Log locale per ora e testo, più logout per timeout. Richiesta prova read-only dell'endpoint OpenAPI su queste righe prima di scegliere API o Syslog; nessun canale al collettore ancora collaudato. Fasi successive richieste: hardening VM e GUI web solo LAN per il sysadmin, da progettare.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-08",
+      "stato": "in_corso",
+      "nota": "08/10/2026: progettata la migrazione dei segreti locali con prove isolate, verifica del server MCP e rollback. La migrazione non e stata ancora eseguita; il server attuale resta operativo.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "09/10/2026: creato il file locale dei quattro segreti con ACL limitato; script e writer adattati e collaudati con dati finti. Configurazione MCP attiva invariata, valori precedenti conservati temporaneamente per rollback. Restano prove reali e cutover.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "09/10: M30 ha migrato quattro chiavi in .env privato con ACL ristretto; launcher MCP Proxmox connesso e list_nodes read-only riuscito; dry-run Nebula/Proxmox valido senza promozione; JSON Claude ripulito. Restano osservazione del task pianificato e nuova sessione Claude interattiva; SEC-025 separato."
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "09/10: M30 ha spostato quattro chiavi nel .env privato con ACL ristretto. Dopo la rimozione dal JSON Claude, una nuova sessione stdio del launcher MCP ha superato initialize, tools/list e list_nodes read-only sul Proxmox reale; dry-run Nebula/Proxmox valido. Restano la prima esecuzione automatica del task con la nuova fonte e una nuova sessione Claude interattiva; SEC-025 distinto."
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "09/10: M30 su .env privato con ACL ristretto; MCP list_nodes read-only riuscito anche dopo il taglio dal JSON Claude; dry-run Nebula/Proxmox valido. Un backup storico conteneva le quattro chiavi correnti: ripulito e JSON rivalidato. Nuova scansione dei due valori segreti nel progetto: solo .env, zero file saltati. Restano task pianificato e sessione Claude interattiva; SEC-025 separato."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "09/10/2026: Nebula OpenAPI ha restituito tutti i cinque eventi AAA/authentication del 30HP gia osservati in GUI, con ora, account e IP; 125 eventi 30HP e 170 eventi 54HP nella finestra di 24 ore. Il poller sul collettore non e ancora installato. Restano token dedicato, retention, paginazione, offline e controllo dei buchi.",
+      "evidenza": "D:/log-collector/docs/runbook-componente-3-nebula.md, prova OpenAPI 09/10/2026"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "09/10/2026: prova MCP con PROXMOX_ALLOW_DANGER=false: catalogo e connessione locale OK, list_nodes reale KO; rollback della baseline verificato e list_nodes torna OK. Il token PVEAuditor resta di sola lettura. Restano SEC-025, correzione della safety policy e verifica TLS con CA valida; .env non isola i segreti dai processi dello stesso utente.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md, gate MCP e rollback 09/10/2026"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "Preflight sicurezza MCP: causa del blocco list_nodes confermata nel wheel privo di safety_policy.json; candidata locale limitata a dieci GET provata offline. Certificato Proxmox letto senza token: CA interna, IP URL fuori SAN, nome DNS da risolvere. Configurazione attiva invariata; TLS e flag di pericolo ancora aperti in attesa di CA integra e collaudo reale.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "Due script MCP di sola lettura preparati nel progetto rete, copia e sintassi verificate; launcher attivo e file .mcp.json invariati. Resta verifica della CA Proxmox, corrispondenza nome certificato, prova TLS senza token e collaudo read-only prima del cambio.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "CA Proxmox pubblica ricostruita dalla Shell e autofirma valida; confronto impronta con nodo ancora atteso. Test TLS senza token con Python 3.13 rifiuta la CA senza keyUsage per VERIFY_X509_STRICT. Python 3.12 del MCP non attiva quel flag: prova reale separata ancora richiesta; MCP attivo invariato.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "Runtime MCP Python 3.12: handshake TLS 1.3 verificato con CA e nome DNS, senza HTTP e senza token. Python 3.13 rigoroso rifiuta la CA priva di keyUsage. Restano confronto impronta CA da Shell, risoluzione nome, test list_nodes del candidato e cutover con rollback.",
+      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "CA Proxmox: impronta SHA-256 confrontata con la Shell del nodo, copia privata verificata; prova TLS Python 3.12 riuscita, Python 3.13 rifiuta keyUsage assente. Audit in docs/evidenze-sicurezza-mcp-proxmox.md. Mancano mappatura hosts elevata, URL DNS, prova MCP reale e cutover; nessun flag attivo cambiato.",
+      "evidenza": "docs/evidenze-sicurezza-mcp-proxmox.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "MCP Proxmox: nome DNS e CA autenticata, URL privato aggiornato, candidato read-only verificato sul nodo reale con 10 tool, rifiuto di delete_instance e list_nodes OK. Cutover locale con backup; claude mcp list Connected. Manca ultima prova list_nodes sulla configurazione attiva. Audit: docs/evidenze-sicurezza-mcp-proxmox.md.",
+      "evidenza": "docs/evidenze-sicurezza-mcp-proxmox.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-09",
+      "stato": "in_corso",
+      "nota": "SEC-025 chiuso nel perimetro MCP Proxmox: .mcp.json attivo con ALLOW_DANGER=false e VERIFY_SSL=true; CA autenticata, catalogo di 10 tool di lettura, delete_instance rifiutato, list_nodes reale riuscito anche post-cutover, Claude Connected. Restano TLS del client PowerShell, upgrade CA/Python e gate M30 distinti. Audit: docs/evidenze-sicurezza-mcp-proxmox.md.",
+      "evidenza": "docs/evidenze-sicurezza-mcp-proxmox.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-12",
+      "stato": "in_corso",
+      "nota": "Dossier tecnico pubblicato: flusso MCP originale e attivo, quattordici prove con esiti negativi e positivi, custodia delle chiavi, rollback, fonti ufficiali e criteri per i limiti residui. SEC-025 resta sanato nel MCP; il bypass TLS del client PowerShell, la CA non compatibile con Python 3.13 e l'isolamento fra processi dello stesso account sono tracciati separatamente. Evidenza: docs/dossier-sicurezza-mcp-proxmox.md.",
+      "evidenza": "docs/dossier-sicurezza-mcp-proxmox.md"
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-12",
+      "stato": "in_corso",
+      "nota": "Client PowerShell Proxmox senza bypass TLS: CA, nome e pin verificati nel runtime 5.1; dry-run reale riuscito il 12/10, snapshot validato e non promosso. Restano task pianificato, PowerShell 7, revoca e guest-agent 403.",
+      "evidenza": "docs/dossier-sicurezza-mcp-proxmox.md §10; docs/evidenze-sicurezza-mcp-proxmox.md SEC-PS-01..04"
     }
   ]
 }

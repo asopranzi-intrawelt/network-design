@@ -132,10 +132,12 @@ if (-not (Test-Path $OutputDir)) {
 # ---------------------------------------------------------------------------
 # 1. Chiave API
 # ---------------------------------------------------------------------------
+. (Join-Path $PSScriptRoot 'Read-ProjectEnv.ps1')
 if (-not $ApiKey) {
-    if ($env:NEBULA_API_KEY) {
-        $ApiKey = $env:NEBULA_API_KEY
-        Write-Host "Chiave API letta da variabile d'ambiente NEBULA_API_KEY." -ForegroundColor DarkGray
+    $storedKey = Get-ProjectSecret -Name 'NEBULA_API_KEY' -ProjectRoot (Split-Path -Parent $PSScriptRoot)
+    if ($storedKey) {
+        $ApiKey = $storedKey
+        Write-Host "Chiave API letta dal file privato .env." -ForegroundColor DarkGray
     } else {
         $secureKey = Read-Host "Chiave API Nebula" -AsSecureString
         $bstr      = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureKey)

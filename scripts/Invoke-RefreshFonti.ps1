@@ -27,8 +27,7 @@
     riporta in rosso al primo avvio di sessione utile. Un'automazione che fallisce in
     silenzio e' peggio dell'assenza di automazione, perche' produce fiducia mal riposta.
 
-    La terza. Le credenziali restano dove ADR-021 le mette, cioe' nel blocco `env` di
-    `.claude/settings.local.json`, e questo script le legge da li' per passarle ai
+    La terza. Le credenziali restano dove ADR-021 le mette, cioe' nel blocco `.env` privato, e questo script le legge da li' per passarle ai
     processi figli. Non ne crea una seconda copia in una variabile d'ambiente di utente,
     non le scrive su disco e non le stampa mai, nemmeno troncate: un segreto in piu' e'
     una superficie in piu' (SEC-024).
@@ -60,12 +59,6 @@ param(
 $ErrorActionPreference = 'Stop'
 $radice     = Split-Path -Parent $PSScriptRoot
 $cartellaOut = Join-Path $radice 'output'
-# Join-Path annidato e non una stringa con separatore: su Linux la barra rovesciata e'
-# un carattere valido in un nome di file, quindi '.claude\settings.local.json' non e' un
-# percorso di due livelli ma un nome unico bizzarro, e lo script cerca un file che non
-# esistera' mai. Il guasto si manifesta solo fuori da Windows, cioe' quando nessuno lo sta
-# guardando.
-$impostazioni = Join-Path (Join-Path $radice '.claude') 'settings.local.json'
 $registro   = Join-Path $cartellaOut 'refresh-log.txt'
 $stampo     = Get-Date -Format 'yyyyMMdd-HHmmss'
 
@@ -96,14 +89,15 @@ function Pulisci-Fallimento([string]$fonte) {
     if (Test-Path $marcatore) { Remove-Item -LiteralPath $marcatore -Force }
 }
 
-# --- Credenziali dal blocco env, senza copie e senza stamparle mai -----------
-if (-not (Test-Path $impostazioni)) {
-    Segnala-Fallimento 'configurazione' "manca $impostazioni, quindi non ci sono credenziali da usare"
-    exit 2
-}
-$env_ = (Get-Content -LiteralPath $impostazioni -Raw -Encoding UTF8 | ConvertFrom-Json).env
-if (-not $env_) {
-    Segnala-Fallimento 'configurazione' "il file delle impostazioni non ha un blocco env"
+# --- Credenziali dal file .env privato, senza stamparne i valori -----------
+. (Join-Path $PSScriptRoot 'Read-ProjectEnv.ps1')
+$env_ = @{}
+try {
+    foreach ($name in @('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE')) {
+        $env_[$name] = Get-ProjectSecret -Name $name -ProjectRoot $radice
+    }
+} catch {
+    Segnala-Fallimento 'configurazione' 'file .env assente o non valido'
     exit 2
 }
 
@@ -175,7 +169,7 @@ $esiti = @{}
 
 if ($Fonte -in @('nebula', 'tutte')) {
     if (-not $env_.NEBULA_API_KEY) {
-        Segnala-Fallimento 'nebula' "manca NEBULA_API_KEY nel blocco env"
+        Segnala-Fallimento 'nebula' "manca NEBULA_API_KEY nel file .env"
         $esiti['nebula'] = $false
     }
     else {
@@ -189,26 +183,18 @@ if ($Fonte -in @('nebula', 'tutte')) {
 if ($Fonte -in @('proxmox', 'tutte')) {
     $mancanti = @('PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE', 'PROXMOX_URL') | Where-Object { -not $env_.$_ }
     if ($mancanti) {
-        Segnala-Fallimento 'proxmox' ("mancano nel blocco env: " + ($mancanti -join ', '))
+        Segnala-Fallimento 'proxmox' ("mancano nel file .env: " + ($mancanti -join ', '))
         $esiti['proxmox'] = $false
     }
     else {
         # L'indirizzo reale non sta in nessun file tracciato (repo pubblico): si ricava
-        # dall'URL gia' presente nel blocco env, che non e' versionato.
+        # dall'URL gia' presente nel file .env, che non e' versionato.
         $indirizzo = ([uri]$env_.PROXMOX_URL).Host
         $porta = ([uri]$env_.PROXMOX_URL).Port
         if ($porta -le 0) { $porta = 8006 }
         $esiti['proxmox'] = Rinfresca 'proxmox' {
             param($dir)
-            $env:PROXMOX_TOKEN_NAME  = $env_.PROXMOX_TOKEN_NAME
-            $env:PROXMOX_TOKEN_VALUE = $env_.PROXMOX_TOKEN_VALUE
-            try {
-                & (Join-Path $PSScriptRoot 'Get-ProxmoxSnapshot.ps1') -ProxmoxHost $indirizzo -Port $porta -OutputDir $dir
-            }
-            finally {
-                Remove-Item Env:\PROXMOX_TOKEN_NAME  -ErrorAction SilentlyContinue
-                Remove-Item Env:\PROXMOX_TOKEN_VALUE -ErrorAction SilentlyContinue
-            }
+            & (Join-Path $PSScriptRoot 'Get-ProxmoxSnapshot.ps1') -ProxmoxHost $indirizzo -Port $porta -OutputDir $dir
         } 'proxmox-snapshot.json' { param($p) Test-SnapshotProxmox $p }
     }
 }

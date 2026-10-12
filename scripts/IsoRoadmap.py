@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Registro operativo ISO 27001: fonte e vista di progetto, export HTML su richiesta.
+"""Registro operativo ISO 27001: fonte e viste di progetto sincronizzate.
 
 Uso:
   python scripts/IsoRoadmap.py build
@@ -9,10 +9,9 @@ Uso:
   python scripts/IsoRoadmap.py check
   python scripts/IsoRoadmap.py check --desktop
 
-`advance` aggiorna sempre la fonte e la vista nel progetto. L'HTML e' un
-export di sola lettura, aggiornato solo con `build --desktop` o con
-`advance --desktop` esplicitamente richiesto; ogni export scrive Desktop
-e copia nella cartella ISO configurata nel livello privato.
+`advance` aggiorna la fonte, la vista Markdown e l'HTML privato del progetto,
+poi le copie identiche su Desktop e nella cartella ISO privata.
+`--solo-progetto` e' riservato a prove isolate senza export esterno.
 """
 
 from __future__ import annotations
@@ -38,6 +37,7 @@ INTERACTIONS = ROOT / "scripts" / "iso-roadmap-interactions.js"
 GLOSSARY = ROOT / "data" / "iso27001-glossario.json"
 PRIVATE_BRAND = ROOT / "_notes" / "iso-roadmap-brand.json"
 DESKTOP_NAME = "Roadmap ISO 27001 - rete.html"
+OUTPUT_HTML = ROOT / "output" / DESKTOP_NAME
 STATI = {"da_fare", "in_corso", "bloccato", "completato", "non_applicabile"}
 FORNITURE = {"nessuna", "necessaria", "condizionata", "da_verificare"}
 LABEL_STATI = {
@@ -176,7 +176,7 @@ def render_markdown(data: dict) -> str:
         "- **Stati:** da fare = non iniziato; in corso = avviato ma senza prova di chiusura; bloccato = in attesa di un prerequisito; completato = chiuso con evidenza datata; non applicabile = esclusione motivata.",
         "- **Forniture:** necessaria = serve un acquisto o servizio; condizionata = solo se diagnosi o decisione lo richiedono; da verificare = controllare prima se esiste gia'; nessuna = non prevista.",
         "- Per ogni avanzamento comunicato o realizzato, l'agente aggiorna il registro nella stessa sessione: azione, stato, fornitura e nota datata. Il comando `advance` rigenera questa vista nel progetto, senza richiedere azioni all'utente.",
-        "- L'HTML e' una copia di sola lettura: si esporta solo su richiesta con `python scripts/IsoRoadmap.py build --desktop`, che aggiorna insieme Desktop e cartella ISO OneDrive configurata privatamente. Puo' essere piu' vecchio del registro; non va modificato a mano.",
+        "- A ogni avanzamento l'HTML privato in `output/` e le copie identiche su Desktop e nella cartella ISO OneDrive si aggiornano insieme. Non modificare le copie a mano.",
         "- Nell'HTML le sigle aprono una vista interna allo stesso file. Le spiegazioni vivono in `data/iso27001-glossario.json`; quelle dei controlli ISO sono parafrasi operative, non il testo della norma.",
         "- Una voce si chiude solo con una prova datata (`--evidenza`); non trascrivere dati reali o segreti nel registro pubblico.",
         "- Cambiamenti fisici non ancora comunicati o misurabili non possono essere rilevati dal registro: in quel caso la voce resta da verificare fino a sopralluogo o evidenza.",
@@ -282,7 +282,7 @@ def render_html(data: dict, logo_uri: str = "", exported_on: str | None = None) 
         "<main><div id='roadmap-view'><div class='hero'><p class='eyebrow'>Piano operativo · ISO/IEC 27001</p>"
         "<h1>Roadmap della rete e della sicurezza</h1>"
         f"<p class='lead'>Fonte del progetto: data/iso27001-interventi.json · Fotografia {e(data['data_base'])} · Ultimo avanzamento {e(data['aggiornato'])} · Obiettivo marzo 2027</p>"
-        f"<p class='export-note'>Copia di sola lettura esportata il {exported_on or date.today().isoformat()}. Lo stato di riferimento vive nel progetto; questa pagina si rigenera su richiesta.</p>"
+        f"<p class='export-note'>Copia di sola lettura esportata il {exported_on or date.today().isoformat()}. Lo stato di riferimento vive nel progetto; questa pagina si rigenera a ogni avanzamento.</p>"
         "<p class='reference-note'>Le sigle sottolineate aprono una scheda rapida in questa pagina. Le descrizioni ISO sono parafrasi operative, non il testo della norma.</p></div>"
         "<section class='reading-guide' aria-labelledby='reading-guide-title'>"
         "<p class='eyebrow'>Guida rapida</p><h2 id='reading-guide-title'>Come leggere questa pagina</h2>"
@@ -343,10 +343,12 @@ def archive_path() -> Path:
 def build(data: dict, desktop: bool) -> None:
     write_if_changed(MARKDOWN, render_markdown(data))
     print(f"Progetto aggiornato: {MARKDOWN}")
+    page = render_html(data, brand_logo_uri())
+    write_if_changed(OUTPUT_HTML, page)
+    print(f"HTML privato aggiornato: {OUTPUT_HTML}")
     if desktop:
         path = desktop_path()
         archive = archive_path()
-        page = render_html(data, brand_logo_uri())
         write_if_changed(archive, page)
         print("Copia ISO aggiornata nella cartella configurata")
         write_if_changed(path, page)
@@ -357,7 +359,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     p_build = sub.add_parser("build", help="Rigenera la lista del progetto")
-    p_build.add_argument("--desktop", action="store_true", help="Esporta su richiesta la copia HTML sul Desktop")
+    p_build.add_argument("--desktop", action="store_true", help="Allinea anche Desktop e archivio ISO")
     p_check = sub.add_parser("check", help="Verifica che la lista del progetto coincida con la fonte")
     p_check.add_argument("--desktop", action="store_true", help="Verifica anche l'export HTML quando richiesto")
     p_advance = sub.add_parser("advance", help="Registra un avanzamento e rigenera la vista nel progetto")
@@ -370,8 +372,8 @@ def main() -> int:
     p_advance.add_argument("--fornitura-dettaglio", help="Che cosa va fornito; necessario per uno stato diverso da nessuna")
     p_advance.add_argument("--fornitura-decisione", help="Condizione o decisione prima di un ordine")
     desktop_mode = p_advance.add_mutually_exclusive_group()
-    desktop_mode.add_argument("--desktop", action="store_true", help="Esporta anche l'HTML sul Desktop se richiesto")
-    desktop_mode.add_argument("--solo-progetto", action="store_true", help="Compatibilita': il progetto e' gia' la destinazione predefinita")
+    desktop_mode.add_argument("--desktop", action="store_true", help="Compatibilita: export automatico sugli avanzamenti")
+    desktop_mode.add_argument("--solo-progetto", action="store_true", help="Solo prove isolate, senza copie esterne")
     args = parser.parse_args()
     data = load()
     if args.command == "check":
@@ -385,10 +387,11 @@ def main() -> int:
             exported = re.search(r"Copia di sola lettura esportata il (\d{4}-\d{2}-\d{2})", page)
             archive = archive_path()
             archived = archive.read_text(encoding="utf-8") if archive.exists() else ""
-            if not exported or page != render_html(data, brand_logo_uri(), exported.group(1)) or archived != page:
+            project = OUTPUT_HTML.read_text(encoding="utf-8") if OUTPUT_HTML.exists() else ""
+            if not exported or page != render_html(data, brand_logo_uri(), exported.group(1)) or archived != page or project != page:
                 print("Export HTML diverso dalla fonte corrente o copie divergenti: riesportare con build --desktop", file=sys.stderr)
                 return 1
-            print("Roadmap ISO 27001: progetto, Desktop e cartella ISO allineati")
+            print("Roadmap ISO 27001: progetto, HTML privato, Desktop e archivio ISO allineati")
             return 0
         print("Roadmap ISO 27001: vista di progetto allineata; export Desktop non verificato")
         return 0
@@ -419,7 +422,7 @@ def main() -> int:
         validate(data)
         glossary(data)
         write_if_changed(SOURCE, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
-        build(data, args.desktop)
+        build(data, not args.solo_progetto)
         return 0
     build(data, args.desktop)
     return 0

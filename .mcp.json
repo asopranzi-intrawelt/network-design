@@ -1,14 +1,13 @@
 {
   "mcpServers": {
     "proxmox": {
-      "command": "uvx",
-      "args": ["proxmox-mcp"],
+      "command": "python",
+      "args": [
+        "${CLAUDE_PROJECT_DIR:-.}/scripts/start_proxmox_mcp_secure.py"
+      ],
       "env": {
-        "PROXMOX_URL": "${PROXMOX_URL}",
-        "PROXMOX_TOKEN_NAME": "${PROXMOX_TOKEN_NAME}",
-        "PROXMOX_TOKEN_VALUE": "${PROXMOX_TOKEN_VALUE}",
-        "PROXMOX_VERIFY_SSL": "false",
-        "PROXMOX_ALLOW_DANGER": "true"
+        "PROXMOX_VERIFY_SSL": "true",
+        "PROXMOX_ALLOW_DANGER": "false"
       }
     }
   }

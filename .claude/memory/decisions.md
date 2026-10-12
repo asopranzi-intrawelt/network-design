@@ -2,6 +2,23 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-031 - Segreti locali indipendenti da Claude con cutover protetto del MCP
+
+Data: 2026-10-08. Stato: **design approvato, non implementato**. M30 e SEC-052 aperti; il flusso attuale dell'ADR-021 resta in esercizio fino al gate finale.
+
+Contesto. I quattro valori automatici della postazione vivono nel blocco `env` di `.claude/settings.local.json`. Questo permette a Claude Code di alimentare il server MCP, ma lega alla configurazione dell'agente gli script e il rinfresco pianificato; una PowerShell ordinaria non eredita quei valori. Una copia `.env` dei tre valori Proxmox non consumata e' stata eliminata il 08/10 dopo confronto. L'ACL ereditato del JSON locale e' piu' ampio del necessario. Il file `.mcp.json` funzionante non e' stato modificato.
+
+Decisione. La fonte locale target sara' un solo `.env` privato, con ACL limitati alle identita' operative, loader esplicito per gli script e launcher stdio per `uvx proxmox-mcp`. Il cambio di `.mcp.json` avverra' soltanto dopo prova isolata con valori finti e prova read-only reale; le chiavi resteranno temporaneamente nel JSON corrente per il rollback e verranno rimosse solo dopo una nuova sessione Claude con MCP verificato. `.env` non cifra i valori e non sottrae i segreti a un processo che gira come l'utente autorizzato. La futura VM del collettore usera', se necessario, una credenziale di servizio distinta.
+
+Motivazione. Il requisito e' che script, task Windows e MCP consumino la stessa fonte senza dipendere dall'avvio di Claude e senza interrompere l'MCP esistente. Claude Code espande le variabili dell'ambiente nei file MCP ma non carica da solo il file `.env`; il launcher colma quel passaggio. Un cambio atomico senza test esporrebbe il sistema al rischio di perdere il server MCP o il rinfresco pianificato. Gate e rollback sono specificati in `docs/runbook-migrazione-segreti-locali.md`.
+
+Conseguenze. Fino al collaudo, ADR-021 descrive correttamente il funzionamento corrente. Dopo l'accettazione si aggiorneranno la sua attuazione, il registro SEC-052, l'inventario dei secret consumer, la timeline e ISO-41. SEC-025 (`PROXMOX_ALLOW_DANGER`) resta distinto e aperto. Nessun token viene ruotato o copiato sulla VM in questo intervento.
+
+Avanzamento del 09/10/2026. Il file `.env` con ACL ristretto e i consumer propri sono stati installati e provati localmente; la candidata `.mcp.json` e' soltanto in `_notes/`. La configurazione MCP corrente e il blocco `env` precedente restano intatti. La decisione e' in attuazione parziale: il gate read-only reale e il cutover mancano ancora.
+
+Esito del 09/10/2026. Il launcher MCP isolato ha completato `initialize`, `tools/list` e `list_nodes` in lettura sul Proxmox reale. Il dry-run del rinfresco da PowerShell ordinaria ha validato entrambe le fonti, Nebula e Proxmox, senza promuovere snapshot. Il vecchio `.mcp.json` (SHA-256 `495472595ca43471ea45e3641ded0b249b59df78729d72d60b4d8c1b6fed6203`) e' stato sostituito con il launcher (SHA-256 `257a27c64ba8a76172801a601388974f4c675a01cfd277f0a98a6af60067a212`); `claude mcp list` ha riportato `proxmox` connesso. Dopo il confronto in memoria di tutti e quattro i valori, le quattro chiavi sono state rimosse dal solo blocco `env` di `.claude/settings.local.json`, preservando `NETDESIGN_ENV_CANARY`, permessi e hook. Una seconda verifica CLI senza le quattro variabili ereditate ha confermato la connessione: `.env` e' ora la fonte locale dei quattro valori. Nessun token e' stato ruotato o copiato sulla VM del collettore. Restano da osservare la prossima esecuzione automatica del task e una nuova sessione Claude interattiva; il test CLI e la chiamata MCP diretta coprono il percorso di avvio e lettura. SEC-025 resta separato.
+
+---
 ## ADR-030 - La riparazione del nodo si decide su una lettura, non su una deduzione, e la lettura si prende dall'iLO
 
 Data: 2026-09-16 Stato: attiva. Apre M28 e i suoi quattro sotto-passi; determina l'esito di #200 (STOR-005); chiude SRV-003 (#108).
@@ -366,7 +383,7 @@ Verifica di chiusura, 06/08/2026 alle 08:51: l'organizzazione dichiara di nuovo 
 
 ## ADR-021 — Custodia dei segreti: un segreto sta in un posto solo, e i token rigenerabili non si copiano
 
-Data: 2026-08-05 Stato: attiva
+Data: 2026-08-05 Stato: attiva per token e segreto MSP; parte KeePassXC ritirata il 07/10/2026
 
 Contesto: l'IT Manager ha chiesto una configurazione univoca, semplice e sicura, dopo che una verifica aveva mostrato che i segreti di questo progetto vivevano in **quattro posti diversi**: le variabili d'ambiente utente per i token letti dagli script, un file `.env` che duplicava i soli token Proxmox come backup umano, un prompt a runtime per il segreto NinjaOne del provider MSP, e una cartella con un foglio di calcolo sul NAS per le password degli apparati. Nella stessa sessione una chiave API era stata trovata in chiaro in un file sul desktop e spostata in una variabile d'ambiente.
 
@@ -390,11 +407,9 @@ Seconda conseguenza, ed e' la parte non ovvia: il valore vero del `.env` non era
 
 Terza conseguenza: il segreto del provider MSP resta digitato a runtime e non si replica altrove. E' il canale gestito meglio fra tutti e non va toccato.
 
-Sulle password degli apparati, che sono l'unico gruppo non rigenerabile e non letto da script, **si adotta un interim invece di attendere Vaultwarden**: un unico archivio KeePassXC `.kdbx` sul NAS, che eredita il backup gia' esistente, in sostituzione del foglio di calcolo in chiaro `accesso_server_accounts_vari.xls`. Lo studio di SEC-007 aveva scartato KeePass per un solo motivo, i conflitti di scrittura concorrente, e quel motivo **non si applica** finche' l'unica persona che accede e' l'IT Manager. Il formato importa direttamente in Vaultwarden, quindi l'interim non e' un vicolo cieco ma il primo passo dello stesso percorso.
+Rettifica del 07/10/2026 sulle password degli apparati: l'IT Manager ha confermato che l'archivio KeePassXC `.kdbx` sul NAS presentato in precedenza come interim adottato non esiste e non e' stato attuato. La parte dell'ADR che lo dava per operativo e' ritirata; restano valide le parti su token automatici e segreto del fornitore. Il password manager e la migrazione delle credenziali saranno decisi nel futuro intervento SEC-007. Il foglio di calcolo sul NAS e' una fonte storica, non una prova aggiornata della collocazione o validita' delle password correnti.
 
-Limiti dichiarati dell'interim, perche' un interim di cui si tacciono i limiti diventa definitivo: un solo archivio con una sola password principale e' un unico punto di rottura, non offre accesso condiviso, non registra chi ha letto cosa e non permette di revocare l'accesso a una singola persona. Sono esattamente le tre cose che Vaultwarden aggiunge, e restano la ragione per cui SEC-007 non si chiude con questo passo. Cio' che l'interim ottiene subito e' che il gruppo di segreti piu' numeroso e piu' pregiato smette di stare in chiaro in un foglio di calcolo.
-
-Conseguenza sulla lettura dello spostamento della chiave Nebula fatto lo stesso giorno, da tenere insieme a SEC-024: quello spostamento non ha protetto il segreto dall'agente ne' da un processo in esecuzione come quell'utente, ha eliminato quattro esposizioni accidentali diverse. Nessuna delle decisioni qui sopra e' un confine di sicurezza: sono igiene contro il vettore piu' probabile, che in questo contesto e' l'esposizione accidentale, piu' la riduzione del numero di posti da presidiare da quattro a tre.
+Conseguenza sulla lettura dello spostamento della chiave Nebula fatto lo stesso giorno, da tenere insieme a SEC-024: quello spostamento non ha protetto il segreto dall'agente ne' da un processo in esecuzione come quell'utente, ha eliminato quattro esposizioni accidentali diverse. Le decisioni attuate su token e segreto del fornitore riducono alcune esposizioni accidentali; la riduzione da quattro a tre posti dichiarata nel testo originario dipendeva dall'interim KeePassXC, che non e' stato realizzato e non va conteggiato.
 
 ### Verifica del 05/08/2026 (sessione del pomeriggio): il MCP funziona senza le variabili di Windows
 

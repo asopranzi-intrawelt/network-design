@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4242" viewBox="0 0 1060 4242" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="4242" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4626" viewBox="0 0 1060 4626" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="4626" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,24 +15,24 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">162 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 02/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">178 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 12/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
-<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(14)</tspan></text>
+<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(19)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(37)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
-<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(15)</tspan></text>
+<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(16)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(18)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
-<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(11)</tspan></text>
+<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(17)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
-<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(33)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(37)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#e6ede9"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#0e5c62" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">2024</text>
@@ -2497,10 +2497,10 @@
 <g class="ev-summary" onclick="toggleEv('ev-154')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">31/08/2026 (2)</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Dismessa la VM 206, e messo in piedi il registro delle credenziali locali <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Dismessa la VM 206, e messo in piedi il registro delle credenziali locali <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
 </g>
 <foreignObject id="ev-154-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
@@ -2637,7 +2637,263 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="4226" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-163" class="ev-block has-detail" transform="translate(0,4196)">
+<g class="ev-summary" onclick="toggleEv('ev-163')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">08/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Progettata la migrazione dei segreti locali senza interrompere il MCP <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-163-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">08/10/2026 &#8212; Progettata la migrazione dei segreti locali senza interrompere il MCP</p>
+<p>La ricognizione ha distinto quattro consumer della stessa credenziale locale: Claude Code, il server MCP Proxmox, gli script PowerShell e il rinfresco pianificato. Le quattro chiavi operative sono ancora nel blocco privato env di .claude/settings.local.json; .mcp.json e' invariato. Una vecchia copia .env Proxmox non consumata e' stata rimossa dopo confronto, conservandone i commenti nel livello privato. E' stato osservato un ACL ereditato ampio sul JSON locale, da restringere senza inferire accessi impropri. ADR-031 definisce una fonte .env privata con loader per gli script e launcher stdio per il MCP, piu' prove isolate e rollback prima di togliere la vecchia fonte. M30 e SEC-052 restano aperti; ISO-41 e' in corso. Il dettaglio tecnico e le prove richieste sono in docs/runbook-migrazione-segreti-locali.md. Nessuna migrazione, rotazione o modifica del MCP e' stata eseguita in questo passo.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-164" class="ev-block has-detail" transform="translate(0,4220)">
+<g class="ev-summary" onclick="toggleEv('ev-164')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Dossier tecnico dei limiti residui MCP e Proxmox <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-164-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Dossier tecnico dei limiti residui MCP e Proxmox</p>
+<p>Pubblicato il [dossier tecnico MCP e TLS](../dossier-sicurezza-mcp-proxmox.md) con il flusso originale e quello attivo, quattordici passaggi di prova, ratio del filtro read-only, custodia dei segreti, limiti probatori, rollback e fonti ufficiali. Il grafico statico prima/dopo vive nel livello privato _notes/ di entrambi i progetti. I due flag MCP sono sanati; il bypass TLS di Get-ProxmoxSnapshot.ps1, l'isolamento fra processi dello stesso account e la CA non compatibile con Python 3.13 restano distinti e hanno criteri di chiusura nel dossier.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-165" class="ev-block has-detail" transform="translate(0,4244)">
+<g class="ev-summary" onclick="toggleEv('ev-165')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">MCP Proxmox verificato dopo cutover <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-165-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; MCP Proxmox verificato dopo cutover</p>
+<p>Il 09/10/2026 i due rischi del client MCP sono stati sanati e collaudati: .mcp.json usa PROXMOX_ALLOW_DANGER=false e PROXMOX_VERIFY_SSL=true, il launcher espone solo dieci tool di lettura e carica la CA autenticata solo nel processo figlio. Dopo il cutover, claude mcp list segnala Connected; la sonda che controlla l'hash della configurazione attiva ha ripetuto catalogo, rifiuto di delete_instance e list_nodes reale. SEC-025 è quindi chiuso per il MCP osservato. Il token non è stato trascritto nei file versionati e rimane nel .env con ACL ristretto; questo non lo isola da processi dello stesso account. Il pacchetto 0.1.0 resta fissato ai byte esaminati. Un aggiornamento del pacchetto o a Python 3.13 richiede nuovo collaudo, perché la CA interna manca dell'estensione keyUsage richiesta dalla verifica rigorosa. Get-ProxmoxSnapshot.ps1 usa ancora un bypass TLS ed è un consumer distinto, non coperto da questo esito. Dettaglio, esiti negativi e fonti ufficiali nel [registro delle evidenze](evidenze-sicurezza-mcp-proxmox.md).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-166" class="ev-block has-detail" transform="translate(0,4268)">
+<g class="ev-summary" onclick="toggleEv('ev-166')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Prova reale del candidato MCP <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-166-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Prova reale del candidato MCP</p>
+<p>La voce hosts è stata installata da PowerShell elevata con esito HOSTS_PROXMOX_OK; una seconda lettura della risoluzione restituisce l'indirizzo atteso. È stato cambiato soltanto PROXMOX_URL nel .env privato, usando il writer che preserva l'ACL; il vecchio URL è conservato nel livello privato per il rollback. Il codice del pacchetto effettivo usa httpx.AsyncClient(verify=True); la CA del cluster entra con SSL_CERT_FILE nel solo processo figlio. Il test reale del launcher candidato ha inizializzato MCP, esposto esattamente dieci tool di lettura, respinto un tool di modifica e completato list_nodes, senza stampare dati del nodo o token. Il filtro locale verifica i byte del pacchetto prima di importarlo. .mcp.json è stato portato al nuovo launcher con backup e hash controllati; restano da provare la connessione vista da Claude e una chiamata tramite la configurazione attiva. [Audit dei gate](evidenze-sicurezza-mcp-proxmox.md); [fonti HTTPX](https://www.python-httpx.org/environment_variables/) e [Python ssl](https://docs.python.org/en/3.13/library/ssl.html).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-167" class="ev-block has-detail" transform="translate(0,4292)">
+<g class="ev-summary" onclick="toggleEv('ev-167')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">CA Proxmox verificata sulla Shell <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-167-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; CA Proxmox verificata sulla Shell</p>
+<p>L'impronta SHA-256 della CA è stata letta direttamente dalla Shell Proxmox con openssl x509 -in /etc/pve/pve-root-ca.pem -noout -fingerprint -sha256 e coincide con quella della copia locale, normalizzando due punti e maiuscole. Il PEM pubblico autenticato è stato copiato in _notes/certs/ e l'hash dei byte è stato ricontrollato; nessun token è stato inviato o copiato. Lo script per hosts ha superato una prova negativa: da processo non elevato si ferma prima della scrittura. Restano mappatura elevata con backup, URL privato, prova reale del candidato e cutover. La differenza Python 3.12/3.13 resta aperta come limite di compatibilità della CA esistente. Metodo ed esiti: [evidenze di sicurezza MCP](evidenze-sicurezza-mcp-proxmox.md).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-168" class="ev-block has-detail" transform="translate(0,4316)">
+<g class="ev-summary" onclick="toggleEv('ev-168')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Handshake TLS verificato nel runtime MCP <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-168-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Handshake TLS verificato nel runtime MCP</p>
+<p>La seconda prova TLS, svolta con Python 3.12.13 del pacchetto MCP e la CA ricevuta dalla Shell, ha restituito TLS_VERIFIED_OK TLSv1.3. La connessione TCP usa l'IP di gestione corrente, mentre SNI e verifica del nome usano il DNS presente nel certificato; nessuna richiesta HTTP o token e' stata inviata. Il runtime MCP attuale sa quindi verificare catena e nome con questa CA, senza disattivare TLS. Restano confronto indipendente dell'impronta CA, risoluzione locale del nome, test di list_nodes sul launcher candidato e cutover con rollback. Python 3.13 rigoroso continua a rifiutare la CA senza keyUsage; questo limite non e' stato nascosto.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-169" class="ev-block has-detail" transform="translate(0,4340)">
+<g class="ev-summary" onclick="toggleEv('ev-169')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Verifica TLS rigorosa della CA Proxmox <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-169-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Verifica TLS rigorosa della CA Proxmox</p>
+<p>La copia pubblica della CA del cluster e' stata completata recuperando quattro caratteri Base64 mancanti dalla riga originale. Si decodifica, ha autofirma valida e scade nel 2035; resta il confronto della sua impronta con la Shell Proxmox. La prima prova TLS senza HTTP e senza token, usando Python 3.13, fallisce con CA cert does not include key usage extension: quella versione attiva per default VERIFY_X509_STRICT, mentre Python 3.12 del pacchetto MCP non lo attiva nel controllo locale dei flag. Serve una prova TLS distinta con Python 3.12, poi risoluzione del nome e test MCP read-only; nessun flag attivo e' stato cambiato. Fonti: [Python ssl 3.13](https://docs.python.org/en/3.13/library/ssl.html) e [OpenSSL verification](https://docs.openssl.org/3.4/man1/openssl-verification-options/).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-170" class="ev-block has-detail" transform="translate(0,4364)">
+<g class="ev-summary" onclick="toggleEv('ev-170')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Causa del blocco MCP e certificato TLS <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-170-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Causa del blocco MCP e certificato TLS</p>
+<p>L'ispezione del pacchetto proxmox-mcp 0.1.0 effettivamente avviato conferma che il wheel non contiene config/safety_policy.json: la lista dei tool sicuri diventa vuota, quindi con PROXMOX_ALLOW_DANGER=false fallisce anche list_nodes. Una candidata privata fissa versione e SHA-256 dei moduli, registra dieci soli tool GET e carica in memoria la lista ammessa. La prova offline con credenziali finte mostra dieci tool, list_nodes ammesso, delete_instance bloccato e nessun tool di modifica nel catalogo. La lettura TLS senza token mostra che il certificato e' firmato dalla CA interna del cluster; l'IP dell'URL corrente non e' nei SAN, mentre il nome DNS del nodo e' presente ma non risolto dalla postazione. La prima copia del certificato pubblico CA in chat manca di quattro caratteri Base64: e' stata chiesta la riga incompleta, senza accettare la copia come ancora di fiducia. I due script scripts/proxmox_mcp_readonly.py e scripts/start_proxmox_mcp_secure.py sono ora preparati nel progetto, con copia byte-per-byte e sintassi controllate. .mcp.json continua ad avviare il launcher precedente: nessun cutover o chiamata reale con la candidata. SEC-025 e TLS restano aperti. Fonti: [Proxmox VE Administration Guide](https://pve.proxmox.com/pve-docs/pve-admin-guide.pdf), [HTTPX environment variables](https://www.python-httpx.org/environment_variables/), [proxmox-mcp upstream](https://github.com/josky-com/proxmox-mcp).</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-171" class="ev-block has-detail" transform="translate(0,4388)">
+<g class="ev-summary" onclick="toggleEv('ev-171')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Prova e rollback del flag di sicurezza MCP <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-171-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Prova e rollback del flag di sicurezza MCP</p>
+<p>Il 09/10/2026 e' stato provato PROXMOX_ALLOW_DANGER=false senza cambiare le credenziali: initialize, tools/list e claude mcp list sono riusciti, ma la singola chiamata read-only list_nodes ha fallito. La configurazione precedente e' stata ripristinata dal backup verificato SHA-256 257a27c64ba8a76172801a601388974f4c675a01cfd277f0a98a6af60067a212; con la baseline list_nodes e' tornato OK. Il codice installato usa una safety policy per i tool non confermati, e nella copia locale esaminata non compare il file safety_policy.json: questo spiega plausibilmente il blocco di list_nodes, ma va verificato sul pacchetto effettivamente avviato prima di correggerlo. PROXMOX_ALLOW_DANGER=true rimane quindi un rischio di configurazione SEC-025; il token PVEAuditor e' la barriera server-side di sola lettura. PROXMOX_VERIFY_SSL=false resta separatamente aperto: prima di abilitarne la verifica servono CA e nome certificato validi. Non copiare token in Claude, file tracciati o sulla VM del collettore.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-172" class="ev-block has-detail" transform="translate(0,4412)">
+<g class="ev-summary" onclick="toggleEv('ev-172')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Eventi AAA degli switch verificati via OpenAPI <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-172-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Eventi AAA degli switch verificati via OpenAPI</p>
+<p>Il 09/10/2026 una lettura read-only di 24 ore della Nebula OpenAPI, con chiave caricata da .env privato da PowerShell ordinaria, ha restituito 125 eventi del 30HP e 170 del 54HP. Tutti i cinque AAA/authentication del 30HP gia' osservati nella GUI NCC compaiono nella risposta: tre fallimenti, un login e un logout, con ora, dispositivo, account e IP nel messaggio. Il JSON grezzo e l'impronta sono nel livello privato di D:/log-collector; il risultato e' descritto nel runbook Nebula. Il collettore non interroga ancora l'API: prossimo passo e' progettare un poller HTTPS con token di servizio dedicato, checkpoint, finestra sovrapposta, deduplicazione e allarme sui buchi. Durata dello storico, paginazione, limiti e dispositivo offline restano da provare. La OpenAPI degli switch non dimostra i login del portale NCC. La migrazione delle chiavi a .env non isola i valori da Claude o altri processi dello stesso account Windows; protegge da commit accidentali e dall'iniezione automatica nei settings Claude.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-173" class="ev-block has-detail" transform="translate(0,4436)">
+<g class="ev-summary" onclick="toggleEv('ev-173')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Launcher MCP attivo e dry-run delle fonti <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-173-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Launcher MCP attivo e dry-run delle fonti</p>
+<p>Il launcher MCP ha superato una chiamata list_nodes read-only sul Proxmox reale; .mcp.json e' stato portato al launcher e la CLI lo vede connesso. Il rinfresco da PowerShell ordinaria ha validato Nebula e Proxmox in dry-run, senza promozione. Il JSON Claude conserva ancora temporaneamente le quattro chiavi per rollback: il taglio finale e la verifica post-rimozione sono il prossimo gate. ISO-41 e SEC-052 restano in corso.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-174" class="ev-block has-detail" transform="translate(0,4460)">
+<g class="ev-summary" onclick="toggleEv('ev-174')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Bonifica della copia storica delle chiavi <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-174-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Bonifica della copia storica delle chiavi</p>
+<p>La verifica delle copie nel progetto ha trovato nel backup locale di agosto del JSON Claude gli stessi quattro valori ora migrati in .env. Rimosse dal backup solo quelle quattro voci e rivalidato il JSON; una scansione ripetuta dei due valori segreti correnti trova corrispondenze solo in .env, senza file saltati. Il percorso MCP post-cutover resta verificato; task pianificato e sessione Claude interattiva restano da osservare.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-175" class="ev-block has-detail" transform="translate(0,4484)">
+<g class="ev-summary" onclick="toggleEv('ev-175')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Chiamata MCP reale dopo la rimozione delle chiavi <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-175-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Chiamata MCP reale dopo la rimozione delle chiavi</p>
+<p>Dopo il cutover, una nuova sessione stdio del launcher ha superato initialize, tools/list e list_nodes read-only sul Proxmox reale. Il percorso applicativo continua quindi a funzionare senza le quattro chiavi nel JSON Claude; resta da osservare il task Windows pianificato con .env e una sessione interattiva Claude.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-176" class="ev-block has-detail" transform="translate(0,4508)">
+<g class="ev-summary" onclick="toggleEv('ev-176')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Cutover delle chiavi locali e MCP Proxmox <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-176-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Cutover delle chiavi locali e MCP Proxmox</p>
+<p>Il launcher MCP isolato ha completato initialize, tools/list e list_nodes in lettura sul Proxmox reale. Il dry-run del rinfresco da PowerShell ordinaria ha validato entrambe le fonti, Nebula e Proxmox, senza promuovere snapshot. Il vecchio .mcp.json (SHA-256 495472595ca43471ea45e3641ded0b249b59df78729d72d60b4d8c1b6fed6203) e' stato sostituito con il launcher (SHA-256 257a27c64ba8a76172801a601388974f4c675a01cfd277f0a98a6af60067a212); claude mcp list ha riportato proxmox connesso. Dopo il confronto in memoria di tutti e quattro i valori, le quattro chiavi sono state rimosse dal solo blocco env di .claude/settings.local.json, preservando NETDESIGN_ENV_CANARY, permessi e hook. Una seconda verifica CLI senza le quattro variabili ereditate ha confermato la connessione: .env e' ora la fonte locale dei quattro valori. Nessun token e' stato ruotato o copiato sulla VM del collettore. Restano da osservare la prossima esecuzione automatica del task e una nuova sessione Claude interattiva; il test CLI e la chiamata MCP diretta coprono il percorso di avvio e lettura. M30 e ISO-41 restano in corso per l'osservazione del task pianificato; SEC-052 resta monitorato per questa prova residua.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-177" class="ev-block has-detail" transform="translate(0,4532)">
+<g class="ev-summary" onclick="toggleEv('ev-177')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">09/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Staging dei segreti locali e dei consumer, MCP invariato <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-177-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">09/10/2026 &#8212; Staging dei segreti locali e dei consumer, MCP invariato</p>
+<p>Le quattro chiavi operative sono state copiate dal JSON locale di Claude in un nuovo .env ignorato da git. Un confronto in memoria conferma l'uguaglianza senza riportare i valori; ACL ereditato rimosso sul nuovo file, con accesso all'utente del task, SYSTEM e amministratori. I loader PowerShell/Python, gli script Nebula/Proxmox, il rinfresco pianificato e il writer ora usano il file; sintassi e casi di errore sono stati provati con dati finti. Una prima prova del writer ha fallito su File.Replace e ha portato alla correzione poi collaudata, compreso il mantenimento dell'ACL. Preparata la candidata MCP con copia di rollback in _notes/, non attivata. Il server MCP attivo conserva la stessa impronta del giorno precedente e il blocco env del JSON locale resta per rollback: la duplicazione e' temporanea, M30 e SEC-052 sono aperti. Restano da provare chiamate reali read-only e rinfresco pianificato prima del cutover. Evidenze e ratio in ADR-031 e nel runbook M30; ISO-41 resta in corso.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-178" class="ev-block has-detail" transform="translate(0,4556)">
+<g class="ev-summary" onclick="toggleEv('ev-178')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">12/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Snapshot Proxmox con TLS verificato nel client PowerShell <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-178-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">12/10/2026 &#8212; Snapshot Proxmox con TLS verificato nel client PowerShell</p>
+<p>Separato dal MCP il percorso Get-ProxmoxSnapshot.ps1. Il preflight Windows PowerShell 5.1 ha verificato il certificato del nodo con nome, validità, impronte e catena della CA privata senza inviare HTTP o token. Poi sono stati rimossi TrustAllCertsPolicy e -SkipCertificateCheck e installato un client .NET con callback limitato alla singola connessione. Il primo dry-run reale è fallito perché $null di PowerShell è arrivato come stringa vuota al metodo C#, che creava un corpo per la GET; corretta la costruzione del contenuto, la prova locale ha riprodotto il caso e il secondo dry-run reale è riuscito alle 09:36, con snapshot validato ma non promosso. Dieci endpoint opzionali guest-agent hanno risposto 403 al token di sola lettura: quei dati possono mancare. Il dossier [MCP e TLS, §10](../dossier-sicurezza-mcp-proxmox.md) contiene flusso, ratio, prove negative, rollback e fonti Microsoft/Proxmox. Restano da osservare task pianificato e PowerShell 7; la revoca del certificato non è verificata nel client attuale. ISO-41 rimane in corso.</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="4610" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -2805,7 +3061,23 @@
   {id:'ev-159',type:'event',h:24},
   {id:'ev-160',type:'event',h:24},
   {id:'ev-161',type:'event',h:24},
-  {id:'ev-162',type:'event',h:24}
+  {id:'ev-162',type:'event',h:24},
+  {id:'ev-163',type:'event',h:24},
+  {id:'ev-164',type:'event',h:24},
+  {id:'ev-165',type:'event',h:24},
+  {id:'ev-166',type:'event',h:24},
+  {id:'ev-167',type:'event',h:24},
+  {id:'ev-168',type:'event',h:24},
+  {id:'ev-169',type:'event',h:24},
+  {id:'ev-170',type:'event',h:24},
+  {id:'ev-171',type:'event',h:24},
+  {id:'ev-172',type:'event',h:24},
+  {id:'ev-173',type:'event',h:24},
+  {id:'ev-174',type:'event',h:24},
+  {id:'ev-175',type:'event',h:24},
+  {id:'ev-176',type:'event',h:24},
+  {id:'ev-177',type:'event',h:24},
+  {id:'ev-178',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -2846,7 +3118,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 4242').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 4626').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
