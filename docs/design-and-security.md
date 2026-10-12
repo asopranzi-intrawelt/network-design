@@ -198,17 +198,25 @@ Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applic
 
 ---
 
-## Dove vivono i segreti di questo progetto (05/08/2026)
+## Dove vivono i segreti di questo progetto (rettifica 07/10/2026)
 
 Sezione scritta perche' la domanda e' stata posta e la risposta non era scritta da nessuna parte: esistevano cinque ADR che ciascuno spiega un canale, e nessun documento che li mettesse in fila. L'assenza di una vista d'insieme ha prodotto un'affermazione sbagliata in sessione, cioe' che il progetto non usasse un file `.env`, quando ne usa uno con un ruolo preciso.
 
-La configurazione e' stata resa univoca il 05/08/2026 con **ADR-021**, su richiesta dell'IT Manager. La regola e' una sola: **un segreto sta in un posto solo**. Da cui tre posti in tutto, ciascuno con un criterio che si spiega in una frase.
+ADR-021 ha definito il 05/08/2026 la regola **un segreto sta in un posto solo**. La parte sui token e sul segreto del fornitore resta attuata; la parte che dichiarava attivo un archivio KeePassXC per gli apparati era una proposta non realizzata, come confermato dall'IT Manager il 07/10/2026. La custodia attuale delle password degli apparati non e' stata verificata.
 
 | Tipo di segreto | Dove vive | Perche' li' |
 |---|---|---|
-| Token che uno script legge da solo | blocco **`env` di `.claude/settings.local.json`**, unica copia | e' un file di progetto ignorato da git, e il blocco `env` alimenta sia il server MCP sia gli script |
+| Token che uno script legge da solo | `.env` privato con ACL ristretto, unica copia locale dal 09/10/2026 | loader PowerShell e launcher MCP lo leggono esplicitamente (ADR-031) |
 | Segreto di un fornitore | **digitato a runtime**, mai su disco | non e' nostro: non averlo scritto e' la scelta corretta |
-| Password degli apparati | **archivio KeePassXC `.kdbx` sul NAS** | non e' rigenerabile e non lo legge nessuno script: e' il caso per cui esiste un password manager |
+| Password degli apparati | posizione corrente da verificare; **nessun archivio KeePassXC `.kdbx` in uso** | il password manager resta un progetto futuro; SEC-007 aperto |
+
+### M30: progetto di migrazione approvato il 08/10/2026, non attuato
+
+La tabella sopra descrive lo stato dopo il cutover del 09/10/2026. L'08/10 il vecchio `.env` duplicato e non letto era stato rimosso, mentre i quattro valori restavano nel JSON Claude e `.mcp.json` era invariato: era la baseline storica di ADR-031. Il nuovo `.env` con ACL ristretto, il loader degli script e il launcher stdio sono ora in uso. Claude Code non carica automaticamente `.env`: il launcher lo legge in modo esplicito. Il runbook documenta prove, rollback e gate residui; SEC-052 resta aperto fino al task pianificato e alla nuova sessione interattiva.
+
+**Staging del 09/10/2026.** Un nuovo `.env` privato e' stato creato con ACL limitato e quattro valori uguali alla fonte precedente. I consumer PowerShell sono stati adattati; il launcher MCP e' installato ma non richiamato da `.mcp.json`. Il JSON di Claude conserva ancora i quattro valori per rollback. La tabella dello stato corrente sopra si riferisce alla configurazione MCP attiva al 08/10; il dettaglio del nuovo stato e i gate mancanti sono nel runbook M30.
+
+**Cutover del 09/10/2026.** Il launcher MCP usa ora `.env`, la CLI si connette anche senza le quattro variabili nel processo chiamante e il blocco `env` del JSON Claude non contiene piu' i quattro valori. La descrizione storica dello stato al 08/10 e dello staging precedente va letta come cronologia; il runbook M30 registra le prove e i limiti correnti.
 
 ### Perche' non un `.env`, e quando invece il `.env` e' giusto
 
@@ -226,21 +234,19 @@ Nel dettaglio, sistema per sistema:
 
 | Sistema | Variabile o canale | Chi la usa | Vincolo |
 |---|---|---|---|
-| Nebula (switch e AP) | `NEBULA_API_KEY` nel blocco `env` | i quattro script Nebula | ADR-009, ADR-010, ADR-021 |
-| Proxmox, sola lettura | tre variabili nel blocco `env`, espanse in `.mcp.json` | MCP `proxmox` | ADR-007, ADR-008, ADR-021 |
+| Nebula (switch e AP) | `NEBULA_API_KEY` nel `.env` privato | i quattro script Nebula | ADR-009, ADR-010, ADR-031 |
+| Proxmox, sola lettura | tre valori nel `.env` privato, letti dal launcher `.mcp.json` | MCP `proxmox` | ADR-007, ADR-008, ADR-031 |
 | Proxmox, scrittura (futuro) | variabili dedicate, a finestra, mai in `.mcp.json` | script, solo quando serve | ADR-008 |
 | NinjaOne (RMM) | prompt a runtime, nessuna variabile | `Get-NinjaSnapshot.ps1` | ADR-017 |
-| Firewall, NAS, switch, MFP, iLO | archivio `.kdbx` | l'IT Manager | ADR-021, SEC-007 |
+| Firewall, NAS, switch, MFP, iLO | custodia corrente da verificare; nessun `.kdbx` attivo | l'IT Manager | ADR-021 rettificato, SEC-007 aperto |
 
-I valori vivono in **un solo file**, `.claude/settings.local.json`, ignorato da git e coperto da una regola `deny`. Il `.env` con i valori viene eliminato perche' nessuno lo legge; al suo posto c'e' **`.env.example`**, senza valori e **versionato di proposito**, perche' il valore di quel file non erano mai i valori ma i commenti — quali variabili servono, da dove vengono, come si rigenerano, quale ADR le vincola. Versionandolo, la procedura di rigenerazione sopravvive alla macchina, che e' precisamente cio' che un backup di valori non garantiva.
+Dal 09/10/2026 i quattro valori operativi vivono in **un solo file**, `.env` privato e ignorato da git, con ACL ristretto; questa frase non descrive le password degli apparati. **`.env.example`** resta senza valori e **versionato di proposito**, perche' il valore di quel file non erano mai i valori ma i commenti — quali variabili servono, da dove vengono, come si rigenerano, quale ADR le vincola. Versionandolo, la procedura di rigenerazione sopravvive alla macchina, che e' precisamente cio' che un backup di valori non garantiva.
 
 Nota operativa su `.env.example`: la regola `Read(.env.*)` lo rende non leggibile dall'agente, quindi e' documentazione **per le persone**. Il suo contenuto informativo e' comunque duplicato in questa sezione, che l'agente puo' leggere.
 
-### L'interim sulle password degli apparati, e i suoi limiti
+### Password degli apparati: proposta non attuata
 
-Fino al 05/08/2026 le password di firewall, NAS, switch e multifunzione vivevano in un foglio di calcolo sul NAS (`accesso_server_accounts_vari.xls`). L'interim adottato e' un unico archivio KeePassXC sul NAS, che eredita il backup gia' esistente. Lo studio di SEC-007 aveva scartato KeePass per i conflitti di scrittura concorrente, e quel motivo non si applica finche' l'unica persona che accede e' l'IT Manager; il formato importa direttamente in Vaultwarden, quindi non e' un vicolo cieco.
-
-Cosa l'interim **non** da', e va detto perche' un interim di cui si tacciono i limiti diventa definitivo: nessun accesso condiviso, nessun registro di chi ha letto cosa, nessuna revoca per singola persona, e una sola password principale come unico punto di rottura. Sono le tre cose che Vaultwarden aggiunge, e sono la ragione per cui **SEC-007 resta aperto**. Cio' che si ottiene subito e' che il gruppo di segreti piu' numeroso smette di stare in chiaro.
+Il 07/10/2026 l'IT Manager ha confermato che non esiste alcun archivio KeePassXC `.kdbx` sul NAS. L'interim descritto in ADR-021 non e' stato attuato e non va usato per cercare credenziali. Il foglio `accesso_server_accounts_vari.xls` e' una fonte storica documentata sul NAS, ma la sua presenza attuale e la validita' delle singole voci non sono state ricontrollate. La custodia futura sara' definita nello sviluppo del password manager; SEC-007 resta aperto. Per l'iLO del server Gen10 l'IT Manager ha recuperato la credenziale ed e' entrato nella GUI il 07/10/2026; il valore non e' acquisito dal progetto e la raccolta IEL richiede una verifica operativa separata, senza copiare segreti nei documenti.
 
 ### L'asimmetria da dichiarare, perche' non e' quella che si crede
 
@@ -250,9 +256,23 @@ Non e' un difetto di progettazione ma una conseguenza necessaria: uno script che
 
 Ne segue la lettura corretta dello spostamento fatto il 05/08/2026, quando la chiave Nebula e' passata da un file sul desktop a una variabile utente. Quello spostamento **non** ha protetto il segreto dall'agente ne' da un processo malevolo in esecuzione come quell'utente. Ha eliminato quattro esposizioni concrete e diverse: un file visibile sfogliando una cartella e apribile per sbaglio, un file che finisce in un backup del desktop, un file che compare in una condivisione schermo o in uno screenshot, e un file che qualcuno potrebbe copiare in una cartella sincronizzata. E' igiene contro l'esposizione accidentale, che e' il vettore piu' probabile in questo contesto, non un confine di sicurezza.
 
-Il confine vero manca ed e' sempre lo stesso: **SEC-007**, il password manager aziendale. Va detto con precisione, perche' altrove in questa documentazione e' stato scritto come se esistesse: lo studio e' completo e il candidato individuato e' Vaultwarden, ma **non e' mai stato messo in produzione**, e oggi le credenziali degli apparati vivono in una cartella accessibile al solo IT Manager. Non si puo' quindi raccomandare di "metterle nel password manager": prima va costruito. Anche quando esistera' non eliminera' l'asimmetria — un segreto usato da uno script deve essere ottenibile dallo script — ma spostera' la custodia in un sistema con controllo di accesso, registro degli accessi e rotazione, invece del filesystem e del registro di una postazione.
+Il confine vero manca ed e' sempre lo stesso: **SEC-007**, il password manager aziendale. Va detto con precisione, perche' altrove in questa documentazione e' stato scritto come se esistesse: lo studio e' completo e il candidato individuato e' Vaultwarden, ma **non e' mai stato messo in produzione**, e oggi la posizione effettiva delle credenziali degli apparati non e' verificata; il precedente archivio KeePassXC dichiarato non esiste. Non si puo' quindi raccomandare di "metterle nel password manager": prima va costruito. Anche quando esistera' non eliminera' l'asimmetria — un segreto usato da uno script deve essere ottenibile dallo script — ma spostera' la custodia in un sistema con controllo di accesso, registro degli accessi e rotazione, invece del filesystem e del registro di una postazione.
 
 Registrato come **SEC-024** per non perdere la conclusione.
+
+## Evidenze ISO dei log infrastrutturali al 07/10/2026
+
+La seguente è una mappa di evidenze per la roadmap, non una dichiarazione di conformità o una SoA approvata. Il collettore riceve accessi da host Proxmox, firewall, NAS QNAP e iLO; su NAS INTRA3 e iLO sono stati osservati login riusciti e falliti, e il confronto degli orari con il collettore sincronizzato è entro un secondo nelle prove indicate nei runbook. Questo sostiene **A.8.15 (Logging), in parte** e **A.8.17 (Clock synchronization), in parte**. Il trasporto UDP può perdere messaggi; i file iLO e NAS mescolano ancora eventi AdS, accessi ordinari e messaggi tecnici; la catena D-1 è provata localmente ma non installata né ancorata a TSA/WORM.
+
+**A.8.16 (Monitoring activities)** non è ancora verificato in esercizio: ricevere i log non dimostra rilevazione automatica, presa in carico e tempi di risposta. `ISO-30` resta in corso. Il censimento dichiarato dei privilegi di condivisione e della GUI NAS dà un punto di partenza per **A.5.15 (Access control), A.5.18 (Access rights) e A.8.2 (Privileged access rights)**, ma senza lettura ACL/account, revisione e approvazione non dimostra attuazione o efficacia. L'assenza della nomina individuale AdS e dell'elenco approvato è una lacuna distinta di governance. La valutazione dei controlli Annex A si fa nel trattamento del rischio e nella SoA; una prova tecnica puntuale non chiude da sola il controllo. Riferimenti: `docs/log-collector-integrazione.md`, `docs/roadmap-iso27001-operativa.md`, [nota ISO/IEC JTC 1/SC 27 sulla verifica dell'Annex A](https://committee.iso.org/files/live/sites/jtc1sc27/files/resources/ISO-IECJTC1-SC27-WG1_N3297_Auditing%20Practices%20Note%20-%20Annex%20A.pdf).
+
+### Decisione sulla ritenzione degli eventi iLO tecnici, 08/10/2026
+
+Il secondo flusso iLO, distinto dalla prova degli accessi AdS, ha una ritenzione locale deliberata di 90 giorni. La rotazione giornaliera deriva dal nome del file, il job di scadenza è provato localmente ma non installato, e la soglia di occupazione dell'80% genera solo una riga nel journal. Questo è un avanzamento di progettazione e prova locale di A.8.15, non un monitoraggio A.8.16 in esercizio. Dettaglio in `docs/log-collector-integrazione.md`.
+
+### Aggiornamento sul filtro iLO, 08/10/2026
+
+Il filtro rsyslog iLO e' installato sul collettore con backup verificato e configurazione completa validata. Il file AdS contiene login Browser fallito, riuscito e logout post-cambio; il test Syslog compare una volta nel file tecnico e zero nel file AdS. La prova copre questi messaggi osservati, non gli altri canali iLO o la perdita possibile su UDP. Il job di scadenza tecnica di 90 giorni e' in esercizio: timer attivo e primo service concluso con `status=ok`, zero file eliminati e filesystem al 44%. Non sono provati il volume a 90 giorni ne' un allarme esterno sulla soglia 80%. A.8.15 ha evidenza tecnica ulteriore ma parziale; A.8.16 resta aperto. Fonte: `docs/log-collector-integrazione.md`.
 
 ## Postura di sicurezza – Sintesi
 

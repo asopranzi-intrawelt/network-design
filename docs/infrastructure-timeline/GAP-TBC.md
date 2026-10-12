@@ -1,4 +1,4 @@
-﻿# GAP-TBC "” Registro completo delle sezioni incomplete
+# GAP-TBC "” Registro completo delle sezioni incomplete
 
 Ogni voce indica: sezione di origine, tipo di informazione mancante, e dove trovare il materiale per completarla (screenshot, file, mail).
 
@@ -445,6 +445,8 @@ Gap emersi dalla ricognizione diretta del nodo `pve` via MCP Proxmox e dell'inte
 |---|----|-------------|-------|
 | 142 | SEC-025 | `.mcp.json` imposta `PROXMOX_ALLOW_DANGER` a `true`, quindi il server MCP espone e consente i tool che creano, cancellano, accendono, spengono e riportano indietro snapshot di VM e container. Cio' che li rende oggi inoffensivi e' **solo** il token PVEAuditor di sola lettura deciso in ADR-007: la difesa e' singola dove potrebbe essere doppia, e basta un token piu' potente inserito per qualunque ragione futura — anche legittima, come lo schema a due token di ADR-008 — perche' l'abilitazione lato client diventi immediatamente operativa senza che nessuno se ne accorga. Rimedio a costo nullo: portare il valore a `false`, dato che tutto l'uso documentato del MCP in questo progetto e' in lettura. Rilevante per A.8.2 (privilegi elevati), A.8.9 e A.9.4 | Lettura di `.mcp.json` durante la verifica dell'accesso MCP senza variabili d'ambiente di Windows, 05/08/2026 |
 
+**Chiusura verificata, 09/10/2026.** SEC-025 è sanato per il MCP 0.1.0 fissato: flag `false`, catalogo con dieci soli tool di lettura, `delete_instance` respinto e `list_nodes` reale riuscito con la configurazione attiva. Nello stesso intervento è stata attivata la verifica TLS con CA del cluster autenticata e nome DNS corrispondente al certificato. La prova e i limiti sono nel [registro delle evidenze MCP](../evidenze-sicurezza-mcp-proxmox.md). L'eventuale aggiornamento del pacchetto o del runtime richiede un nuovo controllo; il bypass TLS dello script PowerShell resta fuori dal perimetro della chiusura.
+
 ## Porte di fonia che accettano qualunque VLAN taggata (06/08/2026)
 
 | # | ID | Descrizione | Fonte |
@@ -665,6 +667,16 @@ Lo snapshot Proxmox del giorno mostra dieci job abilitati che selezionano tutti 
 | 207 | STOR-008 | **[Ipotesi, non accertata] Il blocco della VM 204 cade dentro la sua finestra di backup, e il deposito lento di #204 rende plausibile il nesso.** Il journal dell'ospite si interrompe dopo le 01:30 del 12/09, senza panic, OOM o errori di disco; alle 01:01 qemu-ga aveva ricevuto il `guest-fsfreeze` del lavoro delle 01:00, che per quella VM dura circa un'ora. In modalita' snapshot Proxmox copia sul deposito ogni blocco prima che l'ospite lo sovrascriva, quindi per tutta la durata del backup le scritture dell'ospite vanno alla velocita' del deposito, che per `NAS_INTRA` e' 10,5 MB/s. Nella settimana precedente la VM aveva anche un core occupato al 100% in modo costante, dal 06/09, con 1,7 GB di swap: un ospite gia' sotto pressione e con l'I/O rallentato e' il profilo tipico di uno stallo. Due misure costano poco: attivare il *fleecing* sui lavori di backup (opzione `fleecing` di vzdump, disponibile dalla 8.2, il nodo e' alla 8.3.4), che appoggia i blocchi su uno storage locale veloce invece di frenare l'ospite; e sanare #204, che resta la causa di fondo. Da rileggere se il blocco si ripresenta: con `atop` ora installato sulla VM 204 il processo responsabile sara' visibile | Journal e sysstat della VM 204 letti il 05/10/2026; task vzdump del nodo; #204 |
 | 208 | SRV-012 | **SANATO SULLA VM 204 IL 05/10/2026, aperto sulle altre (M29).** La VM 204 ha `cpu: host`, 4 core, 4 GB fissi e `virtio-scsi-single` con `iothread` e `discard`, senza `writethrough`; snapshot `pre-disco-20261005` preso prima del cambio del disco. Testo originale: **Configurazione hardware delle VM non uniforme, e su otto macchine il tipo di CPU nasconde le istruzioni vettoriali.** Misurato sulla VM 204 il 05/10/2026: con `cpu: x86-64-v2-AES` l'ospite non vede AVX, AVX2 e FMA (`/proc/cpuinfo`), mentre la VM 207 con `cpu: host` le vede. Il tipo `x86-64-v2-AES` e' il predefinito delle VM create con Proxmox 8 e serve a poter migrare una VM fra nodi con processori diversi; con un nodo solo non protegge niente e toglie prestazioni. L'effetto visibile e' sul desktop: senza accelerazione 3D GNOME si disegna in software con Mesa llvmpipe, che senza AVX2 e' molto piu' lento, e la console Proxmox della VM 204 era quasi inutilizzabile con la VM a riposo; con `qm set 204 --cpu host` e un riavvio e' tornata usabile. Nello snapshot del 05/10/2026 alle 07:30 hanno `x86-64-v2-AES` le VM **202, 203, 204, 205, 209, 210, 602, 810**, e `host` la 100, la 207 e la 208; fra quelle con `x86-64-v2-AES` hanno un desktop almeno la **202** e la **210** (il collettore, ADR-012 di `D:/log-collector`), le altre vanno verificate. Due altre differenze emerse dallo stesso confronto, da uniformare con calma perche' toccano il disco di sistema: la VM 204 non specifica `scsihw` e usa quindi il controller emulato predefinito invece di `virtio-scsi-single`, e il suo disco ha `cache=writethrough` senza `iothread`; `cache=writethrough` compare anche su 202, 203, 205, 208 e 209. Il tipo di controller non e' esportato dallo snapshot e va letto con `qm config`. Peserebbero sulle scritture e quindi anche sui backup in modalita' snapshot (#207). Rimedio per la CPU: `qm set <vmid> --cpu host` e uno spegnimento con riaccensione, da raggruppare con il watchdog di #206. Rilevante per A.8.6 (gestione della capacita') | `diff` fra `qm config 204` e `qm config 207` e `/proc/cpuinfo` delle due VM, 05/10/2026; snapshot Proxmox del 05/10/2026 |
 
+## Custodia locale dei token legata a Claude e ACL troppo ampio (08/10/2026)
+
+| # | ID | Stato e prova | Azione |
+|---|---|---|---|
+| 209 | SEC-052 | **Aperto per verifica residua.** Dal 09/10 i quattro valori sono nel `.env` privato con ACL ristretto e sono assenti dal JSON Claude; MCP e dry-run Nebula/Proxmox sono riusciti. Restano l'esecuzione automatica del task con la nuova fonte e una nuova sessione Claude interattiva. L'ACL ampio era sul JSON storico; nessun accesso improprio e' stato osservato. | M30: fonte privata unica e launcher installati; osservare task e sessione interattiva, poi valutare la chiusura; `docs/runbook-migrazione-segreti-locali.md`, ADR-031. A.5.17, A.8.3, A.8.9, A.8.12. |
+
+Aggiornamento SEC-052 del 09/10/2026: il nuovo `.env` ha ACL limitato e i consumer locali sono stati adattati, ma il JSON locale precedente contiene ancora i valori e il MCP non e' stato migrato. Il gap resta aperto fino alle prove reali, al cutover e alla rimozione della copia precedente.
+
+Esito SEC-052 del 09/10/2026: il cutover su `.env` e' riuscito, MCP e dry-run delle due fonti validati, i quattro valori rimossi dal JSON Claude. Rimangono la prima esecuzione automatica del task con la nuova fonte e la prova in sessione interattiva; il gap resta aperto per questi gate, senza modificare il conteggio dei risolti.
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -778,7 +790,8 @@ Lo snapshot Proxmox del giorno mostra dieci job abilitati che selezionano tutti 
 | Il deposito di backup principale scrive a 10,5 MB/s, come un collegamento a 100 Mb/s saturo (16/09/2026) | 204 |
 | VM 204 bloccata per ventitre giorni: nessun controllo di disponibilita', nessun watchdog, nesso ipotetico con il backup (05/10/2026) | 205-207 |
 | Configurazione hardware delle VM non uniforme: tipo di CPU senza istruzioni vettoriali su otto VM, controller e cache dei dischi (05/10/2026) | 208 |
-| **Totale identificati** | **208** |
+| Credenziali locali accoppiate a Claude e ACL ereditato ampio (08/10/2026) | 209 |
+| **Totale identificati** | **209** |
 | **Di cui risolti** | **15** (14, 54, 55, 61, 63, 106, 111, 116, 140, 150, 185, 186, 187, 195, 196 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
 
 Nota sui gap **#67 e #99** (contraddizione anagrafica NET-007 sulla porta 3 del 54HP): chiusi il 06/08/2026, con esito **rovesciato** rispetto all'ipotesi registrata. L'etichetta "SIP-T34W Persona-A" era corretta e il rilievo del 29/05/2026 era sbagliato, sia sull'attribuzione sia sul conteggio dei modelli. Non sono conteggiati fra i risolti qui sopra perche' la chiusura e' documentale e va riverificata alla prossima lettura della scheda; vedi `docs/telefono-pbx-voip.md` §Terminali VoIP installati.

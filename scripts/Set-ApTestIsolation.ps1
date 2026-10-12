@@ -49,9 +49,11 @@ if (-not $Restore -and -not $Keep) {
     exit 1
 }
 
+. (Join-Path $PSScriptRoot 'Read-ProjectEnv.ps1')
 if (-not $ApiKey) {
-    if ($env:NEBULA_API_KEY) {
-        $ApiKey = $env:NEBULA_API_KEY
+    $storedKey = Get-ProjectSecret -Name 'NEBULA_API_KEY' -ProjectRoot (Split-Path -Parent $PSScriptRoot)
+    if ($storedKey) {
+        $ApiKey = $storedKey
     } else {
         $secureKey = Read-Host "Chiave API Nebula" -AsSecureString
         $bstr      = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureKey)

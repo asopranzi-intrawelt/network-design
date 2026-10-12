@@ -69,6 +69,11 @@ Nota di correzione (08/07/2026, confermata dall'utente): l'installazione di Bitd
 
 ## SGSI – Politica della Sicurezza delle Informazioni (PSGSI)
 
+### Nomina individuale degli amministratori di sistema: lacuna dichiarata il 07/10/2026
+
+L'IT Manager svolge operativamente funzioni di amministrazione, ma riferisce che non esiste una nomina individuale AdS scritta e firmata né un elenco di account approvato dalla Direzione. Il ruolo aziendale non documenta da solo identità, ambito autorizzato e verifica dell'operato. I PM dichiarati amministratori della GUI di NAS HERO e NAS INTRA2 entrano nel censimento da verificare, anche se l'accesso dichiarato riguarda condivisioni specifiche; l'ambito tecnico dei privilegi QTS va letto sull'apparato. Non classificare ogni accesso SMB ai file come accesso AdS. La mappatura nominale è nel livello privato; il flusso D7 del collettore resta bloccato finché account e ambiti non siano verificati e approvati. Riferimento: [provvedimento del Garante sugli amministratori di sistema](https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/1577499); dettaglio tecnico in `docs/log-collector-integrazione.md`.
+
+
 Fonte: `_ 📜 GDPR E ISO27001/PSGSI POLITICA DELLA SICUREZZA DELLA INFORMAZIONI rev. 1 16.10.2025.docx` Riferimento: ISO/IEC 27001:2022. Rev. 1 del 16/10/2025.
 
 ### Scope SGSI
@@ -428,32 +433,28 @@ Fonte: `Sviluppo_interno, scripting (IT on FIRE)/[TBC] PASSWORD MANAGER/` Docume
 | Bitwarden Self-Hosted (ufficiale) | Self / Docker | Sì + AD/SSO | Sì | Licenza a pagamento, funzioni enterprise |
 | **Vaultwarden** | Self / Docker | Sì | Limitato | Reimplementazione Rust di Bitwarden, gratuita, leggera |
 
-### Decisione tecnica: Vaultwarden su LAN
+### Ipotesi tecnica storica: Vaultwarden su LAN
 
-Architettura scelta:
+Architettura ipotizzata nello studio, da rivalutare quando sara' sviluppato il password manager:
 - **Docker container `vaultwarden`** su server Ubuntu 24.04 LTS in LAN
 - **Nginx reverse proxy** → URL interno: `https://passwordvault.intrawelt.local`
 - Certificato HTTPS self-signed (o CA interna)
 - **2FA obbligatorio** per tutti gli utenti
 - Backup automatico volume `/vw-data`
 
-Funzionalità IT manager tramite Vaultwarden:
+Funzionalita' ipotizzate per l'IT Manager tramite Vaultwarden:
 - Creare organizzazione e vault condivisi (es. "Accounting", "IT team", "Administration")
 - Aggiungere/rimuovere utenti, assegnare ruoli
 - Revocare accessi centralmente
 - NON può leggere password private (end-to-end encrypted lato client)
 
-Gap: Vaultwarden non supporta SSO/LDAP (solo Bitwarden ufficiale a pagamento). Per Intrawelt PMI: sufficiente per fase attuale; SSO da valutare con crescita organizzativa.
+Limite rilevato nello studio: Vaultwarden non supporta SSO/LDAP (solo Bitwarden ufficiale a pagamento). La scelta del prodotto e dell'architettura resta da confermare nel futuro intervento SEC-007.
 
-Gap attuale: SEC-007 — nessun password manager aziendale in produzione a giugno 2026.
+Gap attuale: SEC-007 - nessun password manager aziendale in produzione, confermato dall'IT Manager il 07/10/2026.
 
-**Interim deciso il 05/08/2026 (ADR-021), indipendente da Vaultwarden.** Su richiesta dell'IT Manager di avere una situazione stabile senza attendere il progetto Vaultwarden, si adotta un unico archivio **KeePassXC `.kdbx` sul NAS**, che eredita il backup gia' esistente, in sostituzione del foglio di calcolo in chiaro `accesso_server_accounts_vari.xls` oggi usato come vault interno.
+**Rettifica del 07/10/2026.** L'IT Manager ha confermato che l'archivio KeePassXC `.kdbx` sul NAS, presentato in ADR-021 come interim gia' attivo, non esiste. Quella parte dell'ADR era una proposta non realizzata e non va trattata come fonte di credenziali. Il foglio `accesso_server_accounts_vari.xls` era documentato come registro interno degli apparati, ma la sua presenza attuale e la validita' delle voci non sono state verificate in questa ricognizione. Non e' stato eseguito alcun recupero o reset di password.
 
-La scelta e' coerente con lo studio qui sopra e non lo contraddice: KeePass era stato scartato per un solo motivo, i conflitti di scrittura concorrente, e quel motivo **non si applica** finche' l'unica persona che accede e' l'IT Manager. Il formato `.kdbx` importa direttamente in Vaultwarden, quindi l'interim e' il primo passo dello stesso percorso e non un vicolo cieco.
-
-Limiti dell'interim, dichiarati perche' un interim di cui si tacciono i limiti diventa definitivo: un solo archivio con una sola password principale e' un unico punto di rottura, non offre accesso condiviso, non registra chi ha letto cosa e non permette di revocare l'accesso a una singola persona. Sono esattamente le funzioni che Vaultwarden aggiunge, e per questo **SEC-007 non si chiude con questo passo**: si riduce. Cio' che si ottiene subito e' che il gruppo di segreti piu' numeroso e piu' pregiato dell'infrastruttura smette di stare in chiaro in un foglio di calcolo.
-
-Passi dell'interim, nell'ordine: creare l'archivio con una password principale robusta e diversa da ogni altra in uso; migrare le voci dal foglio di calcolo verificandole una per una, perche' e' l'occasione per scoprire quali credenziali non sono piu' valide; verificare che il percorso dell'archivio sia incluso in un job di backup; **distruggere il foglio di calcolo** e ogni sua copia, che e' il passo che chiude l'esposizione e senza il quale il resto e' inutile; annotare dove sta l'archivio in un posto che non sia l'archivio stesso. Strumento attuale: password salvate in browser locali o file non cifrati.
+Il password manager resta un intervento futuro di SEC-007: quando verra' sviluppato si decideranno prodotto, custodia, migrazione e verifica delle credenziali. L'IT Manager ha recuperato la credenziale iLO ed e' entrato nella GUI il 07/10/2026; il segreto non viene inserito nei file tracciati.
 
 ---
 

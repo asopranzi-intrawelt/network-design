@@ -507,13 +507,17 @@ Non e' un'anomalia di rete e non appartiene ai filoni di questo progetto, ma e' 
 
 ## NAS-003: interfaccia di amministrazione di NAS-INTRA2 molto lenta
 
-**Severity**: BASSA (nessun impatto sul servizio file, impatto sul lavoro amministrativo) **Origine**: rilevata il 29/07/2026 durante la preparazione dell'intervento R8 **Stato**: aperto, causa non isolata
+**Severity**: BASSA (nessun impatto sul servizio file, impatto sul lavoro amministrativo) **Origine**: rilevata il 29/07/2026 durante la preparazione dell'intervento R8 **Stato**: aperto; lentezza del sottosistema disco misurata il 02/10/2026, origine delle scritture ancora da isolare
 
 ### Contesto
 
 L'interfaccia web di amministrazione dell'apparato (porta 8080) risponde con lentezza marcata: la navigazione tra le sezioni del pannello di controllo richiede attese di diverse decine di secondi, al punto che raggiungere una specifica scheda diventa un esercizio di pazienza. Il servizio file non e' interessato: le condivisioni rispondono e le multifunzione e le postazioni vi accedono normalmente.
 
-### Ipotesi, in ordine di plausibilita'
+### Misure del 02/10/2026 dal progetto log-collector
+
+Durante la configurazione di INTRA2 come sorgente sono stati letti il monitor delle risorse e i log. Alle 15:39 CPU media 17,9%, I/O wait 81,7%, memoria 1,81 su 3,90 GB usati e 1,44 GB liberi; rete circa 25,0 MB/s ricevuti e 23,2 MB/s inviati. Il volume DataVol1 mostrava 22 letture e 87 scritture al secondo, latenza 1329 ms con picco di circa 1870 ms. I quattro dischi mostravano latenze simili di 263-270 ms, senza un singolo disco chiaramente anomalo; il gruppo RAID mostrava 16 letture e 150 scritture al secondo. La lentezza coincide quindi con l'attesa del sottosistema disco, non con saturazione della RAM o della CPU; quale processo produce le scritture e se il RAID stia verificando o ricostruendo restano da stabilire. HBS sul NAS mostrava un solo job in uscita, pianificato alle 22:00, percio' non spiega da solo il carico pomeridiano. La diagnosi e' stata fermata nel progetto sorgente su richiesta dell'IT Manager e riprende qui. L'accesso amministrativo via HTTP sulla 8080 e il firmware non aggiornato sono due rilievi distinti dalla lentezza, da trattare in questo progetto.
+
+### Ipotesi precedenti alla misura
 
 La prima e' la mole di oggetti che l'apparato deve contabilizzare. La stessa lettura che ha rilevato la lentezza ha mostrato che una singola cartella condivisa contiene circa 3,45 milioni di cartelle e 1,86 milioni di file per 14,37 TB (gap STOR-001, `GAP-TBC.md` #127): il pannello delle cartelle condivise calcola dimensioni e conteggi, e su un albero di quelle proporzioni l'operazione e' intrinsecamente costosa. Coerente con il fatto che la lentezza si manifesta proprio nelle pagine che mostrano quei numeri.
 
@@ -521,9 +525,9 @@ La seconda e' la dotazione hardware rispetto al carico: l'apparato ha 4 GB di RA
 
 La terza, da escludere per prima perche' e' la piu' facile da verificare, e' un'attivita' in corso sull'apparato che sta consumando risorse: un job di backup, una verifica di integrita', un'indicizzazione multimediale o una scansione antivirus.
 
-### Verifica suggerita
+### Verifica successiva
 
-Aprire il monitor delle risorse dell'apparato e osservare carico CPU, occupazione di memoria e attivita' disco mentre si naviga il pannello; controllare l'elenco dei job in esecuzione e l'eventuale indicizzazione multimediale attiva su cartelle che non ne hanno bisogno, che e' una causa classica di carico inutile su questi apparati. Se il carico e' basso e la lentezza resta, l'ipotesi si sposta sul conteggio degli oggetti e la mitigazione e' evitare le pagine che calcolano dimensioni, non risolvere la lentezza.
+Leggere sul NAS le attivita' RAID e i processi che scrivono durante la fascia in cui il pannello e' lento; confrontare il carico pomeridiano con quello dei job notturni e con la fascia dei backup delle postazioni. La misura del 02/10 localizza la latenza ai dischi ma non attribuisce le scritture a un processo ne' dimostra una ricostruzione RAID. Prima di dichiarare chiusa NAS-003 serve una seconda misura dopo la correzione della causa individuata.
 
 ### Perche' e' tracciata
 

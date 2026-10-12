@@ -1,10 +1,10 @@
 {
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-09-28",
-  "revisione": 12,
+  "aggiornato": "2026-10-08",
+  "revisione": 14,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
-  "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro e le due multifunzione, che compaiono solo come gruppi aggregati.",
+  "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro, che compaiono come gruppo aggregato. Le due multifunzione sono nodi individuali; la porta di Piano 1 resta da attribuire.",
   "fonti": [
    "STATO RETE INTRAWELT.docx, IT Manager, 06/08/2026 (catena fisica, porte, alimentazione)",
    "Snapshot Nebula del 06/08/2026 (PVID, VLAN ammesse, velocita', tabelle MAC)",
@@ -21,13 +21,15 @@
    "Censimento M27-7 della protezione host-based, 25-28/08/2026 (porte in ascolto sulle macchine Linux)",
    "Dismissione della VM 206 comunicata dall'IT Manager il 31/08/2026, con backup verificato sul NAS",
    "Snapshot Nebula e Proxmox del 23/09/2026: Test-TopologyDrift.py, 39 confronti e zero scostamenti",
-   "Registro GAP-TBC, aggiornamenti del 16/09/2026: due alimentatori sul server (#202), lentezza del deposito NAS (#204)"
+   "Registro GAP-TBC, aggiornamenti del 16/09/2026: due alimentatori sul server (#202), lentezza del deposito NAS (#204)",
+   "D:/log-collector, screenshot 13 di NAS-INTRA3 e dichiarazione dell'IT Manager del 05/10/2026 (modello, firmware e uso delle condivisioni)",
+   "docs/livello-fisico-ed-elettrico.md e docs/interventi-robustezza.md, due multifunzione di rete; porta Kyocera Piano Terra verificata, porta Canon Piano 1 da attribuire"
   ],
   "verifica": {
-   "data": "2026-09-23",
+   "data": "2026-10-08",
    "validita-giorni": 7,
-   "esito": "39 confronti automatici, zero scostamenti",
-   "ambito": "Porte e inventario Nebula; bridge e attestazioni delle VM Proxmox. Le sette VM aggregate non hanno un nodo individuale.",
+   "esito": "40 confronti automatici, zero scostamenti",
+   "ambito": "Porte e inventario Nebula; bridge e attestazioni delle VM Proxmox. Otto VM aggregate non hanno un nodo individuale; la porta fisica della Canon Piano 1 resta da attribuire.",
    "conferma-umana": "IT Manager, 23/09/2026: nessuna modifica esterna dal riallineamento del 22/09.",
    "limiti": [
     "La verifica automatica non collauda policy firewall, applicazioni, backup o continuita elettrica.",
@@ -358,7 +360,7 @@
    "tipo": "storage",
    "livello": "distribuzione",
    "contenitore": "rack-dx",
-   "note": "Funzione non documentata, modello ignoto, alimentazione non descritta in nessuna delle due tabelle elettriche.",
+   "note": "QNAP TS-210, QTS 4.2.6 build 20240618. Condivisioni montate come unita di rete dai due amministratori interni (dichiarazione 05/10/2026); contenuti e log da verificare. Alimentazione non documentata.",
    "alimentazione": null
   },
   {
@@ -567,11 +569,29 @@
   },
   {
    "id": "postazioni-lan",
-   "nome": "Postazioni cablate e multifunzione",
+   "nome": "Postazioni cablate (gruppo)",
    "tipo": "gruppo",
    "livello": "utenze",
    "contenitore": "edificio",
-   "note": "Circa quaranta postazioni e due multifunzione distribuite sui due switch. Fuori perimetro di questa revisione per scelta.",
+   "note": "Circa quaranta postazioni distribuite sui due switch. Le due multifunzione sono censite come nodi individuali; le singole postazioni restano aggregate.",
+   "alimentazione": null
+  },
+  {
+   "id": "mfp-pt",
+   "nome": "Multifunzione Piano Terra",
+   "tipo": "stampante",
+   "livello": "utenze",
+   "contenitore": "pt",
+   "note": "Kyocera TASKalfa 2552ci; porta 6 dello XGS2220-30HP e PVID 1 documentati nella mappa fisica. Log degli accessi al pannello ancora da ricognire.",
+   "alimentazione": null
+  },
+  {
+   "id": "mfp-p1",
+   "nome": "Multifunzione Piano 1",
+   "tipo": "stampante",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Canon della serie iR-ADV C5840 secondo la documentazione; modello preciso e porta switch da confermare. Log degli accessi al pannello ancora da ricognire.",
    "alimentazione": null
   },
   {
@@ -1090,6 +1110,13 @@
    "vlan": [
     2
    ]
+  },
+  {
+   "da": "sw30",
+   "a": "mfp-pt",
+   "mezzo": "rame",
+   "porta-a": "6",
+   "note": "Porta 6 del 30HP documentata; PVID 1. Collegamento Canon Piano 1 ancora da attribuire."
   },
   {
    "da": "sw30",
