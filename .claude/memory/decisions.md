@@ -2,6 +2,16 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-032 - Il progetto integrità-docs entra fra i progetti collegati
+
+Data: 2026-10-12. Stato: attiva.
+
+Contesto. Il progetto `D:/integrità-docs` studia e prototipa l'attestazione crittografica d'integrità dei documenti WindTre (righe 139 e 168 dell'annex della RFQ 10714) e nello stesso giorno ha prodotto fatti di rete e di sicurezza: una condivisione nuova con WORM su NAS-HERO, un requisito di uscita verso TSA pubbliche e un falso positivo di Bitdefender. L'IT Manager ha disposto che questo progetto resti sempre allineato con quello per timeline, contesto e ogni altro aspetto.
+
+Decisione. `integrita-docs` entra in `data/scadenze.json` fra i `progetti_collegati`, come fonte di classe D accanto a `log-collector`, con baseline al commit riconciliato; `Test-Allineamento.py` segnala ogni commit nuovo non ancora recepito. I fatti pertinenti si registrano in `docs/integrita-docs-integrazione.md`, nella timeline trimestrale, nel work-log e nello snapshot, con l'anonimizzazione di questo repository. Le sessioni di quel progetto scrivono qui nello stesso giro in cui il fatto nasce (ADR-008 del progetto collegato); i commit restano manuali e separati.
+
+Conseguenze. La soluzione di quel progetto è una proposta non approvata e qui si descrive come tale: non entra nel registro ISO come misura in essere finché non è approvata. La condivisione `RegistroIntegrita` invece esiste ed è un fatto di inventario di NAS-HERO. Fonte esterna: nessuna, scelta interna di governo della documentazione.
+
 ## ADR-031 - Segreti locali indipendenti da Claude con cutover protetto del MCP
 
 Data: 2026-10-08. Stato: **design approvato, non implementato**. M30 e SEC-052 aperti; il flusso attuale dell'ADR-021 resta in esercizio fino al gate finale.

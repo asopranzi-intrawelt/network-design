@@ -12,6 +12,13 @@
       "vm_nome_previsto": "ads-collector",
       "ssh_windows_stato": "da_configurare",
       "dove": "docs/log-collector-integrazione.md"
+    },
+    {
+      "id": "integrita-docs",
+      "percorso_locale": "D:/integrità-docs",
+      "commit_riconciliato": "24402d1cea9b93567a780ee3d588f5f34c06084e",
+      "riconciliato_il": "2026-10-12",
+      "dove": "docs/integrita-docs-integrazione.md"
     }
   ],
   "scadenze": [
