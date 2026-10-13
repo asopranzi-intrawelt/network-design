@@ -49,3 +49,5 @@ Su richiesta dell'IT Manager il progetto collegato ha tolto dal versionamento il
 Storia del progetto collegato riscritta e pubblicata il 13/10/2026 a `2f1b3b7`; gli identificativi citati in questa scheda sono già convertiti ai nuovi. Il push forzato è stato accettato da GitHub senza modificare impostazioni: la protezione del ramo principale prevista dal progetto collegato non era attiva, e va attivata.
 
 Protezione del ramo principale, 13/10/2026: la regola creata nel repository privato del progetto collegato risulta «Not enforced», perché il piano gratuito dell'organizzazione GitHub non applica le regole di protezione ai repository privati. Vale per ogni repository privato dell'organizzazione: un vincolo di governance da considerare nella gestione degli accessi a GitHub.
+
+Il 13/10/2026 il progetto collegato è stato allineato al template di progetto: i controlli di chiusura sono verdi per la prima volta e il suo versionamento torna alla procedura ordinaria di chiusura. La copia del materiale riservato su una cartella del NAS non si fa, per scelta dell'IT Manager.
