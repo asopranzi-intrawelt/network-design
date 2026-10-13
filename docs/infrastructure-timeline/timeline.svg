@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5034" viewBox="0 0 1060 5034" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="5034" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5058" viewBox="0 0 1060 5058" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="5058" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">195 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 13/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">196 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 13/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -24,7 +24,7 @@
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(37)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
-<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(26)</tspan></text>
+<text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(27)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
@@ -3165,7 +3165,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="5018" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-196" class="ev-block has-detail" transform="translate(0,4988)">
+<g class="ev-summary" onclick="toggleEv('ev-196')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#2a78d6"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">13/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Record locali degli offline Nebula presenti nel cloud <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">RETE</tspan></text>
+</g>
+<foreignObject id="ev-196-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">13/10/2026 &#8212; Record locali degli offline Nebula presenti nel cloud</p>
+<p>L'operatore esegue tre letture storiche del 30HP, concluse alle 16:49:32,166652 locali. Stato matched_local_reference: controllo noto presente, dieci record locali distinti della prima interruzione del 06/10 e tre della seconda tutti presenti nel cloud; zero mancanti e zero autenticazioni. Finestre con dieci minuti di margine, 63 e cinque righe API totali, controllo di due righe. Replay identico senza rete per report, query, metadati e target; SHA di cache, riferimento ed esportazione locale verificati. Ognuna delle tredici righe ricontrollata nell'originale locale su timestamp, priorità, tag e testo. I timestamp dichiarati ricadono nei due intervalli cloud offline, ma la misura prova la visibilità attuale di quel campione tecnico: non invio durante l'offline, istante del recupero, completezza degli eventi, buffering garantito o continuità AdS. Fonte e SHA nei passi 94-95 del runbook del collettore. Nessuna modifica al codice per l'esito reale; suite precedente 147 passate e una POSIX saltata, distinta dalla verifica sui dati originali. Connectivity, confronto storico e risultati pronti per milestone manuale; nessun poller o token sulla VM e nessun parametro cambiato. ISO-30 in_corso: limite/retention massimi, prova AdS offline, AP/NCC, notifica, D-1 e credenziale dedicata/collaudo VM ancora aperti. Tre archivi stessa VM e censimento IT/Seeweb conservati, Outlook non confermato collegato; frontend sysadmin e correlazione successivi. D7, Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Lavori paralleli CA/scadenze, integrità-docs e allineamento del template preservati; commit, push e deploy manuali.</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="5042" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3366,7 +3382,8 @@
   {id:'ev-192',type:'event',h:24},
   {id:'ev-193',type:'event',h:24},
   {id:'ev-194',type:'event',h:24},
-  {id:'ev-195',type:'event',h:24}
+  {id:'ev-195',type:'event',h:24},
+  {id:'ev-196',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3407,7 +3424,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 5034').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 5058').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
