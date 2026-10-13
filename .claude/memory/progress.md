@@ -1,5 +1,9 @@
 # Work-log
 
+## Protezione dei rami non applicata ai repository privati dell'organizzazione
+
+Riscontrato il 13/10 sul progetto collegato integrità-docs: regola su `main` creata e «Not enforced», piano gratuito dell'organizzazione. Annotato in `docs/integrita-docs-integrazione.md`. Commit manuale.
+
 ## Integrità-docs riconciliato a 2f1b3b7 dopo la riscrittura
 
 Storia del progetto collegato riscritta: identificativi convertiti in scheda, indice, work-log e `data/scadenze.json` (`commit_riconciliato` 2f1b3b7). Protezione del ramo principale del progetto collegato risultata non attiva. Commit manuale.
