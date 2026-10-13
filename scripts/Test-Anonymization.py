@@ -83,7 +83,14 @@ PIVA = re.compile(r"\b(?:P\.?\s?IVA|partita iva|cod\.?\s?fisc|codice fiscale)\b[
 # indirizzi di RFC 5737, e la sua assenza era un'asimmetria: senza di essa ogni documento
 # che usa un indirizzo di esempio produce un riscontro bloccante, e chi scrive documentazione
 # impara a ignorare l'esito del controllo.
-DOMINI_DOC = ("example.com", "example.org", "example.net", "example.edu", ".example")
+DOMINI_DOC = ("example.com", "example.org", "example.net", "example.edu", ".example",
+               # RFC 2606 riserva anche tre domini di primo livello interi, che nessun
+               # registro assegnera' mai: una casella su di essi e' un esempio per
+               # costruzione, esattamente come una su example.com. Aggiunti il
+               # 13/10/2026, quando l'allineamento al template ha portato nel repository
+               # file di prova con indirizzi su .invalid e il controllo li ha letti come
+               # caselle di persone.
+               ".invalid", ".test", ".localhost")
 
 # Segnaposto legittimi per la posta: persona-a@, referente-esempio-1@, e simili.
 MAIL_PLACEHOLDER = re.compile(r"^(persona|referente|collaboratore|consulente|tirocinante)-", re.I)
@@ -218,7 +225,12 @@ def analizza(pat, files):
 
             for s in segreti:
                 if s in riga:
-                    aggiungi("SEGRETO LETTERALE", f, ln, riga, "<valore oscurato>", origine)
+                    # Anche il contesto si stampa, quindi il valore va mascherato li' dentro e
+                    # non solo nel riscontro: fino al 13/10/2026 l'esito oscurava il riscontro
+                    # e subito sotto stampava la riga intera, cioe' il segreto in chiaro sul
+                    # terminale di chiunque lanciasse il controllo. Trovato dall'autotest.
+                    aggiungi("SEGRETO LETTERALE", f, ln, riga.replace(s, "<valore oscurato>"),
+                             "<valore oscurato>", origine)
 
             bassa = riga.lower()
             for n in nomi:
@@ -232,6 +244,115 @@ def analizza(pat, files):
     return trovati, saltati
 
 
+def autotest():
+    """Prove interne dei riconoscitori, senza git e senza toccare il repository.
+
+    Ogni caso oppone una forma che deve essere riportata alla forma gemella che non deve
+    esserlo, perche' un riconoscitore che riporta tutto passerebbe meta' delle prove da
+    solo. Le prove girano su file temporanei e su un elenco di schemi finto: nessun valore
+    reale entra qui, come in tutto il resto dello script.
+    """
+    import shutil
+    import tempfile
+
+    # I valori di prova si compongono a pezzi e non si scrivono interi: questo strumento
+    # passa anche il proprio sorgente, e una casella o un indirizzo fisico scritti per
+    # esteso qui dentro verrebbero riportati come riscontri del repository. Un riconoscitore
+    # cerca la forma intera, quindi i pezzi separati non gli somigliano.
+    dominio = "dominio" + "-vero.it"
+    mail_ammessa = "ammessa@" + dominio
+    mail_vera = "caio@" + dominio
+    mac_estraneo = "00:11:22:" + "33:44:55"
+    mac_ammesso = "AA:BB:CC:" + "11:22:33"
+    ip_reale = "99.88." + "77.5"
+    ip_ammesso = "8.8." + "8.8"
+    ip_privato = "10.1." + "2.3"
+
+    pat = {
+        "reti_documentali_ammesse": ["203.0.113.", "198.51.100."],
+        "ip_ammessi": [ip_ammesso],
+        "prefissi_reali": ["99.88.77."],
+        "mac_ammessi_prefissi": ["AA:" + "BB:CC"],
+        "email_ammesse": [mail_ammessa],
+        "nomi_propri": ["Rossini"],
+        "nomi_ammessi_in_contesto": ["Rossini S.p.A."],
+        "segreti_letterali": ["ZZZ-segreto-finto-123"],
+    }
+
+    casi = []
+
+    def prova(nome, condizione):
+        casi.append((nome, bool(condizione)))
+
+    radice = tempfile.mkdtemp(prefix="autotest-anon-")
+    try:
+        def scrivi(nome, righe):
+            percorso = os.path.join(radice, nome)
+            with io.open(percorso, "w", encoding="utf-8") as fh:
+                fh.write("\n".join(righe) + "\n")
+            return percorso
+
+        f_ip = scrivi("ip.md", ["doc 203.0.113.7", "ammesso " + ip_ammesso,
+                                "reale " + ip_reale, "privato " + ip_privato])
+        f_mac = scrivi("mac.md", ["ammesso " + mac_ammesso, "estraneo " + mac_estraneo])
+        f_mail = scrivi("mail.md", ["riservato prova@esempio.invalid", "doc tizio@example.com",
+                                    "segnaposto persona-a@" + dominio,
+                                    "ammessa " + mail_ammessa,
+                                    "vera " + mail_vera])
+        f_seg = scrivi("seg.md", ["chiave ZZZ-segreto-finto-123 in chiaro"])
+        f_nomi = scrivi("nomi.md", ["parla Rossini oggi"])
+        f_ctx = scrivi("ctx.md", ["fattura di Rossini S.p.A."])
+        f_priv = scrivi("priv.md", ["reale " + ip_reale])
+
+        files = [(f, "tracciato") for f in (f_ip, f_mac, f_mail, f_seg, f_nomi, f_ctx)]
+        files.append((f_priv, "ignorato"))
+        trovati, saltati = analizza(pat, files)
+
+        def valori(cat, percorso=None):
+            return [v for v in trovati.get(cat, []) if percorso is None or v[0] == percorso]
+
+        ip_reali = [v[2] for v in valori("IP REALE")]
+        prova("l'indirizzo di documentazione non si riporta", "203.0.113.7" not in ip_reali)
+        prova("l'indirizzo ammesso per decisione non si riporta", ip_ammesso not in ip_reali)
+        prova("l'indirizzo con prefisso reale si riporta", ip_reale in ip_reali)
+        prova("il privato fuori schema non e' bloccante",
+              ip_privato in [v[2] for v in valori("IP privato fuori schema")]
+              and "IP privato fuori schema" not in BLOCCANTI)
+
+        mac = [v[2] for v in valori("MAC REALE")]
+        prova("il MAC del prefisso ammesso non si riporta", mac_ammesso not in mac)
+        prova("il MAC estraneo si riporta", mac_estraneo in mac)
+
+        mail = [v[2] for v in valori("EMAIL PERSONALE")]
+        prova("la casella su dominio riservato RFC 2606 non si riporta",
+              "prova@esempio.invalid" not in mail and "tizio@example.com" not in mail)
+        prova("il segnaposto di persona non si riporta", "persona-a@" + dominio not in mail)
+        prova("la casella ammessa non si riporta", mail_ammessa not in mail)
+        prova("la casella vera si riporta", mail_vera in mail)
+
+        segreti = valori("SEGRETO LETTERALE")
+        prova("il segreto letterale si riporta", len(segreti) == 1)
+        prova("il valore del segreto non esce mai dallo strumento",
+              segreti and segreti[0][2] == "<valore oscurato>"
+              and "ZZZ-segreto-finto-123" not in segreti[0][3])
+
+        prova("il nome proprio si riporta", len(valori("NOME PROPRIO", f_nomi)) == 1)
+        prova("il nome dentro la ragione sociale non si riporta",
+              len(valori("NOME PROPRIO", f_ctx)) == 0)
+
+        privati = [v for v in valori("IP REALE") if v[4] == "ignorato"]
+        prova("l'origine viaggia con il riscontro fino alla stampa",
+              len(privati) == 1 and privati[0][0] == f_priv)
+    finally:
+        shutil.rmtree(radice, ignore_errors=True)
+
+    caduti = [n for n, esito in casi if not esito]
+    for nome, esito in casi:
+        print("  %s  %s" % ("ok" if esito else "KO", nome))
+    print("%d casi, %d falliti" % (len(casi), len(caduti)))
+    return 1 if caduti else 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Guard-rail di anonimizzazione sui file del repository.")
     ap.add_argument("--quiet", action="store_true", help="stampa solo il riepilogo")
@@ -242,7 +363,12 @@ def main():
                     help="radice del repository (default: risalita dalla posizione dello script)")
     ap.add_argument("--patterns", default=PATTERNS_FILE,
                     help="percorso del file di pattern (default: %s)" % PATTERNS_FILE)
+    ap.add_argument("--autotest", action="store_true",
+                    help="esegue le prove interne dei riconoscitori e non guarda il repository")
     args = ap.parse_args()
+
+    if args.autotest:
+        return autotest()
 
     radice = args.radice or trova_radice()
     if not radice:
