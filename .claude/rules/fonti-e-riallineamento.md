@@ -1,12 +1,12 @@
 # Fonti del progetto e protocollo di riallineamento
 
-> Regola modulare, da caricare all'inizio di ogni sessione. Nasce il 03/08/2026 da una domanda dell'IT Manager: quali fonti pesca davvero questo progetto, e perche' resta indietro. La risposta breve e' che il repository e' una sola delle cinque classi di fonti, e le altre quattro non lo notificano: vanno interrogate. Questo file elenca ogni fonte, dice su cosa e' autorevole, come si legge, con quale cadenza va riletta, e quali sono i punti ciechi noti. La colonna della cadenza e' quella che l'IT Manager conferma o corregge: senza una cadenza dichiarata, una fonte che non notifica viene riletta quando qualcuno si ricorda, cioe' mai.
+> Regola modulare, da caricare all'inizio di ogni sessione. Nasce il 03/08/2026 da una domanda dell'IT Manager: quali fonti pesca davvero questo progetto, e perche' resta indietro. La risposta breve e' che il repository e' una sola delle cinque classi di fonti, e le altre quattro non lo notificano: vanno interrogate. Questo file elenca ogni fonte, dice su cosa e' autorevole, come si legge, con quale cadenza va riletta, e quali sono i punti ciechi noti. La colonna della cadenza e' quella che l'IT Manager conferma o corregge: senza una cadenza dichiarata, una fonte che non notifica viene riletta quando qualcuno si ricorda, cioe' mai. I casi osservati che hanno prodotto queste prescrizioni, con le misure e le date, stanno in `.claude/norme/fonti-e-riallineamento.md`: quel file non si carica all'avvio di una sessione e non serve per applicare la regola, serve a chi deve estenderla o rimetterla in discussione.
 
 ## Perche' un progetto di rete resta indietro
 
 La rete non cambia dentro questo repository. Cambia sugli apparati, e viene cambiata da piu' mani: da questa sessione di lavoro, da altre sessioni con altri strumenti e altri account, da interventi manuali dell'IT Manager sulle GUI, e da fornitori che consegnano hardware. Il repository impara soltanto cio' che qualcuno vi scrive.
 
-Ne segue che il rischio non e' la contraddizione, che si vede, ma l'*obsolescenza silenziosa*: una scheda che descrive correttamente lo stato di tre settimane fa e non dichiara di essere vecchia. Il 03/08/2026 il progetto ne ha misurate tre insieme — la distribuzione dei telefoni, il parco telefonico stimato un quinto del reale, e due acquisti di hardware di rete mai censiti — e nessuna delle tre era una contraddizione: erano affermazioni giuste che avevano smesso di esserlo.
+Ne segue che il rischio non e' la contraddizione, che si vede, ma l'*obsolescenza silenziosa*: una scheda che descrive correttamente lo stato di tre settimane fa e non dichiara di essere vecchia.
 
 ## Classe A — Il repository stesso
 
@@ -27,9 +27,7 @@ Trappola nota su questa classe: il frontmatter `last-verified` va bumpato all'ha
 
 Autorevoli su: lo stato reale degli apparati. Vanno interrogate, non ricordate. Nessuna notifica quando qualcosa cambia.
 
-**Aggiornamento del 04/09/2026 (ADR-026): due di queste fonti non vanno piu' interrogate a mano.** Nebula e Proxmox si rinfrescano da un'attivita' pianificata che esegue `scripts/Invoke-RefreshFonti.ps1`. La regola che questo documento portava fino a ieri, cioe' che il rinfresco restasse manuale, e' superata: delle sue quattro ragioni tre reggono e sono attuate come guardie dello script, mentre la quarta — che rinfrescando da soli il confronto non potrebbe piu' dire "questa misura e' vecchia" — va rovesciata, perche' se le misure sono sempre fresche ogni scostamento diventa senza ambiguita' un documento sbagliato, che e' il caso che interessa. La **gestione endpoint resta manuale**: le sue credenziali appartengono al provider MSP (ADR-017) e non stanno in questo repository.
-
-Le tre guardie, che sono la ragione per cui esiste uno script invece di due comandi dentro un'attivita' pianificata. La misura buona non si sovrascrive mai: si scrive in una cartella temporanea, si valida, e solo allora si promuove; valido significa che contiene dispositivi, criterio che viene dal 05/08/2026, quando l'organizzazione declassata produsse uno snapshot formalmente corretto e **vuoto** che avrebbe cancellato l'ultima misura completa. Un rinfresco fallito lascia un marcatore in `output/` che il controllo di allineamento riporta in rosso, perche' un'automazione che fallisce in silenzio sostituisce un dubbio con una fiducia mal riposta. E le credenziali restano nel solo posto dove ADR-021 le mette, senza una seconda copia.
+**Dal 04/09/2026, ADR-026, due di queste fonti non si interrogano piu' a mano**: Nebula e Proxmox si rinfrescano da un'attivita' pianificata che esegue `scripts/Invoke-RefreshFonti.ps1`, con le tre guardie descritte nei casi. La **gestione endpoint resta manuale**, perche' le sue credenziali appartengono al provider MSP (ADR-017) e non stanno in questo repository.
 
 Ne discende che la colonna della cadenza qui sotto cambia significato per quelle due righe: non e' piu' un impegno di chi lavora, e' il limite oltre il quale `scripts/Test-Allineamento.py` dichiara vecchia la misura e quindi, implicitamente, segnala che l'automazione non sta girando.
 
@@ -44,33 +42,17 @@ Ne discende che la colonna della cadenza qui sotto cambia significato per quelle
 
 ### La fonte che si e' spenta e riaccesa: la OpenAPI Nebula dipende dalla licenza
 
-Registrato il 05-06/08/2026, gap NEB-002, decisione in ADR-022. Vale la pena tenerlo qui, in una regola che si carica a ogni sessione, perche' e' l'unico caso finora in cui una fonte di classe B e' morta per una ragione **amministrativa** e non tecnica.
-
-Il fatto: il 05/08 alle 16:09 locali l'organizzazione Nebula e' stata declassata automaticamente a Base Pack e la OpenAPI ha smesso di autorizzare le chiamate; il 06/08 alle 08:51, dopo l'acquisto delle licenze mancanti, ha ripreso a rispondere da sola, senza rigenerare la chiave. Fra le due misure lo strumento di verifica su porte, PVID, VLAN e tabelle MAC semplicemente non esisteva.
-
-La regola che governa la disponibilita' di questa fonte, verificata sui pannelli e non ricordata: il livello dell'organizzazione e' il **minimo** fra i suoi dispositivi, non la loro somma; **un solo** apparato senza licenza Plus o Pro la fa scendere a Base dopo **quindici giorni** di grazia; e la OpenAPI risponde **solo** in stato Pro, perche' il Plus non abilita nemmeno la generazione della chiave. La causa concreta e' stata l'ingresso dei tre access point della Fase B nell'organizzazione il 21/07 senza licenza: quindici giorni esatti dopo, il declassamento.
+Fra il 05 e il 06/08/2026 la OpenAPI ha smesso di autorizzare le chiamate, perche' i quindici giorni di grazia su un apparato senza licenza erano scaduti e l'organizzazione era stata declassata: per un giorno la fonte piu' usata della classe B non esisteva. Il fatto, la regola di licenza che lo governa e la decisione stanno in `.claude/norme/fonti-e-riallineamento.md`, gap NEB-002 e ADR-022. Qui restano le due righe che vincolano il lavoro.
 
 Ne segue una precondizione che va letta ogni volta che si adotta un apparato nuovo, e che non e' un dettaglio di acquisto ma la condizione di sopravvivenza di questa riga della tabella: **un dispositivo nuovo in organizzazione va licenziato entro quindici giorni**, altrimenti spegne la fonte per tutti. Il caso imminente e' l'access point da esterno di M13c, tracciato come M13c-9.
 
-Stato attuale della copertura, dal quale dipende la cadenza qui sopra: tutti e sei i dispositivi in inventario sono coperti con Professional Pack e le scadenze sono co-terminate; la data che vincola l'organizzazione e' la piu' vicina, il **22/11/2027**. Da presidiare in anticipo, perche' la grazia corre in silenzio e l'unico segnale e' una mail automatica.
-
 ### Fonte automatica pianificata: lo USG FLEX 500 su Nebula
 
-Annotato il 03/08/2026 su indicazione dell'IT Manager. Il firewall **verra' portato sull'organizzazione Nebula** che gia' gestisce i due switch e i tre access point. Non e' ancora possibile e la data non e' fissata, ma quando avverra' cambia la classe di appartenenza della fonte piu' importante che oggi non e' interrogabile.
-
-Perche' conta piu' di un comodo in piu'. Oggi il firewall e' l'unico apparato centrale che vive in classe E e non in classe B: interfacce, ambiti DHCP, riserve, policy, oggetti indirizzo, DNS e NAT si leggono solo se l'IT Manager apre la GUI e produce uno screenshot. Ne segue che ogni affermazione di questo progetto sul firewall ha la freschezza dell'ultima volta che qualcuno ha guardato, e piu' di una correzione del luglio 2026 nasce esattamente da li' — l'intervallo degli indirizzi statici documentato come `.18-.84` invece di `.17-.95`, le interfacce residue di FW-013, le tabelle DNS credute assenti e poi trovate popolate su un suffisso sbagliato, la VLAN di gestione attribuita al segmento sbagliato in FW-002.
-
-Con il firewall su Nebula quelle letture diventano interrogabili con lo stesso script e la stessa chiave gia' in uso, e la conseguenza pratica e' che **la verifica del firewall entra nella cadenza automatica** invece di dipendere da una richiesta. Da fare quando succede: estendere `Get-NebulaSnapshot.ps1` agli endpoint del firewall, spostare la riga corrispondente da classe E a classe B in questo documento, fissarne la cadenza, e aggiungere la checklist di verifica in `_notes/TEST-CHECKLIST.md` sul modello di quella degli switch.
+Il firewall e' oggi l'unico apparato centrale che vive in classe E e non in classe B, quindi ogni affermazione di questo progetto sul firewall ha la freschezza dell'ultima volta che qualcuno ne ha aperto la GUI. Verra' portato sull'organizzazione Nebula che gia' gestisce switch e access point, ma la data non e' fissata; il piano, le due modalita' fra cui scegliere e cio' che l'OpenAPI gia' espone oggi stanno in `.claude/norme/fonti-e-riallineamento.md`. Qui resta il vincolo da non perdere quando arrivera'.
 
 Vincolo da non perdere quando arrivera': la chiave Nebula in uso e' di sola lettura per scelta (ADR-009), e il canale di scrittura verso gli switch si e' dimostrato inaffidabile (ADR-010, NEB-001). Portare il firewall su Nebula non deve trasformarsi nell'occasione per scrivere configurazioni di sicurezza da un canale che ha gia' perso silenziosamente delle scritture.
 
-Tre precisazioni acquisite il 06/08/2026 dai pannelli di NCC, che spostano il piano da "quando succede" a "in quale delle due modalita'". La prima e' che il firewall e' **gia' nell'inventario Nebula** dal 09/12/2025, in stato `Unused`, cioe' registrato nell'organizzazione ma non assegnato a un sito, e con l'acquisto del 05/08 e' coperto da Nebula Professional fino al **25/11/2027**: il lato licenza e' gia' pagato e non e' piu' un ostacolo. Da non confondere con il **Gold Security Pack** che il firewall porta a parte, licenza di servizio di sicurezza con scadenza propria al **19/12/2026**.
-
-La seconda e' che le modalita' sono due e la differenza non e' di grado ma di **chi comanda la configurazione**. In *Cloud Monitoring Mode* il firewall resta gestito localmente, la configurazione continua a vivere sul dispositivo e a modificarsi dalla sua interfaccia, e Nebula si limita a osservare, cioe' mostra stato, traffico, log e avvisi e tiene un backup della configurazione sul cloud: nessun reset, niente da rifare. In *Cloud Mode* il cervello diventa NCC, la configurazione vive nel cloud e il dispositivo la esegue, ma per entrarci serve un **reset di fabbrica** e la configurazione attuale **si perde**, perche' i formati non sono compatibili e non esiste uno strumento di importazione: andrebbe ricostruita a mano in NCC, e alcune funzionalita' dell'USG FLEX non sono ancora disponibili in quella modalita'. Per un firewall che porta regole, VPN, NAT, oggetti indirizzo e ambiti DHCP costruiti negli anni, e che questo progetto sta ancora finendo di documentare, la seconda strada e' un progetto a se' e non un cambio di modalita'.
-
-La terza discende dalle prime due: se l'obiettivo dichiarato e' spostare il firewall da classe E a classe B, cioe' renderlo **leggibile** senza screenshot, il candidato e' il *Cloud Monitoring Mode*, che non rischia nulla. Misurato il 06/08/2026, e vale come risposta parziale: nello stato attuale `Unused` il firewall **compare gia' nella risposta della OpenAPI**, in un gruppo con `siteId` nullo, ma con la sola anagrafica — tipo, modello, numero di serie, indirizzo fisico. Nessuna porta, nessuna tabella, nessuna configurazione, il che e' coerente con un apparato non assegnato a un sito. Resta quindi da verificare la sola domanda che conta davvero, e non va data per scontata: **che cosa esponga una volta assegnato a un sito in sola supervisione**. La prova costa poco e va fatta prima di annunciare che la fonte ha cambiato classe.
-
-Il principio che governa questa classe e' che una misura batte una memoria. Tre delle correzioni del 03/08/2026 sono venute da qui e non da un documento.
+Il principio che governa questa classe e' che una misura batte una memoria.
 
 ## Classe C — Le fonti documentali esterne
 
@@ -84,11 +66,7 @@ La libreria aziendale OneDrive contiene **diciannove radici di primo livello** (
 | `IT + Administration - Documenti` | ~750 file | amministrativa | **preventivi, documenti di trasporto, contratti firmati** |
 | `File di chat di Microsoft Teams` | ~220 file | scambio | **gli handoff condivisi in chat**, che non atterrano nelle altre due |
 
-Le sedici fuori perimetro, per trasparenza: `AI adoption`, `App`, `Attachments`, `Desktop`, `Documenti - Certificazioni`, `Documenti - Projects`, `Documenti condivisi - Resources`, `Documenti`, `File chat di Microsoft Copilot`, `Immagini`, `Marketing`, `Microsoft Teams Chat Files`, `Registrazioni`, `Riunioni`, `Scansioni`, `Whiteboards`. Due meritano un pensiero se il perimetro si allarga: `Documenti - Certificazioni` quando comincera' la Fase 5 ISO27001, e `Scansioni` se il servizio di scansione dovesse cambiare destinazione.
-
-Esistono inoltre sul disco altre due librerie montate, `OneDrive` personale e `OneDrive - Intrawelt S.a.s (1)`, che sembra un doppio aggancio della stessa libreria aziendale: nessuna delle due e' sorvegliata, e la seconda va chiarita perche' un doppio mount produce copie divergenti.
-
-La seconda libreria e' quella che il progetto sottovalutava. Un preventivo e un documento di trasporto non sembrano documentazione tecnica, ma sono l'unico posto dove compare un apparato nuovo prima che entri in rete, e sono l'unico posto dove si legge che un contratto e' stato firmato. I tre ritrovamenti del 03/08/2026 vengono tutti da li'.
+L'elenco delle sedici radici fuori perimetro, le due librerie montate in piu' e la ragione per cui la libreria amministrativa era la piu' sottovalutata stanno in `.claude/norme/fonti-e-riallineamento.md`.
 
 Lettura: `scripts/Check-OneDriveDelta.ps1` a ogni avvio di sessione tramite hook. Del suo output si legge per intero il blocco `RILEVANTI PER LA RETE`, che non e' troncato, e il riepilogo per cartella, che dice da cosa e' dominato il delta. Dopo il triage nella checklist di ingestione, e solo dopo, si rilancia con `-UpdateBaseline`.
 
@@ -98,7 +76,7 @@ Regola di ammissione: se il delta e' arretrato di piu' di qualche giorno, si tri
 
 Autorevoli su: tutto cio' che e' stato fatto senza passare da qui. Nessun canale automatico verso questo progetto, e questa e' la ragione strutturale dei ritardi.
 
-Su questa macchina convivono piu' installazioni dell'assistente, ciascuna con i propri progetti: al 03/08/2026 sono ventidue su un account, venti su un altro, quindici su un terzo, con sovrapposizioni. Alcuni di quei progetti toccano direttamente la rete che questo repository documenta.
+Quante installazioni dell'assistente convivano su questa macchina, e il caso del 03/08/2026 in cui due handoff sul dimensionamento della VM207 sono rimasti invisibili per costruzione e non per distrazione, stanno in `.claude/norme/fonti-e-riallineamento.md`.
 
 | Progetto o sede | Perche' riguarda la rete |
 |---|---|
@@ -113,9 +91,7 @@ Su questa macchina convivono piu' installazioni dell'assistente, ciascuna con i 
 
 Il canale che esiste e' il file di handoff, e funziona quando viene scritto e messo dove il delta lo vede. Il progetto ne ha gia' ingeriti tre per questa via, sul GroupShare, sul certificato HTTPS e su un intervento di postazione.
 
-Per `D:/log-collector`, `scripts/Test-Allineamento.py` confronta a ogni avvio il commit Git corrente con `data/scadenze.json` (`progetti_collegati`). Un commit nuovo richiede di leggere il diff e trasferire qui soltanto le novita' che cambiano topologia, sorgenti, accessi, regole, backup o stato ISO. Aggiornare il commit riconciliato solo dopo il triage; le modifiche non ancora committate nell'altro repository restano sviluppo in corso. Il punto di integrazione e la connessione SSH futura sono in `docs/log-collector-integrazione.md`.
-
-Il caso che dimostra il difetto, scoperto il 03/08/2026: due documenti di handoff sul dimensionamento della VM207, datati 13/07/2026, con i valori reali di memoria, processori, disco e bridge di una macchina che questo progetto documenta come asset di rete, piu' un `CLAUDE.md` di progetto, si trovavano dentro una cartella che la lista di esclusione del delta scartava come "mirror di siti esterni". L'esclusione era corretta quando fu scritta, nel luglio 2026; poi un'altra sessione ha usato quella cartella per altro. Erano invisibili per costruzione, non per distrazione. Correzione applicata: i file il cui nome contiene `handoff` e i `CLAUDE.md` non vengono mai esclusi in base alla cartella, e compaiono nel blocco delle voci rilevanti.
+Per `D:/log-collector`, `scripts/Test-Allineamento.py` confronta a ogni avvio il commit Git corrente con `data/scadenze.json` (`progetti_collegati`). Un commit nuovo richiede di leggere il diff e trasferire qui soltanto le novita' che cambiano topologia, sorgenti, accessi, regole, backup o stato ISO. Aggiornare il commit riconciliato solo dopo il triage; le modifiche non ancora committate nell'altro repository restano sviluppo in corso. Il punto di integrazione e la connessione SSH futura sono in `docs/log-collector-integrazione.md`. La VM prevista e il suo accesso SSH Windows restano da configurare alla creazione effettiva della macchina.
 
 Resta scoperto cio' che nessuno scrive: se una sessione cambia una porta su Nebula e non lascia un handoff, questo progetto lo scopre soltanto rileggendo l'apparato. E' l'argomento piu' forte a favore di una cadenza fissa sugli snapshot della classe B.
 
@@ -123,7 +99,7 @@ Resta scoperto cio' che nessuno scrive: se una sessione cambia una porta su Nebu
 
 Unica autorita' su: le decisioni, le priorita', e tutto cio' che e' stato fatto a mano sugli apparati senza che nessun agente ne conservi traccia. E' anche l'unica fonte che puo' dichiarare superata un'affermazione che nessuna misura contraddice.
 
-Esempio del 03/08/2026: la scheda descriveva due telefoni del Piano Terra come privi di lease DHCP, fotografia corretta al 23/07. La correzione — tutti e cinque collegati, ciascuno su una porta che prende la VLAN della fonia, lavoro concluso in sessioni precedenti — e' arrivata da qui, e solo dopo la misura l'ha corroborata. Nessuna interrogazione automatica l'avrebbe prodotta, perche' la tabella MAC dice dove sta un apparecchio, non che il lavoro e' finito.
+L'esempio del 03/08/2026 che lo dimostra, cioe' cinque telefoni dati per scollegati e dichiarati collegati dall'IT Manager prima che qualunque misura lo confermasse, sta in `.claude/norme/fonti-e-riallineamento.md`.
 
 Ne segue una domanda da fare, non da dedurre, all'inizio di ogni sessione: che cosa e' cambiato sulla rete da quando ci siamo lasciati, e in quale sessione o intervento e' avvenuto.
 
@@ -143,7 +119,7 @@ Quinto, invocare la skill `sync-context` per il drift fra schede e stato, e bump
 
 ## Cadenze da confermare dall'IT Manager
 
-Confermate dall'IT Manager il 03/08/2026. La riga del delta era rimasta in sospeso perche' il perimetro delle radici sorvegliate non era stato spiegato: ora lo e', ed e' tre radici su diciannove.
+Confermate dall'IT Manager il 03/08/2026, perimetro compreso: tre radici sorvegliate su diciannove.
 
 | Fonte | Cadenza | Stato |
 |---|---|---|
@@ -155,7 +131,7 @@ Confermate dall'IT Manager il 03/08/2026. La riga del delta era rimasta in sospe
 | Domanda "cosa e' cambiato fuori da qui" | ogni sessione, in apertura | confermata |
 | Handoff dalle altre sessioni | li scrive chi opera altrove, in una delle tre radici sorvegliate | confermata |
 
-Dal 04/09/2026 la sorveglianza di queste cadenze non dipende piu' dalla memoria di nessuno: `scripts/Test-Allineamento.py` gira all'avvio di sessione e riporta, per ogni fonte di questa tabella, l'eta' della misura contro la cadenza dichiarata. E' rumoroso e non blocca, per decisione dell'IT Manager. Con esso vengono riportate anche le scadenze di licenza e di contratto raccolte in `data/scadenze.json`, che prima vivevano sparse nella prosa dei documenti e non erano guardate da nessun meccanismo: erano sedici, e ogni incidente che in questo progetto ha fatto danno era una di quelle date.
+Dal 04/09/2026 la sorveglianza di queste cadenze non dipende piu' dalla memoria di nessuno: `scripts/Test-Allineamento.py` gira all'avvio di sessione e riporta, per ogni fonte di questa tabella, l'eta' della misura contro la cadenza dichiarata. E' rumoroso e non blocca, per decisione dell'IT Manager. Con esso vengono riportate anche le sedici scadenze di licenza e di contratto raccolte in `data/scadenze.json`.
 
 ## Punti ciechi dichiarati
 

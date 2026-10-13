@@ -1,8 +1,10 @@
 ---
 name: git-sync
-description: Riallinea il contesto del progetto dopo un pull o un merge e mostra le modifiche introdotte.
+description: >
+  Aggiorna il contesto di Claude dopo un git pull o merge. Mostra cosa è cambiato rispetto
+  all'ultima sessione. Invocare dopo aver eseguito git pull.
 ---
 
-# Adapter Codex
+<!-- generato da sync-codex-skills.py; non modificare -->
 
-Leggi per intero e applica la skill canonica [`../../../.claude/skills/git-sync/SKILL.md`](../../../.claude/skills/git-sync/SKILL.md). Questo file serve solo alla discovery di Codex e non duplica il workflow.
+Leggere integralmente [`../../../.claude/skills/git-sync/SKILL.md`](../../../.claude/skills/git-sync/SKILL.md) e seguirne la procedura canonica. Risolvere i percorsi relativi dalla directory della skill canonica. Tradurre la sintassi o i nomi degli strumenti specifici di Claude negli equivalenti disponibili in Codex senza indebolire controlli, gate o limiti di autorizzazione.
