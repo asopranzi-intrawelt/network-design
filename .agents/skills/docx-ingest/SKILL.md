@@ -1,8 +1,9 @@
 ---
 name: docx-ingest
-description: Ingerisce progressivamente documenti Word voluminosi del progetto limitando il contesto caricato.
+description: >
+  Esegue la procedura canonica del progetto quando viene richiesta esplicitamente.
 ---
 
-# Adapter Codex
+<!-- generato da sync-codex-skills.py; non modificare -->
 
-Leggi per intero e applica la skill canonica [`../../../.claude/skills/docx-ingest/SKILL.md`](../../../.claude/skills/docx-ingest/SKILL.md). Questo file serve solo alla discovery di Codex e non duplica il workflow.
+Leggere integralmente [`../../../.claude/skills/docx-ingest/SKILL.md`](../../../.claude/skills/docx-ingest/SKILL.md) e seguirne la procedura canonica. Risolvere i percorsi relativi dalla directory della skill canonica. Tradurre la sintassi o i nomi degli strumenti specifici di Claude negli equivalenti disponibili in Codex senza indebolire controlli, gate o limiti di autorizzazione.

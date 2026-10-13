@@ -1,8 +1,11 @@
 ---
 name: repo-status
-description: Riassume branch, commit recenti, file modificati e differenze non committate del progetto.
+description: >
+  Analizza lo stato corrente della repository: branch attivo, commit recenti, file modificati,
+  differenze non committate. Usare quando si vuole un riepilogo aggiornato della repo o prima
+  di iniziare una sessione di sviluppo.
 ---
 
-# Adapter Codex
+<!-- generato da sync-codex-skills.py; non modificare -->
 
-Leggi per intero e applica la skill canonica [`../../../.claude/skills/repo-status/SKILL.md`](../../../.claude/skills/repo-status/SKILL.md). Questo file serve solo alla discovery di Codex e non duplica il workflow.
+Leggere integralmente [`../../../.claude/skills/repo-status/SKILL.md`](../../../.claude/skills/repo-status/SKILL.md) e seguirne la procedura canonica. Risolvere i percorsi relativi dalla directory della skill canonica. Tradurre la sintassi o i nomi degli strumenti specifici di Claude negli equivalenti disponibili in Codex senza indebolire controlli, gate o limiti di autorizzazione.
