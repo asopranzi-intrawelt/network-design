@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="4986" viewBox="0 0 1060 4986" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="4986" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5034" viewBox="0 0 1060 5034" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="5034" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">193 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 13/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">195 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 13/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -28,11 +28,11 @@
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
 <text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
-<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(19)</tspan></text>
+<text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(20)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
 <text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(17)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
-<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(41)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(42)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#e6ede9"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#0e5c62" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">2024</text>
@@ -3133,7 +3133,39 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="4970" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-194" class="ev-block has-detail" transform="translate(0,4940)">
+<g class="ev-summary" onclick="toggleEv('ev-194')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#008300"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">13/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Integrità dei documenti Cliente-1: collaudo su NAS-HERO e cartella Cliente-1_RM <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">STOR</tspan></text>
+</g>
+<foreignObject id="ev-194-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">13/10/2026 &#8212; Integrità dei documenti Cliente-1: collaudo su NAS-HERO e cartella Cliente-1_RM</p>
+<p>Il progetto collegato D:/integrità-docs (proposta non ancora approvata) ha collaudato la propria applicazione sulla struttura reale dei progetti: creata in Documenti la cartella cliente Cliente-1_RM con un progetto di prova, registrati un file scaricato dal browser con canale e provenienza e una mail trascinata dal nuovo Outlook, ciascuno con marca temporale DigiCert. Collaudo del WORM di RegistroIntegrita: con l'account amministrativo l'apertura in scrittura degli eventi è rifiutata dopo 10 minuti dall'ultima scrittura e consentita prima, osservato sullo stesso file. Verificato che l'autorità di certificazione aziendale di ADR-025 non è stata creata: sulla postazione dell'IT Manager è attendibile solo quella di IntraLino. Preparata una presentazione per Cliente-1 e per i PM, con il percorso di rete oscurato.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-195" class="ev-block has-detail" transform="translate(0,4964)">
+<g class="ev-summary" onclick="toggleEv('ev-195')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">13/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Offline cloud osservato e confronto storico locale preparato <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-195-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">13/10/2026 &#8212; Offline cloud osservato e confronto storico locale preparato</p>
+<p>L’operatore esegue quattro letture connectivity 30d e controlli: report ricalcolato identico senza rete, mapping/metadati e SHA cache verificati. 30HP: nove intervalli, cinque online e quattro offline; 54HP: cinque intervalli, tre online e due offline. Sequenze ordinate con estremi condivisi e span riportato esattamente 30 giorni; non copertura fisica o causa delle disconnessioni dimostrate. Offline 30HP il 19/09 23:51-23:54, 21/09 02:20-02:25 e 06/10 11:48-11:51, 16:41-16:43 locali; 54HP il 19/09 23:52-23:54 e 05/10 09:27-12:31, durata ultima 3h04m26,038s. Nel buffer locale 30HP esportato l’08/10 tredici record tecnici distinti hanno timestamp nei due intervalli del 06/10: dieci e tre, zero autenticazioni. Riferimento indipendente dall’API salvato privatamente, non recupero ancora provato. Preparato tools/check-nebula-offline-history.py: un controllo e due finestre storiche con dieci minuti di margine, tre POST; confronto esatto su timestamp, priorità, tag e testo, vuoto non attribuito a perdita o retention. Fixture e test connectivity conservati; tredici nuovi casi del confronto storico, suite 147 passate e una POSIX saltata. Due mutazioni rilevate e SHA ripristinato, processo nativo con riferimento/chiave finti e codici 0/7, parser e Ruff verdi. Passi 89-92 e tabella completa nel runbook del collettore. Prossimo gesto: _notes/check-nebula-offline-history.ps1, sola lettura senza generare eventi o interrompere la rete. Prova storica API ancora attesa e continuità AdS offline non dimostrata. ISO-30 in_corso; limite/retention massimi, AP/NCC, notifica, D-1 e collaudo VM aperti. Tre archivi stessa VM e censimento IT/Seeweb conservati, Outlook non confermato collegato. D7, Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Lavori paralleli rete, compresi CA/scadenze e integrità-docs, preservati; commit, push e deploy manuali.</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="5018" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3332,7 +3364,9 @@
   {id:'ev-190',type:'event',h:24},
   {id:'ev-191',type:'event',h:24},
   {id:'ev-192',type:'event',h:24},
-  {id:'ev-193',type:'event',h:24}
+  {id:'ev-193',type:'event',h:24},
+  {id:'ev-194',type:'event',h:24},
+  {id:'ev-195',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3373,7 +3407,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 4986').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 5034').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }
