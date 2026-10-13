@@ -1,5 +1,13 @@
 # Work-log
 
+## Offline AdS rimandato, censimento email e backup avviato, 13/10/2026
+
+Nel collettore D:/log-collector: Chiusura manuale verificata ad abd1ea4: HEAD e riferimento locale origin/main coincidenti, impronta delle 17:19 coerente, unico albero main. I dodici file Nebula sono versionati; otto modifiche e un nuovo file del template sono rimasti fuori, come previsto. STACK, current-work e dev-testing riconciliate al codice e ai quattro file di test/fixture del nuovo commit; design e deployment mantengono le ancore valide per aree invariate. L'utente chiede spiegazione dell'impatto e poi rimanda esplicitamente il test AdS offline. Nessun blocco cloud, riavvio o modifica del firewall eseguiti; i tredici record tecnici restano la sola prova storica di quel campione e il gate AdS offline resta aperto. Prossimo lavoro scelto: notifiche IT e backup Seeweb già autorizzati. Verifica Plugin Management alle 17:32:59 locali: Outlook Email disponibile e non installato, nessun lettore email esposto. Suggerimento delle 10:02:34 già presente, non riproposto; nessuna mail letta. Cartella privata D:/log-collector/_notes/email-reports-inbox pronta per il primo report Seeweb originale recente in .eml. Procedura Microsoft e criteri di acquisizione in D:/log-collector/docs/progetto-log-operativi-email.md. Formato, esiti per job/nodo, allegati, cadenza, duplicati e canale di produzione ancora da verificare; nessun parser di prodotto o flusso sulla VM inventato prima del campione. Tre archivi stessa VM, frontend sysadmin e correlazione successivi conservati. D7 e gli altri gate Nebula aperti; Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit fonti ADR restano da ricordare. Lavori paralleli del template e integrità-docs preservati; commit, push e deploy manuali.
+
+## Integrità-docs allineato al template
+
+Il 13/10 il progetto collegato è allineato al template (controlli di chiusura verdi) e rinuncia alla copia sul NAS del materiale riservato. Annotato in `docs/integrita-docs-integrazione.md`. Commit manuale.
+
 ## Protezione dei rami non applicata ai repository privati dell'organizzazione
 
 Riscontrato il 13/10 sul progetto collegato integrità-docs: regola su `main` creata e «Not enforced», piano gratuito dell'organizzazione. Annotato in `docs/integrita-docs-integrazione.md`. Commit manuale.
