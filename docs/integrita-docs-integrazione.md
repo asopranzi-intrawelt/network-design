@@ -53,3 +53,7 @@ Protezione del ramo principale, 13/10/2026: la regola creata nel repository priv
 Il 13/10/2026 il progetto collegato è stato allineato al template di progetto: i controlli di chiusura sono verdi per la prima volta e il suo versionamento torna alla procedura ordinaria di chiusura. La copia del materiale riservato su una cartella del NAS non si fa, per scelta dell'IT Manager.
 
 Il 14/10/2026 il progetto collegato ha preparato, oltre alla guida per i PM, un documento e una presentazione per i clienti sulle misure tecniche per l'integrità dei dati, nell'impianto grafico dell'«Intrawelt Design System»; restano materiale riservato e non versionato del progetto collegato.
+
+Lo stesso giorno il materiale per i clienti è stato separato in una presentazione e un documento tecnici generali, senza riferimenti a un cliente, e in una versione per WindTre con la corrispondenza alle righe 139 e 168.
+
+Il 14/10/2026 il progetto collegato ha portato anche l'interfaccia dell'applicazione nel design system Intrawelt e ha preparato lo script NinjaOne per distribuire la radice dell'autorità; il primo rilascio firmato segue al prossimo commit. La prova con una mail cifrata reale resta in sospeso finché non ne arriverà una.
