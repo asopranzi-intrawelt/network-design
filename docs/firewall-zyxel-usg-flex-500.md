@@ -128,6 +128,14 @@ Google Authenticator (TOTP). Canale alternativo: email o SMS. Validita' codice: 
 
 ---
 
+## Perche' il firewall non e' adottato nel sito Nebula
+
+Dichiarazione dell'IT Manager del 14/10/2026, raccolta preparando la risposta al fornitore del VA e non scritta prima da nessuna parte. Lo USG FLEX 500 compare nell'inventario dell'organizzazione Nebula fra i dispositivi non assegnati, verificato nello snapshot dello stesso giorno, ma non e' adottato nel sito e resta quindi gestito dalla sua interfaccia locale, a differenza dei due switch e dei quattro access point.
+
+La ragione e' che l'adozione comporterebbe la riconfigurazione da zero dell'apparato, perche' la configurazione esistente non e' esportabile verso il profilo gestito dal cloud. Non e' quindi un rinvio per mancanza di tempo ma un costo di migrazione, e questo chiarisce la riga della regola delle fonti che registrava il passaggio come previsto senza data: la data non e' fissata perche' il passaggio richiede di ricostruire interfacce, zone, policy, NAT e VPN su un profilo nuovo, con il rischio concentrato sull'unico apparato che tiene insieme la sede.
+
+Ne discende una conseguenza che riguarda la classificazione delle fonti e non solo il firewall: finche' questo apparato resta fuori dal cloud, ogni affermazione del progetto sul firewall ha la freschezza dell'ultima lettura manuale della sua interfaccia, oggi il 30/07/2026 per le interfacce e il 03/08/2026 per il port-grouping, con il changelog di `firewall-zyxel-usg-flex-500-live.conf` a registrare le modifiche successive. La dichiarazione non e' stata verificata contro la documentazione del produttore, e quella verifica resta da fare prima di pianificare l'adozione.
+
 ## NAT e virtual server
 
 10 dichiarazioni totali. 3 attive, 7 deactivate.

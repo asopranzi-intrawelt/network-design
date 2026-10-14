@@ -11,14 +11,14 @@ Questa ricognizione è parte della stessa timeline del collettore. Il dettaglio 
 | ID | Punto di accesso, valori privati nell'inventario | Stato e verifica successiva |
 |---|---|---|
 | SWB-01 | <URL_SEEWEB_BACKUP>, Cloud Backup | Due report del 12 e 13/10: sei stati per unità, due Error nel secondo. Job, cause, cadenza, copie e audit del pannello da verificare |
-| SWB-02 | <URL_SEEWEB_APPLIANCE_PUBBLICO>, Cloud Appliance VPN | OPNsense 21.1.5 verificata, stessa sorgente di SWB-07. Configurazione e log locali PF/charon letti nei83 screenshot (100-180 e 196-197); audit GUI/SSH/config e invio remoto non verificati |
+| SWB-02 | <URL_SEEWEB_APPLIANCE_PUBBLICO>, Cloud Appliance VPN | OPNsense 21.1.5 verificata, stessa sorgente di SWB-07. Configurazione e log locali PF/charon letti nei 93 screenshot (100-180, 196-197 e 202-211); audit GUI/SSH/config e invio remoto non verificati |
 | SWB-03 | <URL_SEEWEB_CLIENTI>, area clienti | Mantenuto nel censimento admin con priorità inferiore per il backup; audit e export del provider non verificati |
 | SWB-04 | <URL_SEEWEB_SUPPORTO>, ticket | Accessi e metadati operativi solo se disponibili e pertinenti; un ticket non prova un login sull'apparato |
 | SWB-05 | <URL_SEEWEB_CLOUDCENTER> | Tre schermate lette, Eventi soltanto visibile; autenticazioni, retention ed export non provati |
 | SWB-06 | <URL_SEEWEB_ESXI> | Hypervisor confermato, famiglia VMware 7 indicata nelle fonti; build corrente, log e Syslog da ricognire |
 | SWB-07 | <URL_SEEWEB_FIREWALL_PRIVATO>, firewall LAN | Identità comune confermata da dashboard e interfacce. Due ingressi, un solo apparato; dossier e piano in docs/firewall-seeweb-opnsense.md |
 
-Sette ingressi non diventano sette nuovi nodi della topologia. Le VM Windows, GroupShare, database e backup mantengono registri propri; l'audit dell'hypervisor non li sostituisce. Gli URL attuali vengono dall'operatore; il Word di architettura è storico, ultima modifica 07/07/2026, SHA beac5702ebe722aa84955e 687aa1642b8d21aace3be5b932ce1d92cbd889d114 riconfermato sull'originale il 14/10. La tabella accessi aiuta a identificarli, senza usare le credenziali per una nuova autenticazione.
+Sette ingressi non diventano sette nuovi nodi della topologia. Le VM Windows, GroupShare, database e backup mantengono registri propri; l'audit dell'hypervisor non li sostituisce. Gli URL attuali vengono dall'operatore; il Word di architettura è storico, ultima modifica 07/07/2026, SHA beac5702ebe722aa84955e687aa1642b8d21aace3be5b932ce1d92cbd889d114 riconfermato sull'originale il 14/10. La tabella accessi aiuta a identificarli, senza usare le credenziali per una nuova autenticazione.
 
 Le tre schermate correnti mostrano Foundation e appliance sulla stessa rete privata, 16 core, 128 GB RAM, 250 GB disco, etichetta VMware 7 e datacenter Milano. Build dell'host e inventario delle VM non letti. Backup: Nessun Backup è il campo del prodotto Foundation; non è una prova dell'assenza del diverso Cloud Backup delle mail. Identificativi, indirizzi, VLAN e hostname stanno in _notes/seeweb-access-inventory-20261014.json; immagini e provenienza in _notes/seeweb-census-20261014, ignorati da git.
 
