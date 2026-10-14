@@ -1,5 +1,5 @@
 ---
-last-verified: 54716ab
+last-verified: 0a12acf
 ---
 
 # Lavoro corrente, riallineato il 22/09/2026
