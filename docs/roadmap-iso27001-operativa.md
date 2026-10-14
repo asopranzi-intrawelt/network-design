@@ -249,7 +249,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-14):** Letti81 originali screenshot 100–180 del firewall Seeweb, dossier e prove conservati nei due progetti. Log locali PF/filterlog e IPsec/charon visibili; audit GUI/SSH/config e invio remoto ancora da verificare. M31f e gap 214 aperti, nessuna raccolta Seeweb sulla VM. Test AdS offline Nebula rimandato.
+  - **Ultimo stato (2026-10-14):** Completata WAN manuale Seeweb con screenshot196/197:29 regole, ultima pass anyIPv4→indirizzoWAN con log. TCP902 LAN eHTTPS443 GroupShare rilevati. Gap212/M31c-d aggiornati;83 prove conservate nei due progetti. Audit admin e trasporto log ancora da verificare, nessun cambio firewall o raccoltaVM.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

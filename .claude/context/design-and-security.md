@@ -162,3 +162,5 @@ piano di gestione della rete. Rilevante anche per A.9.4, accesso privilegiato |
 ## Riscontro cloud Seeweb,14/10/2026
 
 La lettura di81 screenshot del firewall alimenta A.8.8/A.8.9 (OPNsense 21.1.5 della serie upstream fuori supporto), A.8.24 (certificato GUI indicato scaduto e VPN IKEv1), A.8.20/A.8.22 (NAT, pubblicazioni e separazione cloud), A.8.13 (storage TCP 445 osservato, proprietà e backup ignoti) e A.8.15/A.8.16 (log locali presenti, audit admin e invio remoto non verificati). [Configurazione e limiti](../../docs/firewall-seeweb-opnsense.md), gap 210–214, M31 e M14 restano aperti; nessuna conformità o correzione dichiarata dalla sola ricognizione. La timeline registra il lavoro in ISO-25/27/30 in_corso; raccolta Seeweb sulla VM non attiva.
+
+Aggiornamento del 14/10 dalle196-197: 29 manuali WAN complete, ultima pass da qualunque origine verso l'indirizzo WAN per tutto IPv4, logging su 6 e 29; TCP 902 verso LAN e HTTPS443 a GroupShare abilitati. Gap 212/M31c-d prioritari: servizio effettivo e vie alternative da verificare prima di ridurre i permessi. Accesso admin riuscito/raggiungibilità non provati; registri PF non diventano audit GUI.

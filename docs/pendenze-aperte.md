@@ -118,6 +118,6 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Cosa | Stato | Registro proprietario |
 |---|---|---|
 | Completa configurazione/ruoli/logging e proprietà provider, poi piattaforma e certificato supportati | Aperta, nessun cambio | M31a/b/c; SWB-001/002 (#210/211) |
-| Matrice flussi e separazione cloud, HTTP/8080, provider e NAT; coordinare con VPN e segmentazione sede | Aperta, flussi osservati | M31d, M14/M22; SWB-003 (#212) |
+| Priorità al permesso WAN29 verso il firewall e TCP902 LAN; matrice cloud HTTP/HTTPS/8080, provider e NAT; coordinare con VPN e segmentazione sede | Aperta, flussi osservati | M31d, M14/M22; SWB-003 (#212) |
 | Attribuire servizio/storage del vicino NetApp e due sessioni TCP 445 | Aperta, proprietà ignota | M31e; SWB-004 (#213) |
 | Campione nativo e log admin distinti, trasporto e ricezione sul collettore | Aperta, soltanto log locali | M31f; SWB-005 (#214), ISO-30 |
