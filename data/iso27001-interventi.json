@@ -1572,6 +1572,48 @@
       "data": "2026-10-14",
       "stato": "in_corso",
       "nota": "Completata WAN manuale Seeweb con screenshot196/197:29 regole, ultima pass anyIPv4→indirizzoWAN con log. TCP902 LAN eHTTPS443 GroupShare rilevati. Gap212/M31c-d aggiornati;83 prove conservate nei due progetti. Audit admin e trasporto log ancora da verificare, nessun cambio firewall o raccoltaVM."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Letteschermate202-211 e93 totali Seeweb: tutte14 rotte e sei pagine Activity/59 PID. Menu visibile senza Logging/Targets/Utenti; daemon e thread audit non provano accessi raccolti. M31a/f e gap214 aggiornati, richiesta provider preparata non inviata. Non chiedere di nuovo la stessa ricognizione; raccolta automatica ancora non attiva."
+    },
+    {
+      "id": "ISO-28",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Secondo VA Onova consegnato il 14/10/2026: dieci rilievi unici per 87 istanze sul solo segmento delle postazioni, una Alta (firmware USG FLEX 500 5.42, CVE-2026-14818), otto Medie, una Bassa. Fotografia in docs/vulnerability-assessment-ott2026.md; gap propri 215-220. Il perimetro firmato non e' agli atti, quindi nessun rilievo del VA 2025 si chiude per assenza nel nuovo report. Nessuna remediation applicata in questo giro."
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Il VA del 13/10/2026 misura il firmware dello USG FLEX 500 fermo alla 5.42 con una vulnerabilita' nota: e' il primo asset di sede con una versione non allineata accertata da una fonte esterna, accanto alla priorita' cloud gia' aperta su OPNsense 21.1.5. Aggiornamento alla 5.43 o successiva tracciato come #215, in finestra di manutenzione e con backup della configurazione."
+    },
+    {
+      "id": "ISO-21",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Conferma indipendente dal VA del 13/10/2026: le interfacce di gestione di gateway, due switch e quattro access point sono raggiungibili da qualunque dispositivo collegato, con certificati autofirmati di fabbrica, FTP attivo e SSH a password, per trenta istanze Medie su sei apparati. Il report misura inoltre che dei quattro cavi del server uno solo passa dallo switch non gestito, quindi il trunk di gestione si puo' configurare sulle porte gestite 7, 9 e 11 senza dipendere da quel ramo."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "L'osservazione K del VA del 13/10/2026 dichiara assente la raccolta centralizzata dei log: e' vero per cio' che una scansione puo' vedere, non per lo stato reale. Il collettore degli accessi amministrativi e' in servizio dal 01-02/10/2026 con host di virtualizzazione, firewall, tre NAS e iLO come sorgenti, ma sta fuori dal perimetro scansionato e il flusso syslog e' in uscita. Resta fondata la parte dell'osservazione su correlazione, presidio continuo e notifiche, oggi bloccate dal relay di posta non scelto, e sul perimetro cloud dove la raccolta non e' cominciata (#214). Portare all'incontro con il fornitore le due domande che decidono se la protezione gestita si sommi o duplichi: riuso dei flussi gia' raccolti e sorte della difesa endpoint esistente."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Preparati gli allegati della richiesta al provider: sei PNG già analizzati (100, 211, 146, 164, 197 e 204), selezionati per versione, menu Sistema e servizi, log PF, log IPsec, ultima regola WAN e certificato GUI. Copie rinominate sul Desktop e nel livello privato dei due progetti, originali invariati e SHA-256 verificati dopo la copia. Inclusi elenco esplicativo e copia del testo del ticket attualmente presente nel collettore, comprese le integrazioni dell’operatore. Selezione interna basata sulle schermate: non sei nuove prove o nuovi eventi amministrativi. Invio e numero del ticket non ancora confermati; audit/export e raccolta automatica Seeweb restano da verificare. Nessuna modifica al firewall."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Il 14/10/2026 l’operatore riferisce che, dopo essere tornato indietro nel portale Seeweb, la UI non ha più consentito il caricamento degli allegati e decide di attendere la risposta del provider. Stato operativo: attesa risposta dichiarata dall’operatore; numero/ricevuta del ticket e allegati effettivamente associati non verificati. Le quattro schermate selezionate restano pronte per eventuale integrazione nello stesso ticket. Nessun nuovo tentativo nel portale richiesto, nessun ticket o messaggio inviato dall’agente e nessuna modifica al firewall. Audit amministrativo, export e raccolta automatica restano aperti; prossimo passo sul firewall: esaminare la risposta Seeweb quando disponibile."
     }
   ]
 }

@@ -26,7 +26,7 @@ Su questo host i bridge sono quattro e ciascuno contiene una sola scheda fisica:
 
 | Bridge | Scheda fisica | Porta dello switch | Indirizzo sull'host | Macchine attestate |
 |---|---|---|---|---|
-| `vmbr0` | eno1 | 52, attraverso il QNAP non gestito | si, `10.61.20.11/19` | VM 100 prima scheda, VM 202, VM 208, VM 810 |
+| `vmbr0` | eno1 | 52, attraverso il QNAP non gestito | si, `10.61.20.11/19` | VM 100 prima scheda, VM 202, VM 208, VM 210, VM 810 |
 | `vmbr1` | eno2 | 7 | no | VM 100 seconda scheda, e nient'altro |
 | `vmbr2` | eno3 | 9 | no | VM 209; vi era anche la VM 206, dismessa il 31/08/2026 |
 | `vmbr3` | eno4 | 11 | no | VM 203 spenta, VM 204, VM 205, VM 207, VM 602 |

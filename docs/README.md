@@ -12,6 +12,7 @@ Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) e' il punto di par
 | Dove stanno cavi, armadi, corrente e porte fisiche? | [Livello fisico ed elettrico](livello-fisico-ed-elettrico.md) e [mappatura delle porte](mappatura-porte-fisiche.md) |
 | Come il server e le VM raggiungono la rete? | [Proxmox e bridge](virtualizzazione-proxmox-e-bridge.md) e [servizi esposti](esposizione-servizi-interni.md) |
 | Come sono separati oggi i segmenti e come cambieranno? | [Segmentazione M22](segmentazione-lan-m22.md), [firewall](firewall-zyxel-usg-flex-500.md), [risoluzione dei nomi](risoluzione-nomi-interni.md) e [autorita' di certificazione](autorita-certificazione-interna.md) |
+| Che cosa ha trovato l'ultima verifica di vulnerabilita' esterna? | [VA ottobre 2026](vulnerability-assessment-ott2026.md), che sostituisce il [VA novembre 2025](vulnerability-assessment-nov2025.md) come base della riconciliazione |
 | Che cosa resta aperto e quali vincoli ci sono? | [Pendenze consolidate](pendenze-aperte.md), [registro dei difetti](infrastructure-timeline/GAP-TBC.md) e [roadmap](../.claude/context/roadmap.md) |
 | Quali interventi servono per ISO 27001 e quali richiedono forniture? | [Roadmap ISO 27001 operativa](roadmap-iso27001-operativa.md), generata dal [registro degli interventi](../data/iso27001-interventi.json) |
 | Come si e' arrivati allo stato attuale? | [Timeline degli interventi](infrastructure-timeline/README.md) e [SVG interattivo](infrastructure-timeline/timeline.svg) |

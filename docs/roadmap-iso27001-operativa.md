@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 34, in corso 13, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 33, in corso 14, bloccati 0, completati 0, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -185,11 +185,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Responsabile:** IT Manager e responsabili applicativi. **Dipendenze:** ISO-16, ISO-18. **Controlli:** A.8.22.
   - **Fonti:** roadmap M22d, docs/virtualizzazione-proxmox-e-bridge.md.
 
-- **ISO-21 | Segmenti postazioni, server e management** - **Da fare**; FORNITURA CONDIZIONATA. Eventuali porte gestite o apparati aggiuntivi soltanto se il censimento delle porte mostra insufficienza.
+- **ISO-21 | Segmenti postazioni, server e management** - **In corso**; FORNITURA CONDIZIONATA. Eventuali porte gestite o apparati aggiuntivi soltanto se il censimento delle porte mostra insufficienza.
   - **Azione:** Decidere il segmento gestione; migrare postazioni e server dopo il censimento degli statici; spostare la gestione switch/iLO per ultima con console alternativa pronta.
   - **Chiusura verificabile:** Matrice dei flussi soddisfatta, servizi invariati e gestione accessibile solo da postazioni IT.
   - **Responsabile:** IT Manager. **Dipendenze:** ISO-18, ISO-19, ISO-20. **Controlli:** A.8.22, A.8.2.
   - **Fonti:** roadmap M22e, docs/segmentazione-lan-m22.md.
+  - **Ultimo stato (2026-10-14):** Conferma indipendente dal VA del 13/10/2026: le interfacce di gestione di gateway, due switch e quattro access point sono raggiungibili da qualunque dispositivo collegato, con certificati autofirmati di fabbrica, FTP attivo e SSH a password, per trenta istanze Medie su sei apparati. Il report misura inoltre che dei quattro cavi del server uno solo passa dallo switch non gestito, quindi il trunk di gestione si puo' configurare sulle porte gestite 7, 9 e 11 senza dipendere da quel ramo.
 
 - **ISO-22 | DHCP Guard e pulizia delle porte switch** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Attivare protezioni livello 2 per segmento, fidandosi solo dei trunk DHCP legittimi; correggere porte 19 e 21 del 30HP e restringere le VLAN delle porte fonia dopo il riscontro fisico.
@@ -229,14 +230,14 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/vendor-management.md, docs/design-and-security.md, roadmap Fase 4, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-14):** Inventariata OPNsense 21.1.5 della serie upstream fuori supporto e certificato GUI indicato scaduto nel 2020. Aperto M31a/b/c e gap 210/211: responsabilità Seeweb, backup/console e finestra da concordare. Nessun aggiornamento o rinnovo applicato.
+  - **Ultimo stato (2026-10-14):** Il VA del 13/10/2026 misura il firmware dello USG FLEX 500 fermo alla 5.42 con una vulnerabilita' nota: e' il primo asset di sede con una versione non allineata accertata da una fonte esterna, accanto alla priorita' cloud gia' aperta su OPNsense 21.1.5. Aggiornamento alla 5.43 o successiva tracciato come #215, in finestra di manutenzione e con backup della configurazione.
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
   - **Chiusura verificabile:** Ogni chiusura ha output o verbale; i rilievi critici e alti sono riprovati.
   - **Responsabile:** RSGSI e IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.5.36.
   - **Fonti:** docs/vulnerability-assessment-nov2025.md, docs/design-and-security.md.
-  - **Ultimo stato (2026-09-29):** Perimetro VA aggiornato: escluso il vecchio host del gestionale, ritirato dopo migrazione (conferma IT Manager 29/09). Non trasferire i plugin Ubuntu/Tomcat al successore. VM 810 TESTNEWEGETRADBOOT e successore candidato; accesso SSH odierno non verificato, quindi serve censimento del nuovo sistema prima della chiusura.
+  - **Ultimo stato (2026-10-14):** Secondo VA Onova consegnato il 14/10/2026: dieci rilievi unici per 87 istanze sul solo segmento delle postazioni, una Alta (firmware USG FLEX 500 5.42, CVE-2026-14818), otto Medie, una Bassa. Fotografia in docs/vulnerability-assessment-ott2026.md; gap propri 215-220. Il perimetro firmato non e' agli atti, quindi nessun rilievo del VA 2025 si chiude per assenza nel nuovo report. Nessuna remediation applicata in questo giro.
 
 - **ISO-29 | Cifratura endpoint e dispositivo personale in RMM** - **Da fare**; FORNITURA CONDIZIONATA. Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato.
   - **Azione:** Misurare cifratura, TPM, protezioni e chiavi per dispositivo; definire trattamento del PC personale gestito dall'RMM e delle eccezioni.
@@ -249,7 +250,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-14):** Completata WAN manuale Seeweb con screenshot196/197:29 regole, ultima pass anyIPv4→indirizzoWAN con log. TCP902 LAN eHTTPS443 GroupShare rilevati. Gap212/M31c-d aggiornati;83 prove conservate nei due progetti. Audit admin e trasporto log ancora da verificare, nessun cambio firewall o raccoltaVM.
+  - **Ultimo stato (2026-10-14):** Il 14/10/2026 l’operatore riferisce che, dopo essere tornato indietro nel portale Seeweb, la UI non ha più consentito il caricamento degli allegati e decide di attendere la risposta del provider. Stato operativo: attesa risposta dichiarata dall’operatore; numero/ricevuta del ticket e allegati effettivamente associati non verificati. Le quattro schermate selezionate restano pronte per eventuale integrazione nello stesso ticket. Nessun nuovo tentativo nel portale richiesto, nessun ticket o messaggio inviato dall’agente e nessuna modifica al firewall. Audit amministrativo, export e raccolta automatica restano aperti; prossimo passo sul firewall: esaminare la risposta Seeweb quando disponibile.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
