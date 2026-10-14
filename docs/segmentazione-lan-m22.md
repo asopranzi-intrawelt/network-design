@@ -392,3 +392,7 @@ Da fare prima di toccare la rete: snapshot Nebula nuovo, lettura degli ambiti e 
 [^7]: *mDNS*, multicast DNS - meccanismo di risoluzione nomi senza server in cui ogni dispositivo risponde per il proprio nome nel dominio `.local` a una richiesta inviata in multicast sulla rete locale; per costruzione non attraversa un router, quindi funziona dentro un segmento e cessa di funzionare tra segmenti diversi.
 
 [^6]: *WSD*, Web Services for Devices - meccanismo Windows con cui una stampante viene scoperta e installata automaticamente annunciandosi in rete; si appoggia a messaggi multicast/broadcast e quindi non funziona attraverso un confine di livello 3, a differenza di una coda "Standard TCP/IP" che punta a un indirizzo e continua a funzionare instradata.
+
+## Flussi della sede verso il cloud,14/10/2026
+
+I riscontri153/154 del [firewall Seeweb](firewall-seeweb-opnsense.md) mostrano due sessioni TCP 445 dalla sede al vicino storage cloud. I selettori IPsec includono un aggregato /16, più ampio delle tre reti aziendali /24 nell'alias. Prima di M22/M14 serve una matrice che mantenga SMB, GroupShare, RDP, amministrazione e backup autorizzati e ne conosca i proprietari. M31 tratta la separazione nel cloud: capacità VLAN/provider, vSwitch e filtri guest ancora da verificare. Non si assume che regole LAN della sola OPNsense isolino host sulla stessa rete L2 o che le VLAN della sede siano riutilizzabili nel cloud.

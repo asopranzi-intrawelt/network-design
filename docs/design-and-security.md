@@ -286,3 +286,7 @@ Il filtro rsyslog iLO e' installato sul collettore con backup verificato e confi
 | VA/PT cadenza | MEDIO (annuale) | Mantenere + PT annuale |
 | Formazione | BASSO | Programma strutturato |
 | Backup/BC | MEDIO | Verificare e testare formalmente |
+
+## Riscontro cloud Seeweb,14/10/2026
+
+La lettura di81 screenshot del firewall alimenta A.8.8/A.8.9 (OPNsense 21.1.5 della serie upstream fuori supporto), A.8.24 (certificato GUI indicato scaduto e VPN IKEv1), A.8.20/A.8.22 (NAT, pubblicazioni e separazione cloud), A.8.13 (storage TCP 445 osservato, proprietà e backup ignoti) e A.8.15/A.8.16 (log locali presenti, audit admin e invio remoto non verificati). [Configurazione e limiti](firewall-seeweb-opnsense.md), gap 210–214, M31 e M14 restano aperti; nessuna conformità o correzione dichiarata dalla sola ricognizione. La timeline registra il lavoro in ISO-25/27/30 in_corso; raccolta Seeweb sulla VM non attiva.
