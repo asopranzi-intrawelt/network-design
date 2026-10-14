@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5130" viewBox="0 0 1060 5130" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="5130" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5154" viewBox="0 0 1060 5154" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="5154" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">199 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 14/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">200 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 14/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
@@ -26,7 +26,7 @@
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
 <text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(27)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
-<text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(14)</tspan></text>
+<text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(15)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
@@ -3229,7 +3229,23 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="5114" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-200" class="ev-block has-detail" transform="translate(0,5084)">
+<g class="ev-summary" onclick="toggleEv('ev-200')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#1baf7a"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">14/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Censiti i sette ingressi Seeweb, raccolta non attivata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">FW/VPN</tspan></text>
+</g>
+<foreignObject id="ev-200-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">14/10/2026 &#8212; Censiti i sette ingressi Seeweb, raccolta non attivata</p>
+<p>Nel collettore D:/log-collector: Commit manuale del lettore verificato a5fe489: HEAD e origin/main locali coincidono; ls-remote in sola lettura conferma lo stesso SHA su GitHub. Il push precedente è riuscito, ma il controllo SSH successivo è scaduto e non ha registrato l'impronta. La ripetizione della chiusura si ferma correttamente perché HEAD è già cambiato; non rifare il commit dei sedici file. Le tre schede che coprono lettore e fixture sono riconciliate a a5fe489; le altre ancore restano valide nelle rispettive aree. Il lettore è locale su due originali esportati: nessun flusso Seeweb automatico o login del provider raccolto sulla VM. L'utente conferma sette URL: Cloud Backup, appliance pubblica, clienti, supporto, Cloud Center, ESXi e firewall privato, con valori nel livello privato. Il Word invariato, SHA beac5702ebe722aa84955e687aa1642b8d21aace3be5b932ce1d92cbd889d114, associa storicamente i due ingressi firewall alla stessa appliance; identità e prodotto/versione correnti da verificare. Tre schermate Cloud Center lette: Foundation e appliance sulla rete privata, 16 core/128 GB/250 GB, famiglia VMware 7 senza build letta, datacenter Milano, scheda Eventi visibile ma non aperta. Backup: Nessun Backup del prodotto Foundation non prova assenza del diverso Cloud Backup delle mail. Area clienti e ticket mantenuti nel censimento admin, senza capacità di export assunte. API pubblica Shared CPU non prova audit Foundation; Syslog ESXi e canali firewall solo candidati condizionati ai prodotti effettivi. Doc di dettaglio D:/log-collector/docs/sorgenti-log-seeweb.md, inventario e prove solo privati. L'utente autorizza il Word anche per le credenziali: tabella letta per attribuire i portali, nessuna credenziale usata per login o copiata nei file pubblicabili. Nessun comando su host, API di tenant, backup o regola modificati. Ribadita la timeline unica con network-design: fonti, stato e lacune aggiornati nello stesso giro nel progetto rete; ISO-30 rimane in_corso. Prossimo riscontro tecnico: dashboard del firewall per identità/versione e poi registri reali/export. Copia email, cause/job dei due Error del 13/10, cadenza, silenzio, canali, permessi e retention ancora a… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="5138" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3434,7 +3450,8 @@
   {id:'ev-196',type:'event',h:24},
   {id:'ev-197',type:'event',h:24},
   {id:'ev-198',type:'event',h:24},
-  {id:'ev-199',type:'event',h:24}
+  {id:'ev-199',type:'event',h:24},
+  {id:'ev-200',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3475,7 +3492,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 5130').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 5154').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

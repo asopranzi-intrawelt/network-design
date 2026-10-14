@@ -106,6 +106,8 @@ Due migrazioni distinte verso lo stesso fornitore, in due fasi separate: la line
 
 ## Seeweb – IaaS Cloud
 
+Aggiornamento operativo del 14/10/2026: confermati sette punti di accesso, descritti in [Sorgenti Seeweb e raccolta dei log](sorgenti-log-seeweb.md). Due URL dell'appliance/firewall sono nella stessa voce del Word storico; identità e versione corrente da verificare. Tre schermate Cloud Center mostrano Foundation e appliance sulla rete privata, risorse Foundation 16 core/128 GB RAM/250 GB disco e famiglia VMware 7 senza build letta. Eventi visibile ma non aperto; Backup: Nessun Backup del prodotto Foundation non esclude il distinto servizio Cloud Backup dei report. Due report email letti dal collettore in locale, nessun flusso automatico o audit Seeweb raccolto sulla VM. URL e prove aggiornati in _notes/seeweb-access-inventory-20261014.json. La descrizione seguente conserva la ricostruzione storica e non certifica tutti i dettagli attuali.
+
 | Campo | Valore |
 |-------|--------|
 | Tipologia | Infrastructure as a Service (cloud VE) |

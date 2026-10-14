@@ -6,6 +6,7 @@ Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) e' il punto di par
 
 | Domanda | Documento |
 |---|---|
+| Quali pannelli Seeweb sono censiti e quali log sono realmente raccolti? | [Sorgenti Seeweb](sorgenti-log-seeweb.md) e [integrazione del collettore](log-collector-integrazione.md) |
 | Che cosa e' collegato e quanto e' verificato? | [Snapshot](snapshot-infrastruttura.md), [mappa](network-map.html) e [guida](network-diagram.md) |
 | Dove stanno cavi, armadi, corrente e porte fisiche? | [Livello fisico ed elettrico](livello-fisico-ed-elettrico.md) e [mappatura delle porte](mappatura-porte-fisiche.md) |
 | Come il server e le VM raggiungono la rete? | [Proxmox e bridge](virtualizzazione-proxmox-e-bridge.md) e [servizi esposti](esposizione-servizi-interni.md) |
