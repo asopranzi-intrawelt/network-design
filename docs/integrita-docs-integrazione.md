@@ -51,3 +51,5 @@ Storia del progetto collegato riscritta e pubblicata il 13/10/2026 a `2f1b3b7`; 
 Protezione del ramo principale, 13/10/2026: la regola creata nel repository privato del progetto collegato risulta «Not enforced», perché il piano gratuito dell'organizzazione GitHub non applica le regole di protezione ai repository privati. Vale per ogni repository privato dell'organizzazione: un vincolo di governance da considerare nella gestione degli accessi a GitHub.
 
 Il 13/10/2026 il progetto collegato è stato allineato al template di progetto: i controlli di chiusura sono verdi per la prima volta e il suo versionamento torna alla procedura ordinaria di chiusura. La copia del materiale riservato su una cartella del NAS non si fa, per scelta dell'IT Manager.
+
+Il 14/10/2026 il progetto collegato ha preparato, oltre alla guida per i PM, un documento e una presentazione per i clienti sulle misure tecniche per l'integrità dei dati, nell'impianto grafico dell'«Intrawelt Design System»; restano materiale riservato e non versionato del progetto collegato.
