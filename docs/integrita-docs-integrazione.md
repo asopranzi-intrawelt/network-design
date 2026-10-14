@@ -57,3 +57,7 @@ Il 14/10/2026 il progetto collegato ha preparato, oltre alla guida per i PM, un 
 Lo stesso giorno il materiale per i clienti è stato separato in una presentazione e un documento tecnici generali, senza riferimenti a un cliente, e in una versione per WindTre con la corrispondenza alle righe 139 e 168.
 
 Il 14/10/2026 il progetto collegato ha portato anche l'interfaccia dell'applicazione nel design system Intrawelt e ha preparato lo script NinjaOne per distribuire la radice dell'autorità; il primo rilascio firmato segue al prossimo commit. La prova con una mail cifrata reale resta in sospeso finché non ne arriverà una.
+
+## Primo rilascio firmato, 14/10/2026
+
+Alle 14:18 l'IT Manager ha firmato il primo rilascio dell'applicazione del progetto collegato con il certificato di firma del codice dell'autorità aziendale: firma valida, catena fino all'autorità, marca temporale DigiCert. La radice è installata sulla sua postazione; sulle postazioni dei PM verrà distribuita con NinjaOne insieme all'applicazione, con script che verificano impronta e firma prima di installare. Riscontrato che la porta USB frontale della postazione dell'IT Manager non alimenta o non enumera la chiavetta dell'autorità: si usano le porte posteriori.
