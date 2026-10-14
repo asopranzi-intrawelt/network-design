@@ -1566,6 +1566,12 @@
       "data": "2026-10-14",
       "stato": "in_corso",
       "nota": "Letti81 originali screenshot 100–180 del firewall Seeweb, dossier e prove conservati nei due progetti. Log locali PF/filterlog e IPsec/charon visibili; audit GUI/SSH/config e invio remoto ancora da verificare. M31f e gap 214 aperti, nessuna raccolta Seeweb sulla VM. Test AdS offline Nebula rimandato."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-14",
+      "stato": "in_corso",
+      "nota": "Completata WAN manuale Seeweb con screenshot196/197:29 regole, ultima pass anyIPv4→indirizzoWAN con log. TCP902 LAN eHTTPS443 GroupShare rilevati. Gap212/M31c-d aggiornati;83 prove conservate nei due progetti. Audit admin e trasporto log ancora da verificare, nessun cambio firewall o raccoltaVM."
     }
   ]
 }

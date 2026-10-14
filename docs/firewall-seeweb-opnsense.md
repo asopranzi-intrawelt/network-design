@@ -2,9 +2,9 @@
 
 ## Evidenza e perimetro, 14/10/2026
 
-Letti visivamente tutti gli 81 originali screenshot_100.png-screenshot_180.png forniti dall'operatore, alla risoluzione originale 1920×911. Gli originali, le impronte SHA-256 e una nota per ciascuna schermata sono conservati in _notes/seeweb-firewall-20261014/manifest.json e screens/ nei due progetti. Il manifesto distingue fonte, acquisizione e lettura; i valori reali rimangono privati. Nessuna interrogazione o modifica del firewall eseguita dall'agente.
+Letti visivamente tutti gli 81 originali screenshot_100.png-screenshot_180.png forniti dall'operatore, alla risoluzione originale 1920×911. Due ulteriori originali screenshot_196.png e screenshot_197.png completano la tabella WAN:83 schermate lette in totale. Il supplemento è in _notes/seeweb-firewall-wan-20261014/manifest.json; la serie 100-180 rimane nel suo manifesto originale. Gli originali, le impronte SHA-256 e una nota per ciascuna schermata sono conservati in _notes/seeweb-firewall-20261014/manifest.json e screens/ nei due progetti. Il manifesto distingue fonte, acquisizione e lettura; i valori reali rimangono privati. Nessuna interrogazione o modifica del firewall eseguita dall'agente.
 
-Sono tutte le schermate ricevute, non un export completo della configurazione: la pagina WAN termina dentro la tabella, le rotte mostrano 10 righe su 14, le regole automatiche sono ripiegate e alcuni pannelli hanno uno scorrimento interno. Non sono aperti i dettagli di ogni regola, le impostazioni globali del logging, gli utenti/privilegi, la configurazione SSH, il DNS o il firmware. Le pagine Reset e Riavvia sono moduli di conferma; non provano che quelle azioni siano state eseguite. L'aspetto del menu non basta a determinare i privilegi dell'account.
+Sono tutte le schermate ricevute, non un export completo della configurazione: le29 righe manuali WAN sono ora lette fino a fine tabella, ma le dieci automatiche rimangono ripiegate; le rotte mostrano 10 righe su 14, le regole automatiche sono ripiegate e alcuni pannelli hanno uno scorrimento interno. Non sono aperti i dettagli di ogni regola, le impostazioni globali del logging, gli utenti/privilegi, la configurazione SSH, il DNS o il firmware. Le pagine Reset e Riavvia sono moduli di conferma; non provano che quelle azioni siano state eseguite. L'aspetto del menu non basta a determinare i privilegi dell'account.
 
 La raccolta automatica Seeweb sulla VM del collettore resta non attiva. I log visualizzati qui sono registri locali del firewall. Il lettore dei report email resta un diverso canale locale, nell'archivio backup_outcomes.
 
@@ -59,7 +59,7 @@ Un mapping uno-a-uno non apre da solo tutte le porte: vanno combinati filtro, se
 
 Le regole IPsec e LAN sono pass, in e quick. IPsec ha una regola IPv4 any→any con icona log blu. LAN ha due regole LAN net→any, IPv4 e IPv6, con icone log grigie. Floating e Loopback non mostrano regole manuali; restano rispettivamente 15 e una regola automatica ripiegate. Una automatica IPsec e una LAN sono ripiegate (130-133).
 
-La porzione superiore WAN mostra 19 righe manuali, dieci automatiche ripiegate. Le righe abilitate sono pass/in/quick; la tabella termina dentro la pagina, quindi il totale WAN non è certificato (134).
+La serie iniziale 134 mostrava19 righe manuali. Le 196-197 completano la tabella: 29 manuali, 19 abilitate e 10 disabilitate; dieci automatiche rimangono ripiegate. Le righe sono pass/in/quick, con logging abilitato nelle 6 e 29 secondo icone e legenda; le altre icone log sono grigie. Conteggio e campo log riferiti alle regole manuali, non a tutto il ruleset.
 
 | Ordine visibile WAN | Stato e provenienza | Destinazione e servizio |
 |---|---|---|
@@ -74,10 +74,21 @@ La porzione superiore WAN mostra 19 righe manuali, dieci automatiche ripiegate. 
 | 12-13 | Disabilitate, qualunque origine | Questo firewall TCP 443 e 80 |
 | 14-17 | Disabilitate, qualunque origine | LAN net TCP 21, 22, 25 e 587 |
 | 18-19 | Abilitate, qualunque origine | Alias GroupShare TCP 80 e 8080; ultima descritta come Tomcat dall'esterno |
+| 20-21 | Disabilitate, qualunque origine | LAN net TCP 110 (POP3) e 143 (IMAP) |
+| 22 | Abilitata, qualunque origine | Alias GroupShare TCP 443 (HTTPS) |
+| 23 | Abilitata, qualunque origine | LAN net TCP 902 |
+| 24-25 | Disabilitate, qualunque origine | LAN net TCP 993 (IMAPS) e 995 (POP3S) |
+| 26-27 | Abilitate, qualunque origine | Indirizzo WAN UDP 500 (ISAKMP) e 4500 (IPsec NAT-T) |
+| 28 | Abilitata, qualunque origine | Qualunque destinazione, IPv4 ESP |
+| 29 | Abilitata, qualunque origine; logging abilitato | Indirizzo WAN, qualsiasi protocollo IPv4 e porte qualsiasi |
 
-Non risulta abilitata, in questa porzione, la coppia any-source verso la GUI 80/443. Gli accessi del provider e aziendali hanno invece regole attive e ampie. Le descrizioni delle regole provider chiedono di conservarle: prima di restringerle servono proprietà del servizio e matrice dei flussi concordate.
+Le righe dedicate a Questo firewall TCP 80/443 (12-13) restano disabilitate. La nuova lettura della 29 cambia la conclusione sul perimetro: esiste un pass/in/quick da qualsiasi origine verso l'indirizzo WAN per tutto IPv4, con log abilitato. Un pacchetto destinato a un servizio sull'indirizzo WAN, se non intercettato dalle regole precedenti, può essere ammesso da questa regola. Le regole disabilitate non agiscono come un divieto e la 29 non è limitata a IPsec, dato che UDP 500/4500 ed ESP hanno righe separate. Non è una prova dell'ascolto/raggiungibilità della GUI o SSH da Internet: bind, restrizioni del servizio, regole automatiche, filtri upstream e prova di connessione restano non verificati. Va comunque verificato per primo con Seeweb quali servizi siano realmente raggiungibili e perché esista quel permesso, preservando una via amministrativa alternativa. Nessuna disabilitazione proposta senza lettura delle dipendenze.
 
-Per GroupShare, la combinazione NAT e regole abilitate dimostra una pubblicazione configurata su 80/8080. Gli stati mostrano connessioni TCP stabilite da IP pubblici al mapping GroupShare:80, rafforzando il riscontro su HTTP (153-154). Non è stato effettuato un probe esterno né sono provati ascolto/raggiungibilità di 8080, contenuto HTTP o assenza di un diverso ingresso HTTPS. La roadmap deve valutare HTTPS, reverse proxy e riduzione dell'esposizione sulla base dei flussi reali e dei vincoli applicativi.
+Il [manuale OPNsense sulle regole](https://docs.opnsense.org/manual/firewall.html) descrive il primo match per quick; la legenda della 197 conferma in, first match, abilitazione e log nella GUI osservata. Si applica qui solo quella semantica di base, senza attribuire alla 21.1.5 funzionalità delle release successive. Le descrizioni dei permessi provider chiedono di conservarli: proprietà del servizio e matrice dei flussi concordate prima di restringerli.
+
+GroupShare ha ora tre permessi WAN da qualunque origine: 80, 8080 e 443. Il NAT e gli stati 153-154 provavano già connessioni HTTP 80 stabilite; la 22 aggiunge la configurazione HTTPS, non un handshake o un certificato validi osservati. La roadmap deve verificare l'ingresso 443, il comportamento 80, il backend 8080 e i vincoli applicativi prima di decidere reverse proxy o cambiamenti. Non assumere che HTTPS sia assente.
+
+TCP 902 è consentito da qualunque origine verso LAN net, che comprende i tre mapping uno-a-uno. È un candidato di gestione VMware: [Broadcom documenta l'uso della 902 da ESXi](https://knowledge.broadcom.com/external/article/319455/tcp-and-udp-ports-required-to-access-esx.html), mentre la build e i processi del tenant non sono letti. Servizio in ascolto, host destinatario e raggiungibilità effettiva restano da attribuire; il permesso non è un login riuscito.
 
 Le regole ampie di transito LAN/IPsec non separano management, VM e storage sullo stesso segmento cloud. Una conversazione sullo stesso livello 2 può non attraversare il firewall. La segmentazione cloud richiede anche verifica di VLAN, rete privata del provider, vSwitch dell'hypervisor e filtri dei guest: cambiare soltanto una regola LAN non garantisce isolamento fra quei sistemi.
 
@@ -134,7 +145,7 @@ Il canale di produzione verrà scelto dopo lettura della configurazione Logging/
 
 | Ordine | Lavoro da preparare | Criterio di chiusura e dipendenze |
 |---|---|---|
-| 1 | Completare parte inferiore WAN, regole automatiche, route residue; leggere logging, utenti/ruoli e titolarità Seeweb | Configurazione esportata o evidenze complete; accesso amministrativo alternativo, backup esportato e recupero concordati |
+| 1 | Leggere regole automatiche e route residue; WAN manuale completata, individuare dipendenze della 29; leggere logging, utenti/ruoli e titolarità Seeweb | Configurazione esportata o evidenze complete; accesso amministrativo alternativo, backup esportato e recupero concordati |
 | 2 | Pianificare piattaforma supportata e certificato valido per la GUI | Provider/responsabile, finestre, compatibilità, restore e verifica client definiti; firmware nuovo e certificato poi misurati sull'apparato |
 | 3 | M14: IKEv2 e parametri correnti, rotazione PSK e selettori aderenti ai flussi | Due peer coordinati; SMB, GroupShare, amministrazione, backup e log provati; failover e rollback verificati |
 | 4 | Perimetro cloud: separare gestione, applicazioni pubblicate e storage; rivedere alias/provider, HTTP e 8080 | Matrice dei flussi comprensiva delle due sessioni TCP 445; verifica L2/vSwitch/provider/guest prima di scegliere VLAN, ACL, reverse proxy o subnet |
@@ -155,5 +166,6 @@ M22 della LAN della sede e il perimetro cloud sono collegati dai flussi e dalla 
 | 153-161 | pfTop, stati/reset/riepilogo, tunnel/client/PSK/status/lease IPsec |
 | 162-170 | SAD/SPD, due pagine charon e configurazione/stato OpenVPN |
 | 171-180 | Log OpenVPN, DHCPv4 LAN/WAN/lease, DHCPv6 lease e conferma riavvio |
+| 196-197 | Tabella WAN manuale completa e legenda: 29 righe, 19 attive, 10 disabilitate; dieci automatiche ripiegate |
 
 Fonti ufficiali consultate il 14/10/2026: cronologia OPNsense 21.1, manuale logging corrente e RFC 9395. Dati del tenant misurati soltanto nelle schermate. Manifesto e PNG privati conservano i dettagli di ogni pagina; i riferimenti numerici rendono verificabile ciascun riscontro senza pubblicare gli originali.
