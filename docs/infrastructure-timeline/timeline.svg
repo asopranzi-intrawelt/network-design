@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5082" viewBox="0 0 1060 5082" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="5082" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5130" viewBox="0 0 1060 5130" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="5130" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,18 +15,18 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">197 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 13/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">199 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 14/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="290" cy="112" r="5" fill="#e34948"/>
-<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(19)</tspan></text>
+<text x="302" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sicurezza e compliance <tspan fill="#5c6d72">(20)</tspan></text>
 <circle cx="540" cy="112" r="5" fill="#4a3aa7"/>
 <text x="552" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Telefonia e linee <tspan fill="#5c6d72">(37)</tspan></text>
 <circle cx="790" cy="112" r="5" fill="#2a78d6"/>
 <text x="802" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Rete e switching <tspan fill="#5c6d72">(27)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#1baf7a"/>
-<text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(13)</tspan></text>
+<text x="52" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Firewall e VPN <tspan fill="#5c6d72">(14)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
@@ -3197,7 +3197,39 @@
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="5066" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-198" class="ev-block has-detail" transform="translate(0,5036)">
+<g class="ev-summary" onclick="toggleEv('ev-198')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e34948"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">14/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Autorità di certificazione aziendale e certificato di firma del codice creati <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SEC</tspan></text>
+</g>
+<foreignObject id="ev-198-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">14/10/2026 &#8212; Autorità di certificazione aziendale e certificato di firma del codice creati</p>
+<p>L'IT Manager ha creato l'autorità aziendale di ADR-025 su una chiavetta dedicata e, nella stessa seduta, il certificato di firma del codice per le applicazioni interne, con gli script del repository e due passphrase distinte. Catena verificata, impronte registrate in docs/autorita-certificazione-interna.md, scadenze in data/scadenze.json. Prima della riuscita, due tentativi falliti: una passphrase digitata diversa e il soggetto del certificato convertito in percorso dalla Git Bash per Windows, corretto negli script. Restano la copia su una seconda chiavetta e la distribuzione della radice alle postazioni.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-199" class="ev-block has-detail" transform="translate(0,5060)">
+<g class="ev-summary" onclick="toggleEv('ev-199')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#1baf7a"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">14/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Report Seeweb acquisiti e stati per unità verificati <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">FW/VPN</tspan></text>
+</g>
+<foreignObject id="ev-199-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">14/10/2026 &#8212; Report Seeweb acquisiti e stati per unità verificati</p>
+<p>Nel collettore D:/log-collector: Acquisiti due originali Seeweb datati 12 e 13/10 dalla casella IT condivisa, provenienza confermata dall'operatore il 14/10 e conservata privatamente. Due corpi HTML UTF-8/base64, zero allegati, tre unità per report: sei stati, quattro OK e due Error. Il 12/10 tutte OK; il 13/10 due unità dichiarano Failed (1) e una schedulazione fallita ciascuna, mentre la terza rimane OK. Non è una diagnosi dello stato attuale del 14/10. Date e Received sono tempi delle intestazioni; timestamp del job, suo identificativo e causa non presenti. Nessun tempo del job inventato o autenticità dedotta dal mittente. Realizzato D:/log-collector/tools/read-seeweb-report.py, solo lettore locale senza rete: originali/SHA, manifest, reports.json e sei record in unit-statuses.jsonl soltanto sotto _notes, archivio logico backup_outcomes distinto da AdS. Il comando reale del 14/10 alle 09:33:41 restituisce parsed con due unit_errors; confronto esatto delle nove colonne di tutte le unità, conteggi, Date, Received e Message-ID con la misura indipendente; originali e copie immutati. 24 prove locali passate, due mutazioni rilevate con due e un caso rossi, ripristino byte/SHA e Ruff verde. Fixture HTML derivate dagli originali con identità sostituite, intestazioni sintetiche e verifica dei payload decodificati. Deduplicazione soltanto dei byte identici; copie con stesso Message-ID e contenuto ma trasporto diverso mantenute come candidati, senza dedup reale fra caselle ancora provata. Dettaglio e SHA in D:/log-collector/docs/runbook-log-operativi-email.md. Prossimo campione: copia già ricevuta del report Error del 13/10 in una casella personale IT autorizzata, esportata .eml con provenienza dichiarata. Non creare un nuovo inoltro manuale. Pannello/job, cadenza, controllo del silenzio, canale di servizio e permessi/retention prima della produzione restano da verificare. Outlook non collegato; nessuna mail inviata, regola di inoltro, chiave o servizio sulla VM. Tre archivi, frontend sysadmin e correlazione successivi conservati. Test AdS offline rimandato dall'utente, gate Nebula/D7, Proxmox pianificato, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. H… (testo troncato, vedi il file sorgente in docs/infrastructure-timeline/)</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="5114" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3400,7 +3432,9 @@
   {id:'ev-194',type:'event',h:24},
   {id:'ev-195',type:'event',h:24},
   {id:'ev-196',type:'event',h:24},
-  {id:'ev-197',type:'event',h:24}
+  {id:'ev-197',type:'event',h:24},
+  {id:'ev-198',type:'event',h:24},
+  {id:'ev-199',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3441,7 +3475,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 5082').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 5130').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

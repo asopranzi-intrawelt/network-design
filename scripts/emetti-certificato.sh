@@ -20,6 +20,13 @@
 #
 # Uso: emetti-certificato.sh <cartella-autorita> <nome.completo> [altro.nome ...]
 
+# Git Bash per Windows converte in percorso ogni argomento che inizia con /, e il soggetto
+# /C=IT/O=... arrivava a openssl come C:/Program Files/Git/C=IT/O=... (13/10/2026, alla prima
+# creazione reale dell'autorita'). Si esclude solo quel prefisso: i percorsi della cartella
+# devono restare convertiti, perche' l'openssl di Git e' un eseguibile nativo di Windows.
+# Su Linux e macOS la variabile non ha effetto.
+export MSYS2_ARG_CONV_EXCL="/C="
+
 CARTELLA=$1
 shift 2>/dev/null
 NOME=$1
