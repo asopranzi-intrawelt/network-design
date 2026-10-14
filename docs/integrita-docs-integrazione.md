@@ -40,7 +40,7 @@ Il 13/10/2026 il progetto collegato ha registrato due eventi di prova nel regist
 
 Il progetto collegato ha dato all'applicazione l'impianto grafico Intrawelt del nuovo sito (ADR-012 del progetto collegato) e ha preparato con DeckCraft una presentazione per Cliente-1 e per i PM; la schermata dell'applicazione vi compare con la riga del percorso di rete oscurata, così che l'indirizzo interno del NAS non esca dall'azienda. Per `D:/log-collector`, che ha fra le cose da fare l'integrazione di TSA e WORM quando saranno disponibili destinazioni e credenziali, il collaudo di `RegistroIntegrita` di questa giornata è un riferimento diretto: stessa configurazione WORM Enterprise con blocco a 10 minuti, stessa prova non distruttiva per verificarlo, stesse TSA pubbliche. La scelta di una condivisione per i log resta di quel progetto.
 
-Il progetto di prova è stato cancellato il 13/10/2026 alle 16:45 circa; con esso è sparita anche la cartella `Cliente-1_RM`, per una causa non accertata, ricreata vuota subito dopo. Il confronto con lo snapshot del NAS delle 15:40 non mostra altre differenze in `Documenti` per l'anno 2026. Progetto collegato riconciliato a `8cc275c`.
+Il progetto di prova è stato cancellato il 13/10/2026 poco dopo le 16:28; con esso è sparita anche la cartella `Cliente-1_RM`, per una causa non accertata, ricreata vuota subito dopo. Il confronto con lo snapshot del NAS delle 15:40 non mostra altre differenze in `Documenti` per l'anno 2026. Progetto collegato riconciliato a `8cc275c`.
 
 ## Materiale aziendale fuori dal versionamento, 13/10/2026
 

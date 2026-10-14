@@ -2,7 +2,7 @@
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
   "revisione": 19,
-  "aggiornato": "2026-09-30",
+  "aggiornato": "2026-10-14",
   "progetti_collegati": [
     {
       "id": "log-collector",
@@ -85,6 +85,22 @@
       "preavviso_giorni": 90,
       "rompe": "Non vincola piu' il minimo dell'organizzazione, che oggi e' NEB-54HP. Voce conservata perche' resta una data da rinnovare",
       "dove": "Pannello Licenze e inventario, misurato il 10/09/2026 (misurato in precedenza il 09/09/2026 con valore diverso); roadmap.md M13c-9; ADR-022"
+    },
+    {
+      "id": "PKI-FIRMA-CODICE",
+      "cosa": "Certificato di firma del codice «Intrawelt Code Signing», emesso il 14/10/2026 dall'autorità aziendale per firmare i rilasci delle applicazioni interne (prima IntegritaWT del progetto collegato integrità-docs)",
+      "data": "2027-11-15",
+      "preavviso_giorni": 45,
+      "rompe": "Dopo la scadenza non si possono firmare rilasci nuovi; le firme gia' apposte con marca temporale restano valide. Si rinnova con scripts/emetti-firma-codice.sh dalla chiavetta dell'autorita'",
+      "dove": "docs/autorita-certificazione-interna.md, sezione del 14/10/2026"
+    },
+    {
+      "id": "PKI-CA-AZIENDALE",
+      "cosa": "Autorita' di certificazione aziendale «Intrawelt Internal CA», creata il 14/10/2026 (ADR-025)",
+      "data": "2036-10-11",
+      "preavviso_giorni": 365,
+      "rompe": "Ogni certificato emesso dall'autorita' smette di essere attendibile; la nuova autorita' va creata e installata su tutte le postazioni con almeno un anno di anticipo",
+      "dove": "docs/autorita-certificazione-interna.md, ADR-025"
     }
   ],
   "freschezza": [
