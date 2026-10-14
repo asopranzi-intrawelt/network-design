@@ -1,6 +1,6 @@
 # Pendenze aperte
 
-> Vista consolidata di cio' che resta da sanare, aggiornata al 12/10/2026. Non e' una fonte: ogni riga punta al registro che la possiede davvero, e nessuna informazione vive **solo** qui. Serve a rispondere in trenta secondi alla domanda "cosa e' rimasto in sospeso", che altrimenti richiede di attraversare quattro registri diversi: i gap in `infrastructure-timeline/GAP-TBC.md`, i micro-interventi in `interventi-robustezza.md`, i micro-step in `.claude/context/roadmap.md` e le decisioni in `.claude/memory/decisions.md`. Va riletta e potata a fine sessione: una lista di pendenze che non si accorcia mai smette di essere letta.
+> Vista consolidata di cio' che resta da sanare, aggiornata al 14/10/2026. Non e' una fonte: ogni riga punta al registro che la possiede davvero, e nessuna informazione vive **solo** qui. Serve a rispondere in trenta secondi alla domanda "cosa e' rimasto in sospeso", che altrimenti richiede di attraversare quattro registri diversi: i gap in `infrastructure-timeline/GAP-TBC.md`, i micro-interventi in `interventi-robustezza.md`, i micro-step in `.claude/context/roadmap.md` e le decisioni in `.claude/memory/decisions.md`. Va riletta e potata a fine sessione: una lista di pendenze che non si accorcia mai smette di essere letta.
 
 ## Sanabili subito, rischio circoscritto
 
@@ -112,3 +112,12 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Commit manuale delle modifiche di questa sessione, poi bump del frontmatter `last-verified` sulle schede toccate | E' il passo che a luglio si e' perso per sei settimane |
 | Smontare l'immagine SPP lasciata agganciata sul nodo Proxmox durante l'indagine del 16/09 (`umount /mnt/spp`) | Montata in sola lettura per cercare `ssacli`, che non e' stato estratto. Non fa danno e non va dimenticata: e' l'unica traccia che quella sessione ha lasciato sul sistema oltre alle due modifiche di configurazione |
 | Lo snapshot Nebula congelato `_notes/nebula-snapshot-ultimo-buono-2026-08-05-1148-pre-downgrade.json` e' ora **superato** da quello del 06/08, piu' completo | Si puo' eliminare: la ragione per cui esisteva e' venuta meno |
+
+## Cloud Seeweb: progetto da completare prima dei cambi
+
+| Cosa | Stato | Registro proprietario |
+|---|---|---|
+| Completa configurazione/ruoli/logging e proprietà provider, poi piattaforma e certificato supportati | Aperta, nessun cambio | M31a/b/c; SWB-001/002 (#210/211) |
+| Matrice flussi e separazione cloud, HTTP/8080, provider e NAT; coordinare con VPN e segmentazione sede | Aperta, flussi osservati | M31d, M14/M22; SWB-003 (#212) |
+| Attribuire servizio/storage del vicino NetApp e due sessioni TCP 445 | Aperta, proprietà ignota | M31e; SWB-004 (#213) |
+| Campione nativo e log admin distinti, trasporto e ricezione sul collettore | Aperta, soltanto log locali | M31f; SWB-005 (#214), ISO-30 |

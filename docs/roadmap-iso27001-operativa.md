@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 35, in corso 12, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 34, in corso 13, bloccati 0, completati 0, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -209,11 +209,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Responsabile:** IT Manager. **Dipendenze:** ISO-23. **Controlli:** A.8.20, A.8.22.
   - **Fonti:** roadmap M15, docs/virtualizzazione-proxmox-e-bridge.md.
 
-- **ISO-25 | VPN moderne e failover WAN** - **Da fare**; FORNITURA CONDIZIONATA. Intervento del fornitore di connettivita' se le modifiche ai peer o al failover non sono gestibili internamente.
-  - **Azione:** Pianificare IKEv2 e parametri correnti, chiarire profili duplicati, rivedere rotte e interfacce obsolete dopo backup configurazione e prova di failover.
+- **ISO-25 | VPN moderne e failover WAN** - **In corso**; FORNITURA CONDIZIONATA. Intervento del fornitore di connettivita' se le modifiche ai peer o al failover non sono gestibili internamente.
+  - **Azione:** Pianificare IKEv2 e parametri correnti, chiarire profili duplicati, rivedere rotte e interfacce obsolete dopo backup configurazione e prova di failover. Per il peer cloud confermati IKEv1 aggressive, PSK e selettori /24↔/16: coordinare piattaforma, rotazione e matrice dei flussi con Seeweb.
   - **Chiusura verificabile:** Tunnel ristabiliti e servizi operativi con ciascuna tratta di riserva testata.
   - **Responsabile:** IT Manager e fornitori di connettivita'. **Dipendenze:** ISO-12. **Controlli:** A.8.21, A.8.14.
-  - **Fonti:** roadmap M14, M7, GAP-TBC FW-004, FW-006, FW-007.
+  - **Fonti:** roadmap M14, M7, GAP-TBC FW-004, FW-006, FW-007, docs/firewall-seeweb-opnsense.md, roadmap M31.
+  - **Ultimo stato (2026-10-14):** Letti81 screenshot del firewall cloud: IKEv1 aggressive/PSK/SHA-1/DH2, PFS2 e selettori /24↔/16 confermati, due SA attive. M14 integrato con M31 e matrice cloud; progetto in corso, nessun tunnel modificato.
 
 - **ISO-26 | Revisione delle policy Wi-Fi staff e guest** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Dopo la segmentazione, sostituire l'accesso pieno della Wi-Fi staff con la matrice dei flussi; verificare isolamento ospiti e DNS separato.
@@ -224,11 +225,11 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
 ### 3. Controlli ripetibili - dicembre 2026-gennaio 2027
 
 - **ISO-27 | Patch e configurazioni di riferimento** - **In corso**; FORNITURA CONDIZIONATA. Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario.
-  - **Azione:** Censire versioni di firewall, switch, AP, NAS, Proxmox e VM; fissare finestre, priorita', eccezioni e verifica post aggiornamento.
+  - **Azione:** Censire versioni di firewall, switch, AP, NAS, Proxmox e VM; fissare finestre, priorita', eccezioni e verifica post aggiornamento. Priorità cloud Seeweb: OPNsense 21.1.5 fuori supporto upstream e certificato GUI indicato scaduto; concordare proprietà, backup/console e rollback.
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
-  - **Fonti:** docs/vendor-management.md, docs/design-and-security.md, roadmap Fase 4.
-  - **Ultimo stato (2026-09-29):** Conferma IT Manager 29/09: server VA storico del gestionale ritirato dopo migrazione; snapshot Proxmox odierno coerente con assenza del vecchio guest. VM 810 TESTNEWEGETRADBOOT e successore candidato da verificare via SSH e prossimo censimento.
+  - **Fonti:** docs/vendor-management.md, docs/design-and-security.md, roadmap Fase 4, docs/firewall-seeweb-opnsense.md, roadmap M31.
+  - **Ultimo stato (2026-10-14):** Inventariata OPNsense 21.1.5 della serie upstream fuori supporto e certificato GUI indicato scaduto nel 2020. Aperto M31a/b/c e gap 210/211: responsabilità Seeweb, backup/console e finestra da concordare. Nessun aggiornamento o rinnovo applicato.
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
@@ -244,11 +245,11 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Fonti:** docs/design-and-security.md, GAP-TBC #113.
 
 - **ISO-30 | Log e allarmi di rete e infrastruttura** - **In corso**; FORNITURA CONDIZIONATA. VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme.
-  - **Azione:** Definire eventi, soglie, destinatari e ritenzione per firewall, switch, VPN, Proxmox, NAS e UPS; generare un evento di prova per categoria.
+  - **Azione:** Definire eventi, soglie, destinatari e ritenzione per firewall, switch, VPN, Proxmox, NAS e UPS; generare un evento di prova per categoria. Per OPNsense separare PF/charon tecnici da autenticazioni GUI/SSH e cambi; verificare funzionalità della release, campioni nativi e ricezione prima della produzione.
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
-  - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md.
-  - **Ultimo stato (2026-10-14):** Nel collettore D:/log-collector: Commit manuale del lettore verificato a5fe489: HEAD e origin/main locali coincidono; ls-remote in sola lettura conferma lo stesso SHA su GitHub. Il push precedente è riuscito, ma il controllo SSH successivo è scaduto e non ha registrato l'impronta. La ripetizione della chiusura si ferma correttamente perché HEAD è già cambiato; non rifare il commit dei sedici file. Le tre schede che coprono lettore e fixture sono riconciliate a a5fe489; le altre ancore restano valide nelle rispettive aree. Il lettore è locale su due originali esportati: nessun flusso Seeweb automatico o login del provider raccolto sulla VM. L'utente conferma sette URL: Cloud Backup, appliance pubblica, clienti, supporto, Cloud Center, ESXi e firewall privato, con valori nel livello privato. Il Word invariato, SHA beac5702ebe722aa84955e687aa1642b8d21aace3be5b932ce1d92cbd889d114, associa storicamente i due ingressi firewall alla stessa appliance; identità e prodotto/versione correnti da verificare. Tre schermate Cloud Center lette: Foundation e appliance sulla rete privata, 16 core/128 GB/250 GB, famiglia VMware 7 senza build letta, datacenter Milano, scheda Eventi visibile ma non aperta. Backup: Nessun Backup del prodotto Foundation non prova assenza del diverso Cloud Backup delle mail. Area clienti e ticket mantenuti nel censimento admin, senza capacità di export assunte. API pubblica Shared CPU non prova audit Foundation; Syslog ESXi e canali firewall solo candidati condizionati ai prodotti effettivi. Doc di dettaglio D:/log-collector/docs/sorgenti-log-seeweb.md, inventario e prove solo privati. L'utente autorizza il Word anche per le credenziali: tabella letta per attribuire i portali, nessuna credenziale usata per login o copiata nei file pubblicabili. Nessun comando su host, API di tenant, backup o regola modificati. Ribadita la timeline unica con network-design: fonti, stato e lacune aggiornati nello stesso giro nel progetto rete; ISO-30 rimane in_corso. Prossimo riscontro tecnico: dashboard del firewall per identità/versione e poi registri reali/export. Copia email, cause/job dei due Error del 13/10, cadenza, silenzio, canali, permessi e retention ancora aperti. Offline AdS Nebula rimandato, gate Nebula/D7 e Proxmox pianificato, PowerShell 7, dieci guest-agent 403, audit fonti ADR conservati. Nove file del template di altra lavorazione preservati; nuove annotazioni e censimento non committati. Commit, push e deploy manuali.
+  - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
+  - **Ultimo stato (2026-10-14):** Letti81 originali screenshot 100–180 del firewall Seeweb, dossier e prove conservati nei due progetti. Log locali PF/filterlog e IPsec/charon visibili; audit GUI/SSH/config e invio remoto ancora da verificare. M31f e gap 214 aperti, nessuna raccolta Seeweb sulla VM. Test AdS offline Nebula rimandato.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

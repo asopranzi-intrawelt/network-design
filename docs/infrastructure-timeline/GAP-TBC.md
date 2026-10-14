@@ -677,6 +677,18 @@ Aggiornamento SEC-052 del 09/10/2026: il nuovo `.env` ha ACL limitato e i consum
 
 Esito SEC-052 del 09/10/2026: il cutover su `.env` e' riuscito, MCP e dry-run delle due fonti validati, i quattro valori rimossi dal JSON Claude. Rimangono la prima esecuzione automatica del task con la nuova fonte e la prova in sessione interattiva; il gap resta aperto per questi gate, senza modificare il conteggio dei risolti.
 
+## Firewall cloud Seeweb: riscontri del 14/10/2026
+
+Fonti:81 originali screenshot 100–180, manifesto privato conservato anche nella rete e [dossier tecnico](../firewall-seeweb-opnsense.md). Configurazione osservata e progetto non equivalgono a correzione applicata. FW-006/M14 e SEC-023 restano i proprietari della VPN e della PSK, senza duplicare quei gap.
+
+| # | ID | Stato e prova | Azione |
+|---|---|---|---|
+| 210 | SWB-001 | Aperto: OPNsense 21.1.5 nella dashboard 100; la cronologia ufficiale dichiara fine vita della serie 21.1 il 27/07/2021. Backport e responsabilità contrattuale non verificati | M31a/M31b; provider, backup/console/restore, versione supportata e verifica post-cambio; A.8.8/A.8.9/A.8.32, ISO-27 |
+| 211 | SWB-002 | Aperto: certificato auto-firmato indicato in uso WebGUI nella 112, scaduto 23/11/2020. Leaf realmente servita e SAN non letti separatamente | M31c; nomi, rinnovo, chiavi/CA e accesso alternativo; A.8.24/A.8.2, ISO-27/41 |
+| 212 | SWB-003 | Aperto: tre NAT 1:1, LAN IPv4/IPv6 e IPsec ampi, WAN 134 con GroupShare 80/8080 da any; stati 153/154 con HTTP 80 stabilito. WAN inferiore/automatiche mancanti, 8080 non provato raggiungibile | M31d; matrice e separazione management/app/storage a tutti i livelli, preservare servizi del provider; A.8.20/A.8.22/A.8.3 |
+| 213 | SWB-004 | Aperto: vicino GUI-NetApp 119 con due stati TCP 445 dalla sede 153/154. Proprietà, share, dati e protezione backup non attribuiti | M31e; ricognire servizio/contratto/audit/backup, senza nuovo nodo dedotto; A.5.9/A.8.13/A.8.3 |
+| 214 | SWB-005 | Aperto: log locali PF/filterlog e charon osservati; accessi GUI/SSH/config e target remoto non verificati. Nessuna raccolta Seeweb sulla VM; 81 schermate non sono un export integrale | M31a/M31f; originale/export, campioni admin distinti, schema versione, trasporto, volume/ritardo/retention/silenzio; A.8.15/A.8.16, ISO-30 |
+
 ## Riepilogo conteggio
 
 | Categoria | TBC # |
@@ -791,7 +803,8 @@ Esito SEC-052 del 09/10/2026: il cutover su `.env` e' riuscito, MCP e dry-run de
 | VM 204 bloccata per ventitre giorni: nessun controllo di disponibilita', nessun watchdog, nesso ipotetico con il backup (05/10/2026) | 205-207 |
 | Configurazione hardware delle VM non uniforme: tipo di CPU senza istruzioni vettoriali su otto VM, controller e cache dei dischi (05/10/2026) | 208 |
 | Credenziali locali accoppiate a Claude e ACL ereditato ampio (08/10/2026) | 209 |
-| **Totale identificati** | **209** |
+| Firewall cloud Seeweb: supporto, certificato, perimetro, storage e log (14/10/2026) | 210–214 |
+| **Totale identificati** | **214** |
 | **Di cui risolti** | **15** (14, 54, 55, 61, 63, 106, 111, 116, 140, 150, 185, 186, 187, 195, 196 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
 
 Nota sui gap **#67 e #99** (contraddizione anagrafica NET-007 sulla porta 3 del 54HP): chiusi il 06/08/2026, con esito **rovesciato** rispetto all'ipotesi registrata. L'etichetta "SIP-T34W Persona-A" era corretta e il rilievo del 29/05/2026 era sbagliato, sia sull'attribuzione sia sul conteggio dei modelli. Non sono conteggiati fra i risolti qui sopra perche' la chiusura e' documentale e va riverificata alla prossima lettura della scheda; vedi `docs/telefono-pbx-voip.md` §Terminali VoIP installati.
