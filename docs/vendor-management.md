@@ -106,7 +106,7 @@ Due migrazioni distinte verso lo stesso fornitore, in due fasi separate: la line
 
 ## Seeweb – IaaS Cloud
 
-Aggiornamento operativo del 14/10/2026: sette punti di accesso censiti in [Sorgenti Seeweb](sorgenti-log-seeweb.md); SWB-02/SWB-07 confermati sulla stessa OPNsense 21.1.5. [Dossier firewall](firewall-seeweb-opnsense.md) completo delle81 schermate ricevute: NAT, alias, regole, VPN, stati, servizi e log, con lacune dichiarate. Firmware fuori supporto upstream, certificato GUI indicato scaduto, VPN IKEv1 e pubblicazione GroupShare 80/8080 alimentano M31 e M14; nessuna correzione applicata. Un vicino NetApp con due sessioni TCP 445 dalla sede è osservato, ruolo/proprietà/backup ancora da attribuire senza creare nuovi nodi. Tre schermate Cloud Center già lette; build ESXi e Eventi ancora da verificare. Due report email letti in locale, nessun flusso Seeweb automatico sulla VM.
+Aggiornamento operativo del 14/10/2026: sette punti di accesso censiti in [Sorgenti Seeweb](sorgenti-log-seeweb.md); SWB-02/SWB-07 confermati sulla stessa OPNsense 21.1.5. [Dossier firewall](firewall-seeweb-opnsense.md) completo delle83 schermate ricevute: NAT, alias, regole, VPN, stati, servizi e log, con lacune dichiarate. Firmware fuori supporto upstream, certificato GUI indicato scaduto, VPN IKEv1 e pubblicazione GroupShare 80/8080 alimentano M31 e M14; nessuna correzione applicata. Un vicino NetApp con due sessioni TCP 445 dalla sede è osservato, ruolo/proprietà/backup ancora da attribuire senza creare nuovi nodi. Tre schermate Cloud Center già lette; build ESXi e Eventi ancora da verificare. Due report email letti in locale, nessun flusso Seeweb automatico sulla VM.
 
 | Campo | Valore |
 |-------|--------|
