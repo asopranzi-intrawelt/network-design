@@ -2,6 +2,18 @@
 
 > ADR-lite append-only. Ogni decisione entra come voce numerata. Non si cancella, non si riscrive: quando superata, si aggiunge una nuova voce che la dichiara superata.
 
+## ADR-033 - Postura della corrispondenza tecnica con il fornitore del VA
+
+Data: 2026-10-14. Stato: attiva.
+
+Contesto. Alla consegna del secondo Vulnerability Assessment il fornitore ha posto quattro domande tecniche, ha proposto una scansione integrativa anche da remoto via VPN e ha costruito la raccomandazione principale, un servizio di protezione gestita, sull'osservazione che non esista raccolta centralizzata dei log. Rispondere richiede di decidere non solo che cosa sia vero, ma quanto del vero si scrive a una controparte commerciale che e' anche l'auditor.
+
+Decisione. Quattro scelte del proprietario, prese il 14/10/2026. Si risponde con misure datate e con la fonte di ciascuna, mai a memoria. Un difetto che la controparte puo' scoprire da se', come il portale servito in chiaro che il suo pre-brief aveva gia' visto dall'esterno, si dichiara per primi con diagnosi e stato del rimedio. Nessuna data di intervento si scrive al fornitore: gli interventi si dichiarano presi in carico e pianificati internamente, perche' una data scritta a una controparte diventa un impegno che nessuno ha negoziato e ricompare nei suoi follow-up. Una scelta che spetta al titolare dei sistemi, come la modalita' della scansione integrativa, non si anticipa con una preferenza tecnica: si espongono i due scenari e si chiede alla controparte il costo e la finestra di entrambi, perche' senza quei due numeri il titolare non decide.
+
+Motivazione. Le prime due scelte riguardano la credibilita' e vanno nella stessa direzione: una risposta misurata e che anticipa il difetto scomodo rende piu' forte, non piu' debole, la correzione degli errori della controparte, che in questo giro sono tre. La terza separa il piano interno dall'obbligo esterno, distinzione gia' prescritta per i questionari di qualifica dei clienti e qui applicata al rapporto con l'auditor. La quarta evita che il referente tecnico decida al posto del titolare su un'esposizione della rete, e trasforma una preferenza in un confronto fra due preventivi.
+
+Conseguenze. La bozza di risposta vive nel livello privato perche' porta indirizzi reali. Le eccezioni temporanee di una sessione di scansione si riscontrano sulla lista che la controparte ha chiesto, non sulla memoria della giornata, e quella lista si domanda per iscritto. Quando una raccomandazione commerciale poggia su un fatto che e' parzialmente falso, la si divide in due nella risposta e nella documentazione, concedendo per intero la parte fondata: e' cio' che si e' fatto con l'osservazione sulla raccolta dei log, e la forma e' riusabile.
+
 ## ADR-032 - Il progetto integrità-docs entra fra i progetti collegati
 
 Data: 2026-10-12. Stato: attiva.

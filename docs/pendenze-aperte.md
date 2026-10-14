@@ -16,6 +16,25 @@ Interventi che non richiedono una finestra di manutenzione, non toccano il piano
 | Le due code di R8: verificare che la credenziale del NAS sia permanente su ogni postazione, e rimuovere le vecchie condivisioni di scansione con le credenziali che le servivano | R8; SEC-020 (#126) | E' la rimozione delle vecchie condivisioni, non la creazione delle nuove, a chiudere SEC-020 |
 | Le voci multifunzione e scansioni ancora aperte: credenziali di fabbrica, filtro IP, mDNS, campo posizione, porte di stampa orfane, riserve DHCP, account di servizio nelle rubriche, conferma prima dell'invio | R1, R2, R3, R4, R6, R7, R9, R11 | Nessuna interrompe la stampa; R7 e' anche prerequisito di M22b |
 
+## Secondo Vulnerability Assessment Onova, consegnato il 14/10/2026
+
+La fotografia e le attribuzioni stanno in [vulnerability-assessment-ott2026.md](vulnerability-assessment-ott2026.md), i gap propri sono 215-220 in `infrastructure-timeline/GAP-TBC.md`. Qui resta cio' che aspetta una decisione o un gesto, e che altrimenti si perde fra i registri.
+
+| Cosa | Dove e' tracciato | Nota che decide se farlo adesso |
+|---|---|---|
+| Verificare sull'apparato la rimozione delle sette eccezioni temporanee del 13/10 | VA26-005 (#219) | E' la voce piu' urgente dell'intera vicenda: esenzioni su IPS, IDS e difesa endpoint non producono nessun errore quando restano aperte. Nessuno puo' confermarlo al posto del referente IT, che le ha applicate lui |
+| Rileggere e inviare la risposta al fornitore | `_notes/risposta-onova-round2-2026-10-14.md`; ADR-033 | Le quattro decisioni di postura sono prese il 14/10 e il testo e' completo: non manca altro che la rilettura |
+| Portare al Persona-A la scelta fra scansione integrativa in sede e da remoto via VPN del fornitore | ADR-033; VA26-005 (#219) | La risposta chiede a Onova costo e finestra di entrambe le modalita': senza quei due numeri la scelta non si fa. La via remota aggiunge un'utenza di accesso per il fornitore su una rete piatta |
+| Far firmare al titolare il Modulo M2 integrativo per la scansione dei server | VA26-004 (#218); proposta Onova del 14/10 | Il modello e' il documento 03 della cartella Round 1. Da compilare: perimetro (fascia server piu' host discovery sulla /19), finestra temporale, e la casella della verifica della superficie Internet, che nel M2 del 13/10 non risulta barrata. NDA gia' in essere; M1 e M3 si firmano in sede il giorno stesso |
+| Chiedere al fornitore la scansione dei moduli M1 e M2 firmati il 13/10 | VA26-004 (#218) | Senza il perimetro firmato nessuna voce del VA 2025 si puo' chiudere per assenza nel nuovo report. La richiesta e' gia' scritta nella bozza di risposta |
+| Decidere con la direzione se autorizzare la scansione integrativa della fascia server e l'host discovery sulla /19, e con quale modalita' | VA26-004; proposta del fornitore del 14/10 | Serve un modulo M2 integrativo firmato dal titolare. La posizione del referente IT e' di rifarla in sede e non via VPN del fornitore, e va confermata o ribaltata dalla direzione |
+| Aggiornare il firmware dello USG FLEX 500 alla 5.43 o successiva | VA26-001 (#215) | Unico rilievo Alto del ciclo. Richiede finestra di manutenzione e backup della configurazione, quindi non appartiene alle voci sanabili subito |
+| Rinnovare il certificato di `vpn.intrawelt.com`, scaduto dal 24/10/2025 | VA26-002 (#216) | Dodici mesi di avvisi che gli utenti remoti hanno imparato a ignorare. La CA interna esiste gia', ma qui serve un certificato pubblicamente attendibile con rinnovo automatico |
+| Imporre la firma SMB sulle sedici postazioni Windows che non la richiedono | VA26-003 (#217) | Si distribuisce dall'RMM, non richiede finestra. Va misurato prima e dopo, perche' il rimedio e' verificabile da una ri-scansione |
+| Portare all'incontro con il fornitore le due domande sulla protezione gestita: se possa riusare i flussi gia' raccolti dal collettore e che fine farebbe la difesa endpoint in uso | ISO-30; [VA ottobre 2026](vulnerability-assessment-ott2026.md) e [collettore](log-collector-integrazione.md) | Decidono se la proposta si somma a cio' che esiste o lo duplica, quindi il costo reale. Senza risposta l'incontro resta una presentazione |
+| Restringere alla sola Italia il filtro geografico della SSL VPN, regole 5 e 6 | FW-015 (#221) | L'IT Manager ha dichiarato il 14/10 che nessuno si collega dagli Stati Uniti, quindi l'eccezione non ha piu' una ragione. Prima di togliere il paese, leggere i registri di accesso per confermarlo con una misura e annotare lo stato precedente: e' un intervento di un minuto con rollback immediato |
+| Guardare la scheda di rete del gruppo di continuita' a `10.61.10.241`, che il fornitore trova viva | VA26-006 (#220); ELE-001 | Se risponde davvero, l'affermazione del 21/07/2026 secondo cui nessun allarme di alimentazione raggiunge nessuno va riscritta |
+
 ## Esito M30 del 09/10/2026
 
 Il percorso MCP e il dry-run Nebula/Proxmox funzionano tramite `.env`; le quattro chiavi non sono piu' nel blocco `env` di Claude. Restano l'osservazione del prossimo task pianificato e il controllo in una nuova sessione Claude interattiva. SEC-025 è stato sanato il 09/10 con flag `false`, catalogo ristretto, rifiuto del tool di modifica e `list_nodes` reale; il bypass TLS di `Get-ProxmoxSnapshot.ps1` è stato rimosso e il dry-run Windows PowerShell 5.1 è riuscito il 12/10. Restano task pianificato, PowerShell 7 e guest-agent 403.
@@ -120,4 +139,4 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Completa configurazione/ruoli/logging e proprietà provider, poi piattaforma e certificato supportati | Aperta, nessun cambio | M31a/b/c; SWB-001/002 (#210/211) |
 | Priorità al permesso WAN29 verso il firewall e TCP902 LAN; matrice cloud HTTP/HTTPS/8080, provider e NAT; coordinare con VPN e segmentazione sede | Aperta, flussi osservati | M31d, M14/M22; SWB-003 (#212) |
 | Attribuire servizio/storage del vicino NetApp e due sessioni TCP 445 | Aperta, proprietà ignota | M31e; SWB-004 (#213) |
-| Campione nativo e log admin distinti, trasporto e ricezione sul collettore | Aperta, soltanto log locali | M31f; SWB-005 (#214), ISO-30 |
+| Riscontro Seeweb su log admin/permessi/export assenti dal menu visibile, campione nativo e ricezione sul collettore | Aperta, soltanto log locali | M31f; SWB-005 (#214), ISO-30 |

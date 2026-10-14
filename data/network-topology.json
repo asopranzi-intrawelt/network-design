@@ -1,8 +1,8 @@
 {
  "meta": {
   "titolo": "Topologia di rete Intrawelt",
-  "aggiornato": "2026-10-08",
-  "revisione": 14,
+  "aggiornato": "2026-10-14",
+  "revisione": 15,
   "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
   "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro, che compaiono come gruppo aggregato. Le due multifunzione sono nodi individuali; la porta di Piano 1 resta da attribuire.",
   "fonti": [
@@ -23,7 +23,8 @@
    "Snapshot Nebula e Proxmox del 23/09/2026: Test-TopologyDrift.py, 39 confronti e zero scostamenti",
    "Registro GAP-TBC, aggiornamenti del 16/09/2026: due alimentatori sul server (#202), lentezza del deposito NAS (#204)",
    "D:/log-collector, screenshot 13 di NAS-INTRA3 e dichiarazione dell'IT Manager del 05/10/2026 (modello, firmware e uso delle condivisioni)",
-   "docs/livello-fisico-ed-elettrico.md e docs/interventi-robustezza.md, due multifunzione di rete; porta Kyocera Piano Terra verificata, porta Canon Piano 1 da attribuire"
+   "docs/livello-fisico-ed-elettrico.md e docs/interventi-robustezza.md, due multifunzione di rete; porta Kyocera Piano Terra verificata, porta Canon Piano 1 da attribuire",
+   "Secondo Vulnerability Assessment Onova del 13/10/2026, consegnato il 14/10 (composizione del segmento delle postazioni, due dispositivi embedded attribuiti, conferma indipendente dell'inventario degli apparati di rete)"
   ],
   "verifica": {
    "data": "2026-10-08",
@@ -36,7 +37,9 @@
     "La catena WAN conserva attestazioni ripetute sulla P2 del router principale: cablaggio da verificare sul posto.",
     "La presenza residua del vecchio access point e il cablaggio della seconda alimentazione del server non sono confermati.",
     "Il delta documentale esterno e triagiato ma non completamente ingerito: vedere ingestion-checklist.",
-    "Correzione IT Manager 28/09/2026: la porta 4 raggiunge il WBE530, la centralina usa il suo Wi-Fi e l'inverter la seconda porta Ethernet dell'AP. Il GS-105B appartiene alla topologia storica e non e' nel percorso attivo. La sorgente elettrica del WBE530 resta da confermare."
+    "Correzione IT Manager 28/09/2026: la porta 4 raggiunge il WBE530, la centralina usa il suo Wi-Fi e l'inverter la seconda porta Ethernet dell'AP. Il GS-105B appartiene alla topologia storica e non e' nel percorso attivo. La sorgente elettrica del WBE530 resta da confermare.",
+    "Il VA del 13/10/2026 ha misurato la sola fascia delle postazioni: la fascia dei server, quella delle stampanti e le VLAN 40 e 90 non sono coperte da quella fonte, e il perimetro firmato non e' agli atti (#218).",
+    "Il VA trova viva la scheda di rete del gruppo di continuita' Liebert, che il progetto dava per non rispondente dal 21/07/2026: finche' non la si guarda, la premessa di ELE-001 resta in discussione (#220)."
    ]
   }
  },
@@ -747,6 +750,30 @@
    "alimentazione": null,
    "gap": [
     "NET-027"
+   ]
+  },
+  {
+   "id": "ups-liebert-nic",
+   "nome": "Scheda di rete del gruppo di continuita' Liebert",
+   "tipo": "iot",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Scheda Liebert IntelliSlot rilevata viva dal VA del 13/10/2026 nella fascia delle postazioni, con la porta 6004 aperta. Il progetto la dava per non rispondente dalla scansione del 21/07/2026, quindi l'attribuzione del fornitore, che viene da fingerprinting non autenticato, va confermata guardando l'apparato. Porta di switch non attribuita. E' l'unico gruppo di continuita' che abbia mai avuto una via di allarme.",
+   "alimentazione": null,
+   "gap": [
+    "ELE-001"
+   ]
+  },
+  {
+   "id": "domotica-mh",
+   "nome": "Server domotico e videocitofonico BTicino",
+   "tipo": "ot",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "MyHome server del Piano 2, gia' descritto nella mappa fisica come governo di luci, allarmi e termostati ma mai censito come nodo di rete. Il VA del 13/10/2026 lo misura sulla fascia delle postazioni con il protocollo DNP3 sulla 20000 e due servizi web sulla 8080 e sulla 8081. Porta di switch non attribuita; destinazione il segmento IoT e OT di M22c.",
+   "alimentazione": null,
+   "gap": [
+    "NET-020"
    ]
   }
  ],
@@ -1586,6 +1613,18 @@
    "titolo": "Deposito NAS principale lento: causa da diagnosticare",
    "numero": 204,
    "gravita": "alta"
+  },
+  {
+   "id": "VA26-005",
+   "titolo": "Eccezioni temporanee del VA non verificate come rimosse",
+   "numero": 219,
+   "gravita": "alta"
+  },
+  {
+   "id": "VA26-006",
+   "titolo": "Scheda di rete del gruppo di continuita' che risponde: premessa di ELE-001 da rivedere",
+   "numero": 220,
+   "gravita": "media"
   }
  ]
 }
