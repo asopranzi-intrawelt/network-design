@@ -195,7 +195,7 @@ Blocco schermo automatico dopo **5 minuti** di inattività.
 Controlli implementati:
 - SPF record sul dominio intrawelt.com
 - DKIM configurato su Exchange Online
-- DMARC in modalità [TBC – policy reject o quarantine?]
+- DMARC in modalità `p=none`, cioè solo monitoraggio, misurato sul DNS pubblico il 15/10/2026 (vedi §Email Authentication)
 - Filtri anti-spam Exchange Online
 - Regola firewall `Blocco_Gruppo_IP_Phishing_Elisa` (action=ALLOW → BUG FW-001)
 - Miniguida phishing condivisa su gruppo Teams da Alessio
@@ -393,6 +393,24 @@ DMARC configurato su `intrawelt.com` con tag `rua=` per ricezione report aggrega
 **Provider che inviano report DMARC a Intrawelt:** Microsoft, Google, Aruba.it, Mimecast, Yahoo, GMX, Terna, ESA, Amazon SES.
 
 Struttura report aggregato: org name, report ID, date range, policy DMARC applicata, dati per IP sorgente (pass/fail SPF+DKIM, allineamento header From vs SPF/DKIM domain).
+
+### Dove nascono i report che arrivano alla casella IT, verificato il 15/10/2026
+
+Nella casella IT arrivano due famiglie di messaggi automatici che a colpo d'occhio sembrano lo stesso fenomeno, e non lo sono: hanno origine, impostazione e luogo di modifica diversi. La ricognizione parte da due schermate di Outlook fornite dall'utente il 15/10/2026 e da una lettura del DNS pubblico fatta nello stesso giorno con `nslookup -type=TXT _dmarc.intrawelt.com 8.8.8.8`.
+
+La prima famiglia sono i *report DMARC aggregati*, raccolti in una cartella dedicata della casella IT. Non li configura nessun pannello Intrawelt: li spedisce ciascun provider di posta che ha ricevuto messaggi con mittente `intrawelt.com`, perché il record DNS del dominio glielo chiede. Il record misurato è il seguente.
+
+```
+_dmarc.intrawelt.com  TXT  "v=DMARC1; p=none; fo=1; rua=mailto:<casella-funzionale-dmarc>@intrawelt.com"
+```
+
+Il tag *rua* è l'indirizzo di destinazione dei report aggregati, e il suo valore è una casella funzionale dedicata, sostituita qui da un segnaposto perché il controllo di anonimizzazione la tratta come indirizzo personale, che la posta mostra consegnata alla casella IT; se sia un alias, un gruppo di distribuzione o una regola di inoltro non risulta da qui ed è una verifica aperta. Il tag *p=none* dice ai riceventi di non applicare alcuna azione ai messaggi che falliscono DMARC, solo di riferire, e *fo=1* chiede un report di errore quando fallisce anche uno solo fra SPF e DKIM. Il 15/10/2026 i mittenti dei report visibili nella cartella erano Microsoft (due canali), Google, Yahoo in tre domini, Mimecast, due gateway di sicurezza esterni di tipo safe-mail e ESVA cloud, e un filtro olandese: l'elenco cambia con i destinatari a cui Intrawelt scrive, e non è quindi una configurazione. Ne segue che per smettere di riceverli, spostarli su un'altra casella o affidarli a un servizio di analisi si modifica quel solo record TXT nel pannello DNS del dominio, che `vendor-management.md` colloca su Aruba, e non la posta.
+
+Nella stessa cartella compare anche il *Backup status report* giornaliero di Seeweb, che non ha niente a che fare con DMARC: è una notifica del servizio Seeweb Cloud Backup, impostata sul pannello del fornitore, ed è già censita fra le fonti del collettore dei log negli esiti dei backup.
+
+La seconda famiglia sono le *notifiche di quarantena* di Microsoft 365, con mittente il servizio di quarantena di Microsoft, oggetto «Sicurezza di Microsoft 365: ci sono messaggi in quarantena», con cadenza osservata di qualche giorno fra agosto e ottobre 2026 e uno o due messaggi ciascuna. Queste si impostano nel portale Microsoft Defender, non nel DNS: la policy anti-spam di Exchange Online Protection decide quali verdetti finiscono in quarantena e a quale *quarantine policy* sono legati, la quarantine policy decide se l'utente riceve la notifica e che cosa può fare del messaggio, e le impostazioni globali delle quarantine policy fissano frequenza, lingua e mittente della notifica. Quale policy anti-spam sia in uso su Intrawelt, se quella predefinita o una personalizzata, e quale quarantine policy vi sia associata, non è stato letto dal tenant ed è la seconda verifica aperta. L'esempio fotografato riguarda un messaggio classificato come posta indesiderata con azione «Rilascia» offerta all'utente, che è compatibile con una policy che concede accesso con notifica ma non lo dimostra.
+
+Le fonti ufficiali su cui poggia la parte non misurata: la sintassi dei tag DMARC è in [RFC 7489, sezione 6.3](https://datatracker.ietf.org/doc/html/rfc7489#section-6.3); la configurazione DMARC per un dominio su Microsoft 365 è in [Set up DMARC to validate the From address domain](https://learn.microsoft.com/en-us/defender-office-365/email-authentication-dmarc-configure); le quarantine policy e le notifiche all'utente sono in [Quarantine policies](https://learn.microsoft.com/en-us/defender-office-365/quarantine-policies), compresa la sezione sulle impostazioni globali delle notifiche.
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-14",
+  "aggiornato": "2026-10-15",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1614,6 +1614,60 @@
       "data": "2026-10-14",
       "stato": "in_corso",
       "nota": "Il 14/10/2026 l’operatore riferisce che, dopo essere tornato indietro nel portale Seeweb, la UI non ha più consentito il caricamento degli allegati e decide di attendere la risposta del provider. Stato operativo: attesa risposta dichiarata dall’operatore; numero/ricevuta del ticket e allegati effettivamente associati non verificati. Le quattro schermate selezionate restano pronte per eventuale integrazione nello stesso ticket. Nessun nuovo tentativo nel portale richiesto, nessun ticket o messaggio inviato dall’agente e nessuna modifica al firewall. Audit amministrativo, export e raccolta automatica restano aperti; prossimo passo sul firewall: esaminare la risposta Seeweb quando disponibile."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32: l’operatore sceglie console Linux locale senza abbonamenti. Studio pronto per Agent Netdata, Prometheus, Grafana OSS e Loki/Alloy; originali tecnici e accessi nei rispettivi archivi del collettore. Dieci VM configurate Linux nello snapshot e un host fisico Ollama distinto. Dimensionamento, pilota e ricezione da misurare; M29 resta valido, nessuna installazione. Dettaglio in docs/osservabilita-linux-netdata.md."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32a parziale: fisico Ollama scelto come primo pilota dall’operatore; due output riferiti con Ubuntu 26.04.1 x86_64, RTX 5060 Ti e driver nvidia attivo, utility nvidia-smi e Netdata assenti. Runbook e candidato statico 2.12.1 preparati, dry-run e checksum archivio ancora da verificare. Nessuna installazione o raccolta aggiunta; M32d non eseguito. Sviluppo log sul Debian richiesto, hub completo da dimensionare; M29 e gate AdS restano validi."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32a: terzo output riferito del pilota fisico, driver NVIDIA 595.99.02, Netdata assente e dry-run 2.12.1 riuscito. Preparata installazione da bundle offline con hash pubblicato e bind locale; esecuzione e primo avvio ancora attesi. Richiesta estrazione successiva in pacchetto parametrizzato del template, specifica registrata e non catalogata come pronta. Nessun Agent o stack installato, M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32a-d: bundle statico Netdata 2.12.1 scaricato con checksum ufficiale OK, ma il kickstart elimina gli slash dal parametro di preparazione. Il controllo successivo impedisce l’installazione; servizio ancora assente. Ricetta corretta e recupero dal bundle esistente preparati, parser provato in isolamento con due casi negativi; non un collaudo del payload. Specifica del template aggiornata; output del recupero atteso, M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32d parziale: operatore ha installato Agent Netdata 2.12.1 sul fisico, hash di script e archivio OK. Servizio loaded/inactive/enabled, bind 127.0.0.1:19999 scritto, backup e opt-out presenti; updater conferma DISABLED. Primo avvio, listener, CPU/RAM, stato Cloud e impatto ancora da misurare, GPU e ricezione nel Debian aperti. Specifica template aggiornata, pacchetto e stack non completi. Comandi eseguiti dall’operatore; nessuna sessione SSH dell’assistente. M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32d parziale: operatore ha avviato Netdata 2.12.1 sul fisico, servizio active/running, loopback e CPU/RAM locali verificati; ACLK non claimed/non online. Circa 372 MiB cgroup in una lettura, GPU e impatto prolungato aperti. Richiesti normalizzazione uniforme con originali/provenienza, tracciabilità di ogni passo e retention/budget/guardie Debian; risorse Proxmox da dimensionare su baseline. Fonti e contratto documentati, nessun nuovo flusso al Debian o stack centrale. Pacchetto template ancora specifica; M29 e gate AdS invariati. Nessuna sessione SSH dell’assistente."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32d parziale: inventario GPU restituito dall’operatore, modulo Open 595.99.02, nvidia-smi assente. Utility/libreria standard candidate 595.99.02 come il modulo, varianti server 595.91.07 differenti. Simulazione APT alle versioni esatte preparata, output atteso; nessun pacchetto GPU installato. Netdata locale CPU/RAM verificato, query GPU, impatto e stack centrale aperti. Contesto rete aggiornato nello stesso giro, fonti e testo ricevuto conservati. M29 e gate AdS invariati, nessuna sessione SSH dell’assistente."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32d parziale: operatore restituisce simulazione APT con utility e libreria 595.99.02 già presenti, nessuna operazione proposta. Riconciliato handoff del ripristino GPU già presente e con SHA verificato: nvidia-smi e inizializzazione CUDA riusciti, non inferenza Ollama o metriche GPU Netdata. Nessuna seconda installazione o sessione SSH in questo giro. Preparata lettura utente netdata/configurazione/journal; sorgenti tag 2.12.1 lette. Stack centrale e capienza aperti, M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-15",
+      "stato": "in_corso",
+      "nota": "M32d parziale: operatore legge RTX 5060 Ti come utente netdata, 16311 MiB totali, 34 MiB usati e 36 Celsius; job distribuito presente, override assente. Journal enable accepted/202 non prova campioni. Preparata lettura di utilizzo/VRAM/temperatura recenti dall’export locale; filtro validato su 14 casi con mutazioni rilevate, zero chiamate reali nei test. Campioni GPU, impatto e stack ancora aperti; M29 e gate AdS invariati."
     }
   ]
 }
