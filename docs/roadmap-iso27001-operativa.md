@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-15. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -250,7 +250,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-14. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-14):** Il 14/10/2026 l’operatore riferisce che, dopo essere tornato indietro nel portale Seeweb, la UI non ha più consentito il caricamento degli allegati e decide di attendere la risposta del provider. Stato operativo: attesa risposta dichiarata dall’operatore; numero/ricevuta del ticket e allegati effettivamente associati non verificati. Le quattro schermate selezionate restano pronte per eventuale integrazione nello stesso ticket. Nessun nuovo tentativo nel portale richiesto, nessun ticket o messaggio inviato dall’agente e nessuna modifica al firewall. Audit amministrativo, export e raccolta automatica restano aperti; prossimo passo sul firewall: esaminare la risposta Seeweb quando disponibile.
+  - **Ultimo stato (2026-10-15):** M32d parziale: operatore legge RTX 5060 Ti come utente netdata, 16311 MiB totali, 34 MiB usati e 36 Celsius; job distribuito presente, override assente. Journal enable accepted/202 non prova campioni. Preparata lettura di utilizzo/VRAM/temperatura recenti dall’export locale; filtro validato su 14 casi con mutazioni rilevate, zero chiamate reali nei test. Campioni GPU, impatto e stack ancora aperti; M29 e gate AdS invariati.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

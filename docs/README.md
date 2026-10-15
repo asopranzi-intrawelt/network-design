@@ -6,6 +6,7 @@ Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) e' il punto di par
 
 | Domanda | Documento |
 |---|---|
+| Come osservare tutte le macchine Linux, il fisico Ollama e i loro log da una console? | [Studio Netdata e osservabilità Linux](osservabilita-linux-netdata.md), [runbook del pilota GPU](runbook-monitoraggio-linux.md), M32 e relazione con M29 |
 | Quali configurazioni del firewall Seeweb conosciamo e quali interventi derivano? | [Firewall Seeweb](firewall-seeweb-opnsense.md), roadmap M31/M14 e gap 210–214 |
 | Quali pannelli Seeweb sono censiti e quali log sono realmente raccolti? | [Sorgenti Seeweb](sorgenti-log-seeweb.md) e [integrazione del collettore](log-collector-integrazione.md) |
 | Che cosa e' collegato e quanto e' verificato? | [Snapshot](snapshot-infrastruttura.md), [mappa](network-map.html) e [guida](network-diagram.md) |
@@ -30,3 +31,7 @@ La roadmap ISO ha una sola fonte modificabile per gli interventi, `data/iso27001
 La checklist VA Onova privata conserva i 174 rilievi storici. `scripts/Build-OnovaReconciliation.py` aggiunge una fotografia documentale datata allo stesso HTML, con priorita' e note per gli host riconciliati; i dati storici e le spunte locali restano separati. `preview` prepara una copia in `output/`, `apply` conserva l'originale e aggiorna la checklist privata, `check` controlla il risultato. La configurazione privata `_notes/onova-reconciliation.json` lega le note alle fonti del progetto: quando una fonte cambia, i fatti vanno rivisti prima di rigenerare. La sintesi pubblica, senza indirizzi reali, e' in `docs/vulnerability-assessment-nov2025.md`.
 
 `_notes/` contiene il racconto operativo privato e `output/` gli snapshot completi: entrambi sono ignorati da Git. `.claude/context/` e `.claude/memory/` contengono invece schede tecniche e stato di sessione versionati; [CLAUDE.md](../CLAUDE.md) ne definisce la procedura di lettura e aggiornamento.
+
+## Normalizzazione, fonti e capienza del collettore, 15/10/2026
+
+[Normalizzazione e capienza](normalizzazione-retention-capienza.md): contratto di consultazione, politiche degli archivi, baseline, risorse e guardie prima dell’estensione. [Fonti e passi](fonti-osservabilita-linux.md): registro dei collegamenti, sequenza tecnica e limiti delle prove, condiviso con il collettore.
