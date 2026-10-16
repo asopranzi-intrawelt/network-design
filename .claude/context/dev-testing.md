@@ -108,3 +108,7 @@ Lo script e' ASCII puro (tutti i caratteri < 128). Compatibile con PS5.1 e UTF-8
 ## Retention snapshot e launcher, 16/10/2026
 
 Undici unittest Windows PowerShell su fixture Git temporanee, nessun add/commit o API: soglia temporale, anteprima immutata, eliminazione di candidati reali di prova, alias/pin/riferimenti/ultima copia preservati, JSON invalidi conservati, pin alterato/alias assente/indice assente respinti, warning senza anticipo, radice disco e junction respinte, abilitazione/disabilitazione pianificata. Cinque scenari della catena: successo, fonte fallita, DryRun, errore retention e budget superato. Rimozione delle guardie pin e cutoff rilevata dalle rispettive prove, sorgente originale verificata invariata. Nessuna prova saltata nella suite finale. Attivazione e primo giro pianificato reali ancora aperti; metadati del task e anteprima reale sono verifiche distinte.
+
+## Sorgenti QA catalogate e ripresa con altro account preparata, 16/10/2026
+
+Ricognizione QA di sola lettura, non suite del produttore né prova dei 600 secondi. Nessun container centrale avviato o testato. Retention pianificata abilitata dall’operatore; prima esecuzione futura non osservata. Alla ripresa verificare nuove modifiche del produttore prima di fissare il parser e conservare separate prove locali e misure di produzione.

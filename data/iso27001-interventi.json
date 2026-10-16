@@ -1710,6 +1710,18 @@
       "data": "2026-10-16",
       "stato": "in_corso",
       "nota": "Anteprima locale della retention riuscita su 127 copie: zero candidati e zero eliminati; pin iniziali ed evidenze protetti. Controlli completi di chiusura della rete verdi. Attivazione manuale e primo giro pianificato di pulizia ancora aperti; processo della postazione, rischi e responsabilità documentati."
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "Ricevuti commit bff861b pubblicato e abilitazione manuale della retention snapshot a 90 giorni: zero candidati/eliminati; policy enabled=true riletta. Primo giro pianificato e recupero indipendente restano aperti."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "Catalogati i log del futuro servizio QA: applicazione/tentativi, job, accessi, proxy, uso/costi riservati, Ollama e OS; due LXC e runtime dedicato ancora previsti. Default letti di recupero 600 s/60 s, nessuna prova runtime o ingestione centrale. Risorse del collettore e del nodo da completare prima del pilota."
     }
   ]
 }

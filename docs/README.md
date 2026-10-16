@@ -36,3 +36,7 @@ La checklist VA Onova privata conserva i 174 rilievi storici. `scripts/Build-Ono
 ## Normalizzazione, fonti e capienza del collettore, 15/10/2026
 
 [Normalizzazione e capienza](normalizzazione-retention-capienza.md): contratto di consultazione, politiche degli archivi, baseline, risorse e guardie prima dell’estensione. [Fonti e passi](fonti-osservabilita-linux.md): registro dei collegamenti, sequenza tecnica e limiti delle prove, condiviso con il collettore.
+
+## Catalogo del produttore QA
+
+[Integrazione dei log del servizio QA](integrazione-log-qa-verifier.md): ambienti previsti, tentativi e recupero Ollama, categorie e campi comuni, dati riservati, condizioni prima dell’ingestione.

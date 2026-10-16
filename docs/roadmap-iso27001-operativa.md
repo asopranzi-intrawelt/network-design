@@ -250,7 +250,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-16. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-16):** M32c: archivi Debian misurati, AdS 55,70 GiB disponibili e 41,11 MiB allocati, tecnici iLO 44 KiB sulla root. Cinque intervalli senza si/so/wa; crescita e picchi aperti. Snapshot locale Proxmox letto: swap quasi 8 GiB e margine da verificare prima di assegnare risorse. Nessun nuovo flusso o stack installato.
+  - **Ultimo stato (2026-10-16):** Catalogati i log del futuro servizio QA: applicazione/tentativi, job, accessi, proxy, uso/costi riservati, Ollama e OS; due LXC e runtime dedicato ancora previsti. Default letti di recupero 600 s/60 s, nessuna prova runtime o ingestione centrale. Risorse del collettore e del nodo da completare prima del pilota.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
@@ -325,7 +325,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-16. Obie
   - **Chiusura verificabile:** Una esecuzione documentata o esercizio per ciascuna procedura critica.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.5.37, A.8.32, 8.1.
   - **Fonti:** docs/runbook-anomalie.md, roadmap Fase 5.
-  - **Ultimo stato (2026-10-16):** Anteprima locale della retention riuscita su 127 copie: zero candidati e zero eliminati; pin iniziali ed evidenze protetti. Controlli completi di chiusura della rete verdi. Attivazione manuale e primo giro pianificato di pulizia ancora aperti; processo della postazione, rischi e responsabilità documentati.
+  - **Ultimo stato (2026-10-16):** Ricevuti commit bff861b pubblicato e abilitazione manuale della retention snapshot a 90 giorni: zero candidati/eliminati; policy enabled=true riletta. Primo giro pianificato e recupero indipendente restano aperti.
 
 - **ISO-42 | Risposta agli incidenti** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Definire ruoli, escalation, decisione sugli eventi, raccolta prove e comunicazioni; esercitare uno scenario pertinente al phishing gia' documentato.
