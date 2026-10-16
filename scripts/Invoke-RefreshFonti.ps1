@@ -204,5 +204,22 @@ if ($falliti.Count -gt 0) {
     Scrivi-Registro ("esito    {0} fonti su {1} fallite: {2}" -f $falliti.Count, $esiti.Count, (($falliti | ForEach-Object { $_.Key }) -join ', '))
     exit 1
 }
+# La retention segue solo una raccolta riuscita e non gira nel DryRun delle API.
+# Senza abilitazione privata produce unicamente un piano, senza cancellazioni.
+if (-not $DryRun) {
+    try {
+        $retentionText = & (Join-Path $PSScriptRoot 'Invoke-SnapshotRetention.ps1') -Scheduled
+        $retentionReport = $retentionText | ConvertFrom-Json
+        if ($retentionReport.warning) {
+            Segnala-Fallimento 'retention' 'budget di avviso delle copie datate superato; verificare spazio e pin senza anticipare le scadenze'
+            exit 3
+        }
+        Pulisci-Fallimento 'retention'
+        Scrivi-Registro ("retention mode={0} candidates={1} removed={2} bytes_before={3} warning={4}" -f $retentionReport.mode, $retentionReport.candidate_files, $retentionReport.removed_files, $retentionReport.bytes_before, $retentionReport.warning)
+    } catch {
+        Segnala-Fallimento 'retention' ("pulizia non completata: " + $_.Exception.Message)
+        exit 3
+    }
+}
 Scrivi-Registro ("esito    tutte le {0} fonti rinfrescate" -f $esiti.Count)
 exit 0

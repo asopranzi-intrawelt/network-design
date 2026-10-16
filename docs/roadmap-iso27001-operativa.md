@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-15. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-16. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-15. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 33, in corso 14, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 32, in corso 15, bloccati 0, completati 0, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -250,7 +250,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-15. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-15):** M32d parziale: operatore legge RTX 5060 Ti come utente netdata, 16311 MiB totali, 34 MiB usati e 36 Celsius; job distribuito presente, override assente. Journal enable accepted/202 non prova campioni. Preparata lettura di utilizzo/VRAM/temperatura recenti dall’export locale; filtro validato su 14 casi con mutazioni rilevate, zero chiamate reali nei test. Campioni GPU, impatto e stack ancora aperti; M29 e gate AdS invariati.
+  - **Ultimo stato (2026-10-16):** M32c: archivi Debian misurati, AdS 55,70 GiB disponibili e 41,11 MiB allocati, tecnici iLO 44 KiB sulla root. Cinque intervalli senza si/so/wa; crescita e picchi aperti. Snapshot locale Proxmox letto: swap quasi 8 GiB e margine da verificare prima di assegnare risorse. Nessun nuovo flusso o stack installato.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
@@ -300,11 +300,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-15. Obie
   - **Responsabile:** Direzione e RSGSI. **Dipendenze:** ISO-36. **Controlli:** 4.1, 4.2.
   - **Fonti:** ISO/IEC 27001:2022/Amd 1:2024, docs/business-continuity-disaster-recovery.md.
 
-- **ISO-38 | Metodo e registro dei rischi** - **Da fare**; Nessuna fornitura prevista.
+- **ISO-38 | Metodo e registro dei rischi** - **In corso**; Nessuna fornitura prevista.
   - **Azione:** Definire criteri di impatto e probabilita'; per ogni gap registrare scenario, asset, proprietario, rischio iniziale, trattamento, residuo e accettazione.
   - **Chiusura verificabile:** Registro approvato che copre almeno tutti gli interventi critici di questa roadmap.
   - **Responsabile:** RSGSI e proprietari dei rischi. **Dipendenze:** ISO-36. **Controlli:** 6.1.2, 6.1.3.
   - **Fonti:** docs/infrastructure-timeline/GAP-TBC.md, ISO/IEC 27001:2022.
+  - **Ultimo stato (2026-10-16):** Registrati gli scenari del processo fonti vive: dipendenza da PC e sessione, segreti dello stesso utente, perdita/capienza delle evidenze, backup e recupero; presidi e trattamenti aperti nella procedura. Proprietario/delegato e accettazione del residuo da formalizzare nel SGSI; nessuna conformità complessiva attestata.
 
 - **ISO-39 | Statement of Applicability dei 93 controlli** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Riconciliare la checklist locale con misure attuali; motivare applicabilita', esclusioni, implementazione, responsabile e prova per ogni controllo.
@@ -324,8 +325,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-15. Obie
   - **Chiusura verificabile:** Una esecuzione documentata o esercizio per ciascuna procedura critica.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.5.37, A.8.32, 8.1.
   - **Fonti:** docs/runbook-anomalie.md, roadmap Fase 5.
-  - **Ultimo stato (2026-10-12):** Client PowerShell Proxmox senza bypass TLS: CA, nome e pin verificati nel runtime 5.1; dry-run reale riuscito il 12/10, snapshot validato e non promosso. Restano task pianificato, PowerShell 7, revoca e guest-agent 403.
-  - **Evidenza:** docs/dossier-sicurezza-mcp-proxmox.md §10; docs/evidenze-sicurezza-mcp-proxmox.md SEC-PS-01..04
+  - **Ultimo stato (2026-10-16):** Anteprima locale della retention riuscita su 127 copie: zero candidati e zero eliminati; pin iniziali ed evidenze protetti. Controlli completi di chiusura della rete verdi. Attivazione manuale e primo giro pianificato di pulizia ancora aperti; processo della postazione, rischi e responsabilità documentati.
 
 - **ISO-42 | Risposta agli incidenti** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Definire ruoli, escalation, decisione sugli eventi, raccolta prove e comunicazioni; esercitare uno scenario pertinente al phishing gia' documentato.

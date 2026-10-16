@@ -6,6 +6,7 @@ Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) e' il punto di par
 
 | Domanda | Documento |
 |---|---|
+| Da dove arrivano gli snapshot automatici e come si conservano senza perdere evidenze? | [Processo fonti vive e retention](processo-fonti-vive-retention.md), ISO-41/38 e perimetro della postazione |
 | Come osservare tutte le macchine Linux, il fisico Ollama e i loro log da una console? | [Studio Netdata e osservabilità Linux](osservabilita-linux-netdata.md), [runbook del pilota GPU](runbook-monitoraggio-linux.md), M32 e relazione con M29 |
 | Quali configurazioni del firewall Seeweb conosciamo e quali interventi derivano? | [Firewall Seeweb](firewall-seeweb-opnsense.md), roadmap M31/M14 e gap 210–214 |
 | Quali pannelli Seeweb sono censiti e quali log sono realmente raccolti? | [Sorgenti Seeweb](sorgenti-log-seeweb.md) e [integrazione del collettore](log-collector-integrazione.md) |

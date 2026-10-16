@@ -98,3 +98,7 @@ La migrazione e' conclusa solo se il MCP `proxmox` offre gli strumenti attesi e 
 - [proxmox-mcp upstream](https://github.com/josky-com/proxmox-mcp): tool sicuri dichiarati e avviso sullo stato di sviluppo; il difetto del wheel 0.1.0 e' stato verificato nel codice installato.
 
 Le due fonti spiegano il comportamento di Claude Code; la scelta del launcher e dei gate e' una decisione di questo progetto, da collaudare sull'installazione reale.
+
+## 16/10/2026 - SEC-052 e task effettivamente osservato
+
+Il task delle fonti vive è stato letto localmente: esecuzione 16/10 alle 07:30:01+02:00, LastTaskResult=0, pianificazione giornaliera, account interattivo con privilegi limitati. Snapshot datati e puntatori sono presenti; credenziali non lette o stampate. È il riscontro del gate task M30, distinto da una nuova sessione Claude interattiva e dal collaudo PowerShell 7, che restano aperti; SEC-052 non è chiuso. La retention dei soli snapshot ha codice e prove isolate, attivazione manuale e primo giro reale ancora da osservare. Processo, evidenze e rischi della postazione in [Procedura fonti vive](processo-fonti-vive-retention.md).

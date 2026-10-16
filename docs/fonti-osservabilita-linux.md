@@ -133,3 +133,59 @@ La fonte delle nuove misure è il testo dell’operatore, non una nuova sessione
 | [README master citato dal file originale](https://github.com/netdata/netdata/tree/master/src/go/plugin/go.d/collector/nvidia_smi#readme) | Riferimento presente nel commento; non letto in questo giro e non usato per attribuire feature alla release |
 
 Il lettore web non ha recuperato charts.go; recupero HTTPS locale successivo riuscito e conservato. URL, date UTC, SHA e sezioni consultate in sources/retrievals-gpu-metrics-reviewed.json. La prova della procedura in pilot/gpu-metric-command-proof.json usa soltanto campioni costruiti e controlli del fallimento: non afferma di avere interrogato la GPU reale. Soglie di freschezza scelte per questo collaudo e limiti sono nel runbook; il manifest delle evidenze distingue file condivisi e copie presenti solo nel collettore.
+
+## Riscontro senza campioni e diagnostica circoscritta, 16/10/2026
+
+Il riscontro reale contiene soltanto i tre contatori a zero, non il corpo dell’export. È registrato come criterio non raggiunto con causa ignota, mantenendo la distinzione dai test del filtro. Il nuovo export serve alla forma grezza e il debug al comportamento del collector; non si modifica una regola per far passare dati non ancora osservati. Testo ricevuto e comando ricostruito dal precedente script sono dichiarati distintamente nel record privato.
+
+Fonti operative: [debug NVIDIA Netdata](https://learn.netdata.cloud/docs/collecting-metrics/collectors/hardware-and-sensors/nvidia-gpu), sezione diagnostica già letta e conservata, e [GNU timeout](https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html), sezioni signal, kill-after e codici di uscita lette il 16/10. Il lettore web del manuale aveva avuto timeout; recupero HTTPS locale riuscito e conservato. La copia sorgente timeout.c è stata recuperata come fallback ma non usata come fonte consultata: il manuale ufficiale accessibile è sufficiente. URL/data/SHA e stato di lettura in sources/retrievals-gpu-diagnostics-20261016-reviewed.json. Non si assume la versione del coreutils dell’host da quella del manuale corrente.
+
+## Debug hardware positivo e abilitazione persistente proposta, 16/10/2026
+
+Il nuovo riscontro contiene tutto il filtro NVIDIA dell’export (21 righe mostrate su 21) e il protocollo del processo diagnostico con due cicli hardware riusciti e uscita 124. Si conservano estratti fedeli e campi selezionati con provenienza e limiti, senza dichiarare una copia integrale o trasferire il successo al daemon. La modifica proposta mantiene gli stessi criteri di verifica dell’export.
+
+| Fonte ufficiale | Lettura e uso |
+|---|---|
+| [go.d.conf del tag v2.12.1](https://raw.githubusercontent.com/netdata/netdata/v2.12.1/src/go/plugin/go.d/config/go.d.conf) | File letto integralmente: valori globali e default NVIDIA no; SHA della sorgente vincola la trasformazione proposta |
+| [Configurazione collector](https://learn.netdata.cloud/docs/collecting-metrics/collectors-configuration) | Sezioni override go.d.conf, abilitazione/disabilitazione e riavvio Agent; modifica al servizio ancora da provare |
+| [Percorso setup.go cercato nel framework](https://raw.githubusercontent.com/netdata/netdata/v2.12.1/src/go/plugin/framework/agent/setup.go) | Recupero non riuscito, non letto e non citato per provare il comportamento interno |
+
+Il lettore web non aveva recuperato lo stock; HTTPS locale successivo riuscito e letto. Il diverso percorso agent/setup.go cercato dal web non era stato recuperato e non è stato usato come fonte. Metadati dei file acquisiti, data UTC e SHA in sources/retrievals-gpu-enablement-20261016-reviewed.json; la fonte fallita resta marcata. Rendering e controlli della modifica in pilot/gpu-enable-render.json e gpu-enable-command-proof.json, distinti dalle evidenze reali. Il rollback è preparato e sintatticamente verificato, non eseguito sul fisico.
+
+## Campioni GPU del daemon e baseline Debian, 16/10/2026
+
+L’output dell’operatore soddisfa lo stesso criterio di freschezza e formato già verificato: cinque serie della stessa scheda, contatori GPU/VRAM/temperatura 1/3/1. L’abilitazione con hash dello stock e il riavvio sono stati eseguiti dall’operatore. Il riscontro sostituisce lo stato aperto del daemon per questa osservazione; impatto sostenuto e pipeline centrale restano aperti. Record dei comandi/output selezionati e campi privati operator-gpu-enabled-record-20261016.txt e operator-gpu-enabled-selected-20261016.json; hash dell’override atteso distinto da un hash remoto non letto. Timestamp sorgente convertito aritmeticamente, non usato come ora di esecuzione o ricezione.
+
+Le seguenti pagine ufficiali Debian trixie sono state consultate il 16/10/2026 per preparare letture del guest, non per dedurne risorse oggi disponibili. Sono note di lettura del contenuto restituito dallo strumento web, non un archivio integrale delle pagine; URL e sezioni in sources/collector-baseline-sources-20261016.json.
+
+| Manuale ufficiale | Sezioni consultate e uso |
+|---|---|
+| [df](https://manpages.debian.org/trixie/coreutils/df.1.en.html) | Dimensione dei blocchi, inode e colonne di output |
+| [free](https://manpages.debian.org/trixie/procps/free.1.en.html) | Descrizione total/free/available, bytes |
+| [lsblk](https://manpages.debian.org/trixie/util-linux/lsblk.8.en.html) | Descrizione, byte, colonne esplicite, MOUNTPOINTS |
+| [findmnt](https://manpages.debian.org/trixie/util-linux/findmnt.8.en.html) | Descrizione, target e risalita dei percorsi, output |
+| [systemctl](https://manpages.debian.org/trixie/systemd/systemctl.1.en.html) | Show e list-timers |
+| [journalctl](https://manpages.debian.org/trixie/systemd/journalctl.1.en.html) | Disk-usage e distinzione dal vacuum |
+
+La retention tecnica iLO di 90 giorni è già attiva: la rettifica della tabella di capienza segue la prova del runbook iLO del 08/10 (timer enabled/active e service con status=ok, deleted=0). Non è una nuova installazione né una prova odierna della scadenza o del volume a 90 giorni.
+
+## Baseline Debian ricevuta; spazio AdS e attività swap da misurare, 16/10/2026
+
+Riscontro primario: trascrizione incollata dall’operatore, collector/operator-baseline-transcript-20261016.txt; campi separati e limiti nel JSON accanto, con manifest SHA. Non è stata eseguita alcuna lettura SSH dall’assistente. La correzione dell’interpretazione di df è registrata nel runbook, nella memoria e nella capienza: il comando chiedeva il padre /srv, non il volume montato nella sottocartella /srv/ads. Swap occupata distinta dai trasferimenti misurabili, timer pianificato distinto dall’esito della retention.
+
+| Fonte ufficiale consultata il 16/10/2026 | Sezioni lette e uso |
+|---|---|
+| [df](https://manpages.debian.org/trixie/coreutils/df.1.en.html) | Descrizione per argomento FILE, byte e inode; spiega la distinzione /srv e /srv/ads |
+| [vmstat](https://manpages.debian.org/trixie/procps/vmstat.8.en.html) | Primo rapporto dal boot e rapporti successivi; memoria istantanea, swap si/so, I/O e CPU |
+| [du](https://manpages.debian.org/trixie/coreutils/du.1.en.html) | Spazio allocato/apparente, -B, -s e -x |
+| [timeout](https://manpages.debian.org/trixie/coreutils/timeout.1.en.html) | TERM, kill-after e codici 124/137 |
+| [findmnt](https://manpages.debian.org/trixie/util-linux/findmnt.8.en.html) | Descrizione dei mount, target e mountpoint; lettura coerente, nessun nuovo remount |
+| [stat](https://manpages.debian.org/trixie/coreutils/stat.1.en.html) | File-system e formati blocchi/dispositivo consultati; nessun comando stat necessario o incluso in questa fase |
+
+Le note di lettura in sources/collector-capacity-sources-20261016.json descrivono il contenuto reso dallo strumento web, non una copia integrale delle pagine. Il nuovo recupero del manuale GNU timeout ha restituito errore interno: non promosso a nuova lettura; il manuale Debian è stato recuperato e consultato. La copia GNU già consultata nel giro precedente rimane nella sua provenienza originale. Nessuna fonte fallita prova il comportamento della VM.
+
+## Archivi misurati e processo snapshot della postazione tracciato, 16/10/2026
+
+Riscontro primario: output dell’operatore con df, du_exit=0 e sei rapporti vmstat; due file privati di trascrizione e campi selezionati con manifest SHA. Fonte del nodo: snapshot locale del 16/10 e sette fotografie giornaliere 10-16/10, con percorsi e SHA nel JSON privato; nessuna nuova API. Il recupero web odierno dei manuali Proxmox qm e LVM thin ha restituito 403: non è contato come lettura; consultata la copia ufficiale qm.adoc già acquisita nel giro precedente per memoria fissa/ballooning. Il manuale lvs Debian è stato letto per il futuro controllo, non eseguito sul nodo.
+
+Il processo delle fonti vive è stato richiesto come parte del percorso ISO dalla postazione dell’operatore: task, dipendenza dalla sessione e retention 90 giorni sono descritti nel progetto rete. Fonti ufficiali lette: [ISO/IEC 27001, quadro pubblico](https://www.iso.org/standard/27001), [stato del task](https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/get-scheduledtaskinfo?view=windowsserver2025-ps), [sessione interattiva](https://learn.microsoft.com/en-us/windows/win32/taskschd/principal-logontype), [hash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash?view=powershell-5.1), [rimozione con LiteralPath](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-item?view=powershell-5.1). Le soglie sono scelte interne; il codice e le prove isolate attestano la procedura, non una conformità ISO complessiva.
