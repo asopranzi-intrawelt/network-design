@@ -37,7 +37,7 @@ Pipeline proposta: acquisizione dell’originale, identificazione del formato, p
 | Oggetto | Politica da rispettare o definire | Controllo prima dell’esercizio |
 |---|---|---|
 | Originali AdS e manifest | 213 giorni previsti dallo studio esistente; custodia e gate del progetto invariati | Volume e riserva commisurati al periodo; nessuna cancellazione anticipata per fare spazio |
-| Tecnici iLO | 90 giorni già scelti; timer preparato e non installato | Giorno corrente più 89 precedenti; dry-run e permessi del runbook esistente |
+| Tecnici iLO | 90 giorni attivi dal 08/10; timer enabled/active e primo service riuscito | Giorno corrente più 89 precedenti; prova reale con deleted=0, permessi e limiti nel runbook iLO |
 | Altri tecnici e quarantena | Durata e budget da approvare per sorgente e criticità | Origine, scadenza, quota, diritti, errori del parser e controllo della perdita |
 | Esiti backup e originali EML | Durata da definire; storico dei job distinto dalla durata delle copie di backup | Più job per mail, copie inoltrate, mancata ricezione e prova di ripristino distinti |
 | Copia normalizzata e indice Loki | Durata esplicita per archivio, coerente con autorizzazioni e politica degli originali | Retention realmente abilitata e cancellazione osservata, non solo parametro nel file |
@@ -52,7 +52,7 @@ La [TSDB Prometheus](https://prometheus.io/docs/prometheus/latest/storage/) rich
 
 ## Misure e budget prima di allocare risorse
 
-Il dato documentale disponibile per il Debian è 2 GiB di RAM e due vCPU nello snapshot Proxmox del 15/10, non una misura del margine odierno. I circa 372 MiB letti nel servizio Netdata riguardano il fisico pilota: non sono il costo di Grafana, Loki e Prometheus né una raccomandazione di RAM per l’hub. La configurazione finale richiede baseline del Debian e del nodo Proxmox, conteggi delle sorgenti attive e misura sotto carico rappresentativo, includendo il ciclo di manutenzione notturna.
+La prima baseline guest del 16/10 è ricevuta: nproc=2, RAM totale 2030473216 byte e disponibile 923115520 byte; swap usata 482140160 byte. Sono misure puntuali, non un dimensionamento accettato; dettagli e disco AdS nella sezione finale. I circa 372 MiB letti nel servizio Netdata riguardano il fisico pilota: non sono il costo di Grafana, Loki e Prometheus né una raccomandazione di RAM per l’hub. La configurazione finale richiede baseline del Debian e del nodo Proxmox, conteggi delle sorgenti attive e misura sotto carico rappresentativo, includendo il ciclo di manutenzione notturna.
 
 | Misura | Uso nel dimensionamento |
 |---|---|
@@ -92,3 +92,32 @@ In emergenza la procedura deve proteggere gli originali: sospendere o contenere 
 Prima di cambiare la VM si confrontano risorse guest e margine del nodo, storage reale e configurazione di memoria/ballooning. Il [manuale qm](https://pve.proxmox.com/pve-docs/qm.1.html), la [guida della memoria](https://raw.githubusercontent.com/proxmox/pve-docs/master/qm.adoc) e il [modello storage](https://raw.githubusercontent.com/proxmox/pve-docs/master/pvesm.adoc) sono riferimenti ufficiali; M29 resta il punto di coordinamento della standardizzazione. Aumentare il disco virtuale non dimostra che partizione, LVM e filesystem del guest siano già ampliati: rilevare la catena reale prima di preparare i comandi. Headroom fisico, pool thin, snapshot e backup si verificano separatamente. Nessuna nuova allocazione è eseguita o prescritta con numeri non misurati.
 
 L’accettazione richiede un caso reale per ciascuna famiglia di log, con confronto input/campi/UI e errore su formato sconosciuto; orari senza fuso, account condivisi, multilinea, ritrasmissioni e più job per EML sono casi distinti. Riavvio, rotazione e breve interruzione del solo ricevitore di prova devono dimostrare continuità o rendere misurabile la perdita. Scadenza, compattazione, coda piena, mount assente e soglie di capienza si provano in ambiente isolato con dati fittizi, senza saturare il collettore reale o interrompere Ollama. Dopo il carico rappresentativo si misurano ingestione, query, pressione e riserva; solo allora si fissano taglie, retention dei nuovi archivi ed estensione agli altri host.
+
+## Rettifica iLO e prossimo rilievo Debian, 16/10/2026
+
+La tabella precedente riportava erroneamente il timer iLO come non installato. Il runbook iLO del collettore registra installazione verificata, attivazione del timer e service eseguito sotto systemd alle 15:29:04 del 08/10: status=ok mode=apply, deleted=0, filesystem_used_pct=44. Quella fotografia dimostra attivazione e un giro senza scaduti; non misura crescita odierna o conservazione su novanta giorni. Nessuna nuova azione sulla VM è stata eseguita in questa rettifica. Rimangono da realizzare budget e guardie generali qui proposti.
+
+La raccolta locale della GPU del pilota è ora verificata; il budget dello stack sul Debian resta aperto. Il runbook del pilota prepara letture di RAM in byte, spazio/inode e dispositivi/mount, stato rsyslog, timer iLO e occupazione journal. Sono il primo rilievo del guest, non una misura di crescita o un’autorizzazione a cancellare/ridimensionare. Output del Debian ancora atteso; occorreranno poi volumi per archivio e headroom Proxmox prima di fissare risorse.
+
+## Baseline Debian ricevuta; spazio AdS e attività swap da misurare, 16/10/2026
+
+Prima baseline riferita dalla VM il 16/10 alle 10:29:01+02:00: 2 CPU disponibili al processo, RAM totale 2030473216 byte e disponibile 923115520 (880,35 MiB); swap occupata 482140160 (459,80 MiB), attività non misurata. Root /dev/sda2 ext4 al 44%, 8785534976 byte disponibili, inode al 16%. Secondo disco da 60 GiB con partizione ext4 /dev/sdb1 montata su /srv/ads e opzioni rw,nosuid,nodev,noexec,relatime; spazio e inode liberi di quel filesystem non misurati. df / /var /srv osserva il filesystem padre e non il sottomount AdS: le tre righe root sono coerenti e non vanno sommate. La prima lettura in chat che suggeriva un conflitto è corretta qui e nel work-log.
+
+rsyslog active/running con MemoryCurrent 10113024 byte e CPUUsageNSec 24227915000: istantanea del cgroup e contatore cumulativo. Timer iLO con ultimo giro questa notte e prossimo domani, risultato del service non letto; journal 24M. Questi dati sostituiscono l’assenza di baseline guest, non attestano ancora spazio utilizzabile per lo stack, volumi/giorno, successo della retention o margine Proxmox. Le nuove letture preparate nel runbook misurano direttamente i due archivi, un du circoscritto con timeout e sei righe vmstat; output atteso. Nessuna guardia generale, quota o nuova retention applicata.
+
+## Archivi misurati e processo snapshot della postazione tracciato, 16/10/2026
+
+L’operatore esegue le letture mirate del Debian. Date riporta 16/10 alle 10:45:30+02:00; la scansione du termina con du_exit=0. Il successivo vmstat mostra sei rapporti, con cinque intervalli correnti alle 10:45:48-52. Il tempo tra Date e il primo rapporto non è il tempo di esecuzione di du: include anche l’autenticazione e gli altri comandi.
+
+| Area | Misura | Limite |
+|---|---|---|
+| Volume AdS /dev/sdb1 ext4 | Totale 63088406528, usati 45211648, disponibili 59805298688 byte; uso 1% | Disponibili 55,70 GiB; distingue capacità del filesystem dalla partizione e dal disco di 60 GiB |
+| Inode AdS | 3932160 totali, 111 usati, 3932049 liberi, 1% riportato | Non misura crescita futura o numero di eventi |
+| Archivio AdS | du 43110400 byte, 41,11 MiB | Spazio allocato del percorso, distinto dal totale di df; non byte/giorno |
+| Tecnici iLO | du 45056 byte, 44 KiB; filesystem /dev/sda2 root | Restano sulla root, disponibile 8785526784 byte e uso 44%; non sono isolati sul volume AdS |
+| Swap occupata | vmstat swpd=470840 KiB | Coerente con la prima baseline, non è un tasso di trasferimento |
+| Cinque intervalli correnti | si=0, so=0, wa=0, idle=100 come riportato; r=b=0 | Cinque secondi osservati; percentuali arrotondate, non copertura dei picchi |
+
+La prima riga vmstat dà i tassi dal boot e non si conta come sesto intervallo corrente. Un esito du riuscito chiude la scansione circoscritta, non dimostra salute storage, assenza di perdite o conservazione per l’intero periodo. Trascrizione integrale del testo ricevuto e campi strutturati nei file privati operator-capacity-followup-transcript-20261016.txt e operator-capacity-followup-selected-20261016.json, con SHA nel manifest. Restano fonti già lette: [df](https://manpages.debian.org/trixie/coreutils/df.1.en.html), [du](https://manpages.debian.org/trixie/coreutils/du.1.en.html), [vmstat](https://manpages.debian.org/trixie/procps/vmstat.8.en.html).
+
+Il dimensionamento deve inoltre considerare il nodo: 25,41 GiB free e quasi 8 GiB di swap occupata nella fotografia mattutina, massimi delle VM running superiori alla RAM fisica. Occorrono attività corrente, picchi e metadati thin. La retention degli snapshot sulla postazione è un processo distinto, tracciato nella rete con ISO-41/38; nessuna politica di pulizia degli originali AdS è cambiata.

@@ -824,3 +824,7 @@ Fonti: Report Tecnico <rif-report-VA-2026> v1.0 e Relazione di Sintesi del 14/10
 | **Di cui risolti** | **15** (14, 54, 55, 61, 63, 106, 111, 116, 140, 150, 185, 186, 187, 195, 196 — vedi stato "Corretto"/"Fatto"/"Riconciliato"/"Risolto"; il 116 e' risolto per la sola parte switch/VLAN, il livello DHCP resta in attesa del fornitore) |
 
 Nota sui gap **#67 e #99** (contraddizione anagrafica NET-007 sulla porta 3 del 54HP): chiusi il 06/08/2026, con esito **rovesciato** rispetto all'ipotesi registrata. L'etichetta "SIP-T34W Persona-A" era corretta e il rilievo del 29/05/2026 era sbagliato, sia sull'attribuzione sia sul conteggio dei modelli. Non sono conteggiati fra i risolti qui sopra perche' la chiusura e' documentale e va riverificata alla prossima lettura della scheda; vedi `docs/telefono-pbx-voip.md` §Terminali VoIP installati.
+
+## 16/10/2026 - SEC-052 e task effettivamente osservato
+
+Il task delle fonti vive è stato letto localmente: esecuzione 16/10 alle 07:30:01+02:00, LastTaskResult=0, pianificazione giornaliera, account interattivo con privilegi limitati. Snapshot datati e puntatori sono presenti; credenziali non lette o stampate. È il riscontro del gate task M30, distinto da una nuova sessione Claude interattiva e dal collaudo PowerShell 7, che restano aperti; SEC-052 non è chiuso. La retention dei soli snapshot ha codice e prove isolate, attivazione manuale e primo giro reale ancora da osservare. Processo, evidenze e rischi della postazione in [Procedura fonti vive](../processo-fonti-vive-retention.md).

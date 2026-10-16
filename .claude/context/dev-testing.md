@@ -104,3 +104,7 @@ I due controlli Python risalgono alla radice del repository dalla posizione del 
 ## Encoding
 
 Lo script e' ASCII puro (tutti i caratteri < 128). Compatibile con PS5.1 e UTF-8 senza BOM. Nessun accento nel codice, solo nei commenti e nei report. I report Markdown usano caratteri ASCII estesi solo nei valori dell'API, mai nel codice dello script.
+
+## Retention snapshot e launcher, 16/10/2026
+
+Undici unittest Windows PowerShell su fixture Git temporanee, nessun add/commit o API: soglia temporale, anteprima immutata, eliminazione di candidati reali di prova, alias/pin/riferimenti/ultima copia preservati, JSON invalidi conservati, pin alterato/alias assente/indice assente respinti, warning senza anticipo, radice disco e junction respinte, abilitazione/disabilitazione pianificata. Cinque scenari della catena: successo, fonte fallita, DryRun, errore retention e budget superato. Rimozione delle guardie pin e cutoff rilevata dalle rispettive prove, sorgente originale verificata invariata. Nessuna prova saltata nella suite finale. Attivazione e primo giro pianificato reali ancora aperti; metadati del task e anteprima reale sono verifiche distinte.

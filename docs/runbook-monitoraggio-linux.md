@@ -10,9 +10,9 @@ Prova privata: [nvidia-post-upgrade-20261015.json](../_notes/linux-observability
 
 Riferimenti: [installazione NVIDIA su Ubuntu](https://ubuntu.com/server/docs/how-to/graphics/install-nvidia-drivers/), [CUDA Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/), [NVML](https://docs.nvidia.com/deploy/nvml-api/nvml-api-reference.html), [collector NVIDIA Netdata](https://learn.netdata.cloud/docs/collecting-metrics/collectors/hardware-and-sensors/nvidia-gpu).
 
-Prossima verifica di osservabilità: riconoscimento di nvidia-smi nel collector e chart GPU effettive; il solo ripristino delle librerie non chiude quel collaudo.
+Il riconoscimento nel daemon e i campioni GPU sono verificati il 16/10, come nell’ultima sezione. Il ripristino delle librerie del 15/10 rimane una prova distinta; impatto sostenuto e raccolta centrale restano aperti.
 
-Stato al 15/10/2026: Netdata 2.12.1 installato dall’operatore sul fisico Ollama, dopo il recupero del bundle. Script e archivio verificati, servizio avviato e active/running, abilitazione al boot già osservata, listener loopback verificato e opt-out presente. Export CPU/RAM presente e ACLK non claimed/non online; GPU e impatto a regime ancora da verificare; nessun invio di eventi al collettore aggiunto. Il piano generale è in [Osservabilità Linux](osservabilita-linux-netdata.md); la scelta della console locale senza abbonamenti rimane valida. Questo runbook è riportato anche nel progetto rete, insieme a M32 e alla timeline comune.
+Stato al 15/10/2026: Netdata 2.12.1 installato dall’operatore sul fisico Ollama, dopo il recupero del bundle. Script e archivio verificati, servizio avviato e active/running, abilitazione al boot già osservata, listener loopback verificato e opt-out presente. Export CPU/RAM presente e ACLK non claimed/non online; GPU locale verificata nel daemon il 16/10 (1/3/1); impatto a regime ancora da verificare; nessun invio di eventi al collettore aggiunto. Il piano generale è in [Osservabilità Linux](osservabilita-linux-netdata.md); la scelta della console locale senza abbonamenti rimane valida. Questo runbook è riportato anche nel progetto rete, insieme a M32 e alla timeline comune.
 
 ## Scelta del pilota e ambiente
 
@@ -159,7 +159,7 @@ Un Agent non collegato a Cloud, con telemetria e aggiornamenti automatici disatt
 | Pacchetto | Archivio della release verificato, installazione senza avvio e senza aggiornamenti automatici | Installato 2.12.1, hash entrambi OK, mancato avvio iniziale verificato, successivamente avviato; opt-out presente; updater conferma DISABLED |
 | Primo avvio locale | Servizio attivo, unico ascolto autorizzato, versione e dati API coerenti | Active/running, listener loopback, CPU/RAM presenti e ACLK non online; resto aperto |
 | Metriche di sistema | Campioni CPU, memoria, disco e rete presenti; carico e crescita prima/dopo registrati | CPU/RAM locali presenti; disco/rete, crescita e impatto prima/dopo ancora da misurare |
-| GPU | Utility compatibile, query eseguibile dall’utente Agent, metriche reali e non soli grafici vuoti | Ripristino già documentato e nvidia-smi riuscito nella verifica separata; APT non propone operazioni; utente Netdata verificato; campioni GPU Netdata ancora aperti |
+| GPU | Utility compatibile, query eseguibile dall’utente Agent, metriche reali e non soli grafici vuoti | Ripristino già documentato e nvidia-smi riuscito nella verifica separata; APT non propone operazioni; utente Netdata verificato; campioni recenti del daemon verificati il 16/10: GPU/VRAM/temperatura 1/3/1; impatto sostenuto aperto |
 | Servizio applicativo | Ollama ancora raggiungibile; confronto prima/dopo sullo stesso carico concordato | Non eseguito; nessun modello avviato per la prova |
 | Eventi al collettore | Originali tecnici separati dagli accessi AdS, ricezione, code e silenzio verificati | Non configurato |
 | Console comune | Raccolta Prometheus e ricerca tecnica Grafana/Loki con autenticazione e risorse dimensionate | Non installata |
@@ -276,7 +276,7 @@ Criterio: query GPU riuscita anche come netdata, file e job effettivi identifica
 
 La trascrizione integrale ricevuta è nel livello privato operator-gpu-netdata-user-transcript.txt; i campi e i limiti sono in operator-gpu-netdata-user-selected.json. Non è stata aperta una nuova connessione SSH dall’assistente e non è stata cambiata la configurazione. La lettura del journal limitata ai messaggi del modulo e alla giornata non dimostra assenza di altri messaggi o errori. I valori VRAM e temperatura sono una singola osservazione nvidia-smi: non certificano l’impatto dell’Agent o l’assenza di carichi applicativi.
 
-## Prossima prova: campioni hardware nell’export locale
+## Campioni hardware nell’export locale: criterio non raggiunto
 
 Il [sorgente charts.go del tag 2.12.1](https://raw.githubusercontent.com/netdata/netdata/v2.12.1/src/go/plugin/go.d/collector/nvidia_smi/charts.go) definisce i contesti nvidia_smi.gpu_utilization, nvidia_smi.gpu_frame_buffer_memory_usage e nvidia_smi.gpu_temperature. Le [regole dell’export Prometheus](https://learn.netdata.cloud/docs/exporting-metrics/prometheus) collegano il nome al contesto e distinguono as-collected dalle medie. Il controllo fissa prefix=netdata e richiede quei tre nomi, escludendo gli stati delle unità systemd che contengono soltanto la parola NVIDIA. Questa verifica riguarda il pilota con una GPU osservata; l’estensione a più GPU richiederà il confronto per identificativo del dispositivo.
 
@@ -290,4 +290,183 @@ curl --fail --silent --show-error --max-time 15 'http://127.0.0.1:19999/api/v1/a
 
 Ci si attendono righe con i tre contesti, identificativi/chart, valori e timestamp, seguite da gpu_samples, vram_samples e temp_samples tutti maggiori di zero. I totali contano righe corrispondenti, non dispositivi o secondi; le dimensioni VRAM possono produrre più righe. In questa sorgente as-collected si leggono i valori con le unità e le eventuali scale del contesto, senza chiamare percentuale un contatore o assumere unità da una stringa arbitraria. Il controllo dimostra presenza e freschezza puntuale; continuità, impatto e invio al Debian restano prove separate.
 
-La procedura è stata provata in WSL senza rete o servizi: sintassi Bash, 14 fixture con tre gruppi, gruppi mancanti, zero valido, etichette con spazi, stati systemd, HTML/commenti, dati vecchi/futuri, NaN/Inf, timestamp assenti e contesto simile errato. Togliendo la guardia VRAM il suo caso mancante passa erroneamente; togliendo il limite di età il caso vecchio passa erroneamente. Comando originale ripristinato/verificato invariato; un curl fittizio fallito impedisce il filtro. È verifica della procedura, non dei campioni del pilota: output reale ancora atteso.
+La procedura è stata provata in WSL senza rete o servizi: sintassi Bash, 14 fixture con tre gruppi, gruppi mancanti, zero valido, etichette con spazi, stati systemd, HTML/commenti, dati vecchi/futuri, NaN/Inf, timestamp assenti e contesto simile errato. Togliendo la guardia VRAM il suo caso mancante passa erroneamente; togliendo il limite di età il caso vecchio passa erroneamente. Comando originale ripristinato/verificato invariato; un curl fittizio fallito impedisce il filtro. È verifica della procedura, non dei campioni del pilota. L’output reale ora ricevuto è gpu_samples=0, vram_samples=0, temp_samples=0: criterio non raggiunto, causa ancora da individuare.
+
+## Esito negativo e diagnosi, registrati il 16/10/2026
+
+L’operatore restituisce tre conteggi a zero dopo curl e filtro. Nessun messaggio di errore curl riportato; l’esecuzione del filtro indica il successo del download nella catena consegnata. Il codice di uscita separato e l’export grezzo non sono stati trasmessi: non si inventano né il nome concreto del file temporaneo né l’ora originale. Il comando e le tre righe ricevute sono conservati privatamente in operator-gpu-metrics-zero-record-20261016.txt, con la provenienza della ricostruzione del comando dichiarata.
+
+| Dato | Stato che autorizza |
+|---|---|
+| Query come netdata già riuscita | Accesso al binario/GPU verificato in quella lettura |
+| enable accepted/202 | Accettazione del comando osservata; raccolta non dimostrata |
+| Tre contatori validi a zero | Il criterio delle tre famiglie con numeri finiti e tempi recenti non è soddisfatto |
+| Corpo dell’export assente dal riscontro | Non distingue ancora assenza, nomi diversi, valori o timestamp esclusi dal filtro |
+| Fixture locali verdi | La procedura esercita i casi costruiti; non sostituisce il formato reale o la misura sull’host |
+
+La diagnosi mantiene la guardia e allarga soltanto la vista dei dati da esaminare. Non si elimina la verifica del tempo né si tratta un gruppo mancante come successo. Al cambio di giornata non si presume che la variabile della shell o il file temporaneo precedente siano ancora disponibili: il blocco seguente crea un nuovo export, conserva il corpo e mostra le prime 60 righe che contengono nvidia, includendo commenti e stati di unità. Il totale e il limite stampato esplicitano il campionamento; non sono un conteggio di GPU. Se il totale supera 60, una riga non mostrata non si può dichiarare assente.
+
+Destinazione: stesso terminale Bash del fisico pilota, directory plugins.d dell’installazione statica. Il [debug ufficiale del collector](https://learn.netdata.cloud/docs/collecting-metrics/collectors/hardware-and-sensors/nvidia-gpu) avvia un processo separato come utente netdata; non riavvia il servizio esistente e non è un’installazione. Questo processo interroga la GPU e produce output diagnostico per il modulo, senza lanciare un modello Ollama. La documentazione avverte che il debug non copre i job creati dalla UI/Dyncfg: il risultato va confrontato con l’export del daemon, non trasferito automaticamente al job in esercizio.
+
+Il [manuale GNU timeout](https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html) documenta TERM a 20 secondi e l’eventuale KILL dopo altri 5. Si conserva il codice in debug_exit: 124 indica la scadenza, 137 un segnale KILL, gli altri codici si leggono insieme all’output; nessuno di questi è da solo una prova di metriche corrette. Si mantiene il controllo dell’orologio nello stesso blocco per confrontare i timestamp delle righe mostrate. Non si chiede di aggiornare, reinstallare o riavviare driver, Ollama o Netdata.
+
+```bash
+cd /opt/netdata/usr/libexec/netdata/plugins.d
+netdata_gpu_debug_metrics_file=$(mktemp /tmp/netdata-gpu-diagnostic.XXXXXXXX)
+curl --fail --silent --show-error --max-time 15 'http://127.0.0.1:19999/api/v1/allmetrics?format=prometheus&source=as-collected&prefix=netdata&timestamps=yes' --output "$netdata_gpu_debug_metrics_file" && awk 'tolower($0) ~ /nvidia/ {n++; if(n<=60) print} END {printf "nvidia_lines=%d shown=%d\n",n,(n<60?n:60)}' "$netdata_gpu_debug_metrics_file"
+date '+epoch_ms=%s%3N local=%Y-%m-%dT%H:%M:%S%z'
+sudo -u netdata timeout --signal=TERM --kill-after=5s 20s ./go.d.plugin -d -m nvidia_smi
+printf 'debug_exit=%s\n' "$?"
+```
+
+Output atteso per la diagnosi, non per una promozione automatica del collaudo: righe e nomi effettivi dell’export, eventuali timestamp, totale/limite delle righe selezionate, orologio e log del processo separato con debug_exit. L’output completo del debug va conservato, compresi eventuali errori; una scadenza a 124 è prevista se il processo resta attivo fino al limite. La raccolta GPU rimane non verificata finché non sono presenti campioni hardware validi dal daemon. Diagnostica eseguita dall’operatore il 16/10: export senza hardware e debug separato con raccolta riuscita, dettagli nella sezione seguente. Nessun comando remoto dell’assistente.
+
+## Debug separato riuscito ed export del servizio senza GPU, 16/10/2026
+
+L’export restituito dall’operatore mostra nvidia_lines=21 e shown=21: in questo filtro non c’è troncamento. Le corrispondenze sono un contatore interrupt NVIDIA e venti dimensioni degli stati di quattro unità systemd; nessuna è un campione di utilizzo, frame buffer o temperatura del collector. Non si deduce nulla sul funzionamento di quelle unità dai loro valori in questa prova GPU. L’orologio mostrato è 2026-10-16T09:26:09+0200, epoch_ms=1792135569610; i campioni corrispondenti hanno timestamp 1792135535264 e 1792135530008/9. Sono numeri dell’export osservato, non tempi attribuiti ai campioni assenti.
+
+Il processo separato go.d.plugin v2.12.1 gira come netdata, legge go.d.conf e nvidia_smi.conf dalla directory stock e avvia nvidia-smi tramite nd-run. Il log dichiara check success e intervallo di raccolta 10 secondi, poi produce CHART/BEGIN/SET per la GPU in due cicli. La presenza dei messaggi nel terminale non significa che quel protocollo sia stato acquisito dal daemon o dal suo database: questa è proprio la distinzione che spiega perché il debug positivo non chiuda ancora l’export negativo.
+
+| Contesto nel protocollo del processo separato | Primo ciclo | Secondo ciclo | Interpretazione |
+|---|---|---|---|
+| nvidia_smi.gpu_utilization | gpu=0 | gpu=0 | Utilizzo zero è un dato valido, non assenza della GPU |
+| nvidia_smi.gpu_frame_buffer_memory_usage | free=16582180864, used=35651584, reserved=487587840 | Stessi valori | Byte dichiarati dal contesto; used equivale a 34 MiB |
+| nvidia_smi.gpu_temperature | temperature=36 | temperature=36 | Celsius dichiarati dal contesto |
+| Stato interno della raccolta | success=1, failed=0 | success=1, failed=0 | Stato del processo diagnostico soltanto |
+| Durata interna dell’ultima raccolta | 7 ms | 7 ms | Non è misura dell’overhead totale dell’Agent |
+
+Al limite temporale il processo riceve TERM alle 09:26:40.044+02:00, ferma il job, rilascia il tentativo contenuto e termina; debug_exit=124. Gli eventi error/warn sul containment sono successivi al segnale e vanno conservati con questa sequenza, senza riscriverli come un errore nvidia-smi durante i due cicli riusciti. Per l’esatta durata e ogni altro comportamento resta autorevole l’output ricevuto, non una ricostruzione retroattiva dell’intero sistema. Estratti fedeli dei passaggi e campi selezionati sono conservati nei file operator-gpu-debug-excerpts-20261016.txt e operator-gpu-debug-selected-20261016.json: non sono una trascrizione integrale di tutti i chart o dell’intero protocollo.
+
+## Abilitazione esplicita del modulo e riavvio circoscritto preparati
+
+Il [go.d.conf ufficiale 2.12.1](https://raw.githubusercontent.com/netdata/netdata/v2.12.1/src/go/plugin/go.d/config/go.d.conf) riporta nella lista dei valori predefiniti la riga commentata nvidia_smi: no, mentre enabled e default_run sono yes. La [guida di configurazione dei collector](https://learn.netdata.cloud/docs/collecting-metrics/collectors-configuration) descrive l’override locale di go.d.conf e il riavvio dell’Agent dopo la modifica. L’abilitazione esplicita è quindi il prossimo intervento motivato da verificare nel servizio; il valore effettivo del job nel daemon non è ricostruito dal solo processo lanciato con -m.
+
+La modifica copia l’intero file distribuito nel livello locale, trasformando una sola riga, senza cambiare gli altri default. Prima richiede lo SHA-256 della sorgente fissata. La shell con noclobber si ferma se go.d.conf esiste già, anche evitando di sovrascrivere una configurazione comparsa nel frattempo. Solo scrittura riuscita e riga NVIDIA presente consentono il riavvio. Se il checksum non coincide o esiste un override, la catena si ferma e occorre rileggere quella configurazione: non si forza la sovrascrittura o si salta l’hash. Il file distribuito rimane intatto.
+
+Destinazione: Bash del fisico pilota, directory della configurazione statica Netdata. Questa è la prima modifica di configurazione proposta dopo il debug: crea il solo override go.d.conf e riavvia Netdata, con una breve interruzione delle sue metriche. Non è un aggiornamento del pacchetto o dei driver e non riavvia il sistema, Ollama o Veeam. I database e il bind loopback non sono oggetto di modifica. L’output successivo dell’operatore conferma modifica e ricezione nel daemon; dettagli nella sezione finale del 16/10.
+
+```bash
+cd /opt/netdata/etc/netdata
+printf '%s  %s\n' f9252399e7234c8168b10f7b3db371334af344969b1b872188193590a7233d92 /opt/netdata/usr/lib/netdata/conf.d/go.d.conf | sha256sum --check - && sudo sh -c 'set -euC; umask 022; sed "s/^#  nvidia_smi: no$/  nvidia_smi: yes/" /opt/netdata/usr/lib/netdata/conf.d/go.d.conf > /opt/netdata/etc/netdata/go.d.conf; grep -n "^  nvidia_smi: yes$" /opt/netdata/etc/netdata/go.d.conf' && sudo systemctl restart netdata.service
+sleep 15
+systemctl show netdata.service --property=ActiveState --property=SubState --property=Result
+netdata_gpu_metrics_file=$(mktemp /tmp/netdata-gpu-metrics.XXXXXXXX)
+curl --fail --silent --show-error --max-time 15 'http://127.0.0.1:19999/api/v1/allmetrics?format=prometheus&source=as-collected&prefix=netdata&timestamps=yes' --output "$netdata_gpu_metrics_file" && awk -v now_ms="$(date +%s%3N)" 'function fresh(s,a){sub(/^.*}[ \t]+/,"",s); if(split(s,a,/[ \t]+/)!=2) return 0; return a[1] ~ /^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)([eE][+-]?[0-9]+)?$/ && a[2] ~ /^[0-9]+$/ && now_ms-a[2]>=-5000 && now_ms-a[2]<=60000} /^netdata_nvidia_smi_gpu_utilization\{/ && fresh($0){gpu++; if(gpu<=2) print} /^netdata_nvidia_smi_gpu_frame_buffer_memory_usage\{/ && fresh($0){vram++; if(vram<=3) print} /^netdata_nvidia_smi_gpu_temperature\{/ && fresh($0){temp++; if(temp<=1) print} END{printf "gpu_samples=%d vram_samples=%d temp_samples=%d\n",gpu,vram,temp; if(gpu==0 || vram==0 || temp==0) exit 1}' "$netdata_gpu_metrics_file"
+```
+
+La pausa di 15 secondi consente l’avvio dei primi cicli; è una scelta del collaudo, non un tempo garantito. Il filtro finale è quello già verificato e mantiene tutte le guardie su contesti, valori e tempi. Riscontro necessario: hash OK, riga nvidia_smi yes mostrata, servizio active/running e tutti e tre i contatori maggiori di zero con righe recenti. Un servizio attivo senza questi campioni non chiude la prova; un problema residuo richiederà stato/log del daemon, non una nuova installazione delle utility.
+
+La trasformazione è stata provata in WSL con il file stock reale e sudo/systemctl sostituiti: copia nuova con sola riga NVIDIA cambiata, override preesistente preservato senza riavvio, sorgente con hash errato respinta prima della scrittura e riga attesa mancante che impedisce il riavvio. Rimuovendo noclobber il caso di sovrascrittura fallisce il criterio; rimuovendo il controllo dell’hash la sorgente alterata procede erroneamente. Ripristinati i comandi corretti e verificati invariati sorgente e script. Sono quattro casi isolati e due mutazioni, non una modifica già applicata al fisico.
+
+## Ripristino dell’abilitazione, solo se necessario
+
+Lo stato precedente osservato usa il file stock senza override go.d.conf. Il ripristino preparato verifica l’impronta della copia appena generata, la sposta in un archivio con nome distinto e riavvia il solo Netdata dopo aver verificato che go.d.conf non esista più. Il backup non viene cancellato. Un file modificato dopo l’intervento o una destinazione già esistente lascia la catena ferma, senza sovrascrittura. La sintassi è verificata; il ripristino sul fisico non è stato eseguito.
+
+```bash
+cd /opt/netdata/etc/netdata
+printf '%s  %s\n' b1e511f160fd41e17442d09e3578db1940b6eecb55012c980b423f17d95974a4 /opt/netdata/etc/netdata/go.d.conf | sha256sum --check - && sudo mv -n /opt/netdata/etc/netdata/go.d.conf /opt/netdata/etc/netdata/go.d.conf.gpu-enabled-20261016 && test ! -e /opt/netdata/etc/netdata/go.d.conf && sudo systemctl restart netdata.service
+```
+
+## Raccolta GPU nel servizio confermata, 16/10/2026
+
+L’operatore ha eseguito il blocco di abilitazione sopra: checksum dello stock OK, creazione del solo override locale e riga 84 nvidia_smi: yes. Dopo il riavvio di Netdata e l’attesa di 15 secondi, systemctl mostra ActiveState=active, SubState=running e Result=success. Il filtro dell’export è rimasto identico e restituisce gpu_samples=1, vram_samples=3, temp_samples=1. Sono cinque serie della stessa GPU, non cinque GPU e non cinque intervalli di misura.
+
+| Contesto dell’export del daemon | Dimensioni e valori osservati | Criterio soddisfatto |
+|---|---|---|
+| nvidia_smi.gpu_utilization | gpu=0 | Un campione numerico finito; zero è utilizzo valido |
+| nvidia_smi.gpu_frame_buffer_memory_usage | free=16582180864, used=35651584, reserved=487587840 byte | Tre dimensioni; used equivale a 34 MiB |
+| nvidia_smi.gpu_temperature | temperature=36 Celsius | Un campione numerico finito |
+
+Tutte le righe mostrano il timestamp sorgente 1792136744011 ms, corrispondente a 2026-10-16T07:45:44.011Z (09:45:44.011+02:00). La conversione è aritmetica dal valore ricevuto: non è l’ora di ricezione né quella del riavvio, che non sono state incollate. Il filtro confronta ogni timestamp con l’orologio dell’host, accetta età massima 60000 ms e anticipo massimo 5000 ms, oltre a contesto e valore finito; l’età esatta non compare nell’output. UUID e prodotto nelle cinque righe identificano la stessa scheda; l’identità rimane privata.
+
+La precedente assenza di metriche hardware è risolta nell’osservazione successiva all’abilitazione esplicita e al riavvio. È una prova positiva della raccolta locale del daemon, oltre al debug separato precedente. Non isola l’effetto del solo riavvio da quello della configurazione. L’hash dell’override atteso deriva dal rendering locale; l’operatore ha letto la riga e il risultato funzionale, non ha riletto l’hash del file risultante. Non sono stati ripetuti dopo questo riavvio i controlli del listener e di ACLK: valgono come prove precedenti, non come nuove letture.
+
+Restano misure su un intervallo rappresentativo dell’impatto CPU/RAM/I/O, raccolta sotto carico e dopo reboot, inferenza Ollama su GPU e ricezione sul Debian. La configurazione è persistita nel file e il servizio era già enabled, ma non è stata fatta una prova di reboot. Nessuna esposizione del listener o installazione centrale è attestata da questi cinque campioni.
+
+Evidenze private: operator-gpu-enabled-record-20261016.txt conserva comandi/output selezionati e tutte le cinque righe restituite; operator-gpu-enabled-selected-20261016.json conserva campi, provenienza, criteri e limiti. Non è stato ricevuto il file integrale dell’export, né il suo nome temporaneo effettivo. Manifest SHA-256 aggiornato nei due progetti; l’impronta documenta i byte conservati, non certifica autonomamente l’esecuzione. Le fonti che motivano configurazione e formato sono [stock 2.12.1](https://raw.githubusercontent.com/netdata/netdata/v2.12.1/src/go/plugin/go.d/config/go.d.conf), [configurazione collector](https://learn.netdata.cloud/docs/collecting-metrics/collectors-configuration), [contesti NVIDIA 2.12.1](https://raw.githubusercontent.com/netdata/netdata/v2.12.1/src/go/plugin/go.d/collector/nvidia_smi/charts.go) ed [export Prometheus](https://learn.netdata.cloud/docs/exporting-metrics/prometheus), già consultate e registrate. Nessun nuovo comando remoto dell’assistente.
+
+## Baseline del Debian del collettore preparata, 16/10/2026
+
+Il passo successivo legge la VM Debian del collettore per verificare risorse effettive prima di scegliere RAM, vCPU, volumi e budget dello stack. L’indirizzo, l’account e la chiave SSH provengono dalla configurazione privata e dai runbook di installazione esistenti. Il comando di connessione compilato è conservato privatamente in collector-baseline-connection.ps1; si esegue dalla PowerShell della postazione Windows. Ottenuta la shell SSH sul Debian, il seguente blocco si incolla in quella shell. Non contiene installazioni, pulizie, resize o riavvii. Letture eseguite dall’operatore: riscontro ricevuto nella sezione successiva.
+
+```bash
+cd /
+date --iso-8601=seconds
+hostname
+cat /etc/os-release
+nproc
+free -b
+df -B1 --output=source,fstype,size,used,avail,pcent,target / /var /srv
+df -i / /var /srv
+lsblk -b -o NAME,TYPE,SIZE,FSTYPE,MOUNTPOINTS
+findmnt -T /srv/ads -o SOURCE,TARGET,FSTYPE,OPTIONS
+systemctl show rsyslog.service --property=LoadState --property=ActiveState --property=SubState --property=MemoryCurrent --property=CPUUsageNSec
+systemctl list-timers ads-ilo-other-retain.timer --all --no-pager
+sudo journalctl --disk-usage
+```
+
+free -b distingue memoria disponibile, cache e swap; df riporta byte disponibili e inode sui percorsi, senza sommarli quando appartengono allo stesso filesystem. lsblk con colonne esplicite descrive dispositivi/partizioni e mount; findmnt -T risale al filesystem che contiene il percorso, perciò un risultato sulla root non dimostra un volume dedicato né l’esistenza del percorso interrogato. La lettura di rsyslog descrive stato e contatori disponibili: MemoryCurrent è un’istantanea del cgroup e CPUUsageNSec è cumulativo, non una percentuale o un consumo sostenuto; proprietà non disponibili non si trasformano in zero. list-timers osserva pianificazione/ultimo giro, non certifica la cancellazione dei file. journalctl --disk-usage conta occupazione del journal del sistema visibile con sudo, non tutti i possibili namespace, spool o archivi. Conservare anche eventuali errori e righe mancanti, senza promuovere il blocco a riuscito per il solo ultimo comando.
+
+Criterio di questo passo: confermare il bersaglio e OS, RAM/vCPU viste dal guest, byte/inode per filesystem, catena dei dispositivi e stato base della raccolta/retention. Non si dichiara ancora il dimensionamento accettato. Seguiranno conteggi e crescita degli archivi, code, serie temporali, pressione e picchi; prima di assegnare risorse servirà anche il margine reale del nodo/storage Proxmox. I 2 GiB dello snapshot restano un dato storico fino all’output di questa lettura. Fonti ufficiali e sezioni consultate nel registro delle fonti, sezione baseline Debian.
+
+## Baseline Debian ricevuta; spazio AdS e attività swap da misurare, 16/10/2026
+
+La prima baseline del Debian del collettore è stata eseguita dall’operatore nella shell SSH. Il comando date mostra 2026-10-16T10:29:01+02:00; quel valore precede le letture successive e non ne misura la durata o l’ora di ricezione. La trascrizione ricevuta è conservata nel livello privato collector/operator-baseline-transcript-20261016.txt, con campi separati in operator-baseline-selected-20261016.json e manifest SHA. Le misure riguardano questa VM, distinta dal fisico Ollama.
+
+| Oggetto | Dato riferito | Significato e limite |
+|---|---|---|
+| OS e CPU | Debian 13 trixie, DEBIAN_VERSION_FULL=13.7; nproc=2 | Due unità di elaborazione disponibili al processo; non misura del carico o della capacità libera del nodo Proxmox |
+| Memoria | total=2030473216, used=1107357696, free=223571968, shared=864256, buff/cache=884400128, available=923115520 byte | Totale 1936,41 MiB, disponibile 880,35 MiB; istantanea, non budget disponibile per tutto lo stack |
+| Swap | total=1073737728, used=482140160, free=591597568 byte | Usata 459,80 MiB; non prova trasferimenti attivi o rallentamento attuale |
+| Root ext4 | /dev/sda2, totale 16296308736, usati 6660640768, disponibili 8785534976 byte; 44% | 8,182 GiB disponibili su questa root, non sul volume AdS |
+| Inode root | 1018000 totali, 153121 usati, 864879 liberi; 16% | Le tre righe di df riguardano lo stesso filesystem; non vanno sommate |
+| Disco di sistema | sda=17179869184 byte (16 GiB); sda1=510656512 vfat /boot/efi; sda2=16667115520 ext4 / | Dimensioni del dispositivo/partizioni distinte dalla capacità utile del filesystem |
+| Disco AdS | sdb=64424509440 byte (60 GiB), sdb1=64422412288 ext4 /srv/ads | Spazio libero e inode del filesystem non ancora interrogati |
+| Mount AdS | findmnt: /dev/sdb1 su /srv/ads, ext4, rw,nosuid,nodev,noexec,relatime | Il volume dedicato risulta montato nella lettura; non misura dello spazio o prova della protezione dei futuri indici |
+| Supporto ottico | sr0=792723456 byte, iso9660, nessun mount mostrato | Non verificati backing o impostazioni del dispositivo in Proxmox; nessuno sgancio effettuato |
+| rsyslog | loaded/active/running; MemoryCurrent=10113024 byte; CPUUsageNSec=24227915000 | Cgroup circa 9,64 MiB, CPU cumulativa 24,227915 s; non RSS, percentuale o prova di consegna di ogni sorgente |
+| Timer tecnico iLO | LAST 16/10 03:00:08, NEXT 17/10 03:00:00; un timer elencato | Etichette del fuso e unità attivata troncate nella stampa; risultato del service non letto |
+| Journal del sistema | Archived and active journals take up 24M | Lettura sudo completata dopo un tentativo respinto; nessuna password nel materiale ricevuto, altri namespace/archivi non misurati |
+
+Correzione dell’interpretazione iniziale in chat: df interrogava /, /var e /srv. Il mount separato è nella sottocartella /srv/ads; le tre righe sulla root sono quindi coerenti con lsblk e findmnt. Non è dimostrata alcuna divergenza o assenza del mount. Il comando iniziale non copriva spazio e inode del sottomount: la mancanza è nel perimetro della lettura, non un errore del Debian. Si completa con i percorsi effettivi dei due archivi. Riferimento: [df Debian](https://manpages.debian.org/trixie/coreutils/df.1.en.html), che descrive il filesystem contenente ciascun argomento.
+
+Il margine osservato non autorizza ancora a installare e dimensionare Grafana, Loki, Prometheus o altri componenti. La crescita degli originali e delle copie, picchi e pressione, RAM/storage del nodo Proxmox e finestra di recupero restano da misurare. Nessun resize, remount, pulizia o riavvio è stato eseguito dall’assistente.
+
+### Letture successive preparate, stesso terminale SSH del Debian
+
+Il blocco seguente legge byte/inode dei due archivi, ne misura l’occupazione con una scansione circoscritta e osserva brevemente l’attività del sistema. Non legge il contenuto dei log. Output ancora atteso; conservare anche errori e il codice du_exit.
+
+```bash
+cd /
+date --iso-8601=seconds
+df -B1 --output=source,fstype,size,used,avail,pcent,target /srv/ads /var/log/ads-ilo-other
+df -i /srv/ads /var/log/ads-ilo-other
+sudo timeout --signal=TERM --kill-after=2s 20s du -x -B1 -s /srv/ads /var/log/ads-ilo-other
+printf 'du_exit=%s\n' "$?"
+vmstat -w -t 1 6
+```
+
+du -B1 misura spazio allocato in byte, distinto dalla lunghezza apparente dei file; -s limita la stampa ai totali, -x evita di attraversare filesystem annidati diversi. L’avvio con sudo può chiedere la password; il limite di timeout riguarda il comando dopo l’autenticazione, non il tempo per digitarla. Dopo 20 secondi viene inviato TERM, poi KILL dopo altri due se necessario: du_exit=124 indica scadenza, 137 un KILL; risultati incompleti o errori non diventano totali accettati. Il limite contiene la durata ordinaria della scansione, non è un limite di I/O né una garanzia temporale contro un processo bloccato nel kernel. Nessuna pulizia dei dati.
+
+vmstat stampa sei rapporti, il primo con i tassi medi dal boot e i cinque successivi su intervalli di un secondo; i campi di memoria sono istantanei anche nella prima riga. Si leggono soprattutto si/so per i trasferimenti swap, wa per attesa I/O e r/b per processi pronti/bloccati. Un campione breve senza trasferimenti non certifica assenza di pressione nei picchi o adeguatezza dello stack. Fonti: [du](https://manpages.debian.org/trixie/coreutils/du.1.en.html), [timeout](https://manpages.debian.org/trixie/coreutils/timeout.1.en.html), [vmstat](https://manpages.debian.org/trixie/procps/vmstat.8.en.html), consultate il 16/10/2026.
+
+## Archivi misurati e processo snapshot della postazione tracciato, 16/10/2026
+
+L’operatore esegue le letture mirate del Debian. Date riporta 16/10 alle 10:45:30+02:00; la scansione du termina con du_exit=0. Il successivo vmstat mostra sei rapporti, con cinque intervalli correnti alle 10:45:48-52. Il tempo tra Date e il primo rapporto non è il tempo di esecuzione di du: include anche l’autenticazione e gli altri comandi.
+
+| Area | Misura | Limite |
+|---|---|---|
+| Volume AdS /dev/sdb1 ext4 | Totale 63088406528, usati 45211648, disponibili 59805298688 byte; uso 1% | Disponibili 55,70 GiB; distingue capacità del filesystem dalla partizione e dal disco di 60 GiB |
+| Inode AdS | 3932160 totali, 111 usati, 3932049 liberi, 1% riportato | Non misura crescita futura o numero di eventi |
+| Archivio AdS | du 43110400 byte, 41,11 MiB | Spazio allocato del percorso, distinto dal totale di df; non byte/giorno |
+| Tecnici iLO | du 45056 byte, 44 KiB; filesystem /dev/sda2 root | Restano sulla root, disponibile 8785526784 byte e uso 44%; non sono isolati sul volume AdS |
+| Swap occupata | vmstat swpd=470840 KiB | Coerente con la prima baseline, non è un tasso di trasferimento |
+| Cinque intervalli correnti | si=0, so=0, wa=0, idle=100 come riportato; r=b=0 | Cinque secondi osservati; percentuali arrotondate, non copertura dei picchi |
+
+La prima riga vmstat dà i tassi dal boot e non si conta come sesto intervallo corrente. Un esito du riuscito chiude la scansione circoscritta, non dimostra salute storage, assenza di perdite o conservazione per l’intero periodo. Trascrizione integrale del testo ricevuto e campi strutturati nei file privati operator-capacity-followup-transcript-20261016.txt e operator-capacity-followup-selected-20261016.json, con SHA nel manifest. Restano fonti già lette: [df](https://manpages.debian.org/trixie/coreutils/df.1.en.html), [du](https://manpages.debian.org/trixie/coreutils/du.1.en.html), [vmstat](https://manpages.debian.org/trixie/procps/vmstat.8.en.html).
+
+La lettura del solo snapshot Proxmox già sul disco delle 07:30:17, senza fuso dichiarato nel campo generated_at, aggiunge dati del nodo: RAM totale 134670643200 byte, used 107384188928, free 27286454272; swap usata 8589766656 su 8589930496. Le dieci VM running hanno massimi configurati per 135168 MiB (132 GiB), superiori ai 125,42 GiB fisici riportati: è una somma di configurazioni, non l’uso corrente o una prova di swapping attivo. Le sette fotografie giornaliere del 10-16/10 mostrano swap quasi piena; non misurano i picchi o le attività tra una fotografia e l’altra. Il pool thin che ospita il collettore riporta 367971323085 byte disponibili; data/metadata percent e margine sotto carico da verificare sul nodo prima di assegnare risorse.
+
+Nello stesso snapshot la VM collettore ha 2048 MiB, balloon=0, due core, dischi 16G e 60G; il disco AdS riporta backup=0. È una proprietà osservata della configurazione, non prova di copie esterne o autorizzazione a modificarla. Configurazione e storia selezionate sono nel JSON privato proxmox-capacity-snapshots-20261016.json, con percorso e SHA della fonte. Nessuna interrogazione o modifica dell’hypervisor in questo giro. Le nuove risorse dello stack, il volume dati analitico, i budget e il percorso di custodia restano da definire.
+
+La domanda sull’origine dello snapshot ha aperto una parentesi richiesta dall’utente: processo delle fonti vive sulla postazione, retention e tracciamento ISO nel progetto rete. Il task automatico è stato letto localmente; codice della retention verificato, cancellazione pianificata da abilitare manualmente. La parentesi non installa lo stack centrale né applica nuove politiche agli archivi del Debian.
