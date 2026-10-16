@@ -150,3 +150,7 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 ## Processo snapshot e gate task M30, 16/10/2026
 
 Il task automatico del 16/10 è osservato con esito 0, account interattivo e privilegi limitati; quel gate non è più da osservare. Restano nuova sessione Claude interattiva, PowerShell 7 e gli altri limiti M30/TLS non coperti dalla lettura. La retention degli snapshot è implementata e testata, anteprima reale riuscita su 127 copie, zero candidati ed eliminati; abilitazione manuale e primo giro pianificato di pulizia aperti. Processo, dipendenza dalla postazione e rischi in [Procedura fonti vive](processo-fonti-vive-retention.md), ISO-41/38 e perimetro ISO-29/36; proprietario/delegato, continuità, copia esterna e recupero da formalizzare.
+
+## Sorgenti QA catalogate e ripresa con altro account preparata, 16/10/2026
+
+Abilitazione snapshot ora ricevuta; resta primo giro pianificato. Nel progetto del collettore va ripreso il pilota centrale: misure live del nodo e thin metadata, budget anche dei due LXC QA previsti, catalogo e parser del produttore, trasporto, retention/quote/guardie e osservatore esterno. La futura sorgente QA non è ancora ricevuta dal collettore; vedere docs/integrazione-log-qa-verifier.md.

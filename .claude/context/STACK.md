@@ -216,3 +216,7 @@ scripts/Invoke-SnapshotRetention.ps1 pianifica o applica la pulizia dei soli JSO
 | Componente di conservazione locale | Ruolo |
 |---|---|
 | `scripts/Invoke-SnapshotRetention.ps1` | Anteprima, applicazione manuale o attivazione della politica privata per i rinfreschi riusciti; dati reali esclusi da git |
+
+## Sorgenti QA catalogate e ripresa con altro account preparata, 16/10/2026
+
+Aggiunto docs/integrazione-log-qa-verifier.md: catalogo sorgenti del produttore QA e mapping al contratto comune. Campioni di codice in lavorazione e digest delle immagini candidate conservati privatamente; nessun nuovo componente runtime o flusso di raccolta installato. Retention snapshot abilitata dall’operatore dopo la milestone rete pubblicata.
