@@ -189,3 +189,18 @@ Le note di lettura in sources/collector-capacity-sources-20261016.json descrivon
 Riscontro primario: output dell’operatore con df, du_exit=0 e sei rapporti vmstat; due file privati di trascrizione e campi selezionati con manifest SHA. Fonte del nodo: snapshot locale del 16/10 e sette fotografie giornaliere 10-16/10, con percorsi e SHA nel JSON privato; nessuna nuova API. Il recupero web odierno dei manuali Proxmox qm e LVM thin ha restituito 403: non è contato come lettura; consultata la copia ufficiale qm.adoc già acquisita nel giro precedente per memoria fissa/ballooning. Il manuale lvs Debian è stato letto per il futuro controllo, non eseguito sul nodo.
 
 Il processo delle fonti vive è stato richiesto come parte del percorso ISO dalla postazione dell’operatore: task, dipendenza dalla sessione e retention 90 giorni sono descritti nel progetto rete. Fonti ufficiali lette: [ISO/IEC 27001, quadro pubblico](https://www.iso.org/standard/27001), [stato del task](https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/get-scheduledtaskinfo?view=windowsserver2025-ps), [sessione interattiva](https://learn.microsoft.com/en-us/windows/win32/taskschd/principal-logontype), [hash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash?view=powershell-5.1), [rimozione con LiteralPath](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-item?view=powershell-5.1). Le soglie sono scelte interne; il codice e le prove isolate attestano la procedura, non una conformità ISO complessiva.
+
+## 16/10/2026 - Produttore QA e preparazione del pilota centrale
+
+Letti la segnalazione ricevuta nel collettore e sei file del produttore QA in lavorazione: configurazione log, chiamanti, client locale, fallback e registro di uso. Percorsi, HEAD, stato e SHA nella ricognizione privata qa-producer/reading-20261016.json; copie dei soli file letti, non un backup del progetto. La richiesta dell’operatore e la lettura del codice non sono test di esercizio. Catalogo e limiti in [Integrazione QA](integrazione-log-qa-verifier.md).
+
+| Fonte primaria letta il 16/10 | Uso e limite |
+|---|---|
+| [Download Prometheus](https://prometheus.io/download/) | Selezionata candidata 3.13.4 LTS; immagine scaricata e digest letto, non avviata |
+| [Download Grafana OSS](https://grafana.com/grafana/download?edition=oss) | Candidata 13.2.4; immagine scaricata e digest letto, non avviata |
+| [Immagini Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker/) | Repository grafana/grafana per OSS; il vecchio grafana-oss non riceve nuove release da 12.4 |
+| [Configurazione Prometheus](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) | Limiti di scrape da collaudare; superare sample_limit fa fallire lo scrape intero |
+| [Storage Prometheus](https://prometheus.io/docs/prometheus/latest/storage/) | Retention di tempo e dimensione, con margine per WAL/Head; non quota rigida del filesystem |
+| [Compose services](https://docs.docker.com/reference/compose-file/services/) e [provisioning Grafana](https://grafana.com/docs/grafana/latest/administration/provisioning/) | Riferimenti per configurazioni future, non stack generato o già verificato |
+
+Le due immagini ispezionate occupano complessivamente circa 2,14 GiB secondo Docker: non dimensionano cache, database, WAL o uso del Debian. Digest e misure sono privati; nessun container creato in questa preparazione. La richiesta di chiusura ha preceduto configurazione e collaudo del pilota centrale: riprenderli nella nuova sessione, con rete locale e risorse esplicite.
