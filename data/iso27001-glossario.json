@@ -725,6 +725,10 @@
     "M29": [
       "Standardizzazione dei presidi delle VM",
       "Estendere alle altre VM il pilota con watchdog, risorse e controlli tecnici, con finestre e prove concordate. Resta il gate già deciso prima dell’estensione delle sorgenti AdS."
+    ],
+    "ADR-036": [
+      "Fonti vive sulla postazione e retention degli snapshot",
+      "Processo locale con responsabilità, validazione, dipendenza dalla sessione, evidenze protette e conservazione parametrica; attivazione e collaudo pianificato distinti dal codice."
     ]
   }
 }

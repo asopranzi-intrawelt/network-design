@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-15",
+  "aggiornato": "2026-10-16",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1668,6 +1668,48 @@
       "data": "2026-10-15",
       "stato": "in_corso",
       "nota": "M32d parziale: operatore legge RTX 5060 Ti come utente netdata, 16311 MiB totali, 34 MiB usati e 36 Celsius; job distribuito presente, override assente. Journal enable accepted/202 non prova campioni. Preparata lettura di utilizzo/VRAM/temperatura recenti dall’export locale; filtro validato su 14 casi con mutazioni rilevate, zero chiamate reali nei test. Campioni GPU, impatto e stack ancora aperti; M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "M32d ancora parziale: ricevuti gpu_samples=0 vram_samples=0 temp_samples=0; criterio non raggiunto, export grezzo assente e causa non stabilita. Query come netdata già riuscita. Preparati nuovo export e processo diagnostico go.d.plugin separato con limite di tempo, nessun riavvio o nuova installazione. Contesto/timeline condivisi aggiornati, stack e impatto aperti; M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "M32d parziale: export con 21 sole righe interrupt/systemd, debug separato come netdata con due cicli GPU/VRAM/temperatura riusciti e uscita 124 dopo TERM. Stock go.d.conf documenta default NVIDIA no; preparata abilitazione esplicita da copia stock con hash e noclobber, solo riga NVIDIA cambiata e riavvio solo Netdata, poi verifica dei campioni recenti. Quattro casi isolati e due mutazioni passati, nessuna modifica reale eseguita. Raccolta daemon, impatto e stack restano aperti; M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "M32d parziale: operatore applica override NVIDIA verificato e riavvia Netdata; export daemon con GPU/VRAM/temperatura recenti 1/3/1. Raccolta locale confermata; impatto sostenuto e flusso centrale aperti. Baseline Debian di sola lettura preparata, output atteso. Retention tecnica iLO già attiva dal 08/10 riconciliata; nuove guardie/capienza Proxmox e stack da realizzare. M29 e gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "M32c: baseline guest Debian ricevuta, 2 CPU, RAM disponibile 880 MiB e swap occupata 460 MiB; disco AdS dedicato 60 GiB. df interrogava il padre /srv: tre righe root coerenti, spazio/inode del volume non misurati. rsyslog attivo, timer iLO con ultimo giro odierno, esito del service non letto. Preparati df sui due archivi, du circoscritto con timeout e vmstat; output atteso. Margine Proxmox, risorse, retention/guardie e stack ancora aperti; M29/gate AdS invariati."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "M32c: archivi Debian misurati, AdS 55,70 GiB disponibili e 41,11 MiB allocati, tecnici iLO 44 KiB sulla root. Cinque intervalli senza si/so/wa; crescita e picchi aperti. Snapshot locale Proxmox letto: swap quasi 8 GiB e margine da verificare prima di assegnare risorse. Nessun nuovo flusso o stack installato."
+    },
+    {
+      "id": "ISO-38",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "Registrati gli scenari del processo fonti vive: dipendenza da PC e sessione, segreti dello stesso utente, perdita/capienza delle evidenze, backup e recupero; presidi e trattamenti aperti nella procedura. Proprietario/delegato e accettazione del residuo da formalizzare nel SGSI; nessuna conformità complessiva attestata."
+    },
+    {
+      "id": "ISO-41",
+      "data": "2026-10-16",
+      "stato": "in_corso",
+      "nota": "Anteprima locale della retention riuscita su 127 copie: zero candidati e zero eliminati; pin iniziali ed evidenze protetti. Controlli completi di chiusura della rete verdi. Attivazione manuale e primo giro pianificato di pulizia ancora aperti; processo della postazione, rischi e responsabilità documentati."
     }
   ]
 }
