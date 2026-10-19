@@ -20,7 +20,7 @@ Questa ricognizione è parte della stessa timeline del collettore. Il dettaglio 
 
 Sette ingressi non diventano sette nuovi nodi della topologia. Le VM Windows, GroupShare, database e backup mantengono registri propri; l'audit dell'hypervisor non li sostituisce. Gli URL attuali vengono dall'operatore; il Word di architettura è storico, ultima modifica 07/07/2026, SHA beac5702ebe722aa84955e687aa1642b8d21aace3be5b932ce1d92cbd889d114 riconfermato sull'originale il 14/10. La tabella accessi aiuta a identificarli, senza usare le credenziali per una nuova autenticazione.
 
-Le tre schermate correnti mostrano Foundation e appliance sulla stessa rete privata, 16 core, 128 GB RAM, 250 GB disco, etichetta VMware 7 e datacenter Milano. Build dell'host e inventario delle VM non letti. Backup: Nessun Backup è il campo del prodotto Foundation; non è una prova dell'assenza del diverso Cloud Backup delle mail. Identificativi, indirizzi, VLAN e hostname stanno in _notes/seeweb-access-inventory-20261014.json; immagini e provenienza in _notes/seeweb-census-20261014, ignorati da git.
+Le tre schermate correnti mostrano Foundation e appliance sulla stessa rete privata, 16 core, 128 GB RAM, 250 GB disco, etichetta VMware 7 e datacenter Milano. Build dell'host e inventario delle VM non letti. Backup: Nessun Backup è il campo del prodotto Foundation; non è una prova dell'assenza del diverso Cloud Backup delle mail. Identificativi, indirizzi, VLAN e hostname stanno in _notes/archivio-sessioni/seeweb-email/materiali/seeweb-access-inventory-20261014.json; immagini e provenienza in _notes/archivio-sessioni/seeweb-email/risultati/seeweb-census-20261014, ignorati da git.
 
 ## Canali candidati, nessuno attivato
 
