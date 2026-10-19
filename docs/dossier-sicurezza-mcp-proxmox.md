@@ -1,6 +1,6 @@
 # Dossier tecnico: credenziali, policy MCP e TLS Proxmox
 
-Data della misura: 09/10/2026. Destinazione versionata: `D:/network-design/docs/dossier-sicurezza-mcp-proxmox.md`. I nomi dei nodi, gli indirizzi e le impronte integrali stanno nell'appendice privata `_notes/proxmox-mcp-security-evidence-private-20261009.md`; questo dossier non contiene token o identificativi dell'organizzazione.
+Data della misura: 09/10/2026. Destinazione versionata: `D:/network-design/docs/dossier-sicurezza-mcp-proxmox.md`. I nomi dei nodi, gli indirizzi e le impronte integrali stanno nell'appendice privata `_notes/archivio-sessioni/rete-proxmox/materiali/proxmox-mcp-security-evidence-private-20261009.md`; questo dossier non contiene token o identificativi dell'organizzazione.
 
 ## 1. Perimetro e stato dichiarato
 
@@ -105,7 +105,7 @@ La [guida Proxmox VE](https://pve.proxmox.com/pve-docs/pve-admin-guide.pdf) desc
 
 ## 8. Rollback e continuità
 
-Il backup esatto di `.mcp.json` e il precedente URL sono nel livello privato. Lo script `D:/log-collector/_notes/cutover_proxmox_mcp_secure_20261009.py --rollback` ripristina il JSON **solo** se hash del file attivo e backup coincidono con quelli attesi. `D:/log-collector/_notes/switch_proxmox_url_20261009.ps1 -Mode Rollback` ripristina il vecchio URL nel `.env` tramite il writer che preserva l'ACL. Dopo un rollback occorre verificare lo stato del MCP e registrare il motivo; la voce `hosts` e la CA pubblica possono restare, perché non contengono segreti, ma vanno censite. Il rollback ripristina temporaneamente i due flag rischiosi: è una misura di recupero, non una soluzione finale.
+Il backup esatto di `.mcp.json` e il precedente URL sono nel livello privato. Lo script `D:/log-collector/_notes/archivio-sessioni/rete-proxmox/strumenti/cutover_proxmox_mcp_secure_20261009.py --rollback` ripristina il JSON **solo** se hash del file attivo e backup coincidono con quelli attesi. `D:/log-collector/_notes/archivio-sessioni/rete-proxmox/strumenti/switch_proxmox_url_20261009.ps1 -Mode Rollback` ripristina il vecchio URL nel `.env` tramite il writer che preserva l'ACL. Dopo un rollback occorre verificare lo stato del MCP e registrare il motivo; la voce `hosts` e la CA pubblica possono restare, perché non contengono segreti, ma vanno censite. Il rollback ripristina temporaneamente i due flag rischiosi: è una misura di recupero, non una soluzione finale.
 
 Nessun commit, push o deploy è stato eseguito dagli agenti. I file di progetto sono preparati per il controllo e per la chiusura manuale dell'utente. La roadmap ISO-41 resta **in corso**: il successo tecnico di SEC-025 è un'evidenza, non una dichiarazione di certificazione ISO/IEC 27001.
 
