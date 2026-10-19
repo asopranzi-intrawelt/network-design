@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5634" viewBox="0 0 1060 5634" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="5634" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5826" viewBox="0 0 1060 5826" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="5826" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">220 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 16/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">228 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 19/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(29)</tspan></text>
@@ -30,9 +30,9 @@
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
-<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(19)</tspan></text>
+<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(23)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
-<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(48)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(52)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#e6ede9"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#0e5c62" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">2024</text>
@@ -3473,15 +3473,15 @@
 <g class="ev-summary" onclick="toggleEv('ev-215')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#e87ba4"/>
-<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Controllo dei campioni GPU negativo, diagnostica preparata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Pilota locale dei log tecnici sintetici verificato, 16/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
 </g>
 <foreignObject id="ev-215-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">16/10/2026 &#8212; Controllo dei campioni GPU negativo, diagnostica preparata</p>
-<p>Ricevuto dall’operatore gpu_samples=0, vram_samples=0, temp_samples=0. È mancato il criterio di accettazione dei tre contesti con valori finiti e timestamp recenti; non dimostra da solo che manchino tutte le metriche GPU. Export grezzo non ricevuto: nomi/formato, timestamp e mancata raccolta restano ipotesi da distinguere. Nessuna guardia indebolita, nessuna installazione o riavvio eseguiti. Restano verificati il binario come netdata e i file letti; enable accepted/202 non promosso a raccolta riuscita. Ripresa del 16/10: preparato un nuovo export locale con stampa delle prime 60 righe contenenti nvidia e conteggio totale, orologio del fisico e processo diagnostico separato go.d.plugin -d -m nvidia_smi come netdata. TERM dopo 20 secondi, KILL dopo ulteriori 5 se necessario; conservare debug_exit, 124 indica scadenza del timer, non misura di successo del collector. Il debug esercita i file, non necessariamente eventuali job dinamici della UI. Nessuna dipendenza dalla variabile del terminale precedente, nessun modello avviato. Fonti e comandi nel runbook e nel contesto rete, timeline comune nello stesso giro; output diagnostico ancora atteso. Stack Debian, parser comuni, retention e capienza aperti, M29/D7/gate AdS invariati. Offline Nebula rimandato, Seeweb atteso; task Proxmox/TLS/segreti, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Nessuna sessione SSH o operazione git dell’assistente; lavoro parallelo e milestone manuale rete 7cbc488 preservati, chiusure da rigenerare.</p>
+<p class="d-meta"> &#8212; Pilota locale dei log tecnici sintetici verificato, 16/10/2026</p>
+<p>Il pilota PC del collettore ora include Loki 3.7.0 e Alloy 1.20.1 con soli file sintetici ignorati da Git. Un originale per evento ha SHA-256 verificato e una riga JSON v0 di consultazione; Alloy la legge, Loki restituisce un record e Grafana lo interroga con login. Nessun apparato, Debian, Agent reale o LXC QA invia log a questa prova; non sono state aperte porte LAN. Retention di test 24 ore configurata ma cancellazione e quota non misurate. M32b progredisce per la catena locale sintetica, mentre parser, trasporto, identità, custodia, TLS LAN e budget Proxmox sono aperti. ISO-30 e gate AdS restano invariati; quattro container arrestati dopo il collaudo.</p>
 </div>
 </foreignObject>
 </g>
@@ -3489,15 +3489,15 @@
 <g class="ev-summary" onclick="toggleEv('ev-216')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#e87ba4"/>
-<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Debug GPU riuscito, abilitazione persistente preparata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Pilota locale Prometheus/Grafana verificato, 16/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
 </g>
 <foreignObject id="ev-216-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">16/10/2026 &#8212; Debug GPU riuscito, abilitazione persistente preparata</p>
-<p>L’operatore restituisce export con 21 righe NVIDIA tutte mostrate: un interrupt e venti stati di quattro unità systemd, nessun contesto hardware nvidia_smi. Il debug separato come netdata legge la configurazione stock e raccoglie due cicli: GPU 0%, VRAM used 35651584 byte (34 MiB), temperatura 36 Celsius, collection success=1/failed=0. TERM a fine finestra e debug_exit=124; gli eventi di containment seguono il segnale, non sono promossi a errore di lettura GPU. Prova del processo diagnostico, non della raccolta del daemon. Il file ufficiale go.d.conf del tag 2.12.1 documenta nvidia_smi: no come default; preparata abilitazione esplicita da verificare nel servizio. Catena: hash del file stock, nuova copia locale senza sovrascrivere una configurazione esistente, sola riga NVIDIA a yes, controllo della riga e riavvio del solo Netdata. Interruzione breve delle sue metriche, nessun driver o servizio Ollama toccato. Dopo 15 secondi controllo del servizio e identico filtro dei tre contesti recenti; nessuna guardia ridotta. Ripristino preparato al precedente stato senza override, con hash e copia conservata. Quattro casi isolati e due mutazioni delle guardie superati con systemctl/sudo sostituiti, zero riavvii reali. Modifica ancora non eseguita, raccolta GPU nel daemon aperta. Estratti fedeli e campi selezionati privati, non una copia integrale del protocollo; fonti, contesto e timeline rete aggiornati nello stesso giro. Pacchetto template e stack Debian ancora da completare; normalizzazione/retention/capienza e impatto aperti. M29/D7/gate AdS invariati, offline Nebula rimandato e Seeweb atteso; task Proxmox/TLS/segreti, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Nessun SSH, add/commit/push/deploy dell’assistente; lavoro parallelo preservato, chiusure obsolete da rigenerare.</p>
+<p class="d-meta"> &#8212; Pilota locale Prometheus/Grafana verificato, 16/10/2026</p>
+<p>Il 16/10/2026 è stato collaudato sul PC un profilo locale Prometheus/Grafana del progetto collettore (pilot/monitoring-hub/): scrape interno riuscito, query via Grafana e rifiuto dell'accesso anonimo. Porte solo loopback; lista target Netdata vuota. Nessun nuovo endpoint o flusso è aperto nella rete, e i due LXC QA restano pianificati. Il primo avvio Grafana ha scaricato plugin; il preinstall è ora disattivato e una seconda partenza da volumi nuovi su rete Docker interna ha superato la query Grafana-Prometheus senza download plugin. Questa seconda prova non ha pubblicato porte verso il PC. M32b avanza solo per la catena interna delle metriche; Loki/Alloy, Agent reali, TLS LAN e dimensionamento richiedono ancora prove. ISO-30 e gate AdS non sono promossi da questo collaudo.</p>
 </div>
 </foreignObject>
 </g>
@@ -3505,15 +3505,15 @@
 <g class="ev-summary" onclick="toggleEv('ev-217')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#e87ba4"/>
-<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Metriche GPU confermate nel daemon; baseline Debian preparata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Futura sorgente QA del collettore identificata, 16/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
 </g>
 <foreignObject id="ev-217-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">16/10/2026 &#8212; Metriche GPU confermate nel daemon; baseline Debian preparata</p>
-<p>L’operatore verifica lo SHA dello stock, crea go.d.conf locale con NVIDIA yes alla riga 84 e riavvia il solo Netdata. Servizio active/running, Result=success; lo stesso filtro rigoroso restituisce GPU/VRAM/temperatura 1/3/1: cinque serie della stessa GPU, utilizzo 0%, VRAM usata 34 MiB, temperatura 36 Celsius. Timestamp sorgente 1792136744011 ms; valori finiti e recenti accettati dal filtro (età massima 60 s, tolleranza futura 5 s). Raccolta locale del daemon confermata per questa osservazione, distinta dal precedente debug e dall’invio al Debian. Hash dell’override renderizzato noto localmente, non riletto sul fisico. Impatto sostenuto, inferenza Ollama, prova dopo reboot e ingestione centrale ancora aperti. Preparata baseline di sola lettura sul Debian del collettore, da raggiungere con la chiave SSH già censita; output ancora atteso, nessuna installazione o allocazione Proxmox. Retention iLO riconciliata: 90 giorni già attivi dal 08/10, non un nuovo deploy; nuove guardie generali da realizzare. Runbook, fonti, evidenze private, contesto, integrazione e timeline della rete aggiornati nello stesso giro; specifica template aggiornata, pacchetto e stack completi non rilasciati. M29/D7/gate AdS invariati, offline Nebula rimandato e Seeweb atteso. Task Proxmox/TLS/segreti, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Nessun SSH, add/commit/push/deploy dell’assistente; modifiche parallele preservate e chiusure obsolete da rigenerare.</p>
+<p class="d-meta"> &#8212; Futura sorgente QA del collettore identificata, 16/10/2026</p>
+<p>L’operatore specifica che la nuova macchina da considerare nel percorso del collettore proviene da D:/intrawelt-qa-verifier. La decisione di deployment del produttore prevede due LXC Debian per staging e produzione, entrambi ancora assenti, più un’istanza Ollama dedicata sul fisico GPU. HEAD staging 1b2d9f3 versiona i passi 1-3 del backend locale; nessun ambiente QA o flusso centrale è attestato. Le richieste di 4 GiB e circa 16 GiB per ciascun LXC entrano nel prossimo preflight Proxmox insieme all’hub di monitoraggio; pressione live della swap e metadati thin restano da misurare. Catalogo, integrazione, memoria e contesto aggiornati nei due progetti; nessuno stato ISO è stato avanzato per questa sola ricognizione.</p>
 </div>
 </foreignObject>
 </g>
@@ -3521,15 +3521,15 @@
 <g class="ev-summary" onclick="toggleEv('ev-218')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e87ba4"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Prima baseline Debian e letture mirate degli archivi <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Controllo dei campioni GPU negativo, diagnostica preparata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI</tspan></text>
 </g>
 <foreignObject id="ev-218-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">16/10/2026 &#8212; Prima baseline Debian e letture mirate degli archivi</p>
-<p>L’operatore restituisce la baseline della VM collettore: Debian 13 trixie, DEBIAN_VERSION_FULL=13.7, orologio 16/10 alle 10:29:01+02:00, nproc=2. RAM 2030473216 byte totali, 923115520 disponibili (880,35 MiB); swap usata 482140160 byte (459,80 MiB), senza misura dell’attività corrente. Root ext4 44%, 8785534976 byte disponibili; inode 16%. lsblk mostra disco da 16 GiB e secondo disco da 60 GiB, partizione ext4 montata su /srv/ads, confermata da findmnt con rw,nosuid,nodev,noexec,relatime. df interrogava /, /var e /srv: le tre righe root sono coerenti, non misurano lo spazio del sottomount AdS. Corretta la prima interpretazione in chat che suggeriva una divergenza; nessun guasto del mount dimostrato. rsyslog loaded/active/running, cgroup 10113024 byte e CPU cumulativa 24227915000 ns. Timer iLO: ultimo giro 16/10 03:00:08, prossimo 17/10 03:00:00 con etichette troncate; non prova l’esito della pulizia. Journal di sistema 24M dopo lettura sudo riuscita. Preparati df sui due archivi, du circoscritto con limite temporale e vmstat con sei righe per separare swap occupata e trasferimenti attuali. Output successivo atteso; risorse definitive, margine Proxmox, retention, guardie e stack centrale ancora aperti. GPU locale del pilota resta verificata 1/3/1, impatto sostenuto e flusso centrale aperti. Fonti, runbook, evidenze private e contesto/timeline/ISO della rete aggiornati nello stesso giro; specifica template aggiornata, pacchetto non rilasciato. M29/D7/gate AdS invariati, offline Nebula rimandato e Seeweb atteso. Nessun SSH, installazione, allocazione o riavvio dell’assistente; nessun add/commit/push/deploy e modifiche parallele preservate.</p>
+<p class="d-meta">16/10/2026 &#8212; Controllo dei campioni GPU negativo, diagnostica preparata</p>
+<p>Ricevuto dall’operatore gpu_samples=0, vram_samples=0, temp_samples=0. È mancato il criterio di accettazione dei tre contesti con valori finiti e timestamp recenti; non dimostra da solo che manchino tutte le metriche GPU. Export grezzo non ricevuto: nomi/formato, timestamp e mancata raccolta restano ipotesi da distinguere. Nessuna guardia indebolita, nessuna installazione o riavvio eseguiti. Restano verificati il binario come netdata e i file letti; enable accepted/202 non promosso a raccolta riuscita. Ripresa del 16/10: preparato un nuovo export locale con stampa delle prime 60 righe contenenti nvidia e conteggio totale, orologio del fisico e processo diagnostico separato go.d.plugin -d -m nvidia_smi come netdata. TERM dopo 20 secondi, KILL dopo ulteriori 5 se necessario; conservare debug_exit, 124 indica scadenza del timer, non misura di successo del collector. Il debug esercita i file, non necessariamente eventuali job dinamici della UI. Nessuna dipendenza dalla variabile del terminale precedente, nessun modello avviato. Fonti e comandi nel runbook e nel contesto rete, timeline comune nello stesso giro; output diagnostico ancora atteso. Stack Debian, parser comuni, retention e capienza aperti, M29/D7/gate AdS invariati. Offline Nebula rimandato, Seeweb atteso; task Proxmox/TLS/segreti, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Nessuna sessione SSH o operazione git dell’assistente; lavoro parallelo e milestone manuale rete 7cbc488 preservati, chiusure da rigenerare.</p>
 </div>
 </foreignObject>
 </g>
@@ -3537,15 +3537,15 @@
 <g class="ev-summary" onclick="toggleEv('ev-219')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e87ba4"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Archivi Debian e processo fonti vive della postazione <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Debug GPU riuscito, abilitazione persistente preparata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI</tspan></text>
 </g>
 <foreignObject id="ev-219-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">16/10/2026 &#8212; Archivi Debian e processo fonti vive della postazione</p>
-<p>Ricevuto follow-up del Debian: volume AdS con 59805298688 byte disponibili (55,70 GiB), occupazione du 43110400 byte (41,11 MiB); tecnici iLO 45056 byte (44 KiB), sulla root. du_exit=0. Nei cinque intervalli correnti vmstat 10:45:48-52, si/so/wa=0 e idle=100 come riportato; la prima riga è media dal boot per i tassi. Non sono misurati picchi o crescita giornaliera. Snapshot Proxmox locale delle 07:30:17: 25,41 GiB di RAM free, swap quasi 8 GiB occupata e massimi delle dieci VM running pari a 132 GiB contro 125,42 GiB fisici rilevati; non è l’uso corrente né un margine garantito. Da verificare attività swap, picchi e metadata thin prima di aumentare risorse. L’utente chiede retention degli snapshot e registrazione del processo ISO dalla propria postazione, poi version control della rete. Verificato task giornaliero 07:30, ultimo esito 0, identità interattiva con privilegi limitati, StartWhenAvailable sì, wake no e niente blocchi a batteria: dipendenza da PC e sessione aperta. 127 copie datate, 36817388 byte (35,11 MiB). Retention 90 giorni parametrica implementata e provata: alias/ultima copia/pin/riferimenti protetti, 127 pin iniziali, avviso 512 MiB, soli tre nomi JSON nella radice output, nessun attraversamento di reparse point. Undici prove isolate, cinque scenari del launcher e due mutazioni delle guardie; nessuna prova saltata. La cancellazione pianificata richiede attivazione manuale; primo giro reale e recupero esterno aperti. Processo e rischi collegati a ISO-41/38 e perimetro ISO-29/36, senza attestare conformità complessiva. Fonti, evidenze, contesto e timeline comuni aggiornati nello stesso giro; versionamento preparato per l’utente. GPU locale resta verificata 1/3/1; stack, risorse definitive, flusso centrale, normalizzazione e guardie Debian aperti. M29/D7 invariati, offline Nebula rimandato e Seeweb atteso. Nessun comando su apparati, add/commit/push/deploy o attivazione del task dell’assistente; letture locali del task autorizzate.</p><p>Anteprima reale della retention riuscita: 127 copie, zero candidati ed eliminati; controlli di chiusura rete verdi. Attivazione e primo giro pianificato restano da osservare, senza nuovi eventi sugli apparati.</p>
+<p class="d-meta">16/10/2026 &#8212; Debug GPU riuscito, abilitazione persistente preparata</p>
+<p>L’operatore restituisce export con 21 righe NVIDIA tutte mostrate: un interrupt e venti stati di quattro unità systemd, nessun contesto hardware nvidia_smi. Il debug separato come netdata legge la configurazione stock e raccoglie due cicli: GPU 0%, VRAM used 35651584 byte (34 MiB), temperatura 36 Celsius, collection success=1/failed=0. TERM a fine finestra e debug_exit=124; gli eventi di containment seguono il segnale, non sono promossi a errore di lettura GPU. Prova del processo diagnostico, non della raccolta del daemon. Il file ufficiale go.d.conf del tag 2.12.1 documenta nvidia_smi: no come default; preparata abilitazione esplicita da verificare nel servizio. Catena: hash del file stock, nuova copia locale senza sovrascrivere una configurazione esistente, sola riga NVIDIA a yes, controllo della riga e riavvio del solo Netdata. Interruzione breve delle sue metriche, nessun driver o servizio Ollama toccato. Dopo 15 secondi controllo del servizio e identico filtro dei tre contesti recenti; nessuna guardia ridotta. Ripristino preparato al precedente stato senza override, con hash e copia conservata. Quattro casi isolati e due mutazioni delle guardie superati con systemctl/sudo sostituiti, zero riavvii reali. Modifica ancora non eseguita, raccolta GPU nel daemon aperta. Estratti fedeli e campi selezionati privati, non una copia integrale del protocollo; fonti, contesto e timeline rete aggiornati nello stesso giro. Pacchetto template e stack Debian ancora da completare; normalizzazione/retention/capienza e impatto aperti. M29/D7/gate AdS invariati, offline Nebula rimandato e Seeweb atteso; task Proxmox/TLS/segreti, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Nessun SSH, add/commit/push/deploy dell’assistente; lavoro parallelo preservato, chiusure obsolete da rigenerare.</p>
 </div>
 </foreignObject>
 </g>
@@ -3553,19 +3553,147 @@
 <g class="ev-summary" onclick="toggleEv('ev-220')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#e87ba4"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Metriche GPU confermate nel daemon; baseline Debian preparata <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI</tspan></text>
+</g>
+<foreignObject id="ev-220-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">16/10/2026 &#8212; Metriche GPU confermate nel daemon; baseline Debian preparata</p>
+<p>L’operatore verifica lo SHA dello stock, crea go.d.conf locale con NVIDIA yes alla riga 84 e riavvia il solo Netdata. Servizio active/running, Result=success; lo stesso filtro rigoroso restituisce GPU/VRAM/temperatura 1/3/1: cinque serie della stessa GPU, utilizzo 0%, VRAM usata 34 MiB, temperatura 36 Celsius. Timestamp sorgente 1792136744011 ms; valori finiti e recenti accettati dal filtro (età massima 60 s, tolleranza futura 5 s). Raccolta locale del daemon confermata per questa osservazione, distinta dal precedente debug e dall’invio al Debian. Hash dell’override renderizzato noto localmente, non riletto sul fisico. Impatto sostenuto, inferenza Ollama, prova dopo reboot e ingestione centrale ancora aperti. Preparata baseline di sola lettura sul Debian del collettore, da raggiungere con la chiave SSH già censita; output ancora atteso, nessuna installazione o allocazione Proxmox. Retention iLO riconciliata: 90 giorni già attivi dal 08/10, non un nuovo deploy; nuove guardie generali da realizzare. Runbook, fonti, evidenze private, contesto, integrazione e timeline della rete aggiornati nello stesso giro; specifica template aggiornata, pacchetto e stack completi non rilasciati. M29/D7/gate AdS invariati, offline Nebula rimandato e Seeweb atteso. Task Proxmox/TLS/segreti, PowerShell 7, dieci guest-agent 403 e audit fonti ADR aperti. Nessun SSH, add/commit/push/deploy dell’assistente; modifiche parallele preservate e chiusure obsolete da rigenerare.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-221" class="ev-block has-detail" transform="translate(0,5588)">
+<g class="ev-summary" onclick="toggleEv('ev-221')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Prima baseline Debian e letture mirate degli archivi <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-221-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">16/10/2026 &#8212; Prima baseline Debian e letture mirate degli archivi</p>
+<p>L’operatore restituisce la baseline della VM collettore: Debian 13 trixie, DEBIAN_VERSION_FULL=13.7, orologio 16/10 alle 10:29:01+02:00, nproc=2. RAM 2030473216 byte totali, 923115520 disponibili (880,35 MiB); swap usata 482140160 byte (459,80 MiB), senza misura dell’attività corrente. Root ext4 44%, 8785534976 byte disponibili; inode 16%. lsblk mostra disco da 16 GiB e secondo disco da 60 GiB, partizione ext4 montata su /srv/ads, confermata da findmnt con rw,nosuid,nodev,noexec,relatime. df interrogava /, /var e /srv: le tre righe root sono coerenti, non misurano lo spazio del sottomount AdS. Corretta la prima interpretazione in chat che suggeriva una divergenza; nessun guasto del mount dimostrato. rsyslog loaded/active/running, cgroup 10113024 byte e CPU cumulativa 24227915000 ns. Timer iLO: ultimo giro 16/10 03:00:08, prossimo 17/10 03:00:00 con etichette troncate; non prova l’esito della pulizia. Journal di sistema 24M dopo lettura sudo riuscita. Preparati df sui due archivi, du circoscritto con limite temporale e vmstat con sei righe per separare swap occupata e trasferimenti attuali. Output successivo atteso; risorse definitive, margine Proxmox, retention, guardie e stack centrale ancora aperti. GPU locale del pilota resta verificata 1/3/1, impatto sostenuto e flusso centrale aperti. Fonti, runbook, evidenze private e contesto/timeline/ISO della rete aggiornati nello stesso giro; specifica template aggiornata, pacchetto non rilasciato. M29/D7/gate AdS invariati, offline Nebula rimandato e Seeweb atteso. Nessun SSH, installazione, allocazione o riavvio dell’assistente; nessun add/commit/push/deploy e modifiche parallele preservate.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-222" class="ev-block has-detail" transform="translate(0,5612)">
+<g class="ev-summary" onclick="toggleEv('ev-222')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Archivi Debian e processo fonti vive della postazione <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-222-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">16/10/2026 &#8212; Archivi Debian e processo fonti vive della postazione</p>
+<p>Ricevuto follow-up del Debian: volume AdS con 59805298688 byte disponibili (55,70 GiB), occupazione du 43110400 byte (41,11 MiB); tecnici iLO 45056 byte (44 KiB), sulla root. du_exit=0. Nei cinque intervalli correnti vmstat 10:45:48-52, si/so/wa=0 e idle=100 come riportato; la prima riga è media dal boot per i tassi. Non sono misurati picchi o crescita giornaliera. Snapshot Proxmox locale delle 07:30:17: 25,41 GiB di RAM free, swap quasi 8 GiB occupata e massimi delle dieci VM running pari a 132 GiB contro 125,42 GiB fisici rilevati; non è l’uso corrente né un margine garantito. Da verificare attività swap, picchi e metadata thin prima di aumentare risorse. L’utente chiede retention degli snapshot e registrazione del processo ISO dalla propria postazione, poi version control della rete. Verificato task giornaliero 07:30, ultimo esito 0, identità interattiva con privilegi limitati, StartWhenAvailable sì, wake no e niente blocchi a batteria: dipendenza da PC e sessione aperta. 127 copie datate, 36817388 byte (35,11 MiB). Retention 90 giorni parametrica implementata e provata: alias/ultima copia/pin/riferimenti protetti, 127 pin iniziali, avviso 512 MiB, soli tre nomi JSON nella radice output, nessun attraversamento di reparse point. Undici prove isolate, cinque scenari del launcher e due mutazioni delle guardie; nessuna prova saltata. La cancellazione pianificata richiede attivazione manuale; primo giro reale e recupero esterno aperti. Processo e rischi collegati a ISO-41/38 e perimetro ISO-29/36, senza attestare conformità complessiva. Fonti, evidenze, contesto e timeline comuni aggiornati nello stesso giro; versionamento preparato per l’utente. GPU locale resta verificata 1/3/1; stack, risorse definitive, flusso centrale, normalizzazione e guardie Debian aperti. M29/D7 invariati, offline Nebula rimandato e Seeweb atteso. Nessun comando su apparati, add/commit/push/deploy o attivazione del task dell’assistente; letture locali del task autorizzate.</p><p>Anteprima reale della retention riuscita: 127 copie, zero candidati ed eliminati; controlli di chiusura rete verdi. Attivazione e primo giro pianificato restano da osservare, senza nuovi eventi sugli apparati.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-223" class="ev-block has-detail" transform="translate(0,5636)">
+<g class="ev-summary" onclick="toggleEv('ev-223')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
 <circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">16/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
 <text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Catalogo QA e passaggio di sessione <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
 </g>
-<foreignObject id="ev-220-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<foreignObject id="ev-223-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta">16/10/2026 &#8212; Catalogo QA e passaggio di sessione</p>
 <p>Ricevuta chiusura manuale rete bff861b con push e verifica remoto riusciti; policy snapshot abilitata dall’operatore a 90 giorni, zero candidati/eliminati su 127 copie, primo giro pianificato ancora da osservare. Ripreso il focus Linux e poi richiesta la chiusura della sessione. Solo scaricate sul PC le immagini ufficiali Prometheus 3.13.4 LTS e Grafana OSS 13.2.4, digest registrati; nessuno stack/configurazione o container del pilota avviato, nessun nuovo flusso al Debian. Letta la segnalazione del produttore QA e il suo codice in lavorazione: due LXC Debian previsti (produzione/staging), istanza Ollama dedicata sul fisico GPU, non ancora censiti come in esercizio. Catalogo in docs/integrazione-log-qa-verifier.md: tecnici applicativi e tentativi, job, autenticazione, proxy, uso/costi riservati, runtime, OS e backup separati; coda cifrata e documenti esclusi dalla raccolta. Requisiti: messaggi italiani con tempi/codice/errore/batch/segmenti/tentativo; senza consenso, recupero locale transitorio almeno dieci minuti. Codice letto con default 600 s e intervallo 60 s, distinto dai retry della chiamata; nessuna prova runtime o finale del produttore svolta qui. Timestamp applicativo senza offset, intervallo segmenti non promosso a elenco completo; troncamento del messaggio non è sanitizzazione. Memoria, fonti, timeline, ISO e integrazione rete aggiornati nello stesso giro; specifica template e procedura di passaggio account aggiornate. Punto di ripresa: margine live Proxmox e pilota centrale metriche/log con guardie, normalizzazione e retention; GPU locale resta verificata 1/3/1, impatto aperto. Offline Nebula rimandato, Seeweb atteso, D7 e gate AdS invariati. Pulizia Codex in due tempi, sessioni vive protette e chiusura Git solo manuale. Nessun add/commit/push/deploy dell’assistente; modifiche parallele preservate.</p>
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="5618" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<g id="ev-224" class="ev-block has-detail" transform="translate(0,5660)">
+<g class="ev-summary" onclick="toggleEv('ev-224')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Preflight Proxmox e confine QA, 17/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-224-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta"> &#8212; Preflight Proxmox e confine QA, 17/10/2026</p>
+<p>Sei letture GET del nodo Proxmox alle 16:09 UTC mostrano 25,3884-25,4174 GiB di RAM libera e 16 KiB di swap libera su circa 8 GiB; 70 campioni RRD AVERAGE, distanti 30 minuti, coprono 34,5 ore e non misurano i picchi. Pool thin del collettore: dati 65,79%, metadati 30,65% di 128 MiB. Sono presenti 11 QEMU, 10 accese, e zero LXC. Due LXC QA previsti richiedono insieme 8 GiB RAM e circa 32 GiB disco; il budget dell'hub resta da misurare. La swap occupata non prova paginazione corrente: mancano si/so del nodo e carico rappresentativo. Nessuna risorsa allocata.</p><p>Il produttore QA staging è pulito a 425d956; il codice applicativo è invariato rispetto a 1b2d9f3. Due LXC Debian e l'Ollama dedicato restano pianificati. La rilettura trova testo potenzialmente sensibile negli errori Ollama/JSON, nell'auth e nel CSV uso: ADR-022 richiede eventi strutturati minimizzati, whitelist per i testi noti e rifiuto di quelli non classificati prima di Loki generale. Originali diagnostici solo in archivio protetto autorizzato; prove negative QA e prova UI/job dell'attesa di almeno 600 s senza consenso ancora aperte.</p><p>Nel PC il guard v0 accetta soltanto la fixture sintetica con originale verificato e label fisse: non è parser o ingestione reale. Il pilota ha riprodotto una perdita alla seconda rotazione ravvicinata del path fisso; la correzione con segmenti a nomi unici ha consegnato due file consecutivi da 818 byte, mantenendo gli originali precedenti immutati. Docker fermo. Guasti durante scrittura/rete e cancellazione alla scadenza restano da provare. Nessun nuovo flusso LAN, LXC o distribuzione. M32b avanza solo nel laboratorio locale; ISO-30 resta in corso e gate AdS invariati.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-225" class="ev-block has-detail" transform="translate(0,5684)">
+<g class="ev-summary" onclick="toggleEv('ev-225')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Coda sintetica separata da Alloy, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-225-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta"> &#8212; Coda sintetica separata da Alloy, 19/10/2026</p>
+<p>Il collettore ha provato sul PC replay-outbox.py per soli eventi fittizi: due segmenti emessi con Loki fermo sono stati recuperati dopo il ripristino e un secondo replay non ha inviato copie. Il codice valida l'intero lotto, limita i segmenti a 256 e 8 MiB e blocca temporanei residui; originali, alimentazione, carico, concorrenza e fermi oltre 55 minuti restano fuori dalla prova. Evidenza privata nel collettore SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA. M32e e ISO-30 avanzano nel pilot ma restano in corso; nessuna sorgente QA/AdS reale è collegata e i due LXC QA restano previsti. Il budget hub+QA e l'attività swap live sono ancora aperti.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-226" class="ev-block has-detail" transform="translate(0,5708)">
+<g class="ev-summary" onclick="toggleEv('ev-226')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Riparazione di una fixture dopo il fermo, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-226-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta"> &#8212; Riparazione di una fixture dopo il fermo, 19/10/2026</p>
+<p>Un tool del solo pilot ha validato con il guard v0 il segmento sintetico mancante e i byte del suo originale, poi ha interrogato Loki: assente. Il push JSON locale ha ricevuto HTTP 204 e la query ha trovato una copia esatta; una seconda esecuzione ha trovato la copia presente e non ha inviato. Stati privati SHA-256 4190910FD2ED6D6E51238D2D9ECECEA2E45E86BAE10421D776A415D8FC27982B e EDDC122E8C9AF3C3BE002333AB0DA34A797F96B3B24256C43C5F83B94E0B9E53. repair-outage.py copre un solo evento fittizio recente, senza scheduler, coda con quota o scansione generale. Query e push non sono atomici: concorrenza e crash dopo 204 possono produrre duplicati. ADR-023 e il blocco dei flussi reali restano attivi. Docker fermo, volumi conservati. M32e e ISO-30 restano in corso; due LXC QA non creati.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-227" class="ev-block has-detail" transform="translate(0,5732)">
+<g class="ev-summary" onclick="toggleEv('ev-227')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Fermo Loki e riavvio Alloy, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-227-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta"> &#8212; Fermo Loki e riavvio Alloy, 19/10/2026</p>
+<p>Nel pilot PC sono stati indicizzati un controllo prima del fermo Loki e un evento dopo il riavvio di Alloy; il record completo emesso e letto da Alloy mentre Loki era fermo non è comparso entro 90 secondi dal ripristino né al probe successivo. Il risultato 2/3 si è ripetuto con una variante temporanea del WAL experimental di loki.write, validata sulla versione fissata ma provata su un volume Alloy già esistente. Nel suo shutdown Alloy ha registrato un errore di lettura del segmento WAL 00000001 mancante. La variante è stata rimossa: la causa esatta resta aperta e il profilo corrente è soltanto dimostrativo. Evidenza privata SHA-256 D867439A4203CFA2550624268C7F7E91D3FB65B3E7C863C380992C60E0D25D69. Nessuna sorgente reale, QA o AdS va collegata a questo percorso finché una coda durevole con limite di spazio, replay dopo riavvio, conteggio dei duplicati e recupero da fermo Loki non sia provata nel punto di indice. Il test contiene due eventi sintetici durante ogni fermo e non quantifica carico sostenuto, perdita irreversibile o comportamento su volume WAL nuovo. M32e e ISO-30 rimangono in corso; due LXC QA non creati. Docker fermo con volumi conservati.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-228" class="ev-block has-detail" transform="translate(0,5756)">
+<g class="ev-summary" onclick="toggleEv('ev-228')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Publisher sintetico e ripresa del pilota, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
+</g>
+<foreignObject id="ev-228-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta"> &#8212; Publisher sintetico e ripresa del pilota, 19/10/2026</p>
+<p>Il pilota PC del collettore pubblica ora ogni record sintetico solo dopo flush/fsync e rename del file staged fuori dal glob Alloy. Il test di crash del publisher e la ripetizione di riavvio/rotazione sono riusciti, ma le sette query negative del 17/10 e le due del 19/10 sono separate da circa 38 ore non osservate; la retention configurata a 24 ore impedisce di dedurne assenza continua. Quattro container fermati, volumi conservati; campione PC di circa 426,06 MiB non dimensiona l'hub. Il contratto qa-tech-v1 è proposto ma non emesso dal produttore, e i due LXC QA restano pianificati. M32b/e e ISO-30 avanzano solo nel pilot sintetico; swap attiva, budget hub+QA, sorgenti reali e gate AdS restano aperti.</p>
+</div>
+</foreignObject>
+</g>
+<text id="footer-src" x="40" y="5810" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3791,7 +3919,15 @@
   {id:'ev-217',type:'event',h:24},
   {id:'ev-218',type:'event',h:24},
   {id:'ev-219',type:'event',h:24},
-  {id:'ev-220',type:'event',h:24}
+  {id:'ev-220',type:'event',h:24},
+  {id:'ev-221',type:'event',h:24},
+  {id:'ev-222',type:'event',h:24},
+  {id:'ev-223',type:'event',h:24},
+  {id:'ev-224',type:'event',h:24},
+  {id:'ev-225',type:'event',h:24},
+  {id:'ev-226',type:'event',h:24},
+  {id:'ev-227',type:'event',h:24},
+  {id:'ev-228',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3832,7 +3968,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 5634').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 5826').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

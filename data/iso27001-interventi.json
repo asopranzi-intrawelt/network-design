@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-16",
+  "aggiornato": "2026-10-19",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1722,6 +1722,40 @@
       "data": "2026-10-16",
       "stato": "in_corso",
       "nota": "Catalogati i log del futuro servizio QA: applicazione/tentativi, job, accessi, proxy, uso/costi riservati, Ollama e OS; due LXC e runtime dedicato ancora previsti. Default letti di recupero 600 s/60 s, nessuna prova runtime o ingestione centrale. Risorse del collettore e del nodo da completare prima del pilota."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-17",
+      "stato": "in_corso",
+      "nota": "M32: pilota PC Prometheus/Grafana/Loki/Alloy con soli dati interni e sintetici verificato; due rotazioni ravvicinate a pari dimensione ricevute dopo correzione Alloy, guard v0 offline limitato alla fixture. Preflight Proxmox live con RAM, swap e thin misurati, senza misura di si/so o budget hub e due LXC QA. Nessun flusso reale, retention effettiva e gate AdS ancora aperti. Dettagli in docs/log-collector-integrazione.md e docs/normalizzazione-retention-capienza.md."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-19",
+      "stato": "in_corso",
+      "nota": "Pilot PC del collettore riprovato con publisher a segmenti completi, riavvio e rotazione; soli dati sintetici. Sette query negative del 17/10 e due del 19/10 separate da circa 38 ore non attestano assenza continua. Docker fermo. Restano sorgenti reali, allarmi, quote e ritenzione effettiva, budget hub e due LXC QA, custodia e gate AdS.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-19",
+      "stato": "in_corso",
+      "nota": "Prova di guasto del pilot PC: controllo e secondo evento presenti, evento letto da Alloy durante fermo Loki assente dopo riavvio Alloy entro 90 secondi e al probe. Stesso 2/3 con WAL experimental su volume esistente; errore di segmento WAL allo shutdown, causa aperta, variante rimossa. Trasporto reale bloccato fino a coda durevole, replay, quota e duplicati provati. QA, hub e gate AdS invariati.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-19",
+      "stato": "in_corso",
+      "nota": "Pilot PC: un record sintetico mancante dopo fermo Loki e riavvio Alloy è stato validato dal guard, inviato manualmente con HTTP 204 e letto una volta; secondo giro senza invio. La riparazione copre un solo evento recente, non è automatica e query+push possono duplicare sotto concorrenza. Gate di coda durevole, replay generale, quota e flussi reali invariato; QA e hub non distribuiti.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-19",
+      "stato": "in_corso",
+      "nota": "Pilot sintetico: due eventi conservati durante il fermo Loki e recuperati dall'outbox dopo il ripristino; secondo replay senza invii. Restano aperti quota degli originali, durata dei fermi, carico, duplicati concorrenti, budget hub e LXC QA, fonti reali e gate AdS.",
+      "evidenza": "Dossier privato collettore replay-outbox-20261019.json SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA"
     }
   ]
 }
