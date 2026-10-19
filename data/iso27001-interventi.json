@@ -1756,6 +1756,12 @@
       "stato": "in_corso",
       "nota": "Pilot sintetico: due eventi conservati durante il fermo Loki e recuperati dall'outbox dopo il ripristino; secondo replay senza invii. Restano aperti quota degli originali, durata dei fermi, carico, duplicati concorrenti, budget hub e LXC QA, fonti reali e gate AdS.",
       "evidenza": "Dossier privato collettore replay-outbox-20261019.json SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-19",
+      "stato": "in_corso",
+      "nota": "Pilot sintetico: quota logica estesa a segmenti e originali, con prova che fallisce togliendo il conteggio degli originali; suite 18/18. La decisione versionata del produttore QA adotta qa-tech-v1 ma non emette eventi; passo 5 non committato, due LXC non creati. Quota fisica, concorrenza, alimentazione, carico, trasporto reale e budget hub+QA ancora aperti; gate AdS invariati."
     }
   ]
 }

@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Quota del pilot e contratto QA ricontrollati, 19/10/2026
+
+Il pilot sintetico del collettore include ora nel limite logico di 8 MiB i segmenti della coda e i file della cartella condivisa degli originali, con massimo 256 segmenti. La prova mirata fallisce togliendo gli originali dal conteggio e la suite finale guard+coda passa 18/18. Altri generatori non condividono il lock: quota fisica, carico, concorrenza, alimentazione e fermi oltre 55 minuti restano aperti. Il produttore QA staging è a 7472de5: la sua ADR-023 versionata adotta qa-tech-v1 ma dichiara assente l'emettitore; il passo 5 applicativo è ancora non committato. I due LXC QA e l'istanza Ollama dedicata restano previsti, senza nuovo flusso o allocazione. M32e e ISO-30 restano in corso; gate AdS invariati.
+
 ## Coda sintetica separata da Alloy, 19/10/2026
 
 Il collettore ha provato sul PC `replay-outbox.py` per soli eventi fittizi: due segmenti emessi con Loki fermo sono stati recuperati dopo il ripristino e un secondo replay non ha inviato copie. Il codice valida l'intero lotto, limita i segmenti a 256 e 8 MiB e blocca temporanei residui; originali, alimentazione, carico, concorrenza e fermi oltre 55 minuti restano fuori dalla prova. Evidenza privata nel collettore SHA-256 `3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA`. M32e e ISO-30 avanzano nel pilot ma restano in corso; nessuna sorgente QA/AdS reale è collegata e i due LXC QA restano previsti. Il budget hub+QA e l'attività swap live sono ancora aperti.

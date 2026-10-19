@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5826" viewBox="0 0 1060 5826" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
-<rect width="1060" height="5826" fill="#f4f7f5"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="5850" viewBox="0 0 1060 5850" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">
+<rect width="1060" height="5850" fill="#f4f7f5"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">228 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 19/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">229 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 19/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#e87ba4"/>
 <text x="52" y="116" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">AI e automazione <tspan fill="#5c6d72">(29)</tspan></text>
@@ -30,7 +30,7 @@
 <circle cx="290" cy="136" r="5" fill="#008300"/>
 <text x="302" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Storage e backup <tspan fill="#5c6d72">(21)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#eda100"/>
-<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(23)</tspan></text>
+<text x="552" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Server e virtualizzazione <tspan fill="#5c6d72">(24)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#eb6834"/>
 <text x="802" y="140" font-size="12" fill="#151d20" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Sistemi e gestionali <tspan fill="#5c6d72">(52)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
@@ -3633,15 +3633,15 @@
 <g class="ev-summary" onclick="toggleEv('ev-225')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
-<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Coda sintetica separata da Alloy, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Quota del pilot e contratto QA ricontrollati, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
 </g>
 <foreignObject id="ev-225-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta"> &#8212; Coda sintetica separata da Alloy, 19/10/2026</p>
-<p>Il collettore ha provato sul PC replay-outbox.py per soli eventi fittizi: due segmenti emessi con Loki fermo sono stati recuperati dopo il ripristino e un secondo replay non ha inviato copie. Il codice valida l'intero lotto, limita i segmenti a 256 e 8 MiB e blocca temporanei residui; originali, alimentazione, carico, concorrenza e fermi oltre 55 minuti restano fuori dalla prova. Evidenza privata nel collettore SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA. M32e e ISO-30 avanzano nel pilot ma restano in corso; nessuna sorgente QA/AdS reale è collegata e i due LXC QA restano previsti. Il budget hub+QA e l'attività swap live sono ancora aperti.</p>
+<p class="d-meta"> &#8212; Quota del pilot e contratto QA ricontrollati, 19/10/2026</p>
+<p>Il pilot sintetico del collettore include ora nel limite logico di 8 MiB i segmenti della coda e i file della cartella condivisa degli originali, con massimo 256 segmenti. La prova mirata fallisce togliendo gli originali dal conteggio e la suite finale guard+coda passa 18/18. Altri generatori non condividono il lock: quota fisica, carico, concorrenza, alimentazione e fermi oltre 55 minuti restano aperti. Il produttore QA staging è a 7472de5: la sua ADR-023 versionata adotta qa-tech-v1 ma dichiara assente l'emettitore; il passo 5 applicativo è ancora non committato. I due LXC QA e l'istanza Ollama dedicata restano previsti, senza nuovo flusso o allocazione. M32e e ISO-30 restano in corso; gate AdS invariati.</p>
 </div>
 </foreignObject>
 </g>
@@ -3652,12 +3652,12 @@
 <circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Riparazione di una fixture dopo il fermo, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Coda sintetica separata da Alloy, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
 </g>
 <foreignObject id="ev-226-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta"> &#8212; Riparazione di una fixture dopo il fermo, 19/10/2026</p>
-<p>Un tool del solo pilot ha validato con il guard v0 il segmento sintetico mancante e i byte del suo originale, poi ha interrogato Loki: assente. Il push JSON locale ha ricevuto HTTP 204 e la query ha trovato una copia esatta; una seconda esecuzione ha trovato la copia presente e non ha inviato. Stati privati SHA-256 4190910FD2ED6D6E51238D2D9ECECEA2E45E86BAE10421D776A415D8FC27982B e EDDC122E8C9AF3C3BE002333AB0DA34A797F96B3B24256C43C5F83B94E0B9E53. repair-outage.py copre un solo evento fittizio recente, senza scheduler, coda con quota o scansione generale. Query e push non sono atomici: concorrenza e crash dopo 204 possono produrre duplicati. ADR-023 e il blocco dei flussi reali restano attivi. Docker fermo, volumi conservati. M32e e ISO-30 restano in corso; due LXC QA non creati.</p>
+<p class="d-meta"> &#8212; Coda sintetica separata da Alloy, 19/10/2026</p>
+<p>Il collettore ha provato sul PC replay-outbox.py per soli eventi fittizi: due segmenti emessi con Loki fermo sono stati recuperati dopo il ripristino e un secondo replay non ha inviato copie. Il codice valida l'intero lotto, limita i segmenti a 256 e 8 MiB e blocca temporanei residui; originali, alimentazione, carico, concorrenza e fermi oltre 55 minuti restano fuori dalla prova. Evidenza privata nel collettore SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA. M32e e ISO-30 avanzano nel pilot ma restano in corso; nessuna sorgente QA/AdS reale è collegata e i due LXC QA restano previsti. Il budget hub+QA e l'attività swap live sono ancora aperti.</p>
 </div>
 </foreignObject>
 </g>
@@ -3668,12 +3668,12 @@
 <circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Fermo Loki e riavvio Alloy, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Riparazione di una fixture dopo il fermo, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
 </g>
 <foreignObject id="ev-227-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta"> &#8212; Fermo Loki e riavvio Alloy, 19/10/2026</p>
-<p>Nel pilot PC sono stati indicizzati un controllo prima del fermo Loki e un evento dopo il riavvio di Alloy; il record completo emesso e letto da Alloy mentre Loki era fermo non è comparso entro 90 secondi dal ripristino né al probe successivo. Il risultato 2/3 si è ripetuto con una variante temporanea del WAL experimental di loki.write, validata sulla versione fissata ma provata su un volume Alloy già esistente. Nel suo shutdown Alloy ha registrato un errore di lettura del segmento WAL 00000001 mancante. La variante è stata rimossa: la causa esatta resta aperta e il profilo corrente è soltanto dimostrativo. Evidenza privata SHA-256 D867439A4203CFA2550624268C7F7E91D3FB65B3E7C863C380992C60E0D25D69. Nessuna sorgente reale, QA o AdS va collegata a questo percorso finché una coda durevole con limite di spazio, replay dopo riavvio, conteggio dei duplicati e recupero da fermo Loki non sia provata nel punto di indice. Il test contiene due eventi sintetici durante ogni fermo e non quantifica carico sostenuto, perdita irreversibile o comportamento su volume WAL nuovo. M32e e ISO-30 rimangono in corso; due LXC QA non creati. Docker fermo con volumi conservati.</p>
+<p class="d-meta"> &#8212; Riparazione di una fixture dopo il fermo, 19/10/2026</p>
+<p>Un tool del solo pilot ha validato con il guard v0 il segmento sintetico mancante e i byte del suo originale, poi ha interrogato Loki: assente. Il push JSON locale ha ricevuto HTTP 204 e la query ha trovato una copia esatta; una seconda esecuzione ha trovato la copia presente e non ha inviato. Stati privati SHA-256 4190910FD2ED6D6E51238D2D9ECECEA2E45E86BAE10421D776A415D8FC27982B e EDDC122E8C9AF3C3BE002333AB0DA34A797F96B3B24256C43C5F83B94E0B9E53. repair-outage.py copre un solo evento fittizio recente, senza scheduler, coda con quota o scansione generale. Query e push non sono atomici: concorrenza e crash dopo 204 possono produrre duplicati. ADR-023 e il blocco dei flussi reali restano attivi. Docker fermo, volumi conservati. M32e e ISO-30 restano in corso; due LXC QA non creati.</p>
 </div>
 </foreignObject>
 </g>
@@ -3681,19 +3681,35 @@
 <g class="ev-summary" onclick="toggleEv('ev-228')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#eb6834"/>
+<text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Fermo Loki e riavvio Alloy, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SYS</tspan></text>
+</g>
+<foreignObject id="ev-228-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta"> &#8212; Fermo Loki e riavvio Alloy, 19/10/2026</p>
+<p>Nel pilot PC sono stati indicizzati un controllo prima del fermo Loki e un evento dopo il riavvio di Alloy; il record completo emesso e letto da Alloy mentre Loki era fermo non è comparso entro 90 secondi dal ripristino né al probe successivo. Il risultato 2/3 si è ripetuto con una variante temporanea del WAL experimental di loki.write, validata sulla versione fissata ma provata su un volume Alloy già esistente. Nel suo shutdown Alloy ha registrato un errore di lettura del segmento WAL 00000001 mancante. La variante è stata rimossa: la causa esatta resta aperta e il profilo corrente è soltanto dimostrativo. Evidenza privata SHA-256 D867439A4203CFA2550624268C7F7E91D3FB65B3E7C863C380992C60E0D25D69. Nessuna sorgente reale, QA o AdS va collegata a questo percorso finché una coda durevole con limite di spazio, replay dopo riavvio, conteggio dei duplicati e recupero da fermo Loki non sia provata nel punto di indice. Il test contiene due eventi sintetici durante ogni fermo e non quantifica carico sostenuto, perdita irreversibile o comportamento su volume WAL nuovo. M32e e ISO-30 rimangono in corso; due LXC QA non creati. Docker fermo con volumi conservati.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-229" class="ev-block has-detail" transform="translate(0,5780)">
+<g class="ev-summary" onclick="toggleEv('ev-229')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#c3d0cd" stroke-width="2"/>
 <circle cx="178" cy="-4" r="4.5" fill="#eda100"/>
 <text x="164" y="0" font-size="12" fill="#5c6d72" text-anchor="end" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
 <text x="204" y="0" font-size="13" fill="#151d20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif">Publisher sintetico e ripresa del pilota, 19/10/2026 <tspan font-size="10" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">SRV</tspan></text>
 </g>
-<foreignObject id="ev-228-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<foreignObject id="ev-229-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta"> &#8212; Publisher sintetico e ripresa del pilota, 19/10/2026</p>
 <p>Il pilota PC del collettore pubblica ora ogni record sintetico solo dopo flush/fsync e rename del file staged fuori dal glob Alloy. Il test di crash del publisher e la ripetizione di riavvio/rotazione sono riusciti, ma le sette query negative del 17/10 e le due del 19/10 sono separate da circa 38 ore non osservate; la retention configurata a 24 ore impedisce di dedurne assenza continua. Quattro container fermati, volumi conservati; campione PC di circa 426,06 MiB non dimensiona l'hub. Il contratto qa-tech-v1 è proposto ma non emesso dal produttore, e i due LXC QA restano pianificati. M32b/e e ISO-30 avanzano solo nel pilot sintetico; swap attiva, budget hub+QA, sorgenti reali e gate AdS restano aperti.</p>
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="5810" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<text id="footer-src" x="40" y="5834" font-size="11" fill="#5c6d72" font-family="ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -3927,7 +3943,8 @@
   {id:'ev-225',type:'event',h:24},
   {id:'ev-226',type:'event',h:24},
   {id:'ev-227',type:'event',h:24},
-  {id:'ev-228',type:'event',h:24}
+  {id:'ev-228',type:'event',h:24},
+  {id:'ev-229',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -3968,7 +3985,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 5826').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 5850').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

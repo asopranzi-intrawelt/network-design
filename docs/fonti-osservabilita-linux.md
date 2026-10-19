@@ -260,3 +260,9 @@ Le fonti primarie sono i due stati del controllo `check-outage.py`, le query Lok
 ## Fonti della riparazione della fixture, 19/10/2026
 
 Fonte primaria: `pilot/monitoring-hub/repair-outage.py`, query e stati privati con SHA-256 `4190910FD2ED6D6E51238D2D9ECECEA2E45E86BAE10421D776A415D8FC27982B` per il push e `EDDC122E8C9AF3C3BE002333AB0DA34A797F96B3B24256C43C5F83B94E0B9E53` per il giro senza invio. La [API HTTP ufficiale di Loki](https://grafana.com/docs/loki/latest/reference/loki-http-api/) specifica corpo JSON `streams`, timestamp nanosecondi come stringa e query_range. La risposta 204 e la copia letta sono misure del pilot, non una garanzia di exactly once; il limite di concorrenza è inferenza dalla separazione fra query e push.
+
+## Fonti della quota del pilot e della ricognizione QA, 19/10/2026
+
+Per la quota la fonte primaria è il codice locale `pilot/monitoring-hub/replay-outbox.py` con `tests/test_replay_outbox.py`: 18 prove guard+coda verdi dopo il ripristino verificato, e la prova mirata fallisce se il conteggio degli originali viene tolto. Il limite di 8 MiB è una scelta interna e si applica solo al comando del pilot, non al filesystem; nessuna fonte esterna gli attribuisce una garanzia di durabilità o concorrenza.
+
+Per il produttore QA la fonte versionata è l'ADR-023 del branch `staging` a `7472de5` del 19/10/2026, che adotta `qa-tech-v1` del collettore e dichiara assente l'emettitore. Le modifiche del passo 5 lette nello stesso repository sono non committate e mobili; la nota privata `_notes/qa-source-snapshot-20261019.md` distingue stato, percorso e limiti. La scelta di separare gli eventi tecnici minimizzati da un registro di autorizzazione identificante è una decisione da definire fra progetti, non una conclusione dedotta da documentazione esterna o una prova di esercizio.
