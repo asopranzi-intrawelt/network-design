@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-16. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-19. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -250,7 +250,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-16. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-16):** Catalogati i log del futuro servizio QA: applicazione/tentativi, job, accessi, proxy, uso/costi riservati, Ollama e OS; due LXC e runtime dedicato ancora previsti. Default letti di recupero 600 s/60 s, nessuna prova runtime o ingestione centrale. Risorse del collettore e del nodo da completare prima del pilota.
+  - **Ultimo stato (2026-10-19):** Pilot sintetico: due eventi conservati durante il fermo Loki e recuperati dall'outbox dopo il ripristino; secondo replay senza invii. Restano aperti quota degli originali, durata dei fermi, carico, duplicati concorrenti, budget hub e LXC QA, fonti reali e gate AdS.
+  - **Evidenza:** Dossier privato collettore replay-outbox-20261019.json SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
