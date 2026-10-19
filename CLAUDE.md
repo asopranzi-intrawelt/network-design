@@ -4,7 +4,7 @@
 
 ## Cos'e' questo progetto
 
-Progetto di documentazione e progettazione della rete Intrawelt. Raccoglie la storia completa degli interventi infrastrutturali di rete, lo snapshot corrente dell'infrastruttura Proxmox, la documentazione del firewall e degli altri componenti, e definisce gli step di intervento futuri. La documentazione segue un doppio layer: narrativo (locale, in `_notes/`) per le spiegazioni dettagliate e la storyline, e tecnico (versionato, in `.claude/context/`) per i documenti strutturati. Il progetto adotta un angolo ISO27001 per la documentazione della sicurezza di rete.
+Documentazione e progettazione della rete Intrawelt: interventi passati e futuri, snapshot Proxmox, firewall, altri componenti e sicurezza ISO 27001. Il layer narrativo locale e' in `_notes/`; quello tecnico, strutturato e versionato, in `.claude/context/`.
 
 ## Procedura di ripresa in una sessione nuova
 
@@ -16,7 +16,7 @@ Per ogni decisione tecnica nuova o rettificata si collega nel registro ADR o nel
 
 ## Due layer documentali
 
-Il layer narrativo vive in `_notes/`, ignorato da git: contiene spiegazioni dettagliate, diario operativo, resoconto esteso, trascrizioni e materiale grezzo. Non va in git perche' e' narrativo, personale e spesso voluminoso.
+`_notes/` raccoglie spiegazioni, diario, resoconti, trascrizioni e materiale grezzo. E' ignorato da Git perche' spesso personale o voluminoso.
 
 Il layer tecnico vive in `.claude/context/` e `docs/`, versionato: contiene le schede strutturate con frontmatter di riconciliazione, i diagrammi, la timeline degli interventi in formato Markdown, la documentazione ISO27001. E' la fonte di verita' recuperabile da un clone.
 

@@ -250,8 +250,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-19. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-19):** Pilot sintetico: due eventi conservati durante il fermo Loki e recuperati dall'outbox dopo il ripristino; secondo replay senza invii. Restano aperti quota degli originali, durata dei fermi, carico, duplicati concorrenti, budget hub e LXC QA, fonti reali e gate AdS.
-  - **Evidenza:** Dossier privato collettore replay-outbox-20261019.json SHA-256 3ED8E8A8EF1F05C3E98502328CEAA090F0383363A4BFC206C65B50BB3891CDBA
+  - **Ultimo stato (2026-10-19):** Pilot sintetico: quota logica estesa a segmenti e originali, con prova che fallisce togliendo il conteggio degli originali; suite 18/18. La decisione versionata del produttore QA adotta qa-tech-v1 ma non emette eventi; passo 5 non committato, due LXC non creati. Quota fisica, concorrenza, alimentazione, carico, trasporto reale e budget hub+QA ancora aperti; gate AdS invariati.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
