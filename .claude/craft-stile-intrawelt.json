@@ -1,0 +1,11 @@
+{
+  "nome": "intrawelt-design",
+  "descrizione": "Design system di Intrawelt applicato ai documenti prodotti con le applicazioni Craft. Valori presi dalla skill di account `intrawelt-design`, che li estrae a sua volta dal Brand Manual di luglio 2026 e dal file Figma del rifacimento del sito: titoli in Altro Serif, testo in Altro Grotesk, viola istituzionale 4D11A7 sui titoli, inchiostro 0A0A0A sul testo. Si usa per gli artefatti destinati a essere letti fuori dal repository, cioe' documenti di consegna, relazioni e presentazioni; la documentazione interna del progetto resta nel suo stile tecnico. I font Altro sono licenziati per uso su scrivania e sono installati sulla macchina: la licenza per uso su web e' una pendenza aperta e non riguarda questo impiego.",
+  "font_titoli": "Altro Serif",
+  "font_testo": "Altro Grotesk",
+  "colore_titoli": "4D11A7",
+  "colore_testo": "0A0A0A",
+  "font_codice": "Consolas",
+  "dimensioni": {"Title": 28, "Heading 1": 20, "Heading 2": 16, "Heading 3": 13, "Normal": 11, "Code": 10},
+  "colori_slide": {"dk1": "#0A0A0A", "lt1": "#FFFFFF", "dk2": "#4D11A7", "lt2": "#F4F5F9", "accent1": "#4D11A7", "accent2": "#57CCF6", "hlink": "#4D11A7"}
+}
