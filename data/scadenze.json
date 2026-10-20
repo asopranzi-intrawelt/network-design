@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 21,
+  "revisione": 23,
   "aggiornato": "2026-10-20",
   "progetti_collegati": [
     {
@@ -30,11 +30,13 @@
     {
       "id": "intrawelt-website",
       "percorso_remoto": "ssh://intra-newsite/home/intrawelt-site/intrawelt-website",
-      "commit_riconciliato": "non_ancora_letto",
+      "commit_riconciliato": "90ec67fd542dcad3c66c36f07b5f985695f453fe",
       "riconciliato_il": "2026-10-20",
-      "accesso_stato": "da_configurare",
-      "accesso_mancante": "nessun alias intra-newsite nel ~/.ssh/config e nessuna chiave dedicata: l'accesso e' con password, difetto #226",
-      "dove": "docs/sito-nuovo-integrazione.md"
+      "accesso_stato": "configurato",
+      "accesso_mancante": "nessuno: alias intra-newsite attivo dal 20/10/2026, chiave dedicata, lettura verificata anche in modalita non interattiva",
+      "dove": "docs/sito-nuovo-integrazione.md",
+      "nota_chiave": "la chiave e senza frase di accesso, scelta da confermare: con una frase servirebbe ssh-agent caricato a ogni avvio, altrimenti il controllo riporterebbe la macchina irraggiungibile pur essendo corretta",
+      "ramo": "staging"
     }
   ],
   "scadenze": [
