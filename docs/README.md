@@ -8,6 +8,7 @@ Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) e' il punto di par
 |---|---|
 | Da dove arrivano gli snapshot automatici e come si conservano senza perdere evidenze? | [Processo fonti vive e retention](processo-fonti-vive-retention.md), ISO-41/38 e perimetro della postazione |
 | Come osservare tutte le macchine Linux, il fisico Ollama e i loro log da una console? | [Studio Netdata e osservabilità Linux](osservabilita-linux-netdata.md), [runbook del pilota GPU](runbook-monitoraggio-linux.md), M32 e relazione con M29 |
+| Perche' un servizio raggiungibile puo' essere guasto, e che cosa deve misurare il presidio? | [Inferenza: la GPU persa al riavvio](inferenza-gpu-persa-al-riavvio.md), ADR-037, M32g e gap 222-223 |
 | Quali configurazioni del firewall Seeweb conosciamo e quali interventi derivano? | [Firewall Seeweb](firewall-seeweb-opnsense.md), roadmap M31/M14 e gap 210–214 |
 | Quali pannelli Seeweb sono censiti e quali log sono realmente raccolti? | [Sorgenti Seeweb](sorgenti-log-seeweb.md) e [integrazione del collettore](log-collector-integrazione.md) |
 | Che cosa e' collegato e quanto e' verificato? | [Snapshot](snapshot-infrastruttura.md), [mappa](network-map.html) e [guida](network-diagram.md) |

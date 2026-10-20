@@ -1,8 +1,16 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## Inferenza degradata dopo il riavvio e direttiva sul monitoraggio, 20/10/2026
+
+Sull'host di inferenza della LAN una misura diretta ha trovato 1,91 parole al secondo in decodifica contro le 43,99 della stessa macchina dopo il riavvio del servizio, con caricamento del modello da 105,89 a 3,99 secondi e memoria video occupata da zero a 10,12 GB. La causa è la scoperta delle schede fatta una volta sola all'avvio: il servizio era ripartito dodici secondi dopo l'accensione, prima che lo stack del driver fosse pronto, aveva concluso per il solo processore e aveva servito così per cinque giorni, mentre la scheda era sana e libera con 34 MiB occupati su 16.311 e utilizzo a zero. Nello stesso minuto il secondo servizio di inferenza in contenitore registrava il fallimento del montaggio della cartella del driver. Il vincolo contro la corsa è installato come frammento di unità, con attesa della strumentazione della scheda, tetto di sessanta secondi ed esito ignorato; resta non provato al riavvio della macchina, che richiede una finestra concordata perché l'host serve più progetti. La direttiva dell'IT Manager che ne discende è ADR-037: il monitoraggio guarda la prestazione e non soltanto la raggiungibilità, perché nessun controllo del progetto avrebbe cambiato stato in quei cinque giorni. Tre segnali decisi per l'host, memoria video a modello caricato, riga di avvio che dichiara la libreria trovata e campione periodico di velocità; letture preparate nel runbook, nessuna serie raccolta, M32g aperto e gap 222-223 registrati. ISO-30 prende nota senza avanzare di stato; le misure di prestazione prese su quell'endpoint nei cinque giorni vanno ricontrollate con la data accanto.
+
 ## Ticket Seeweb e modulo eventi QA, 20/10/2026
 
 La nuova risposta Seeweb indica i menu dei log locali e il confronto Backup; chiede se limitare la GUI a IP definiti e propone uno studio dell'aggiornamento con possibile ripristino. Il ticket appare chiuso senza aver specificato audit degli attori, export/Syslog, retention, servizi raggiungibili dalla WAN 29, certificato o piano operativo. Screenshot originale e bozza di seguito privati, nessun messaggio inviato o configurazione cambiata. Il produttore QA su staging a 71a3892 ha versionato app/events.py: costruisce qa-tech-v1 senza trasporto; l'evento di autorizzazione include identità e nome file, da tenere fuori dalla vista tecnica generale. Due LXC QA non creati; ISO-30 resta in corso, dossier sincronizzati fra rete e collettore.
+
+## 20/10/2026 - Seguito Seeweb e piano OPNsense
+
+Il 20/10 l'utente ha deciso di inviare un seguito al ticket Seeweb: richiesta di Syslog remoto verso la Debian privata via IPsec, con IP sorgente e percorso da confermare, ricevitore da preparare e prova limitata prima dell'attivazione. L'aggiornamento OPNsense 21.1.5, la restrizione della GUI e il certificato saranno concordati con il provider mediante piano di backup, accesso alternativo e rollback. Il ticket non è ancora confermato come inviato; nessuna configurazione o stato ISO è cambiato.
 
 ## Quota del pilot e contratto QA ricontrollati, 19/10/2026
 

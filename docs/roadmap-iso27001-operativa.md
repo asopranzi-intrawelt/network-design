@@ -250,8 +250,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-20):** Risposta Seeweb letta il 20/10: indicati menu dei log e confronto Backup; ticket chiuso. Audit amministrativo, export/Syslog, regola WAN 29, certificato GUI e piano di aggiornamento restano aperti; nessuna modifica all'appliance o raccolta centrale.
-  - **Evidenza:** docs/firewall-seeweb-opnsense.md
+  - **Ultimo stato (2026-10-20):** 20/10/2026: direttiva dell'IT Manager ADR-037, il presidio misura la prestazione e non la sola raggiungibilita'. Un servizio di inferenza della LAN ha servito per cinque giorni a 1,91 parole al secondo invece di 43,99 restando raggiungibile, attivo e corretto: nessun evento o soglia oggi definiti lo avrebbero mostrato. Gli eventi e le soglie di questo controllo comprendono ora, per ogni sorgente, il segnale da cui dipende il suo valore; sull'host di inferenza memoria video a modello caricato, riga di avvio che dichiara la libreria trovata e campione periodico di velocita'. Letture preparate nel runbook, nessuna serie raccolta: lavoro M32g, gap 222-223, nessun avanzamento di copertura.
+  - **Evidenza:** docs/inferenza-gpu-persa-al-riavvio.md; docs/runbook-monitoraggio-linux.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

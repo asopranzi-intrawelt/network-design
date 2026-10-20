@@ -1,5 +1,17 @@
 # Snapshot di sincronizzazione
 
+## Il produttore QA entra nel triage automatico, 20/10/2026
+
+`data/scadenze.json` elenca ora tre progetti collegati: `log-collector`, `integrita-docs` e `intrawelt-qa-verifier`, quest'ultimo con baseline `71a3892` del ramo `staging` e rimando a `docs/integrazione-log-qa-verifier.md`. Il controllo di allineamento riporta subito tre commit da triagiare, due di allineamento dal template e uno applicativo sul banco di prova; il commit riconciliato si aggiorna solo dopo la lettura del diff. Le note che dichiaravano quel progetto fuori dal confronto sono state corrette; resta dichiarato il limite del ramo. Diff pronto per il `chiudi` manuale, messaggio in `_notes/COMMIT-MSG.txt`.
+
+## Contesto di progetto aggiornato sul presidio della prestazione, 20/10/2026
+
+Le tre schede di contesto conservano ora la direttiva ADR-037 e il confine del lavoro: `STACK.md` dice che qui vivono regola, segnali, soglia, M32g, gap 222-223 e nota ISO-30, mentre trasporto, archivi ed esportatori sono di `D:/log-collector` e l'istanza dedicata sul fisico GPU e' di `D:/intrawelt-qa-verifier`; `design-and-security.md` registra che A.8.16 non si considera coperto da un controllo di sola esistenza su un servizio il cui valore e' un tasso; `dev-testing.md` porta la lezione di verifica e le due pratiche che ne seguono. Dichiarato il punto cieco: il produttore QA non e' fra i `progetti_collegati` di `data/scadenze.json`, quindi i suoi avanzamenti non entrano nel triage automatico di `Test-Allineamento.py`. Frontmatter `last-verified` delle schede da bumpare dopo il commit.
+
+## Il monitoraggio guarda la prestazione, 20/10/2026
+
+Il rilievo sull'host di inferenza, 1,91 contro 43,99 parole al secondo per cinque giorni con porta aperta e risposte corrette, ha prodotto la direttiva ADR-037: il presidio misura la prestazione e non la sola raggiungibilita'. Tre segnali decisi per quell'host, due gia' leggibili senza costo e il terzo da fissare per modello, richiesta, cadenza e soglia; nessuna serie raccolta, nessun esportatore scritto, Agent del fisico ancora in loopback. Gap 222-223 registrati e totale a 223, roadmap M32g aperto, ISO-30 annotato in corso senza avanzamento, glossario ISO esteso con ADR-037 e M32g, timeline rigenerata a 232 eventi, lezione `L-001` aperta verso il template. Resta non provato che al prossimo riavvio della macchina l'ordinamento corretto si ripeta: serve una finestra concordata perche' l'host serve piu' progetti. Nessuna modifica a host, topologia o stato ISO; add, commit e push restano manuali.
+
 ## Template 953e506 allineato, 20/10/2026
 
 L'allineamento è stato eseguito contro il template pulito al commit `953e506`; una lavorazione parallela successiva ha ora un diff separato nella fonte. La passata globale aveva saltato la rete perché i file erano già modificati: l'allineatore mirato ha aggiornato nove file storici, aggiunto l'innesco Craft e conservato con merge pulito l'adattamento locale di `tools/chiudi-sessione.ps1`. La seconda prova a vuoto conta zero VECCHIO, NUOVO, MERGE e INNESCO; i wrapper Codex sono allineati. Il dossier QA condiviso distingue ora esplicitamente la fotografia storica del 17/10 dallo stato del 20/10. Nessuna modifica topologica, LXC o flusso reale; add, commit, push e deploy restano all'utente. Il budget istruzioni dopo l'innesco Craft è 99.868/100.000, ottenuto accorciando la descrizione duplicata dei due livelli documentali. La copia eseguibile di `chiudi` ora passa `controlla` come argomento unico: prima stampava `invalid choice: 'c'` pur con gate verde. La lezione `L-001` è registrata nel collettore per la correzione nella fonte del template. `chiudi -SoloControlli` è verde nei due progetti e i diff non hanno errori di spaziatura con CRLF riconosciuto.
@@ -7,6 +19,8 @@ L'allineamento è stato eseguito contro il template pulito al commit `953e506`; 
 ## Risposta Seeweb e builder QA riletti, 20/10/2026
 
 Il ticket Seeweb chiuso indica i menu dei log e il confronto Backup, chiede se limitare la GUI per IP e propone uno studio dell'aggiornamento; audit degli attori, trasporto, regola WAN 29, certificato e piano operativo restano aperti. Il produttore QA su `staging` a `71a3892` ha versionato `app/events.py` (`7189dfe`), che costruisce `qa-tech-v1` senza inviarlo. L'evento di autorizzazione contiene identità e nome file da separare dalla vista tecnica generale; la validazione diretta non copre tutti i valori. Due LXC QA ancora previsti, non creati. Dossier condivisi e stato della rete aggiornati, senza cambio topologico o operativo.
+
+Il seguito del ticket Seeweb ora specifica l'inoltro Syslog al collettore Debian sulla VPN IPsec e il test solo dopo aver preparato regola di ingresso e archivio tecnico. L'utente concorderà con il provider il piano di avanzamento OPNsense e della GUI; ticket non ancora confermato inviato, nessuna modifica operativa o chiusura di M31/SWB-005.
 
 ## Pubblicazione protetta del pilot del collettore, 20/10/2026
 
