@@ -1,5 +1,5 @@
 {
-  "versione": "2026-09-29",
+  "versione": "2026-10-20",
   "nota": "Sintesi operative parafrasate. I codici ISO rinviano a ISO/IEC 27001:2022 e all'Annex A della stessa edizione; non riproducono il testo normativo.",
   "voci": {
     "4-10": [
@@ -737,6 +737,22 @@
     "ADR-037": [
       "Il monitoraggio guarda la prestazione",
       "Il presidio misura ciò che un servizio produce per unità di tempo e non soltanto che risponda; soglia dal riferimento misurato, serie conservata, nessuna lettura dei contenuti."
+    ],
+    "#224": [
+      "Chiave unica della VPS del sito",
+      "La VPS di produzione del sito nuovo autorizza una sola chiave, custodita su un dispositivo che non e' nell'inventario aziendale. La via di emergenza dichiarata e' la console web del pannello del fornitore, mai provata."
+    ],
+    "#226": [
+      "Accesso con password sulla macchina di staging del sito",
+      "La macchina di staging del sito si raggiunge con password e non con chiave, e quella password e' transitata in un canale di chat senza essere piu' cambiata. La porta di amministrazione della VPS di produzione e' inoltre aperta verso Internet senza restrizione di provenienza, con il registro degli accessi mai letto."
+    ],
+    "#232": [
+      "Intestazione e recapiti dell'account del pannello cloud",
+      "L'account del pannello cloud che governa le VPS esterne ha come contatto una casella individuale di un reparto diverso da quello che amministra le macchine, e il fornitore dichiara i suoi recapiti non verificati: e' la ragione per cui un codice di reset non raggiungeva l'IT."
+    ],
+    "#235": [
+      "Secondo fattore assente sull'account del pannello cloud",
+      "L'accesso con secondo fattore all'account del pannello cloud e' disattivato. Quell'account puo' spegnere, reinizializzare e cancellare tutte le VPS esterne, e la sua password si recupera dalla casella intestataria, quindi senza secondo fattore il controllo dell'account coincide con il controllo di quella casella."
     ]
   }
 }

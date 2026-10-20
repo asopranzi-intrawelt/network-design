@@ -1799,6 +1799,12 @@
       "data": "2026-10-20",
       "stato": "in_corso",
       "nota": "20/10: nel collettore preparato il controllo dell'archivio tecnico Seeweb: misura file, byte e spazio, richiede durata esplicita per scadere file, segnala localmente archivio assente o occupazione almeno 80%. Prova Linux su file fittizi e mutazione della guardia ai link superate; unita' systemd non installate. Volume reale, durata approvata, allarme esterno e ricezione Seeweb ancora assenti."
+    },
+    {
+      "id": "ISO-07",
+      "data": "2026-10-20",
+      "stato": "in_corso",
+      "nota": "Censimento avviato il 20/10/2026 sul perimetro degli accessi amministrativi esterni, con quattro riscontri verificati per lettura diretta del pannello e nessuna rimedizione ancora applicata. L'account del pannello cloud del fornitore, che governa tutte e tre le VPS esterne e puo' spegnerle, reinizializzarle e cancellarle, non ha il secondo fattore attivo (#235) e il fornitore stesso dichiara i suoi recapiti non verificati (#232); il contatto intestatario e' una casella individuale di un reparto diverso da quello che amministra le macchine, il che spiega perche' un codice di reset non raggiungeva l'IT. La VPS di produzione del sito ha una sola chiave autorizzata, su un dispositivo fuori inventario (#224). La macchina di staging del sito si raggiunge con password e non con chiave, e quella password e' transitata in un canale di chat senza essere piu' cambiata (#226). Ordine di rimedio proposto: secondo fattore e verifica dei recapiti dal pannello, che non richiedono ne' finestra ne' fermo; poi seconda chiave intestata all'azienda con frase di accesso nel gestore aziendale; poi sostituzione dell'accesso con password sulla macchina di staging. La matrice degli accessi e la revoca delle vecchie credenziali, che la verifica di questo intervento richiede, restano da produrre."
     }
   ]
 }

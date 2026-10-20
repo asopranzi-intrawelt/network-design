@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 32, in corso 15, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 31, in corso 16, bloccati 0, completati 0, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -91,11 +91,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
   - **Responsabile:** Responsabile del servizio. **Dipendenze:** nessuna. **Controlli:** A.8.3, A.8.20.
   - **Fonti:** docs/esposizione-servizi-interni.md sezione host Ollama, GAP-TBC #173.
 
-- **ISO-07 | Credenziali e accessi amministrativi delle VM** - **Da fare**; Nessuna fornitura prevista.
+- **ISO-07 | Credenziali e accessi amministrativi delle VM** - **In corso**; Nessuna fornitura prevista.
   - **Azione:** Censire password condivise e SSH con password, assegnare credenziali individuali o chiavi, eliminare file di credenziali in chiaro e rivedere VNC/RDP aperti.
   - **Chiusura verificabile:** Matrice accessi approvata, vecchie credenziali revocate, test degli accessi consentiti e negati.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.5.16, A.5.17, A.8.2.
   - **Fonti:** docs/esposizione-servizi-interni.md, GAP-TBC #120, #170, #172.
+  - **Ultimo stato (2026-10-20):** Censimento avviato il 20/10/2026 sul perimetro degli accessi amministrativi esterni, con quattro riscontri verificati per lettura diretta del pannello e nessuna rimedizione ancora applicata. L'account del pannello cloud del fornitore, che governa tutte e tre le VPS esterne e puo' spegnerle, reinizializzarle e cancellarle, non ha il secondo fattore attivo (#235) e il fornitore stesso dichiara i suoi recapiti non verificati (#232); il contatto intestatario e' una casella individuale di un reparto diverso da quello che amministra le macchine, il che spiega perche' un codice di reset non raggiungeva l'IT. La VPS di produzione del sito ha una sola chiave autorizzata, su un dispositivo fuori inventario (#224). La macchina di staging del sito si raggiunge con password e non con chiave, e quella password e' transitata in un canale di chat senza essere piu' cambiata (#226). Ordine di rimedio proposto: secondo fattore e verifica dei recapiti dal pannello, che non richiedono ne' finestra ne' fermo; poi seconda chiave intestata all'azienda con frase di accesso nel gestore aziendale; poi sostituzione dell'accesso con password sulla macchina di staging. La matrice degli accessi e la revoca delle vecchie credenziali, che la verifica di questo intervento richiede, restano da produrre.
 
 - **ISO-08 | Diagnosi del NAS principale dei backup** - **Da fare**; FORNITURA CONDIZIONATA. NAS sostitutivo preventivato; dischi, NIC, firmware o assistenza solo se la diagnosi identifica il componente da sostituire.
   - **Azione:** Leggere RAID, dischi, carico, firmware, SMB, negoziazione e aggregazione delle due NIC; ripetere le misure prima e dopo il rimedio.
