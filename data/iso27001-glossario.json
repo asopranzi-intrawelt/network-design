@@ -722,6 +722,10 @@
       "Estensione controllata Linux",
       "Estendere per gruppi dopo il pilota, con conteggi, silenzio, retention e recupero verificati per host."
     ],
+    "M32g": [
+      "Segnali di prestazione nel presidio",
+      "Raccogliere accanto alla disponibilità il segnale da cui dipende il valore di ogni sorgente; sull'host di inferenza memoria video a modello caricato, riga di avvio con la libreria trovata e campione periodico di velocità."
+    ],
     "M29": [
       "Standardizzazione dei presidi delle VM",
       "Estendere alle altre VM il pilota con watchdog, risorse e controlli tecnici, con finestre e prove concordate. Resta il gate già deciso prima dell’estensione delle sorgenti AdS."
@@ -729,6 +733,10 @@
     "ADR-036": [
       "Fonti vive sulla postazione e retention degli snapshot",
       "Processo locale con responsabilità, validazione, dipendenza dalla sessione, evidenze protette e conservazione parametrica; attivazione e collaudo pianificato distinti dal codice."
+    ],
+    "ADR-037": [
+      "Il monitoraggio guarda la prestazione",
+      "Il presidio misura ciò che un servizio produce per unità di tempo e non soltanto che risponda; soglia dal riferimento misurato, serie conservata, nessuna lettura dei contenuti."
     ]
   }
 }
