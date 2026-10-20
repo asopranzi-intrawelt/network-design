@@ -662,12 +662,17 @@ def main():
     p.add_argument("--registra", action="store_true",
                    help="scrive l'impronta nel file di ripresa; si fa a fine sessione")
     p.add_argument("--breve", action="store_true", help="una riga di esito, per un hook")
+    p.add_argument("--hook", action="store_true",
+                   help="come --breve, ma esce sempre con zero: vedi la nota in fondo")
     p.add_argument("--radice", help="radice del repository; per difetto la cartella corrente")
     p.add_argument("--self-test", action="store_true")
     a = p.parse_args()
 
     if a.self_test:
         return self_test()
+
+    if a.hook:
+        a.breve = True
 
     try:
         if a.registra:
@@ -707,5 +712,13 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    # Il codice di uscita dice a una persona, o a CI, se il file di ripresa e' divergente,
+    # e resta quello. Verso un hook SessionStart non dice niente: Claude Code tratta
+    # qualunque valore diverso da zero come un errore, scarta lo standard output e mostra
+    # una riga di fallimento senza contenuto, cosi' che proprio l'avviso di divergenza,
+    # cioe' il solo caso in cui questo controllo ha qualcosa da dire, sia il caso in cui
+    # la sessione non lo legge. Con --hook l'esito resta nella riga di testo e l'uscita
+    # e' sempre zero.
+    _codice = main()
+    sys.exit(0 if "--hook" in sys.argv else _codice)
 

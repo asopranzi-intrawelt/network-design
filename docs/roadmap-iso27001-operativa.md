@@ -35,7 +35,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
 - **ISO-11 - Copertura e cifratura della copia fuori sede:** Capacita' o servizio cloud aggiuntivo solo se la misura dimostra che il piano attuale non copre il perimetro approvato. Decisione: Definire prima perimetro e ritenzione.
 - **ISO-21 - Segmenti postazioni, server e management:** Eventuali porte gestite o apparati aggiuntivi soltanto se il censimento delle porte mostra insufficienza. Decisione: Usare la capacita' esistente prima di acquistare.
 - **ISO-25 - VPN moderne e failover WAN:** Intervento del fornitore di connettivita' se le modifiche ai peer o al failover non sono gestibili internamente. Decisione: Confermare responsabilita' e condizioni del servizio.
-- **ISO-27 - Patch e configurazioni di riferimento:** Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario. Decisione: Aprire proposta distinta per ogni asset non aggiornabile.
+- **ISO-27 - Patch e configurazioni di riferimento:** Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico. Decisione: Chiarire titolarita' e scheda contrattuale, concordare e approvare per iscritto piano e costo prima dell'ordine.
 - **ISO-28 - Remediation del vulnerability assessment:** Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi. Decisione: Definire perimetro della verifica prima dell'incarico.
 - **ISO-29 - Cifratura endpoint e dispositivo personale in RMM:** Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato. Decisione: Confrontare il requisito con le funzioni RMM gia' disponibili.
 - **ISO-30 - Log e allarmi di rete e infrastruttura:** VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme. Decisione: Verificare capacita' Proxmox e NAS e misurare volumi e ritenzione prima di acquistare.
@@ -225,12 +225,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
 
 ### 3. Controlli ripetibili - dicembre 2026-gennaio 2027
 
-- **ISO-27 | Patch e configurazioni di riferimento** - **In corso**; FORNITURA CONDIZIONATA. Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario.
+- **ISO-27 | Patch e configurazioni di riferimento** - **In corso**; FORNITURA CONDIZIONATA. Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico.
   - **Azione:** Censire versioni di firewall, switch, AP, NAS, Proxmox e VM; fissare finestre, priorita', eccezioni e verifica post aggiornamento. Priorità cloud Seeweb: OPNsense 21.1.5 fuori supporto upstream e certificato GUI indicato scaduto; concordare proprietà, backup/console e rollback.
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/vendor-management.md, docs/design-and-security.md, roadmap Fase 4, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-14):** Il VA del 13/10/2026 misura il firmware dello USG FLEX 500 fermo alla 5.42 con una vulnerabilita' nota: e' il primo asset di sede con una versione non allineata accertata da una fonte esterna, accanto alla priorita' cloud gia' aperta su OPNsense 21.1.5. Aggiornamento alla 5.43 o successiva tracciato come #215, in finestra di manutenzione e con backup della configurazione.
+  - **Ultimo stato (2026-10-20):** 20/10: screenshot_111, Seeweb propone aggiornamento OPNsense in piu' sessioni con salvataggio configurazioni; offerta non accettata. Il contratto generale 2014 non assegna esplicitamente il patching del firewall: servono scheda servizio e accordi vigenti. OPNsense 21.1.5 fuori supporto upstream; prima del cambio definire release e percorso testati, backup ripristinabile, console, finestra, rollback e prove VPN/GroupShare/GUI/log. Nessuna modifica eseguita.
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
@@ -250,8 +250,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-20):** 20/10/2026: direttiva dell'IT Manager ADR-037, il presidio misura la prestazione e non la sola raggiungibilita'. Un servizio di inferenza della LAN ha servito per cinque giorni a 1,91 parole al secondo invece di 43,99 restando raggiungibile, attivo e corretto: nessun evento o soglia oggi definiti lo avrebbero mostrato. Gli eventi e le soglie di questo controllo comprendono ora, per ogni sorgente, il segnale da cui dipende il suo valore; sull'host di inferenza memoria video a modello caricato, riga di avvio che dichiara la libreria trovata e campione periodico di velocita'. Letture preparate nel runbook, nessuna serie raccolta: lavoro M32g, gap 222-223, nessun avanzamento di copertura.
-  - **Evidenza:** docs/inferenza-gpu-persa-al-riavvio.md; docs/runbook-monitoraggio-linux.md
+  - **Ultimo stato (2026-10-20):** 20/10: nel collettore preparato il controllo dell'archivio tecnico Seeweb: misura file, byte e spazio, richiede durata esplicita per scadere file, segnala localmente archivio assente o occupazione almeno 80%. Prova Linux su file fittizi e mutazione della guardia ai link superate; unita' systemd non installate. Volume reale, durata approvata, allarme esterno e ricezione Seeweb ancora assenti.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
