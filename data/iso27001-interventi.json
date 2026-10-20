@@ -626,8 +626,8 @@
       ],
       "fornitura": {
         "stato": "condizionata",
-        "dettaglio": "Licenze di supporto o sostituzioni hardware solo per prodotti fuori supporto accertati dall'inventario",
-        "decisione": "Aprire proposta distinta per ogni asset non aggiornabile"
+        "dettaglio": "Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico",
+        "decisione": "Chiarire titolarita' e scheda contrattuale, concordare e approvare per iscritto piano e costo prima dell'ordine"
       },
       "stato_iniziale": "da_fare"
     },
@@ -1776,6 +1776,29 @@
       "stato": "in_corso",
       "nota": "20/10/2026: direttiva dell'IT Manager ADR-037, il presidio misura la prestazione e non la sola raggiungibilita'. Un servizio di inferenza della LAN ha servito per cinque giorni a 1,91 parole al secondo invece di 43,99 restando raggiungibile, attivo e corretto: nessun evento o soglia oggi definiti lo avrebbero mostrato. Gli eventi e le soglie di questo controllo comprendono ora, per ogni sorgente, il segnale da cui dipende il suo valore; sull'host di inferenza memoria video a modello caricato, riga di avvio che dichiara la libreria trovata e campione periodico di velocita'. Letture preparate nel runbook, nessuna serie raccolta: lavoro M32g, gap 222-223, nessun avanzamento di copertura.",
       "evidenza": "docs/inferenza-gpu-persa-al-riavvio.md; docs/runbook-monitoraggio-linux.md"
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-20",
+      "stato": "in_corso",
+      "nota": "20/10: screenshot_111, Seeweb propone aggiornamento OPNsense in piu' sessioni con salvataggio configurazioni; offerta non accettata. Il contratto generale 2014 non assegna esplicitamente il patching del firewall: servono scheda servizio e accordi vigenti. OPNsense 21.1.5 fuori supporto upstream; prima del cambio definire release e percorso testati, backup ripristinabile, console, finestra, rollback e prove VPN/GroupShare/GUI/log. Nessuna modifica eseguita.",
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico",
+        "decisione": "Chiarire titolarita' e scheda contrattuale, concordare e approvare per iscritto piano e costo prima dell'ordine"
+      }
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-20",
+      "stato": "in_corso",
+      "nota": "20/10: screenshot_111, Seeweb chiede di precisare se inoltrare tutti i log. Selezionare eventi amministrativi GUI/SSH e cambi con attore, piu' PF/IPsec utili, con campioni, volume e retention; concordare IP sorgente, canale privato IPsec e test di ricezione su Debian con archivio tecnico distinto. Nessun Syslog remoto o audit amministrativo verificato in esercizio e nessuna modifica al firewall."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-20",
+      "stato": "in_corso",
+      "nota": "20/10: nel collettore preparato il controllo dell'archivio tecnico Seeweb: misura file, byte e spazio, richiede durata esplicita per scadere file, segnala localmente archivio assente o occupazione almeno 80%. Prova Linux su file fittizi e mutazione della guardia ai link superate; unita' systemd non installate. Volume reale, durata approvata, allarme esterno e ricezione Seeweb ancora assenti."
     }
   ]
 }

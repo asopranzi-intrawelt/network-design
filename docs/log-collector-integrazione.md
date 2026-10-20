@@ -8,7 +8,9 @@ La separazione dei flussi non cambia e anzi si applica anche qui. I segnali di p
 
 ## Ingresso OPNsense Seeweb da concordare, 20/10/2026
 
-L'utente prepara il seguito al ticket per inviare i log OPNsense alla Debian del collettore su UDP 514 nel tunnel IPsec esistente. Il provider deve confermare indirizzo sorgente, selettori, regole e assenza di NAT prima del test. Il firewall della Debian oggi ammette quel canale solo dalla LAN locale e rsyslog inoltrerebbe un mittente nuovo nell'archivio AdS: servono regola mirata e archivio tecnico separato, da verificare prima dell'attivazione. L'upgrade OPNsense e la restrizione della GUI richiedono un piano con Seeweb; nessuna VM, firewall o sorgente reale è stata modificata.
+Il seguito del ticket è stato inviato dall'utente; Seeweb chiede ora di scegliere quali log inoltrare. Nel collettore è preparato, ma non installato, il parametro `sorgenti.seeweb_opnsense`: vuoto per default, aggiunge solo per l'IPv4 sorgente verificato la regola nftables UDP 514 e un archivio tecnico `root:root` distinto da AdS. Il test Debian 13 ha inviato da una seconda sorgente loopback e verificato file tecnico presente, nessun file AdS per Seeweb e sorgente AdS locale ancora funzionante; 32 unit test render/parametri verdi. Il provider deve ancora confermare IP sorgente, selettori, NAT, categorie e campioni. Prima di attivare occorrono ritenzione, capienza, rilevamento silenzio e classificazione degli accessi amministrativi su eventi reali. Nessuna VM, firewall o sorgente reale è stata modificata.
+
+Il collettore ha preparato anche `ads-seeweb-technical-retain.sh`: `--inspect` misura file, byte, giorni e spazio; la cancellazione richiede `--days N` esplicito, registra i percorsi eliminati e misura lo stato residuo. Archivio mancante o vuoto e filesystem almeno all'80% producono un avviso locale. Unità systemd istanziate non installate; prova Linux su file fittizi e mutazione della guardia ai link superate. La durata non è scelta: servono volume reale, responsabile della ritenzione e recapito dell'allarme, oltre alla prova del flusso.
 
 ## Quota del pilot e contratto QA ricontrollati, 19/10/2026
 

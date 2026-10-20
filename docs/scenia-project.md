@@ -444,10 +444,12 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` — decisione architetturale 11/
 
 ### Cloudflare Zero Trust (Free)
 
-- cloudflared daemon installato su VPS
-- Porte 80/443 chiuse con `ufw deny` → unico canale HTTP = tunnel Cloudflare
-- IP server mascherato: attacchi DDoS diretti non raggiungono la VPS
+- cloudflared daemon installato sulla **sola VPS di staging**, non sulla produzione (vedi la correzione qui sotto)
+- Porte 80/443 chiuse con `ufw deny` sullo staging → unico canale HTTP = tunnel Cloudflare
+- IP server mascherato sullo staging: attacchi DDoS diretti non raggiungono quella VPS
 - Team name: scenia.cloudflareaccess.com
+
+**Correzione del 20/10/2026: questo vale per lo staging e non per la produzione.** La riga diceva "installato su VPS" senza dire quale, e la timeline del trimestre diceva invece che l'installazione riguarda la sola macchina di staging e che per la produzione il tunnel e' pianificato in una fase successiva. La bozza di procedura letta il 20/10/2026 conferma la seconda versione: l'installazione vi avviene sull'indirizzo di staging, e sul dominio soltanto `staging-portal.scenia.it` risulta proxato, mentre i nomi del portale, del sito e del modulo di contatto puntano con record A diretti alla macchina di produzione. Ne segue che l'origine della produzione e' pubblica e le sue porte del web sono aperte, cioe' il contrario di quanto questa sezione lasciava intendere, e che il mascheramento dell'indirizzo non la protegge. Lo stesso `SaaS security.docx` avverte del meccanismo che rende grave la configurazione: un WAF si aggira parlando con l'origine, quando l'origine e' nota. Il rilievo e' VPS-004 (#227) e la decisione se chiudere anche la produzione spetta all'IT Manager; il capitolo della bozza intitolato a questo e' vuoto.
 
 ### Controlli accesso
 

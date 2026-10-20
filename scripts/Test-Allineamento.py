@@ -40,9 +40,11 @@
 #   python scripts/Test-Allineamento.py              report completo
 #   python scripts/Test-Allineamento.py --silenzioso solo il verdetto finale
 #   python scripts/Test-Allineamento.py --giorni 30  orizzonte delle scadenze da mostrare
+#   python scripts/Test-Allineamento.py --hook        come sopra, ma esce sempre con zero
 #
 # Codici di uscita: 0 allineato, 1 c'e' qualcosa di scaduto o arretrato,
-# 2 non giudicabile (registro mancante o illeggibile).
+# 2 non giudicabile (registro mancante o illeggibile). Con --hook l'uscita e' sempre
+# zero e la gravita' resta nel testo: vedi la nota sul blocco finale.
 
 import json
 import os
@@ -260,19 +262,57 @@ def controlla_freschezza(reg, esito):
     for voce in reg.get('progetti_collegati', []):
         nome = voce.get('id', 'progetto collegato')
         radice = voce.get('percorso_locale', '')
+        remoto = voce.get('percorso_remoto', '')
         riferimento = voce.get('commit_riconciliato', '')
-        if not radice or not riferimento:
+        if not (radice or remoto) or not riferimento:
             esito.grave("baseline incompleta per %s" % nome)
             continue
-        try:
-            risposta = subprocess.run(
-                ['git', '-C', radice, 'rev-parse', 'HEAD'], capture_output=True,
-                text=True, encoding='utf-8', errors='replace', timeout=5)
-            corrente = risposta.stdout.strip() if risposta.returncode == 0 else ''
-        except (OSError, subprocess.TimeoutExpired):
-            corrente = ''
+
+        # Un progetto collegato puo' vivere su una macchina virtuale e non su questo
+        # disco: il suo repository si legge allora in SSH, nella forma
+        # ssh://<alias>/<percorso>, dove l'alias e' quello del ~/.ssh/config della
+        # postazione, che non fa parte di questo repository e non contiene percorsi
+        # qui. Finche' quell'accesso non esiste il confronto non si puo' fare, e il
+        # registro lo dichiara con accesso_stato: la voce resta rossa e nominata
+        # invece di degradare in un "non leggibile" che si confonde con un refuso
+        # nel percorso. Un canale di propagazione che tace e' peggio di nessun
+        # canale, perche' sostituisce un dubbio con una fiducia mal riposta.
+        if remoto and voce.get('accesso_stato') != 'configurato':
+            esito.grave("%s: canale di propagazione non attivo (%s)"
+                        % (nome, voce.get('accesso_mancante', 'accesso SSH da configurare')))
+            esito.nota("      %s" % voce.get('dove', ''))
+            continue
+
+        corrente = ''
+        if remoto:
+            resto = remoto[len('ssh://'):] if remoto.startswith('ssh://') else remoto
+            alias, _, percorso_remoto = resto.partition('/')
+            if not alias or not percorso_remoto:
+                esito.grave("%s: percorso_remoto malformato, atteso ssh://<alias>/<percorso>" % nome)
+                continue
+            try:
+                risposta = subprocess.run(
+                    ['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=5', alias,
+                     'git -C "/%s" rev-parse HEAD' % percorso_remoto],
+                    capture_output=True, text=True, encoding='utf-8',
+                    errors='replace', timeout=20)
+                corrente = risposta.stdout.strip() if risposta.returncode == 0 else ''
+            except (OSError, subprocess.TimeoutExpired):
+                corrente = ''
+        else:
+            try:
+                risposta = subprocess.run(
+                    ['git', '-C', radice, 'rev-parse', 'HEAD'], capture_output=True,
+                    text=True, encoding='utf-8', errors='replace', timeout=5)
+                corrente = risposta.stdout.strip() if risposta.returncode == 0 else ''
+            except (OSError, subprocess.TimeoutExpired):
+                corrente = ''
         if not corrente:
-            esito.avviso("%s non leggibile: verificare il percorso locale" % nome)
+            if remoto:
+                esito.grave("%s: dichiarato raggiungibile ma il repository non risponde in SSH" % nome)
+                esito.nota("      provare l'alias a mano; se l'accesso e' caduto, riportare accesso_stato a da_configurare")
+            else:
+                esito.avviso("%s non leggibile: verificare il percorso locale" % nome)
         elif corrente != riferimento:
             esito.avviso("%s ha nuovi commit: baseline %s, HEAD %s" %
                          (nome, riferimento[:7], corrente[:7]))
@@ -674,4 +714,12 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    codice = main()
+    # Il codice di uscita e' un canale verso una persona o verso CI, non verso un hook.
+    # Claude Code tratta qualunque valore diverso da zero in un hook SessionStart come
+    # un errore: scarta lo standard output e mostra una riga di fallimento priva di
+    # contenuto. Il rapporto che questo script esiste per consegnare non arriverebbe
+    # mai in sessione, che e' lo stesso difetto comportamentale da cui lo script nasce,
+    # spostato di un livello. Con --hook la distinzione fra cio' che invecchia e cio'
+    # che e' rotto resta dove viene letta davvero, cioe' nel testo, e l'uscita e' zero.
+    sys.exit(0 if '--hook' in sys.argv else codice)

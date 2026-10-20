@@ -1,8 +1,8 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 19,
-  "aggiornato": "2026-10-14",
+  "revisione": 20,
+  "aggiornato": "2026-10-20",
   "progetti_collegati": [
     {
       "id": "log-collector",
@@ -26,6 +26,15 @@
       "commit_riconciliato": "71a38928562dc6e9c679b09709de2cbb8d6df01f",
       "riconciliato_il": "2026-10-20",
       "dove": "docs/integrazione-log-qa-verifier.md"
+    },
+    {
+      "id": "intrawelt-website",
+      "percorso_remoto": "ssh://intra-newsite/home/intrawelt-site/intrawelt-website",
+      "commit_riconciliato": "non_ancora_letto",
+      "riconciliato_il": "2026-10-20",
+      "accesso_stato": "da_configurare",
+      "accesso_mancante": "nessun alias intra-newsite nel ~/.ssh/config e nessuna chiave dedicata: l'accesso e' con password, difetto #226",
+      "dove": "docs/sito-nuovo-integrazione.md"
     }
   ],
   "scadenze": [
