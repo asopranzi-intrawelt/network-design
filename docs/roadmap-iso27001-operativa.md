@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-19. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -250,7 +250,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-19. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-19):** Pilot sintetico: quota logica estesa a segmenti e originali, con prova che fallisce togliendo il conteggio degli originali; suite 18/18. La decisione versionata del produttore QA adotta qa-tech-v1 ma non emette eventi; passo 5 non committato, due LXC non creati. Quota fisica, concorrenza, alimentazione, carico, trasporto reale e budget hub+QA ancora aperti; gate AdS invariati.
+  - **Ultimo stato (2026-10-20):** Risposta Seeweb letta il 20/10: indicati menu dei log e confronto Backup; ticket chiuso. Audit amministrativo, export/Syslog, regola WAN 29, certificato GUI e piano di aggiornamento restano aperti; nessuna modifica all'appliance o raccolta centrale.
+  - **Evidenza:** docs/firewall-seeweb-opnsense.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
