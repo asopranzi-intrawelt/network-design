@@ -1,4 +1,9 @@
 # Snapshot di sincronizzazione
+## Parco VPS misurato dal pannello, tre rinnovi a breve, 20/10/2026
+
+Il parco esterno non e' piu' dedotto ma misurato: il pannello `cloud.it` dichiara tre elementi su tre, tutti accesi, tutti nella regione IT1 del datacenter di Arezzo e nel progetto `cloud-v1`, quindi senza ridondanza geografica. Corrette le sigle dei piani in `scenia-project.md`: la produzione SCENIA e' `VPS-O4A8-Linux` e lo staging `VPS-O2A4-Linux`, cioe' la meta' abbondante e non un piano simile come la scheda affermava. Il pannello etichetta come privato il campo che porta l'indirizzo pubblico: nessuna rete privata esiste su questo prodotto.
+
+Tre rinnovi sono ora scadenze sorvegliate in `data/scadenze.json`, revisione 21, e compaiono a ogni avvio: produzione SCENIA il 29/10/2026, VPS del sito il 10/11, staging il 12/11, tutti sullo stesso credito prepagato. Manca ancora il numero della capienza residua, che sta nella pagina di riepilogo del pannello: finche' manca, quelle date dicono quando si paga e non se si puo'. Chiusa la meta' della fase 0 che si legge dal pannello; resta quella che si legge dalla macchina. Timeline a 235 eventi.
 
 ## Il sito nuovo e' una fonte di classe D con canale dichiarato, 20/10/2026
 

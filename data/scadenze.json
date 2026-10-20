@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 20,
+  "revisione": 21,
   "aggiornato": "2026-10-20",
   "progetti_collegati": [
     {
@@ -117,6 +117,30 @@
       "preavviso_giorni": 365,
       "rompe": "Ogni certificato emesso dall'autorita' smette di essere attendibile; la nuova autorita' va creata e installata su tutte le postazioni con almeno un anno di anticipo",
       "dove": "docs/autorita-certificazione-interna.md, ADR-025"
+    },
+    {
+      "id": "VPS-PORTALE-AI",
+      "cosa": "Rinnovo mensile della VPS di produzione del portale SCENIA, piano VPS-O4A8-Linux, attivata il 29/12/2025. MISURATO IL 20/10/2026 dal pannello, dopo il ripristino dell'accesso: e' la piu' vicina delle tre e cade a nove giorni dalla lettura",
+      "data": "2026-10-29",
+      "preavviso_giorni": 30,
+      "rompe": "Il rinnovo attinge al credito prepagato dell'account <account-cloud>, che e' uno solo per tutte e tre le VPS: se il credito non copre, non si ferma un servizio ma il portale in produzione. Le tre scadenze cadono in una finestra di quindici giorni, quindi vanno guardate insieme e non una per volta",
+      "dove": "docs/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
+    },
+    {
+      "id": "VPS-INTRAWELT-WEBSITE",
+      "cosa": "Rinnovo mensile della VPS di produzione del sito nuovo, piano VPS-O4A8-Linux, attivata l'11/08/2026 e tuttora vuota. MISURATO IL 20/10/2026 dal pannello",
+      "data": "2026-11-10",
+      "preavviso_giorni": 30,
+      "rompe": "Stesso credito prepagato unico. La macchina non serve ancora nulla, quindi un mancato rinnovo oggi non interrompe un servizio, ma perde l'impianto gia' fatto e la sola chiave autorizzata (#224)",
+      "dove": "docs/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
+    },
+    {
+      "id": "VPS-TEST-PORTALEAI",
+      "cosa": "Rinnovo mensile della VPS di staging del portale SCENIA, piano VPS-O2A4-Linux, attivata il 12/01/2026. MISURATO IL 20/10/2026 dal pannello",
+      "data": "2026-11-12",
+      "preavviso_giorni": 30,
+      "rompe": "Stesso credito prepagato unico. E' la macchina su cui vive l'unico tunnel di protezione realmente in esercizio: perderla significa perdere il precedente funzionante su cui si modella l'hardening del sito",
+      "dove": "docs/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
     }
   ],
   "freschezza": [
