@@ -390,14 +390,20 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx`
 | Parametro | Valore |
 |-----------|--------|
 | Provider | Aruba Cloud (ID ARU-340414) |
-| Piano | O2A4 |
+| Nome nel pannello | `Intrawelt-Portale-AI` |
+| Piano | `VPS-O4A8-Linux` (**corretto il 20/10/2026**: la scheda dichiarava `O2A4`, che e' invece il piano della macchina di staging) |
 | CPU | 4 vCPUs |
 | RAM | 8 GB |
 | Storage | 80 GB |
 | Data transfer | 50 TB/mese (in + out) |
-| OS | Ubuntu 22.04 LTS |
-| IP pubblico | <IP-SCENIA-VPS-PROD> |
-| Hypervisor | OpenStack (Aruba-managed) |
+| OS | Ubuntu Server 22.04 LTS 64bit |
+| IP pubblico | <IP-SCENIA-VPS-PROD> (il pannello lo etichetta "Private IP", ma non esiste alcuna rete privata su questo prodotto) |
+| Hypervisor | OpenStack (Aruba-managed), tecnologia `OpenStackVPS` |
+| Regione e progetto | IT1, datacenter di Arezzo, progetto `cloud-v1` |
+| Attivata il | 29/12/2025 |
+| Rinnovo | mensile, prossima data 29/10/2026 (scadenza sorvegliata `VPS-PORTALE-AI`) |
+
+**Misurato dal pannello il 20/10/2026**, dopo il ripristino dell'accesso da parte dell'IT Manager. La correzione del piano non e' un dettaglio di catalogo: `O2A4` e `O4A8` sono due prodotti diversi, il primo da due processori e quattro gigabyte e il secondo da quattro e otto, e la scheda ne dichiarava uno con la dotazione dell'altro. Dalla stessa lettura risulta che le tre VPS dell'account stanno tutte nella medesima regione e nel medesimo progetto, quindi non esiste alcuna ridondanza geografica: l'ipotesi di una replica, che `SaaS security.docx` cita come soluzione a regime, resta non decisa.
 
 **Stack applicativo:**
 - Nginx (reverse proxy, HTTP 80 → Next.js 3000)
@@ -408,8 +414,13 @@ Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx`
 
 | Parametro | Valore |
 |-----------|--------|
-| Piano | O2A4 (piano simile a produzione) |
+| Nome nel pannello | `test-portaleAI` |
+| Piano | `VPS-O2A4-Linux`, cioe' 2 vCPU / 4 GB / 40 GB: **non** simile a produzione, come la scheda affermava, ma la meta' abbondante (misurato il 20/10/2026) |
+| OS | Ubuntu Server 22.04 LTS 64bit |
 | IP pubblico | <IP-SCENIA-VPS-STAGING> |
+| Regione e progetto | IT1, datacenter di Arezzo, progetto `cloud-v1` |
+| Attivata il | 12/01/2026 |
+| Rinnovo | mensile, prossima data 12/11/2026 (scadenza sorvegliata `VPS-TEST-PORTALEAI`) |
 | Ruolo | staging-portal.scenia.it (proxato Cloudflare) |
 
 ### Backup VPS
