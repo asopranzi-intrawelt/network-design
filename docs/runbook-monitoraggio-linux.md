@@ -6,7 +6,7 @@ Riscontro tecnico del 15/10/2026 dall'host fisico pilota: Ubuntu 26.04.1 LTS e k
 
 Fonte: installazione interattiva autorizzata dall'operatore, poi letture indipendenti via SSH alle 13:53:37 UTC. Il modulo kernel già presente non sostituiva le librerie user-space: libcuda serve al calcolo GPU dal programma; NVML e nvidia-smi espongono stato/risorse. Ripristino limitato ai due pacchetti con versione fissata e simulazione senza rimozioni. I dati della baseline precedente, più avanti nel runbook, restano una fotografia precedente.
 
-Prova privata: [nvidia-post-upgrade-20261015.json](../_notes/linux-observability-20261015/pilot/nvidia-post-upgrade-20261015.json), SHA-256 6924038e39f88a8b302fb611897cb435920d39ae4461366448ebc2aac977db06. Contiene i riferimenti e gli hash delle letture sorgenti. Nessun indirizzo, account o destinazione NAS reale nel testo pubblico. Il controllo CUDA verifica caricamento/inizializzazione e presenza del dispositivo, non accuratezza, prestazioni, energia o inferenza Ollama.
+Prova privata: [nvidia-post-upgrade-20261015.json](../_notes/lavoro-corrente/linux-observability-20261015/pilot/nvidia-post-upgrade-20261015.json), SHA-256 6924038e39f88a8b302fb611897cb435920d39ae4461366448ebc2aac977db06. Contiene i riferimenti e gli hash delle letture sorgenti. Nessun indirizzo, account o destinazione NAS reale nel testo pubblico. Il controllo CUDA verifica caricamento/inizializzazione e presenza del dispositivo, non accuratezza, prestazioni, energia o inferenza Ollama.
 
 Riferimenti: [installazione NVIDIA su Ubuntu](https://ubuntu.com/server/docs/how-to/graphics/install-nvidia-drivers/), [CUDA Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/), [NVML](https://docs.nvidia.com/deploy/nvml-api/nvml-api-reference.html), [collector NVIDIA Netdata](https://learn.netdata.cloud/docs/collecting-metrics/collectors/hardware-and-sensors/nvidia-gpu).
 
@@ -22,7 +22,7 @@ Il pilota riguarda un’applicazione di terze parti su una macchina reale, scelt
 
 ## Baseline riferita dall’operatore
 
-La fonte delle misure è l’output incollato dall’operatore il 15/10/2026, non una connessione SSH eseguita dall’agente. Il primo gruppo legge sistema, risorse, `nvidia-smi` e presenza di Netdata nel PATH; il secondo PCI, dispositivi grafici, modelli caricati e metadati APT. Trascrizione sintetica, identità reale e stato strutturato sono nel livello privato `_notes/linux-observability-20261015/pilot/`. L’impronta di questi file identifica il materiale conservato, non certifica autonomamente l’esecuzione remota.
+La fonte delle misure è l’output incollato dall’operatore il 15/10/2026, non una connessione SSH eseguita dall’agente. Il primo gruppo legge sistema, risorse, `nvidia-smi` e presenza di Netdata nel PATH; il secondo PCI, dispositivi grafici, modelli caricati e metadati APT. Trascrizione sintetica, identità reale e stato strutturato sono nel livello privato `_notes/lavoro-corrente/linux-observability-20261015/pilot/`. L’impronta di questi file identifica il materiale conservato, non certifica autonomamente l’esecuzione remota.
 
 | Controllo | Output riferito | Limite |
 |---|---|---|

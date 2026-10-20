@@ -16,13 +16,13 @@ Per ogni decisione tecnica nuova o rettificata si collega nel registro ADR o nel
 
 ## Due layer documentali
 
-`_notes/` raccoglie spiegazioni, diario, resoconti, trascrizioni e materiale grezzo. E' ignorato da Git perche' spesso personale o voluminoso.
+`_notes/` conserva diario, trascrizioni e materiale privato o grezzo; e' ignorato da Git.
 
-Il layer tecnico vive in `.claude/context/` e `docs/`, versionato: contiene le schede strutturate con frontmatter di riconciliazione, i diagrammi, la timeline degli interventi in formato Markdown, la documentazione ISO27001. E' la fonte di verita' recuperabile da un clone.
+Schede e documenti tecnici in `.claude/context/` e `docs/` sono versionati: stato e fonti recuperabili restano li'.
 
 ## Gli script, e dove sta la loro descrizione
 
-Questo repository e' la fonte unica degli strumenti di rete: gli altri progetti, come il convertitore dei ruolini, non ne tengono copia e rimandano qui. L'indice esaustivo degli script e' la tabella in testa a `.claude/context/STACK.md`, e la descrizione estesa di ogni famiglia, cioe' che cosa fa, che cosa scrive e quali vincoli rispetta, sta nella sezione "Descrizione estesa delle famiglie di script" della stessa scheda. Si legge quando si tocca uno script, non a ogni sessione. Qui restano le sole regole che valgono comunque.
+Questo repository è la fonte degli strumenti di rete. Indice, descrizione e vincoli di ogni famiglia sono in `.claude/context/STACK.md`: consultarli quando si tocca uno script.
 
 Gli artefatti derivati non si modificano mai a mano. La timeline SVG, la mappa `docs/network-map.html`, la roadmap ISO con le sue copie su Desktop e in OneDrive, la matrice delle porte e la riconciliazione Onova nascono tutte da una fonte tracciata e da uno script: se un dato e' sbagliato si corregge la fonte e si rigenera, altrimenti nasce una seconda verita' accanto alla prima.
 
@@ -36,7 +36,7 @@ Gli output che contengono valori reali restano fuori da git: `output/` e `_notes
 
 ## Portabilita' su un'altra macchina
 
-Nessun file tracciato contiene un percorso di macchina: cio' che resta specifico vive nei tre posti non versionati, cioe' il `.env` privato con gli hook di `.claude/settings.local.json`, il layer privato `_notes/` e gli output in `output/`. Come e' stato ottenuto, che cosa verificare al primo avvio su una macchina nuova e che cosa non e' ancora provato su Linux stanno in `.claude/context/deployment.md`, sezione "Portabilita' su un'altra macchina, Windows o Linux".
+Percorsi e valori di macchina vivono nei livelli privati `.env`, `_notes/`, `output/` e `.claude/settings.local.json`. Le prove Windows e i limiti Linux sono in `.claude/context/deployment.md`, sezione sulla portabilità.
 
 ## Confine con E:\projects
 
@@ -118,6 +118,7 @@ Norme caricate su richiesta, una riga per situazione con le parole con cui si pr
 - Si imposta o si verifica user.name e user.email, si collega o si cambia il remoto o l'alias SSH, si inizializza un repository, un push fallisce per permessi, `/status` mostra un account Claude diverso da quello atteso, si autentica o si usa `gh`: skill `identita-git`.
 - Si scrive o si valuta una prova automatica, si chiude un difetto, una verifica manuale smentisce una suite verde, si sta per dichiarare completo un intervento il cui scopo era un effetto misurabile: skill `prove-che-misurano`.
 - Si inizializza o si allinea il progetto, oppure cambia il modo in cui si prova e si rilascia, e va deciso come separare test e produzione: skill `separazione-ambienti`.
+- Va prodotto, modificato o convertito un artefatto visivo o documentale, cioè un documento, una presentazione, un PDF, un'immagine, un'animazione, un audio o un impaginato, oppure si sta per scrivere uno script o installare una libreria per farlo: skill `craft-apps`, che prima verifica in locale le applicazioni Craft installate e le usa senza rete né token.
 
 ## Vincoli di team
 
@@ -129,4 +130,4 @@ Per ogni passo della migrazione dei segreti locali, aggiornare nello stesso giro
 
 ## Nota MCP
 
-Il server MCP `proxmox` e' configurato in `.mcp.json`, nella radice e mai sotto `.claude/`, sul pacchetto PyPI `proxmox-mcp` via uvx, e autentica solo con un token API di sola lettura che il launcher legge dal `.env` privato: decisione e procedura in ADR-007, cutover M30 del 09/10/2026 in ADR-031. Il file tracciato non contiene valori reali. Il task pianificato è stato osservato il 16/10/2026 con esito 0; richiede la sessione interattiva della postazione. Processo e retention sono descritti in `docs/processo-fonti-vive-retention.md`; attivazione della pulizia e primo giro reale restano da osservare. Per lo snapshot completo resta canonico `scripts/Get-ProxmoxSnapshot.ps1`.
+Il client Proxmox MCP usa un token di sola lettura dal `.env` privato; ADR-007 e ADR-031 descrivono configurazione e cutover. Task, retention e limiti sono in `docs/processo-fonti-vive-retention.md`; lo snapshot completo resta affidato a `scripts/Get-ProxmoxSnapshot.ps1`.

@@ -145,7 +145,9 @@ Vanno chiuse con una misura, non con un'inferenza. Finche' restano qui, il proge
 | Completa configurazione/ruoli/logging e proprietà provider, poi piattaforma e certificato supportati | Aperta, nessun cambio | M31a/b/c; SWB-001/002 (#210/211) |
 | Priorità al permesso WAN29 verso il firewall e TCP902 LAN; matrice cloud HTTP/HTTPS/8080, provider e NAT; coordinare con VPN e segmentazione sede | Aperta, flussi osservati | M31d, M14/M22; SWB-003 (#212) |
 | Attribuire servizio/storage del vicino NetApp e due sessioni TCP 445 | Aperta, proprietà ignota | M31e; SWB-004 (#213) |
-| Riscontro Seeweb su log admin/permessi/export assenti dal menu visibile, campione nativo e ricezione sul collettore | Aperta, soltanto log locali | M31f; SWB-005 (#214), ISO-30 |
+| Campioni nativi di login e modifiche con attore, retention, permessi, export/Syslog e ricezione centrale dopo la risposta Seeweb che indica i menu locali | Aperta, menu indicati ma audit e trasporto non verificati | M31f; SWB-005 (#214), ISO-30 |
+
+Il 20/10 è stata letta una risposta parziale del ticket Seeweb: menu dei log e confronto Backup indicati, domanda sul limite IP della GUI e studio dell'aggiornamento proposti; ticket chiuso. SWB-005, regola WAN 29, certificato GUI e piano operativo restano aperti. Nessun cambio sull'appliance.
 
 ## Processo snapshot e gate task M30, 16/10/2026
 
