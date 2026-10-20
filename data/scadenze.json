@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 23,
+  "revisione": 24,
   "aggiornato": "2026-10-20",
   "progetti_collegati": [
     {
@@ -35,7 +35,7 @@
       "accesso_stato": "configurato",
       "accesso_mancante": "nessuno: alias intra-newsite attivo dal 20/10/2026, chiave dedicata, lettura verificata anche in modalita non interattiva",
       "dove": "docs/sito-nuovo-integrazione.md",
-      "nota_chiave": "la chiave e senza frase di accesso, scelta da confermare: con una frase servirebbe ssh-agent caricato a ogni avvio, altrimenti il controllo riporterebbe la macchina irraggiungibile pur essendo corretta",
+      "nota_chiave": "chiave senza frase di accesso, DECISO dall IT Manager il 20/10/2026: raggiunge una macchina di sviluppo sulla LAN interna, e una frase imporrebbe ssh-agent caricato a ogni avvio perche il controllo interroga in modalita non interattiva. Questione chiusa, non riaprirla",
       "ramo": "staging"
     }
   ],
