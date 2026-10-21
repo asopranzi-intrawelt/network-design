@@ -1812,6 +1812,13 @@
       "stato": "completato",
       "nota": "Eseguito il 21/10/2026 dall'IT Manager con comandi preparati e verificati da questa sessione. La pubblicazione del contenitore PostgreSQL del sito e' passata da tutte le interfacce al solo loopback, cambiando una riga nel descrittore dei servizi e ricreando il contenitore, perche' la pubblicazione di una porta si fissa alla creazione e un riavvio non l'avrebbe applicata. Il volume e' dichiarato esterno con il nome reale, quindi i dati non dipendevano dalla ricreazione; una copia temporanea del database e' stata comunque presa prima e rimossa dopo. L'applicazione non e' in contenitore, gira sull'host e raggiunge il database su loopback, quindi non e' stata toccata.",
       "evidenza": "Misura prima e dopo, stesso comando: apertura di una connessione verso la porta sull'indirizzo di LAN della macchina, da RAGGIUNGIBILE a connessione rifiutata. Binding letto dal motore passato da HostIp vuoto a 127.0.0.1; tabella di ascolto del sistema passata da tutte le interfacce a 127.0.0.1:5432. Integrita' verificata dopo la ricreazione: 343 tabelle presenti e volume intrawelt-pgdata invariato. Dettaglio tecnico in docs/esposizione-servizi-interni.md e approfondimento didattico in .claude/context/refactor-01-filtro-e-contenitori.md"
+    },
+    {
+      "id": "ISO-05",
+      "data": "2026-10-21",
+      "stato": "completato",
+      "nota": "Effetto verificato sul contenitore in esercizio il 21/10/2026 e invariato. Rilevato lo stesso giorno un rischio di regressione che non annulla la chiusura ma la circoscrive, difetto #242: la correzione vive in un solo albero di lavoro su tre del progetto del sito e non e' ancora committata, mentre gli altri due portano ancora la pubblicazione su tutte le interfacce nel proprio descrittore. Un comando di ricreazione lanciato da uno di quegli alberi riaprirebbe la porta senza errori. La chiusura resta valida per cio' che e' stato misurato, cioe' il servizio in esercizio; la propagazione della configurazione ai tre rami e' lavoro del progetto del sito ed e' tracciata come pendenza.",
+      "evidenza": "Misura prima e dopo sul servizio in esercizio: connessione verso la porta sull'indirizzo di LAN da riuscita a rifiutata; binding da HostIp vuoto a 127.0.0.1; ascolto da tutte le interfacce a 127.0.0.1:5432; 343 tabelle integre e volume invariato dopo la ricreazione. Misura del rischio residuo: lettura del descrittore nei tre alberi, uno corretto e due ancora con la pubblicazione aperta. Dettaglio in docs/esposizione-servizi-interni.md, approfondimento in .claude/context/refactor-01-filtro-e-contenitori.md"
     }
   ]
 }
