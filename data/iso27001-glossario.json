@@ -1,5 +1,5 @@
 {
-  "versione": "2026-10-20",
+  "versione": "2026-10-21",
   "nota": "Sintesi operative parafrasate. I codici ISO rinviano a ISO/IEC 27001:2022 e all'Annex A della stessa edizione; non riproducono il testo normativo.",
   "voci": {
     "4-10": [
@@ -753,6 +753,10 @@
     "#235": [
       "Secondo fattore assente sull'account del pannello cloud",
       "L'accesso con secondo fattore all'account del pannello cloud e' disattivato. Quell'account puo' spegnere, reinizializzare e cancellare tutte le VPS esterne, e la sua password si recupera dalla casella intestataria, quindi senza secondo fattore il controllo dell'account coincide con il controllo di quella casella."
+    ],
+    "#242": [
+      "Correzione presente in un solo albero di lavoro",
+      "La correzione della pubblicazione del database del sito vive in uno solo dei tre alberi di lavoro di quel progetto e non e' ancora committata; gli altri due portano nel proprio descrittore la pubblicazione su tutte le interfacce. Un comando di ricreazione lanciato da uno di quegli alberi riaprirebbe la porta senza errori, perche' ogni albero e' una copia completa del progetto."
     ]
   }
 }
