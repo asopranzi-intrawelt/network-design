@@ -1,5 +1,13 @@
 # Work-log
 
+## Gate locale QA candidato, 21/10/2026
+
+Il produttore QA su `staging` ha chiuso manualmente il checkpoint `2ab7e5a`. Nel candidato successivo, ancora non versionato, `app/authorisation_store.py` committa su SQLite privata fuori dal clone la ricevuta con ora UTC e testo esatto dell'avviso prima di avviare il worker; il runner la rilegge prima di costruire il backend. Una scrittura SQLite fallita ferma il job prima del thread. La CLI rifiuta la modalità server prima di costruire il client esterno. Verifica locale: 458 prove con filtro CI, 6 con dati reali deselezionati, Ruff e Mypy verdi. È un gate applicativo locale: non dimostra custodia indipendente, ACL/retention/restore a dodici mesi, emissione durevole di `backup_selected`, trasporto o indicizzazione. Il fallback esterno resta spento per default; due LXC QA non create, M32e e ISO-30 in corso senza avanzamento da questa modifica. Ratio: si aggiorna l'evidenza incrociata senza dichiarare installati i due LXC o completato ISO-30. **Template:** nessuna.
+
+## Correzione della chiave esterna nel produttore QA, 21/10/2026
+
+Recepita la prova red/green del produttore: il job web solo locale falliva senza chiave Anthropic prima della scelta del backend; il fix in albero sposta la risoluzione della chiave sulla rotta esterna, che senza credenziale fallisce chiusa. 449 prove con filtro CI, 6 dati reali deselezionati, Ruff e Mypy verdi. Aggiornati dossier QA, current-work e indice, preservando i diff paralleli della rete. Autorizzazione durevole, evento tecnico, CLI, trasporto e due LXC restano aperti; M32e e ISO-30 invariati. Nessun host o flusso reale toccato. Ratio: il dossier di rete distingue una correzione verificata ma non committata da una capacità in esercizio, per non far avanzare un controllo ISO sulla sola presenza del diff. **Template:** nessuna.
+
 ## Prova spool Linux e gate del produttore QA, 21/10/2026
 
 Recepita la prova locale WSL del collettore: tmpfs 16 MiB, due bind mount, ENOSPC, correzione del lock residuo e sincronizzazione delle directory; 41 prove mirate verdi. Dall'audit del produttore emergono autorizzazione solo in RAM, selezione backup persa se letta soltanto dal risultato di un job fallito e CLI esterna diretta. Aggiornati dossier QA, integrazione, roadmap, pendenze e indice; ISO-30 resta in corso, senza LXC o sorgenti reali. Il diff parallelo del sito e del template è preservato. Versionamento manuale. **Template:** nessuna.
@@ -2650,3 +2658,71 @@ Chiuso il #243: il ramo di rilascio e' `main`, deciso dall'IT Manager, e cio' ch
 Nessun valore reale e' entrato nei file tracciati: l'indirizzo pubblico della VPS, gli importi del credito e la partita IVA presenti nel documento di origine sono stati lasciati fuori, e il guard-rail e' verde sulle categorie bloccanti.
 
 File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/piano-produzione-sito-nuovo.md`, `docs/pendenze-aperte.md`, `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** L-008
+
+## Capienza del credito misurata, la stima era pessimistica, 21/10/2026
+
+Letta dal cruscotto del pannello del fornitore cloud, su screenshot dell'IT Manager: il rapporto fra capienza residua e consumo degli ultimi trenta giorni copre **circa un mese**, cioe' fino attorno al 20/11/2026. **Corregge la stima recepita poche ore prima dall'analisi di go-live**, che collocava l'esaurimento fra la fine di ottobre e l'inizio di novembre: quella estrapolava da una lettura di agosto e da un canone promozionale, questa misura il consumo reale a tre macchine. Le cifre stanno nel layer privato, in `_notes/DIARIO.md`, e non nei file tracciati.
+
+Il profilo di rischio cambia in meglio ma non sparisce, e si restringe a una domanda sola. La ricarica automatica risulta attiva e dichiarata tale dal pannello, quindi la soglia dovrebbe essere attraversata prima dell'esaurimento; resta aperto **quale strumento di pagamento sia associato e se sia valido**, che era gia' il punto di VPS-006 e che adesso e' l'unica cosa fra il parco e una sospensione, perche' le ultime tre ricariche risultavano manuali. Una nota di perimetro che vale per tutte le misure prese cosi': il cruscotto dichiara i propri dati aggiornati al giorno precedente, quindi la misura nasce con un giorno di eta'.
+
+Confermati nella stessa lettura, e alla data di oggi, il secondo fattore ancora da attivare (#235) e i recapiti dell'account ancora non verificati (#232). Annotato nel layer privato, e non qui, un dubbio da guardare dal vivo prima di scriverlo: nello screenshot compare un elenco a tendina con due identita', di cui una e' una casella personale su un fornitore esterno, e non e' chiaro se sia un recapito dell'account o un suggerimento del browser. Se fosse un recapito, la catena di recupero della password passerebbe fuori dal dominio aziendale.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `_notes/DIARIO.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
+## Autoricarica cloud misurata e #229 chiuso, #232 peggiora, 21/10/2026
+
+Letta con l'IT Manager la pagina della gestione del credito nell'Area Clienti del fornitore, che e' un'altra superficie rispetto al pannello cloud: il pulsante di ricarica del cruscotto porta al carrello di acquisto, mentre l'autoricarica si configura solo li'. Percorso e campi sono ora nel registro delle fonti con gli URL della documentazione del fornitore.
+
+**#229 chiuso con misura.** L'autoricarica risulta attiva, l'importo che aggiunge copre circa tre mesi di consumo misurato, lo strumento di pagamento e' una carta di credito salvata, e la soglia che la fa scattare era gia' sopra il valore di fabbrica ed e' stata alzata ancora sopra il piu' grande dei rinnovi mensili. La stessa soglia governa avviso e addebito insieme, perche' la pagina lo dichiara. Resta un residuo scritto e non chiudibile a vista: che la carta sia ancora valida si prova con un addebito e non guardando una pagina, e il modo meno costoso e' reinserirla, perche' la registrazione fa un addebito simulato di un centesimo.
+
+**#232 peggiora invece di migliorare, e la misura lo mostra.** L'unico canale di avviso attivo e' la posta verso una casella individuale di un altro reparto, che quella pagina dichiara non modificabile; il canale SMS esiste, ha un numero associato ed e' spento. L'avviso di credito in esaurimento e un'eventuale segnalazione di pagamento fallito arrivano quindi a una persona sola, che non amministra le macchine, e a nessun telefono.
+
+**Correzione registrata su me stesso.** Nel giro precedente avevo chiuso #229 attribuendo all'IT Manager una decisione che non aveva preso: aveva chiesto come funziona il meccanismo. La voce e' stata tolta da `decisions.md` e il difetto riaperto, poi chiuso adesso per misura. Nel frattempo la domanda ha prodotto la sezione nuova del registro delle fonti, che e' il modo giusto in cui doveva finire.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `docs/fonti-produzione-sito-vps.md`, `_notes/DIARIO.md`, `.claude/memory/decisions.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
+## Discesa di main eseguita, ramo dell'uscita autoconsistente spinto, 21/10/2026
+
+Su autorizzazione dell'IT Manager e' stato aggiunto a `.claude/settings.local.json` il permesso per le scritture via SSH verso la macchina del sito, che fino a quel momento erano negate dalla modalita' permessi e avevano tenuto fermi due passi della roadmap.
+
+**Passo 2 eseguito.** Posata una rete di sicurezza sul commit di partenza del ramo delle consegne, poi fusione del riferimento di rilascio dentro quel ramo con la risoluzione gia' verificata a secco, cioe' la correzione piu' recente che vince sulle due righe in conflitto. Verificato dopo la fusione e non dedotto: il descrittore dei servizi porta la pubblicazione sul solo loopback, le due righe in calce portano la ragione sociale corretta del 19/10, nessun marcatore di conflitto residuo, albero di lavoro pulito. Ramo spinto. Resta la meta' sul ramo degli invii, che ha file non committati e aspetta chi ci lavora.
+
+**Passo 3 avviato.** L'impostazione dell'uscita autoconsistente, che e' il difetto #245, e' stata scritta su un ramo nuovo creato dal riferimento di rilascio e dentro un albero di lavoro temporaneo, per non toccare i tre alberi legati alle rispettive macchine dall'ADR-011 di quel progetto. Il ramo e' spinto; la richiesta di incorporazione si apre dall'interfaccia web, perche' lo strumento a riga di comando sulla postazione e' autenticato con un account che non vede quel repository. Nello stesso albero e' in corso la prima costruzione di produzione mai tentata su questo progetto: si fa li' perche' la banca dati di sviluppo e' raggiungibile in locale, che e' la condizione misurata di #247 e che un esecutore esterno non avrebbe.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `.claude/settings.local.json`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
+## Prima costruzione di produzione: fallita su main, riuscita sul ramo di lavoro, 21/10/2026
+
+Due costruzioni nello stesso albero temporaneo, ed e' la prima volta che questo progetto esegue la catena fino in fondo.
+
+**La prima, dal riferimento di rilascio con l'impostazione aggiunta, fallisce.** La configurazione viene letta, la compilazione riesce in sessantacinque secondi, il controllo dei tipi passa in undici, e la generazione anticipata delle pagine si ferma sulla pagina iniziale: il componente dei glifi riceve un glifo non definito. La causa non e' la riga aggiunta ma uno scarto fra codice e contenuto, perche' alla punta del riferimento di rilascio l'elenco dei pittogrammi del marchio ha un solo nome scritto a mano mentre il ramo di lavoro lo deriva dalla mappa completa dei dodici arrivati il 16/09, e la banca dati condivisa contiene gia' contenuto che li usa.
+
+**La seconda, dal ramo di lavoro con la stessa impostazione, riesce.** Trentaquattro secondi di tempo di parete, picco di memoria residente di circa due gigabyte e due, e produce la cartella autoconsistente con il server minimo che il descrittore dell'immagine si aspetta di copiare, centotrentasei megabyte piu' cinque di risorse statiche.
+
+Ne discendono tre cose registrate nei difetti. Il #245 e' **chiuso con misura**, perche' l'impostazione mancante era davvero il prerequisito e con essa la catena arriva in fondo. Il #244 **perde la sua assunzione**: il picco misurato e' due e sei nella costruzione piu' pesante delle due, non otto, quindi gli otto gigabyte dello script sono un tetto e non un fabbisogno, e l'argomento contro la costruzione sulla macchina di produzione si riduce alla contesa di risorse durante il rilascio. Il #247 ha la sua prima risposta e una conseguenza scomoda: **il riferimento di rilascio non e' oggi costruibile**, e non lo diventa facendovi scendere la riga di configurazione, perche' il contenuto nella banca dati presuppone il lavoro del ramo delle consegne. Serve una richiesta di incorporazione da quel ramo verso il riferimento di rilascio prima di qualunque distribuzione.
+
+Lezione L-009 registrata per il template: la costruibilita' di un ramo dipende dai dati e non solo dal suo codice, e il ramo piu' esposto e' proprio quello di rilascio perche' e' il piu' indietro.
+
+Resta sulla macchina un albero di lavoro temporaneo con le dipendenze installate e la cartella costruita, usato per le due prove: va rimosso quando le richieste di incorporazione sono fuse, e fino ad allora serve per rifare una costruzione senza toccare i tre alberi legati alle macchine.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** L-009
+
+## Il riferimento di rilascio costruisce, 21/10/2026
+
+La richiesta di incorporazione dal ramo delle consegne e' stata approvata e fusa dall'IT Manager, che ha scelto di approvarla lui stesso. Verificato subito dopo, e non dedotto: `main` porta l'elenco delle icone del marchio derivato dalla mappa, e una costruzione lanciata dalla sua punta riesce in quattordici secondi con un picco di circa un gigabyte e tre, dove la mattina falliva sulla pagina iniziale. **Il riferimento di rilascio e' costruibile per la prima volta.**
+
+La stessa prova mostra che cosa manca: la cartella autoconsistente non viene prodotta, perche' la riga che la abilita vive sul ramo a parte la cui richiesta non e' ancora fusa.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
+## Immagine costruita, eseguita, e modello di rilascio deciso, 21/10/2026
+
+Le tre richieste di incorporazione sono state fuse dall'IT Manager e la catena e' stata percorsa per intero. `main` costruisce e produce la cartella autoconsistente in cinquantacinque secondi con picco di due gigabyte e otto; l'immagine e' stata costruita per la prima volta, pesa quattrocentottantotto megabyte, e il contenitore avviato da essa serve il sito, con pagina iniziale a esito duecento in quarantaquattro millesimi per centoventuno kilobyte e pannello di amministrazione a duecento.
+
+Tre difetti del descrittore dell'immagine corretti e spinti, tutti trovati eseguendolo. La configurazione del gestore dei pacchetti, tracciata nel repository e non copiata dal descrittore, che da sola avrebbe fatto fallire ogni costruzione fuori dalla macchina di sviluppo. Il file di esclusione del contesto mancante, con un gigabyte e mezzo di roba inutile e le dipendenze dell'ospite che sovrascrivevano quelle dell'immagine. E il file dei segreti che arrivava fino all'immagine finale, verificato guardandoci dentro e corretto rimuovendolo nell'ultimo stadio.
+
+**ADR-038**: l'immagine si costruisce sulla macchina di produzione, contro la banca dati di produzione, con il contenitore vecchio che serve finche' il nuovo non e' pronto. La ragione che decide e' che la costruzione legge la banca dati e incorpora i contenuti nelle pagine generate, quindi un'immagine costruita altrove porta i contenuti di quell'altrove: vuoti su un esecutore esterno, di prova sulla macchina di sviluppo. Le ragioni di corredo sono il costo misurato, che sta dentro la macchina, e il fatto che la via esterna richiederebbe un registro con le sue credenziali sulla macchina esposta. La decisione si rivede dopo il primo rilascio, se il sito rendera' dinamiche le pagine che oggi si generano in anticipo. La spiegazione per esteso sta nel piano, dentro la fase 3.
+
+Bonifica eseguita sulla macchina: albero di lavoro temporaneo rimosso con la copia del file dei segreti che conteneva, cinque rami di prova locali cancellati, due immagini di prova eliminate e cache di costruzione svuotata, dove quel file sopravviveva come strato intermedio; liberati quattro gigabyte e quattro. Nessun segreto e' uscito dalla macchina, perche' nessuna immagine e' mai stata spinta su un registro, quindi non c'e' niente da ruotare.
+
+File scritti e riletti: `.claude/memory/decisions.md`, `docs/piano-produzione-sito-nuovo.md`, `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
