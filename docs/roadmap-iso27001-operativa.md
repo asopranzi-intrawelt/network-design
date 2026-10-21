@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 31, in corso 16, bloccati 0, completati 0, non applicabili 0.
+- Interventi: **47**; da fare 30, in corso 16, bloccati 0, completati 1, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -79,11 +79,13 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-20. Obie
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.20, A.8.9.
   - **Fonti:** docs/esposizione-servizi-interni.md sezione VM 100, GAP-TBC #175.
 
-- **ISO-05 | Database della VM 209** - **Da fare**; Nessuna fornitura prevista.
+- **ISO-05 | Database della VM 209** - **Completato**; Nessuna fornitura prevista.
   - **Azione:** Cambiare la pubblicazione del contenitore PostgreSQL da tutte le interfacce al solo loopback; verificare che l'applicazione continui a connettersi.
   - **Chiusura verificabile:** Connessione applicativa riuscita e porta del database non raggiungibile dalla LAN.
   - **Responsabile:** Responsabile applicativo. **Dipendenze:** nessuna. **Controlli:** A.8.3, A.8.20.
   - **Fonti:** docs/esposizione-servizi-interni.md sezione VM 209.
+  - **Ultimo stato (2026-10-21):** Eseguito il 21/10/2026 dall'IT Manager con comandi preparati e verificati da questa sessione. La pubblicazione del contenitore PostgreSQL del sito e' passata da tutte le interfacce al solo loopback, cambiando una riga nel descrittore dei servizi e ricreando il contenitore, perche' la pubblicazione di una porta si fissa alla creazione e un riavvio non l'avrebbe applicata. Il volume e' dichiarato esterno con il nome reale, quindi i dati non dipendevano dalla ricreazione; una copia temporanea del database e' stata comunque presa prima e rimossa dopo. L'applicazione non e' in contenitore, gira sull'host e raggiunge il database su loopback, quindi non e' stata toccata.
+  - **Evidenza:** Misura prima e dopo, stesso comando: apertura di una connessione verso la porta sull'indirizzo di LAN della macchina, da RAGGIUNGIBILE a connessione rifiutata. Binding letto dal motore passato da HostIp vuoto a 127.0.0.1; tabella di ascolto del sistema passata da tutte le interfacce a 127.0.0.1:5432. Integrita' verificata dopo la ricreazione: 343 tabelle presenti e volume intrawelt-pgdata invariato. Dettaglio tecnico in docs/esposizione-servizi-interni.md e approfondimento didattico in .claude/context/refactor-01-filtro-e-contenitori.md
 
 - **ISO-06 | Servizio Ollama esposto alla LAN** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Togliere l'ascolto dell'istanza non autenticata dalla LAN o metterla dietro un accesso autenticato e ristretto.

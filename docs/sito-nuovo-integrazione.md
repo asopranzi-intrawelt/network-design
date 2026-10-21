@@ -20,6 +20,14 @@ Oggi il confronto non si può fare, e il registro lo dichiara invece di nasconde
 
 Il canale si attiva quindi con un atto solo, che è anche il primo passo della fase 1 e 2 del piano: creare la chiave e l'alias, provarli, e portare `accesso_stato` a `configurato`. Da quel momento ogni commit nuovo sul sito compare all'avvio della sessione successiva senza che nessuno debba ricordarsene.
 
+## Da quale albero si legge, che non è una domanda di dettaglio
+
+Il progetto del sito tiene **tre alberi di lavoro** sulla stessa macchina, e questo cambia dove vive la sua memoria. Il 21/10/2026 il registro delle decisioni contava trentasei voci sul ramo delle consegne grafiche, sedici su quello di integrazione e nessuna sul principale: la memoria versionata descrive la branch e non il progetto, quindi puntare il canale alla cartella del repository invece che all'albero giusto significa leggere una fotografia vecchia che ha l'aria di essere quella corrente.
+
+È successo, e va scritto perché non si ripeta. Il canale è nato il 20/10 puntato sull'albero di integrazione e ha dichiarato allineato un commit di ventisette giorni prima. La risposta era già nel progetto del sito, nel suo ADR-034, che stabilisce che la memoria sta sulla branch più avanti: esisteva una decisione e il canale la ignorava. Dal 21/10 `percorso_remoto` punta all'albero autorevole per percorso assoluto, e i tre alberi sono annotati nel registro.
+
+Ne discende la regola per chi mantiene questo canale, che è quella della norma `alberi-di-lavoro` applicata a un progetto esterno. La memoria si legge dall'albero autorevole e non si copia né si fonde negli altri. Quale sia l'albero autorevole lo decide quel progetto e non questo, quindi la domanda si fa a chi lo tiene invece di dedurla dai nomi dei rami; dove quel progetto abbia già registrato la risposta in una propria decisione, quella vale. E quando gli alberi cambiano, cambia anche il percorso qui: è la ragione per cui il registro porta l'elenco dei tre e non solo il percorso in uso.
+
 ## Che cosa si porta qui quando compare un commit nuovo
 
 Il criterio è quello già in vigore per gli altri progetti collegati e non va allargato: si legge il diff e si trasferisce soltanto ciò che cambia topologia, sorgenti, accessi, regole, backup, presidio o stato ISO. Tradotto su questo progetto, sono sei famiglie di fatti.

@@ -1,7 +1,7 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 24,
+  "revisione": 25,
   "aggiornato": "2026-10-20",
   "progetti_collegati": [
     {
@@ -29,14 +29,15 @@
     },
     {
       "id": "intrawelt-website",
-      "percorso_remoto": "ssh://intra-newsite/home/intrawelt-site/intrawelt-website",
-      "commit_riconciliato": "90ec67fd542dcad3c66c36f07b5f985695f453fe",
-      "riconciliato_il": "2026-10-20",
+      "percorso_remoto": "ssh://intra-newsite/home/intrawelt-site/lavoro-consegne",
+      "commit_riconciliato": "6db2ce12e8263d2f2569855fa2ba96375b6d10df",
+      "riconciliato_il": "2026-10-21",
       "accesso_stato": "configurato",
       "accesso_mancante": "nessuno: alias intra-newsite attivo dal 20/10/2026, chiave dedicata, lettura verificata anche in modalita non interattiva",
       "dove": "docs/sito-nuovo-integrazione.md",
       "nota_chiave": "chiave senza frase di accesso, DECISO dall IT Manager il 20/10/2026: raggiunge una macchina di sviluppo sulla LAN interna, e una frase imporrebbe ssh-agent caricato a ogni avvio perche il controllo interroga in modalita non interattiva. Questione chiusa, non riaprirla",
-      "ramo": "staging"
+      "ramo": "ricerca-e-consegne-grafiche",
+      "nota_alberi": "il progetto ha tre alberi di lavoro: intrawelt-website su staging, lavoro-consegne su ricerca-e-consegne-grafiche, lavoro-mailing su fase-7-invii-e-mailing. Il suo ADR-034 stabilisce che la memoria sta sulla branch piu avanti, che e ricerca-e-consegne-grafiche: 36 decisioni contro 16 su staging e zero su main. Il canale legge quell albero per percorso assoluto e non copia nulla altrove, secondo la norma alberi-di-lavoro"
     }
   ],
   "scadenze": [
