@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-20",
+  "aggiornato": "2026-10-21",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1805,6 +1805,13 @@
       "data": "2026-10-20",
       "stato": "in_corso",
       "nota": "Censimento avviato il 20/10/2026 sul perimetro degli accessi amministrativi esterni, con quattro riscontri verificati per lettura diretta del pannello e nessuna rimedizione ancora applicata. L'account del pannello cloud del fornitore, che governa tutte e tre le VPS esterne e puo' spegnerle, reinizializzarle e cancellarle, non ha il secondo fattore attivo (#235) e il fornitore stesso dichiara i suoi recapiti non verificati (#232); il contatto intestatario e' una casella individuale di un reparto diverso da quello che amministra le macchine, il che spiega perche' un codice di reset non raggiungeva l'IT. La VPS di produzione del sito ha una sola chiave autorizzata, su un dispositivo fuori inventario (#224). La macchina di staging del sito si raggiunge con password e non con chiave, e quella password e' transitata in un canale di chat senza essere piu' cambiata (#226). Ordine di rimedio proposto: secondo fattore e verifica dei recapiti dal pannello, che non richiedono ne' finestra ne' fermo; poi seconda chiave intestata all'azienda con frase di accesso nel gestore aziendale; poi sostituzione dell'accesso con password sulla macchina di staging. La matrice degli accessi e la revoca delle vecchie credenziali, che la verifica di questo intervento richiede, restano da produrre."
+    },
+    {
+      "id": "ISO-05",
+      "data": "2026-10-21",
+      "stato": "completato",
+      "nota": "Eseguito il 21/10/2026 dall'IT Manager con comandi preparati e verificati da questa sessione. La pubblicazione del contenitore PostgreSQL del sito e' passata da tutte le interfacce al solo loopback, cambiando una riga nel descrittore dei servizi e ricreando il contenitore, perche' la pubblicazione di una porta si fissa alla creazione e un riavvio non l'avrebbe applicata. Il volume e' dichiarato esterno con il nome reale, quindi i dati non dipendevano dalla ricreazione; una copia temporanea del database e' stata comunque presa prima e rimossa dopo. L'applicazione non e' in contenitore, gira sull'host e raggiunge il database su loopback, quindi non e' stata toccata.",
+      "evidenza": "Misura prima e dopo, stesso comando: apertura di una connessione verso la porta sull'indirizzo di LAN della macchina, da RAGGIUNGIBILE a connessione rifiutata. Binding letto dal motore passato da HostIp vuoto a 127.0.0.1; tabella di ascolto del sistema passata da tutte le interfacce a 127.0.0.1:5432. Integrita' verificata dopo la ricreazione: 343 tabelle presenti e volume intrawelt-pgdata invariato. Dettaglio tecnico in docs/esposizione-servizi-interni.md e approfondimento didattico in .claude/context/refactor-01-filtro-e-contenitori.md"
     }
   ]
 }
