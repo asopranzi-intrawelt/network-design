@@ -2604,3 +2604,19 @@ Trovato nel frattempo un restringimento di #238: la configurazione del framework
 Linter della prosa passato con due correzioni di parallelismo negativo; guard-rail a zero riscontri bloccanti.
 
 File scritti e riletti: `docs/storia-del-sito-da-zero.md`, `docs/README.md`, `docs/infrastructure-timeline/GAP-TBC.md`, questo work-log. **Template:** nessuna
+
+## PR 3 fusa, main verificato, quattro lezioni al template, 21/10/2026
+
+La richiesta di incorporazione numero 3 del progetto del sito e' stata approvata dal collaboratore che lo ha costruito e fusa dall'IT Manager. **Verifica eseguita e non dedotta**: `main` e' a `9c491de` e il suo `docker-compose.yml`, letto dal remoto, porta alla riga 39 `- '127.0.0.1:5432:5432'`. Il ramo di rilascio nasce con la porta del database chiusa, che era l'unico controllo che contava su quella fusione.
+
+Dichiarato all'IT Manager di **non cancellare il ramo della vetrina**, che l'interfaccia propone di eliminare a fusione avvenuta: l'ADR-011 di quel progetto lega ogni ramo a una macchina e quello e' il ramo a cui l'albero della vetrina e' agganciato. Difetto #242 aggiornato a meta' chiuso: resta la discesa di `main` nei due rami di lavoro, che e' cio' che toglie l'innesco, e il ramo delle consegne puo' riceverla subito perche' ha l'albero pulito mentre quello degli invii ha quattro file non committati.
+
+Generalizzate al template quattro delle sei lezioni dell'asset, registrate come L-003, L-004, L-005 e L-006, che il template legge da se' a ogni apertura. Un'affermazione verificabile che nessuno verifica e' peggio di un'affermazione assente, con i tre casi misurati che l'hanno prodotta. Una configurazione che descrive un'altra macchina viene applicata da chi la legge, lezione che riguarda direttamente un template che distribuisce bundle e che suggerisce a un pacchetto di dichiarare in testa quali propri valori appartengano alla macchina che lo ha prodotto. Cio' che nasce a mano resta descritto male finche' qualcuno non se ne accorge, con la verifica che costa un comando, cioe' chiedere al motore che cosa stia eseguendo invece di leggere il descrittore. E il fatto che piu' alberi di lavoro moltiplichino anche la configurazione e non solo la memoria, che estende la norma esistente con due prescrizioni.
+
+Due lezioni non sono state registrate per scelta: quella sul contenimento che conta solo in un riferimento che resta e' gia' coperta in sostanza dalla norma sugli alberi, e quella sul costo dichiarato alla nascita e' vera ma e' gia' nella testa di chi lavora bene, che e' il criterio di esclusione del registro.
+
+Trovato entrando nel template che i **due file che vi avevo scritto il 20/10 sono rimasti non committati** e, al ritorno su `main` di un'altra sessione, se li e' portati dietro: `craft-apps/README.md` e `stili/aziendale-design-system.esempio.json` stanno la' in mezzo a undici file modificati da quella sessione. Non ho committato nulla in quell'albero, come la regola sul formato dei comandi prescrive quando un'altra sessione vi sta scrivendo, e la cosa e' annotata nello snapshot e nel file di ripresa perche' chi chiude quella sessione decida consapevolmente se includerli.
+
+Allineati snapshot e file di ripresa perche' la prossima sessione riparta esattamente da qui: il file di ripresa si apre ora con il passo successivo nell'ordine, le due cose da non fare, il modo di lavorare con quel progetto e le tre trappole operative gia' pagate, cioe' le virgolette di PowerShell, i blocchi di codice nei testi da incollare e il linter da passare su cio' che esce.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `.claude/memory/index.md`, `.claude/memory/lezioni-template.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** L-003, L-004, L-005, L-006
