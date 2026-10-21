@@ -1,5 +1,5 @@
 ---
-last-verified: 0945f4d
+last-verified: 4079c8e
 ---
 
 # Deep-dive 01: il filtro di sistema e le porte pubblicate dai contenitori

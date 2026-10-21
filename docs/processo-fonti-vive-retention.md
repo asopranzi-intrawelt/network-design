@@ -87,4 +87,4 @@ Anteprima reale del 16/10/2026 sulla cartella output: mode=plan, 127 copie per 3
 
 ## Abilitazione ricevuta, 16/10/2026
 
-L’operatore ha poi pubblicato la milestone bff861b, con remoto verificato, ed eseguito EnableScheduled a 90 giorni: mode=enable, 127 copie, 36817388 byte, zero candidati ed eliminati. Policy locale riletta enabled=true. Il primo successivo giro pianificato di pulizia resta da osservare; questa abilitazione non ha cancellato file.
+L’operatore ha poi pubblicato la milestone 2164dd0, con remoto verificato, ed eseguito EnableScheduled a 90 giorni: mode=enable, 127 copie, 36817388 byte, zero candidati ed eliminati. Policy locale riletta enabled=true. Il primo successivo giro pianificato di pulizia resta da osservare; questa abilitazione non ha cancellato file.

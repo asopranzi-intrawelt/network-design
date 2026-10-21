@@ -1,5 +1,5 @@
 ---
-last-verified: 0945f4d
+last-verified: 4079c8e
 ---
 
 # Studio didattico: racconto evolutivo delle scelte di qualità
