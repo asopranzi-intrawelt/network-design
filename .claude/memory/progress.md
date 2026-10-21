@@ -1,5 +1,9 @@
 # Work-log
 
+## Confine tecnico QA offline, 21/10/2026
+
+Recepita la nuova prova del collettore: confine tecnico QA offline, 20 test, lotto validato prima dell'output, `job_ref` omesso, autorizzazione respinta. Aggiornati il dossier QA, l'integrazione, la roadmap M32e/ISO-30 e l'indice. Nessun LXC, sorgente reale o apparato modificato. Preservato il diff preesistente della rete. **Template:** nessuna.
+
 ## Seeweb: capienza e ritenzione parametrica preparate, 20/10/2026
 
 Nel collettore è stato preparato `ads-seeweb-technical-retain.sh` per misurare file, byte e spazio libero e per scadere file giornalieri solo dopo `--days N` esplicito; avviso locale all'80% e archivio assente o vuoto; dopo l'applicazione registra i percorsi cancellati e le metriche residue. Unità systemd istanziate non installate. Test WSL su file fittizi, inclusi file vuoti e scadenza totale, e mutazione della guardia ai link riusciti; nessun volume reale, durata approvata, allarme consegnato o flusso Seeweb attivo. Integrazione e timeline di rete aggiornate, ISO-30 in corso. Nessun cambio sugli apparati o operazione Git dell'agente. **Template:** nessuna.
@@ -2492,3 +2496,111 @@ Il terzo riguarda l'attribuzione. L'identita' git locale di quel repository e' q
 Perimetro dei commit proposti, verificato con `git status` prima di scriverli: sulla vetrina l'unico file tracciato modificato e' il descrittore, mentre il resto sono cartelle di skill non tracciate che un `add -A` avrebbe inghiottito; nell'albero delle consegne gli undici file modificati sono due miei e nove di lavoro vivo altrui sulle componenti di anteprima. Entrambi i commit sono quindi ad `add` mirato, secondo la regola sul formato dei comandi che vieta `add -A` quando un altro sta scrivendo nello stesso albero.
 
 File scritti e riletti: `data/iso27001-interventi.json` e `data/iso27001-glossario.json` con le quattro viste rigenerate, `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Commit del sito andati, e il doppione di firma che avevo creato, 21/10/2026
+
+I due commit mirati sono andati e sono stati spinti sul remoto dell'IT Manager: `e7db1cf` sulla vetrina con il solo descrittore, `8360e62` sulle consegne con i soli due file di memoria. Controllo del perimetro dopo i commit: zero file tracciati modificati sulla vetrina, nove sulle consegne, cioe' esattamente il lavoro altrui lasciato intatto.
+
+Il blocco precedente era fallito per citazione, ed e' stato il secondo errore della stessa classe in due giorni: PowerShell 5.1 toglie le virgolette doppie dagli argomenti di un eseguibile, e la riga arrivava alla shell remota spezzata sul nome con lo spazio e sulle parentesi del messaggio. Corretto spostando la citazione dove e' controllabile, cioe' preparando lo script sulla macchina e lasciando all'utente una riga senza virgolette. E' la forma da usare d'ora in avanti per qualunque comando remoto non banale.
+
+Trovato un doppione di firma **creato da me**: lo script usava `Alessio Sopranzi` mentre nella storia esisteva gia' `asopranzi-intrawelt`, che e' il nome utente di GitHub usato in automatico per la fusione della richiesta di incorporazione del 02/09 dall'interfaccia web. Stessa casella, due nomi, quindi due righe nell'elenco dei contributori. Dovevo adottare la firma esistente invece di sceglierne una. Sanato con un `.mailmap` nell'albero autorevole, che e' il modo non distruttivo: non riscrive la storia, dichiara che due firme sono la stessa persona. Verificato l'effetto prima di committare: l'elenco passa da quattro righe a tre, con quarantacinque commit del collaboratore che ha costruito il progetto, sei di un terzo contributore e tre dell'IT Manager.
+
+Chiarito anche il terzo contributore, che non era un'anomalia: sei commit tutti del 02/09, cioe' il rifacimento di Chi siamo approvato in sede di design, gli stili dei bottoni, la decisione sull'uso da telefono e tre fusioni. Lavoro di frontend di quella giornata.
+
+File scritti e riletti: `.mailmap` nell'albero delle consegne del progetto del sito, questo work-log. **Template:** nessuna
+
+## Dove si costruisce l'immagine, deciso da due misure, 21/10/2026
+
+Domanda dell'IT Manager: non basta che la produzione faccia un prelievo del sorgente dal ramo di rilascio e finisca li'. E' la forma piu' semplice e andrebbe preferita se reggesse; due misure dicono che non regge, e sono misure e non preferenze architetturali.
+
+La prima e' la memoria, difetto #244. Lo script di costruzione del progetto passa `--max-old-space-size=8000`, cioe' chiede fino a otto gigabyte di heap; la VPS ne ha otto in tutto e dovra' far girare insieme database, applicazione e reverse proxy. La macchina di sviluppo, letta nello stesso momento, aveva 352 MB liberi su 7,8 GB. Una costruzione sulla produzione contende memoria al servizio e fallisce durante un rilascio, cioe' nel momento peggiore.
+
+La seconda e' un prerequisito mai soddisfatto, difetto #245. Il `Dockerfile` del progetto, scritto il 15/09, dichiara nella propria prima riga di richiedere l'uscita autoconsistente impostata nella configurazione del framework; quella impostazione non c'e'. Il passo che copia la cartella prodotta da quell'uscita fallirebbe perche' la cartella non viene prodotta. La catena non e' quindi mai stata eseguita fino in fondo. Entrambe le documentazioni ufficiali, del framework e del CMS, prescrivono quella impostazione per la via con i contenitori.
+
+Forma proposta, che conserva la semplicita' chiesta: si costruisce dove la memoria e' libera, cioe' la postazione o la macchina di sviluppo ferma, senza che serva per forza un'integrazione continua, e sulla VPS si tira l'immagine gia' pronta e si riavvia. Resta un prelievo e un comando, ma cio' che si tira e' un artefatto. La scelta del riferimento resta necessaria e diventa piu' evidente, perche' un'immagine va etichettata e l'etichetta viene da un riferimento dichiarato, che e' il difetto #243 ancora aperto. Scritto nella fase 3 del piano.
+
+Nel frattempo il `.mailmap` e' stato committato e spinto: la storia del sito mostra ora tre contributori, quarantacinque commit del collaboratore che lo ha costruito, sei del terzo contributore e quattro dell'IT Manager, con i nove file di lavoro altrui ancora intatti e non committati.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `docs/piano-produzione-sito-nuovo.md`, questo work-log. **Template:** nessuna
+
+## Modello di rilascio del sito: concordato, e cosa manca davvero, 21/10/2026
+
+Chiarimento dell'IT Manager dopo una mia risposta fuori bersaglio: la sua proposta non era prelevare il sorgente e costruire sulla VPS, ma che la VPS ospiti uno a uno cio' che il ramo di rilascio contiene, tirandolo gia' costruito. E' esattamente il modello che il piano prevede e non c'era nulla da discutere; la confusione l'ho introdotta io rispondendo a una posizione che non era stata espressa. Il modello e' quindi concordato: si costruisce dove la memoria e' libera, la VPS tira l'immagine e riavvia.
+
+Misurato cosa manca per farlo, e sono quattro cose piccole e nessuna architetturale. Nel repository esiste **un solo file compose e contiene il solo database**: nessun servizio applicativo, nessuna immagine del sito, nessun flusso di integrazione continua. Servono percio': l'uscita autoconsistente nella configurazione del framework, senza la quale il descrittore dell'immagine non costruisce, che e' il difetto #245; un compose di produzione con il servizio applicativo che punti a un'etichetta di immagine, oggi inesistente; l'immagine costruita, etichettata e spinta su un registro, che non e' mai stata prodotta; e il riferimento da cui si costruisce, che e' il difetto #243. Fatte queste quattro, sulla VPS il rilascio e' un prelievo dell'immagine e un riavvio.
+
+Lezione di conduzione, non tecnica: prima di argomentare contro un'alternativa conviene verificare che sia quella proposta. Qui ho speso un giro intero a sostenere una tesi che nessuno contestava, e il costo l'ha pagato chi leggeva.
+
+File scritti e riletti: questo work-log. **Template:** nessuna
+
+## Decisioni sui rami prese, contenuto messo in salvo, fusione pronta, 21/10/2026
+
+Tre decisioni prese dall'IT Manager. Il ramo di rilascio e' `main`. Il lavoro attuale vi entra per fusione. La configurazione atterra su `main` e scende nei rami di lavoro. Chiarito anche un punto di lessico: la parola «descrittore» era mio gergo per `docker-compose.yml`, e non si usa piu'.
+
+**Difetto #246 mitigato con misura.** I 37 MB di contenuto caricato dalla redazione sono stati copiati dalla macchina di sviluppo alla postazione, e la copia e' stata verificata per impronta e non per dimensione: diciannove file, 37.912.408 byte, e tutte e diciannove le impronte SHA-256 dei contenuti coincidono. L'impronta aggregata dei due elenchi differiva, ma per l'ordine dei percorsi fra i due sistemi e non per i contenuti, come il confronto per singolo file ha accertato: e' il caso in cui fidarsi del totale avrebbe dato un falso allarme e fidarsi della sola dimensione un falso verde. Il difetto resta aperto perche' due copie su due dischi singoli non sono un salvataggio: nessuna ritenzione, nessuna prova di ripristino. Si chiude con la fase 5.
+
+Preparata la fusione che rende `main` il ramo di rilascio, come script sulla macchina. Fa sei cose nell'ordine: crea un albero di lavoro dedicato a `main`, che oggi non ne ha e che gli serve comunque come ramo di rilascio; fonde il ramo delle consegne, che porta ventiquattro commit e la memoria autorevole; fonde la vetrina, che e' l'unica a portare la correzione della porta in `docker-compose.yml`; verifica prima di pubblicare che `main` contenga davvero la riga con il loopback, e si ferma se non la trova; pubblica; e stampa la distanza dei tre rami da `main` dopo l'operazione. La guardia al punto quattro non e' decorativa: senza la fusione della vetrina `main` nascerebbe con la porta del database aperta, e sarebbe il difetto #242 trasferito sul ramo di rilascio.
+
+Resta che i due rami di lavoro non ricevono la correzione con questa operazione, perche' entrambi hanno lavoro non committato nei propri alberi e una fusione li' e' decisione di chi ci sta lavorando. #242 si chiude quando `main` scende nei rami, che e' anche la terza decisione presa oggi.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, questo work-log, piu' la copia verificata del contenuto fuori dai repository e lo script preparato sulla macchina. **Template:** nessuna
+
+## Materiale consolidato sulla macchina, e la fusione diretta ritirata, 21/10/2026
+
+Due direttive dell'IT Manager, entrambe attuate.
+
+**Il materiale di riferimento e' consolidato.** Viveva sulla postazione, fuori da qualunque controllo di versione, in una cartella separata dal progetto, ed e' stato portato sulla macchina di sviluppo in `/home/intrawelt-site/riferimenti/`: settecentoventisei file per quaranta megabyte, trasferiti e verificati confrontando l'impronta dei contenuti con i percorsi esclusi, identica sui due lati. Contiene guida di impianto e diario di bordo, materiale di progettazione del database, consegna scritta e materiale di design. Collocato come fratello dei tre alberi di lavoro e non dentro uno di essi, benche' la richiesta parlasse della radice del progetto: una cartella ignorata da git dentro un albero esiste solo in quell'albero, e con tre alberi la scelta letterale avrebbe ricreato la dispersione che il consolidamento chiudeva; stando fuori da ogni albero non puo' nemmeno finire committata per distrazione. Scelta dichiarata nella scheda del canale.
+
+Una cosa non e' stata spostata, deliberatamente: la copia dei file caricati dalla redazione resta sulla postazione, perche' e' l'unica seconda copia di un contenuto che altrimenti esiste in un esemplare solo, e portarla sulla macchina metterebbe originale e copia sullo stesso disco riaprendo il difetto #246 invece di mitigarlo.
+
+**Ritirata la fusione diretta su `main`.** L'IT Manager ha fissato il modello: `main` si aggiorna soltanto per richiesta di incorporazione aperta da un ramo, riletta e approvata, e la produzione preleva da li'. Lo script di fusione preparato da questa sessione aggirava la rilettura ed e' stato rimosso dalla macchina perche' nessuno lo esegua per abitudine. Le richieste si aprono dall'interfaccia web: lo strumento a riga di comando sulla postazione e' autenticato con un account che non vede quel repository, misurato con due chiamate fallite, e sulla macchina non e' installato.
+
+Sciolto il timore espresso insieme alla decisione, perche' la risposta e' precisa e cambia cosa si puo' fare oggi. Fondere un ramo **dentro** `main` non tocca quel ramo ne' il suo albero: git sposta `main` e nient'altro, quindi i file non committati nei due alberi dove si lavora restano intatti. Il rischio sta nella direzione opposta, cioe' quando `main` scende in un ramo con modifiche non committate, e quella e' proprio la direzione che chiude il difetto #242: per questo aspetta che quegli alberi siano puliti. Ne segue l'ordine corretto, cioe' prima le richieste verso `main`, che non disturbano nessuno, poi la discesa quando si puo'.
+
+File scritti e riletti: `docs/sito-nuovo-integrazione.md`, questo work-log, piu' il materiale trasferito e verificato sulla macchina e lo script di fusione rimosso. **Template:** nessuna
+
+## Seconda copia dei media in OneDrive, e una correzione a me stesso sulle PR, 21/10/2026
+
+Correzione da fare subito perche' riguarda un passo che l'IT Manager dava per compiuto: **le richieste di incorporazione non sono state aperte**, da me ne' da nessuno. Avevo fornito due indirizzi che aprono il modulo di creazione sul web, e un indirizzo non e' una richiesta; lo strumento a riga di comando su questa postazione non vede quel repository, quindi non potrei nemmeno crearle. Dichiarato esplicitamente per non lasciare l'impressione contraria.
+
+Chiarito cosa fosse la copia dei media, che non era evidente: sono i diciannove file caricati dalla redazione nel CMS, nove video e dieci immagini, cioe' il contenuto vero delle pagine. Vivono in una cartella esclusa da git, non entrano nell'immagine e non si ricostruiscono dalle migrazioni, quindi esistevano in una copia sola.
+
+Su richiesta di svuotare del tutto la postazione, la copia e' stata spostata dove un backup esiste davvero invece di essere cancellata: `Marketing - Documenti/_BRAND_IDENTITY/media-sito-nuovo-2026-10-21` nella libreria OneDrive, accanto al resto del materiale di marchio. Verificata dopo il trasferimento con il confronto delle impronte dei contenuti, identiche. Essendo OneDrive replicato e versionato, quella e' una seconda copia vera e non un secondo disco singolo, il che migliora la mitigazione del difetto #246 rispetto a ieri. Dopo lo spostamento la cartella sulla postazione puo' essere rimossa per intero.
+
+Spiegato senza gergo che cosa significhi far scendere `main` nei rami, perche' la parola non era chiara: i rami sono linee parallele e ciascuna ha la propria copia dei file, la correzione della porta sta oggi su una sola linea, e farla scendere vuol dire portarla dentro le altre due. Resta in attesa perche' quei due alberi hanno rispettivamente nove e cinque file modificati non committati, e portare dentro qualcosa mentre c'e' lavoro aperto puo' entrare in conflitto con quel lavoro.
+
+Adottato il passo per micro-step su richiesta. Micro-step 1 consegnato: aprire la sola prima richiesta di incorporazione, quella da `staging`, che porta due commit e si rilegge in un minuto.
+
+File scritti e riletti: questo work-log, piu' la copia verificata in OneDrive. **Template:** nessuna
+
+## PR #3 del sito aperta, e la lezione sul consegnare testo da incollare, 21/10/2026
+
+Aperta la richiesta di incorporazione numero 3 del progetto del sito, da `staging` verso `main`, quattordici commit e trecentosette file: porta `main` allo stato della vetrina e con esso la correzione della pubblicazione del database, che e' il fatto di rete per cui questo progetto la registra. Revisione richiesta al collaboratore che ha costruito il progetto; l'IT Manager e' l'autore e non puo' approvare la propria. In attesa.
+
+Tre errori miei nella consegna del testo della descrizione, tutti della stessa famiglia e costati tempo all'IT Manager.
+
+Il primo: avevo scritto che la richiesta portava due commit e si rileggeva in un minuto. Erano quattordici commit e trecentosette file, perche' avevo confuso la distanza fra due rami di lavoro con la distanza da `main`, che e' fermo al 2 settembre.
+
+Il secondo: la descrizione conteneva un blocco di codice recintato. Copiata dalla chat e incollata, ha perso l'a capo dopo la chiusura del blocco, la chiusura si e' fusa con la riga seguente e tutto il resto del documento e' finito dentro il blocco, reso come codice. La correzione non e' incollare con piu' attenzione ma togliere il blocco: la differenza fra le due righe del descrittore si scrive in linea, e l'artefatto diventa impossibile da rompere in quel modo. **Regola adottata: una descrizione destinata a essere incollata non contiene blocchi di codice recintati.**
+
+Il terzo: non avevo passato il linter della prosa sulla descrizione, pur avendolo passato sui documenti di progetto nello stesso giro. Passandolo ha trovato tre parallelismi negativi, cioe' il «non e' X, e' Y», che e' uno dei marcatori di prosa generata. Corretti tutti e tre. **Regola adottata: ogni testo destinato a uscire passa dal linter prima della consegna, non solo i documenti tracciati.**
+
+Su richiesta esplicita il file e' stato appoggiato sul Desktop e **verificato rendendolo**, non a occhio: zero blocchi recintati e zero blocchi di codice nell'HTML, cinque intestazioni, diciotto paragrafi, venticinque frammenti di codice in linea e otto grassetti tutti bilanciati, UTF-8 valido senza BOM con trentaquattro lettere accentate corrette, e coda del testo integra. **Regola adottata: un testo da incollare si rende e si controlla prima di consegnarlo.**
+
+File scritti e riletti: questo work-log, piu' il file temporaneo sul Desktop che non e' una fonte da mantenere. **Template:** nessuna
+
+## Asset sulla storia di sviluppo del sito, 21/10/2026
+
+Scritto `docs/storia-del-sito-da-zero.md`, centosettantasette righe, su direttiva dell'IT Manager: un file solo, esaustivo, che racconta lo sviluppo del sito dal primo commit alla soglia della produzione con il dettaglio tecnico e la lettura ISO 27001, e che cresce insieme alla roadmap invece di essere una fotografia. Indicizzato in `docs/README.md`. Anonimizzato, perche' questo repository e' pubblico: persone per ruolo, indirizzi a segnaposto, nessun dato identificante.
+
+Costruito applicando la token economy invece di leggere tutto. L'ossatura viene da un'estrazione deterministica con `git`: cinquantasei commit con data, autore, titolo, righe aggiunte e tolte e file toccati, senza che il modello aprisse un solo diff. La lettura delle trentasette decisioni, che e' lavoro meccanico di volume, e' andata a un subagent che ha restituito una tabella densa con decisione e vincolo per ciascuna, piu' la mappatura su otto temi. A me e' restato il giudizio, cioe' come quei vincoli si legano, che cosa insegnano e dove toccano la norma.
+
+Contenuto: i numeri misurati; il racconto per periodi da agosto a oggi con le decisioni che li governano; sei lezioni generalizzabili; una tabella di lettura ISO con undici temi che dichiara per ciascuno cosa esiste e cosa manca; e i quattro passi che restano fra oggi e la prima pubblicazione.
+
+Due cose che il documento dice e che vale la pena ricordare qui. La prima e' che il conteggio delle righe su un progetto di contenuto misura l'ingestione e non lo sforzo: tre giornate concentrano la maggior parte del volume e sono quelle in cui e' entrato materiale generato o importato in blocco. La seconda e' che due righe della tabella ISO si contraddicono, cioe' la conservazione delle trascrizioni protegge la storia e crea un archivio di segreti non versionato, e un inventario onesto le tiene entrambe invece di scegliere quella comoda.
+
+Trovato nel frattempo un restringimento di #238: la configurazione del framework dichiara solo `localPatterns` e nessun `remotePatterns`, quindi l'avviso sull'ottimizzatore di immagini non si applica e resta il solo debito di versione.
+
+Linter della prosa passato con due correzioni di parallelismo negativo; guard-rail a zero riscontri bloccanti.
+
+File scritti e riletti: `docs/storia-del-sito-da-zero.md`, `docs/README.md`, `docs/infrastructure-timeline/GAP-TBC.md`, questo work-log. **Template:** nessuna

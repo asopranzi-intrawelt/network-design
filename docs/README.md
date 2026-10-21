@@ -11,6 +11,7 @@ Lo [snapshot dell'infrastruttura](snapshot-infrastruttura.md) e' il punto di par
 | Perche' un servizio raggiungibile puo' essere guasto, e che cosa deve misurare il presidio? | [Inferenza: la GPU persa al riavvio](inferenza-gpu-persa-al-riavvio.md), ADR-037, M32g e gap 222-223 |
 | Quali configurazioni del firewall Seeweb conosciamo e quali interventi derivano? | [Firewall Seeweb](firewall-seeweb-opnsense.md), roadmap M31/M14 e gap 210–214 |
 | Quali pannelli Seeweb sono censiti e quali log sono realmente raccolti? | [Sorgenti Seeweb](sorgenti-log-seeweb.md) e [integrazione del collettore](log-collector-integrazione.md) |
+| Come e' stato costruito il sito da zero, e che cosa insegna? | [Storia del sito da zero](storia-del-sito-da-zero.md), racconto tecnico con le decisioni e la lettura ISO 27001 |
 | Come si porta il sito nuovo in produzione sulla VPS esterna, e in quale ordine? | [Piano di produzione del sito](piano-produzione-sito-nuovo.md), [registro delle fonti del filone](fonti-produzione-sito-vps.md) e [canale di propagazione dalla VM](sito-nuovo-integrazione.md) |
 | Che cosa e' collegato e quanto e' verificato? | [Snapshot](snapshot-infrastruttura.md), [mappa](network-map.html) e [guida](network-diagram.md) |
 | Dove stanno cavi, armadi, corrente e porte fisiche? | [Livello fisico ed elettrico](livello-fisico-ed-elettrico.md) e [mappatura delle porte](mappatura-porte-fisiche.md) |

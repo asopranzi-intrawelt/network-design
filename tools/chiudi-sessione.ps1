@@ -257,8 +257,8 @@ if ($python -and (Test-Path $lezioni)) {
     if ($righe.Count -gt 0) { Titolo "Lezioni per il template"; $righe | ForEach-Object { Write-Host "   $_" } }
 }
 
-# Le fonti a monte, dal 2026-10-20: nel template un repository citato e non censito ferma il
-# commit, cosi' registro e schede entrano insieme; nel progetto il censimento avvisa e basta.
+# Le fonti a monte, dal 2026-10-20: nel template una fonte non censita, senza filone, senza
+# motivo o mai verificata ferma il commit (dal 2026-10-21); nel progetto il censimento avvisa.
 $fonti = ".claude\templates\tools\fonti-a-monte.py"
 if ($python -and (Test-Path $fonti)) {
     $uscitaF = & $python $fonti censisci --check 2>&1
@@ -332,16 +332,14 @@ if ($NoPush) {
     Nota "nessun commit sul ramo: niente da pushare"
 } else {
     # Destinazione esplicita: un upstream diverso da origin non deve deviare la chiusura.
-    # Un push caduto sulla rete non e' un push rifiutato, e la differenza conta:
-    # il 2026-10-13, su due tornate di chiusura, dieci push sono caduti su timeout
-    # SSH verso GitHub e ogni volta bastava rilanciare. La ripetizione sta qui
-    # invece che nelle dita di chi chiude.
+    # Un timeout SSH o un rifiuto remoto transitorio possono far fallire il push.
+    # La chiusura ritenta fino a tre volte e si ferma se il remoto resta indietro.
     $attese = @(5, 15)
     for ($t = 1; $t -le 3; $t++) {
         & git push -u origin "HEAD:refs/heads/$ramo"
         if ($LASTEXITCODE -eq 0) { break }
         if ($t -eq 3) { Write-Host "Push fallito: l'impronta non si registra finche' il remoto non e' allineato." -ForegroundColor Red; exit 1 }
-        Nota ("push caduto, ritento fra {0} secondi (tentativo {1} di 3)" -f $attese[$t - 1], ($t + 1))
+        Nota ("push non riuscito, ritento fra {0} secondi (tentativo {1} di 3)" -f $attese[$t - 1], ($t + 1))
         Start-Sleep -Seconds $attese[$t - 1]
     }
     $locale = (& git rev-parse HEAD)
