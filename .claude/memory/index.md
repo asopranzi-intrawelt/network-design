@@ -1,5 +1,19 @@
 # Snapshot di sincronizzazione
 
+## Dove siamo sul sito, 21/10/2026 a fine giornata
+
+**Fatto e verificato.** ISO-05 e' chiuso con misura prima e dopo: il database del sito non e' piu' raggiungibile dalla LAN, binding a `127.0.0.1`, 343 tabelle integre. La richiesta di incorporazione numero 3 del progetto del sito e' stata approvata e fusa: `main` e' a `9c491de` e porta la riga con il loopback, letta dal remoto. Il ramo di rilascio esiste e nasce con la porta chiusa. Il canale di propagazione e' in esercizio e riconciliato a `7be5cef` sull'albero autorevole, che e' `/home/intrawelt-site/lavoro-consegne` sul ramo `ricerca-e-consegne-grafiche`.
+
+**Da non fare.** Il ramo `staging` non si cancella, benche' l'interfaccia lo proponga dopo la fusione: l'ADR-011 di quel progetto lega ogni ramo a una macchina e quello e' il ramo della vetrina.
+
+**Il passo successivo, nell'ordine.** Primo, far scendere `main` in `ricerca-e-consegne-grafiche`, che ha l'albero pulito: chiude l'innesco di #242 per quel ramo. Il ramo degli invii ha quattro file non committati e aspetta. Secondo, #245, cioe' aggiungere `output: 'standalone'` a `next.config.ts` su un ramo nuovo creato **da main**, e provare una costruzione completa dell'immagine, che non e' mai stata eseguita fino in fondo. La modifica e' una riga, da inserire come prima proprieta' di `nextConfig`.
+
+**Quattro difetti sul percorso verso la produzione**, tutti del progetto del sito e nessuno di rete: #243 il riferimento di rilascio, ora risolto dalla fusione; #244 la memoria del build, che impone di costruire l'immagine dove la RAM e' libera e non sulla VPS; #245 l'impostazione mancante; #246 i file caricati dalla redazione, che non sono versionati e di cui esiste ora una seconda copia verificata in OneDrive.
+
+**Asset nuovo**: `docs/storia-del-sito-da-zero.md`, il racconto completo dello sviluppo con la lettura ISO, costruito con estrazione deterministica e delega invece di lettura diretta. Cresce con la roadmap.
+
+**Verso il template**: quattro lezioni registrate oggi, da L-003 a L-006. Attenzione, due file miei del giorno prima sono rimasti **non committati** nell'albero del template, mescolati a undici modificati da un'altra sessione: `craft-apps/README.md` e `stili/aziendale-design-system.esempio.json`. Non vanno committati da qui.
+
 ## Confine tecnico QA offline, 21/10/2026
 
 Il collettore valida offline il solo `backup_selected` QA e rifiuta l'autorizzazione identificante dalla vista generale; 20 prove verdi, mutazione del correlatore rilevata. Il produttore a `2bb9381` non ha ancora chiamanti o trasporto. Due LXC e budget aperti, M32e/ISO-30 in corso. Dettaglio in `docs/integrazione-log-qa-verifier.md`.
