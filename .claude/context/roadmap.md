@@ -4,6 +4,10 @@ last-verified: 0a12acf
 
 # Roadmap e fasi del progetto
 
+## Confine tecnico QA offline, 21/10/2026
+
+M32e avanza con un confine offline del collettore per il solo evento QA `backup_selected`: 20 prove, validazione del lotto e autorizzazione identificante respinta dalla vista generale. La prova sul produttore reale, il trasporto, l'archivio riservato, i due LXC e il budget Proxmox restano aperti. ISO-30 mantiene stato in corso; nessuna modifica di topologia o flusso operativo. Fonte: `docs/log-collector-integrazione.md`.
+
 ## Il monitoraggio guarda la prestazione, 20/10/2026
 
 Direttiva dell'IT Manager del 20/10/2026 dopo il rilievo sull'host di inferenza, che per cinque giorni ha servito a un ventitreesimo della propria velocita' restando raggiungibile, attivo e corretto: il presidio misura la prestazione e non la sola raggiungibilita'. La decisione e' ADR-037, il lavoro e' M32g, i difetti sono i gap 222 e 223 e ISO-30 ne prende nota senza avanzare di stato. Il vincolo di avvio e' installato sull'host ma non provato all'accensione; nessun segnale di prestazione e' oggi raccolto in serie.

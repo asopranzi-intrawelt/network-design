@@ -1,4 +1,9 @@
 # Snapshot di sincronizzazione
+
+## Confine tecnico QA offline, 21/10/2026
+
+Il collettore valida offline il solo `backup_selected` QA e rifiuta l'autorizzazione identificante dalla vista generale; 20 prove verdi, mutazione del correlatore rilevata. Il produttore a `2bb9381` non ha ancora chiamanti o trasporto. Due LXC e budget aperti, M32e/ISO-30 in corso. Dettaglio in `docs/integrazione-log-qa-verifier.md`.
+
 ## Parco VPS misurato dal pannello, tre rinnovi a breve, 20/10/2026
 
 Il parco esterno non e' piu' dedotto ma misurato: il pannello `cloud.it` dichiara tre elementi su tre, tutti accesi, tutti nella regione IT1 del datacenter di Arezzo e nel progetto `cloud-v1`, quindi senza ridondanza geografica. Corrette le sigle dei piani in `scenia-project.md`: la produzione SCENIA e' `VPS-O4A8-Linux` e lo staging `VPS-O2A4-Linux`, cioe' la meta' abbondante e non un piano simile come la scheda affermava. Il pannello etichetta come privato il campo che porta l'indirizzo pubblico: nessuna rete privata esiste su questo prodotto.

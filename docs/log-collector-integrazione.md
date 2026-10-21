@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Confine tecnico QA offline, 21/10/2026
+
+Il collettore ha preparato `bin/qa_technical_boundary.py` per gli eventi `qa-tech-v1` del produttore QA: accetta offline il solo `backup_selected`, vincola sorgente e ambiente attesi, verifica l'intero lotto e produce una vista tecnica minimizzata senza `job_ref`. L'autorizzazione con identità e nome file è rifiutata e richiede un archivio riservato distinto. Venti prove isolate passano; una mutazione che reinserisce il correlatore fa cadere due prove. Il produttore `staging` a `2bb9381` ha il builder versionato ma non lo chiama dall'applicazione e non invia eventi. Nessun LXC, flusso reale o deploy: M32e e ISO-30 restano in corso. [Dettagli e limiti](integrazione-log-qa-verifier.md).
+
 ## Il flusso tecnico porta anche la prestazione, 20/10/2026
 
 Un rilievo del 20/10 sull’host di inferenza ha trovato un servizio raggiungibile, attivo e corretto che serviva a un ventitreesimo della propria velocità da cinque giorni, perché all’accensione aveva scelto il processore invece della scheda grafica e teneva quella scelta fino al riavvio ([dettaglio e misure](inferenza-gpu-persa-al-riavvio.md)). Nessuno dei controlli previsti qui avrebbe cambiato stato: porta aperta, processo attivo, unità in esecuzione, e per il collettore un heartbeat regolare. La direttiva dell’IT Manager che ne segue è ADR-037, il monitoraggio guarda la prestazione e non soltanto la raggiungibilità, e tocca il punto 5 della decisione del 05/10/2026: il controllo di risorse generalizzato a tutte le VM non basta se non porta, per i servizi il cui valore è una velocità o un tempo di risposta, anche il segnale che misura quel valore.

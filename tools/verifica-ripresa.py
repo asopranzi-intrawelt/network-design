@@ -49,11 +49,15 @@ Uso
 ---
     python tools/verifica-ripresa.py                confronta e riporta
     python tools/verifica-ripresa.py --registra     scrive l'impronta, a fine sessione
-    python tools/verifica-ripresa.py --breve        una riga di esito, per un hook
+    python tools/verifica-ripresa.py --breve        una riga di esito
+    python tools/verifica-ripresa.py --hook         come --breve, ma esce sempre con zero
     python tools/verifica-ripresa.py --self-test
 
-Esce con codice diverso da zero quando trova una divergenza, così che un hook di apertura
-sessione possa segnalarla senza che nessuno debba leggere l'output.
+Da riga di comando o in CI esce con codice diverso da zero quando trova una divergenza. Verso
+un hook il codice di uscita non dice niente: Claude Code tratta come errore qualunque uscita
+diversa da zero, scarta lo standard output e mostra una riga di fallimento senza contenuto,
+quindi l'avviso sparirebbe proprio quando c'è. Un hook chiama perciò lo strumento con --hook,
+oppure attraverso i wrapper di hooks-starter, che leggono il codice e tornano sempre zero.
 """
 
 import argparse
