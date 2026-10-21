@@ -1,5 +1,27 @@
 # Snapshot di sincronizzazione
 
+## Roadmap di go-live recepita, 21/10/2026 sera
+
+**Il quadro.** L'impianto della VPS del sito si e' fermato alla parte C: niente pipeline, niente reverse proxy, niente salvataggio, applicazione mai eseguita. Lo stato di `main` non e' lo stato della macchina.
+
+**Sei difetti nuovi, da #247 a #252**: due modelli di rilascio incompatibili con la costruzione che legge la banca dati, postura applicativa non pronta per Internet, salvataggio assente e script gia' incompleto, nome provvisorio mancante con una contraddizione aperta sulla titolarita' della zona DNS, presidio inesistente con la produzione vincolata a una sola istanza, adempimenti verso le persone di cui due sono di questo progetto.
+
+**Ordine di lavoro aggiornato.** Prima il credito prepagato, che si esaurisce fra fine ottobre e inizio novembre e la cui sospensione ferma tre macchine; poi le tre decisioni del committente, cioe' quale sito, quali lingue, quale strumento di misura del traffico; poi la prima costruzione di produzione riuscita.
+
+**Chiuso #243**, il ramo di rilascio e' `main`. Lezione L-008 registrata.
+
+## Spool fisico e audit del produttore QA, 21/10/2026
+
+Il collettore ha provato in WSL due bind mount di uno spool sintetico da 16 MiB: rifiuto del mount assente, soglia, ENOSPC e correzione del lock a disco pieno; 41 prove mirate verdi. Mancano power loss, carico, alert consegnato e budget hub+due LXC. Nel produttore QA `staging` a `2bb9381` la prova di autorizzazione è solo in RAM, il risultato può perdere la selezione del backup se il job fallisce e la CLI usa il client esterno diretto. Dossier, integrazione e roadmap M32e aggiornati; ISO-30 rimane in corso e nessun flusso reale è stato attivato.
+
+## Discesa pronta e NET-030 corretto, 21/10/2026 pomeriggio
+
+**Pronto ma non eseguito.** La discesa di `main` in `ricerca-e-consegne-grafiche` e' preparata e provata a secco; va lanciata a mano perche' questa sessione non puo' scrivere sulla macchina del sito. Non e' una fusione pulita: conflitto su due righe di un file di contenuto, dove `main` porta una ragione sociale superata e il ramo porta la correzione del 19/10. Risoluzione scelta e verificata: vince il ramo sulle due righe, entra tutto il resto di `main`.
+
+**Corretto.** Il difetto #240 non descriveva processi orfani: sono tre servizi d'utente abilitati e attivi, uno per albero, con ascolto su tutte le interfacce scritto nelle unita' e riavvio automatico. Il rimedio scritto ieri non avrebbe funzionato. Lezione L-007 registrata.
+
+**Confermato per misura.** #245 vero alla punta di `main`, #244 confermato dallo script di costruzione, ISO-05 regge in esercizio.
+
 ## Dove siamo sul sito, 21/10/2026 a fine giornata
 
 **Fatto e verificato.** ISO-05 e' chiuso con misura prima e dopo: il database del sito non e' piu' raggiungibile dalla LAN, binding a `127.0.0.1`, 343 tabelle integre. La richiesta di incorporazione numero 3 del progetto del sito e' stata approvata e fusa: `main` e' a `9c491de` e porta la riga con il loopback, letta dal remoto. Il ramo di rilascio esiste e nasce con la porta chiusa. Il canale di propagazione e' in esercizio e riconciliato a `7be5cef` sull'albero autorevole, che e' `/home/intrawelt-site/lavoro-consegne` sul ramo `ricerca-e-consegne-grafiche`.

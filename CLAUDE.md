@@ -8,7 +8,7 @@ Documentazione e progettazione della rete Intrawelt: interventi passati e futuri
 
 ## Procedura di ripresa in una sessione nuova
 
-Eseguire prima `python tools/verifica-agent-bridge.py`, che rende visibile una divergenza fra le skill scoperte da Claude Code e quelle scoperte da Codex. Invocare poi la skill `riprendi`, che esegue `python tools/verifica-ripresa.py` e verifica il file di ripresa prima di fidarsene. Leggere quindi `.claude/memory/index.md` (branch, commit di riferimento, stato schede, punto di ripresa) e `.claude/context/current-work.md` se c'e' una feature attiva. Seguire poi i cinque passi del protocollo di riallineamento di `.claude/rules/fonti-e-riallineamento.md`, perche' il repository e' una sola delle cinque classi di fonti e le altre quattro non notificano. Invocare la skill `sync-context` per verificare il drift tra schede e codice. Leggere solo le schede pertinenti al task, mai tutte insieme. Per documenti Word voluminosi usare la skill `docx-ingest` che applica la disclosure progressiva (livello 1: TOC, livello 2: sezioni chiave, livello 3: sezione completa su richiesta). A fine sessione, dopo i commit manuali dell'utente e l'aggiornamento di `_notes/RESUME_PROMPT.md`, registrare l'impronta con `python tools/verifica-ripresa.py --registra`.
+Eseguire prima `python tools/verifica-agent-bridge.py`, che rende visibile una divergenza fra le skill scoperte da Claude Code e quelle scoperte da Codex, e invocare poi la skill `riprendi`, dove la procedura vive per intero: impronta, memoria, riallineamento alle cinque classi di fonti, drift con `sync-context` e registrazione dell'impronta a fine sessione. Per documenti Word voluminosi, la skill `docx-ingest`.
 
 ## Fonti delle decisioni tecniche
 
@@ -32,7 +32,7 @@ Gli output che contengono valori reali restano fuori da git: `output/` e `_notes
 
 ## Guard-rail di anonimizzazione
 
-`python scripts/Test-Anonymization.py` si esegue prima di ogni commit che tocchi documentazione. Il suo perimetro e' cio' che sta per essere pubblicato, cioe' i file tracciati piu' i non tracciati e non ignorati, e il codice di uscita e' diverso da zero se trova un valore reale in una categoria bloccante. Cio' che cerca vive in `_notes/.anonymization-patterns.json`, ignorato da git accanto alla mappa dei segnaposto: se quel file manca lo script si ferma invece di dare un verde non calcolato. La norma sta in `.claude/rules/anonymization.md`, la storia del controllo e l'allargamento del perimetro del 07/09/2026 in `.claude/context/STACK.md`.
+`python scripts/Test-Anonymization.py` si esegue prima di ogni commit che tocchi documentazione: perimetro, categorie bloccanti e file dei pattern stanno nella regola `.claude/rules/anonymization.md`, che e' sempre attiva, e la storia del controllo in `.claude/context/STACK.md`.
 
 ## Portabilita' su un'altra macchina
 
