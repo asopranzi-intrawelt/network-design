@@ -1,5 +1,37 @@
 # Snapshot di sincronizzazione
 
+## Catena completa e modello di rilascio deciso, 21/10/2026 sera
+
+Tre richieste fuse, `main` costruisce, immagine costruita ed eseguita con il sito che risponde. Tre difetti del descrittore corretti: configurazione del gestore dei pacchetti non copiata, esclusione del contesto mancante, segreti dentro l'immagine finale. **ADR-038**: si costruisce sulla macchina di produzione contro la banca dati di produzione, perche' l'immagine porta con se' i contenuti del database che legge; si rivede dopo il primo rilascio. Bonifica fatta, nessun segreto uscito dalla macchina. Prossimo lavoro: la VPS, cioe' composizione con reverse proxy, certificato, migrazioni e cartelle dei caricamenti.
+
+## Produttore QA: gate locale candidato, 21/10/2026
+
+Il produttore QA su `staging` ha chiuso manualmente il checkpoint `2ab7e5a`. Nel candidato successivo, ancora non versionato, `app/authorisation_store.py` committa su SQLite privata fuori dal clone la ricevuta con ora UTC e testo esatto dell'avviso prima di avviare il worker; il runner la rilegge prima di costruire il backend. Una scrittura SQLite fallita ferma il job prima del thread. La CLI rifiuta la modalità server prima di costruire il client esterno. Verifica locale: 458 prove con filtro CI, 6 con dati reali deselezionati, Ruff e Mypy verdi. È un gate applicativo locale: non dimostra custodia indipendente, ACL/retention/restore a dodici mesi, emissione durevole di `backup_selected`, trasporto o indicizzazione. Il fallback esterno resta spento per default; due LXC QA non create, M32e e ISO-30 in corso senza avanzamento da questa modifica.
+
+## main costruisce, 21/10/2026 sera
+
+Richiesta numero quattro fusa: `main` e' a `8af5cd4`, costruisce in quattordici secondi con un picco di un gigabyte e tre, ed e' la prima volta che il riferimento di rilascio e' costruibile. Manca la cartella autoconsistente, che arriva con la richiesta piccola ancora da fondere.
+
+## Catena di costruzione provata, il riferimento di rilascio non costruisce, 21/10/2026 sera
+
+Prima costruzione di produzione mai eseguita: fallisce dal riferimento di rilascio, riesce dal ramo di lavoro con la stessa impostazione, in trentaquattro secondi e sotto i due gigabyte e mezzo di picco, producendo la cartella autoconsistente. #245 chiuso con misura, #244 privato della sua assunzione sugli otto gigabyte, #247 con la prima risposta. La conseguenza che decide l'ordine dei lavori: `main` non costruisce finche' non riceve il ramo delle consegne, perche' il contenuto della banca dati lo presuppone, quindi serve una richiesta di incorporazione da quel ramo e non basta la riga di configurazione.
+
+## Passo 2 fatto, passo 3 in corso, 21/10/2026 sera
+
+La discesa del riferimento di rilascio nel ramo delle consegne e' eseguita e spinta, con la risoluzione del conflitto verificata dopo la fusione: loopback dentro, ragione sociale corretta conservata, nessun marcatore residuo. Resta il ramo degli invii, che ha file non committati. L'impostazione dell'uscita autoconsistente e' su un ramo nuovo creato da `main`, in un albero temporaneo, gia' spinto; manca la richiesta di incorporazione, che si apre dall'interfaccia web. Prima costruzione di produzione in corso in quell'albero.
+
+## Credito presidiato per misura, avvisi ciechi, 21/10/2026 sera
+
+#229 e' chiuso con misura: autoricarica attiva, importo pari a circa tre mesi di consumo, carta salvata, soglia alzata sopra il piu' grande dei rinnovi. Residuo dichiarato: la validita' della carta si prova solo con un addebito. #232 peggiora con la misura: l'unico avviso attivo va a una casella individuale di un altro reparto e il canale SMS e' spento, quindi oggi nessun allarme di credito raggiunge chi amministra le macchine. Percorso e campi dell'Area Clienti sono nel registro delle fonti.
+
+## Runner QA corretto in albero, 21/10/2026
+
+QA `staging` a `083aae0`: la correzione non ancora committata sposta la lettura della chiave Anthropic sul solo backend esterno. Il job locale senza chiave era rosso prima del fix e passa dopo; la rotta esterna senza chiave fallisce chiusa. Suite QA 449 eseguite, 6 dati reali deselezionati, Ruff e Mypy verdi. Dossier e current-work aggiornati; registro durevole, evento, CLI, trasporto e LXC ancora aperti. M32e e ISO-30 in corso, senza cambio di stato o topologia.
+
+## Credito misurato, resta solo lo strumento di pagamento, 21/10/2026 sera
+
+La capienza del credito cloud copre circa un mese al consumo reale, fino attorno al 20/11/2026, e la ricarica automatica e' attiva: la stima dell'analisi di go-live, che dava l'esaurimento fra fine ottobre e inizio novembre, era pessimistica perche' estrapolava da agosto. Resta una sola domanda, cioe' se lo strumento di pagamento associato alla ricarica automatica sia valido. Secondo fattore e recapiti dell'account confermati ancora aperti (#235, #232). Cifre nel layer privato.
+
 ## Roadmap di go-live recepita, 21/10/2026 sera
 
 **Il quadro.** L'impianto della VPS del sito si e' fermato alla parte C: niente pipeline, niente reverse proxy, niente salvataggio, applicazione mai eseguita. Lo stato di `main` non e' lo stato della macchina.
