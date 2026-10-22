@@ -253,7 +253,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-20):** 20/10: nel collettore preparato il controllo dell'archivio tecnico Seeweb: misura file, byte e spazio, richiede durata esplicita per scadere file, segnala localmente archivio assente o occupazione almeno 80%. Prova Linux su file fittizi e mutazione della guardia ai link superate; unita' systemd non installate. Volume reale, durata approvata, allarme esterno e ricezione Seeweb ancora assenti.
+  - **Ultimo stato (2026-10-21):** Produttore QA: candidato non versionato registra la prova locale su SQLite privata prima del worker e blocca la CLI in modo server; 458 prove sintetiche verdi. Mancano custodia indipendente, retention e restore, evento backup_selected durevole, trasporto, indice e due LXC. Nessun flusso reale o avanzamento del controllo ISO-30.
+  - **Evidenza:** docs/integrazione-log-qa-verifier.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
@@ -328,7 +329,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obie
   - **Chiusura verificabile:** Una esecuzione documentata o esercizio per ciascuna procedura critica.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.5.37, A.8.32, 8.1.
   - **Fonti:** docs/runbook-anomalie.md, roadmap Fase 5.
-  - **Ultimo stato (2026-10-16):** Ricevuti commit bff861b pubblicato e abilitazione manuale della retention snapshot a 90 giorni: zero candidati/eliminati; policy enabled=true riletta. Primo giro pianificato e recupero indipendente restano aperti.
+  - **Ultimo stato (2026-10-16):** Ricevuti commit 2164dd0 pubblicato e abilitazione manuale della retention snapshot a 90 giorni: zero candidati/eliminati; policy enabled=true riletta. Primo giro pianificato e recupero indipendente restano aperti.
 
 - **ISO-42 | Risposta agli incidenti** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Definire ruoli, escalation, decisione sugli eventi, raccolta prove e comunicazioni; esercitare uno scenario pertinente al phishing gia' documentato.

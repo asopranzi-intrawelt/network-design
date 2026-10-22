@@ -1,5 +1,21 @@
 # Work-log
 
+## Ripresa verificata, fine riga della roadmap ripristinata, 22/10/2026
+
+La verifica di ripresa ha trovato due divergenze rispetto all'impronta delle 09:18: il commit `c1d1e68` delle 09:57, cioe' l'allineamento dal template al commit `3c611dc`, che nessuna voce di questo work-log registrava, e l'albero di lavoro passato da sei a dieci file modificati. Le dieci modifiche sono state attribuite leggendole una per una e non per memoria: il rilievo sul certificato HTTPS di IntraLino con la richiesta di censimento complessivo, il gate locale del produttore QA con i due avanzamenti ISO-30, la rimappatura degli hash citati nei documenti dopo la riscrittura della storia del 21/10, e `timeline.svg` rigenerato. L'IT Manager ha dichiarato chiusa l'altra sessione, quindi il lavoro si allinea in un commit unico invece di restare in albero.
+
+Corretto un difetto che sarebbe entrato in storia senza produrre nessun errore: `.claude/context/roadmap.md` e' registrato CRLF nell'indice ed era stato riscritto in LF da uno script, quindi il diff dichiarava 309 righe aggiunte e 305 tolte mentre il contenuto davvero cambiato era 7 e 3, cioe' il bump di `last-verified` e la voce del 21/10 sul pilot dello spool. E' la famiglia di difetti registrata come L-009. La fine riga e' stata ripristinata convertendo ogni LF in CRLF dopo aver verificato che nel file non ci fosse nessun CR, e la misura dopo la correzione e' 309 CRLF contro i 305 della versione in `HEAD`, con newline finale conservato e nessun BOM. Il diff complessivo del commit passa da 384 inserimenti e 316 rimozioni a 82 e 14.
+
+Verificato inoltre che la riscrittura della storia non ha lasciato ancore orfane: i quattro commit citati come `last-verified` nelle schede di contesto, cioe' `920c616`, `ec49fb5`, `07d97db` e `4079c8e`, esistono e sono tutti antenati di `HEAD`. Ponte Claude/Codex verde con diciassette skill condivise. `chiudi -SoloControlli` chiude con «Controlli verdi» e zero lezioni aperte verso il template, dieci recepite.
+
+Resta non triagiato il delta OneDrive, con baseline al 30/09 e quindi arretrato di ventidue giorni: 2443 voci sulla radice tecnica, di cui dieci marcate rilevanti per la rete.
+
+File scritti e riletti: `.claude/context/roadmap.md`, `.claude/memory/index.md`, `_notes/COMMIT-MSG.txt`, questo work-log. **Template:** nessuna
+
+## Certificato IntraLino emesso; censimento complessivo richiesto, 22/10/2026
+
+Certificato HTTPS di IntraLino emesso dall’autorità aziendale e verificato indipendentemente il 22/10; scade il 24/11/2027, installazione e prova live ancora pendenti. L’IT Manager richiede il censimento di tutti i certificati nel quadro complessivo della rete, con responsabili, dipendenze di fiducia, scadenze, rinnovi e stato emesso/installato/verificato. Riferimento canonico: `docs/autorita-certificazione-interna.md`, sezione sull’emissione IntraLino e sul censimento. Nessuna modifica ad apparati, servizi o stati ISO. Aggiornati documento CA, current-work, indice e ripresa, con soli riferimenti pubblici e prova privata; le preesistenti modifiche dei lavori QA/osservabilità/ISO sono conservate. Ratio: collegare l’emissione del progetto applicativo al governo delle identità della rete senza promuovere l’emissione a installazione o il singolo riscontro a inventario completo. **Template:** nessuna.
+
 ## Gate locale QA candidato, 21/10/2026
 
 Il produttore QA su `staging` ha chiuso manualmente il checkpoint `2ab7e5a`. Nel candidato successivo, ancora non versionato, `app/authorisation_store.py` committa su SQLite privata fuori dal clone la ricevuta con ora UTC e testo esatto dell'avviso prima di avviare il worker; il runner la rilegge prima di costruire il backend. Una scrittura SQLite fallita ferma il job prima del thread. La CLI rifiuta la modalità server prima di costruire il client esterno. Verifica locale: 458 prove con filtro CI, 6 con dati reali deselezionati, Ruff e Mypy verdi. È un gate applicativo locale: non dimostra custodia indipendente, ACL/retention/restore a dodici mesi, emissione durevole di `backup_selected`, trasporto o indicizzazione. Il fallback esterno resta spento per default; due LXC QA non create, M32e e ISO-30 in corso senza avanzamento da questa modifica. Ratio: si aggiorna l'evidenza incrociata senza dichiarare installati i due LXC o completato ISO-30. **Template:** nessuna.
