@@ -1,5 +1,13 @@
 # Snapshot di sincronizzazione
 
+## Roadmap di go-live riconciliata e ordine dell'accesso fissato, 22/10/2026
+
+La roadmap a undici voci e' quella in corso ma precede la sera del 21: credito chiuso con misura, uscita autoconsistente e prima costruzione fatte, modello di rilascio deciso, discesa di `main` nei due rami ancora aperta, tre decisioni del committente ora vero passo zero. La copia in circolazione contraddice ADR-038 sul dove si costruisce e va corretta. Chiarito che il login di amministrazione disabilitato vale per le sole sessioni SSH e non tocca la console del pannello, e che entrambe le password stanno nel gestore secondo il diario di impianto: nessun recupero necessario. Ordine fissato: password dal gestore, chiave nuova autorizzata dalla console cosi' da provarla, lettura della fase 0 con il registro degli accessi, e solo allora restrizione per provenienza.
+
+## Il sito riparte, ma la VPS non si apre da qui, 22/10/2026
+
+Misurato il 22/10: la porta 22 della VPS del sito risponde dalla postazione aziendale, quindi nessuna restrizione di provenienza, ma l'autenticazione fallisce e la chiave dell'impianto non c'e'; anche la VM 209 ha solo chiavi GitHub. Nessuna macchina del perimetro aziendale entra, e #224 diventa un fatto misurato. Dal diario di impianto: utente operativo `deploy`, login di amministrazione disabilitato. La via in banda e' il calcolatore di Persona-E, quella fuori banda la console del pannello, mai provata. Sequenza di lettura della fase 0 pronta e non eseguita. L'IT Manager chiede l'accesso da postazione e da VM 209, con riserva espressa su quest'ultima per NET-024 e NET-027, e rimanda per la seconda volta il secondo fattore di #235. Caduta la prima delle due dipendenze da una persona sola: il codice del sito e' su un remoto condiviso dal 20/10.
+
 ## Ripresa verificata e albero allineabile, 22/10/2026
 
 Le dieci modifiche in albero sono dell'altra sessione, ora chiusa, e vanno in un commit unico: certificato IntraLino con censimento richiesto, gate locale del produttore QA con due avanzamenti ISO-30, hash dei documenti rimappati dopo la riscrittura della storia del 21/10, `timeline.svg` rigenerato. Ripristinata la fine riga CRLF di `.claude/context/roadmap.md`, che uno script aveva riscritto in LF facendo apparire 309/305 righe cambiate al posto di 7/3. Le quattro ancore `last-verified` delle schede sono antenati di `HEAD`, quindi la riscrittura non ne ha orfanate nessuna. Controlli di chiusura verdi. Delta OneDrive arretrato di ventidue giorni, non triagiato.
