@@ -1,5 +1,13 @@
 # Snapshot di sincronizzazione
 
+## Ripresa verificata e albero allineabile, 22/10/2026
+
+Le dieci modifiche in albero sono dell'altra sessione, ora chiusa, e vanno in un commit unico: certificato IntraLino con censimento richiesto, gate locale del produttore QA con due avanzamenti ISO-30, hash dei documenti rimappati dopo la riscrittura della storia del 21/10, `timeline.svg` rigenerato. Ripristinata la fine riga CRLF di `.claude/context/roadmap.md`, che uno script aveva riscritto in LF facendo apparire 309/305 righe cambiate al posto di 7/3. Le quattro ancore `last-verified` delle schede sono antenati di `HEAD`, quindi la riscrittura non ne ha orfanate nessuna. Controlli di chiusura verdi. Delta OneDrive arretrato di ventidue giorni, non triagiato.
+
+## Certificati: riscontro IntraLino e censimento da svolgere, 22/10/2026
+
+Certificato HTTPS di IntraLino emesso dall’autorità aziendale e verificato indipendentemente il 22/10; scade il 24/11/2027, installazione e prova live ancora pendenti. L’IT Manager richiede il censimento di tutti i certificati nel quadro complessivo della rete, con responsabili, dipendenze di fiducia, scadenze, rinnovi e stato emesso/installato/verificato. Riferimento canonico: `docs/autorita-certificazione-interna.md`, sezione sull’emissione IntraLino e sul censimento. Nessuna modifica ad apparati, servizi o stati ISO.
+
 ## Storia riscritta e riallineata, 21/10/2026 sera
 
 L'altra sessione ha eseguito la bonifica dell'anonimizzazione riscrivendo la storia e forzandola sul remoto: due punte senza antenati in comune. Il lavoro di questa sessione e' dentro la storia nuova come `677f1d3`, locale e remoto sono allineati, ADR-038 pubblicata. Regola di recupero registrata: si confrontano le due punte per sapere quali file la riscrittura ha cambiato, si ricommittano solo i propri file non toccati, e non si spinge mai la storia vecchia.
