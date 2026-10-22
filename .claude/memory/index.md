@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Storia riscritta e riallineata, 21/10/2026 sera
+
+L'altra sessione ha eseguito la bonifica dell'anonimizzazione riscrivendo la storia e forzandola sul remoto: due punte senza antenati in comune. Il lavoro di questa sessione e' dentro la storia nuova come `677f1d3`, locale e remoto sono allineati, ADR-038 pubblicata. Regola di recupero registrata: si confrontano le due punte per sapere quali file la riscrittura ha cambiato, si ricommittano solo i propri file non toccati, e non si spinge mai la storia vecchia.
+
 ## Catena completa e modello di rilascio deciso, 21/10/2026 sera
 
 Tre richieste fuse, `main` costruisce, immagine costruita ed eseguita con il sito che risponde. Tre difetti del descrittore corretti: configurazione del gestore dei pacchetti non copiata, esclusione del contesto mancante, segreti dentro l'immagine finale. **ADR-038**: si costruisce sulla macchina di produzione contro la banca dati di produzione, perche' l'immagine porta con se' i contenuti del database che legge; si rivede dopo il primo rilascio. Bonifica fatta, nessun segreto uscito dalla macchina. Prossimo lavoro: la VPS, cioe' composizione con reverse proxy, certificato, migrazioni e cartelle dei caricamenti.

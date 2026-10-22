@@ -2726,3 +2726,23 @@ Tre difetti del descrittore dell'immagine corretti e spinti, tutti trovati esegu
 Bonifica eseguita sulla macchina: albero di lavoro temporaneo rimosso con la copia del file dei segreti che conteneva, cinque rami di prova locali cancellati, due immagini di prova eliminate e cache di costruzione svuotata, dove quel file sopravviveva come strato intermedio; liberati quattro gigabyte e quattro. Nessun segreto e' uscito dalla macchina, perche' nessuna immagine e' mai stata spinta su un registro, quindi non c'e' niente da ruotare.
 
 File scritti e riletti: `.claude/memory/decisions.md`, `docs/piano-produzione-sito-nuovo.md`, `docs/infrastructure-timeline/GAP-TBC.md`, `docs/pendenze-aperte.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
+## La storia riscritta sotto i piedi, e come e' finita, 21/10/2026
+
+Al momento di pubblicare il commit di questo giro la spinta e' stata rifiutata, e il recupero ha dichiarato un aggiornamento forzato: l'altra sessione aveva **riscritto la storia del repository** e l'aveva forzata sul remoto, con gli stessi messaggi e tutti gli hash diversi, senza nessun antenato in comune fra le due punte, duecentoquarantuno commit locali contro duecentoquaranta remoti. E' la bonifica dell'anonimizzazione che era in roadmap come Fase B, non un incidente.
+
+La diagnosi utile e' stata confrontare le due punte invece della storia, perche' dice in un colpo solo che cosa la riscrittura cambia **nel contenuto di oggi**: tre file, in cui un nome utente personale e' sostituito da un segnaposto. Da li' discende la regola di recupero, cioe' che si possono ricommittare i propri file soltanto dopo aver verificato che la riscrittura non li abbia toccati, e che per quelli toccati si prende la versione nuova invece della propria. Verificato che i due registri su cui si era lavorato non erano fra quelli corretti.
+
+Il commit era stato messo al sicuro come file di patch prima di qualunque operazione. Non e' servito: l'altra sessione lo ha portato dentro la storia nuova, dove vive come `677f1d3`, e vi ha aggiunto due commit di raccordo per i riferimenti ai commit e per i fine riga. Locale e remoto sono allineati e la decisione ADR-038 e' pubblicata.
+
+La cosa da non fare, e che era a un tasto di distanza, era spingere comunque: avrebbe rimesso in piedi la storia non bonificata annullando il lavoro di pulizia. Vale per chiunque abbia una copia: dopo una riscrittura forzata ogni copia va riallineata, e la prima che spinge senza farlo riporta indietro tutto.
+
+File scritti e riletti: `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** L-010
+
+## La Fase B eseguita e' parziale: misurato, 21/10/2026
+
+Verificato subito dopo la riscrittura della storia forzata sul remoto, perche' una riscrittura si giudica da cio' che resta e non da cio' che dichiara. Il nome utente personale e' sparito da tutta la storia, in ogni riferimento. Gli indirizzi no: su quarantacinque prefissi reali sorvegliati dal file dei pattern, venti portano ancora un indirizzo completo dentro commit vecchi di file tracciati, fra cui la cronologia dello switch del piano terra, la scheda SCENIA, il runbook delle anomalie, il work-log e un diagramma del firewall. Quattro dei venti stanno in file di esempio del pacchetto di anonimizzazione e vanno guardati a parte.
+
+La punta e' pulita, cioe' il guard-rail passa a zero riscontri bloccanti: il problema vive solo nella storia pubblica, che e' dove SEC-047 (#191) lo colloca da settembre. Il difetto resta percio' aperto, e la riscrittura di oggi va considerata una passata parziale e non la chiusura della Fase B. Da questa macchina non risulta nessun riferimento di salvataggio della storia precedente, il che non significa che non esista altrove.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, questo work-log. **Template:** nessuna
