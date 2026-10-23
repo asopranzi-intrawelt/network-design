@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="6090" viewBox="0 0 1060 6090" font-family="'Altro Serif', Georgia, serif">
-<rect width="1060" height="6090" fill="#F4F5F9"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="6114" viewBox="0 0 1060 6114" font-family="'Altro Serif', Georgia, serif">
+<rect width="1060" height="6114" fill="#F4F5F9"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">239 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 23/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">240 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 23/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#6B15EC"/>
 <text x="52" y="116" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">AI e automazione <tspan fill="#4C4C63">(29)</tspan></text>
@@ -32,7 +32,7 @@
 <circle cx="540" cy="136" r="5" fill="#576C08"/>
 <text x="552" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Server e virtualizzazione <tspan fill="#4C4C63">(24)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#4C4C63"/>
-<text x="802" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Sistemi e gestionali <tspan fill="#4C4C63">(58)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Sistemi e gestionali <tspan fill="#4C4C63">(59)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#EBEDF4"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#4D11A7" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">2024</text>
@@ -3857,19 +3857,35 @@
 <g class="ev-summary" onclick="toggleEv('ev-239')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#D0D4E3" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#4C4C63"/>
+<text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">23/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Timer D6 del collettore preparato, esercizio aperto <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SYS</tspan></text>
+</g>
+<foreignObject id="ev-239-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">23/10/2026 &#8212; Timer D6 del collettore preparato, esercizio aperto</p>
+<p>Il collettore main 3e12aa6 ha un controllo di silenzio per sorgente; il passo successivo ha preparato il timer alle 00:45 e il rifiuto di /srv/ads non montato. Nove prove locali e la sintassi systemd sono verificate, ma sulla VM il timer non è installato e mancano heartbeat reale, allarme esterno, recupero di tutti i giorni saltati e lista AdS approvata. ISO-30 e le righe WindTre 89/90 restano in corso. Il sito parallelo e i suoi file di memoria non sono stati toccati.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-240" class="ev-block has-detail" transform="translate(0,6044)">
+<g class="ev-summary" onclick="toggleEv('ev-240')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#D0D4E3" stroke-width="2"/>
 <circle cx="178" cy="-4" r="4.5" fill="#E7000B"/>
 <text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif"></text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
 <text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Questionario cliente e chiarimento Seeweb, 23/10/2026 <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SEC</tspan></text>
 </g>
-<foreignObject id="ev-239-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<foreignObject id="ev-240-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta"> &#8212; Questionario cliente e chiarimento Seeweb, 23/10/2026</p>
 <p>L'utente ha fissato al 20/12 la consegna dei requisiti dichiarati per dicembre nel questionario cliente: 19 righe, con evidenze proprie. Il collettore contribuisce alle righe 89 e 90 sui log AdS; i suoi 59 nodi censiti sono un programma più ampio e non diventano automaticamente il perimetro della riga 89. La proposta interna di completare parzialmente entro dicembre le righe 90 e 46 non risulta confermata dal cliente nella cartella esaminata: l'Annex consegnato indicava 12/2026 per entrambe. La roadmap prioritaria e le lacune sono nel collettore e nel dossier ISO; nessuna riga viene chiusa da questa ricognizione.</p><p>QA staging 02f1e40 e collettore main b29612c sono pubblicati, con trasporto SSH e ricevuta provati localmente ma non fra host. Il supporto Seeweb chiede nello screenshot_103 se i log debbano arrivare al server che termina IPsec. Il chiarimento distingue il tunnel fra i firewall dalla VM Debian destinataria nella LAN di sede; l'utente riferisce di aver inviato la risposta. Il provider deve ancora confermare sorgente, selettori, NAT e categorie; nessun flusso Seeweb è attivo. La segmentazione della LAN resta intervento interno futuro. ISO-30 e M32e restano in corso.</p>
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="6074" font-size="11" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<text id="footer-src" x="40" y="6098" font-size="11" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -4114,7 +4130,8 @@
   {id:'ev-236',type:'event',h:24},
   {id:'ev-237',type:'event',h:24},
   {id:'ev-238',type:'event',h:24},
-  {id:'ev-239',type:'event',h:24}
+  {id:'ev-239',type:'event',h:24},
+  {id:'ev-240',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -4155,7 +4172,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 6090').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 6114').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

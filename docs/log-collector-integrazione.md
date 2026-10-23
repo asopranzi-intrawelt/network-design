@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Controllo D6 preparato nel collettore, 23/10/2026
+
+Il collettore `main` è stato pubblicato dall'utente a `3e12aa6`. Il controllo di silenzio D6 dispone ora di politica privata per sorgente, unità systemd candidate alle 00:45 e guardia che rifiuta `/srv/ads` non montato. Nove prove locali passano; su WSL il comando ha riconosciuto un mount reale e `systemd-analyze verify` ha accettato le unità con avvisi dovuti ai permessi DrvFs. Il timer non è installato sul Debian, nessun heartbeat reale o allarme esterno è stato consegnato. `Persistent=true` non recupera ogni giorno saltato perché il comando predefinito legge solo D-1. D7, elenco AdS approvato, TSA, custodia indipendente e prova della conservazione restano aperti: ISO-30 e WindTre 89/90 non sono completati. Dettaglio e limiti in `D:/log-collector/docs/runbook-componente-5-catena.md`.
+
 ## Priorità questionario cliente e ticket Seeweb, 23/10/2026
 
 L'utente ha fissato al 20/12 la consegna di ciò che il questionario cliente richiede per dicembre: 19 righe dell'Annex, non l'intero programma di 59 nodi del collettore. Le righe 89 e 90 riguardano raccolta e conservazione dei log AdS; 139 e 168 appartengono al progetto separato di integrità documentale; le altre 15 richiedono evidenze di governance, vulnerabilità e procedure. Il piano interno di settembre stimava 36,5-56 giorni persona, ma va riconciliato con i progressi successivi. L'Annex consegnato indica `12/2026` anche per le due righe che una copia interna successiva propone parziali: senza conferma scritta del cliente, non sono scadenze differite accettate. La roadmap attiva del collettore dà priorità a 89/90 e mantiene distinti i lavori QA, Seeweb e hub che il cliente non ha ancora incluso esplicitamente nel perimetro.
