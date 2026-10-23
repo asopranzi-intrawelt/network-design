@@ -53,17 +53,17 @@ $files = @(
 $mesi = @{ "gennaio"=1; "febbraio"=2; "marzo"=3; "aprile"=4; "maggio"=5; "giugno"=6;
            "luglio"=7; "agosto"=8; "settembre"=9; "ottobre"=10; "novembre"=11; "dicembre"=12 }
 
-# Aree di competenza: ordine fisso -> slot fisso della tavolozza categoriale
-# validata (dataviz, light mode). Il match usa la prima categoria che scatta.
+# Aree di competenza: colori dai token Intrawelt (institutional, interaction,
+# semantic, neutral). Il tag testuale distingue le categorie anche senza colore.
 $categorie = @(
-    @{ Tag="AI";     Nome="AI e automazione";          Colore="#e87ba4"; Kw=@("intralino","scenia","ollama","rag ","n8n","qdrant","gpu","benchmark","tinker","thinking","unimc","aidapt","chroma","automazione","api odoo","export tm","power platform","app desktop","pyqt") },
-    @{ Tag="SEC";    Nome="Sicurezza e compliance";    Colore="#e34948"; Kw=@("phishing","bitdefender","iso 27001","gdpr","dpa","dpia","vulnerability","pentest","proelium","onova","cve","mfa","ssl","certificat","password","segreti","credenzial","crittograf","audit","questionario","nis2","breach","ransomware","csrf","sicurezza","regolamento","2fa","cybersecurity","malware","spoofing") },
-    @{ Tag="TEL";    Nome="Telefonia e linee";         Colore="#4a3aa7"; Kw=@("vianova","tim:","da tim","fibercop","ftto","centralino","voip","pbx","ivr","telefon","sip-","fonia","linea","linee","ponte radio","pec","disdetta") },
-    @{ Tag="RETE";   Nome="Rete e switching";          Colore="#2a78d6"; Kw=@("vlan","switch","trunk","cablaggio","dorsale","sfp","wi-fi","dhcp","dns","tagging","porte","porta ","rack","10 gbps","scan-to-folder","scanner","stampant","nebula") },
-    @{ Tag="FW/VPN"; Nome="Firewall e VPN";            Colore="#1baf7a"; Kw=@("firewall","vpn","zyxel","usg","tunnel","ipsec","dmz","seeweb","allow-",'allow->') },
-    @{ Tag="STOR";   Nome="Storage e backup";          Colore="#008300"; Kw=@("nas","backup","veeam","dischi","disco","raid","qnap","spazio","groupshare 2020","black-out") },
-    @{ Tag="SRV";    Nome="Server e virtualizzazione"; Colore="#eda100"; Kw=@("proxmox","vm6","vm2","vm8","vm1","server","ram","ilo","hp g","hp prol","snapshot","vzdump","datacenter","partizione","hypervisor","freeze") },
-    @{ Tag="SYS";    Nome="Sistemi e gestionali";      Colore="#eb6834"; Kw=@() }   # default
+    @{ Tag="AI";     Nome="AI e automazione";          Colore="#6B15EC"; Kw=@("intralino","scenia","ollama","rag ","n8n","qdrant","gpu","benchmark","tinker","thinking","unimc","aidapt","chroma","automazione","api odoo","export tm","power platform","app desktop","pyqt") },
+    @{ Tag="SEC";    Nome="Sicurezza e compliance";    Colore="#E7000B"; Kw=@("phishing","bitdefender","iso 27001","gdpr","dpa","dpia","vulnerability","pentest","proelium","onova","cve","mfa","ssl","certificat","password","segreti","credenzial","crittograf","audit","questionario","nis2","breach","ransomware","csrf","sicurezza","regolamento","2fa","cybersecurity","malware","spoofing") },
+    @{ Tag="TEL";    Nome="Telefonia e linee";         Colore="#4D11A7"; Kw=@("vianova","tim:","da tim","fibercop","ftto","centralino","voip","pbx","ivr","telefon","sip-","fonia","linea","linee","ponte radio","pec","disdetta") },
+    @{ Tag="RETE";   Nome="Rete e switching";          Colore="#12ACE5"; Kw=@("vlan","switch","trunk","cablaggio","dorsale","sfp","wi-fi","dhcp","dns","tagging","porte","porta ","rack","10 gbps","scan-to-folder","scanner","stampant","nebula") },
+    @{ Tag="FW/VPN"; Nome="Firewall e VPN";            Colore="#095D83"; Kw=@("firewall","vpn","zyxel","usg","tunnel","ipsec","dmz","seeweb","allow-",'allow->') },
+    @{ Tag="STOR";   Nome="Storage e backup";          Colore="#92B500"; Kw=@("nas","backup","veeam","dischi","disco","raid","qnap","spazio","groupshare 2020","black-out") },
+    @{ Tag="SRV";    Nome="Server e virtualizzazione"; Colore="#576C08"; Kw=@("proxmox","vm6","vm2","vm8","vm1","server","ram","ilo","hp g","hp prol","snapshot","vzdump","datacenter","partizione","hypervisor","freeze") },
+    @{ Tag="SYS";    Nome="Sistemi e gestionali";      Colore="#4C4C63"; Kw=@() }   # default
 )
 
 function Get-Categoria([string]$titolo) {
@@ -237,13 +237,13 @@ $maxTitle = 96
 $years = $events | Select-Object -ExpandProperty Year -Unique
 $H = $top + $bottom + ($events.Count * $rowH) + ($years.Count * $yearH)
 
-$ink = "#151d20"; $muted = "#5c6d72"; $band = "#e6ede9"; $line = "#c3d0cd"; $accent = "#0e5c62"
-$fontMono  = "ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace"
-$fontSerif = "Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif"
+$ink = "#0A0A0A"; $muted = "#4C4C63"; $band = "#EBEDF4"; $line = "#D0D4E3"; $accent = "#4D11A7"
+$fontMono  = "'Altro Var', 'Altro Grotesk', Arial, sans-serif"
+$fontSerif = "'Altro Serif', Georgia, serif"
 
 $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine("<svg id=""root-svg"" xmlns=""http://www.w3.org/2000/svg"" width=""$W"" height=""$H"" viewBox=""0 0 $W $H"" font-family=""$fontSerif"">")
-[void]$sb.AppendLine("<rect width=""$W"" height=""$H"" fill=""#f4f7f5""/>")
+[void]$sb.AppendLine("<rect width=""$W"" height=""$H"" fill=""#F4F5F9""/>")
 [void]$sb.AppendLine(@"
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
@@ -253,8 +253,8 @@ $sb = New-Object System.Text.StringBuilder
   .ev-block.open .ev-chevron { transform: rotate(90deg); }
   .ev-block:not(.has-detail) .ev-chevron { visibility: hidden; }
   .d-wrap { font-family: $fontSerif; }
-  .d { font-size: 12.5px; line-height: 1.5; color: #2c3a3d; background: #ffffff; border-left: 3px solid $accent; border-radius: 0 4px 4px 0; padding: 8px 12px 10px; box-shadow: 0 1px 2px rgba(15,30,28,0.08); }
-  .d-meta { font-family: $fontMono; font-size: 10px; letter-spacing: 0.03em; text-transform: uppercase; color: #7c8b8e; margin: 0 0 6px; }
+  .d { font-size: 12.5px; line-height: 1.5; color: $ink; background: #FFFFFF; border-left: 3px solid $accent; border-radius: 0; padding: 8px 12px 10px; }
+  .d-meta { font-family: $fontMono; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: $muted; margin: 0 0 6px; }
   .d p { margin: 0 0 7px; }
   .d p.sub { font-weight: 700; color: $ink; margin-top: 10px; }
   .d p:last-child { margin-bottom: 0; }
@@ -408,6 +408,7 @@ $blocksJs = ($blockDescriptors -join ",`n  ")
 [void]$sb.AppendLine("</svg>")
 
 $enc = New-Object System.Text.UTF8Encoding($false)
-[System.IO.File]::WriteAllText($outSvg, $sb.ToString(), $enc)
+$svgText = $sb.ToString().Replace("`r`n", "`n")
+[System.IO.File]::WriteAllText($outSvg, $svgText, $enc)
 Write-Output "SVG: $outSvg ($($events.Count) eventi dal $FromYear, $H px, accordion attivo)"
 Write-Output ("Aree: " + (($categorie | ForEach-Object { "$($_.Tag)=$($counts[$_.Tag])" }) -join " "))

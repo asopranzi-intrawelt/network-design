@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Lavoro corrente, riallineato il 22/09/2026
 
+## Questionario cliente, QA e ticket Seeweb, 23/10/2026
+
+L'utente ha precisato che la scadenza del 20/12 riguarda i 19 requisiti dichiarati al cliente per dicembre, non l'intero programma del collettore. Le righe 89/90 richiedono raccolta e conservazione dei log AdS; il perimetro dei sistemi e l'eventuale differimento di 90 e 46 richiedono riscontro scritto del cliente, perché l'Annex consegnato indicava `12/2026`. Nel collettore QA `02f1e40` e `b29612c` sono checkpoint pubblicati: trasporto SSH con ricevuta locale, ma due LXC e flusso reale assenti; il controllo mount del ricevitore è un nuovo diff locale, non un volume provato. Screenshot_103: Seeweb chiede la sede del tunnel per i log, l'utente riferisce risposta inviata il 23/10. L'IP sorgente, selettori, regole, NAT e categorie attendono conferma del provider; il Debian è destinatario Syslog via tunnel fra firewall, non endpoint VPN. ISO-30 e M32e restano in corso; la LAN piatta si affronta con interventi interni successivi.
+
 ## Integrazione QA e collettore, 22/10/2026
 
 Chiusure manuali confermate: QA `staging` `d994af0`, collettore `main` `5e46478`, entrambi allineati al remoto. L'outbox tecnico QA precede la chiamata al backup e il ricevitore del collettore archivia offline con limite logico e lock POSIX. La prova è sintetica; mancano trasporto autenticato, ricevuta/replay, quota fisica/allarme, archivio riservato con retention/restore, indice e due LXC. M32e e ISO-30 restano in corso. Dettagli in `docs/integrazione-log-qa-verifier.md` e `docs/log-collector-integrazione.md`; il lavoro concorrente sulla VPS del sito non cambia questo stato.

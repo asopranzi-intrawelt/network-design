@@ -1,5 +1,11 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## Questionario cliente e chiarimento Seeweb, 23/10/2026
+
+L'utente ha fissato al 20/12 la consegna dei requisiti dichiarati per dicembre nel questionario cliente: 19 righe, con evidenze proprie. Il collettore contribuisce alle righe 89 e 90 sui log AdS; i suoi 59 nodi censiti sono un programma più ampio e non diventano automaticamente il perimetro della riga 89. La proposta interna di completare parzialmente entro dicembre le righe 90 e 46 non risulta confermata dal cliente nella cartella esaminata: l'Annex consegnato indicava `12/2026` per entrambe. La roadmap prioritaria e le lacune sono nel collettore e nel dossier ISO; nessuna riga viene chiusa da questa ricognizione.
+
+QA `staging` `02f1e40` e collettore `main` `b29612c` sono pubblicati, con trasporto SSH e ricevuta provati localmente ma non fra host. Il supporto Seeweb chiede nello screenshot_103 se i log debbano arrivare al server che termina IPsec. Il chiarimento distingue il tunnel fra i firewall dalla VM Debian destinataria nella LAN di sede; l'utente riferisce di aver inviato la risposta. Il provider deve ancora confermare sorgente, selettori, NAT e categorie; nessun flusso Seeweb è attivo. La segmentazione della LAN resta intervento interno futuro. ISO-30 e M32e restano in corso.
+
 ## ISO-05 chiuso con misura, e il canale puntava all'albero sbagliato, 21/10/2026
 
 Il database del sito non e' piu' raggiungibile dalla LAN. La pubblicazione del contenitore e' passata da tutte le interfacce al solo loopback, con una riga nel descrittore e la ricreazione del contenitore, perche' la pubblicazione di una porta si fissa alla creazione. Misura prima e dopo con lo stesso comando: la connessione verso la porta sull'indirizzo di LAN riusciva e ora riceve un rifiuto; il binding letto dal motore passa da `HostIp` vuoto a `127.0.0.1`; la tabella di ascolto da tutte le interfacce a `127.0.0.1:5432`. Integrita' confermata dopo la ricreazione con trecentoquarantatre tabelle e volume invariato. L'applicazione non e' stata toccata perche' gira sull'host e raggiunge il database su loopback. Intervento ISO-05 registrato completato con evidenza, difetto NET-027 chiuso dopo cinquantaquattro giorni, e nel progetto del sito l'ADR-037 fissa la regola che ne discende.
