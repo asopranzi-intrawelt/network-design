@@ -1,5 +1,45 @@
 # Snapshot di sincronizzazione
 
+## Manca la persistenza dei file caricati, non solo il salvataggio, 23/10/2026
+
+Verificata la voce del salvataggio e trovato un difetto a monte: le due collezioni di file scrivono in due cartelle distinte e la struttura creata all'impianto ne contiene una sola; soprattutto, nel repository del sito esiste un solo descrittore dei contenitori, che definisce la sola banca dati, senza servizio applicativo, senza proxy e **senza volumi per i file caricati**. Al primo rilascio quei file vivrebbero dentro il contenitore e sparirebbero a ogni ricreazione. Il problema non e' il salvataggio ma la persistenza, e correggere lo script di salvataggio da solo avrebbe prodotto un salvataggio che copia una cartella destinata a svuotarsi.
+
+## Perse le revisioni del proprietario su un documento rigenerato, 23/10/2026
+
+Difetto con danno non recuperabile: la nota sulla misura del traffico e' stata rigenerata quattro volte sopra le revisioni a mano del proprietario. Sopravvissute quelle lette e trascritte una volta, verificate su nove modifiche distintive; perse quelle successive. Recupero tentato e fallito: nessun file di recupero automatico, copie di salvataggio di altri documenti, nessuna copia ombra, cestino vuoto, scrivania non sincronizzata. La causa e' il metodo: due autori e un solo file, con il generatore che riscrive tutto e la persona che cambia tre frasi. Da adesso quel documento si modifica solo sul posto. Lezione L-014.
+
+## Fonti citate per esteso nella nota, 23/10/2026
+
+Le fonti della nota sulla misura del traffico sono ora una tabella con gli indirizzi completi e cio' che ciascun documento stabilisce, con collegamenti attivi nella versione per il browser. Corretto un difetto del controllo che verificava il documento prodotto: guardava i soli paragrafi e non le celle delle tabelle, dove un accento con l'apostrofo era sopravvissuto.
+
+## Requisiti degli strumenti di analisi verificati, 23/10/2026
+
+Letti sulla documentazione ufficiale prima che la nota uscisse: entrambi i candidati sono MIT; il cruscotto raccomandato dichiara due soli requisiti e indica PostgreSQL come **unico** database supportato, quindi il riuso del motore del sito e' la configurazione prevista dal fornitore e non una stima nostra. Cambiata la frase sul consenso: la documentazione dice che il tracciatore non usa cookie ma che la conformita' dipende da configurazione e uso, quindi la nota non promette l'assenza di banner e rimanda la valutazione a chi segue la privacy. Aggiunta la sezione delle fonti e dichiarato il non verificato, cioe' il consumo di memoria. Segnalazione al fornitore cloud per la console: <ticket-fornitore-cloud>, in lavorazione.
+
+## Raccomandazione sulla misura del traffico rivista, 23/10/2026
+
+Rivista prima di installare qualunque cosa: la prima raccomandazione nasceva dalla prudenza sulla memoria, ma il vincolo contrattuale conta visualizzazioni di pagina mentre i registri del server contano richieste, comprese quelle dei programmi automatici e dei file statici. Il framework del sito gestisce inoltre parte della navigazione nel browser, quindi i registri la sottostimano. Raccomandato il cruscotto senza identificatori che riusa la banca dati del sito; i registri restano come ripiego e come complemento per la diagnosi. Nota ai colleghi aggiornata in entrambe le uscite, con i prodotti candidati e gli scarti motivati. Go-live: italiano con rimandi sistemati, oppure cambio lingua mascherato nel frontend.
+
+## Il sito nuovo e' monolingue, 23/10/2026
+
+Misurato invece di chiesto: la configurazione del gestore di contenuti dichiara tre lingue e non cinque, e la banca dati riporta quattro pagine, ventinove articoli e sei soluzioni **tutte e sole in italiano**, con zero righe per le altre due. Qualunque pubblicazione multilingua e' percio' un progetto di traduzione non ancora cominciato, la cui durata decide la data piu' del lavoro tecnico. Nominati i candidati concreti per la misura del traffico, con le ragioni degli scarti; requisiti da verificare sulla documentazione ufficiale prima di installare. Corretta una domanda posta male: la scelta sulle lingue non riguarda il CMS ma i rimandi dagli indirizzi esteri gia' indicizzati.
+
+## Decisione sulla misura del traffico istruita, 23/10/2026
+
+Una delle tre decisioni che bloccano la pubblicazione era stata posta senza alternative: istruita per intero. Il punto che la decide non e' il prodotto ma se si voglia riconoscere lo stesso visitatore fra due visite, perche' quel riconoscimento richiede un identificatore permanente e quindi il consenso, anche con lo strumento ospitato su una macchina propria. Registrato il vincolo che rende la misura obbligatoria: la licenza del carattere copre venticinquemila visualizzazioni al mese. Tre strade con il costo reale sulla macchina; raccomandazione dai registri del server, cruscotto da valutare dopo il rilascio perche' il numero che decide e' la memoria libera in esercizio, oggi solo stimabile. Nota per i colleghi prodotta sul Desktop. Chiusa la pendenza sull'albero degli invii: le modifiche sono dell'IT Manager e riguardano un server di posta.
+
+## Questionario dicembre e ticket Seeweb, 23/10/2026
+
+Il perimetro urgente dichiarato dall'utente è l'Annex Cliente-1 con 19 righe a dicembre: il collettore concorre a 89/90, il progetto documentale a 139/168, e le altre 15 richiedono evidenze distinte. L'Annex consegnato indica `12/2026` anche per 46/90; il piano interno che le propone parziali non è una conferma del cliente. QA `02f1e40` e collettore `b29612c` sono checkpoint pubblicati; montaggio dell'archivio QA ancora solo candidato locale, nessun flusso fra host. Per screenshot_103 l'utente riferisce chiarimento inviato a Seeweb il 23/10; conferma del provider e ricezione Syslog mancanti. ISO-30 e M32e restano in corso. Dossier e timeline comuni aggiornati.
+
+## Database non esposto, i server di sviluppo si', 23/10/2026
+
+Rimisurata la portata del residuo di #242 prima di proporre una fusione: l'unico servizio di banca dati in esecuzione nasce dall'albero gia' corretto ed e' legato al loopback, mentre dall'albero residuo non gira niente. L'esposizione e' latente e si attiverebbe solo con una ricreazione lanciata da li'. La stessa misura mostra l'esposizione viva, che e' un'altra: le tre porte dei server di sviluppo su tutte le interfacce con i pannelli di amministrazione dietro, gia' tracciate come NET-030. Priorita' fra le due voci invertita. Baseline della VPS interamente conforme: nessuna voce non verificabile, istantanea da prendere.
+
+## Portabilita' del template censita e presidiata, 23/10/2026
+
+Censimento verificato nei riscontri principali: gli hook di git del template erano tutti senza bit di esecuzione e su Linux git li salta in silenzio, quindi i quattro presidi del commit non sarebbero girati; mancava il file di attributi e trenta script di shell erano esposti alla conversione automatica su Windows. Sanati con una misura che separa le trentacinque modifiche di solo modo dalle sei rinormalizzazioni, con zero contenuto cambiato. Chiusa poi la portabilita' degli strumenti: l'interprete si risolve eseguendolo e non cercandolo, perche' su Windows il nome esiste come collegamento del negozio e fallisce con codice 49. Prodotto un controllo con autotest che distingue rilievo nuovo, eccezione dichiarata e debito noto: zero rilievi nuovi su centodiciannove capacita', tredici debiti elencati. I due che contano sono propagazione e chiusura dell'allineamento, solo PowerShell: finche' e' cosi' il template non si usa fuori da Windows.
+
 ## Risalita al template completata, 23/10/2026
 
 Ramo di risalita fuso nel template e albero dedicato smontato: la raccolta del debito di lezioni parte ora a ogni apertura di sessione nel template, e lo strumento distingue un progetto non letto da uno senza debito. L'hook segnala e non recepisce: le lezioni restano aperte finche' qualcuno non le porta dentro e non le chiude, perche' il giudizio su cosa valga oltre il progetto non si automatizza. Annotata una violazione della regola sui comandi, ripetuta nella stessa giornata: un blocco consegnato senza il proprio `cd` e fallito.

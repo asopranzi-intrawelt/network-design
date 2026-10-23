@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Lavoro corrente, riallineato il 22/09/2026
 
+## D6 del collettore: unità candidate, 23/10/2026
+
+Il commit manuale del collettore `3e12aa6` prepara unità systemd alle 00:45 e guardia sul mount `/srv/ads`; nove prove locali e verifica sintattica systemd sono verdi. Non esistono timer attivo, heartbeat reale o allarme esterno consegnato. D7, nomina/elenco AdS e custodia indipendente restano gate delle righe Cliente-1 89/90 e ISO-30. I quattro file della memoria e dei gap del sito sono modificati da una sessione parallela e non fanno parte del delta del collettore; riconciliare la memoria della rete dopo la loro chiusura.
+
 ## Questionario cliente, QA e ticket Seeweb, 23/10/2026
 
 L'utente ha precisato che la scadenza del 20/12 riguarda i 19 requisiti dichiarati al cliente per dicembre, non l'intero programma del collettore. Le righe 89/90 richiedono raccolta e conservazione dei log AdS; il perimetro dei sistemi e l'eventuale differimento di 90 e 46 richiedono riscontro scritto del cliente, perché l'Annex consegnato indicava `12/2026`. Nel collettore QA `02f1e40` e `b29612c` sono checkpoint pubblicati: trasporto SSH con ricevuta locale, ma due LXC e flusso reale assenti; il controllo mount del ricevitore è un nuovo diff locale, non un volume provato. Screenshot_103: Seeweb chiede la sede del tunnel per i log, l'utente riferisce risposta inviata il 23/10. L'IP sorgente, selettori, regole, NAT e categorie attendono conferma del provider; il Debian è destinatario Syslog via tunnel fra firewall, non endpoint VPN. ISO-30 e M32e restano in corso; la LAN piatta si affronta con interventi interni successivi.

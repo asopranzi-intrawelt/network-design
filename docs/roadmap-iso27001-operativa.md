@@ -253,8 +253,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-23. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-23):** QA staging 02f1e40 e collettore main b29612c pubblicati: trasporto SSH con ricevuta e replay provato in locale. Il controllo mount dell'archivio e' solo nel nuovo diff del collettore. Seeweb: l'utente riferisce risposta inviata al ticket dopo screenshot_103; conferma del provider e flusso Syslog assenti. Mancano quota fisica, allarme, due LXC, prova fra host e perimetro AdS Cliente-1 concordato; nessuna copertura operativa nuova.
-  - **Evidenza:** docs/integrazione-log-qa-verifier.md; docs/firewall-seeweb-opnsense.md; docs/log-collector-integrazione.md
+  - **Ultimo stato (2026-10-23):** Collettore main 3e12aa6: D6 candidato con politica per sorgente, timer alle 00:45 e guardia sul mount /srv/ads; nove prove locali e verifica sintattica systemd. Timer e heartbeat non installati, allarme esterno e custodia indipendente ancora aperti.
+  - **Evidenza:** docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

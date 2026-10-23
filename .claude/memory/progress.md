@@ -1,5 +1,143 @@
 # Work-log
 
+## La persistenza dei file caricati non esiste, e viene prima del salvataggio, 23/10/2026
+
+Ripresa la roadmap sulla voce aperta con il rischio piu' alto fra quelle che non dipendono da decisioni, cioe' il salvataggio della macchina di produzione. Il progetto registrava che lo script previsto e' incompleto perche' copia la cartella dei file pubblici e non quella dei documenti riservati; la verifica ha confermato il fatto e ne ha trovato uno peggiore a monte.
+
+Primo riscontro, letto nel codice: le due collezioni di file del gestore di contenuti scrivono in due cartelle distinte, una pubblica e una riservata, e la struttura creata sulla macchina esterna all'impianto contiene soltanto la prima. La seconda non esiste nemmeno come cartella.
+
+Secondo riscontro, che cambia l'ordine dei lavori: nel repository del progetto del sito esiste **un solo** descrittore dei contenitori, e definisce il solo servizio di banca dati. Non c'e' un servizio applicativo, non c'e' il reverse proxy, e non c'e' alcun volume per le due cartelle dei file caricati; il descrittore dell'immagine non le nomina e non dichiara volumi. Al primo rilascio, con i descrittori di oggi, i file caricati vivrebbero dentro il contenitore e sparirebbero a ogni ricreazione.
+
+Ne discende la riformulazione della voce. Il problema non e' che manca un salvataggio: e' che manca la **persistenza**, e un salvataggio costruito sopra uno stato effimero salverebbe cio' che resta per caso. Correggere l'esclusione nello script resta necessario ma viene dopo, e da solo avrebbe prodotto l'illusione peggiore, cioe' un salvataggio che esiste, che nessuno rimette in discussione, e che copia una cartella destinata a svuotarsi da se'.
+
+E' anche un vincolo alla voce del primo rilascio, perche' il descrittore che fa girare insieme applicazione, proxy e banca dati non e' ancora scritto: la decisione sul modello di rilascio e' presa, l'esecuzione presuppone un descrittore che oggi non esiste.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log, piu' la vista di roadmap sul Desktop. **Template:** nessuna
+
+## Perse le revisioni del proprietario su un documento rigenerato, 23/10/2026
+
+Un difetto mio, con danno effettivo e non recuperabile. La nota sulla misura del traffico era stata generata da uno strumento, poi rivista a mano dal proprietario nell'elaboratore di testi, e poi rigenerata quattro volte dall'agente per aggiungervi contenuto. Le revisioni che erano state lette e trascritte una volta sono sopravvissute, e la verifica lo conferma su nove modifiche distintive; quelle fatte dal proprietario **dopo** quella lettura sono andate perdute.
+
+Il recupero e' stato tentato ed e' fallito, e vale la pena scrivere dove si e' guardato: nessun file di recupero automatico dell'elaboratore di testi per quel documento, tre copie di salvataggio presenti ma tutte di altri documenti e di mesi precedenti, nessuna copia ombra del volume accessibile, cestino vuoto, e la cartella della scrivania non sincronizzata con il servizio cloud, quindi nessuna cronologia delle versioni. Il file non era versionato perche' e' un artefatto volatile per costruzione.
+
+La causa non e' una distrazione ma un metodo sbagliato: un documento con due autori, uno strumento e una persona, e un solo file. Chi genera riscrive tutto il file a ogni giro, chi rivede ne cambia tre frasi: la persona perde sempre, e perde in silenzio, perche' il file esiste, ha la data giusta e nessun errore segnala la perdita.
+
+Metodo corretto, adottato da adesso per quel documento: l'artefatto e' del proprietario dal momento in cui lo modifica, e da quel momento si tocca **solo sul posto**, cambiando il singolo punto richiesto invece di riscriverlo da una sorgente parallela. La generazione resta per la prima stesura e per l'uscita in formato per il browser, che si ricava dal documento del proprietario e non da una sorgente separata.
+
+Registrata come **L-014** verso il template, perche' il difetto non ha niente di specifico a questo progetto: riguarda qualunque artefatto che uno strumento produce e una persona rivede.
+
+File scritti e riletti: `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, questo work-log. **Template:** L-014
+
+## Fonti citate per esteso nella nota, 23/10/2026
+
+Su richiesta dell'IT Manager le fonti della nota sulla misura del traffico sono state portate da una menzione discorsiva dei domini a una tabella con gli indirizzi completi e, accanto a ciascuno, che cosa quel documento stabilisce. Nella versione per il browser gli indirizzi sono collegamenti attivi; in quella per l'elaboratore di testi restano leggibili e copiabili. Nient'altro del documento e' stato toccato.
+
+Trovato e corretto nello stesso giro un difetto del controllo che avevo scritto per verificare il documento prodotto: ispezionava i soli paragrafi e non le celle delle tabelle, e infatti un accento scritto con l'apostrofo era sopravvissuto dentro una cella. Il controllo ora scorre paragrafi e tabelle insieme, ed e' un caso piccolo della stessa famiglia delle lezioni di oggi: uno strumento di verifica che guarda meno di quanto il documento contiene restituisce un verde che non copre tutto.
+
+File scritti e riletti: `.claude/memory/index.md`, questo work-log, piu' le due uscite della nota sul Desktop. **Template:** nessuna
+
+## Requisiti degli strumenti di analisi verificati sulle fonti, 23/10/2026
+
+Prima che la nota uscisse verso i colleghi, i requisiti dei due candidati sono stati letti sulla documentazione ufficiale invece che ricordati, come la regola delle fonti del progetto prescrive per ogni decisione tecnica.
+
+Per il cruscotto raccomandato: licenza MIT, e due soli requisiti dichiarati, cioe' un ambiente di esecuzione dalla versione 18.18 e un database PostgreSQL dalla versione 12.14. Il dato che vale di piu' e' che PostgreSQL risulta **l'unico** database supportato: il riuso del motore che il sito avra' gia' non e' quindi un'ipotesi nostra ma la configurazione prevista dal fornitore, e la frase della nota che lo affermava smette di essere una stima. La versione che il sito usera' e' ampiamente superiore al minimo.
+
+Per lo strumento di lettura dei registri, tenuto come ripiego e come complemento: licenza MIT, scritto in C, con una sola libreria come dipendenza, e lettura diretta dei formati di registro dei server web previsti. Il costo trascurabile che la nota gli attribuiva e' confermato dalla natura del programma.
+
+Una precisazione ha cambiato il testo, ed e' quella che conta di piu' per un documento che esce dall'IT. La documentazione del cruscotto afferma che il tracciatore non usa cookie, ma precisa anche che la conformita' al regolamento dipende da come lo si configura e lo si usa. La nota non puo' quindi promettere l'assenza di banner come un fatto: afferma che l'assenza di cookie toglie il presupposto che fa scattare l'obbligo del consenso, e dichiara che la valutazione resta dell'azienda e va fatta con chi segue la privacy. Un documento interno che promette conformita' al posto di un legale espone chi lo firma.
+
+Aggiunta alla nota una sezione delle fonti con le pagine lette e la data, e dichiarato esplicitamente cio' che resta non verificato: il consumo di memoria effettivo sulla macchina, che il fornitore non documenta e che si misura dopo il primo rilascio. Corretti nello stesso giro due difetti del documento generato, un accento scritto con l'apostrofo e due sequenze di escape rimaste letterali nel testo, trovati con un controllo sul file prodotto e non a vista.
+
+Registrato infine il numero della segnalazione aperta al fornitore cloud per la console guasta, <ticket-fornitore-cloud> del 23/10/2026, in lavorazione.
+
+File scritti e riletti: `.claude/memory/index.md`, questo work-log, piu' le due uscite della nota sul Desktop. **Template:** nessuna
+
+## Raccomandazione sulla misura del traffico rivista prima di installare, 23/10/2026
+
+L'IT Manager ha chiesto una scelta sola invece di due opzioni, e la richiesta ha fatto emergere che la raccomandazione precedente era sbagliata. Era stata formulata per prudenza sulla memoria della macchina; riletta contro lo scopo dichiarato, non lo serve.
+
+Il vincolo che obbliga a misurare conta **visualizzazioni di pagina**. L'analisi dei registri del server conta **richieste**, e fra quelle stanno i programmi automatici che scandiscono il web, i file statici e i precaricamenti: sulla grandezza esatta che decide la conformita' contrattuale e' quindi uno strumento impreciso. Si aggiunge una ragione tecnica che vale per questo sito in particolare: il framework gestisce parte della navigazione dentro il browser senza generare una richiesta di pagina al server, quindi i registri sottostimano la navigazione effettiva. E i registri non possono dire quante persone abbiano aperto il modulo di contatto o quali servizi guardino, che e' l'altra ragione per cui la misura serve.
+
+La raccomandazione diventa percio' il cruscotto senza identificatori che riusa la banca dati che il sito avra' gia', quindi senza un secondo motore di archiviazione, senza cookie e senza banner. L'analisi dei registri resta come ripiego a costo praticamente nullo se la memoria non bastasse, e come complemento permanente, perche' i registri servono comunque alla diagnosi degli errori e al riconoscimento del traffico automatico. Il costo in memoria si misura dopo il primo rilascio e non si stima adesso.
+
+La revisione e' stata fatta prima che fosse installato qualcosa, ed e' il momento in cui cambiare idea costa zero. Aggiornata di conseguenza la nota destinata ai colleghi, in entrambe le uscite, che ora nomina anche i prodotti candidati e quelli scartati con la loro ragione.
+
+Registrata infine la posizione dell'IT Manager sul go-live: pubblicazione in italiano, con sistemazione dei rimandi dagli indirizzi esteri indicizzati, oppure mascheramento temporaneo del cambio lingua nel frontend. E' coerente con la misura del giorno, che ha mostrato il contenuto esistere nella sola lingua italiana.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log, piu' le due uscite della nota sul Desktop. **Template:** nessuna
+
+## Il sito nuovo e' monolingue: misurato, 23/10/2026
+
+L'IT Manager ha risposto che vorrebbe pubblicare in tutte e cinque le lingue, e ha chiesto di verificare nella macchina di sviluppo invece di continuare a porgli domande. La verifica da' due numeri che cambiano l'ordine del lavoro.
+
+Il primo: la configurazione del gestore di contenuti dichiara **tre** lingue, non cinque, con l'italiano come predefinita. Cinque richiederebbero prima una modifica di configurazione.
+
+Il secondo, e piu' importante: interrogata la banca dati, le tabelle localizzate riportano quattro pagine, ventinove articoli e sei schede di soluzione, **tutte e sole in italiano**. Zero righe per le altre due lingue che la configurazione gia' prevede. Il sito nuovo e' oggi monolingue.
+
+Ne discende una riformulazione della voce di roadmap. La domanda non era quali lingue si vogliano: e' che qualunque pubblicazione multilingua e' un progetto di traduzione che nel gestore di contenuti non e' ancora cominciato, e la sua durata decide la data di pubblicazione piu' di tutto il lavoro tecnico in corso. L'azienda traduce di mestiere, quindi e' fattibile; ma trentanove elementi vanno tradotti e caricati, e finche' non lo sono una pubblicazione multilingua produrrebbe sezioni vuote o rimandi alla lingua predefinita.
+
+Nominati nello stesso giro i candidati concreti per la misura del traffico, che l'IT Manager chiedeva da due giri e che la nota aveva lasciato astratti. Per la prima strada uno strumento di lettura dei registri, singolo eseguibile, senza banca dati, consumo trascurabile. Per la seconda un cruscotto che riusa la banca dati che il sito avra' gia', quindi senza secondo motore. Scartati con la loro ragione uno strumento che richiede un motore colonnare affamato di memoria e uno che richiede un secondo motore relazionale. La verifica dei requisiti sulla documentazione ufficiale resta da fare prima di installare.
+
+Corretta infine una domanda posta male. La scelta sulle lingue era stata presentata come una decisione sul gestore di contenuti, che ovviamente le gestisce; la ragione vera per cui va decisa prima della pubblicazione e' un'altra, cioe' che il sito attuale ha indirizzi inglesi e tedeschi gia' indicizzati e quegli indirizzi vanno rimandati da qualche parte, altrimenti rispondono errore e il posizionamento acquisito si perde.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Istruita la decisione sulla misura del traffico, 23/10/2026
+
+Delle tre decisioni del committente che bloccano la pubblicazione, una era stata posta all'IT Manager come domanda senza alternative, il che non e' una domanda: e' stata quindi istruita per intero e trasformata in una scelta fra tre strade, con una nota destinata ai colleghi perche' possano decidere.
+
+Il punto che la decide non e' quale prodotto adottare, ed e' il pezzo che mancava: equivalenza a uno strumento di analisi completo e assenza di banner di consenso **non possono coesistere**, e non per limite degli strumenti. Cio' che distingue quella categoria e' il riconoscimento dello stesso visitatore fra una visita e l'altra, che richiede un identificatore permanente nel browser, quindi il consenso preventivo. Vale per qualunque strumento lo faccia, **anche se ospitato su una macchina propria**: l'installazione interna elimina il trasferimento dei dati a un terzo, non il consenso. La decisione da prendere e' percio' una sola, se si voglia quel riconoscimento, e da li' discende il prodotto invece che il contrario.
+
+Registrato anche il vincolo che rende la misura obbligatoria e non facoltativa, e che il progetto trattava come una nota a margine della licenza: la licenza d'uso web del carattere tipografico copre venticinquemila visualizzazioni di pagina al mese, e senza una misura del traffico non si sa se il sito la rispetti. Il superamento di un limite contrattuale si scopre quando qualcuno lo contesta.
+
+Le tre strade, con il costo reale sulla macchina di produzione. L'analisi dei registri del server, che non mette codice nelle pagine, non pone identificatori e non fa uscire dati, soddisfa il vincolo della licenza e costa quasi nulla. Un cruscotto senza identificatori ospitato internamente, che resta senza consenso e aggiunge eventi e obiettivi, il cui costo dipende da un fatto preciso: fra i candidati, quello che riusa la banca dati che il sito avra' gia' e' nettamente il meno esigente, mentre altri richiedono un secondo motore di archiviazione affamato di memoria su una macchina che ne ha otto gigabyte e dovra' far girare applicazione, banca dati e reverse proxy. E lo strumento completo con riconoscimento, che comporta il banner, l'aggiornamento del registro dei trattamenti e, nella versione esterna, la nomina a responsabile e la valutazione del trasferimento fuori dall'Unione.
+
+Raccomandazione registrata, con il suo limite dichiarato: partire dai registri, valutare il cruscotto dopo il primo rilascio. La ragione e' che il numero che distingue un cruscotto sostenibile da uno che rallenta il sito e' la memoria libera con applicazione e banca dati in esercizio, e oggi quel numero si potrebbe solo stimare. Lo studio con le fonti ufficiali sui requisiti di risorse e sulle configurazioni che non richiedono consenso resta da fare, e si fa quando la misura e' possibile.
+
+Chiusa nello stesso giro una pendenza che era stata aperta per difetto: le modifiche non committate nell'albero degli invii del progetto del sito sono dell'IT Manager stesso e riguardano un server di posta, quindi non c'e' nessuna proprieta' da accertare e la fusione del riferimento di rilascio in quel ramo e' una sua scelta di momento.
+
+Prodotta infine la bozza della richiesta al fornitore dell'ERP, pronta da inviare, con i cinque punti e l'indicazione di quali due siano prioritari.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log, piu' la nota per la decisione sul Desktop. **Template:** nessuna
+
+## Questionario cliente, integrazione QA e Seeweb, 23/10/2026
+
+Allineati dossier e timeline della rete ai checkpoint manuali QA `02f1e40` e collettore `b29612c`. Il ticket Seeweb: l'utente riferisce di aver inviato la risposta alla domanda di screenshot_103; testo effettivo e ricevuta non disponibili. Il tunnel resta fra OPNsense cloud e firewall di sede, la VM Debian è il destinatario Syslog interno; sorgente effettiva, selettori, NAT e categorie attendono riscontro del provider. Nessun flusso reale abilitato. Il perimetro dicembre è quello delle 19 righe dell'Annex Cliente-1: 89/90 nel collettore, 139/168 nel progetto documentale e altre 15 da valutare singolarmente. Le righe 46/90 risultano `12/2026` nell'Annex consegnato e un differimento non è confermato. ISO-30 e M32e restano in corso. File scritti: `docs/firewall-seeweb-opnsense.md`, `docs/sorgenti-log-seeweb.md`, `docs/integrazione-log-qa-verifier.md`, `docs/log-collector-integrazione.md`, timeline, contesto e memoria. Modifiche parallele della sessione VPS preservate; nessun comando su apparati, invio ticket dell'agente, commit, push o deploy.
+
+**Template:** nessuna.
+
+Nello stesso allineamento `IsoRoadmap.py advance` ha registrato ISO-30 `in_corso` il 23/10; `check --desktop` conferma fonte, Markdown, HTML privato, Desktop e archivio ISO allineati. La timeline SVG è stata rigenerata dai Markdown con i colori e le famiglie tipografiche del design system Intrawelt; XML valido, 239 eventi, script di apertura conservato. VectorCraft 0.14.0 l'ha aperta in sola lettura: l'app omette lo script inline nella propria vista, perciò non è stata usata per risalvare l'SVG interattivo. Corretto anche l'unico warning di conversione dipendente dalla cultura in `Watch-VmHealth.ps1` con `DateTimeOffset.ToUnixTimeSeconds()`; espressione eseguita in PowerShell. `chiudi -SoloControlli` verde in entrambi i repository, nessun warning nel collettore. La prima prova dei controlli rete nel sandbox era fallita solo per il permesso di un file temporaneo dell'autotest; ripetuta fuori sandbox, verde.
+
+## Esposizione del database rimisurata: latente, non attiva, 23/10/2026
+
+Ripresa la roadmap di messa in produzione dopo il lavoro sul template. L'unica voce tecnica che non dipende da decisioni e' la discesa del riferimento di rilascio nell'ultimo albero di lavoro del progetto del sito, e prima di proporre una fusione ne e' stata misurata la portata reale invece di accettare la descrizione della voce.
+
+Lo stato dell'albero residuo e' invariato dal 21/10: stesso ramo, stesso descrittore con la pubblicazione del database su tutte le interfacce, e gli stessi cinque file non committati, il che dice che nessuno vi ha lavorato nel frattempo. Ma la misura dei contenitori in esecuzione cambia il quadro: l'unico servizio di banca dati attivo sulla macchina di sviluppo nasce dall'albero gia' corretto ed e' legato al solo indirizzo di loopback. Dall'albero residuo non gira niente. L'esposizione e' quindi **latente** e si attiverebbe soltanto se qualcuno vi lanciasse una ricreazione dei contenitori, che e' lo scenario che la voce gia' descriveva ma che il progetto stava trattando come se fosse in corso.
+
+La stessa misura mostra che cosa sia esposto davvero oggi sulla rete locale piatta, e non e' la banca dati: sono le tre porte dei server di sviluppo, una per albero di lavoro, in ascolto su tutte le interfacce, con i pannelli di amministrazione del gestore di contenuti dietro. Sono gia' tracciate, ma la priorita' fra le due voci va invertita rispetto a come il progetto le trattava: la prima e' un rischio condizionato a un comando che nessuno sta lanciando, la seconda e' raggiungibile adesso da qualunque host della rete.
+
+Non e' stata proposta nessuna fusione su quell'albero. Porta lavoro altrui non committato, fra cui un file nuovo di utilita' per la posta coerente con il nome del ramo, e una fusione su un albero sporco puo' fermarsi sul manifesto dei pacchetti; la proprieta' di quelle modifiche non e' di questo progetto e va accertata da chi tiene quel repository.
+
+Registrato nello stesso giro l'esito della verifica della baseline sulla VPS, che e' interamente conforme: ogni voce verificata, nessuna non verificabile, e lo strumento dichiara che e' il momento di prendere l'istantanea di ripristino. I tentativi falliti sono saliti a 18.893, e tutti gli accessi riusciti provengono dall'indirizzo pubblico aziendale.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log, piu' la vista di roadmap sul Desktop. **Template:** nessuna
+
+## Portabilita' del template censita e presidiata, 23/10/2026
+
+Su richiesta dell'IT Manager, che ha posto il vincolo che tutto il template valga sia su Windows sia su Linux, e' stato commissionato un censimento della portabilita' a un sotto-agente e ne sono stati verificati i riscontri principali invece di accettarli.
+
+Il riscontro grave era uno e rompeva in silenzio: il template usa `core.hooksPath` per i propri hook di git, e tutti e cinque i file erano senza bit di esecuzione. Su Linux e macOS git salta un hook non eseguibile senza dire niente, quindi il divieto di attribuzioni nel messaggio di commit, l'anti-slop, il controllo delle identita' personali e quello del budget delle istruzioni non sarebbero girati affatto, e il commit sarebbe passato. Mancava anche un file di attributi alla radice, con trenta script di shell tracciati e nessuno eseguibile: un clone su Windows con conversione automatica li avrebbe riscritti con fine riga CRLF, e uno script di shell con CRLF non parte su Linux perche' l'interprete legge il nome con il ritorno a capo attaccato e dichiara che il file non esiste.
+
+Entrambi sanati in un primo giro, con una misura che distingue cio' che e' cambiato da cio' che sembra cambiato: trentacinque file cambiano solo di modo, sei vengono rinormalizzati da CRLF a LF, e ignorando il fine riga le modifiche di contenuto sono zero. Le fixture che vanno confrontate byte per byte erano gia' protette da un proprio file di attributi, verificato prima di scrivere quello nuovo.
+
+Un secondo giro ha chiuso la portabilita' degli strumenti. L'hook di apertura chiamava `python` nudo, che su molte distribuzioni non esiste: la forma portabile e' stata trovata misurando invece di indovinare, perche' su Windows `python3` esiste in percorso come collegamento del negozio di applicazioni e un controllo di presenza lo sceglierebbe, mentre eseguirlo fallisce con codice 49. Il comando prova quindi a eseguire l'interprete invece di cercarlo. Corretto anche uno strumento che suggeriva sempre un comando PowerShell, anche su sistemi dove quel programma non esiste.
+
+Prodotto infine lo strumento che impedisce al problema di riformarsi, con autotest a sei casi: censisce le capacita' in forma singola, i bit di esecuzione, il file di attributi e i comandi degli hook, e distingue **tre** stati invece di due. Un rilievo nuovo, un'eccezione legittima dichiarata con la sua ragione, e un debito noto. La distinzione non e' cosmetica: senza di essa il rapporto elencava quindici forme singole a ogni esecuzione, che e' il modo piu' rapido di far spegnere un controllo. Dopo la dichiarazione il rapporto riporta zero rilievi nuovi su centodiciannove capacita' censite e tredici debiti elencati a parte, ciascuno con la ragione per cui esiste.
+
+I due debiti che contano sono gli strumenti di propagazione e di chiusura dell'allineamento, che esistono solo in PowerShell: finche' e' cosi', il template non si usa fuori da Windows. Sono stati tenuti fuori dalle eccezioni di proposito, perche' dichiararli legittimi toglierebbe il motivo di portarli.
+
+File scritti e riletti: nel template, `.gitattributes`, `.claude/settings.json`, `passata-in-sospeso.py`, `verifica-portabilita.py` e `portabilita-eccezioni.json`, su due rami di risalita fusi dal proprietario; in questo progetto, `.claude/memory/index.md` e questo work-log. **Template:** nessuna
+
 ## Risalita al template completata, 23/10/2026
 
 Il proprietario ha fuso nel template il ramo di risalita e smontato l'albero di lavoro dedicato. Da adesso il template esegue la raccolta del debito di lezioni a ogni apertura di sessione, senza dipendere dal fatto che l'agente legga la prescrizione, e lo strumento distingue un progetto non letto da un progetto senza debito.

@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 23/10/2026 - Timer D6 del collettore preparato, esercizio aperto
+
+Il collettore `main` `3e12aa6` ha un controllo di silenzio per sorgente; il passo successivo ha preparato il timer alle 00:45 e il rifiuto di `/srv/ads` non montato. Nove prove locali e la sintassi systemd sono verificate, ma sulla VM il timer non è installato e mancano heartbeat reale, allarme esterno, recupero di tutti i giorni saltati e lista AdS approvata. ISO-30 e le righe Cliente-1 89/90 restano in corso. Il sito parallelo e i suoi file di memoria non sono stati toccati.
+
 ## Questionario cliente e chiarimento Seeweb, 23/10/2026
 
 L'utente ha fissato al 20/12 la consegna dei requisiti dichiarati per dicembre nel questionario cliente: 19 righe, con evidenze proprie. Il collettore contribuisce alle righe 89 e 90 sui log AdS; i suoi 59 nodi censiti sono un programma più ampio e non diventano automaticamente il perimetro della riga 89. La proposta interna di completare parzialmente entro dicembre le righe 90 e 46 non risulta confermata dal cliente nella cartella esaminata: l'Annex consegnato indicava `12/2026` per entrambe. La roadmap prioritaria e le lacune sono nel collettore e nel dossier ISO; nessuna riga viene chiusa da questa ricognizione.
