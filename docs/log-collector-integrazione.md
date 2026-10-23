@@ -1,5 +1,11 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Passaggio QA offline versionato, 22/10/2026
+
+QA `staging` a `d994af0` scrive la selezione `backup_selected` in un outbox locale prima della richiesta al backup; il collettore `main` a `5e46478` può archiviarne offline un file alla volta con vista tecnica minimizzata, lock POSIX e limite logico di byte obbligatorio. Un probe sintetico ha verificato ricezione e retry; le 34 prove del ricevitore/confine e il caso WSL con due writer non dimostrano una consegna in esercizio. L'autorizzazione identificante resta in SQLite privata del produttore, fuori dalla vista tecnica generale.
+
+Da realizzare e provare: trasporto autenticato fra i due ambienti, ricevuta e replay, quota fisica/allarme, retention e restore riservati, indice minimizzato e LXC QA. Nessun LXC o flusso QA reale attivo; M32e e ISO-30 restano in corso. [Contratto e limiti](integrazione-log-qa-verifier.md). Le sezioni del 21/10 restano fotografie storiche.
+
 ## Spool Linux limitato e audit QA, 21/10/2026
 
 Nel pilot sintetico del collettore, due bind mount su tmpfs WSL da 16 MiB hanno verificato preflight, soglia di spazio ed ENOSPC. La prima prova a zero blocchi lasciava `.lock`; la correzione è stata riprovata sul filesystem pieno. Originali e segmenti nuovi sincronizzano anche le directory su Linux; 41 prove mirate sono verdi. La prova non copre un taglio di alimentazione, il carico, un allarme ricevuto o il budget del nodo. Il produttore QA `staging` a `2bb9381` conserva l'autorizzazione solo in RAM, aggrega gli eventi di backup nel risultato solo a job completo e ha una CLI che chiama direttamente il client esterno: prima del collegamento servono registro riservato durevole, emissione tecnica nei fallimenti e copertura del percorso CLI. Nessun LXC o flusso reale attivo. M32e e ISO-30 restano in corso. [Prova e limiti](integrazione-log-qa-verifier.md).

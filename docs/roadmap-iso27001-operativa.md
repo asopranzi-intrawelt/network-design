@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-23. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 30, in corso 16, bloccati 0, completati 1, non applicabili 0.
+- Interventi: **47**; da fare 29, in corso 17, bloccati 0, completati 1, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -253,8 +253,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-21):** Produttore QA: candidato non versionato registra la prova locale su SQLite privata prima del worker e blocca la CLI in modo server; 458 prove sintetiche verdi. Mancano custodia indipendente, retention e restore, evento backup_selected durevole, trasporto, indice e due LXC. Nessun flusso reale o avanzamento del controllo ISO-30.
-  - **Evidenza:** docs/integrazione-log-qa-verifier.md
+  - **Ultimo stato (2026-10-22):** QA staging d994af0: outbox locale di backup_selected prima della chiamata esterna. Collettore main 5e46478: ricezione offline con limite logico di byte e lock POSIX; prove sintetiche e WSL. Mancano trasporto autenticato, ricevuta/replay, quota fisica e allarme, archivio riservato con retention/restore, indice e due LXC. Nessun flusso QA reale o copertura operativa nuova.
+  - **Evidenza:** docs/integrazione-log-qa-verifier.md; D:/log-collector/docs/integrazione-log-qa-verifier.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
@@ -329,7 +329,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obie
   - **Chiusura verificabile:** Una esecuzione documentata o esercizio per ciascuna procedura critica.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.5.37, A.8.32, 8.1.
   - **Fonti:** docs/runbook-anomalie.md, roadmap Fase 5.
-  - **Ultimo stato (2026-10-16):** Ricevuti commit 2164dd0 pubblicato e abilitazione manuale della retention snapshot a 90 giorni: zero candidati/eliminati; policy enabled=true riletta. Primo giro pianificato e recupero indipendente restano aperti.
+  - **Ultimo stato (2026-10-16):** Ricevuti commit bff861b pubblicato e abilitazione manuale della retention snapshot a 90 giorni: zero candidati/eliminati; policy enabled=true riletta. Primo giro pianificato e recupero indipendente restano aperti.
 
 - **ISO-42 | Risposta agli incidenti** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Definire ruoli, escalation, decisione sugli eventi, raccolta prove e comunicazioni; esercitare uno scenario pertinente al phishing gia' documentato.
@@ -337,11 +337,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-21. Obie
   - **Responsabile:** RSGSI e Comitato di crisi. **Dipendenze:** nessuna. **Controlli:** A.5.24, A.5.25, A.5.26, A.5.28, A.6.8.
   - **Fonti:** docs/cybersecurity-governance.md, docs/business-continuity-disaster-recovery.md.
 
-- **ISO-43 | Fornitori, cloud e servizi esterni** - **Da fare**; Nessuna fornitura prevista.
+- **ISO-43 | Fornitori, cloud e servizi esterni** - **In corso**; Nessuna fornitura prevista.
   - **Azione:** Rivedere responsabilita', accessi, incidenti, continuita' e cessazione per hosting, RMM, backup, connettivita' e SaaS; chiedere prove contrattuali e operative.
   - **Chiusura verificabile:** Schede fornitore con rischio, proprietario, ultima revisione e azioni aperte.
   - **Responsabile:** RSGSI e responsabile acquisti. **Dipendenze:** nessuna. **Controlli:** A.5.19, A.5.20, A.5.21, A.5.22, A.5.23.
   - **Fonti:** docs/vendor-management.md, ISO/IEC 27001:2022.
+  - **Ultimo stato (2026-10-23):** Confrontata la lettera di nomina a responsabile del trattamento del fornitore dell'ERP con la riga del registro sub-responsabili: corrette categorie di dati e luogo del trattamento, che erano piu' strette del documento. Tre scostamenti aperti: forma societaria non coincidente, contratto di consulenza 2019 privo della firma del titolare, oggetto della nomina limitato a un progetto concluso mentre il rapporto in essere e' manutenzione e hosting. Un fornitore su undici del registro.
 
 - **ISO-44 | Revisione accessi e formazione** - **Da fare**; FORNITURA CONDIZIONATA. Formazione esterna solo se il programma interno non copre le competenze richieste.
   - **Azione:** Rivedere account privilegiati, accessi di collaboratori e fornitori, revoche e consapevolezza del personale su phishing e segnalazione eventi.

@@ -4,9 +4,13 @@ last-verified: 920c616
 
 # Lavoro corrente, riallineato il 22/09/2026
 
+## Integrazione QA e collettore, 22/10/2026
+
+Chiusure manuali confermate: QA `staging` `d994af0`, collettore `main` `5e46478`, entrambi allineati al remoto. L'outbox tecnico QA precede la chiamata al backup e il ricevitore del collettore archivia offline con limite logico e lock POSIX. La prova è sintetica; mancano trasporto autenticato, ricevuta/replay, quota fisica/allarme, archivio riservato con retention/restore, indice e due LXC. M32e e ISO-30 restano in corso. Dettagli in `docs/integrazione-log-qa-verifier.md` e `docs/log-collector-integrazione.md`; il lavoro concorrente sulla VPS del sito non cambia questo stato.
+
 ## Certificati: emissione IntraLino e censimento della rete, 22/10/2026
 
-Certificato HTTPS di IntraLino emesso dall’autorità aziendale e verificato indipendentemente il 22/10; scade il 24/11/2027, installazione e prova live ancora pendenti. L’IT Manager richiede il censimento di tutti i certificati nel quadro complessivo della rete, con responsabili, dipendenze di fiducia, scadenze, rinnovi e stato emesso/installato/verificato. Riferimento canonico: `docs/autorita-certificazione-interna.md`, sezione sull’emissione IntraLino e sul censimento. Nessuna modifica ad apparati, servizi o stati ISO.
+IntraLino: certificato aziendale installato e verificato nel solo ambiente TEST il22/10/2026 alle15:22 UTC, scadenza24/11/2027. Audit indipendente: TLS rigoroso su due nomi e due ingressi, rifiuti di nome errato/CA assente e HTTP anonimo coerente. Produzione sui certificati precedenti; vecchia autorità e coppia ancora necessarie. Chiave CA offline, trust store invariati. Censimento complessivo, rinnovi/revoca e distribuzione ai client restano aperti. Prova privata in `_notes/pki/intralino-emissione-2026-10-22.json`; fonte canonica `docs/autorita-certificazione-interna.md`. Nessun cambio di stato ISO o scansione generale.
 
 La lettura riguarda questo rilievo e la relativa procedura: non attesta allineamento delle altre aree o copertura di un controllo ISO. Preservate le modifiche parallele già presenti.
 
