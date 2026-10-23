@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Porta di amministrazione ristretta, Openforce esaurito sui documenti, 23/10/2026
+
+La 22 della VPS e' ammessa dal solo indirizzo pubblico aziendale; regola aggiunta prima di togliere le quattro aperte, sessione nuova verificata, IPv6 chiuso di conseguenza. Residuo accettato e dichiarato: in subentro si perderebbe l'amministrazione, non il servizio. Domanda al fornitore inviata. Sul fornitore dell'ERP: il documento firmato piu' recente e' un ordine commerciale del novembre 2025, non un contratto quadro e non una nomina, quindi non esiste altro. Primo scostamento chiuso dal proprietario, stessa persona giuridica. Restano due bloccanti: contratto vigente non identificato ne' firmato da entrambi, e nomina che non descrive manutenzione e hosting in essere.
+
 ## Causa del difetto di recupero e riordino di `_notes`, 23/10/2026
 
 Diagnosticato il meccanismo comune a tre errori della sessione: dedurre quale documento contenga il fatto e cercare li', invece di cercare il token distintivo su tutto il corpus. In tutti e tre i casi il token c'era. Aggiunto il pezzo che mancava al sistema: dentro il repository una registrazione di misura batte un racconto, e un racconto non corroborato e' candidato all'obsolescenza. Lezione L-011; la risalita al template resta ADR-027 con commit manuale. Riordinata `_notes` rispettando la decisione di agosto, che vietava di spostare cio' che e' citato per percorso: spostati nell'archivio solo i materiali con zero riferimenti, verificati nome per nome; radice da sessantasei a quarantotto voci, sette temi in `archivio-sessioni/`, indice riscritto con l'obbligo di dichiarare ogni file nel giro in cui si crea. Porte del centralino: verificate e non bloccate dal 23/03/2026, oggetti gia' creati nel firewall.

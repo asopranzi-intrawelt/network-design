@@ -1,5 +1,17 @@
 # Work-log
 
+## Porta di amministrazione ristretta, e documenti Openforce esauriti, 23/10/2026
+
+La porta di amministrazione della VPS del sito e' ora ammessa dal solo indirizzo pubblico aziendale. L'ordine dell'intervento e' stato quello sicuro: prima aggiunta la regola ristretta, poi rimosse le quattro aperte, due in IPv4 e due in IPv6, con la sessione precedente tenuta viva e una sessione nuova aperta e verificata dopo la modifica. Restano ammesse da qualunque provenienza le sole due porte del web, che serviranno al sito. Un effetto collaterale voluto e' che l'amministrazione non e' piu' raggiungibile in IPv6, perche' quelle righe sono state rimosse e non ricreate: non incide perche' si entra in IPv4, e chiude un percorso che prima era aperto al mondo.
+
+La decisione e' stata presa dall'IT Manager accettando un residuo dichiarato invece di aspettare: se durante il subentro sul percorso di riserva l'indirizzo in uscita cambiasse, si perderebbe l'accesso amministrativo e non il servizio, perche' le porte del web restano aperte. La domanda al fornitore della connettivita' e' stata inviata nella stessa giornata, e la regola si rivede quando arriva la risposta.
+
+Esaurita nello stesso giro la verifica documentale sul fornitore dell'ERP, su domanda del proprietario. Il documento firmato da entrambe le parti piu' recente e' un ordine commerciale del novembre 2025, accettato in dicembre, per un pacchetto di ore di analisi dei flussi legato alla migrazione di versione del gestionale: e' un ordine e non un contratto quadro, e non e' una nomina. Ne discende la risposta alla domanda del proprietario: non esiste altro. Il contratto quadro resta quello del 2019, di cui esiste solo una copia non firmata dal titolare, e la nomina resta quella del 2018 intestata a un progetto concluso. Il proprietario ha confermato che la forma societaria diversa riguarda la stessa persona giuridica, quindi il primo dei tre scostamenti si chiude con un'annotazione e non con una nomina nuova.
+
+Restano percio' due scostamenti su tre, ed entrambi bloccanti per un audit: il contratto vigente non identificato e non firmato da entrambi, e la nomina che non descrive il trattamento in essere, cioe' manutenzione e hosting del gestionale in produzione. Le altre richieste da avanzare al fornitore, cioe' elenco dei sub-responsabili e luogo dei server, uso di dati reali in sviluppo e verifica, e certificazioni o questionario, sono evidenza utile a ISO-43 ma non espongono il titolare se arrivano dopo.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
 ## Causa del difetto di recupero, lezione L-011, e riordino di `_notes`, 23/10/2026
 
 L'IT Manager ha contestato un difetto ricorrente: piu' volte nella stessa sessione sono state date risposte senza prendere le informazioni dal contesto completo del progetto. La contestazione e' fondata e il meccanismo e' uno solo in tutti e tre i casi, non tre sviste diverse. Le porte del centralino cloud sono state cercate nel solo documento del firewall e stavano nella scheda della telefonia, con la verifica del 23/03/2026 e perfino l'elenco degli oggetti creati nell'apparato; l'inventario degli apparati del fornitore e' stato chiesto al proprietario mentre stava gia' in `data/network-topology.json` con tanto di collegamenti; e un'affermazione sulla connettivita' e' stata presa da un documento di continuita' operativa invecchiato invece che dal dump del firewall.
