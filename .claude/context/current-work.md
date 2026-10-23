@@ -6,7 +6,7 @@ last-verified: 920c616
 
 ## D6 del collettore: unità candidate, 23/10/2026
 
-Il commit manuale del collettore `3e12aa6` prepara unità systemd alle 00:45 e guardia sul mount `/srv/ads`; nove prove locali e verifica sintattica systemd sono verdi. Non esistono timer attivo, heartbeat reale o allarme esterno consegnato. D7, nomina/elenco AdS e custodia indipendente restano gate delle righe Cliente-1 89/90 e ISO-30. I quattro file della memoria e dei gap del sito sono modificati da una sessione parallela e non fanno parte del delta del collettore; riconciliare la memoria della rete dopo la loro chiusura.
+Il commit manuale del collettore `3e12aa6` prepara unità systemd alle 00:45 e guardia sul mount `/srv/ads`; nove prove locali e verifica sintattica systemd sono verdi. Il timer non è attivo; heartbeat reale e allarme esterno non sono stati collaudati. D7, nomina/elenco AdS e custodia indipendente restano gate delle righe Cliente-1 89/90 e ISO-30.
 
 ## Questionario cliente, QA e ticket Seeweb, 23/10/2026
 

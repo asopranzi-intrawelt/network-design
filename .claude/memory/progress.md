@@ -1,5 +1,33 @@
 # Work-log
 
+## Tre cose diverse chiamate backup: distinte nella roadmap e nella lezione, 23/10/2026
+
+L'IT Manager ha colto che la correzione sullo snapshot non era un dettaglio operativo ma una distinzione concettuale, e che vale oltre questo progetto. Ha ragione, e il punto e' che tre strumenti diversi portano in bocca a tutti lo stesso nome.
+
+Il primo e' l'istantanea del pannello del fornitore, che e' un tasto annulla per una singola operazione rischiosa: si prende pochi minuti prima di toccare qualcosa e si lascia scadere. Qui dura due giorni e nel frattempo limita le modifiche della macchina.
+
+Il secondo e' la riproducibilita' della macchina, cioe' lo strumento che porta una macchina appena creata allo stato voluto e lo verifica. Protegge dalla perdita totale e dal cambio di fornitore, sopravvive a entrambi perche' non dipende dal pannello, e **non protegge nessun dato**, perche' ricostruisce una macchina vuota.
+
+Il terzo e' il salvataggio dei dati, l'unico che protegge da cancellazione, corruzione ed errore umano, e l'unico che non vale niente finche' un ripristino non e' stato provato.
+
+Confonderli produce la condizione peggiore, cioe' credersi coperti su tre fronti avendone presidiato uno. Nel progetto erano gia' tre voci distinte ma con nomi che si sovrapponevano, e la vista destinata ai colleghi li trattava come un unico argomento.
+
+Aggiunta percio' alla vista di roadmap una tabella che li distingue prima dell'elenco degli interventi, con che cosa protegge ciascuno e il suo stato: lo snapshot da usare al rilascio e non adesso, la ricostruzione fatta, il salvataggio inesistente e bloccato dalla persistenza dei file. E' la parte che i colleghi leggeranno con piu' profitto, perche' e' l'errore che chiunque farebbe.
+
+Registrata come **L-015** verso il template la forma astratta, con le quattro prescrizioni che ne discendono: nominare i tre con tre parole diverse, tenerli come voci separate nella pianificazione, prendere l'istantanea del fornitore solo immediatamente prima dell'operazione che la giustifica, e verificare che i dati siano persistiti fuori dal contenitore prima di costruirvi sopra un salvataggio.
+
+File scritti e riletti: `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, questo work-log, piu' la vista di roadmap sul Desktop. **Template:** L-015
+
+## Lo snapshot del pannello non e' un punto di ritorno durevole, 23/10/2026
+
+Correzione a un'indicazione data piu' volte oggi, scoperta leggendo la pagina del pannello invece di assumerla. Lo snapshot del fornitore cloud dichiara, nella propria descrizione, che **viene rimosso automaticamente dopo due giorni** dalla creazione, e che finche' esiste limita le modifiche della macchina ai soli valori di memoria e processore. Non e' quindi la fotografia durevole di macchina pronta che era stata descritta: e' uno strumento pre-manutenzione, da prendere subito prima di un intervento rischioso e da lasciar scadere.
+
+Ne discendono due cose. La prima e' operativa: lo snapshot non va preso adesso, che nei prossimi due giorni non e' previsto nessun intervento, ma il giorno del primo rilascio, pochi minuti prima di cominciare. La seconda riguarda cio' che era stato chiesto davvero, cioe' una fotografia riproducibile da cui ripartire in caso di reinizializzazione: quella resta lo strumento di baseline, che ricostruisce lo stato verificandolo, piu' il salvataggio che ancora non esiste. Un fornitore che chiama snapshot una cosa che dura due giorni non fornisce un punto di ritorno, e chiamarlo cosi' nel progetto avrebbe prodotto la peggiore delle illusioni, cioe' credere di avere una rete di sicurezza che a lunedi' non c'e' piu'.
+
+Aggiornata di conseguenza la vista di roadmap destinata ai colleghi, dove quella voce passa da **da fare** a **chiusa** con la correzione scritta dentro, e dove nello stesso giro sono state allineate altre due voci superate dai fatti del pomeriggio: la decisione sulle lingue, che non e' piu' una domanda aperta perche' il contenuto esiste solo in italiano e il proprietario ha scelto di pubblicare in italiano sistemando i rimandi, e la segnalazione al fornitore per la console, che risulta aperta e in lavorazione invece che da aprire. La vista e' ora allineata allo stato di fine giornata e pronta da inviare insieme alla nota sulla misura del traffico.
+
+File scritti e riletti: `.claude/memory/index.md`, questo work-log, piu' la vista di roadmap sul Desktop. **Template:** nessuna
+
 ## La persistenza dei file caricati non esiste, e viene prima del salvataggio, 23/10/2026
 
 Ripresa la roadmap sulla voce aperta con il rischio piu' alto fra quelle che non dipendono da decisioni, cioe' il salvataggio della macchina di produzione. Il progetto registrava che lo script previsto e' incompleto perche' copia la cartella dei file pubblici e non quella dei documenti riservati; la verifica ha confermato il fatto e ne ha trovato uno peggiore a monte.

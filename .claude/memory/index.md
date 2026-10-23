@@ -1,5 +1,13 @@
 # Snapshot di sincronizzazione
 
+## Tre cose diverse chiamate backup, 23/10/2026
+
+Distinti nella roadmap e in una lezione: l'istantanea del pannello, che e' un tasto annulla per una singola operazione e qui dura due giorni; la ricostruzione della macchina, che protegge dalla perdita totale e dal cambio di fornitore ma non protegge nessun dato; e il salvataggio dei dati, l'unico che protegge il contenuto e che non vale niente senza una prova di ripristino. Aggiunta alla vista per i colleghi una tabella che li separa con stato e perimetro. Lezione L-015 verso il template.
+
+## Lo snapshot del pannello scade in due giorni, 23/10/2026
+
+Letta la descrizione del pannello invece di assumerla: lo snapshot del fornitore viene rimosso dopo due giorni e nel frattempo limita le modifiche alla macchina. Non e' un punto di ritorno durevole ma uno strumento pre-manutenzione, da prendere il giorno del rilascio e non adesso. La fotografia riproducibile resta lo strumento di baseline piu' il salvataggio, che non esiste. Vista di roadmap allineata allo stato di fine giornata: voce dello snapshot chiusa con la correzione, lingue non piu' una domanda aperta, segnalazione al fornitore aperta e in lavorazione.
+
 ## Manca la persistenza dei file caricati, non solo il salvataggio, 23/10/2026
 
 Verificata la voce del salvataggio e trovato un difetto a monte: le due collezioni di file scrivono in due cartelle distinte e la struttura creata all'impianto ne contiene una sola; soprattutto, nel repository del sito esiste un solo descrittore dei contenitori, che definisce la sola banca dati, senza servizio applicativo, senza proxy e **senza volumi per i file caricati**. Al primo rilascio quei file vivrebbero dentro il contenitore e sparirebbero a ogni ricreazione. Il problema non e' il salvataggio ma la persistenza, e correggere lo script di salvataggio da solo avrebbe prodotto un salvataggio che copia una cartella destinata a svuotarsi.
