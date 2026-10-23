@@ -1,5 +1,205 @@
 # Work-log
 
+## Causa del difetto di recupero, lezione L-011, e riordino di `_notes`, 23/10/2026
+
+L'IT Manager ha contestato un difetto ricorrente: piu' volte nella stessa sessione sono state date risposte senza prendere le informazioni dal contesto completo del progetto. La contestazione e' fondata e il meccanismo e' uno solo in tutti e tre i casi, non tre sviste diverse. Le porte del centralino cloud sono state cercate nel solo documento del firewall e stavano nella scheda della telefonia, con la verifica del 23/03/2026 e perfino l'elenco degli oggetti creati nell'apparato; l'inventario degli apparati del fornitore e' stato chiesto al proprietario mentre stava gia' in `data/network-topology.json` con tanto di collegamenti; e un'affermazione sulla connettivita' e' stata presa da un documento di continuita' operativa invecchiato invece che dal dump del firewall.
+
+Il meccanismo comune e' dedurre quale documento contenga il fatto e cercare li', invece di cercare il fatto su tutto il corpus. In un progetto con oltre cento documenti sembra la mossa efficiente ed e' la piu' fragile, perche' i fatti non stanno dove la tassonomia dice che dovrebbero. In tutti e tre i casi esisteva un token distintivo, cioe' un numero di porta, un modello di apparato, il nome di un prodotto, e cercarlo sarebbe costato una chiamata sola. Il conto e' asimmetrico: una conclusione sbagliata costa una raccomandazione sbagliata che poi deve fermare il proprietario, e in questa sessione l'ha fermata due volte lui.
+
+Ne e' emerso un terzo pezzo che il sistema non aveva scritto da nessuna parte: dentro il repository gli artefatti non hanno pari autorita'. Alcuni sono registrazioni di una misura, come il dump di un apparato, un inventario generato o uno snapshot di una fonte viva; altri sono racconti, come un piano o una scheda di governance. Per una domanda sulla configurazione attuale la registrazione batte il racconto, e un racconto che nessuna registrazione corrobora e' candidato all'obsolescenza, tanto piu' se descrive un accordo con un fornitore. La regola delle cinque classi distingue il repository dal mondo esterno, non gli artefatti fra loro.
+
+Registrata come **L-011** in `.claude/memory/lezioni-template.md`. Non e' stata scritta nel template: il registro lo legge da se' a ogni apertura di sessione, e la risalita al template resta materia di ADR-027 con commit manuale del proprietario.
+
+Riordinata nello stesso giro la cartella privata, su richiesta del proprietario. La versione precedente dell'indice, del 03/08/2026, aveva deciso di **non** riorganizzare, con una ragione corretta e verificata: quasi ogni file in radice e' citato per percorso da uno script o da una scheda pubblica, e spostarlo romperebbe qualcosa in silenzio. Quella ragione vale ancora per la radice, ma non spiegava il disordine di oggi: il difetto vero era il debito di indicizzazione, perche' da agosto a ottobre sono comparse una quarantina di cartelle che nell'indice non c'erano. Il riordino ha percio' spostato soltanto i materiali che nessun file tracciato nomina, verificandolo nome per nome con una ricerca sul corpus prima di toccarli, e ha riscritto l'indice per intero. La radice passa da sessantasei a quarantotto voci; i materiali chiusi vanno in `archivio-sessioni/<tema>/`, con sette temi, adottando la convenzione gia' in uso nel progetto gemello invece di inventarne una. Sette voci candidate sono state trattenute perche' la ricerca le ha trovate citate, e una cartella vuota annidata e' stata rimossa.
+
+Il nuovo indice aggiunge la prescrizione che mancava: un file si dichiara nell'indice nello stesso giro in cui si crea, perche' un file non indicizzato diventa indistinguibile da un residuo in poche settimane, ed e' la stessa asimmetria del rimando a senso unico gia' descritta nella regola sulla persistenza.
+
+Chiuse infine due questioni aperte con il proprietario. La terza domanda da porre al fornitore della connettivita' e' stata tolta: il proprietario ha osservato empiricamente piu' di una volta che la fibra e' caduta e l'azienda ha continuato a navigare, il che risponde al punto sull'automatismo del subentro, ma non risponde ai punti sull'indirizzo in uscita e sulla raggiungibilita' dall'esterno, che restano. E le porte del centralino risultano verificate e non bloccate dal 23/03/2026, con gli oggetti Address e Service gia' creati nell'apparato.
+
+File scritti e riletti: `_notes/LEGGIMI.md`, `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, questo work-log. **Template:** L-011
+
+## Nomina Openforce confrontata con il registro: due correzioni e tre scostamenti, 23/10/2026
+
+L'IT Manager ha indicato la cartella del fornitore dell'ERP nella libreria amministrativa come materiale da recepire per ISO e GDPR. La lettera di nomina a responsabile del trattamento, datata 24/05/2018, e' stata letta per intero e confrontata con la riga che il registro sub-responsabili del progetto gia' conteneva. Il fornitore era quindi gia' censito: cio' che mancava era la verifica che la riga dicesse il vero.
+
+Non lo diceva, su due campi. Le categorie di dati erano piu' strette di quanto la nomina autorizzi: il registro si fermava a dati contabili, ordini, fatture e CRM, mentre la nomina copre anche i documenti che i clienti forniscono per la traduzione e i dati finanziari come le coordinate bancarie, oltre ai dati identificativi di dipendenti, clienti e fornitori fra cui traduttori, revisori e interpreti. E il luogo del trattamento era indicato come il solo cloud dell'ERP, mentre la nomina indica i server di Intrawelt **e i sistemi del fornitore usati per sviluppo e verifiche**: la seconda formulazione ammette che dati personali di clienti stiano su macchine che Intrawelt non amministra, che e' precisamente l'ambito dei controlli A.5.19 e A.5.22. Entrambe le correzioni sono state applicate al registro.
+
+Tre scostamenti restano aperti e non si chiudono riscrivendo una riga. La nomina intesta una forma societaria che non coincide con quella con cui il fornitore sottoscrive oggi. Il contratto di consulenza del 2019 risulta privo della firma di Intrawelt, dichiarato dal fornitore stesso in uno scambio del 22/10/2026. E l'oggetto della nomina e' un progetto di implementazione con migrazione dal gestionale precedente, mentre il rapporto corrente e' manutenzione e hosting continuativi del gestionale in produzione: la nomina copre un'attivita' conclusa e non quella in essere. Il terzo e' il piu' sostanziale, perche' una nomina che non descrive il trattamento in corso non protegge il titolare.
+
+Un quarto fatto riguarda la custodia documentale e si ripete facilmente: l'accordo di riservatezza del 2021, firmato da entrambe le parti, non era reperibile nell'archivio di Intrawelt ed e' stato chiesto al fornitore il 22/10/2026, che lo ha restituito la sera stessa. La prova dell'adempimento esisteva ma stava solo dalla controparte.
+
+Letta nello stesso giro la cartella del partner di telefonia, delegata a un sotto-agente con esclusione esplicita dei documenti personali. Esito utile e negativo sul tema per cui era stata aperta: non contiene nulla sulla connettivita' di sede, quindi la domanda al fornitore della connettivita' resta necessaria e non sta coprendo una lettura incompleta. Il sotto-agente ha escluso due documenti d'identita' senza aprirli, come la regola prescrive. Dei fatti di rete che ha riportato, il gateway analogico dell'ascensore risulta gia' censito dal progetto e collegato alla porta 6 dello switch principale, quindi non e' una lacuna; resta da verificare contro il firewall l'elenco delle destinazioni in uscita che il fornitore del centralino dichiara necessarie.
+
+File scritti e riletti: `docs/cybersecurity-governance.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Le fonti della connettivita' lette nella libreria amministrativa, 23/10/2026
+
+Su indicazione dell'IT Manager e' stata aperta la cartella del fornitore di connettivita' nella libreria amministrativa, che e' una delle tre radici sorvegliate di classe C, per rispondere alla domanda che il repository non copriva: che cosa accade all'indirizzo pubblico quando la fibra cade e subentra il ponte radio. La cartella contiene novantasei file, in gran parte fotografie e filmati della posa; i documenti utili sono cinque e nessuno dei cinque era nel contesto del progetto.
+
+Il primo e il piu' importante e' uno scambio di posta dell'08/04/2025 in cui l'IT Manager scrive all'installatore che l'opzione radio e' collegata e che il ponte radio subentra quando cade la fibra. Non e' un'inferenza del progetto ma una dichiarazione della classe E messa per iscritto all'epoca. Lo stesso scambio registra che il router di scorta previsto dal contratto non era stato consegnato e che serviva anche uno switch gestito, quindi a quella data il backup non era effettivo in caso di guasto del router; una comunicazione di spedizione del giorno successivo mostra che entrambi gli apparati sono stati spediti, chiudendo quella lacuna.
+
+Il secondo e' il verbale tecnico di installazione del 12/03/2024: il collegamento radio usa apparati di un operatore radio terzo, ma l'operatore del servizio indicato nel verbale e' il fornitore principale, lo stesso della fibra, e il collaudo di connettivita' risulta positivo un anno prima dell'attivazione della fibra. Il terzo e il quarto sono due copie del modulo di profilo e servizi del fornitore, che distingue il recupero di linea dal router di scorta e ha un campo dedicato agli indirizzi pubblici: entrambe le copie sono pero' variazioni per la sola VPN e quei campi sono vuoti, quindi il modulo esiste ma non e' mai stato compilato dove serviva.
+
+Il quinto riscontro e' un'assenza, ed e' quella che chiude la correzione del giorno prima: in tutta la cartella del fornitore attuale non compare mai T-BOND, il che concorda per via documentale con la cronologia che ne registra la disdetta nel maggio 2025 insieme alla linea a cui apparteneva.
+
+La domanda resta percio' senza fonte primaria e va posta al fornitore attraverso il partner. Cio' che la sostiene oggi e' una deduzione dalla configurazione del firewall, dichiarata come tale e non come misura: l'apparato ha una sola interfaccia di uscita viva, con indirizzo statico, e nessuna seconda interfaccia in grado di riceverne uno diverso, perche' quella della linea dismessa punta a un blocco estraneo e a un gateway inesistente; il subentro avviene quindi a monte del firewall e l'apparato non vede cambiare il proprio indirizzo. L'alternativa implicherebbe che in failover si rompa tutto cio' che dipende dall'indirizzo pubblico, VPN comprese.
+
+Corretti di conseguenza i due documenti che dichiaravano T-BOND attivo al presente, in tre punti complessivi, sostituendo l'affermazione falsa con cio' che e' accertato e marcando esplicitamente cio' che resta deduzione. Aggiunta al registro delle fonti del filone una sezione sulle cinque fonti interne, ciascuna con il proprio limite, e aperta la pendenza della domanda al fornitore.
+
+File scritti e riletti: `docs/business-continuity-disaster-recovery.md`, `docs/cybersecurity-governance.md`, `docs/fonti-produzione-sito-vps.md`, `docs/pendenze-aperte.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Correzione: T-BOND non esiste piu', e la restrizione della porta resta sospesa, 22/10/2026
+
+L'IT Manager ha fermato un comando prima di lanciarlo e ha contestato la fonte su cui si fondava. Aveva ragione, e l'errore e' di metodo prima che di lettura: una riga di `docs/business-continuity-disaster-recovery.md` e' stata usata come se fosse una misura dello stato attuale della connettivita', mentre il repository e' classe A, cioe' autorevole su cio' che il progetto sa e non su com'e' la rete adesso. La riga immediatamente successiva di quel documento dichiara «Da aggiornare», ed e' stata letta e sottopesata.
+
+Il fatto, verificato nel progetto stesso: la timeline del 15/05/2025 registra la disdetta via PEC di sei servizi TIM residui, fra cui **il canone TBond MultiLink**. T-BOND era un prodotto TIM ed e' cessato con la linea. Due documenti tracciati continuano pero' ad affermarlo al presente, `business-continuity-disaster-recovery.md` e `cybersecurity-governance.md` in due punti, e da li' discendeva l'affermazione che l'indirizzo pubblico non cambia in failover. Quell'affermazione non ha oggi alcun fondamento accertato ed e' stata ritirata.
+
+Letto invece il dump del firewall, che e' la fonte pertinente: il firewall ha due sole interfacce di uscita, quella del fornitore principale con l'indirizzo da cui si esce e quattro alias tutti in shutdown, e quella della linea dismessa, scollegata fisicamente da maggio 2025. Il gruppo logico che le unisce ha la linea dismessa come primaria e quella attiva come passiva, ed e' il gruppo di uscita predefinito del sistema: con la linea morta il traffico esce comunque dall'altra, ma quella configurazione e' un residuo gia' tracciato da rimuovere.
+
+Ne discende il punto che blocca la decisione: **il ponte radio di backup non compare fra le interfacce di uscita del firewall**, che ne ha due e sono le altre due. O termina altrove, o il dump e' anteriore, o i documenti sbagliano. Finche' non si sa se in failover l'indirizzo pubblico resti quello o cambi, una regola che ammette il solo indirizzo misurato chiuderebbe fuori dalla VPS proprio nel momento in cui la rete e' gia' in avaria, e con la console del pannello guasta non esisterebbe rientro.
+
+La restrizione della porta di amministrazione resta percio' **sospesa**, non abbandonata, in attesa di una sola risposta che appartiene all'IT Manager o al contratto del fornitore: se durante il failover sul ponte radio l'indirizzo pubblico resti invariato. Nel frattempo l'esposizione non e' scoperta: autenticazione a sola chiave, blocco automatico dei tentativi attivo, e settantadue giorni misurati con zero accessi riusciti a fronte di 18.737 tentativi.
+
+Una nota su come e' stata trovata la contraddizione, perche' vale oltre questo caso: non l'ha trovata uno strumento, l'ha trovata il proprietario dicendo che un documento era vecchio. E' il caso che la regola delle fonti chiama classe E, cioe' l'unica fonte che puo' dichiarare superata un'affermazione che nessuna misura contraddice.
+
+File scritti e riletti: `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## VPS-011 mitigato su cinque fronti, non ancora chiuso, 22/10/2026
+
+L'IT Manager ha dato mandato di risolvere, e l'intervento e' stato eseguito in due passi separati, ciascuno verificato prima del successivo.
+
+Primo passo, la limitazione del servizio SSH al solo utente operativo. E' il controllo principale perche' regge anche se il meccanismo di inizializzazione ricrea utente, chiave e regola di elevazione. Applicato con la procedura reversibile: copia di salvataggio della configurazione, validazione della sintassi prima di applicarla, ricarica del servizio invece di riavvio, sessione precedente tenuta aperta come via di rientro, e una sessione nuova provata da un secondo terminale prima di proseguire. La sessione nuova entra, quindi la limitazione e' attiva e non ha chiuso fuori nessuno.
+
+Secondo passo, la neutralizzazione dell'utente predefinito. Svuotato il suo file delle chiavi autorizzate previa copia sotto la cartella dell'amministratore; tolta la shell di accesso; rimosso il file di elevazione senza password, previa copia e **dopo averne letto il contenuto**, che si e' rivelato contenere la sola regola di quell'utente e due righe di commento, quindi la rimozione non toglie nulla a nessun altro. La scelta di leggerlo prima di cancellarlo non era formale: le regole di elevazione sono il posto dove un errore si paga caro, e cancellare alla cieca un file che avrebbe potuto contenere altre concessioni era il rischio da non correre.
+
+Verifiche dopo l'intervento, tutte positive: insieme delle regole di elevazione validato, nessuna regola senza password residua nell'intero albero, utente operativo che conserva l'elevazione completa dietro password, file delle chiavi a zero byte, shell di rifiuto impostata, direttiva di limitazione presente nella configurazione effettiva del servizio.
+
+Un riscontro inatteso rafforza la prescrizione di verificare le altre macchine, e la porta da probabile a quasi certa: il file di elevazione portava la data del 02/07/2024, cioe' oltre due anni prima dell'impianto e in linea con la data di costruzione dell'immagine. Non e' stato generato alla creazione di questa macchina: e' cotto dentro il modello del fornitore, quindi ogni VPS creata da quel pannello lo porta.
+
+Il difetto resta **mitigato e non chiuso**, e la distinzione non e' prudenza formale: la prova che manca e' il riavvio, perche' il meccanismo di inizializzazione potrebbe ricreare utente, chiave e regola. Se accadesse, la difesa che regge e' la limitazione del servizio, che non dipende da lui; ma finche' non si e' visto, non si dichiara.
+
+Deliberatamente non disattivato il meccanismo di inizializzazione, benche' sarebbe la via per impedire la ricreazione: governa anche la configurazione di rete all'avvio, e disattivarlo mentre la console del pannello e' guasta rischierebbe una macchina che riparte senza rete e senza alcun modo di ispezionarla. La decisione si rivede quando il fornitore avra' riparato la console.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Stato delle password misurato sulla VPS, 22/10/2026
+
+Verificata l'ipotesi dell'IT Manager che l'utente predefinito dell'immagine avesse una password predefinita del fornitore, utilizzabile per paradosso proprio dove si voleva chiudere. L'ipotesi e' infondata e la misura lo dice: quell'utente risulta bloccato, con data risalente alla costruzione dell'immagine e non al giorno dell'impianto, quindi non ha mai avuto una password. Gli altri due utenti hanno password utilizzabili, entrambe datate al giorno dell'impianto, e sono quelle reperite dall'IT Manager.
+
+La misura toglie un'ipotesi ma non alleggerisce il difetto, e la ragione va scritta perche' la parola bloccato suona piu' rassicurante di cio' che significa: il blocco riguarda la sola password e non impedisce l'autenticazione con chiave, che e' la via effettivamente aperta su quell'account. Un account senza password che si apre con una chiave e ottiene elevazione totale senza digitare nulla e' piu' pericoloso di uno con password, non meno.
+
+Confermato inoltre, dalla data di costruzione dell'immagine, che l'assetto e' ereditato dal fornitore e non prodotto da questo impianto: rafforza la prescrizione di #253 di verificarlo sulle altre macchine create dallo stesso pannello.
+
+Chiarito infine all'IT Manager, su sua domanda, perche' lo snapshot preventivo non serve alla restrizione del servizio SSH: la sessione aperta e la ricarica senza riavvio sono gia' l'annullamento, e sono migliori di un ripristino. Lo snapshot resta dove lo collocava lui, cioe' a macchina sistemata. Dichiarato pero' il rischio che nessuno dei due copre: se il riavvio per i kernel non riuscisse, ripristinare uno snapshot restituirebbe lo stesso disco con lo stesso kernel, e senza console non si puo' scegliere un avvio precedente. E' accettabile oggi perche' la macchina e' vuota, e rende piu' urgente la segnalazione al fornitore.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## TLS aziendale attivo nel solo test IntraLino, 22/10/2026
+
+IntraLino: certificato aziendale installato e verificato nel solo ambiente TEST il22/10/2026 alle15:22 UTC, scadenza24/11/2027. Audit indipendente: TLS rigoroso su due nomi e due ingressi, rifiuti di nome errato/CA assente e HTTP anonimo coerente. Produzione sui certificati precedenti; vecchia autorità e coppia ancora necessarie. Chiave CA offline, trust store invariati. Censimento complessivo, rinnovi/revoca e distribuzione ai client restano aperti. Prova privata in `_notes/pki/intralino-emissione-2026-10-22.json`; fonte canonica `docs/autorita-certificazione-interna.md`. Nessun cambio di stato ISO o scansione generale. Ratio: distinguere emissione, installazione e verifica live e mantenere il riferimento fra rete e progetto applicativo. Template: nessuna.
+
+## Nessuno e' entrato, ma il modello di accesso era aggirato, 22/10/2026
+
+Letto con elevazione cio' che mancava alla fase 0, e il giro produce una risposta attesa da settembre e un riscontro che nessuno cercava.
+
+La risposta: nessuno e' entrato. Il registro degli accessi riusciti comincia il giorno dell'impianto, quindi copre l'intera vita della macchina e non una finestra recente, ed elenca soltanto le sessioni dei due utenti nei due giorni dell'impianto, tutte dall'indirizzo pubblico aziendale, piu' una dalla macchina stessa durante la configurazione. Fra la chiusura dell'impianto e oggi non risulta nessun accesso riuscito. La domanda che il progetto poneva da settembre, e che aveva una risposta su disco che nessuno aveva guardato, e' chiusa.
+
+Nello stesso periodo i tentativi falliti sono 18.737 nella finestra conservata dal giornale, con attivita' continua nella sola giornata di oggi da piu' di dieci indirizzi distinti e nomi utente da dizionario. E' la misura piu' concreta a sostegno della restrizione per provenienza, perche' fra quel traffico e la macchina stanno oggi soltanto l'autenticazione a sola chiave e il blocco automatico dei tentativi.
+
+Il filtro risulta attivo con rifiuto predefinito in ingresso e tre porte ammesse da qualunque provenienza, in IPv4 e IPv6: la porta di amministrazione, doppia perche' definita sia per profilo sia per numero, e le due del web, aperte mentre nulla vi e' in ascolto.
+
+Il riscontro grave, aperto come VPS-011 (#253): l'utente predefinito dell'immagine della distribuzione porta nel proprio file delle chiavi autorizzate la stessa chiave che apre l'utente operativo, e il meccanismo di inizializzazione dell'istanza gli concede elevazione totale senza password. Chiunque possieda quella chiave diventa amministratore senza digitare niente, quindi le tre garanzie dichiarate dalla documentazione d'impianto, cioe' login di amministrazione disabilitato, permessi limitati nel lavoro quotidiano ed elevazione tracciata dietro password, erano gia' aggirate da una via parallela mai censita. Non e' un errore di chi ha fatto l'impianto ma un'eredita' dell'immagine del fornitore, e per questo va verificata sulle altre macchine create dallo stesso pannello, la produzione SCENIA compresa.
+
+Il rimedio e' stato scritto nel registro insieme al difetto, con l'ordine che lo rende sicuro: istantanea prima di toccare qualunque cosa, perche' la via di emergenza del pannello e' guasta e un errore sul servizio SSH chiuderebbe fuori tutti; limitazione del servizio al solo utente operativo come controllo principale, perche' regge anche se l'inizializzazione ricrea utente, chiave e regola al riavvio; svuotamento delle chiavi, rimozione della regola senza password e blocco dell'account come misure di contorno; validazione della configurazione prima di applicarla e ricarica invece di riavvio, con la sessione corrente tenuta aperta e una sessione nuova provata prima di chiudere quella vecchia. Il riavvio gia' necessario per i kernel diventa la prova che la correzione sopravvive all'inizializzazione.
+
+File scritti e riletti: `docs/vps-sito-stato-interno.md`, `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Passaggio QA-collettore offline allineato alla rete, 22/10/2026
+
+Ricevuti i due output di `chiudi` del 22/10: QA `staging` `d994af0` e collettore `main` `5e46478`, ciascuno uguale al remoto. Letti codice e documentazione dei due checkpoint. Aggiornati nella rete i dossier QA e collettore, il contesto operativo, M32e e la fonte ISO-30; `IsoRoadmap.py advance` ha rigenerato Markdown e tre HTML privati identici. Il controllo della roadmap con `check --desktop` è verde. I test citati (34 ricevitore/confine e probe WSL concorrente) restano prove locali/sintetiche: non c'è flusso QA in esercizio. I file VPS, GAP e pendenze già modificati dalla sessione parallela sono rimasti nel suo perimetro. Non eseguiti add, commit, push o deploy.
+
+Restano autenticazione del trasporto, ricevuta e replay, quota fisica/allarme, retention e restore dell'archivio riservato, indice minimizzato, budget e creazione dei due LXC. M32e e ISO-30 restano in corso. **Template:** nessuna.
+
+File scritti e riletti: `docs/integrazione-log-qa-verifier.md`, `docs/log-collector-integrazione.md`, `.claude/context/roadmap.md`, `.claude/context/current-work.md`, `data/iso27001-interventi.json`, `docs/roadmap-iso27001-operativa.md`, `.claude/memory/index.md`, questo work-log; viste HTML private rigenerate.
+
+## Chiave non copiata, alias in esercizio, registro credenziali corretto, 22/10/2026
+
+Chiuso uno dei tre punti residui di #224: verificato sul calcolatore di Persona-E che la chiave privata della postazione **non vi e' presente**. E' quindi nata sulla postazione e vi sta soltanto, e l'attribuzione che la scelta di aggiungere una chiave invece di copiare quella esistente serviva a preservare e' intatta. Restano aperti gli altri due, cioe' la frase di accesso rimandata per decisione e la via fuori banda ancora guasta.
+
+Configurato e provato l'alias SSH della VPS sulla postazione: il collegamento riesce in modalita' non interattiva. Con questo il calcolatore di Persona-E esce dal perimetro operativo di questo filone: serviva solo a far entrare la chiave nuova, e quel passo e' concluso e verificato.
+
+Aggiornato di conseguenza `_notes/registro-credenziali.md`, che la regola di progetto vuole allineato nella stessa sessione in cui cambia la configurazione SSH. Aggiunta la riga della VPS esterna con alias, utente, nome del file di chiave e stato degli accessi, senza alcun valore di credenziale. Corretta nella stessa occasione una riga superata: la macchina di sviluppo del sito risultava con l'alias non risolvibile da questa postazione, mentre il collegamento riesce, ed e' stato usato oggi per leggere la documentazione d'impianto della VPS.
+
+File scritti e riletti: `_notes/registro-credenziali.md`, `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Due decisioni dell'IT Manager e l'ordine dei lavori sulla VPS, 22/10/2026
+
+Prima decisione: la frase di accesso sulla chiave nuova della postazione **e' rimandata**, per scelta esplicita e non per dimenticanza. La voce resta aperta e non va letta come chiusa: finche' dura, chi si porta via quel file dalla postazione apre la produzione del sito, e la misura che lo dimostra e' che la connessione riesce in modalita' non interattiva senza agente attivo.
+
+Seconda decisione: si adotta lo snapshot del pannello come punto di ripristino della macchina. All'idea originale, cioe' fotografare la macchina a configurazione finita, se ne aggiunge una seconda che l'IT Manager ha accolto: una fotografia **prima** di toccare qualunque cosa, perche' oggi la macchina e' vuota e lo snapshot costa zero, mentre dopo un intervento mal riuscito costerebbe la reinstallazione. Resta da verificare nella scheda delle istantanee del pannello se l'operazione richieda la macchina spenta.
+
+Fissato l'ordine dei lavori sulla macchina, per dipendenza. Istantanea iniziale; lettura elevata di registro degli accessi, regole del filtro, chiavi del secondo utente e regole di elevazione senza password, che e' la meta' mancante della fase 0 e si fa prima di cambiare qualunque cosa; sanatoria del secondo utente; riavvio; istantanea finale come base pulita; restrizione della porta di amministrazione.
+
+Due ragioni d'ordine che non sono preferenze. Il registro degli accessi si legge prima della restrizione, perche' dopo la domanda su chi abbia bussato non si pone piu' allo stesso modo. E il riavvio si fa adesso: la macchina porta cinque aggiornamenti del kernel e uno della libreria di sistema installati e non attivi da settantadue giorni, oggi non serve nessuno e il riavvio non interrompe niente, mentre dopo la pubblicazione sarebbe un disservizio.
+
+Una cautela sul secondo utente, che cambia la scelta e va scritta prima di eseguirla: e' l'utente predefinito dell'immagine della distribuzione, quasi certamente creato dal meccanismo di inizializzazione dell'istanza, che risulta installato e fra i pacchetti aggiornabili. Cancellarlo e basta puo' quindi farlo ricomparire al riavvio del passo successivo. Le vie da valutare dopo la misura sono disattivarlo, svuotarne le chiavi autorizzate, toglierlo dal gruppo di elevazione, oppure limitare il servizio SSH al solo utente operativo, che e' la piu' reversibile.
+
+File scritti e riletti: `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Accesso alla VPS ottenuto, e prima lettura dall'interno, 22/10/2026
+
+La postazione aziendale entra nella VPS del sito. La chiave e' stata generata sulla postazione e non copiata da quella esistente, poi accodata al file delle chiavi autorizzate dell'utente operativo dal calcolatore che gia' accedeva. La scrittura e' stata fatta con due precauzioni che la rendevano reversibile: copia di salvataggio del file prima di toccarlo, e scrittura preceduta da un a capo, perche' un file che non terminasse con un a capo avrebbe attaccato la chiave nuova a quella esistente rompendole entrambe e chiudendo fuori anche l'unica persona che entrava, con la via di emergenza gia' guasta. Verificato dopo la scrittura che le impronte autorizzate fossero due e non una, e verificato dalla postazione che la connessione riuscisse.
+
+Eseguita una verifica di identita' della macchina che la console guasta aveva reso impossibile. L'impronta della chiave di host osservata dalla postazione coincide con quella che il calcolatore di Persona-E porta registrata dall'impianto di agosto: sono due osservazioni indipendenti, da reti diverse e in momenti diversi, e la loro coincidenza toglie alla fiducia al primo incontro accettata la mattina del 22/10 il carattere di scommessa.
+
+Eseguita poi la lettura della fase 0, e scritta in `docs/vps-sito-stato-interno.md`. Cio' che e' misurato: settantadue giorni di esercizio senza mai un riavvio, riavvio ora richiesto con cinque aggiornamenti del kernel e uno della libreria di sistema installati e non attivi, quarantasei pacchetti aggiornabili, aggiornamenti non presidiati attivi e funzionanti ma limitati al canale di sicurezza; in ascolto la sola porta di amministrazione, nessuna porta del web e nessun contenitore, quindi macchina vuota come dichiarato; login di amministrazione e autenticazione per password disabilitati letti dal file di configurazione; due sole chiavi autorizzate; filtro di sistema installato, abilitato e attivo; blocco automatico dei tentativi ripetuti abilitato e attivo, che e' un presidio che nessun documento del progetto citava.
+
+Due riscontri non attesi. Esiste un secondo utente con shell di accesso, quello predefinito dell'immagine della distribuzione, e appartiene al gruppo di elevazione; la sua cartella delle chiavi esiste ma non e' leggibile dall'utente operativo, quindi non si sa se porti chiavi autorizzate, ed e' un secondo possibile accesso che nessun documento del progetto aveva mai considerato. E l'utente operativo appartiene al gruppo del motore dei container, il che equivale a privilegi di amministratore senza passare dall'elevazione tracciata.
+
+Dichiarato cio' che non e' stato misurato, perche' la password dell'utente operativo e' dell'IT Manager e non dell'agente: regole del filtro, configurazione effettiva del servizio SSH oltre alle due direttive lette, chiavi del secondo utente, regole di elevazione senza password, e soprattutto il registro degli accessi riusciti e falliti, che era lo scopo principale del giro. La fase 0 non si chiude finche' quella risposta non e' nel repository.
+
+Una lezione di metodo emersa dal giro, e corretta prima di riportare qualunque cosa: nella prima esecuzione diverse sezioni avevano stampato un ripiego che dichiarava l'assenza di un componente, per esempio del filtro di sistema, mentre la causa vera era il fallimento del comando elevato. Un ripiego che somiglia a una misura e' peggio di un errore, perche' si legge come un riscontro. Le voci sono state rifatte con comandi che non richiedono elevazione, e solo quelle hanno prodotto le affermazioni scritte.
+
+Resta aperto che la chiave nuova e' priva di frase di accesso, misurato perche' la connessione riesce in modalita' non interattiva senza agente attivo, e che va accertato se la stessa chiave privata sia rimasta anche sul calcolatore di Persona-E.
+
+File scritti e riletti: `docs/vps-sito-stato-interno.md`, `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Le password non aprono nulla: metodo di autenticazione SSH misurato, 22/10/2026
+
+L'IT Manager ha reperito entrambe le password della VPS e ha chiesto che cosa farne. La risposta e' stata misurata invece di essere dedotta dal diario di agosto, perche' una configurazione di due mesi fa non e' una misura: interrogato il servizio SSH della macchina sui metodi che accetta, dichiara il solo metodo a chiave pubblica. La password non e' quindi una via alternativa, e non lo e' per nessuno dei due utenti. Rilevata nella stessa interrogazione la versione del servizio, che e' una revisione patchata rispetto a quella originale della distribuzione: e' coerente con gli aggiornamenti di sicurezza non presidiati dichiarati attivi all'impianto, ed e' il primo riscontro che la macchina riceve correzioni, ma resta un indizio e non una prova finche' la lettura della fase 0 non elenca gli aggiornamenti pendenti.
+
+Ne discende la risposta operativa. Le due password non aprono niente oggi, perche' l'SSH non le accetta e la console e' guasta lato fornitore: il loro valore immediato non e' l'accesso ma la custodia, cioe' portarle nel gestore aziendale perche' quando la console tornera' Intrawelt non dipenda da una persona sola. L'unica azione che sblocca davvero il lavoro resta far aggiungere la chiave pubblica da chi gia' accede.
+
+Messa in pendenza la segnalazione al fornitore come voce a se', collegata a #224, con gli elementi di prova gia' elencati, cosi' che non dipenda dal ricordo di questa sessione.
+
+File scritti e riletti: `docs/pendenze-aperte.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## La console del pannello e' guasta lato fornitore: 504 sull'API, 22/10/2026
+
+Il blocco della console e' stato diagnosticato per intero invece di essere attribuito per ipotesi, ed e' del fornitore. La console del browser restituisce un 504 Gateway Time-out sull'API `deploymentservice` del pannello; gli errori di tipo che seguono nel codice del fornitore, che tenta di leggere un campo da una risposta nulla, e la dichiarazione di sessione non autenticata della sua applicazione sono conseguenze di quel fallimento e non cause.
+
+Le spiegazioni lato cliente sono state escluse con misura e non per esclusione logica. Il difetto si riproduce su due browser diversi, il che toglie di mezzo sia il blocco dei popup sia un'estensione; e i venticinque blocchi di accesso all'archiviazione segnalati dalla prevenzione del tracciamento riguardano tutti il dominio del fornitore del banner dei cookie, quindi non toccano la console. La prova che impedisce al fornitore di rimandare indietro la segnalazione e' che il registro attivita' della macchina riporta la generazione dell'indirizzo della console come completata, piu' volte nella stessa giornata, con la coda delle operazioni vuota: il pannello genera, l'applicazione non arriva a usarla.
+
+Ne discende che la via di emergenza di #224 non e' riparabile da Intrawelt e richiede una segnalazione al fornitore. Gli elementi sono gia' tutti raccolti: codice e percorso dell'errore, ora esatta con i millesimi, identificativo dell'account, nome della macchina, riproducibilita' su due browser, stato del registro attivita'.
+
+Chiusa invece la meta' del difetto che riguarda le credenziali: l'IT Manager ha reperito nella stessa giornata sia la password di root sia quella dell'utente operativo. Vanno portate nel gestore aziendale se non vi sono gia', perche' la custodia e' il punto e non il possesso temporaneo. Con la console guasta, pero', averle non apre nulla: l'unica via dentro la macchina resta la chiave sul calcolatore di Persona-E.
+
+Annotato un rilievo marginale da verificare al prossimo accesso al pannello, perche' costa un'occhiata e tocca un residuo gia' aperto: nell'interfaccia compare ora un invito a ricaricare l'account che negli accessi precedenti della stessa giornata non era presente. Il residuo di #229 e' che la validita' dello strumento di pagamento si prova solo con un addebito, e il primo rinnovo utile e' vicino.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Nessuna via di accesso alla VPS, e la voce 2 della roadmap rimisurata, 22/10/2026
+
+Il tentativo di aprire la console del pannello si e' fermato, e la diagnosi e' stata fatta sui dati del pannello invece che sul sintomo. La coda delle operazioni della macchina e' vuota e il registro delle attivita' riporta piu' comandi `CreateWebConsoleUrl` tutti con esito completato nella stessa giornata: il fornitore genera correttamente la console, e il guasto sta a valle, nel browser che non la apre. Il primo sospetto e' il blocco dei popup, il secondo un'estensione che blocca il websocket.
+
+Ne discende il peggioramento di #224, su due riscontri di cui il secondo non era previsto. La password di root, che il diario d'impianto dichiara salvata nel gestore delle password e che il progetto aveva letto come custodia aziendale, e' in mano alla stessa persona che detiene la chiave: la via di emergenza dipende quindi dalla stessa persona sola della via ordinaria, cioe' e' una ridondanza solo apparente. E la console non e' piu' «mai provata» ma provata e non funzionante dalla postazione aziendale. Messi insieme, oggi Intrawelt non ha nessuna via di accesso alla propria VPS di produzione, ne' in banda ne' fuori banda, e l'unica via esistente sta su una macchina e in una custodia che non controlla. E' il difetto nella sua forma piu' grave da quando e' aperto.
+
+Rimisurata nel frattempo la voce 2 della roadmap di go-live, cioe' la discesa di `main` nei rami di lavoro, perche' non tocca la VPS e si poteva fare mentre l'altra via era ferma. La misura corregge #242 in meglio: dei tre alberi del progetto del sito sulla macchina di sviluppo, due portano gia' la pubblicazione del database sul solo loopback, e uno di essi ha la fusione di `origin/main` come ultimo commit, quindi la discesa li' e' gia' avvenuta. Resta un solo albero, quello degli invii, il cui descrittore pubblica ancora il database su tutte le interfacce.
+
+Rilevata su quell'albero una condizione che la roadmap non poteva prevedere e che ne smentisce la stima dei due comandi: non e' pulito, porta modifiche non committate al manifesto dei pacchetti, al suo blocco, a un foglio di stile e alla configurazione del CMS, piu' un file nuovo. Una fusione su un albero sporco puo' fermarsi sul manifesto dei pacchetti, e la proprieta' di quelle modifiche non e' di questo progetto: va accertata prima di toccare l'albero, invece di scoprirla da un conflitto.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
 ## Roadmap di go-live riconciliata, e l'accesso di emergenza chiarito, 22/10/2026
 
 L'IT Manager ha riproposto la roadmap di go-live a undici voci chiedendo se fosse quella in corso. Lo e', ed e' l'ordine di lavoro che discende dall'analisi di go-live del 21/10 recepita in `docs/piano-produzione-sito-nuovo.md`, ma la copia in circolazione precede il lavoro della sera del 21 e cinque delle sue prime voci si sono mosse. Il credito prepagato, voce zero, e' chiuso con misura e non blocca piu' niente. Le tre decisioni del committente sono il vero passo zero di oggi. La discesa di `main` nei rami sopravvive come scritta, perche' il difetto e' chiuso ma la discesa nei due rami di lavoro e' dichiarata ancora aperta dal registro. L'uscita autoconsistente e la prima costruzione di produzione sono fatte, con l'immagine costruita e il contenitore che serve il sito. Il modello di rilascio e' deciso.

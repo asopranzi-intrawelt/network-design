@@ -254,9 +254,19 @@ Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/SubResponsabili Intr
 | Odoo SA (Ramillies, BE) | ERP/CRM, fatturazione, contratti | Dati aziendali, clienti, fatture | Data center EU (BE, FR) | 2028 (rinnovo triennale; sottoscritto 19/09/2019) |
 | QNAP Cloud | NAS cloud backup | File, log, config, accessi remoti | Data center globali (13 sedi, incluse EU e USA); lo spazio in uso e' in **Italia (Milano)** dal rinnovo del 04/09/2026, prima era in Germania (Francoforte) | 2027 (rinnovo annuale) |
 | Seeweb Srl (Frosinone, IT) | Hosting, cloud server, housing | Dati di sistema, backup, config | Italia e Svizzera | N/A (sottoscritto 26/09/2014, in corso) |
-| Openforce Srls (Pedaso FM, IT) | Implementazione/personalizzazione Odoo ERP | Dati contabili, ordini, fatture, CRM | Server cloud EU (Odoo Enterprise) | 2027 (rinnovo annuale; sottoscritto 24/05/2018) |
+| Openforce (Pedaso FM, IT) | Implementazione e personalizzazione dell'ERP, oggi anche manutenzione e hosting del gestionale in produzione | **Corretto il 23/10/2026 leggendo la lettera di nomina**: identificazione di dipendenti, clienti e fornitori fra cui traduttori, revisori e interpreti; **documenti forniti dai clienti per la traduzione**; **dati finanziari come coordinate bancarie**. La riga precedente diceva dati contabili, ordini, fatture e CRM, che e' piu' stretto di quanto la nomina autorizzi | **Corretto il 23/10/2026**: la nomina indica i server di Intrawelt **e i sistemi del fornitore usati per sviluppo e verifiche**, quindi dati personali possono stare su macchine del fornitore. La riga precedente indicava solo il cloud dell'ERP | Sottoscritto 24/05/2018. **Tre scostamenti aperti al 23/10/2026**: la nomina intesta una forma societaria diversa da quella con cui il fornitore sottoscrive oggi; il contratto di consulenza del 2019 risulta privo della firma di Intrawelt per dichiarazione del fornitore stesso; e l'oggetto della nomina e' un progetto di implementazione, mentre il rapporto corrente e' manutenzione e hosting continuativi |
 | Punto Informatica SNC (Porto San Giorgio, IT) | Vendita HW/SW, assistenza tecnica | Dati cliente, ordini, fatture | Server locali/gestionali interni | 2026 (rinnovo annuale; sottoscritto 01/02/2025) |
 | Eter Biometric Technologies Srl (Modena, IT) | Sistemi biometrici, controllo accessi, presenze | Dati biometrici, log presenze, accessi | Server locali o cloud EU | 2027 (rinnovo annuale; sottoscritto 2020) |
+
+### Revisione della nomina Openforce, 23/10/2026
+
+La lettera di nomina del 24/05/2018 e' stata letta per intero e confrontata con la riga del registro, su indicazione dell'IT Manager, nell'ambito di ISO-43. Il confronto ha prodotto due correzioni alla riga, gia' applicate sopra, e tre scostamenti che restano aperti e che non si chiudono riscrivendo il registro.
+
+Le due correzioni riguardano cio' che la riga diceva di meno rispetto al documento. Sulle categorie di dati, la nomina autorizza il trattamento dei documenti che i clienti forniscono per la traduzione e dei dati finanziari come le coordinate bancarie, oltre ai dati identificativi di dipendenti, clienti e fornitori: il registro si fermava a dati contabili, ordini, fatture e CRM. Sul luogo del trattamento, la nomina indica i server di Intrawelt e, accanto, i sistemi del fornitore usati per lo sviluppo e le verifiche: il registro indicava il solo cloud dell'ERP. La differenza non e' formale, perche' la seconda formulazione ammette che dati personali di clienti e fornitori stiano su macchine che Intrawelt non amministra, ed e' esattamente l'ambito che i controlli A.5.19 e A.5.22 chiedono di governare.
+
+I tre scostamenti aperti sono di natura diversa e vanno portati a chi tiene i contratti. Il primo e' che la nomina intesta una forma societaria che non coincide con quella con cui il fornitore sottoscrive oggi, il che va verificato e, se confermato, sanato con una nomina aggiornata invece che con una nota. Il secondo e' che il contratto di consulenza del 2019 risulta privo della firma di Intrawelt, e lo dichiara il fornitore stesso in uno scambio del 22/10/2026: un contratto firmato da una parte sola non regge come prova contrattuale in un audit. Il terzo, e il piu' sostanziale, e' che l'oggetto della nomina e' un progetto di implementazione con il trasferimento dei dati dal gestionale precedente, mentre il rapporto corrente e' di manutenzione e di hosting continuativi del gestionale in produzione: la nomina copre un'attivita' conclusa e non quella in essere.
+
+Un quarto fatto, di custodia documentale e non di contenuto, merita una riga perche' si ripete facilmente: l'accordo di riservatezza del 09/04/2021, firmato da entrambe le parti, non era reperibile nell'archivio di Intrawelt ed e' stato richiesto al fornitore il 22/10/2026, che lo ha restituito la sera stessa insieme alla nomina firmata. La prova dell'adempimento esisteva, ma stava solo dalla controparte.
 
 Nota: AIDAPT S.r.l. (sub-processor SCENIA) documentato separatamente in `docs/scenia-project.md` (DPA SCENIA Art. 28 v1.7 in negoziazione a giugno 2026).
 
@@ -532,7 +542,7 @@ Fonte: `Cybersec & IT Governance/Business Continuity/BCD_2026.docx` (135 KB, 142
 
 ### Resilienza TLC
 
-- 3 linee internet **T-BOND failover** configurate (failover automatico)
+- Linee internet con subentro automatico del ponte radio alla caduta della fibra. **Corretto il 22/10/2026**: la voce precedente parlava di tre linee affasciate con T-BOND, che era un prodotto della linea TIM disdetta nel maggio 2025 e non esiste piu'. Le linee attive sono due e il comportamento dell'indirizzo pubblico durante il subentro e' una pendenza aperta verso il fornitore
 - **UPS** autonomia 15 minuti (protezione da brevi interruzioni di corrente)
 - PC portatili preconfigurati per continuità operativa da sede alternativa
 
@@ -542,7 +552,7 @@ Fonte: `Cybersec & IT Governance/Business Continuity/BCD_2026.docx` (135 KB, 142
 |----------|----------|
 | Sede indisponibile | Attivazione sede secondaria Via Elpidiense 14 |
 | Mancanza corrente | UPS 15 min + escalation a sede alternativa |
-| Mancanza internet | Failover T-BOND su linea disponibile tra le 3 |
+| Mancanza internet | Subentro del ponte radio alla caduta della fibra; le linee attive sono due e non tre, vedi la correzione del 22/10/2026 nella sezione Resilienza TLC |
 
 ### DR Cloud
 

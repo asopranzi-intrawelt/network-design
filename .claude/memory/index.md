@@ -1,5 +1,61 @@
 # Snapshot di sincronizzazione
 
+## Causa del difetto di recupero e riordino di `_notes`, 23/10/2026
+
+Diagnosticato il meccanismo comune a tre errori della sessione: dedurre quale documento contenga il fatto e cercare li', invece di cercare il token distintivo su tutto il corpus. In tutti e tre i casi il token c'era. Aggiunto il pezzo che mancava al sistema: dentro il repository una registrazione di misura batte un racconto, e un racconto non corroborato e' candidato all'obsolescenza. Lezione L-011; la risalita al template resta ADR-027 con commit manuale. Riordinata `_notes` rispettando la decisione di agosto, che vietava di spostare cio' che e' citato per percorso: spostati nell'archivio solo i materiali con zero riferimenti, verificati nome per nome; radice da sessantasei a quarantotto voci, sette temi in `archivio-sessioni/`, indice riscritto con l'obbligo di dichiarare ogni file nel giro in cui si crea. Porte del centralino: verificate e non bloccate dal 23/03/2026, oggetti gia' creati nel firewall.
+
+## Nomina Openforce verificata, registro corretto, 23/10/2026
+
+Confrontata la lettera di nomina a responsabile del trattamento del 2018 con la riga del registro sub-responsabili: due campi erano piu' stretti del documento e sono stati corretti, cioe' le categorie di dati, che comprendono i documenti dei clienti per la traduzione e le coordinate bancarie, e il luogo del trattamento, che comprende i sistemi del fornitore usati per sviluppo e verifiche e non il solo cloud dell'ERP. Restano tre scostamenti aperti: forma societaria diversa da quella attuale, contratto di consulenza del 2019 privo della firma di Intrawelt per dichiarazione del fornitore, e oggetto della nomina limitato a un progetto di implementazione concluso mentre il rapporto in essere e' manutenzione e hosting. Avanzamento parziale di ISO-43 su un fornitore. La cartella del partner di telefonia non contiene nulla sulla connettivita' di sede: la domanda al fornitore resta necessaria.
+
+## Fonti della connettivita' lette, T-BOND corretto nei documenti, 23/10/2026
+
+Letta la cartella del fornitore di connettivita' nella libreria amministrativa, classe C: cinque documenti utili su novantasei file, nessuno dei quali era nel contesto del progetto. Accertato per iscritto dall'IT Manager nel 2025 che il ponte radio subentra alla caduta della fibra, e dal verbale di installazione che il radio e' su apparati di terzi ma con il fornitore principale come operatore del servizio. I moduli di profilo conservati sono variazioni per la sola VPN, quindi i campi sugli indirizzi pubblici sono vuoti: la domanda sul comportamento dell'indirizzo in failover resta senza fonte primaria e diventa una pendenza verso il fornitore. Confermata per assenza documentale la correzione su T-BOND, che non compare mai nella cartella del fornitore attuale; corrette le tre affermazioni false nei due documenti tracciati. Aggiunta al registro delle fonti una sezione con le cinque fonti interne e i loro limiti.
+
+## T-BOND ritirato, restrizione della porta sospesa, 22/10/2026
+
+Ritirata un'affermazione che il progetto dava per vera: l'affascio T-BOND era un prodotto della linea dismessa e la timeline ne registra la disdetta nel maggio 2025, ma due documenti tracciati lo dichiarano ancora attivo e da li' discendeva la tesi che l'indirizzo pubblico non cambi in failover. Errore di metodo: una scheda del repository usata come misura dello stato attuale della rete. Il dump del firewall mostra due sole uscite, il fornitore principale e la linea dismessa, con un gruppo logico che ha la dismessa come primaria; il ponte radio di backup non vi compare. Restrizione della porta di amministrazione sospesa fino a sapere se in failover l'indirizzo pubblico resti invariato. Esposizione intanto non scoperta: sola chiave, blocco dei tentativi, zero accessi riusciti misurati in settantadue giorni.
+
+## VPS-011 mitigato su cinque fronti, 22/10/2026
+
+Limitato il servizio SSH al solo utente operativo con procedura reversibile e sessione nuova provata prima di proseguire; svuotate le chiavi dell'utente predefinito, tolta la shell, rimossa la regola di elevazione senza password dopo averne letto il contenuto. Verifiche tutte positive. Il file di elevazione portava la data di costruzione dell'immagine, oltre due anni prima dell'impianto: l'assetto e' cotto nel modello del fornitore, quindi ogni VPS di quel pannello lo porta. Difetto mitigato e **non chiuso**: la prova manca ed e' il riavvio, perche' l'inizializzazione potrebbe ricreare tutto; la difesa che reggerebbe e' la limitazione del servizio. Non disattivato il meccanismo di inizializzazione perche' governa anche la rete all'avvio e la console del pannello e' guasta.
+
+## Password della VPS misurate, ipotesi caduta, difetto intatto, 22/10/2026
+
+L'utente predefinito dell'immagine risulta bloccato, con data di costruzione dell'immagine e non d'impianto: non ha mai avuto password, quindi l'ipotesi di una password predefinita del fornitore cade. Il blocco vale pero' solo per la password e non per la chiave, che e' la via aperta, quindi #253 resta grave. Gli altri due utenti hanno password impostate il giorno dell'impianto. Deciso che lo snapshot si prende a macchina sistemata e non prima della restrizione SSH, perche' sessione aperta e ricarica senza riavvio sono gia' l'annullamento; dichiarato che nessuno dei due copre il rischio di un riavvio che non riesce senza console.
+
+## Nessuno e' entrato nella VPS, ma il modello di accesso era aggirato, 22/10/2026
+
+Registro degli accessi letto con elevazione: comincia il giorno dell'impianto e copre l'intera vita della macchina; nessun accesso riuscito fra la chiusura dell'impianto e oggi, tutte le sessioni dei due giorni d'impianto provengono dall'indirizzo pubblico aziendale. Domanda aperta da settembre, chiusa. Tentativi falliti 18.737 nella finestra del giornale, con attivita' continua oggi da oltre dieci indirizzi. Filtro attivo, rifiuto predefinito in ingresso, tre porte ammesse da qualunque provenienza. Aperto VPS-011 (#253): l'utente predefinito dell'immagine ha la stessa chiave dell'utente operativo ed elevazione totale senza password, quindi le garanzie dichiarate dall'impianto erano aggirate; eredita' dell'immagine del fornitore, da verificare anche sulle altre macchine del pannello.
+
+## Passaggio QA-collettore offline allineato alla rete, 22/10/2026
+
+QA `staging` `d994af0` e collettore `main` `5e46478` sono stati chiusi e pubblicati manualmente. La rete registra ora l'outbox QA prima del backup e la ricezione offline con lock POSIX e limite logico di byte. I dettagli sono nei due dossier di integrazione e nella riga M32e; ISO-30 resta `in_corso`. Mancano trasporto autenticato, ricevuta/replay, quota fisica e allarme, archivio riservato con retention/restore, indice e due LXC. Le modifiche VPS di un'altra sessione nello stesso albero non sono state toccate.
+
+## Chiave non copiata e alias in esercizio, 22/10/2026
+
+Verificato che la chiave privata della postazione non sia presente sul calcolatore di Persona-E: punto chiuso di #224, attribuzione intatta. Alias SSH della VPS configurato e provato; il calcolatore di Persona-E esce dal perimetro operativo. Registro credenziali privato aggiornato con la riga della VPS e corretta la riga superata della macchina di sviluppo del sito, il cui alias risolve e il collegamento riesce.
+
+## Ordine dei lavori sulla VPS e due decisioni, 22/10/2026
+
+Frase di accesso sulla chiave della postazione rimandata per decisione esplicita: voce aperta, non chiusa. Adottato lo snapshot del pannello come punto di ripristino, con una fotografia anche prima di toccare la macchina e non solo a configurazione finita. Ordine fissato: istantanea, lettura elevata della meta' mancante della fase 0, sanatoria del secondo utente, riavvio per attivare cinque kernel e la libreria di sistema fermi da settantadue giorni, istantanea finale, restrizione della porta. Il secondo utente va misurato prima di toccarlo, perche' e' quello predefinito dell'immagine e il meccanismo di inizializzazione potrebbe ricrearlo al riavvio.
+
+## La postazione entra nella VPS, fase 0 letta a meta', 22/10/2026
+
+Chiave nuova generata sulla postazione e autorizzata dal calcolatore che gia' accedeva, con copia di salvataggio e scrittura su riga nuova; due impronte verificate dopo la scrittura. Identita' della macchina corroborata fuori banda dal confronto dell'impronta di host con quella registrata all'impianto. Lettura della fase 0 in `docs/vps-sito-stato-interno.md`: macchina vuota, sola porta di amministrazione in ascolto, filtro e blocco dei tentativi attivi, settantadue giorni senza riavvio con riavvio ora richiesto e quarantasei pacchetti aggiornabili. Due riscontri non attesi: un secondo utente nel gruppo di elevazione con cartella chiavi non ispezionabile, e l'utente operativo nel gruppo del motore dei container. Non misurati per mancanza di elevazione il registro degli accessi, le regole del filtro e le chiavi del secondo utente: la fase 0 non si chiude. La chiave nuova e' senza frase di accesso e va protetta.
+
+## Le password della VPS non aprono nulla, 22/10/2026
+
+Misurato interrogando il servizio SSH: la macchina accetta il solo metodo a chiave pubblica, quindi le due password reperite non sono una via alternativa per nessuno dei due utenti. Con la console guasta lato fornitore, il loro valore immediato e' la custodia e non l'accesso: vanno nel gestore aziendale. L'unica azione che sblocca resta far aggiungere la chiave pubblica da chi gia' accede. Segnalazione ad Aruba messa in pendenza come voce a se'.
+
+## Console del pannello guasta lato fornitore, 22/10/2026
+
+Diagnosi chiusa: 504 Gateway Time-out sull'API `deploymentservice` del pannello, con gli errori di tipo del codice del fornitore come conseguenza. Escluse con misura le cause lato cliente, perche' il difetto si riproduce su due browser e i blocchi dell'archiviazione riguardano il solo banner dei cookie. La generazione dell'indirizzo della console risulta completata nel registro attivita' con coda vuota, il che impedisce di attribuire il guasto al cliente. Serve una segnalazione al fornitore; gli elementi sono raccolti. Reperite entrambe le password della VPS, da portare nel gestore aziendale: chiude la meta' credenziali di #224, ma con la console guasta non apre nulla e l'unica via resta la chiave di Persona-E.
+
+## Nessuna via di accesso alla VPS del sito, 22/10/2026
+
+Peggioramento di #224 nella sua forma piu' grave: la password di root sta dalla stessa persona che ha la chiave, quindi la via di emergenza non e' una ridondanza; e la console del pannello, provata, non si apre dalla postazione, mentre il pannello la genera correttamente con comandi completati e coda operazioni vuota. Oggi Intrawelt non ha nessuna via di accesso alla propria VPS di produzione. Rimisurata in parallelo la voce 2 della roadmap: due alberi su tre portano gia' il database sul solo loopback, resta quello degli invii, che pero' ha un albero sporco e quindi non e' la fusione a due comandi che la roadmap stimava.
+
 ## Roadmap di go-live riconciliata e ordine dell'accesso fissato, 22/10/2026
 
 La roadmap a undici voci e' quella in corso ma precede la sera del 21: credito chiuso con misura, uscita autoconsistente e prima costruzione fatte, modello di rilascio deciso, discesa di `main` nei due rami ancora aperta, tre decisioni del committente ora vero passo zero. La copia in circolazione contraddice ADR-038 sul dove si costruisce e va corretta. Chiarito che il login di amministrazione disabilitato vale per le sole sessioni SSH e non tocca la console del pannello, e che entrambe le password stanno nel gestore secondo il diario di impianto: nessun recupero necessario. Ordine fissato: password dal gestore, chiave nuova autorizzata dalla console cosi' da provarla, lettura della fase 0 con il registro degli accessi, e solo allora restrizione per provenienza.
@@ -14,7 +70,7 @@ Le dieci modifiche in albero sono dell'altra sessione, ora chiusa, e vanno in un
 
 ## Certificati: riscontro IntraLino e censimento da svolgere, 22/10/2026
 
-Certificato HTTPS di IntraLino emesso dall’autorità aziendale e verificato indipendentemente il 22/10; scade il 24/11/2027, installazione e prova live ancora pendenti. L’IT Manager richiede il censimento di tutti i certificati nel quadro complessivo della rete, con responsabili, dipendenze di fiducia, scadenze, rinnovi e stato emesso/installato/verificato. Riferimento canonico: `docs/autorita-certificazione-interna.md`, sezione sull’emissione IntraLino e sul censimento. Nessuna modifica ad apparati, servizi o stati ISO.
+IntraLino: certificato aziendale installato e verificato nel solo ambiente TEST il22/10/2026 alle15:22 UTC, scadenza24/11/2027. Audit indipendente: TLS rigoroso su due nomi e due ingressi, rifiuti di nome errato/CA assente e HTTP anonimo coerente. Produzione sui certificati precedenti; vecchia autorità e coppia ancora necessarie. Chiave CA offline, trust store invariati. Censimento complessivo, rinnovi/revoca e distribuzione ai client restano aperti. Prova privata in `_notes/pki/intralino-emissione-2026-10-22.json`; fonte canonica `docs/autorita-certificazione-interna.md`. Nessun cambio di stato ISO o scansione generale.
 
 ## Storia riscritta e riallineata, 21/10/2026 sera
 

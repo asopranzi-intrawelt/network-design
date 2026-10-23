@@ -1,5 +1,13 @@
 # Integrazione dei log del servizio QA
 
+## Outbox QA e ricevitore offline, 22/10/2026
+
+Il produttore QA `staging` ha chiuso e pubblicato `d994af0`: il gate di autorizzazione SQLite resta locale e riservato; `app/technical_outbox.py` pubblica un file `qa-tech-v1` completo e sincronizzato prima della chiamata al backup esterno. Se la scrittura o l'identità sorgente falliscono, la chiamata non parte; il file resta anche quando il backup fallisce. Il fallback esterno resta spento per default.
+
+Il collettore `main` ha chiuso e pubblicato `5e46478`: `bin/qa_technical_archive.py` riceve offline un file alla volta, applica il confine che ammette solo `backup_selected`, conserva l'originale in una directory privata e separa la proiezione tecnica minimizzata. Richiede un limite logico di byte, serializza i writer POSIX e riconosce il retry identico anche a capienza piena. Sono passate 34 prove locali e un probe sintetico fra i due writer; in WSL due processi con spazio per un solo evento hanno dato una ricevuta e un rifiuto per capacità. Il limite non è una quota fisica.
+
+Mancano trasporto autenticato e identità attestata, replay dell'outbox fino alla ricevuta centrale, quota fisica e allarme, retention e restore dell'archivio riservato, prova sul mount destinato e indicizzazione della sola vista tecnica. I due LXC QA non sono creati. Nessun flusso QA reale, nuovo servizio o modifica topologica è attestato: M32e e ISO-30 restano in corso. Le sezioni datate 21/10 descrivono lo stato precedente ai due commit.
+
 ## Gate locale del produttore, 21/10/2026
 
 Il produttore QA su `staging` ha chiuso manualmente il checkpoint `2ab7e5a`. Nel candidato successivo, ancora non versionato, `app/authorisation_store.py` committa su SQLite privata fuori dal clone la ricevuta con ora UTC e testo esatto dell'avviso prima di avviare il worker; il runner la rilegge prima di costruire il backend. Una scrittura SQLite fallita ferma il job prima del thread. La CLI rifiuta la modalità server prima di costruire il client esterno. Verifica locale: 458 prove con filtro CI, 6 con dati reali deselezionati, Ruff e Mypy verdi. È un gate applicativo locale: non dimostra custodia indipendente, ACL/retention/restore a dodici mesi, emissione durevole di `backup_selected`, trasporto o indicizzazione. Il fallback esterno resta spento per default; due LXC QA non create, M32e e ISO-30 in corso senza avanzamento da questa modifica.

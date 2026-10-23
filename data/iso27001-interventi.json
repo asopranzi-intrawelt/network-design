@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-21",
+  "aggiornato": "2026-10-23",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1833,6 +1833,19 @@
       "stato": "in_corso",
       "nota": "Produttore QA: candidato non versionato registra la prova locale su SQLite privata prima del worker e blocca la CLI in modo server; 458 prove sintetiche verdi. Mancano custodia indipendente, retention e restore, evento backup_selected durevole, trasporto, indice e due LXC. Nessun flusso reale o avanzamento del controllo ISO-30.",
       "evidenza": "docs/integrazione-log-qa-verifier.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-22",
+      "stato": "in_corso",
+      "nota": "QA staging d994af0: outbox locale di backup_selected prima della chiamata esterna. Collettore main 5e46478: ricezione offline con limite logico di byte e lock POSIX; prove sintetiche e WSL. Mancano trasporto autenticato, ricevuta/replay, quota fisica e allarme, archivio riservato con retention/restore, indice e due LXC. Nessun flusso QA reale o copertura operativa nuova.",
+      "evidenza": "docs/integrazione-log-qa-verifier.md; D:/log-collector/docs/integrazione-log-qa-verifier.md"
+    },
+    {
+      "id": "ISO-43",
+      "data": "2026-10-23",
+      "stato": "in_corso",
+      "nota": "Confrontata la lettera di nomina a responsabile del trattamento del fornitore dell'ERP con la riga del registro sub-responsabili: corrette categorie di dati e luogo del trattamento, che erano piu' strette del documento. Tre scostamenti aperti: forma societaria non coincidente, contratto di consulenza 2019 privo della firma del titolare, oggetto della nomina limitato a un progetto concluso mentre il rapporto in essere e' manutenzione e hosting. Un fornitore su undici del registro."
     }
   ]
 }
