@@ -1,5 +1,25 @@
 # Snapshot di sincronizzazione
 
+## Risalita al template completata, 23/10/2026
+
+Ramo di risalita fuso nel template e albero dedicato smontato: la raccolta del debito di lezioni parte ora a ogni apertura di sessione nel template, e lo strumento distingue un progetto non letto da uno senza debito. L'hook segnala e non recepisce: le lezioni restano aperte finche' qualcuno non le porta dentro e non le chiude, perche' il giudizio su cosa valga oltre il progetto non si automatizza. Annotata una violazione della regola sui comandi, ripetuta nella stessa giornata: un blocco consegnato senza il proprio `cd` e fallito.
+
+## Raccolta lezioni robusta e automatica nel template, 23/10/2026
+
+Letto nel codice, non ricordato: la numerazione delle lezioni e' per progetto e le collisioni si risolvono sulla coppia progetto-identificativo nel registro delle recepite, non rinumerando. L'automatismo mancava: il template prescriveva la raccolta all'apertura ma non aveva hook, con il file di impostazioni tracciato vuoto. Aggiunti un hook di avvio sessione e un modo compatto non bloccante. Corretti due difetti della raccolta, della famiglia di L-013: i progetti non letti non venivano stampati pur contando nel denominatore, e una lettura remota fallita era indistinguibile da un registro assente. Lavoro su un albero dedicato del template, ramo di risalita, commit dell'utente per ADR-027. Autotest tredici su tredici.
+
+## Baseline riproducibile della VPS e due lezioni, 23/10/2026
+
+Prodotti `scripts/Set-VpsBaseline.sh`, idempotente e di sola verifica per difetto, e `docs/runbook-baseline-vps.md` con l'ordine dei passi e cio' che la baseline non copre. La prima esecuzione ha rivelato un difetto nello strumento stesso, della stessa famiglia di L-011: senza elevazione i ripieghi dei comandi elevati erano stati letti come misure, e sette voci su sette erano fittizie. Riscritto con tre esiti invece di due, dove non verificabile pesa come non conforme. Registrate L-012 sull'accesso che l'immagine del fornitore porta e che la consegna non nomina, e L-013 sulla distinzione fra assenza e impossibilita' di verificare. Presentazione spostata sul Desktop e caratteri del marchio installati sul profilo utente.
+
+## Riavvio superato e artefatti di comunicazione, 23/10/2026
+
+VPS riavviata e tornata con il kernel piu' recente: i cinque aggiornamenti del nucleo fermi da settantadue giorni sono attivi e non e' piu' richiesto un riavvio. Prova superata: l'inizializzazione dell'istanza non ha ricreato il secondo utente ne' la direttiva di limitazione del servizio. Mancano due verifiche con elevazione per chiudere #253. Prodotte una presentazione di aggiornamento in otto pagine sul design system di account e una vista volatile della roadmap sul Desktop; la presentazione non e' stata vista da chi l'ha prodotta, perche' manca un convertitore, e i caratteri del marchio non sono installati sul sistema.
+
+## Il subentro non cambia l'indirizzo pubblico: confermato, 23/10/2026
+
+Risposta del partner nello stesso giorno: blocco pubblico instradato anche sui percorsi di riserva, stesso indirizzo in uscita, port forwarding e tunnel funzionanti. La conferma strutturale viene dal portale del fornitore: LAN dati su un blocco `/28`, due router con indirizzi distinti e gateway condiviso **in VRRP**, NAT e inoltro porte disabilitati lato fornitore. Il firewall punta a un indirizzo virtuale, quindi il next hop non cambia e l'indirizzo di uscita non puo' cambiare in subentro: il residuo accettato con la restrizione della porta e' rientrato. Rilievo minore: entrambi i router del fornitore hanno firmware da aggiornare.
+
 ## Porta di amministrazione ristretta, Openforce esaurito sui documenti, 23/10/2026
 
 La 22 della VPS e' ammessa dal solo indirizzo pubblico aziendale; regola aggiunta prima di togliere le quattro aperte, sessione nuova verificata, IPv6 chiuso di conseguenza. Residuo accettato e dichiarato: in subentro si perderebbe l'amministrazione, non il servizio. Domanda al fornitore inviata. Sul fornitore dell'ERP: il documento firmato piu' recente e' un ordine commerciale del novembre 2025, non un contratto quadro e non una nomina, quindi non esiste altro. Primo scostamento chiuso dal proprietario, stessa persona giuridica. Restano due bloccanti: contratto vigente non identificato ne' firmato da entrambi, e nomina che non descrive manutenzione e hosting in essere.

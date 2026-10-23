@@ -1,5 +1,67 @@
 # Work-log
 
+## Risalita al template completata, 23/10/2026
+
+Il proprietario ha fuso nel template il ramo di risalita e smontato l'albero di lavoro dedicato. Da adesso il template esegue la raccolta del debito di lezioni a ogni apertura di sessione, senza dipendere dal fatto che l'agente legga la prescrizione, e lo strumento distingue un progetto non letto da un progetto senza debito.
+
+Vale la pena fissare che cosa l'automatismo fa e che cosa non fa, perche' la differenza decide quando una lezione e' davvero chiusa: l'hook **segnala**, non recepisce. Le lezioni di questo progetto resteranno elencate come aperte finche' in una sessione del template qualcuno non le porti dentro e non le chiuda con il comando apposito. E' voluto: la decisione se una lezione valga oltre il progetto che l'ha scritta e' un giudizio, e l'automatismo copre il trasporto, non il giudizio.
+
+Un difetto di consegna da annotare contro se stessi, perche' e' la seconda volta nella stessa giornata che la stessa regola viene violata: il blocco di comandi per smontare l'albero di lavoro e' stato consegnato senza il proprio `cd`, dando per scontato che la shell fosse rimasta nella cartella del blocco precedente, e il comando e' fallito. La regola sul formato dei comandi prescrive che **ogni** blocco si apra con il proprio `cd`, perche' il terminale dell'utente e' un processo distinto e la sua cartella corrente non e' ne' osservabile ne' deducibile.
+
+File scritti e riletti: `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Raccolta delle lezioni resa robusta e automatica, 23/10/2026
+
+L'IT Manager ha chiesto se la raccolta delle lezioni verso il template sia automatica e come si comporti con numerazioni che collidono fra progetti. La risposta e' stata letta nel codice dello strumento invece che ricordata, ed e' doppia.
+
+Sul funzionamento: la numerazione e' per progetto, perche' `nuova` calcola l'identificativo dal massimo presente nel registro di quel progetto soltanto; due progetti arrivano quindi allo stesso numero. La collisione non si risolve rinumerando ma scoprendo la coppia, perche' il registro delle lezioni recepite memorizza progetto e identificativo insieme e il filtro delle chiuse lavora su quella coppia. Nessun progetto crea mai un identificativo per la lezione di un altro, ed e' corretto: rinumerare romperebbe il riferimento a chi l'ha scritta. L'aggregazione avviene solo nel template.
+
+Sull'automatismo: il `CLAUDE.md` del template prescrive gia' di raccogliere all'apertura, ma era una prescrizione all'agente e non un automatismo, e il template non aveva alcun hook di apertura perche' il suo file di impostazioni tracciato era vuoto. Su richiesta dell'IT Manager e' stato aggiunto un hook di avvio sessione che esegue la raccolta, piu' un modo dedicato che ne rende l'uscita compatta e **non bloccante**: un controllo che blocca l'avvio viene disattivato alla seconda volta che da' fastidio, e da quel momento non protegge piu' niente.
+
+Corretti nello stesso ramo due difetti della raccolta, entrambi della famiglia di L-013 e quindi dentro lo strumento che esiste per trasportare proprio quella lezione. Il primo: l'elenco dei progetti non letti veniva riempito e **mai stampato**, mentre il denominatore del riepilogo continuava a contarli, cosi' che un rapporto in cui meta' dei progetti non aveva risposto si leggeva come completo. Ora i non letti si stampano uno per uno, il denominatore dice quanti sono stati davvero letti, e il riepilogo dichiara che in loro presenza il totale e' un minimo e non una misura. Il secondo: la lettura remota restituiva la stringa vuota sia quando il registro non esisteva sia quando il comando falliva, confondendo il debito zero accertato con il debito ignoto; ora il comando remoto prova l'esistenza del file e il chiamante distingue i tre casi. Stessa distinzione aggiunta al ramo locale, dove una radice sparita produceva un'assenza di debito invece di un'incognita.
+
+Il lavoro e' stato fatto su un albero di lavoro dedicato del template, su un ramo di risalita, per non toccare le modifiche non committate presenti nel suo albero principale. Il commit resta dell'utente, come prescrive ADR-027, perche' quel repository ha un'altra identita' git. Autotest dello strumento: tredici casi su tredici dopo le modifiche.
+
+File scritti e riletti: nel ramo di risalita del template, lo strumento delle lezioni e il file di impostazioni; in questo progetto, `.claude/memory/index.md` e questo work-log; aggiornata la vista di roadmap sul Desktop. **Template:** nessuna
+
+## Baseline riproducibile della VPS, e due lezioni per il template, 23/10/2026
+
+L'IT Manager ha chiesto, oltre al riordino degli artefatti, una fotografia riproducibile di macchina pronta e vergine da cui ripartire in caso di reinizializzazione, e la generalizzazione della procedura per il template. Prodotti percio' uno strumento, un runbook e due lezioni.
+
+Lo strumento e' `scripts/Set-VpsBaseline.sh`, che porta una macchina appena creata allo stato di riferimento e lo verifica, in modo idempotente, con la sola verifica come comportamento predefinito. Il runbook `docs/runbook-baseline-vps.md` dice perche' ogni passo esiste e in quale ordine, e dichiara che cosa la baseline non copre.
+
+Dalla prima esecuzione a vuoto e' emerso un difetto **nello strumento stesso**, ed e' la stessa famiglia della lezione registrata poche ore prima: senza elevazione i comandi elevati falliscono in silenzio e il loro ripiego coincide con il valore che segnala l'assenza del problema, cioe' zero per un conteggio e vuoto per una ricerca. Il primo rapporto dava tre voci in regola e quattro fuori regola, e **tutte e sette erano fittizie**. Lo strumento e' stato riscritto perche' accerti i permessi una volta sola all'inizio e perche' restituisca tre esiti e non due, con il terzo, non verificabile, che pesa sull'esito complessivo come il secondo: una macchina che non si e' potuta ispezionare non e' una macchina a posto. Dove una misura non e' disponibile lo strumento mostra l'indizio, per esempio il file di configurazione al posto della configurazione in vigore, etichettandolo come tale. Riprovato dopo la correzione, dichiara correttamente cio' che non ha potuto leggere, e l'impronta della chiave di host che riporta coincide con quella corroborata in mattinata.
+
+Registrate due lezioni verso il template, entrambe generali e prive di riferimenti alla rete aziendale. **L-012**: l'immagine di un fornitore cloud porta un accesso che la consegna non nomina, perche' la consegna descrive cio' che e' stato configurato e non cio' che l'immagine conteneva gia'; ne discendono l'inventario degli utenti letto sulla macchina, la limitazione del servizio di accesso come controllo che regge all'inizializzazione, il riavvio come prova e non solo come attivazione dei nuclei, e l'estensione della verifica a tutte le macchine create dalla stessa immagine. **L-013**: uno strumento di verifica deve distinguere l'assenza dal non aver potuto guardare, con tre esiti invece di due e i permessi accertati una volta sola.
+
+Spostata inoltre la presentazione dalla cartella degli output al Desktop, su richiesta, che da ora e' la sua destinazione. Installati i caratteri del marchio sul profilo dell'utente, cinquantuno in tutto, cosi' che il programma di presentazione non li sostituisca: la presentazione resta non vista da chi l'ha prodotta, perche' in questo ambiente non esiste un convertitore, e la verifica visiva resta al proprietario.
+
+File scritti e riletti: `scripts/Set-VpsBaseline.sh`, `docs/runbook-baseline-vps.md`, `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, questo work-log. **Template:** L-012, L-013
+
+## Riavvio superato, presentazione e vista di roadmap, 23/10/2026
+
+Il riavvio della VPS e' stato eseguito e la macchina e' tornata su con il kernel piu' recente fra quelli installati, quindi i cinque aggiornamenti del nucleo fermi da settantadue giorni sono ora attivi e la macchina non dichiara piu' un riavvio richiesto. La sorveglianza del ritorno e' stata fatta da qui, con un controllo in sottofondo che ritentava il collegamento finche' non ha risposto: il proprietario aveva chiesto come fosse possibile, ed e' questo.
+
+La prova che il riavvio doveva dare e' positiva: il meccanismo di inizializzazione dell'istanza **non ha ricreato nulla**. Il secondo utente conserva la shell di rifiuto, la direttiva che limita il servizio al solo utente operativo e' ancora nel file di configurazione, e i quattro servizi di sistema pertinenti risultano attivi. Restano da verificare con elevazione due soli punti, cioe' se il file di elevazione senza password sia tornato e se il file delle chiavi del secondo utente sia ancora vuoto; con quelli VPS-011 (#253) si chiude.
+
+Prodotti nello stesso giro due artefatti di comunicazione richiesti dal proprietario. Una presentazione di aggiornamento per i colleghi, in otto pagine, costruita sul design system di account e non su una palette improvvisata: fondi limitati a due per pagina, raggio zero, nessuna ombra, rigo gradiente a tutta pagina, etichette in maiuscolo con spaziatura, tipografia Altro. Il contenuto riporta solo misure registrate nel progetto e dichiara di farlo. Rilevato e comunicato un limite che riguarda la resa e non il contenuto: i caratteri Altro non risultano installati sul sistema, quindi finche' non lo sono il programma di presentazione sostituisce la tipografia; e in questo ambiente non esiste un programma capace di convertire il file in immagini, quindi la presentazione **non e' stata vista** e la verifica visiva resta a carico del proprietario, come prescrive la regola sugli screenshot.
+
+Il secondo artefatto e' una vista della roadmap di messa in produzione sul Desktop, dichiarata volatile e cancellabile, che il proprietario usa per inviarla. Riporta le undici voci dell'ordine di lavoro con lo stato verificato di ciascuna e, separatamente, i sei interventi conclusi sulla macchina. Dichiara in testa il criterio che la rende utile invece che rassicurante: una voce e' chiusa solo se esiste una misura presa dopo l'intervento, non se il lavoro e' stato fatto.
+
+File scritti e riletti: `output/Sito-e-rete-aggiornamento-2026-10-23.pptx`, `C:/Users/Utente/Desktop/Roadmap sito in produzione - 23-10-2026.html`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Il subentro non cambia l'indirizzo: confermato dal partner e dal portale, 23/10/2026
+
+La domanda posta al fornitore della connettivita' tramite il partner ha avuto risposta lo stesso giorno. Il partner conferma per iscritto i tre punti: il blocco pubblico resta instradato e raggiungibile quando il traffico passa sui percorsi di riserva, il traffico in uscita si presenta con lo stesso indirizzo pubblico, e port forwarding e tunnel restano funzionanti. Raccomanda per completezza di rigirare le domande al fornitore, che l'IT Manager aveva gia' fatto in parallelo.
+
+La conferma che conta, pero', non e' la risposta ma l'allegato, perche' e' una misura e non un parere: la pagina del portale del fornitore, datata e letta lo stesso giorno, mostra che la LAN dati e' il blocco `203.0.113.0/28` e che i due router del fornitore hanno indirizzi reali distinti mentre condividono il gateway `203.0.113.1` **in VRRP**, con NAT e inoltro delle porte disabilitati dal loro lato. Ne discende per costruzione cio' che era stato dedotto dalla topologia e che ora e' verificato: il firewall punta a un indirizzo virtuale condiviso, quindi il suo next hop non cambia qualunque linea sia viva, e l'indirizzo con cui la sede esce non puo' cambiare in subentro. Il residuo che era stato accettato applicando la restrizione della porta di amministrazione e' percio' rientrato, e la regola resta valida senza riserve.
+
+Due rilievi minori dalla stessa lettura. Entrambi i router del fornitore hanno un aggiornamento di firmware disponibile e la loro configurazione risulta non aggiornabile dal portale. E le tre linee voce risultano una non configurabile, destinata al servizio fax verso posta, e due configurate in centrale.
+
+Aggiornata la mappa dei segnaposto con i tre indirizzi nuovi, cioe' i due router reali e l'indirizzo virtuale condiviso; il prefisso era gia' coperto dal file dei pattern, quindi il controllo di anonimizzazione li riconosce senza altre modifiche.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `_notes/.anonymization-map.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
 ## Porta di amministrazione ristretta, e documenti Openforce esauriti, 23/10/2026
 
 La porta di amministrazione della VPS del sito e' ora ammessa dal solo indirizzo pubblico aziendale. L'ordine dell'intervento e' stato quello sicuro: prima aggiunta la regola ristretta, poi rimosse le quattro aperte, due in IPv4 e due in IPv6, con la sessione precedente tenuta viva e una sessione nuova aperta e verificata dopo la modifica. Restano ammesse da qualunque provenienza le sole due porte del web, che serviranno al sito. Un effetto collaterale voluto e' che l'amministrazione non e' piu' raggiungibile in IPv6, perche' quelle righe sono state rimosse e non ricreate: non incide perche' si entra in IPv4, e chiude un percorso che prima era aperto al mondo.
