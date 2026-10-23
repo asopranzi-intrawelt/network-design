@@ -1,5 +1,11 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Priorità questionario cliente e ticket Seeweb, 23/10/2026
+
+L'utente ha fissato al 20/12 la consegna di ciò che il questionario cliente richiede per dicembre: 19 righe dell'Annex, non l'intero programma di 59 nodi del collettore. Le righe 89 e 90 riguardano raccolta e conservazione dei log AdS; 139 e 168 appartengono al progetto separato di integrità documentale; le altre 15 richiedono evidenze di governance, vulnerabilità e procedure. Il piano interno di settembre stimava 36,5-56 giorni persona, ma va riconciliato con i progressi successivi. L'Annex consegnato indica `12/2026` anche per le due righe che una copia interna successiva propone parziali: senza conferma scritta del cliente, non sono scadenze differite accettate. La roadmap attiva del collettore dà priorità a 89/90 e mantiene distinti i lavori QA, Seeweb e hub che il cliente non ha ancora incluso esplicitamente nel perimetro.
+
+QA `staging` `02f1e40` e collettore `main` `b29612c` sono checkpoint manuali pubblicati. Il trasporto QA SSH con ricevuta e replay è candidato locale; nel diff corrente del collettore il ricevitore richiede un mount Linux, senza quota fisica o prova fra host. Il supporto Seeweb chiede nello screenshot_103 dove termini IPsec: la risposta dell'utente, riferita inviata il 23/10, distingue il tunnel fra firewall dalla VM Debian destinataria di Syslog UDP 514. Seeweb deve ancora confermare sorgente, selettori, NAT e categorie, quindi non c'è flusso attivo. ISO-30 e M32e restano in corso.
+
 ## Passaggio QA offline versionato, 22/10/2026
 
 QA `staging` a `d994af0` scrive la selezione `backup_selected` in un outbox locale prima della richiesta al backup; il collettore `main` a `5e46478` può archiviarne offline un file alla volta con vista tecnica minimizzata, lock POSIX e limite logico di byte obbligatorio. Un probe sintetico ha verificato ricezione e retry; le 34 prove del ricevitore/confine e il caso WSL con due writer non dimostrano una consegna in esercizio. L'autorizzazione identificante resta in SQLite privata del produttore, fuori dalla vista tecnica generale.

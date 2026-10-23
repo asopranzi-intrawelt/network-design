@@ -118,7 +118,7 @@ if (Test-Path $Stato) {
 }
 
 $adesso = Get-Date
-$epoca = [int][double]::Parse((Get-Date -Date $adesso.ToUniversalTime() -UFormat %s))
+$epoca = [int]([DateTimeOffset]$adesso).ToUnixTimeSeconds()
 $eventi = New-Object System.Collections.Generic.List[string]
 $nuovaMemoria = [ordered]@{}
 

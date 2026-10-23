@@ -1,5 +1,9 @@
 # Integrazione dei log del servizio QA
 
+## Trasporto candidato versionato, 23/10/2026
+
+Il produttore QA `staging` è stato chiuso manualmente a `02f1e40` e il collettore `main` a `b29612c`, entrambi allineati ai remoti: mittente OpenSSH con host key vincolata, ricevuta ID/SHA-256 e retry dopo risposta persa; ricevitore con comando SSH forzato e identità sorgente stabilita sul server. Le prove locali e POSIX confermano il candidato, non un collegamento fra host. Nel nuovo diff del collettore il ricevitore SSH verifica anche che l'archivio sia un mount Linux prima di scrivere; 39 prove ricevitore/confine verdi, mountinfo simulato e mutazione della guardia discriminante. Non è un volume reale né una quota fisica. Due LXC, chiavi operative, allarme, indice minimizzato, retention/restore e prova dal job fra host restano aperti; M32e e ISO-30 in corso. Per la scadenza del questionario cliente di dicembre, QA non entra automaticamente nel percorso critico della riga AdS 89: serve un perimetro concordato con il cliente.
+
 ## Outbox QA e ricevitore offline, 22/10/2026
 
 Il produttore QA `staging` ha chiuso e pubblicato `d994af0`: il gate di autorizzazione SQLite resta locale e riservato; `app/technical_outbox.py` pubblica un file `qa-tech-v1` completo e sincronizzato prima della chiamata al backup esterno. Se la scrittura o l'identità sorgente falliscono, la chiamata non parte; il file resta anche quando il backup fallisce. Il fallback esterno resta spento per default.

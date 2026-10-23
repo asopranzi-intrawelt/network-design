@@ -1846,6 +1846,13 @@
       "data": "2026-10-23",
       "stato": "in_corso",
       "nota": "Confrontata la lettera di nomina a responsabile del trattamento del fornitore dell'ERP con la riga del registro sub-responsabili: corrette categorie di dati e luogo del trattamento, che erano piu' strette del documento. Tre scostamenti aperti: forma societaria non coincidente, contratto di consulenza 2019 privo della firma del titolare, oggetto della nomina limitato a un progetto concluso mentre il rapporto in essere e' manutenzione e hosting. Un fornitore su undici del registro."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-23",
+      "stato": "in_corso",
+      "nota": "QA staging 02f1e40 e collettore main b29612c pubblicati: trasporto SSH con ricevuta e replay provato in locale. Il controllo mount dell'archivio e' solo nel nuovo diff del collettore. Seeweb: l'utente riferisce risposta inviata al ticket dopo screenshot_103; conferma del provider e flusso Syslog assenti. Mancano quota fisica, allarme, due LXC, prova fra host e perimetro AdS Cliente-1 concordato; nessuna copertura operativa nuova.",
+      "evidenza": "docs/integrazione-log-qa-verifier.md; docs/firewall-seeweb-opnsense.md; docs/log-collector-integrazione.md"
     }
   ]
 }

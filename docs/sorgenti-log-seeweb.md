@@ -1,5 +1,9 @@
 # Sorgenti Seeweb e raccolta dei log
 
+## Chiarimento sul tunnel, 23/10/2026
+
+Il nuovo riscontro screenshot_103 chiede se il server destinatario dei log debba avere già configurato IPsec. Il chiarimento formulato specifica che il tunnel esistente termina sui firewall e che la VM Debian del collettore riceve Syslog UDP 514 nella LAN di sede attraverso quel percorso. L'utente riferisce di aver inviato la risposta il 23/10; non è disponibile qui la ricevuta. Il provider deve ancora confermare IP sorgente effettivo dei pacchetti generati dall'appliance, selettori, regole e NAT; solo allora si abilita il ricevitore e si prova una selezione di eventi. La segmentazione della LAN è una lavorazione interna futura, non una richiesta a Seeweb. Nessun flusso reale è attivo; dettaglio nel [dossier firewall](firewall-seeweb-opnsense.md).
+
 ## Ticket dell'appliance: risposta parziale, 20/10/2026
 
 Seeweb indica `Sistema -> File di log` e `Firewall -> File di log` per i registri locali e `Sistema -> Configurazione -> Backup` per confrontare la configurazione precedente. Chiede se limitare la GUI a IP determinati e propone uno studio dell'aggiornamento dell'OPNsense 21.1.5 attraverso undici passaggi fra serie principali, con possibile ripristino. Il ticket appare chiuso nella schermata ricevuta. Non sono ancora documentati audit dei login e delle modifiche con attore, retention, export/Syslog, raggiungibilità effettiva della regola WAN 29, piano operativo o rinnovo del certificato GUI indicato scaduto. Nessuna modifica all'appliance o raccolta centrale. Dettaglio nel [dossier firewall](firewall-seeweb-opnsense.md); originale privato con SHA-256 nel collettore.
