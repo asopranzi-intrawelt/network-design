@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Collettore D6 recupera la finestra locale, 26/10/2026
+
+Il collettore `213d19b` è pubblicato: politica v2 con `active_from`, 213 giorni retrospettivi e report limitato; 16 test, Ruff e chiusura verdi. Dossier e timeline della rete allineati, ISO-30 resta in corso. Mancano installazione del timer, heartbeat, allarme consegnato, D7 e custodia indipendente per Cliente-1 89/90.
+
 ## Decisa la misura del traffico, 23/10/2026
 
 Risposta data: basta sapere quante persone arrivano, da dove e su quali pagine, senza riconoscere il visitatore fra una visita e l'altra. Esclusa l'opzione con identificatore persistente e con essa banner, nomina a responsabile e valutazione del trasferimento: la posizione del sito resta informativa dovuta e banner non dovuto. Resta raccomandato il cruscotto senza identificatori. Dipendenza fissata: e' un servizio in contenitore e appartiene allo stesso descrittore di produzione che manca, insieme ad applicazione, proxy e volumi dei file; non e' lavoro successivo al rilascio ma una riga dentro lo stesso lavoro.

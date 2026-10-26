@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-23",
+  "aggiornato": "2026-10-26",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1859,6 +1859,13 @@
       "data": "2026-10-23",
       "stato": "in_corso",
       "nota": "Collettore main 3e12aa6: D6 candidato con politica per sorgente, timer alle 00:45 e guardia sul mount /srv/ads; nove prove locali e verifica sintattica systemd. Timer e heartbeat non installati, allarme esterno e custodia indipendente ancora aperti.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-26",
+      "stato": "in_corso",
+      "nota": "Collettore main 213d19b pubblicato: D6 v2 con data di attivazione per sorgente e recupero candidato fino a 213 giorni; 16 prove locali verdi. Timer, heartbeat e allarme esterno non installati o collaudati; D7, custodia indipendente e perimetro Cliente-1 89/90 ancora aperti. Nessuna nuova copertura operativa.",
       "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
     }
   ]

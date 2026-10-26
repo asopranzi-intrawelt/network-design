@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 26/10/2026 - D6 recupera le giornate entro la finestra locale
+
+Collettore `213d19b` pubblicato: politica D6 v2 con data di attivazione per sorgente e controllo candidato degli ultimi 213 giorni, con totale delle anomalie e dettaglio limitato a 100. Sedici test sintetici verdi; il caso 31/12/9999 ha rilevato e fatto correggere un overflow. Il precedente limite del solo D-1 è superato nel codice, ma il timer non è installato sul Debian; heartbeat, relay e allarme ricevuto non sono provati. ISO-30 e Cliente-1 89/90 restano in corso, con D7 e custodia indipendente ancora aperti.
+
 ## 23/10/2026 - Timer D6 del collettore preparato, esercizio aperto
 
 Il collettore `main` `3e12aa6` ha un controllo di silenzio per sorgente; il passo successivo ha preparato il timer alle 00:45 e il rifiuto di `/srv/ads` non montato. Nove prove locali e la sintassi systemd sono verificate, ma sulla VM il timer non è installato e mancano heartbeat reale, allarme esterno, recupero di tutti i giorni saltati e lista AdS approvata. ISO-30 e le righe Cliente-1 89/90 restano in corso.

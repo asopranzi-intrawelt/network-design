@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Lavoro corrente, riallineato il 22/09/2026
 
+## D6 retrospettivo nel collettore, 26/10/2026
+
+Il commit manuale `213d19b` porta politica v2 con `active_from`, finestra candidata di 213 giorni e report limitato a 100 dettagli; 16 prove locali verdi. Il vecchio limite D-1 è corretto nel codice. Nessuna unità installata o prova di allarme e heartbeat reale: Cliente-1 89/90 e ISO-30 restano in corso. Dossier nel progetto del collettore e nota ISO-30 in questa rete.
+
 ## D6 del collettore: unità candidate, 23/10/2026
 
 Il commit manuale del collettore `3e12aa6` prepara unità systemd alle 00:45 e guardia sul mount `/srv/ads`; nove prove locali e verifica sintattica systemd sono verdi. Il timer non è attivo; heartbeat reale e allarme esterno non sono stati collaudati. D7, nomina/elenco AdS e custodia indipendente restano gate delle righe Cliente-1 89/90 e ISO-30.

@@ -1,5 +1,13 @@
 # Work-log
 
+## 26/10/2026 - Allineato il recupero D6 del collettore
+
+L'utente ha chiuso e pubblicato `D:/log-collector` a `213d19b`. La politica D6 v2 richiede `active_from`, il timer candidato scandisce 213 giorni e il report conserva il conteggio completo delle anomalie. Sedici prove sintetiche e tre mutazioni rilevate; corretto anche il limite del calendario. Aggiornati integrazione, roadmap e timeline della rete; ISO-30 rimane in_corso per assenza di installazione e prova di allarme, heartbeat, D7 e custodia. Nessun apparato modificato e nessuna copertura Cliente-1 89/90 dichiarata completa.
+
+Verifiche del 26/10: `IsoRoadmap.py check --desktop` conferma le copie; SVG XML valido con 241 eventi. VectorCraft 0.14 legge il file, ma sostituisce il font Altro Var e omette lo script inline: questa lettura non prova tipografia o accordion nel browser. `chiudi -SoloControlli` termina con «Controlli verdi» e `git diff --check` non segnala errori.
+
+**Template:** nessuna.
+
 ## Decisa la misura del traffico: nessun riconoscimento fra visite, 23/10/2026
 
 La risposta alla domanda che la nota poneva e' arrivata: basta sapere quante persone arrivano, da dove e su quali pagine, senza riconoscere lo stesso visitatore fra una visita e l'altra.

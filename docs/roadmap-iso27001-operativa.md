@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-23. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-26. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -253,7 +253,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-23. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-23):** Collettore main 3e12aa6: D6 candidato con politica per sorgente, timer alle 00:45 e guardia sul mount /srv/ads; nove prove locali e verifica sintattica systemd. Timer e heartbeat non installati, allarme esterno e custodia indipendente ancora aperti.
+  - **Ultimo stato (2026-10-26):** Collettore main 213d19b pubblicato: D6 v2 con data di attivazione per sorgente e recupero candidato fino a 213 giorni; 16 prove locali verdi. Timer, heartbeat e allarme esterno non installati o collaudati; D7, custodia indipendente e perimetro Cliente-1 89/90 ancora aperti. Nessuna nuova copertura operativa.
   - **Evidenza:** docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.

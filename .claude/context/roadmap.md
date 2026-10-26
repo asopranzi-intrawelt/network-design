@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Roadmap e fasi del progetto
 
+## D6 nel collettore e stato ISO-30, 26/10/2026
+
+Il collettore `213d19b` recupera nel codice candidato i giorni D6 entro 213 giorni e dopo la data di attivazione della sorgente. Il timer sulla VM, il produttore heartbeat e la consegna dell'allarme restano da provare; la custodia indipendente e D7 mantengono aperte Cliente-1 89/90 e ISO-30. Questo checkpoint riduce un difetto del recupero ma non cambia il criterio di accettazione della roadmap di dicembre.
+
 ## Priorità Annex Cliente-1 e riscontro Seeweb, 23/10/2026
 
 La consegna richiesta entro il 20/12 riguarda le 19 righe dell'Annex cliente, non tutte le 59 sorgenti censite dal collettore. Le righe 89/90 sono il percorso AdS del collettore, 139/168 il progetto di integrità documentale; le altre 15 richiedono una prova specifica. L'Annex consegnato indica `12/2026` anche per 46/90: il piano interno di esecuzione parziale non è un'accettazione del cliente. QA `02f1e40` e collettore `b29612c` sono pubblicati, ma il trasporto QA è stato provato solo localmente. L'utente riferisce chiarimento inviato nel ticket Seeweb dopo screenshot_103: si attende il provider per sorgente, instradamento e categorie prima di dichiarare un flusso. M32e e ISO-30 rimangono in corso; la fonte ISO è aggiornata al 23/10, senza nuova copertura operativa. Dettaglio nei dossier collegati e nella timeline.

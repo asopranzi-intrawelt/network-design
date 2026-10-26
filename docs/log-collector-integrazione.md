@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Recupero D6 retrospettivo, 26/10/2026
+
+Il collettore `main` `213d19b` è pubblicato dall'utente. La politica privata D6 passa a `version=2` con `active_from` per sorgente; il servizio candidato verifica fino a 213 giorni precedenti, entro la ritenzione locale prevista, e registra il totale delle anomalie con al massimo 100 dettagli. Sedici prove sintetiche, Ruff e controlli di chiusura sono verdi; tre mutazioni e una prova rossa al limite del calendario hanno verificato controlli e correzione. Questo supera il limite tecnico sul solo D-1 descritto nel checkpoint del 23/10; non estende la ritenzione effettiva e non prova la copertura in esercizio. Sulla VM il timer non è installato e mancano politica approvata, heartbeat reale, relay, allarme ricevuto e custodia indipendente. D7, Cliente-1 89/90 e ISO-30 restano aperti. Dettaglio nel runbook del componente 5 del collettore.
+
 ## Controllo D6 preparato nel collettore, 23/10/2026
 
 Il collettore `main` è stato pubblicato dall'utente a `3e12aa6`. Il controllo di silenzio D6 dispone ora di politica privata per sorgente, unità systemd candidate alle 00:45 e guardia che rifiuta `/srv/ads` non montato. Nove prove locali passano; su WSL il comando ha riconosciuto un mount reale e `systemd-analyze verify` ha accettato le unità con avvisi dovuti ai permessi DrvFs. Il timer non è installato sul Debian, nessun heartbeat reale o allarme esterno è stato consegnato. `Persistent=true` non recupera ogni giorno saltato perché il comando predefinito legge solo D-1. D7, elenco AdS approvato, TSA, custodia indipendente e prova della conservazione restano aperti: ISO-30 e Cliente-1 89/90 non sono completati. Dettaglio e limiti in `D:/log-collector/docs/runbook-componente-5-catena.md`.
