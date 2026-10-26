@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Heartbeat Windows D6: ricevente candidato, 26/10/2026
+
+Il collettore `main` `2e57ad9` è pubblicato dall'utente. Il template rsyslog scrive il marker Windows RFC 5424 ricevuto via TLS 6514 da un IP presente nella lista pilota configurata in `/var/lib/ads/heartbeats/<IP>/<giorno>.heartbeat`, letto da D6. Marker via UDP, RFC 3164 o da IP estraneo via TLS vanno in `/var/log/ads-heartbeat-rejected/`, fuori dagli accessi AdS. Il test integrato Debian 13 ha verificato i tre rifiuti, i permessi e lo stato `observed` del controllo di silenzio; 34 test Python mirati sono verdi. La configurazione Fluent Bit distingue `ads.win` e `ads.hb` e corregge `Mode tcp` con `tls on`, ma richiede prova sulla versione Windows scelta e su una postazione reale. TLS autentica il server, non il client anonimo. Il timer sulla VM, lista IP e politica approvate, ritenzione del rifiutato, allarme esterno e custodia indipendente sono ancora aperti. Questo checkpoint non chiude ISO-30 né Cliente-1 89/90.
+
 ## Catena locale: preflight storico, 26/10/2026
 
 Il collettore `main` `3d72338` è stato pubblicato dall'utente. Il job notturno recupera i giorni saltati entro 213 giorni e verifica tutti i manifest, archivi e log di origine già conservati prima di aggiungerne uno. In WSL, l'alterazione del primo di quattro manifest faceva creare il quinto al codice precedente; la versione pubblicata lo rifiuta senza scriverlo. La prova usa dati fittizi: durata e I/O reali, retention degli originali e ancoraggio dopo il taglio dei 213 giorni richiedono progetto e collaudo sulla VM. Timer, heartbeat e allarme esterno non sono attivi; D7, TSA/WORM e custodia indipendente restano gate. Cliente-1 89/90 e ISO-30 sono in corso. Dettagli nel runbook del componente 5 del collettore.

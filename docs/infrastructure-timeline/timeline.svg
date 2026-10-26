@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="6162" viewBox="0 0 1060 6162" font-family="'Altro Serif', Georgia, serif">
-<rect width="1060" height="6162" fill="#F4F5F9"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="6186" viewBox="0 0 1060 6186" font-family="'Altro Serif', Georgia, serif">
+<rect width="1060" height="6186" fill="#F4F5F9"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">242 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 26/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">243 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 26/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#6B15EC"/>
 <text x="52" y="116" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">AI e automazione <tspan fill="#4C4C63">(29)</tspan></text>
@@ -32,7 +32,7 @@
 <circle cx="540" cy="136" r="5" fill="#576C08"/>
 <text x="552" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Server e virtualizzazione <tspan fill="#4C4C63">(24)</tspan></text>
 <circle cx="790" cy="136" r="5" fill="#4C4C63"/>
-<text x="802" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Sistemi e gestionali <tspan fill="#4C4C63">(61)</tspan></text>
+<text x="802" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Sistemi e gestionali <tspan fill="#4C4C63">(62)</tspan></text>
 <g id="yr-2024" transform="translate(0,176)">
 <rect x="40" y="10" width="980" height="28" rx="4" fill="#EBEDF4"/>
 <text x="54" y="29" font-size="15" font-weight="700" fill="#4D11A7" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">2024</text>
@@ -3892,12 +3892,12 @@
 <circle cx="178" cy="-4" r="4.5" fill="#4C4C63"/>
 <text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">26/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">La catena AdS controlla lo storico prima di avanzare <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Il ricevente D6 distingue i marker Windows <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SYS</tspan></text>
 </g>
 <foreignObject id="ev-241-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">26/10/2026 &#8212; La catena AdS controlla lo storico prima di avanzare</p>
-<p>Collettore 3d72338 pubblicato dall'utente: il job candidato chiude i giorni mancanti entro 213 giorni, ma verifica prima tutta la catena locale. La prova sintetica ha mostrato che il codice precedente aggiungeva un manifest nuovo dopo la corruzione di uno vecchio; la versione pubblicata si ferma. Costo della scansione su VM, retention e ancoraggio esterno restano da collaudare. Nessun timer o allarme installato; ISO-30 e Cliente-1 89/90 ancora in corso.</p>
+<p class="d-meta">26/10/2026 &#8212; Il ricevente D6 distingue i marker Windows</p>
+<p>Collettore 2e57ad9 pubblicato: il ricevente candidato scrive l'heartbeat RFC 5424 via TLS da IP pilota ammesso nel percorso letto da D6 e separa in un archivio tecnico i marker UDP, RFC 3164 e da IP estraneo. Il test Debian 13 verifica smistamento, permessi e stato observed; il mittente Fluent Bit Windows, la VM, la ritenzione del rifiutato e l'allarme esterno non sono collaudati. Client TLS anonimo; nessuna nuova copertura in esercizio o chiusura di ISO-30 e Cliente-1 89/90.</p>
 </div>
 </foreignObject>
 </g>
@@ -3908,16 +3908,32 @@
 <circle cx="178" cy="-4" r="4.5" fill="#4C4C63"/>
 <text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">26/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">D6 recupera le giornate entro la finestra locale <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SYS</tspan></text>
+<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">La catena AdS controlla lo storico prima di avanzare <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SYS</tspan></text>
 </g>
 <foreignObject id="ev-242-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">26/10/2026 &#8212; La catena AdS controlla lo storico prima di avanzare</p>
+<p>Collettore 3d72338 pubblicato dall'utente: il job candidato chiude i giorni mancanti entro 213 giorni, ma verifica prima tutta la catena locale. La prova sintetica ha mostrato che il codice precedente aggiungeva un manifest nuovo dopo la corruzione di uno vecchio; la versione pubblicata si ferma. Costo della scansione su VM, retention e ancoraggio esterno restano da collaudare. Nessun timer o allarme installato; ISO-30 e Cliente-1 89/90 ancora in corso.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-243" class="ev-block has-detail" transform="translate(0,6116)">
+<g class="ev-summary" onclick="toggleEv('ev-243')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#D0D4E3" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#4C4C63"/>
+<text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">26/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">D6 recupera le giornate entro la finestra locale <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">SYS</tspan></text>
+</g>
+<foreignObject id="ev-243-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta">26/10/2026 &#8212; D6 recupera le giornate entro la finestra locale</p>
 <p>Collettore 213d19b pubblicato: politica D6 v2 con data di attivazione per sorgente e controllo candidato degli ultimi 213 giorni, con totale delle anomalie e dettaglio limitato a 100. Sedici test sintetici verdi; il caso 31/12/9999 ha rilevato e fatto correggere un overflow. Il precedente limite del solo D-1 è superato nel codice, ma il timer non è installato sul Debian; heartbeat, relay e allarme ricevuto non sono provati. ISO-30 e Cliente-1 89/90 restano in corso, con D7 e custodia indipendente ancora aperti.</p>
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="6146" font-size="11" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<text id="footer-src" x="40" y="6170" font-size="11" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -4165,7 +4181,8 @@
   {id:'ev-239',type:'event',h:24},
   {id:'ev-240',type:'event',h:24},
   {id:'ev-241',type:'event',h:24},
-  {id:'ev-242',type:'event',h:24}
+  {id:'ev-242',type:'event',h:24},
+  {id:'ev-243',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -4206,7 +4223,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 6162').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 6186').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

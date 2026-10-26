@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 26/10/2026 - Il ricevente D6 distingue i marker Windows
+
+Collettore `2e57ad9` pubblicato: il ricevente candidato scrive l'heartbeat RFC 5424 via TLS da IP pilota ammesso nel percorso letto da D6 e separa in un archivio tecnico i marker UDP, RFC 3164 e da IP estraneo. Il test Debian 13 verifica smistamento, permessi e stato `observed`; il mittente Fluent Bit Windows, la VM, la ritenzione del rifiutato e l'allarme esterno non sono collaudati. Client TLS anonimo; nessuna nuova copertura in esercizio o chiusura di ISO-30 e Cliente-1 89/90.
+
 ## 26/10/2026 - La catena AdS controlla lo storico prima di avanzare
 
 Collettore `3d72338` pubblicato dall'utente: il job candidato chiude i giorni mancanti entro 213 giorni, ma verifica prima tutta la catena locale. La prova sintetica ha mostrato che il codice precedente aggiungeva un manifest nuovo dopo la corruzione di uno vecchio; la versione pubblicata si ferma. Costo della scansione su VM, retention e ancoraggio esterno restano da collaudare. Nessun timer o allarme installato; ISO-30 e Cliente-1 89/90 ancora in corso.

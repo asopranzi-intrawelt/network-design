@@ -253,8 +253,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-26. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-26):** Collettore main 3d72338 pubblicato: recupero locale dei manifest fino a 213 giorni e verifica integrale dello storico prima della nuova chiusura; prova WSL rossa sul codice precedente e verde sul commit. Timer, heartbeat e allarme esterno non in esercizio; durata e I/O sulla VM, retention con ancoraggio, D7 e custodia indipendente ancora aperti. Nessuna copertura Cliente-1 89/90 dichiarata completa.
-  - **Evidenza:** docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
+  - **Ultimo stato (2026-10-26):** Collettore main 2e57ad9 pubblicato: ricevente heartbeat Windows D6 candidato, RFC 5424 via TLS e IP pilota; UDP, RFC 3164 e IP estranei separati. Test Debian 13 e 34 prove Python verdi. Fluent Bit Windows, timer VM, ritenzione del rifiutato, allarme esterno, D7 e custodia indipendente ancora aperti; Cliente-1 89/90 non chiuse.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

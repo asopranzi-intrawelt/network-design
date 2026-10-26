@@ -1874,6 +1874,12 @@
       "stato": "in_corso",
       "nota": "Collettore main 3d72338 pubblicato: recupero locale dei manifest fino a 213 giorni e verifica integrale dello storico prima della nuova chiusura; prova WSL rossa sul codice precedente e verde sul commit. Timer, heartbeat e allarme esterno non in esercizio; durata e I/O sulla VM, retention con ancoraggio, D7 e custodia indipendente ancora aperti. Nessuna copertura Cliente-1 89/90 dichiarata completa.",
       "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-26",
+      "stato": "in_corso",
+      "nota": "Collettore main 2e57ad9 pubblicato: ricevente heartbeat Windows D6 candidato, RFC 5424 via TLS e IP pilota; UDP, RFC 3164 e IP estranei separati. Test Debian 13 e 34 prove Python verdi. Fluent Bit Windows, timer VM, ritenzione del rifiutato, allarme esterno, D7 e custodia indipendente ancora aperti; Cliente-1 89/90 non chiuse."
     }
   ]
 }

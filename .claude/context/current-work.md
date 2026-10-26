@@ -2,7 +2,28 @@
 last-verified: 920c616
 ---
 
+## Verifica PH## Primo rilascio del sito concluso, 26/10/2026
+
+Il filone della messa in produzione chiude la propria parte infrastrutturale. Sulla VPS girano banca dati, applicazione e proxy inverso secondo il descrittore di `deploy/vps-sito/`; l'immagine e' costruita sulla macchina di produzione contro la sua banca dati come prescrive ADR-038; il sito risponde in HTTPS su un nome di anteprima ammesso alla sola provenienza aziendale, con certificato ottenuto e rinnovato dal proxy. Le verifiche sono chiuse con misura: persistenza dei file provata in scrittura e in cancellazione su entrambe le collezioni, file riservati non raggiungibili senza autenticazione, cartelle non servite in forma diretta.
+
+Cio' che resta non e' infrastruttura. Sono i contenuti definitivi, oggi ancora con testo di riempimento in pagina iniziale, le pagine legali e i moduli di contatto che non esistono, la mappa dei rimandi dal sito attuale, e poi salvataggio con prova di ripristino, presidio e passaggio del dominio. La via del passaggio e' decisa e confermata dal fornitore: si dismette l'hosting, la zona resta dov'e', si cambiano le sole righe del web.
+
+La definizione di fatto di questa fase e' soddisfatta. Il filone successivo e' il censimento dei certificati, che la roadmap gia' prevedeva e che era fermo in attesa di questa chiusura.
+
+P dei processi conclusa,26/10/2026
+
+**PHP2Shell, verifica dei processi del26/10:** sulle tre VM con Apache attivo,18 processi su18 usano il dispositivo/inode del modulo corretto; checksum del file conformi al database del pacchetto Ubuntu. Sulla quarta VM Apache è inattivo e non si osservano processi PHP. Ricevuta root e riesame in _notes/vulnerabilita-runtime/2026-10-26; originali conservati. L’uguaglianza del namespace non è necessaria quando dispositivo e inode coincidono già. Nessun riavvio; nessuna chiusura del controllo complessivo VA/ISO. Restano gli altri runtime e gli host non verificati.
+
+
 # Lavoro corrente, riallineato il 22/09/2026
+
+## Heartbeat D6 pubblicato nel collettore, 26/10/2026
+
+Il collettore `2e57ad9` è sul remoto: ricevente candidato RFC 5424/TLS per il marker Windows dalla lista IP pilota, con rifiuto separato per UDP, RFC 3164 e IP estranei. Test Debian 13 e 34 prove Python verdi; Fluent Bit Windows, VM reale, ritenzione del rifiutato e allarme ricevuto ancora aperti. ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati integrazione, fonte ISO e timeline senza includere le modifiche parallele del sito.
+
+## Censimento runtime e integrita, 26/10/2026
+
+Su richiesta dell'utente, ricognizione dei progetti aziendali e degli host collegati, escluso il materiale personale. Dossier privato filtrato in `_notes/vulnerabilita-runtime/2026-10-26/`; fonte tecnica in [design e sicurezza](design-and-security.md#censimento-runtime-2026-10-26). Undici host aziendali su dodici raggiunti, WordPress non verificato. PHP .13 corrisponde alla correzione Ubuntu sulle quattro VM osservate; priorita aperte sui runtime dei container IntraLino e Next nei due progetti aziendali. Versioni affette e sfruttabilita restano distinte; nessun aggiornamento o riavvio. Ricognizione parziale, non attestazione di assenza di compromissione; nessun gate ISO chiuso. Preservato il lavoro parallelo sul sito e sugli altri filoni.
 
 ## Catena AdS pubblicata e gate operativi, 26/10/2026
 

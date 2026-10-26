@@ -1,5 +1,46 @@
 # Snapshot di sincronizzazione
 
+## Fase infrastrutturale del sito chiusa, si apre il censimento dei certificati, 26/10/2026
+
+Il primo rilascio e' concluso e verificato in ogni sua parte; cio' che resta appartiene ai contenuti, agli adempimenti e al calendario, non all'infrastruttura. ADR-040 fissa che sul repository del sito le persone sono due e che chi sviluppa firma con la propria identita' e dalla propria macchina. Il filone successivo e' il censimento dei certificati di tutta la rete, gia' previsto dalla roadmap.
+
+## Primo rilascio del sito chiuso e verificato, 26/10/2026
+
+Tutte le verifiche tecniche del primo rilascio sono chiuse con misura: persistenza provata su entrambe le collezioni con una scrittura vera, file riservati irraggiungibili senza autenticazione, cartelle non servite in forma diretta. Restano soltanto contenuti, pagine legali, salvataggio, presidio e passaggio del dominio, che non sono infrastruttura. Due regole di lavoro per la redazione emerse dalla prova: le immagini non vengono ridimensionate dal sistema, quindi pesano come sono caricate.
+
+## Verifica PHP dei processi conclusa,26/10/2026
+
+**PHP2Shell, verifica dei processi del26/10:** sulle tre VM con Apache attivo,18 processi su18 usano il dispositivo/inode del modulo corretto; checksum del file conformi al database del pacchetto Ubuntu. Sulla quarta VM Apache è inattivo e non si osservano processi PHP. Ricevuta root e riesame in _notes/vulnerabilita-runtime/2026-10-26; originali conservati. L’uguaglianza del namespace non è necessaria quando dispositivo e inode coincidono già. Nessun riavvio; nessuna chiusura del controllo complessivo VA/ISO. Restano gli altri runtime e gli host non verificati.
+
+
+## Il sito nuovo e' raggiungibile sul nome di anteprima, 26/10/2026
+
+Primo rilascio concluso: record creato dal fornitore, certificato ottenuto, HTTPS funzionante dalla sede e rifiuto dalle altre provenienze, reindirizzamento dal traffico in chiaro attivo. Il fornitore ha confermato per iscritto che puo' abbassare il tempo di validita' prima del passaggio e che puo' tenere la sola gestione dei nomi con il sito altrove, previa disdetta del solo spazio web: la via a rischio minore e' praticabile. Restano contenuti, pagine legali, salvataggio, presidio e il passaggio del dominio.
+
+## Sito nuovo in esecuzione sulla VPS, manca solo il nome, 26/10/2026
+
+L'immagine e' stata costruita sulla macchina di produzione contro la sua banca dati e l'applicazione e' in esecuzione: risponde dentro la rete dei contenitori, con contenuti veri e pannello di amministrazione attivo, senza pubblicare porte. Mancano il record `A` di `anteprima.intrawelt.com`, chiesto a Fastnet, e con esso l'avvio del proxy e il certificato. Resta aperto un fatto di contenuto: testo di riempimento visibile sulla pagina iniziale.
+
+## Collettore D6: percorso del marker Windows provato, 26/10/2026
+
+Collettore `2e57ad9` pubblicato e remoto allineato. Il ricevente distingue RFC 5424 via TLS da IP della lista pilota e scrive l'heartbeat nel file letto da D6; UDP, RFC 3164 e IP estranei passano al flusso tecnico. Test Debian 13 e 34 prove Python verdi, senza prova dell'agent Windows o deploy. ISO-30 e Cliente-1 89/90 in corso. Questo filone aggiorna due dossier, fonte e vista ISO, SVG e le schede di rete; le modifiche parallele del sito restano nel worktree fuori dal commit selettivo.
+
+## Anteprima configurata, manca il record DNS e la chiave, 26/10/2026
+
+Il nome provvisorio del primo rilascio e' `anteprima.intrawelt.com`, configurato nel descrittore e nel proxy, che ammette la sola provenienza aziendale con l'eccezione della verifica del certificato. Restano due atti del proprietario: il record `A` verso la VPS, da creare nel pannello dell'hosting attuale, e l'autorizzazione della chiave di distribuzione su GitHub. Chiarito che dismettere l'hosting senza prima spostare la zona fermerebbe anche la posta aziendale, e aperte tre pendenze: ordine della dismissione, censimento dei certificati a deploy concluso, credenziali in chiaro nel foglio dei domini.
+
+## Censimento runtime e integrita, 26/10/2026
+
+Su richiesta dell'utente, ricognizione dei progetti aziendali e degli host collegati, escluso il materiale personale. Dossier privato filtrato in `_notes/vulnerabilita-runtime/2026-10-26/`; fonte tecnica in [censimento runtime](../context/design-and-security.md#censimento-runtime-2026-10-26). Undici host aziendali su dodici raggiunti, WordPress non verificato. PHP .13 corrisponde alla correzione Ubuntu sulle quattro VM osservate; priorita aperte sui runtime dei container IntraLino e Next nei due progetti aziendali. Versioni affette e sfruttabilita restano distinte; nessun aggiornamento o riavvio. Ricognizione parziale, non attestazione di assenza di compromissione; nessun gate ISO chiuso. Preservato il lavoro parallelo sul sito e sugli altri filoni.
+
+## Primo rilascio del sito: produzione popolata, manca il codice, 26/10/2026
+
+La VPS di produzione ha ora banca dati con i contenuti di sviluppo, file caricati allineati, descrittore dei contenitori e configurazione del proxy validati sul posto, e segreti propri. Mancano il codice, che aspetta l'autorizzazione della chiave di distribuzione su GitHub, e un nome provvisorio che punti alla macchina perche' il proxy possa ottenere il certificato. Il difetto dell'uscita autoconsistente risulta gia' chiuso su `main`, che e' il riferimento di rilascio: il progetto lo dava per aperto perche' leggeva un altro ramo. Il difetto della persistenza dei file caricati e' chiuso dal descrittore nuovo, che monta le due cartelle dall'host. Nessun avanzamento ISO registrato.
+
+## Sei lezioni risalite al template, 26/10/2026
+
+Il ramo `risalita/lezioni-23-ottobre` dell'albero `E:/template-risalita-lez23` porta L-011...L-016 al template: la regola sempre attiva `recupero-dei-fatti.md` con la sua norma, due sezioni nelle skill `prove-che-misurano` e `craft-apps`, il pacchetto nuovo `vps-baseline` come novantaquattresima voce del catalogo, e la correzione di `lint-md-tables.py`, che su un percorso non trovato rispondeva «0 file esaminati, 0 difetti» con uscita zero. Commit, merge in fast-forward e push fatti dall'utente il 26/10: il template e' a `6472819`, l'albero di lavoro e il ramo sono stati rimossi. Resta l'allineamento dei progetti istanziati, che finche' non passa fa ancora elencare L-011...L-016 come aperte qui, perche' `lezioni-template.py` legge la copia del registro dentro il progetto. In questo progetto non si e' proposto nessun `chiudi`: una sessione Codex stava scrivendo nello stesso albero.
+
 ## Collettore D6 recupera la finestra locale, 26/10/2026
 
 Il collettore `213d19b` è pubblicato: politica v2 con `active_from`, 213 giorni retrospettivi e report limitato; 16 test, Ruff e chiusura verdi. Dossier e timeline della rete allineati, ISO-30 resta in corso. Mancano installazione del timer, heartbeat, allarme consegnato, D7 e custodia indipendente per Cliente-1 89/90.

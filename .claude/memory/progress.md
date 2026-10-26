@@ -1,5 +1,249 @@
 # Work-log
 
+## Identita' d'autore unificata sui repository di lavoro, 26/10/2026
+
+Sanato il difetto che aveva prodotto i tre nomi d'autore nella storia del progetto del sito. La misura preliminare aveva mostrato la causa: dodici repository di lavoro sulla stessa macchina, tutti sullo stesso alias SSH aziendale, con l'identita' locale scritta in tre modi diversi, sei in una forma, quattro in un'altra, uno in una terza e uno senza. Ogni commit prendeva il nome dal repository da cui partiva.
+
+L'IT Manager ha scartato due vie che gli erano state proposte, e aveva ragione su entrambe. L'identita' globale di macchina avrebbe firmato con la casella aziendale anche cio' che aziendale non e'; l'inclusione condizionale legata all'alias del remoto, tecnicamente corretta e supportata dalla versione di git installata, era macchineria sproporzionata a un problema che si risolve impostando l'identita' dove serve. La via scelta e' la piu' semplice: stessa identita' locale su tutti i repository il cui remoto passa dall'alias aziendale, un comando solo, nessuna configurazione globale e nessun effetto sugli altri alias della macchina.
+
+Verificato dopo l'esecuzione, che e' il passo che distingue l'intenzione dall'esito: dodici repository su tredici riportano ora lo stesso nome, compreso uno comparso nel frattempo. Il tredicesimo non ha remoto, quindi non rientrava nel criterio, e mostra l'identita' globale della macchina. Da qui un residuo che vale la pena conoscere e che non riguarda solo questo progetto: il nome globale di questa macchina e' l'identificativo dell'account e non la persona, quindi ogni repository nuovo nasce con quello finche' qualcuno non imposta l'identita' locale.
+
+I commit gia' scritti restano con il nome che avevano. Non e' un problema di attribuzione, perche' la piattaforma attribuisce in base alla casella di posta, che e' sempre stata la stessa: cio' che cambia da adesso e' soltanto il nome leggibile nella storia.
+
+File scritti e riletti: questo work-log. **Template:** nessuna
+
+## Verificata e respinta una seconda segnalazione, e la lezione che resta, 26/10/2026
+
+La sessione che aveva riferito il guasto del supporto ha corretto nel proprio repository le due righe che dichiaravano la corrispondenza fra classi di indirizzi, e ne ha sollevata una seconda: che nel file di esempio dei pattern del pacchetto di anonimizzazione, tracciato e quindi pubblico anche qui, fosse finito un prefisso di sottorete vero. Ha dichiarato di non volerlo toccare da sola, il che era la scelta giusta.
+
+La verifica dice che il sospetto e' infondato. I due valori di quel file sono stati confrontati con i trentasei prefissi reali del file privato dei pattern e con la mappa dei segnaposto: nessuno dei due coincide, e il terzo ottetto dell'esempio non compare fra quelli veri. Il file e' corretto e non va cambiato per questa ragione, ed e' stato comunicato alla sessione che lo aveva segnalato perche' valga anche per la sua copia, che viene dallo stesso pacchetto.
+
+Resta un margine piccolo e vero, che e' cio' che il sospetto aveva intravisto senza saperlo nominare: i valori inventati condividono i primi due ottetti con altrettanti intervalli reali, perche' sono stati scelti verosimili. Un esempio destinato a un repository pubblico guadagnerebbe a usare gli intervalli riservati dagli standard alla documentazione, che non somigliano a nulla per costruzione. E' materia del pacchetto del template e segue la via della risalita, non si fa qui.
+
+La lezione che la sessione si e' portata via vale anche per questo progetto e conviene scriverla: una pseudonimizzazione non si rompe nel file protetto, si rompe nel punto in cui qualcuno spiega come funziona, e quel punto di solito e' un registro di lavoro. Chi cerca nomi propri e numeri di serie non trova una frase che mette in relazione due classi di indirizzi, perche' non somiglia a nessuna delle due cose, eppure vale piu' di entrambe.
+
+File scritti e riletti: `docs/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Recepita dall'esterno la caduta del supporto della CA, e trovata una reversibilita' della pseudonimizzazione, 26/10/2026
+
+Una sessione che lavorava su un altro progetto ha riferito due fatti su richiesta dell'IT Manager. Nessuno dei due e' stato recepito sulla parola: entrambi verificati qui prima di scriverli.
+
+Il primo. Il supporto rimovibile che custodiva il materiale dell'autorita' di certificazione interna ha ceduto una seconda volta ed e' fuori servizio; il materiale e' stato recuperato per intero, dieci file, e risiede ora in una cartella locale sincronizzata in cloud per scelta consapevole dell'IT Manager. E' esattamente il rischio che la deroga del 14/10 aveva accettato per iscritto, e che quella stessa deroga nominava. Aggiornata la scheda dell'autorita': le affermazioni sulla collocazione della chiave erano superate, la nuova collocazione contraddice la ragione di ADR-025 e il fatto si registra come stato reale senza riaprire una decisione presa, e serve un supporto nuovo con la decisione se tornare alla forma di ADR-025 o dichiarare una deroga diversa.
+
+Il secondo e' piu' serio e la segnalazione lo sottovalutava. Un altro repository pubblico, estraneo a questo progetto, dichiarava per esteso in due righe del proprio registro di lavoro la corrispondenza fra la classe di indirizzi reali della LAN e quella dei segnaposto usati qui, nominando questo repository. Verificato che quel repository era pubblico e che le righe dicevano quello; quale sia non si scrive qui, perche' nominarlo in un file pubblico ricostruirebbe il collegamento che la correzione toglie. La pseudonimizzazione degli indirizzi interni di questo progetto e' percio' reversibile da chiunque legga entrambi, su 461 occorrenze nei file tracciati. Non apre accessi, perche' quegli indirizzi non sono instradabili da Internet, ed e' la perdita di un controllo dichiarato con valore di ricognizione per chi attacca. Il rimedio sta nell'altro repository e non in questo; qui resta la sorveglianza perche' la mappatura non sia ridichiarata altrove, e la regola generale che ne discende, cioe' che le convenzioni di pseudonimizzazione di questo progetto non si spiegano fuori da questo progetto.
+
+Nessuna delle due notizie e' stata scritta con valori reali: ne' la collocazione del materiale, ne' i nomi degli host, ne' le classi di indirizzi, che in questo repository non possono comparire proprio per la ragione che il secondo fatto mette in discussione.
+
+File scritti e riletti: `docs/autorita-certificazione-interna.md`, `docs/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Identita' d'autore: che cosa la determina, e una mia misura sbagliata, 26/10/2026
+
+Chiarito su domanda dell'IT Manager che cosa decide l'autore di un commit, perche' la spiegazione precedente non bastava. Un commit ha un solo campo autore e git lo riempie con la configurazione della macchina su cui il commit nasce, non con chi e' alla tastiera e non con la chiave che poi lo pubblica. Sulla macchina di sviluppo quella configurazione e' del collaboratore, quindi un commit creato li' nasce suo anche se la modifica e' di altri, e non diventa di entrambi: per un lavoro a quattro mani esiste la riga `Co-authored-by`, che git prevede e GitHub riconosce.
+
+Corretta una mia affermazione del giro precedente, sbagliata e gia' scritta in ADR-040. Avevo detto che i tre nomi d'autore con cui l'IT Manager compare nella storia frammentano il conteggio dei suoi contributi. La misura dice che non e' vero: i tre nomi sono l'identificativo dell'account, usato da GitHub per i commit nati dall'interfaccia web, piu' due nomi configurati su due macchine; ma la casella di posta e' la stessa in tutti e tre, e GitHub attribuisce per casella e non per nome. I contributi sono quindi gia' tutti attribuiti correttamente, e cio' che varia e' soltanto il nome leggibile. ADR-040 e' stata corretta su questo punto invece di lasciarvi dentro l'esagerazione.
+
+La sanazione proposta e' percio' cosmetica e vale in avanti: stesso nome nel profilo GitHub, che governa i commit nati dal web, e stessa configurazione locale su ogni macchina da cui si committa, compresa quella di sviluppo quando vi lavora l'IT Manager. I commit gia' fatti restano, perche' riscrivere una storia condivisa per una ragione estetica non si fa.
+
+File scritti e riletti: `.claude/memory/decisions.md`, questo work-log. **Template:** nessuna
+
+## Corretta ADR-040 dopo una premessa sbagliata, 26/10/2026
+
+L'IT Manager ha contestato la prima stesura di ADR-040, e aveva ragione. Quella stesura descriveva il repository del sito come lavoro di una persona sola e ne faceva discendere una separazione rigida di competenze. La misura sulla storia del repository dice altro: le persone che vi hanno scritto sono tre, con ventotto commit del collaboratore, dieci dell'IT Manager e due di un terzo collaboratore interno. Il sito e' un lavoro a piu' mani e l'IT Manager e' co-autore.
+
+Nella stessa stesura erano state confuse due cose diverse, ed e' l'errore tecnico che va ricordato perche' si ripete facilmente. La chiave SSH autentica la pubblicazione di un ramo; l'identita' git configurata determina l'autore del commit. Si era concluso che un ramo spinto dalla macchina di sviluppo avrebbe portato la firma del collaboratore a causa della chiave: non e' per quello. E' vero per un'altra ragione, misurata adesso, cioe' che su quella macchina l'identita' git configurata e' la sua in tutti e tre gli alberi di lavoro, quindi un commit creato li' nasce intestato a lui qualunque chiave lo pubblichi.
+
+ADR-040 e' stata riscritta per intero con la premessa corretta. Aggiunge inoltre cio' che l'IT Manager ha chiesto fin dall'inizio e che la prima stesura trascurava: questo progetto segue anche lo sviluppo del sito, non solo l'infrastruttura, attraverso il canale gia' definito, perche' meta' delle voci di irrobustimento sono scelte di sviluppo. Rilevato infine che l'IT Manager compare nella storia sotto tre nomi d'autore diversi con la stessa casella: non rompe niente, frammenta il conteggio dei contributi.
+
+File scritti e riletti: `.claude/memory/decisions.md`, questo work-log. **Template:** nessuna
+
+## Roadmap del primo rilascio chiusa, 26/10/2026
+
+Chiusa la fase infrastrutturale della messa in produzione del sito. Lo stato finale, tutto misurato e non dedotto: descrittore di produzione in esercizio, immagine costruita sulla macchina di produzione contro la sua banca dati, sito che risponde in HTTPS sul nome di anteprima con certificato automatico, restrizione alla sola provenienza aziendale con l'eccezione della verifica del certificato, persistenza provata in scrittura e in cancellazione su entrambe le collezioni, riservatezza verificata, cartelle non servite in forma diretta. I conteggi dei file sono tornati esatti a quelli di partenza dopo la pulizia delle prove, compresa quella riservata che il proprietario ha rimosso con un'utenza amministrativa.
+
+Registrata ADR-040 sulla titolarita' del repository del sito, che nasce dal rilievo sull'identita' con cui la macchina di sviluppo pubblica. Le persone sul repository sono due, chi sviluppa firma con la propria identita' e dalla propria macchina, e questo progetto non spinge mai dalla macchina di sviluppo perche' da li' firmerebbe come il collaboratore. VPS-002 (#225) resta aperta sul ruolo formale nell'organizzazione.
+
+Aggiornata la scheda del lavoro corrente con la chiusura della fase e con cio' che resta, che non e' infrastruttura ma contenuto, adempimenti e calendario. Il filone successivo, concordato con il proprietario, e' il censimento dei certificati, fermo finora in attesa di questa chiusura.
+
+File scritti e riletti: `.claude/memory/decisions.md`, `.claude/context/current-work.md`, questo work-log, `.claude/memory/index.md`. **Template:** nessuna
+
+## Il ciclo dei file e' provato nei due sensi, e la macchina di sviluppo firma come il collaboratore, 26/10/2026
+
+Completata la prova della persistenza anche in cancellazione. Rimosse dal pannello le due immagini di prova della collezione pubblica, i file sono spariti anche dal disco della macchina e i conteggi sono tornati a quelli di partenza, venticinque file e sedici schede. Il montaggio delle cartelle regge percio' nei due sensi e non solo in scrittura.
+
+Rilevato nello stesso giro un fatto di permessi: l'utenza di redattore crea nella collezione riservata ma non vi cancella, e selezionando la riga non compare alcun comando di eliminazione. E' una restrizione sensata e non un difetto, perche' chi deposita un documento riservato non e' detto debba poterlo distruggere; va pero' saputa, perche' significa che la pulizia di quella collezione richiede un'utenza amministrativa. Il file di prova resta li', innocuo.
+
+Il fatto che conta di piu' e' emerso verificando se si potesse preparare una richiesta di incorporazione per il file che popola i contenuti. Si puo', ma non da dove si pensava: l'unica macchina da cui questo progetto raggiunge quel repository e' la macchina di sviluppo, e quella si autentica a GitHub con le credenziali personali del collaboratore, come mostra l'alias del remoto. Un ramo spinto da li' porterebbe la sua identita' su un lavoro che non ha fatto, che e' la stessa rottura di attribuzione per cui non si copiano le chiavi fra macchine. La via pulita e' spingere dalla postazione aziendale con l'identita' del proprietario, oppure lasciare il lavoro a chi scrive i testi. E' materia di VPS-002 (#225), cioe' la decisione sul ruolo del collaboratore nell'organizzazione, che resta aperta.
+
+Ritirata inoltre un'obiezione sbagliata fatta poco prima in sessione: si era detto che preparare quella richiesta avrebbe aggirato la rilettura prevista dal modello di rilascio. Non e' vero, perche' una richiesta di incorporazione e' precisamente il luogo della rilettura. Le ragioni valide per non farla adesso sono altre due, cioe' che manca il testo da sostituire e che chi scrive i testi dovra' comunque toccare quel file.
+
+File scritti e riletti: questo work-log. **Template:** nessuna
+
+## Primo rilascio chiuso: persistenza provata e riservatezza misurata, 26/10/2026
+
+L'ultima verifica tecnica aperta e' stata fatta dal proprietario con l'utenza di redattore, su entrambe le collezioni di file. Due immagini caricate nella collezione pubblica sono atterrate su `/opt/intrawelt-new-website/media` con il peso identico al byte e la scheda corretta per tipo, dimensione e pixel; un file caricato nella collezione riservata e' atterrato su `private-uploads`, la cartella che all'impianto non esisteva e che il descrittore nuovo ha creato. La persistenza e' provata con una scrittura vera su entrambe, e il difetto che bloccava il salvataggio e' chiuso.
+
+Nella stessa occasione e' stata misurata la riservatezza, che nessuno aveva chiesto e che vale piu' della prova stessa. Interrogando il sito dalla provenienza ammessa: le due cartelle non sono servite in forma diretta e rispondono come se non esistessero; il file pubblico si raggiunge solo attraverso il percorso applicativo della sua collezione, che risponde positivamente; il file riservato, interrogato sul proprio percorso applicativo senza autenticazione, e' rifiutato dal controllo di accesso. La separazione regge per costruzione, ed e' la risposta alla domanda che il piano poneva sulla rilettura del controllo di accesso prima della pubblicazione.
+
+Corretto anche un errore di misura commesso durante la verifica: la prima prova di irraggiungibilita' del file riservato era stata lanciata dalla VPS stessa, che il proxy respinge comunque, quindi il suo esito negativo non dimostrava niente. Rifatta dalla provenienza ammessa, dove la domanda ha senso.
+
+Corretta infine un'affermazione sbagliata fatta poche ore prima: era stato detto che un'immagine in CMYK non si sarebbe vista perche' i browser non la disegnano. La prova mostra il contrario, cioe' che si vede correttamente nella scheda del pannello; l'anteprima vuota osservata nell'elenco era un'altra cosa e non autorizzava quella conclusione. Resta la raccomandazione di caricare in RGB come buona pratica, non come difetto misurato.
+
+Rilevato infine che la collezione pubblica conserva l'originale e non genera versioni ridotte: nella cartella gli unici file con suffisso di dimensione sono due residui della vecchia importazione. Ogni immagine e' percio' servita come caricata, e il peso di una fotografia non ridimensionata si paga per intero sul tempo di composizione della pagina, che e' la grandezza su cui il presidio dovra' vigilare.
+
+File scritti e riletti: `docs/runbook-primo-rilascio-sito.md`, questo work-log, `.claude/memory/index.md`. **Template:** nessuna
+
+## La via di emergenza alla VPS esiste di nuovo, 26/10/2026
+
+Il fornitore non ha riparato niente e non doveva: la console di ripristino non e' guasta in se', e' guasta nel pannello nuovo e funziona in quello precedente. Percorso il cammino per intero su indicazione del fornitore e documentato: dal pannello nuovo si apre il menu dell'identificativo dell'account in alto a destra e si sceglie la voce che porta al pannello precedente; da li', nella sezione dei server, la console si apre sia dal menu rapido della riga sia dalla pagina di gestione della macchina. La prova e' arrivata fino al prompt di accesso del sistema operativo, che e' il punto in cui doveva arrivare.
+
+Ne discende che la ridondanza dell'accesso e' reale e non piu' apparente, e la ragione e' che questa via non condivide niente con quella ordinaria: usa credenziali diverse, cioe' utenza e password invece della chiave, e un canale diverso, cioe' l'infrastruttura del fornitore invece della rete. Regge percio' a una chiave persa, a una regola di filtro scritta male e a un servizio di accesso remoto fermo, che sono i tre modi in cui la via ordinaria si perde. Resta il limite dichiarato: entrambe le vie fuori banda appartengono allo stesso fornitore e cadono insieme se cade lui.
+
+Corretta anche la diagnosi del 22/10, che dava la console per guasta senza distinguere i due pannelli. Scritta la procedura in `docs/runbook-accesso-emergenza-vps.md`, corta per costruzione perche' si legge quando nessuno ha voglia di cercare, con dentro il presidio che ne discende: si riprova quando non serve, perche' una via di emergenza mai aperta e' una dichiarazione e non una via, ed e' l'errore che il 22/10 aveva fatto considerare funzionante una console che nessuno aveva mai provato.
+
+File scritti e riletti: `docs/runbook-accesso-emergenza-vps.md`, `docs/infrastructure-timeline/GAP-TBC.md` riga 224, questo work-log. **Template:** nessuna
+
+## Il testo di riempimento nasce dal codice e vive nella banca dati, 26/10/2026
+
+Correzione a quanto affermato poche ore prima in sessione. Il testo di riempimento della pagina iniziale era stato descritto come contenuto che sta nella banca dati e non nel codice: e' vero per cio' che il sito serve oggi, ed e' falso sull'origine. La ricerca per token nel repository del sito lo trova in `src/seed/globals.ts`, il file che popola i globali, con almeno due occorrenze fra cui titolo, paragrafo ed etichetta del richiamo della slide iniziale.
+
+Ne discende che i posti da correggere sono due e non uno, e che correggerne uno solo produce due difetti opposti. Intervenire soltanto dal pannello di redazione sana il sito in esercizio ma lascia il testo nel file che popola: chiunque ripopoli un ambiente nuovo se lo ritrova. Intervenire soltanto nel file non cambia nulla di cio' che si vede, perche' il sito legge la banca dati e non il file.
+
+Resta invece confermato che la cosa non dipende dalla gestione dei rami: quel file e' identico sui rami in gioco, e il riferimento di rilascio non c'entra. La distinzione utile non e' fra ramo e ramo ma fra codice che popola e dati popolati, ed e' la stessa che rende ADR-038 necessaria, cioe' che la costruzione legge la banca dati e incorpora cio' che vi trova.
+
+La correzione e' stata portata nel testo preparato per il referente dei contenuti, che ora nomina entrambi i luoghi.
+
+File scritti e riletti: questo work-log. **Template:** nessuna
+
+## Credito del fornitore cloud misurato dal pannello, e due difetti a un clic, 26/10/2026
+
+Letto il cruscotto del pannello cloud mentre si cercava la via alla console di emergenza, e ne escono tre dati che il progetto non aveva. Il credito disponibile e il consumo degli ultimi trenta giorni coincidono a meno di pochi centesimi: il credito copre esattamente un mese di esercizio e non piu'. Le cifre non si scrivono qui, perche' questo file e' pubblico e la regola esclude gli importi; stanno nel pannello del fornitore, che e' la fonte. La ricarica automatica risulta attiva, il che e' la sola ragione per cui il dato non e' un allarme; resta che le tre macchine rinnovano in una finestra di quindici giorni, la prima fra tre giorni, e che la validita' dello strumento di pagamento e' gia' registrata come residuo non provato.
+
+Nello stesso cruscotto due difetti aperti del progetto risultano sanabili da quella pagina, con un collegamento diretto ciascuno. Il secondo fattore sull'account, VPS-010 (#235), e' dichiarato «da attivare» con il proprio comando accanto: e' la voce con il miglior rapporto fra effetto e costo dell'intero filone, al secondo rinvio. I recapiti dell'account, VPS-009 (#232), sono dichiarati non verificati con il comando di verifica accanto, ed e' la stessa radice per cui il codice di reinizializzazione della password non arrivava.
+
+Sulla segnalazione della console di emergenza il fornitore non ha riparato nulla: indica di passare al pannello di controllo precedente, raggiungibile dal nuovo cliccando sull'identificativo dell'account in alto a destra e poi sul comando che porta al pannello di controllo. E' una via alternativa, non una correzione, e va provata dal proprietario.
+
+File scritti e riletti: questo work-log. **Template:** nessuna
+
+## Primo rilascio concluso: il sito risponde sul nome di anteprima, 26/10/2026
+
+Il fornitore dell'hosting ha creato il record `A` richiesto nel pomeriggio, con il tempo di validita' a trecento secondi. Il nome risolve verso la VPS sia dal server autoritativo sia da un risolutore pubblico, che e' la verifica che conta. Avviato il proxy, che ha ottenuto il certificato alla prima richiesta: il registro mostra la verifica arrivata da cinque punti di controllo distinti, tutti serviti, che e' la prova che l'eccezione lasciata aperta nella restrizione era necessaria e non ornamentale.
+
+Tre prove di esercizio, tutte positive. Dalla postazione il sito risponde in HTTPS con certificato valido, 121 KB di pagina e il titolo del sito in poco piu' di un secondo. Da una provenienza non ammessa, provata dalla VPS stessa, la risposta e' il rifiuto previsto con il suo messaggio: la restrizione funziona e l'anteprima non e' pubblica. Il traffico in chiaro viene rimandato su HTTPS con reindirizzamento permanente. Il registro del proxy riporta la provenienza reale e non il loopback, il che chiude meta' della verifica rimasta aperta; l'altra meta', cioe' se il framework legga l'intestazione inoltrata, resta dichiarata non verificata.
+
+Il fornitore ha sciolto nella stessa risposta le due domande che accompagnavano la richiesta, ed entrambe sostengono la via a rischio minore. Puo' abbassare il tempo di validita' dei record del web nei giorni precedenti il passaggio e riportarlo dopo, se la data gli arriva in anticipo. E puo' mantenere la sola gestione dei nomi con il sito ospitato altrove, previa richiesta di disdetta scritta del solo spazio web. La via smette di essere un'ipotesi tecnica e diventa una pratica amministrativa con una forma nota.
+
+Dal fornitore della VPS e' arrivata invece una risposta alla segnalazione <ticket-fornitore-cloud> sulla console di emergenza guasta: indica di usare il pannello di controllo precedente, raggiungibile dal nuovo, dove la console del server sarebbe presente. E' una via alternativa e non una correzione del guasto; va provata dal proprietario, e se funziona chiude la meta' di VPS-001 che riguarda la via fuori banda.
+
+Restano aperte, in ordine: la prova di un caricamento dal pannello di redazione, che richiede le credenziali del proprietario; i contenuti definitivi al posto del testo di riempimento; le pagine legali e i moduli di contatto; il salvataggio con la sua prova di ripristino; il presidio; e il passaggio del dominio.
+
+File scritti e riletti: `docs/runbook-primo-rilascio-sito.md`, `.claude/context/roadmap.md`, la vista di roadmap sul Desktop, questo work-log. **Template:** nessuna
+
+## Artefatti di comunicazione riallineati al sito in produzione, 26/10/2026
+
+Aggiornati i tre artefatti che raccontano lo stato ai colleghi, dopo che il sito e' entrato in esecuzione sulla VPS. La vista di roadmap sul Desktop e' stata rigenerata come file datato del 26/10, riusando senza modifiche il foglio di stile della versione precedente, che e' gia' quello del design system di account: quindici voci contro le undici di prima, con le voci della persistenza, dei contenuti portati, della prima costruzione e del sito avviato chiuse con la loro misura, e la voce del passaggio del dominio riscritta sulla via a rischio minore. La presentazione per i colleghi e' stata aggiornata sul posto dopo una copia di sicurezza datata, con nove testi sostituiti e sette piedi di pagina.
+
+Nel sostituire i testi della presentazione il confronto letterale falliva su due stringhe, e la ragione merita di essere scritta perche' non si vede: in quel file le lettere accentate sono in forma decomposta, cioe' lettera piu' accento combinante, mentre le stringhe cercate erano in forma precomposta. Le due forme si vedono identiche a schermo e non lo sono per un confronto. Corretto normalizzando entrambe prima del confronto, e lo strumento si ferma se una sostituzione non trova il proprio bersaglio invece di salvare a meta'.
+
+Resta il limite gia' dichiarato il 23/10 e non superato: in questo ambiente non esiste un convertitore che renda la presentazione in immagini, quindi non e' stata vista e la verifica visiva resta al proprietario.
+
+Aggiornata anche la roadmap di progetto con la soglia superata: tutto cio' che restava di infrastruttura e' fatto, e cio' che resta e' contenuto, adempimenti e una decisione di calendario. Preparato per il proprietario il testo da girare al referente dei contenuti del sito, che in questo progetto e' Persona-E, sul testo di riempimento ancora presente sulla pagina iniziale.
+
+File scritti e riletti: `C:/Users/Utente/Desktop/Roadmap sito in produzione - 26-10-2026.html`, `C:/Users/Utente/Desktop/Sito e rete - aggiornamento colleghi.pptx` con la copia di sicurezza accanto, `.claude/context/roadmap.md`, questo work-log. **Template:** nessuna
+
+## Prima costruzione di produzione riuscita sulla VPS, 26/10/2026
+
+Catena percorsa per intero fino al punto in cui manca il record del nome. Chiave di distribuzione autorizzata dall'IT Manager e verificata dalla macchina, che si autentica al solo repository del sito; copia di `main` prelevata in `/opt/intrawelt-new-website/sorgente` al commit `e535aa4`; file di ambiente della costruzione scritto con la banca dati sul loopback e permessi 600.
+
+Costruzione riuscita in 2 minuti e 48 secondi, immagine `intrawelt-sito:primo-rilascio`. E' la prima volta che la catena arriva in fondo su questa macchina. Conferma due cose che il progetto aveva dedotto: gli otto gigabyte chiesti dallo script erano un tetto concesso all'interprete e non un fabbisogno, e il passo che copia l'uscita autoconsistente non fallisce piu' perche' quella configurazione e' dichiarata su `main`.
+
+Applicazione avviata: risponde 200 dentro la rete dei contenitori e non pubblica nessuna porta verso la macchina, verificato dal motore. Il proxy resta fermo perche' senza un nome che punti qui non otterrebbe il certificato.
+
+Chiuse due delle tre verifiche aperte. Le pagine hanno contenuto vero e non generato dal nulla: pagina iniziale di 121 KB, titolo del sito presente, pannello di amministrazione che risponde 200; e' la conferma a posteriori che i contenuti dovevano precedere la costruzione. Le due cartelle dei file caricati sono visibili dentro il contenitore ai percorsi attesi, con 25 file e 1 file, gli stessi contati sullo sviluppo; resta da provare una scrittura nuova dal pannello, che richiede il pannello raggiungibile.
+
+Rilevato un fatto di contenuto e non di infrastruttura: la seconda delle tre immagini che scorrono sulla pagina iniziale ha titolo e paragrafo ancora in lorem ipsum. Appartiene al progetto del sito ed e' gia' coperto dalla decisione aperta su che cosa si pubblica, ma ora e' misurato sul riferimento di rilascio e non sul banco di prova.
+
+File scritti e riletti: `docs/runbook-primo-rilascio-sito.md`, questo work-log. **Template:** nessuna
+
+## Heartbeat Windows D6 collegato alla rete, 26/10/2026
+
+Ricevuto il `chiudi` del collettore: commit `2e57ad9` su `main`, uguale a `origin/main`, albero pulito. Propagato il checkpoint nei dossier di integrazione e nella timeline; registrato un evento ISO-30 `in_corso` e rigenerate vista Markdown, HTML privati e SVG a 243 eventi. Il test Debian 13 prova lo smistamento e la lettura D6, ma nessun Fluent Bit Windows, timer, ritenzione del rifiutato o allarme è in esercizio. D7, custodia indipendente e Cliente-1 89/90 aperti. Le quattro schede condivise erano già modificate dal filone sito: aggiunte solo le sezioni D6, da versionare con patch selettivo. Nessun add, commit, push o deploy dell'agente. **Template:** nessuna.
+
+## Spiegazione DNS per un lettore esterno, e una direttiva sugli artefatti, 26/10/2026
+
+L'IT Manager ha contestato il linguaggio delle risposte sulla materia DNS, con ragione: erano stati usati termini tradotti in italiano che non esistono nell'uso tecnico, come scambiatore per record MX o alias per record CNAME, e che rendevano illeggibile un argomento gia' ostico. Scritta percio' `docs/dns-domini-come-funziona.md`, che spiega i concetti dall'inizio con i nomi corretti, porta una tabella di traduzione dei termini sbagliati e tre disegni in blocco preformattato dello stato attuale, di quello con l'anteprima e di quello dopo il passaggio. La scheda dichiara di essere leggibile da sola, perche' il proprietario la gira a un collega.
+
+Direttiva dell'utente ribadita nello stesso giro, dopo che l'agente aveva cominciato a produrre un documento su claude.ai: gli artefatti e i documenti si fanno sempre e soltanto come file locali del progetto, mai come artefatti o documenti del servizio, nemmeno quando il contenuto e' destinato a un'altra persona. Il documento appena creato e' stato cancellato e la direttiva scritta in `CLAUDE.local.md`, che l'agente legge a ogni sessione, perche' finora viveva solo nell'abitudine e non in un file.
+
+File scritti e riletti: `docs/dns-domini-come-funziona.md`, `CLAUDE.local.md`, questo work-log. **Template:** nessuna
+
+## La zona non si tocca dal pannello, e la posta non e' all'hosting, 26/10/2026
+
+Chiave di distribuzione autorizzata dall'IT Manager e verificata dalla VPS: GitHub risponde «successfully authenticated» per il solo repository del sito, in sola lettura. Quel passo e' chiuso e misurato, non dichiarato.
+
+Il record del nome provvisorio invece non si crea dal pannello dell'hosting. La pagina delle impostazioni DNS del dominio contiene due soli oggetti, i due server di nomi, e il comando per aggiungere un record offre un solo tipo, che e' ancora un server di nomi: e' un pannello in cui il servizio DNS per quel dominio e' esterno. L'interrogazione diretta conferma che i server autoritativi sono quelli dell'hosting, che il primario dichiarato nel record di inizio autorita' e' il secondo dei due, e che il contatto della zona e' una casella dell'hosting. Ogni modifica passa percio' da loro.
+
+La stessa interrogazione porta il fatto che cambia il giudizio sul rischio dell'intera fase del passaggio del nome, e che il progetto finora non distingueva: la posta non e' presso l'hosting, perche' lo scambiatore punta al servizio di Microsoft 365 e l'hosting detiene soltanto il file di zona che contiene quel record. Il sito attuale invece sta li', con il nome del web che e' un alias verso un nome di macchina sull'indirizzo del pannello, lo stesso del sottodominio gia' esistente.
+
+Ne discende una via a rischio minore che non era stata considerata e che risponde alla domanda dell'IT Manager: si puo' smettere di usare l'hosting per il sito e lasciare la zona dov'e', cambiando al passaggio i soli record del web. Il capitolo piu' pericoloso del piano si evita non spostando la zona. I tre costi sono dichiarati nel runbook: ogni modifica diventa una richiesta all'hosting, compreso il ritorno indietro; il tempo di validita' predefinito della zona e' di un giorno, quindi l'abbassamento va chiesto giorni prima e non durante; e la via e' incompatibile con la decisione D1 nella forma con il fornitore di protezione. Registrata anche una cosa da non fare: il comando del pannello che abilita il servizio DNS locale genererebbe una zona priva dei record della posta.
+
+File scritti e riletti: `docs/runbook-primo-rilascio-sito.md`, questo work-log. **Template:** nessuna
+
+## Nome di anteprima scelto, proxy ristretto e zona DNS chiarita, 26/10/2026
+
+Scelto `anteprima.intrawelt.com` come nome provvisorio del primo rilascio, su delega dell'IT Manager. Configurato nel descrittore e nel proxy insieme all'indirizzo pubblico dell'applicazione; il record che lo fa puntare alla VPS resta da creare e non e' lavoro di questo progetto.
+
+Il proxy ammette ora la sola provenienza aziendale, misurata e non dedotta: la VPS vede questa postazione arrivare da `wan1` del firewall, che e' l'uscita unica della sede. L'eccezione e' il percorso di verifica dell'autorita' di certificazione, che resta aperto perche' altrimenti il certificato non verrebbe mai emesso, ed e' il difetto che la restrizione avrebbe introdotto se fosse stata scritta senza pensarci. Nome e provenienza non stanno nel file versionato ma nell'ambiente della macchina, perche' il repository e' pubblico. Trovato e corretto prima di usarlo un secondo difetto della stessa famiglia: la variabile della provenienza non era passata al contenitore del proxy e si sarebbe espansa a vuoto, cioe' una restrizione che non restringe. Entrambi i file sono stati rivalidati dopo la correzione e il motore conferma che il proxy vede le due variabili.
+
+Corretto un ragionamento dell'IT Manager sulla licenza del carattere: non conta che il sito vecchio non lo usi, conta su quanti domini o sottodomini il carattere viene servito, e il nome provvisorio sarebbe il secondo. La restrizione alla sola sede disinnesca la questione, perche' un ambiente non pubblico non e' un sito servito al pubblico.
+
+Chiarita, su domanda dell'IT Manager, la differenza fra le tre cose che oggi stanno tutte attorno a Fastnet. Il dominio e' registrato presso EuroDNS, la zona e i server di nome autoritativi stanno presso l'hosting attuale, e l'hosting serve il sito vecchio. Ne discende che dismettere l'hosting senza aver prima spostato la zona non spegne il sito vecchio ma la risoluzione del dominio, e quindi la posta aziendale, perche' quella zona porta scambiatore, mittente autorizzato in rifiuto duro, due selettori di firma e politica di autenticazione verso Microsoft 365. L'ordine obbligato e la coincidenza fra la scelta del nuovo gestore della zona e la decisione D1 sono ora voci del registro delle pendenze.
+
+Letta la cartella di analisi dei domini indicata dall'IT Manager. Conferma la ripartizione fra registrar, DNS e hosting, mostra che esiste gia' un sottodominio gestito allo stesso modo, quindi l'operazione richiesta ha un precedente in casa, e porta tre indizi per il censimento dei certificati. Rilevato nello stesso foglio che le credenziali complete dei pannelli di hosting sono scritte in chiaro: non trascritte da nessuna parte, registrata la pendenza. Il censimento dei certificati e' stato soltanto aperto come pendenza, per indicazione esplicita dell'IT Manager di non cominciarlo prima della fine del deploy.
+
+L'Excel non e' stato modificato: contiene diciassette immagini e otto disegni che una riscrittura automatica avrebbe perso senza segnalarlo, che e' esattamente L-014. Prodotto accanto un foglio compagno datato con le sette voci di oggi, e la ragione della separazione e' scritta nella sua prima riga.
+
+File scritti e riletti: `deploy/vps-sito/compose.yml`, `deploy/vps-sito/caddy/Caddyfile`, `docs/runbook-primo-rilascio-sito.md`, `docs/pendenze-aperte.md`, il foglio compagno nella libreria amministrativa, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Accesso SSH alle due VPS SCENIA preparato dalla postazione, 26/10/2026
+
+Su richiesta dell'IT Manager, che vuole collegarsi alle VPS di produzione e di staging del portale SCENIA come utente `ubuntu`. Due chiavi ED25519 distinte, una per macchina, cosi' che revocare lo staging non tocchi la produzione, senza frase di accesso come la chiave della VPS del sito. Le ha generate prima l'agente e subito dopo, con lo stesso comando, l'IT Manager, che le ha sovrascritte: valgono le seconde, e il registro privato porta le loro impronte, non quelle della prima generazione. Aggiunti alla configurazione SSH della postazione gli alias `scenia-prod` e `scenia-staging`, con l'indirizzo fra i nomi della riga `Host`, cosi' che anche il collegamento per indirizzo usi la chiave giusta: verificato con `ssh -G` su indirizzi e alias.
+
+Misurato senza autenticarsi: la porta 22 delle due macchine risponde dalla postazione, lo staging era gia' fra gli host noti e la produzione no. L'impronta della chiave di host della produzione e' stata letta e registrata nel registro privato, ma resta da corroborare per un canale indipendente prima di accettarla. Non tentato alcun accesso, perche' le pubbliche non sono ancora installate e la scheda dichiara un blocco automatico dopo pochi tentativi falliti, che colpirebbe l'indirizzo pubblico di tutta l'azienda.
+
+Resta un'azione di chi gia' accede alle macchine: aggiungere le due pubbliche alle chiavi autorizzate di `ubuntu`. Poi si prova il collegamento e se ne registra l'esito. Nessun avanzamento ISO.
+
+File scritti e riletti: `docs/scenia-project.md`, `_notes/registro-credenziali.md`, questo work-log. **Template:** nessuna
+
+## Primo rilascio del sito: produzione popolata e descrittore in esercizio, 26/10/2026
+
+Ripreso il filone del sito su richiesta dell'IT Manager, che ha dichiarato nessun cambiamento sulla rete fuori da qui. La misura ha corretto subito due premesse del progetto. La prima: dalla postazione aziendale si entra nella VPS, perche' la chiave nuova autorizzata il 22/10 funziona, quindi il rilascio si esegue e non si prepara soltanto. La seconda, piu' importante: il difetto dell'uscita autoconsistente che il progetto dava per aperto e' chiuso su `main`, che e' il riferimento di rilascio, insieme a un `.dockerignore` che esclude correttamente le due cartelle dei file caricati dal contesto di costruzione. La lettura era stata fatta sul ramo autorevole della memoria del sito e non sul ramo di rilascio, che e' cinque commit avanti: e' la stessa famiglia di L-011, cioe' il fatto cercato dove si credeva stesse invece che dove sta.
+
+Resta invece intero il difetto della persistenza, e la verifica lo conferma sul riferimento di rilascio e non piu' solo sul ramo di lavoro: il descrittore dei contenitori del progetto del sito definisce la sola banca dati, senza applicazione, senza proxy e senza volumi per i file caricati. Scritto percio' il descrittore di produzione in `deploy/vps-sito/`, che e' di questo progetto e non di quello del sito, perche' la roadmap assegna all'IT proxy, filtro e canale. Attua tre scelte: nessuna pubblicazione di porte tranne il proxy, le due cartelle dei file caricati montate dall'host, e la costruzione sulla macchina di produzione secondo ADR-038.
+
+Trovato e corretto un difetto del descrittore prima di usarlo: in costruzione il contenitore non sta sulla rete dei servizi, quindi il nome della banca dati non si risolverebbe e la costruzione leggerebbe una banca dati irraggiungibile proprio mentre deve incorporarne i contenuti. La costruzione usa ora la rete della macchina e la banca dati e' pubblicata sul solo loopback, con la ragione scritta accanto perche' non sembri una svista.
+
+Eseguito sulla VPS: struttura delle cartelle con la cartella riservata che all'impianto non esisteva, descrittore e configurazione del proxy copiati e validati sul posto con `docker compose config` e `caddy validate`, segreti di produzione generati sulla macchina in due file leggibili dal solo utente operativo, chiave di distribuzione per il solo repository del sito generata e in attesa di autorizzazione su GitHub. Portati i contenuti: copia logica della banca dati di sviluppo ripristinata senza errori e verificata contando le righe su entrambe le macchine, cioe' 343 tabelle, 4 pagine, 29 articoli, 6 soluzioni e 16 record di media, identici; i file caricati trasferiti e ricontati sulla VPS, 25 file e 37 MB nella cartella pubblica e 1 file e 536 KB in quella riservata.
+
+Tre decisioni prese dall'IT Manager nello stesso giro: il codice arriva per chiave di distribuzione e non per copia, il primo rilascio avviene su un nome provvisorio e non sul dominio definitivo, e i contenuti si portano subito invece di fare una prova a vuoto. ADR-039 sulla misura del traffico e' stata riconfermata dall'IT Manager e non cambia.
+
+Restano due azioni del proprietario prima della costruzione: autorizzare la chiave su GitHub e far puntare un nome provvisorio alla macchina. Non registrato nessun avanzamento ISO, perche' nessun intervento si chiude finche' il sito non e' pubblicato e sorvegliato. Misurato infine che il framework e' alla `16.3.0`, sotto la soglia dell'avviso di settembre, ma che il codice non usa `next/og` ne' `ImageResponse`, quindi il rilievo critico non e' oggi raggiungibile: l'aggiornamento resta da fare prima della pubblicazione sul nome definitivo.
+
+File scritti e riletti: `deploy/vps-sito/compose.yml`, `deploy/vps-sito/caddy/Caddyfile`, `deploy/vps-sito/env/app.env.esempio`, `docs/runbook-primo-rilascio-sito.md`, `.claude/memory/index.md`, questo work-log. **Template:** nessuna
+
+## Sei lezioni risalite al template, e un lint che dava verde senza leggere, 26/10/2026
+
+Chiusa la risalita delle lezioni L-011...L-015 sul ramo `risalita/lezioni-23-ottobre` dell'albero `E:/template-risalita-lez23`, generalizzate e prive di ogni riferimento a questo progetto. L-011 e' diventata la regola sempre attiva `recupero-dei-fatti.md` con la propria norma, e le regole sempre attive del template salgono a 65.356 caratteri su una soglia di guardia di 100.000. L-013 e' una sezione di `skills/prove-che-misurano/RIFERIMENTO.md`, L-014 una sezione di `skills/craft-apps/SKILL.md` con la riconciliazione della frase che prescriveva di rigenerare un artefatto che una persona ha gia' toccato. L-012 e L-015 sono il pacchetto nuovo `vps-baseline`, con il README e `tools/baseline-vps.sh`, novantaquattresima voce del catalogo.
+
+Durante la verifica della riga nuova del catalogo, `lint-md-tables.py` ha risposto «0 file esaminati, 0 difetti» con uscita zero su un file che non aveva aperto: risolveva il percorso relativo contro la propria cartella e, non trovandolo, `os.walk` non produceva bersagli. Il verde e' stato preso per buono per qualche minuto su una tabella appena scritta. Corretto: il relativo si risolve prima sulla cartella corrente, un percorso inesistente ferma la corsa con uscita diversa da zero, e la raccolta dei bersagli ha ora una propria prova nel self-test, che sale a sedici casi. Registrata come L-016 e recepita nello stesso giro.
+
+I controlli di chiusura del template hanno trovato altre tre cose che la risalita aveva lasciato indietro, e che senza di loro sarebbero entrate nel commit: il pacchetto nuovo senza la marca `readme-summary`, i conteggi «novantatre voci» e «93» scritti a mano in `PACKAGES.md`, `docs/feature-map.html` e `docs/project-flow.html`, e la regola nuova non raggiungibile da nessun punto d'ingresso, ora dichiarata in `SEMPRE_ATTIVE` di `check-raggiungibilita.py`. Dopo le correzioni l'esito e' «Controlli verdi».
+
+Nota su questo albero di lavoro: mentre si scriveva, un'altra sessione stava modificando `D:/network-design`, con una voce di work-log sull'allineamento D6 del collettore e otto file toccati fra le 09:40 e le 09:43. Non si propone percio' nessun `chiudi` su questo progetto, perche' il suo perimetro e' l'albero e non il proprio lavoro: l'unico file scritto qui da questa sessione e' `.claude/memory/lezioni-template.md`, piu' questa voce.
+
+L'utente ha committato il ramo come `6472819`, fuso in fast-forward su `main` del template e pubblicato, poi ha rimosso albero di lavoro e ramo. Registrata inoltre ADR-039, che fissa la decisione sulla misura del traffico del sito, riconfermata dall'IT Manager lo stesso giorno: nessun riconoscimento del visitatore fra una visita e l'altra, quindi nessun identificatore persistente, conteggio dei visitatori distinti dichiarato come stima per finestra, e nessun banner di consenso che nasca da questa misura.
+
+**Template:** L-016.
+
 ## 26/10/2026 - Allineato il recupero D6 del collettore
 
 L'utente ha chiuso e pubblicato `D:/log-collector` a `213d19b`. La politica D6 v2 richiede `active_from`, il timer candidato scandisce 213 giorni e il report conserva il conteggio completo delle anomalie. Sedici prove sintetiche e tre mutazioni rilevate; corretto anche il limite del calendario. Aggiornati integrazione, roadmap e timeline della rete; ISO-30 rimane in_corso per assenza di installazione e prova di allarme, heartbeat, D7 e custodia. Nessun apparato modificato e nessuna copertura Cliente-1 89/90 dichiarata completa.
@@ -3250,3 +3494,21 @@ Verificato subito dopo la riscrittura della storia forzata sul remoto, perche' u
 La punta e' pulita, cioe' il guard-rail passa a zero riscontri bloccanti: il problema vive solo nella storia pubblica, che e' dove SEC-047 (#191) lo colloca da settembre. Il difetto resta percio' aperto, e la riscrittura di oggi va considerata una passata parziale e non la chiusura della Fase B. Da questa macchina non risulta nessun riferimento di salvataggio della storia precedente, il che non significa che non esista altrove.
 
 File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, questo work-log. **Template:** nessuna
+
+## Ubicazione di NinjaOne corretta nel registro dei sub-responsabili, 26/10/2026
+
+Verifica chiesta dall'utente nella preparazione di una gara che ammette il trattamento di dati personali solo nello SEE. Il portale RMM del partner risolve su indirizzi AWS della regione eu-central-1 (Francoforte), confrontati con l'elenco ufficiale degli intervalli AWS del giorno; il DPA NinjaOne dell'8/6/2026 vieta il trattamento extra-SEE senza garanzie (par. 10) e dichiara l'adesione al DPF (par. 11). La riga del registro, che diceva USA e altre regioni, e' corretta in `docs/cybersecurity-governance.md` con una sezione che separa misura locale, comportamento documentato e rischio residuo: alcuni sub-responsabili di NinjaOne per supporto e diagnostica restano fuori dallo SEE, e l'iscrizione attiva al registro DPF non e' ancora verificata. Lo stesso giorno, su richiesta dell'utente, e' stato allineato anche l'elenco formale dei sub-responsabili da cui la riga deriva, documento fuori da questo repository: cambiata la sola colonna dell'ubicazione nella riga NinjaOne. La stessa correzione e' stata riportata nella knowledge base dei questionari fornitori.
+
+File scritti e riletti: `docs/cybersecurity-governance.md`, questo work-log. **Template:** nessuna
+
+## Censimento runtime e integrita, 26/10/2026
+
+Su richiesta dell'utente, ricognizione dei progetti aziendali e degli host collegati, escluso il materiale personale. Dossier privato filtrato in `_notes/vulnerabilita-runtime/2026-10-26/`; fonte tecnica in [censimento runtime](../context/design-and-security.md#censimento-runtime-2026-10-26). Undici host aziendali su dodici raggiunti, WordPress non verificato. PHP .13 corrisponde alla correzione Ubuntu sulle quattro VM osservate; priorita aperte sui runtime dei container IntraLino e Next nei due progetti aziendali. Versioni affette e sfruttabilita restano distinte; nessun aggiornamento o riavvio. Ricognizione parziale, non attestazione di assenza di compromissione; nessun gate ISO chiuso. Preservato il lavoro parallelo sul sito e sugli altri filoni.
+
+File aggiornati: design-and-security, current-work, index, progress, pendenze e riesame SEC-053. Fonte pubblica consultata e ricevuta privata filtrata; Git e servizi invariati. **Template:** nessuna.
+
+## Verifica privilegiata PHP,26/10/2026
+
+**PHP2Shell, verifica dei processi del26/10:** sulle tre VM con Apache attivo,18 processi su18 usano il dispositivo/inode del modulo corretto; checksum del file conformi al database del pacchetto Ubuntu. Sulla quarta VM Apache è inattivo e non si osservano processi PHP. Ricevuta root e riesame in _notes/vulnerabilita-runtime/2026-10-26; originali conservati. L’uguaglianza del namespace non è necessaria quando dispositivo e inode coincidono già. Nessun riavvio; nessuna chiusura del controllo complessivo VA/ISO. Restano gli altri runtime e gli host non verificati.
+
+Ricevute originali immutate e riesame distinto, con sette controlli negativi della qualificazione. Non sono cambiati pacchetti o servizi. Priorità concordata: portale, nuovo sito, assistente; il report finale distinguerà i residui. **Template:** nessuna.

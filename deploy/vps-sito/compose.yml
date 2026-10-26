@@ -1,0 +1,145 @@
+# Descrittore dei contenitori della VPS di produzione del sito nuovo.
+#
+# Questo file sta qui e non nel repository del sito perche' descrive l'infrastruttura
+# della macchina, che secondo la ripartizione della roadmap decide ed esegue il
+# responsabile IT; il repository del sito governa il proprio codice e il proprio
+# Dockerfile. Il descrittore che vive la' definisce la sola banca dati di sviluppo e
+# non va confuso con questo: quello serve a far girare Postgres accanto a un'applicazione
+# che sulla macchina di sviluppo gira sull'host, questo fa girare l'intera produzione.
+#
+# Si copia sulla VPS in /opt/intrawelt-new-website/compose.yml e si lancia da li'.
+# Nessun valore reale e nessun segreto compare qui: i segreti stanno in env/app.env
+# sulla macchina, che non e' versionato, e il nome del sito arriva dall'ambiente.
+#
+# Tre scelte di questo file vanno lette prima di modificarlo, perche' ciascuna corregge
+# un difetto gia' misurato su questo parco macchine.
+#
+# La prima e' che ne' la banca dati ne' l'applicazione pubblicano porte verso l'host.
+# Si raggiungono per nome sulla rete interna dei contenitori, e l'unico servizio che
+# pubblica e' il proxy. La ragione non e' di stile: la documentazione del motore dei
+# contenitori dichiara che il traffico verso una porta pubblicata viene deviato prima di
+# passare dal filtro di sistema, quindi su una porta pubblicata il filtro non protegge
+# nulla. E' il vincolo V2-ter della roadmap, ed e' lo stesso difetto che sulla macchina
+# di sviluppo teneva la banca dati aperta su tutte le interfacce.
+#
+# La seconda e' che le due cartelle dei file caricati sono montate dall'host e non sono
+# volumi anonimi. Senza queste due righe i file caricati dalla redazione vivrebbero dentro
+# il contenitore e sparirebbero a ogni ricreazione: e' il difetto che ha fatto rimandare
+# il salvataggio, perche' un salvataggio costruito sopra una cartella effimera copia cio'
+# che resta per caso. Montandole sull'host restano anche leggibili da chi fa il salvataggio
+# senza entrare nei contenitori.
+#
+# La terza e' che l'immagine si costruisce qui, sulla macchina di produzione, contro la
+# banca dati di produzione. E' ADR-038, e la ragione e' che la costruzione legge la banca
+# dati e incorpora nei file generati i contenuti che vi trova: un'immagine costruita
+# altrove porta i contenuti di quell'altrove, cioe' pagine vuote o pagine di prova.
+
+name: intrawelt-sito
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: intrawelt-pg
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: intrawelt
+      POSTGRES_DB: intrawelt
+      # Il due punti con il punto interrogativo ferma l'avvio con un errore esplicito se
+      # la variabile manca, invece di far partire una banca dati con una password vuota.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?manca POSTGRES_PASSWORD nel file .env accanto al descrittore}
+
+    # La banca dati si pubblica sul solo indirizzo di loopback della macchina, e non su
+    # tutte le interfacce. Non serve all'applicazione, che la raggiunge per nome sulla
+    # rete interna dei contenitori: serve alla costruzione dell'immagine, che gira fuori
+    # da quella rete e deve comunque leggere i contenuti da incorporare nelle pagine.
+    # Con il motore alla versione 29 la pubblicazione sul loopback e' raggiungibile dalla
+    # sola macchina; il difetto che fino alla versione 28 la esponeva ai vicini di segmento
+    # non si applica. La forma senza indirizzo, cioe' la pubblicazione su tutte le
+    # interfacce, e' quella che su questo parco macchine ha gia' prodotto un difetto.
+    ports:
+      - '127.0.0.1:5432:5432'
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U intrawelt -d intrawelt']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      # Il contesto e' la copia del codice sulla macchina, che va posizionata a questo
+      # percorso e aggiornata dal riferimento di rilascio dichiarato, cioe' main.
+      context: /opt/intrawelt-new-website/sorgente
+      dockerfile: Dockerfile
+      # La costruzione usa la rete della macchina e non quella dei contenitori, che in
+      # quel momento non la comprende: e' il modo con cui raggiunge la banca dati sul
+      # loopback. La variabile che le dice dove trovarla vive nel file .env della cartella
+      # del sorgente, che il Dockerfile cancella dall'immagine finita perche' i segreti
+      # non viaggino dentro un artefatto.
+      network: host
+    image: intrawelt-sito:${TAG:-locale}
+    container_name: intrawelt-app
+    restart: unless-stopped
+
+    env_file:
+      - ./env/app.env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    # La documentazione del framework chiede che l'arresto sia atteso, con dieci-trenta
+    # secondi di drenaggio, altrimenti le richieste in corso e le attivita' differite
+    # vengono troncate. Trenta e' l'estremo alto dell'intervallo raccomandato.
+    stop_grace_period: 30s
+
+    volumes:
+      # Le due collezioni di file del gestore di contenuti scrivono in due cartelle
+      # distinte, dichiarate nelle collezioni come percorsi relativi: dentro il
+      # contenitore si risolvono rispetto alla cartella di lavoro dell'applicazione.
+      - /opt/intrawelt-new-website/media:/app/media
+      - /opt/intrawelt-new-website/private-uploads:/app/private-uploads
+
+  caddy:
+    # Il proxy inverso davanti all'applicazione e' raccomandazione esplicita della
+    # documentazione del framework, non prassi: e' il proxy a farsi carico delle richieste
+    # malformate, delle connessioni lente, dei limiti di dimensione e della limitazione di
+    # frequenza, che il server applicativo non sa fare. La scelta di Caddy segue la
+    # struttura di cartelle gia' creata sulla macchina all'impianto, che prevede caddy/.
+    image: caddy:2-alpine
+    container_name: intrawelt-caddy
+    restart: unless-stopped
+
+    # L'unico servizio che pubblica. Le due porte sono gia' ammesse dal filtro della
+    # macchina da qualunque provenienza, perche' servono il sito.
+    ports:
+      - '80:80'
+      - '443:443'
+
+    # Il nome che il proxy serve non e' scritto nel suo file di configurazione ma gli
+    # arriva di qui, perche' quel file e' versionato mentre il nome e' una scelta di
+    # esercizio, destinata a cambiare quando il dominio definitivo puntera' qui.
+    environment:
+      SITO_NOME: ${SITO_NOME:?manca SITO_NOME nel file .env accanto al descrittore}
+      PROVENIENZA_AMMESSA: ${PROVENIENZA_AMMESSA:?manca PROVENIENZA_AMMESSA nel file .env accanto al descrittore}
+
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
+    name: intrawelt-pgdata
+  caddy_data:
+    name: intrawelt-caddy-data
+  caddy_config:
+    name: intrawelt-caddy-config

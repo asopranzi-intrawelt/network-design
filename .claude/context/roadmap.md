@@ -4,6 +4,34 @@ last-verified: 920c616
 
 # Roadmap e fasi del progetto
 
+## Sito raggiungibile sul nome di anteprima, 26/10/2026
+
+Il primo rilascio e' concluso: record creato dal fornitore, certificato ottenuto dal proxy alla prima richiesta, sito che risponde in HTTPS dalla sede e rifiuta le altre provenienze. Il reindirizzamento dal traffico in chiaro funziona e il registro del proxy riporta la provenienza reale e non il loopback.
+
+Il fornitore ha inoltre confermato per iscritto i due punti che reggevano la via a rischio minore del passaggio del nome. Puo' abbassare il tempo di validita' dei record del web nei giorni precedenti il passaggio, se la data gli viene comunicata in anticipo. E puo' mantenere la sola gestione dei nomi con il sito ospitato altrove, previa disdetta scritta del solo spazio web. La via smette percio' di essere un'ipotesi e diventa una pratica con una forma nota, e la decisione D1 sul fornitore di protezione resta separabile e rinviabile.
+
+## Il sito nuovo gira in produzione, 26/10/2026
+
+La messa in produzione ha superato la soglia che la divideva in due: tutto cio' che restava di infrastruttura e' fatto, e cio' che resta e' contenuto, adempimenti e una decisione di calendario. Sulla VPS ci sono il descrittore di produzione, i contenuti ripristinati dalla macchina di sviluppo e verificati per conteggio, i file caricati, l'immagine costruita contro la banca dati di produzione secondo ADR-038 e l'applicazione in esecuzione, che risponde e serve il pannello di amministrazione. Nulla pubblica porte tranne il proxy, che resta fermo perche' senza un nome che punti alla macchina non otterrebbe il certificato.
+
+Chiuse con misura due delle tre verifiche che il runbook teneva aperte: le pagine hanno contenuto vero e non generato dal nulla, e le due cartelle dei file caricati sono visibili ai percorsi attesi dentro il contenitore. Resta da provare una scrittura nuova dal pannello, che richiede il pannello raggiungibile, e la lettura dell'indirizzo reale del visitatore nei registri.
+
+La voce bloccante del 23/10, cioe' la persistenza dei file caricati, e' chiusa dal descrittore nuovo. Ne discende che il salvataggio torna lavorabile: non esiste ancora, ma non copierebbe piu' una cartella destinata a svuotarsi.
+
+Resta un fatto di contenuto, non di infrastruttura, misurato sul riferimento di rilascio e non piu' sul banco di prova: la seconda delle tre immagini che scorrono sulla pagina iniziale porta titolo e paragrafo in lorem ipsum. Appartiene al progetto del sito ed e' coperto dalla decisione aperta su che cosa si pubblica.
+
+## D6 Windows: ricevente pronto per il pilota, 26/10/2026
+
+Il checkpoint `2e57ad9` porta al test Debian 13 il marker Windows fino al file letto da D6 e separa i marker non ammessi. Il prossimo gate è un evento reale da Fluent Bit Windows sulla versione fissata, con IP e policy approvati, ritenzione del flusso rifiutato, prova sulla VM e allarme esterno consegnato. Il checkpoint non sposta le scadenze del 30/10, 06/11 e 18/12 né chiude ISO-30 o Cliente-1 89/90.
+
+## Passaggio del nome: la via a rischio minore, 26/10/2026
+
+Misurato il 26/10 che la posta del dominio non sta presso l'hosting ma su Microsoft 365, e che l'hosting detiene soltanto la zona in cui il record MX e' scritto. Ne discende una via che il piano non contemplava e che diventa quella raccomandata: si dismette l'hosting e si lascia la zona dov'e', cambiando al passaggio i soli record del web. I record della posta, cioe' MX, SPF, DKIM e DMARC, non vengono aperti affatto, e il capitolo piu' rischioso della fase 3-bis non si apre. La fase 3-bis resta scritta per il caso in cui la zona debba comunque spostarsi, che e' la forma della decisione D1 con il fornitore di protezione.
+
+Tre vincoli accompagnano la scelta e vanno letti insieme a essa. La zona non e' modificabile da Intrawelt: il pannello dell'hosting ha il servizio DNS esterno per quel dominio e offre di aggiungere soltanto record NS, quindi ogni modifica e' una richiesta al fornitore, compreso il ritorno indietro durante il passaggio. Il TTL predefinito dichiarato dalla zona e' di un giorno, percio' l'abbassamento va concordato giorni prima del passaggio e non durante. E la scelta esclude, finche' dura, il fornitore di protezione davanti al sito, che diventerebbe lui il DNS autoritativo dell'intero dominio.
+
+Lo spostamento del DNS verso un gestore dove Intrawelt possa modificare i record da se' resta un intervento sensato, ma successivo e distinto: si valuta a sito stabile, perche' sommare lo spostamento della zona al passaggio del sito renderebbe indistinguibili le cause di un eventuale guasto. I concetti e i due disegni dello stato attuale e di quello futuro stanno in `docs/dns-domini-come-funziona.md`, che e' anche il perimetro da cui parte il censimento dei certificati.
+
 ## Catena AdS: prossimo gate operativo, 26/10/2026
 
 Il collettore `3d72338` aggiunge un preflight integrale prima della chiusura giornaliera: prova locale rossa sul codice precedente e verde sul commit pubblicato. Non cambia le scadenze della tabella di dicembre né lo stato ISO-30. Entro il checkpoint del 30/10 servono le decisioni su elenco AdS, perimetro, custodia indipendente e recapito degli allarmi; in parallelo si può misurare il carico del job e preparare il collaudo sulla VM. Nessun timer o flusso nuovo è stato attivato.

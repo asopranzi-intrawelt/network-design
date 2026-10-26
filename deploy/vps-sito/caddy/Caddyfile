@@ -1,0 +1,66 @@
+# Configurazione del proxy inverso della VPS di produzione del sito nuovo.
+#
+# Il nome che il proxy serve e la provenienza ammessa non sono scritti qui dentro ma
+# arrivano dall'ambiente, perche' questo file e' versionato in un repository pubblico
+# mentre quei due valori sono scelte di esercizio: uno destinato a cambiare quando il
+# dominio definitivo puntera' alla macchina, l'altro un indirizzo reale della sede.
+# Vivono nel file .env accanto al descrittore, che non entra in git.
+#
+# Caddy ottiene e rinnova da se' il certificato per il nome che serve, purche' quel nome
+# risolva verso questa macchina e la porta in chiaro sia raggiungibile da Internet: e' la
+# ragione per cui qui non compaiono ne' file di certificato ne' procedura di rinnovo, ed
+# e' anche la ragione del primo blocco di regole qui sotto.
+
+{$SITO_NOME} {
+
+	route {
+		# Finche' il sito vive su un nome provvisorio non e' un sito pubblicato ma un
+		# ambiente di verifica, e si ammette la sola provenienza aziendale. Due ragioni,
+		# e nessuna delle due e' la prudenza generica. La licenza del carattere del
+		# marchio copre un dominio solo e dichiara che l'uso su un altro dominio o
+		# sottodominio ne richiede una seconda: un ambiente raggiungibile dalla sola
+		# sede non e' un secondo sito servito al pubblico. E un sito di prova pubblico
+		# finirebbe indicizzato accanto all'originale, che e' un danno che si ripara
+		# lentamente.
+		#
+		# L'eccezione e' il percorso con cui l'autorita' di certificazione verifica il
+		# nome, che deve restare aperto a chiunque: senza, la restrizione impedirebbe
+		# l'emissione del certificato e il sito non avrebbe HTTPS. Caddy gestisce da se'
+		# quella verifica prima delle regole del sito, ma l'eccezione resta scritta per
+		# non dipendere da un dettaglio interno che nessuno qui ha verificato.
+		@estranei {
+			not remote_ip {$PROVENIENZA_AMMESSA}
+			not path /.well-known/acme-challenge/*
+		}
+		respond @estranei "Ambiente di verifica non pubblico." 403
+
+		# Seconda difesa contro l'indicizzazione, che non dipende dalla prima: anche se
+		# un motore arrivasse dalla provenienza ammessa, gli si dice di non indicizzare.
+		header X-Robots-Tag "noindex, nofollow"
+
+		# L'applicazione non pubblica porte verso l'host: si raggiunge per nome di
+		# servizio sulla rete interna dei contenitori. Caddy aggiunge da se' le
+		# intestazioni con l'indirizzo reale del visitatore, che senza proxy
+		# l'applicazione vedrebbe sempre come loopback; che il framework le legga davvero
+		# va verificato sul primo rilascio guardando un registro, non dato per fatto.
+		reverse_proxy app:3000
+	}
+
+	# Il registro degli accessi in formato strutturato, sul volume dei dati del proxy.
+	# Serve alla fase di presidio e, finche' non esiste un cruscotto, e' anche l'unica
+	# misura del traffico disponibile. Per ADR-039 non si aggiunge nessun identificatore
+	# che riconosca il visitatore fra una visita e l'altra.
+	log {
+		output file /data/access.log {
+			roll_size 50MiB
+			roll_keep 10
+		}
+		format json
+	}
+
+	encode zstd gzip
+}
+
+# Quando il dominio definitivo puntera' qui, la restrizione va tolta nello stesso atto in
+# cui il sito diventa pubblico, insieme all'intestazione che scoraggia l'indicizzazione.
+# Non si lascia per prudenza: un sito di produzione che respinge il pubblico e' un guasto.
