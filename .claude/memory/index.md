@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Decisa la misura del traffico, 23/10/2026
+
+Risposta data: basta sapere quante persone arrivano, da dove e su quali pagine, senza riconoscere il visitatore fra una visita e l'altra. Esclusa l'opzione con identificatore persistente e con essa banner, nomina a responsabile e valutazione del trasferimento: la posizione del sito resta informativa dovuta e banner non dovuto. Resta raccomandato il cruscotto senza identificatori. Dipendenza fissata: e' un servizio in contenitore e appartiene allo stesso descrittore di produzione che manca, insieme ad applicazione, proxy e volumi dei file; non e' lavoro successivo al rilascio ma una riga dentro lo stesso lavoro.
+
 ## Tre cose diverse chiamate backup, 23/10/2026
 
 Distinti nella roadmap e in una lezione: l'istantanea del pannello, che e' un tasto annulla per una singola operazione e qui dura due giorni; la ricostruzione della macchina, che protegge dalla perdita totale e dal cambio di fornitore ma non protegge nessun dato; e il salvataggio dei dati, l'unico che protegge il contenuto e che non vale niente senza una prova di ripristino. Aggiunta alla vista per i colleghi una tabella che li separa con stato e perimetro. Lezione L-015 verso il template.

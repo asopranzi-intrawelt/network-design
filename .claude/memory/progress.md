@@ -1,5 +1,17 @@
 # Work-log
 
+## Decisa la misura del traffico: nessun riconoscimento fra visite, 23/10/2026
+
+La risposta alla domanda che la nota poneva e' arrivata: basta sapere quante persone arrivano, da dove e su quali pagine, senza riconoscere lo stesso visitatore fra una visita e l'altra.
+
+Ne discende la conseguenza che la nota aveva isolato come il punto che decide tutto il resto. L'opzione con identificatore persistente e' esclusa, e con essa cadono il banner di consenso, l'aggiornamento del registro dei trattamenti per quel titolo e, nella variante del fornitore esterno, la nomina a responsabile e la valutazione del trasferimento dei dati fuori dall'Unione. La posizione attuale del sito resta quella di oggi, cioe' informativa dovuta e banner non dovuto, che era la condizione semplice da mantenere e costosa da recuperare.
+
+Fra le due opzioni rimaste resta raccomandata quella con il cruscotto senza identificatori, per le ragioni gia' verificate sulle fonti: il vincolo contrattuale conta visualizzazioni di pagina mentre i registri del server contano richieste, e su questo sito i registri sbagliano in due direzioni perche' il framework precarica automaticamente pagine che nessuno guardera' e gestisce parte della navigazione nel browser senza interrogare il server.
+
+Emersa nel registrare la decisione una dipendenza che cambia la pianificazione e che vale la pena fissare: il cruscotto e' un servizio in contenitore, quindi vive nello stesso descrittore di produzione che oggi non esiste, insieme all'applicazione, al reverse proxy e ai volumi dei file caricati. Non e' percio' un lavoro da fare dopo il rilascio ma una riga in piu' dentro lo stesso lavoro, e trattarlo come voce separata lo farebbe ricominciare da capo. La misura del consumo di memoria, che resta l'unica cosa non verificata, si prende nello stesso momento in cui si misura quella dell'applicazione.
+
+File scritti e riletti: `docs/infrastructure-timeline/GAP-TBC.md`, `.claude/memory/index.md`, questo work-log, piu' la vista di roadmap sul Desktop. **Template:** nessuna
+
 ## Tre cose diverse chiamate backup: distinte nella roadmap e nella lezione, 23/10/2026
 
 L'IT Manager ha colto che la correzione sullo snapshot non era un dettaglio operativo ma una distinzione concettuale, e che vale oltre questo progetto. Ha ragione, e il punto e' che tre strumenti diversi portano in bocca a tutti lo stesso nome.
