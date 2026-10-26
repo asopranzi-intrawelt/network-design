@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Catena locale: preflight storico, 26/10/2026
+
+Il collettore `main` `3d72338` è stato pubblicato dall'utente. Il job notturno recupera i giorni saltati entro 213 giorni e verifica tutti i manifest, archivi e log di origine già conservati prima di aggiungerne uno. In WSL, l'alterazione del primo di quattro manifest faceva creare il quinto al codice precedente; la versione pubblicata lo rifiuta senza scriverlo. La prova usa dati fittizi: durata e I/O reali, retention degli originali e ancoraggio dopo il taglio dei 213 giorni richiedono progetto e collaudo sulla VM. Timer, heartbeat e allarme esterno non sono attivi; D7, TSA/WORM e custodia indipendente restano gate. Cliente-1 89/90 e ISO-30 sono in corso. Dettagli nel runbook del componente 5 del collettore.
+
 ## Recupero D6 retrospettivo, 26/10/2026
 
 Il collettore `main` `213d19b` è pubblicato dall'utente. La politica privata D6 passa a `version=2` con `active_from` per sorgente; il servizio candidato verifica fino a 213 giorni precedenti, entro la ritenzione locale prevista, e registra il totale delle anomalie con al massimo 100 dettagli. Sedici prove sintetiche, Ruff e controlli di chiusura sono verdi; tre mutazioni e una prova rossa al limite del calendario hanno verificato controlli e correzione. Questo supera il limite tecnico sul solo D-1 descritto nel checkpoint del 23/10; non estende la ritenzione effettiva e non prova la copertura in esercizio. Sulla VM il timer non è installato e mancano politica approvata, heartbeat reale, relay, allarme ricevuto e custodia indipendente. D7, Cliente-1 89/90 e ISO-30 restano aperti. Dettaglio nel runbook del componente 5 del collettore.

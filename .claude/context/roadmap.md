@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Roadmap e fasi del progetto
 
+## Catena AdS: prossimo gate operativo, 26/10/2026
+
+Il collettore `3d72338` aggiunge un preflight integrale prima della chiusura giornaliera: prova locale rossa sul codice precedente e verde sul commit pubblicato. Non cambia le scadenze della tabella di dicembre né lo stato ISO-30. Entro il checkpoint del 30/10 servono le decisioni su elenco AdS, perimetro, custodia indipendente e recapito degli allarmi; in parallelo si può misurare il carico del job e preparare il collaudo sulla VM. Nessun timer o flusso nuovo è stato attivato.
+
 ## D6 nel collettore e stato ISO-30, 26/10/2026
 
 Il collettore `213d19b` recupera nel codice candidato i giorni D6 entro 213 giorni e dopo la data di attivazione della sorgente. Il timer sulla VM, il produttore heartbeat e la consegna dell'allarme restano da provare; la custodia indipendente e D7 mantengono aperte Cliente-1 89/90 e ISO-30. Questo checkpoint riduce un difetto del recupero ma non cambia il criterio di accettazione della roadmap di dicembre.

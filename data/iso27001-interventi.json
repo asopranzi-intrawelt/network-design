@@ -1867,6 +1867,13 @@
       "stato": "in_corso",
       "nota": "Collettore main 213d19b pubblicato: D6 v2 con data di attivazione per sorgente e recupero candidato fino a 213 giorni; 16 prove locali verdi. Timer, heartbeat e allarme esterno non installati o collaudati; D7, custodia indipendente e perimetro Cliente-1 89/90 ancora aperti. Nessuna nuova copertura operativa.",
       "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-26",
+      "stato": "in_corso",
+      "nota": "Collettore main 3d72338 pubblicato: recupero locale dei manifest fino a 213 giorni e verifica integrale dello storico prima della nuova chiusura; prova WSL rossa sul codice precedente e verde sul commit. Timer, heartbeat e allarme esterno non in esercizio; durata e I/O sulla VM, retention con ancoraggio, D7 e custodia indipendente ancora aperti. Nessuna copertura Cliente-1 89/90 dichiarata completa.",
+      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
     }
   ]
 }

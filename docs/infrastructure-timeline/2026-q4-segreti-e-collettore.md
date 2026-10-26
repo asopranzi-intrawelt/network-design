@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 26/10/2026 - La catena AdS controlla lo storico prima di avanzare
+
+Collettore `3d72338` pubblicato dall'utente: il job candidato chiude i giorni mancanti entro 213 giorni, ma verifica prima tutta la catena locale. La prova sintetica ha mostrato che il codice precedente aggiungeva un manifest nuovo dopo la corruzione di uno vecchio; la versione pubblicata si ferma. Costo della scansione su VM, retention e ancoraggio esterno restano da collaudare. Nessun timer o allarme installato; ISO-30 e Cliente-1 89/90 ancora in corso.
+
 ## 26/10/2026 - D6 recupera le giornate entro la finestra locale
 
 Collettore `213d19b` pubblicato: politica D6 v2 con data di attivazione per sorgente e controllo candidato degli ultimi 213 giorni, con totale delle anomalie e dettaglio limitato a 100. Sedici test sintetici verdi; il caso 31/12/9999 ha rilevato e fatto correggere un overflow. Il precedente limite del solo D-1 è superato nel codice, ma il timer non è installato sul Debian; heartbeat, relay e allarme ricevuto non sono provati. ISO-30 e Cliente-1 89/90 restano in corso, con D7 e custodia indipendente ancora aperti.

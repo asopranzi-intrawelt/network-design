@@ -253,7 +253,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-26. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/design-and-security.md, GAP-TBC #200, docs/log-collector-integrazione.md, docs/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-26):** Collettore main 213d19b pubblicato: D6 v2 con data di attivazione per sorgente e recupero candidato fino a 213 giorni; 16 prove locali verdi. Timer, heartbeat e allarme esterno non installati o collaudati; D7, custodia indipendente e perimetro Cliente-1 89/90 ancora aperti. Nessuna nuova copertura operativa.
+  - **Ultimo stato (2026-10-26):** Collettore main 3d72338 pubblicato: recupero locale dei manifest fino a 213 giorni e verifica integrale dello storico prima della nuova chiusura; prova WSL rossa sul codice precedente e verde sul commit. Timer, heartbeat e allarme esterno non in esercizio; durata e I/O sulla VM, retention con ancoraggio, D7 e custodia indipendente ancora aperti. Nessuna copertura Cliente-1 89/90 dichiarata completa.
   - **Evidenza:** docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.

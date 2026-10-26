@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Lavoro corrente, riallineato il 22/09/2026
 
+## Catena AdS pubblicata e gate operativi, 26/10/2026
+
+L'utente ha pubblicato il collettore `3d72338` e il precedente allineamento di rete `0367ece`. Il job notturno candidato recupera i giorni mancanti entro 213 giorni e verifica tutta la catena locale prima di scrivere un nuovo manifest. Una prova WSL alterava il primo di quattro manifest: il vecchio codice creava il quinto, quello pubblicato si ferma prima della scrittura. La scansione completa non è stata misurata su volume e dati della VM. Timer, heartbeat, relay, allarme ricevuto, D7 e custodia indipendente restano aperti; Cliente-1 89/90 e ISO-30 non avanzano a completato.
+
 ## D6 retrospettivo nel collettore, 26/10/2026
 
 Il commit manuale `213d19b` porta politica v2 con `active_from`, finestra candidata di 213 giorni e report limitato a 100 dettagli; 16 prove locali verdi. Il vecchio limite D-1 è corretto nel codice. Nessuna unità installata o prova di allarme e heartbeat reale: Cliente-1 89/90 e ISO-30 restano in corso. Dossier nel progetto del collettore e nota ISO-30 in questa rete.
