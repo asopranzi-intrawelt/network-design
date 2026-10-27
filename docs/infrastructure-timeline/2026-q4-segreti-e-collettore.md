@@ -1,5 +1,13 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 27/10/2026 - Il pilota Windows distingue i domini e riprende la coda
+
+Collettore `2344c5e` pubblicato: identità AdS `DOMINIO/utente`, query Windows che confronta nome e dominio e Lua che conserva il dominio. Tre eventi fittizi e un heartbeat inviati da Fluent Bit 5.1.3 via TLS locale sono stati smistati da rsyslog Debian 13. Un chunk fittizio è sopravvissuto all'arresto con ricevitore assente ed è arrivato dopo il riavvio; Security, bookmark, capienza, VM e allarme restano aperti. ISO-30 e Cliente-1 89/90 non sono chiusi.
+
+## 27/10/2026 - Il trasporto Windows passa la prova sintetica
+
+Collettore `b0ef599` pubblicato: query Windows corretta per l'attore del 4648 e il destinatario del 4672. Fluent Bit 5.1.3 ha inviato tre eventi fittizi e un heartbeat via TLS locale; la fixture di 648 byte passa in rsyslog Debian 13 con tre eventi AdS e D6 distinti. Security e consegna alla VM restano aperti. Sulla VM rsyslog e mount AdS attivi, timer D6 e catena assenti. ISO-30 e Cliente-1 89/90 in corso.
+
 ## 26/10/2026 - Il ricevente D6 distingue i marker Windows
 
 Collettore `8773aa6` pubblicato: il ricevente candidato scrive l'heartbeat RFC 5424 via TLS da IP pilota ammesso nel percorso letto da D6 e separa in un archivio tecnico i marker UDP, RFC 3164 e da IP estraneo. Il test Debian 13 verifica smistamento, permessi e stato `observed`; il mittente Fluent Bit Windows, la VM, la ritenzione del rifiutato e l'allarme esterno non sono collaudati. Client TLS anonimo; nessuna nuova copertura in esercizio o chiusura di ISO-30 e Cliente-1 89/90. Fluent Bit 4.1.1 Linux ha verificato il SAN del server e la fixture del marker è stata letta da rsyslog e D6; il pilota Windows resta da collaudare.

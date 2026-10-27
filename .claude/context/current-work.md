@@ -2,6 +2,10 @@
 last-verified: 920c616
 ---
 
+## Collettore Windows pubblicato, esercizio ancora aperto, 27/10/2026
+
+Il collettore `2344c5e` è pubblicato. Il renderer richiede identità AdS `DOMINIO/utente` e la query Windows confronta nome e dominio di Target o Subject secondo l'evento; il Lua conserva i domini di attore e credenziali. Fluent Bit 5.1.3 ha inviato tre eventi fittizi e un heartbeat via TLS locale; la fixture di 740 byte è passata in rsyslog Debian 13 con tre eventi AdS e D6 `observed`. Un chunk fittizio rimasto sul disco mentre il ricevitore era spento è arrivato dopo il riavvio, insieme a un record nuovo, in 18,2 secondi nel giro misurato. Security reale, grafie dei domini, bookmark, capienza, VM e allarme esterno restano da provare. Sulla VM rsyslog e mount AdS sono attivi, i timer AdS assenti; l'archivio non è stato misurato senza sudo. D7, ISO-30 e Cliente-1 89/90 restano aperti.
+
 ## Verifica cloudflared,27/10/2026
 
 **Cloudflared,27 ottobre:** due connettori sulle VPS del portale con eseguibili caricati2026.3.0 in staging e2026.5.2 in produzione, precedenti alla correzione2026.10.2. PC non rilevato nel perimetro;12 alias aziendali,11 raggiunti, uno in timeout. Solo ricognizione, nessuna modifica o chiusura VA/ISO. [Evidenze e limiti](design-and-security.md#cloudflared-2026-10-27).

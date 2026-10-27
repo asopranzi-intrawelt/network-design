@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-26",
+  "aggiornato": "2026-10-27",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1887,6 +1887,30 @@
       "stato": "in_corso",
       "nota": "Collettore main 8773aa6 pubblicato: Fluent Bit 4.1.1 Linux verifica il nome TLS; la fixture RFC 5424 del marker attraversa il test Debian fino a D6. Il pilota Windows, i timer sulla VM, la ritenzione del rifiutato, D7, allarme esterno e custodia indipendente restano aperti; Cliente-1 89/90 non chiuse.",
       "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-27",
+      "stato": "in_corso",
+      "nota": "Collettore cd8441d pubblicato: bundle pilota Windows Fluent Bit 5.1.3 validato su Application e sintesi Lua; Security non ancora collaudato. VM con archivio montato e rsyslog attivo, timer notturno e silenzio assenti. Coda, allarme, elenco AdS approvato, D7 e custodia indipendente restano aperti; Cliente-1 89/90 non chiuse."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-27",
+      "stato": "in_corso",
+      "nota": "Collettore 5e5bdd1 pubblicato: Fluent Bit Windows 5.1.3 ha emesso accesso e heartbeat fittizi via TLS locale; fixture di 262 byte smistata da rsyslog Debian 13 in AdS e D6. Security, VM reale, buffer e replay, allarme, elenco AdS approvato, D7 e custodia indipendente restano aperti; Cliente-1 89/90 non chiuse."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-27",
+      "stato": "in_corso",
+      "nota": "Collettore b0ef599 pubblicato: query Windows corretta per attore 4648 e destinatario 4672; tre eventi fittizi e heartbeat via TLS locale, fixture di 648 byte smistata da rsyslog Debian 13 in AdS e D6. Security reale, omonimie di dominio, VM, buffer/replay, allarme, elenco AdS, D7 e custodia indipendente aperti; Cliente-1 89/90 non chiuse."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-27",
+      "stato": "in_corso",
+      "nota": "Collettore 2344c5e pubblicato: filtro Windows per identita DOMINIO/utente, tre eventi fittizi e heartbeat via TLS locale smistati da Debian 13; chunk fittizio recuperato dopo riavvio con ricevitore spento. Security reale, bookmark, capienza, VM, allarme, elenco AdS, D7 e custodia indipendente aperti; Cliente-1 89/90 non chiuse."
     }
   ]
 }

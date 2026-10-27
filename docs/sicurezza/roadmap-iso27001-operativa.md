@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-26. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -253,8 +253,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-26. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-26):** Collettore main 8773aa6 pubblicato: Fluent Bit 4.1.1 Linux verifica il nome TLS; la fixture RFC 5424 del marker attraversa il test Debian fino a D6. Il pilota Windows, i timer sulla VM, la ritenzione del rifiutato, D7, allarme esterno e custodia indipendente restano aperti; Cliente-1 89/90 non chiuse.
-  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
+  - **Ultimo stato (2026-10-27):** Collettore 2344c5e pubblicato: filtro Windows per identita DOMINIO/utente, tre eventi fittizi e heartbeat via TLS locale smistati da Debian 13; chunk fittizio recuperato dopo riavvio con ricevitore spento. Security reale, bookmark, capienza, VM, allarme, elenco AdS, D7 e custodia indipendente aperti; Cliente-1 89/90 non chiuse.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

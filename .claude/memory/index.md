@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Collettore Windows e VM, 27/10/2026
+
+Il collettore `2344c5e` è pubblicato. Il filtro Windows associa nome e dominio dell'AdS; tre eventi fittizi e un heartbeat emessi dal binario 5.1.3 sono passati via TLS locale e nella prova Debian 13. Un chunk fittizio è stato ripreso dopo riavvio con ricevitore inizialmente spento. Nessun evento Security reale o consegna alla VM è provato; mount e rsyslog della VM attivi, timer assenti. ISO-30 e Cliente-1 89/90 in corso.
+
 ## Verifica cloudflared,27/10/2026
 
 **Cloudflared,27 ottobre:** due connettori sulle VPS del portale con eseguibili caricati2026.3.0 in staging e2026.5.2 in produzione, precedenti alla correzione2026.10.2. PC non rilevato nel perimetro;12 alias aziendali,11 raggiunti, uno in timeout. Solo ricognizione, nessuna modifica o chiusura VA/ISO. [Evidenze e limiti](../context/design-and-security.md#cloudflared-2026-10-27).
