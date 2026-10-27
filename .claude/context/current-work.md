@@ -2,6 +2,10 @@
 last-verified: 920c616
 ---
 
+## Monitor della coda Windows pubblicato, esercizio aperto, 27/10/2026
+
+Il collettore `55af8ca` include nel bundle Fluent Bit Windows un controllo PowerShell di sola lettura della coda. Richiede soglie esplicite per byte, spazio libero e anzianità del chunk; distingue sano (0), allarme (2) e misura impossibile (3). Otto prove mirate sono verdi. Il binario 5.1.3 ha lasciato un chunk fittizio con ricevitore TLS spento: il monitor lo ha segnalato e dopo il riavvio sono arrivati vecchio e nuovo record. NinjaOne, soglie misurate, Security reale, VM e allarme esterno restano da collaudare. ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## Collettore Windows pubblicato, esercizio ancora aperto, 27/10/2026
 
 Il collettore `2344c5e` è pubblicato. Il renderer richiede identità AdS `DOMINIO/utente` e la query Windows confronta nome e dominio di Target o Subject secondo l'evento; il Lua conserva i domini di attore e credenziali. Fluent Bit 5.1.3 ha inviato tre eventi fittizi e un heartbeat via TLS locale; la fixture di 740 byte è passata in rsyslog Debian 13 con tre eventi AdS e D6 `observed`. Un chunk fittizio rimasto sul disco mentre il ricevitore era spento è arrivato dopo il riavvio, insieme a un record nuovo, in 18,2 secondi nel giro misurato. Security reale, grafie dei domini, bookmark, capienza, VM e allarme esterno restano da provare. Sulla VM rsyslog e mount AdS sono attivi, i timer AdS assenti; l'archivio non è stato misurato senza sudo. D7, ISO-30 e Cliente-1 89/90 restano aperti.

@@ -253,7 +253,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-27):** Collettore 2344c5e pubblicato: filtro Windows per identita DOMINIO/utente, tre eventi fittizi e heartbeat via TLS locale smistati da Debian 13; chunk fittizio recuperato dopo riavvio con ricevitore spento. Security reale, bookmark, capienza, VM, allarme, elenco AdS, D7 e custodia indipendente aperti; Cliente-1 89/90 non chiuse.
+  - **Ultimo stato (2026-10-27):** Collettore 55af8ca pubblicato: monitor locale della coda Fluent Bit Windows nel bundle, soglie esplicite e codici distinti; chunk fittizio offline segnalato e ripreso dopo riavvio. Otto prove mirate verdi. Mancano soglie misurate, NinjaOne, Security reale, VM e allarme esterno; Cliente-1 89/90 aperte.
+  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

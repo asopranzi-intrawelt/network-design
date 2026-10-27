@@ -1,5 +1,11 @@
 # Work-log
 
+## Monitor della coda Windows allineato, 27/10/2026
+
+L'utente ha pubblicato il collettore `55af8ca` e la rete `7ab60f4`, entrambi puliti e uguali al remoto. Il monitor nel bundle richiede soglie esplicite, misura byte della coda, spazio libero e anzianità dei chunk, distinguendo allarme da misura fallita. Otto prove mirate verdi; la mutazione della soglia byte rende rossa la prova pertinente. Il binario Windows ha prodotto un chunk offline segnalato dal monitor e recuperato dopo riavvio. Soglie reali, NinjaOne, Security, VM e allarme ancora aperti; ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati dossier, schede, fonte ISO, timeline e memoria; nessun Git di scrittura dell'agente.
+
+**Template:** nessuna.
+
 ## Identità Windows e replay locale allineati, 27/10/2026
 
 Collettore `2344c5e` pubblicato dall'utente: il renderer richiede `DOMINIO/utente`, confronta nome e dominio nelle query Windows e conserva i domini nel messaggio. Sei prove renderer verdi; togliere temporaneamente il predicato `TargetDomainName` le rende rosse. Tre eventi fittizi e un heartbeat del binario 5.1.3 sono passati via TLS locale e nel test Debian 13, con fixture di 740 byte. Una prova con input `dummy`, ricevitore inizialmente spento e arresto forzato ha visto il chunk su disco e poi il vecchio record e uno nuovo al riavvio, in 18,2 secondi nel giro misurato. Security reale, bookmark, capienza, VM e allarme non provati; ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati dossier, due schede, fonte ISO, timeline e memoria; nessun Git di scrittura dell'agente.

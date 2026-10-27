@@ -4,6 +4,10 @@ last-verified: 920c616
 
 # Roadmap e fasi del progetto
 
+## Coda del pilota Windows, 27/10/2026
+
+Il checkpoint `55af8ca` aggiunge al bundle il controllo di coda e lo prova con un chunk prodotto dal binario Windows durante un fermo del ricevitore. Il prossimo gate è misurare crescita della coda e spazio sul pilota, fissare soglie e recapito NinjaOne, poi provare Security, bookmark e ricezione sulla VM. ISO-30 e Cliente-1 89/90 restano in corso; le date non cambiano.
+
 ## Pilota Windows del collettore, 27/10/2026
 
 Il checkpoint `2344c5e` qualifica su dati fittizi il filtro Windows per identità `DOMINIO/utente`, il trasporto TLS locale, lo smistamento di tre eventi AdS e un heartbeat D6 su Debian 13 e la ripresa locale di un chunk dopo arresto con ricevitore assente. Il prossimo gate è il Security log sul pilota autorizzato: verificare i valori dei domini, il bookmark e il recupero dopo fermo; poi misurare capienza, ricezione sulla VM e allarme. ISO-30 e Cliente-1 89/90 restano in corso; le scadenze non cambiano.

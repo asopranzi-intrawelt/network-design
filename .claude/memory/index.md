@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Monitor Windows nel bundle, 27/10/2026
+
+Collettore `55af8ca` pubblicato: monitor di coda PowerShell incluso nel bundle, due prove del monitor e sei del renderer verdi. Il controllo ha segnalato il chunk fittizio lasciato dal binario con TLS locale assente; replay riuscito dopo il riavvio. Nessun job NinjaOne, evento Security reale o invio alla VM collaudato. ISO-30 e Cliente-1 89/90 in corso.
+
 ## Collettore Windows e VM, 27/10/2026
 
 Il collettore `2344c5e` è pubblicato. Il filtro Windows associa nome e dominio dell'AdS; tre eventi fittizi e un heartbeat emessi dal binario 5.1.3 sono passati via TLS locale e nella prova Debian 13. Un chunk fittizio è stato ripreso dopo riavvio con ricevitore inizialmente spento. Nessun evento Security reale o consegna alla VM è provato; mount e rsyslog della VM attivi, timer assenti. ISO-30 e Cliente-1 89/90 in corso.

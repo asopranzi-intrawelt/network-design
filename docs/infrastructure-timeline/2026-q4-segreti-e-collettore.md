@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## Il monitor Windows segnala la coda offline, 27/10/2026
+
+Collettore `55af8ca` pubblicato: monitor PowerShell nel bundle, soglie esplicite e codici distinti per allarme e misura fallita. Il binario Fluent Bit ha prodotto un chunk fittizio con ricevitore spento, segnalato dal monitor e poi recuperato. Nessun NinjaOne o servizio installato; Security, capienza, VM e allarme esterno aperti. ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## 27/10/2026 - Il pilota Windows distingue i domini e riprende la coda
 
 Collettore `2344c5e` pubblicato: identità AdS `DOMINIO/utente`, query Windows che confronta nome e dominio e Lua che conserva il dominio. Tre eventi fittizi e un heartbeat inviati da Fluent Bit 5.1.3 via TLS locale sono stati smistati da rsyslog Debian 13. Un chunk fittizio è sopravvissuto all'arresto con ricevitore assente ed è arrivato dopo il riavvio; Security, bookmark, capienza, VM e allarme restano aperti. ISO-30 e Cliente-1 89/90 non sono chiusi.
