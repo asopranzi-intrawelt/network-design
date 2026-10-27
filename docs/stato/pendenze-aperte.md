@@ -227,3 +227,27 @@ Resta un margine di miglioramento, piccolo e da valutare con calma, che e' l'uni
 ## Connettori cloudflared,27 ottobre2026
 
 Due VPS del portale con binario caricato2026.3.0 (staging) e2026.5.2 (produzione), precedenti alla correzione2026.10.2. Pianificare aggiornamento controllato con repliche/continuità, dipendenza SSH, origin TLS, ripristino e verifica del processo dopo l’attivazione. [Fonte tecnica e limiti](../../.claude/context/design-and-security.md#cloudflared-2026-10-27). Un alias non raggiunto; inventario account Cloudflare ancora aperto. Nessun aggiornamento o gate VA/ISO chiuso. La presenza del connettore non chiude VPS-004 sull’esposizione del web.
+
+## Guasto USB sulla postazione dell'IT Manager, 27/10/2026
+
+Il rapporto d'incidente del 26/10/2026 lascia aperte domande che riguardano la custodia dell'autorita' e la flotta, non solo la postazione. Il dettaglio sta in `docs/sicurezza/autorita-certificazione-interna.md`, sezione del 27/10/2026.
+
+| Cosa | Dove e' tracciato | Nota che decide se farlo adesso |
+|---|---|---|
+| Supporto nuovo per la chiave dell'autorita', con seriale univoco verificato, e decisione fra ritorno ad ADR-025 e deroga motivata | ISO-17; ADR-025; scheda dell'autorita' | Finche' manca, la chiave sta in una cartella sincronizzata in cloud, cioe' nella collocazione che ADR-025 esisteva per evitare |
+| Causa a monte del guasto, ristretta il 27/10/2026 a un solo hub ASMedia della postazione: i due supporti guasti stavano sulla stessa porta, e il disco di backup e' ancora sulla porta accanto | documento 18 del progetto delle postazioni Windows, paragrafo 8 | Prova fisica: spostare il disco di backup su una porta del retro diretta in scheda madre. Il supporto nuovo dell'autorita' non va mai su quell'hub |
+| Gruppo di continuita' per la postazione dell'IT Manager | ELE-001 (#145) come famiglia; nessuna voce propria | Desktop senza UPS, calo di tensione riferito e assorbito dal PC ma non dai supporti USB. Decisione dell'IT Manager |
+| Sospensione selettiva USB e spegnimento degli hub come impostazione di base delle postazioni, distribuita con lo strumento di gestione degli endpoint | nessuna voce ISO ancora; procedura nel documento 18 del progetto delle postazioni Windows | Applicata e verificata il 26/10 sulla sola postazione dell'IT Manager. Estenderla e' una scelta, non un obbligo: va valutata contro il consumo dei portatili |
+
+## Skill di conformità e gap analysis ISO 27001, 27/10/2026
+
+Il dettaglio sta in `docs/sicurezza/gap-analysis-iso27001.md` e in ADR-042.
+
+| Cosa | Dove è tracciato | Nota che decide se farlo adesso |
+|---|---|---|
+| Commit del ramo `pacchetto/grc-skills` del template, merge in `main` e `allinea-tutti.ps1 -Applica` | ADR-042; albero `E:/template-grc-skills` | Finché non avviene, la copia del pacchetto in questo progetto non ha storia nel template e l'aggiornamento mensile non arriva a nessun progetto. `main` del template porta modifiche di un'altra sessione: il merge va fatto dopo il suo commit |
+| Decisione sul perimetro del primo certificato, con o senza lo sviluppo SaaS | ISO-36 | Decide l'applicabilità di nove controlli di sviluppo e il peso della SoA |
+| Nomine scritte dei ruoli e degli amministratori di sistema | clausola 5.3, A.5.2-A.5.4; nessun intervento ISO | È un documento della direzione e la lacuna più visibile a un auditor |
+| Interventi di rete mancanti nel registro: autenticazione a più fattori, sincronizzazione degli orologi, sicurezza fisica della sala server, filtraggio web | A.8.5, A.8.17, A.7.1-A.7.6, A.8.23; nessun intervento ISO | Da aprire con `IsoRoadmap.py` dopo la conferma dell'IT Manager |
+| Esito dell'analisi di applicabilità NIS2 dello studio legale | gap analysis, sezione NIS2 | Cambia i tempi di notifica di ISO-42; serve il documento o la sua conclusione |
+| Testo del post Reddit indicato come fonte per aggiornare le skill | `docs/fonti-di-scouting.md` del template | Reddit risponde 403: serve l'URL completo o il testo salvato in `_notes/fonti/` |
