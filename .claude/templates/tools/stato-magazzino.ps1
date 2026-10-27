@@ -352,7 +352,7 @@ function Get-ProcessiClaude {
 # i verbali con attivita' dopo l'avvio del processo che nessuna sessione legata con
 # certezza rivendica, prima quelli nati dopo l'avvio (una sessione nuova), poi gli altri
 # (una sessione ripresa con --resume continua un verbale piu' vecchio).
-function Get-Cliente-8($processi, $magazzino) {
+function Get-Legami($processi, $magazzino) {
   $tolleranza = 20000000L
   $file = @($magazzino.Account | ForEach-Object { $_.Sessioni })
   $tuttiVerbali = @()
@@ -781,7 +781,7 @@ function Invoke-Autotest {
       [pscustomobject]@{ Pid = 111; Avvio = $avvio; AvvioFileTime = $ft; Catena = 'x'; Cpu = 1; RamMB = 1; Proprio = $false },
       [pscustomobject]@{ Pid = 222; Avvio = $avvio; AvvioFileTime = $ft; Catena = 'x'; Cpu = 1; RamMB = 1; Proprio = $false },
       [pscustomobject]@{ Pid = 333; Avvio = $avvio; AvvioFileTime = $ft; Catena = 'x'; Cpu = 1; RamMB = 1; Proprio = $true })
-    $leg = Get-Cliente-8 $proc $m
+    $leg = Get-Legami $proc $m
     $l111 = $leg | Where-Object { $_.Processo.Pid -eq 111 }
     $l222 = $leg | Where-Object { $_.Processo.Pid -eq 222 }
     $l333 = $leg | Where-Object { $_.Processo.Pid -eq 333 }
@@ -833,7 +833,7 @@ if ($Chiudi -gt 0) {
   $no = Test-Chiudibile $Chiudi $processi
   if ($no) { Write-Host $no -ForegroundColor Red; exit 1 }
   $magazzino = Read-Magazzino $Radice $TempClaude
-  $legami = @(Get-Cliente-8 $processi $magazzino | Where-Object { $_.Processo.Pid -eq $Chiudi })
+  $legami = @(Get-Legami $processi $magazzino | Where-Object { $_.Processo.Pid -eq $Chiudi })
   Write-Resoconto $magazzino $legami
   Write-Host "Chiudere il PID $Chiudi termina la sessione senza che il suo hook SessionEnd parta: il verbale resta e il wipe va rilanciato dopo."
   try { $r = Read-Host "Per confermare riscrivi il PID ($Chiudi), qualunque altra risposta annulla" }
@@ -845,6 +845,6 @@ if ($Chiudi -gt 0) {
 }
 
 $magazzino = Read-Magazzino $Radice $TempClaude
-$legami = @(Get-Cliente-8 $processi $magazzino)
+$legami = @(Get-Legami $processi $magazzino)
 if ($Dettagli) { Write-Resoconto $magazzino $legami } else { Write-Compatto $magazzino $legami }
 exit 0

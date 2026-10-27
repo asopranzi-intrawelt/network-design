@@ -4,7 +4,7 @@
 .DESCRIPTION
     Legge `data/network-topology.json`, lo valida, lo inietta nel template
     `scripts/templates/network-map.template.html` e scrive un unico file HTML
-    autoconsistente in `docs/network-map.html`.
+    autoconsistente in `docs/stato/network-map.html`.
 
     Tre vincoli che questo script fa rispettare, e che vengono da ADR-023.
 
@@ -23,7 +23,7 @@
 .PARAMETER SourcePath
     Fonte strutturata. Predefinito: data/network-topology.json
 .PARAMETER OutputPath
-    File generato. Predefinito: docs/network-map.html
+    File generato. Predefinito: docs/stato/network-map.html
 .PARAMETER Force
     Scrive anche se il guard-rail di anonimizzazione trova qualcosa. Da usare solo dopo
     aver guardato ogni riscontro: il valore predefinito e' rifiutare.
@@ -61,7 +61,7 @@ if (-not $here) { $here = Split-Path -Parent $MyInvocation.MyCommand.Path }
 $root = Split-Path -Parent $here
 if (-not $SourcePath)   { $SourcePath   = Join-Path (Join-Path $root 'data') 'network-topology.json' }
 if (-not $TemplatePath) { $TemplatePath = Join-Path (Join-Path $here 'templates') 'network-map.template.html' }
-if (-not $OutputPath)   { $OutputPath   = Join-Path (Join-Path $root 'docs') 'network-map.html' }
+if (-not $OutputPath)   { $OutputPath   = Join-Path (Join-Path (Join-Path $root 'docs') 'stato') 'network-map.html' }
 
 if (-not (Test-Path -LiteralPath $SourcePath))   { Fail "Fonte non trovata: $SourcePath" }
 if (-not (Test-Path -LiteralPath $TemplatePath)) { Fail "Template non trovato: $TemplatePath" }

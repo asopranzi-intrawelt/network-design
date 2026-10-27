@@ -9,7 +9,7 @@
     nulla. Serve il parametro -Apply PIU' una conferma testuale a runtime per scrivere
     davvero (vedi ADR-010 in .claude/memory/decisions.md).
 
-    Target fissi (da docs/runbook-anomalie.md §AP-001, verificati il 15/07/2026 via
+    Target fissi (da docs/operativita/runbook-anomalie.md §AP-001, verificati il 15/07/2026 via
     tabella MAC L2 incrociata con LLDP):
       XGS2220-30HP porta 1   -> AP "PianoTerra"   (AA:BB:CC:00:00:27)
       XGS2220-54HP porta 41  -> AP "PianoPrimo"   (AA:BB:CC:00:00:25)

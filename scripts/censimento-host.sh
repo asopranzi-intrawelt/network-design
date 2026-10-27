@@ -4,7 +4,7 @@
 # Interroga i quattro livelli a cui puo' vivere un filtro, perche' guardarne uno
 # solo produce un quadro parziale: e' l'errore corretto il 31/08/2026 dopo che il
 # censimento con il solo `ufw` aveva mancato la restrizione per indirizzo attiva
-# sulla VM 204. Vedi docs/esposizione-servizi-interni.md.
+# sulla VM 204. Vedi docs/rete/esposizione-servizi-interni.md.
 #
 # Non scrive nulla sull'host e non apre connessioni. Va eseguito come root.
 # Si lancia dalla postazione con scripts/Invoke-HostCensus.ps1, che lo copia,

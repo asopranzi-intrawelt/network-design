@@ -19,8 +19,8 @@
   "_ip_ammessi": "Indirizzi singoli ammessi alla lettera: maschere di rete, indirizzi di ascolto su tutte le interfacce, indirizzi di esempio della documentazione di un fornitore.",
 
   "prefissi_reali": [
-    "10.61.77.",
-    "<IP-OMESSO>"
+    "192.168.77.",
+    "172.20.5."
   ],
   "_prefissi_reali": "I prefissi REALI del progetto. Un riscontro su questi e' BLOCCANTE, perche' significa che un indirizzo vero e' finito in un file pubblicabile. E' la chiave piu' importante del file e va estesa ogni volta che si scopre un blocco reale non ancora elencato.",
 

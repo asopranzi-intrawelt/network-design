@@ -123,7 +123,7 @@
           <mxGeometry x="50" y="810" width="220" height="130" as="geometry" />
         </mxCell>
 
-        <mxCell id="pcs" value="&lt;b&gt;PC utenti (10.61.10.0)&lt;/b&gt;&#10;Address-object configurati per:&#10;alessia, alessianazz, daniel,&#10;elena, elisa, fabio, persona-r,&#10;federica, giuseppe, marcello,&#10;mery, pasquale, roberta, sara,&#10;sergio, sonia, ulrike&#10;+ Mac: alessandro, marcello,&#10;sara, sergio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="pcs" value="&lt;b&gt;PC utenti (10.61.10.0)&lt;/b&gt;&#10;Address-object configurati per:&#10;alessia, alessianazz, daniel,&#10;elena, elisa, fabio, giordano,&#10;federica, giuseppe, marcello,&#10;mery, pasquale, roberta, sara,&#10;sergio, sonia, ulrike&#10;+ Mac: alessandro, marcello,&#10;sara, sergio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="290" y="810" width="220" height="130" as="geometry" />
         </mxCell>
 
@@ -193,7 +193,7 @@
           <mxGeometry x="850" y="1120" width="380" height="220" as="geometry" />
         </mxCell>
 
-        <mxCell id="vpn-users" value="&lt;b&gt;User group VPN&lt;/b&gt;&#10;groupname: vpn-users&#10;• persona-j&#10;• persona-k / persona-k_old&#10;• asopranzi&#10;• persona-a&#10;• persona-e&#10;• persona-m&#10;• anazziconi&#10;• persona-l&#10;• persona-b&#10;• fguidali&#10;&#10;groupname: RemoteAccess_Wiz_USER_GRP&#10;• asopranzi" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="vpn-users" value="&lt;b&gt;User group VPN&lt;/b&gt;&#10;groupname: vpn-users&#10;• anasini&#10;• persona-k / persona-k_old&#10;• asopranzi&#10;• persona-a&#10;• persona-e&#10;• atrovato&#10;• anazziconi&#10;• persona-l&#10;• persona-b&#10;• fguidali&#10;&#10;groupname: RemoteAccess_Wiz_USER_GRP&#10;• asopranzi" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;align=left;fontSize=9;spacingLeft=10;verticalAlign=top;" vertex="1" parent="1">
           <mxGeometry x="1250" y="1120" width="220" height="220" as="geometry" />
         </mxCell>
 

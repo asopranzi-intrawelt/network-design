@@ -35,7 +35,7 @@
       "responsabile": "IT Manager e gestore del servizio",
       "fonti": [
         "GAP-TBC #117",
-        "docs/risoluzione-nomi-interni.md"
+        "docs/rete/risoluzione-nomi-interni.md"
       ],
       "controlli": [
         "A.8.24",
@@ -77,7 +77,7 @@
       "responsabile": "IT Manager",
       "fonti": [
         "GAP-TBC #194",
-        "docs/interventi-robustezza.md R21"
+        "docs/rete/interventi-robustezza.md R21"
       ],
       "controlli": [
         "A.8.22",
@@ -96,7 +96,7 @@
       "verifica": "Servizi aziendali funzionanti e connessioni non autorizzate negate da una postazione di prova.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/esposizione-servizi-interni.md sezione VM 100",
+        "docs/rete/esposizione-servizi-interni.md sezione VM 100",
         "GAP-TBC #175"
       ],
       "controlli": [
@@ -116,7 +116,7 @@
       "verifica": "Connessione applicativa riuscita e porta del database non raggiungibile dalla LAN.",
       "responsabile": "Responsabile applicativo",
       "fonti": [
-        "docs/esposizione-servizi-interni.md sezione VM 209"
+        "docs/rete/esposizione-servizi-interni.md sezione VM 209"
       ],
       "controlli": [
         "A.8.3",
@@ -135,7 +135,7 @@
       "verifica": "Client applicativo autorizzato funziona; host non autorizzato non raggiunge l'API.",
       "responsabile": "Responsabile del servizio",
       "fonti": [
-        "docs/esposizione-servizi-interni.md sezione host Ollama",
+        "docs/rete/esposizione-servizi-interni.md sezione host Ollama",
         "GAP-TBC #173"
       ],
       "controlli": [
@@ -155,7 +155,7 @@
       "verifica": "Matrice accessi approvata, vecchie credenziali revocate, test degli accessi consentiti e negati.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/esposizione-servizi-interni.md",
+        "docs/rete/esposizione-servizi-interni.md",
         "GAP-TBC #120, #170, #172"
       ],
       "controlli": [
@@ -177,7 +177,7 @@
       "responsabile": "IT Manager e fornitore NAS",
       "fonti": [
         "GAP-TBC #204",
-        "docs/pendenze-aperte.md"
+        "docs/stato/pendenze-aperte.md"
       ],
       "controlli": [
         "A.8.13",
@@ -200,7 +200,7 @@
       "responsabile": "IT Manager",
       "fonti": [
         "GAP-TBC #200, #203, #204",
-        "docs/pendenze-aperte.md"
+        "docs/stato/pendenze-aperte.md"
       ],
       "controlli": [
         "A.8.13",
@@ -220,7 +220,7 @@
       "verifica": "Verbale con dati aperti, tempi effettivi, errori e azioni correttive.",
       "responsabile": "IT Manager e responsabili dei dati",
       "fonti": [
-        "docs/business-continuity-disaster-recovery.md",
+        "docs/sicurezza/business-continuity-disaster-recovery.md",
         "GAP-TBC #192, #204"
       ],
       "controlli": [
@@ -285,7 +285,7 @@
       "responsabile": "IT Manager",
       "fonti": [
         "GAP-TBC #138",
-        "docs/pendenze-aperte.md"
+        "docs/stato/pendenze-aperte.md"
       ],
       "controlli": [
         "A.5.17",
@@ -307,7 +307,7 @@
       "verifica": "Scansioni verso tutte le destinazioni NAS riuscite e vecchie condivisioni non piu' utilizzabili.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/interventi-robustezza.md R8, R9",
+        "docs/rete/interventi-robustezza.md R8, R9",
         "GAP-TBC #126"
       ],
       "controlli": [
@@ -328,7 +328,7 @@
       "verifica": "Stampa e scansione funzionanti dopo ogni modifica; accesso amministrativo negato dalle postazioni non IT.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/interventi-robustezza.md R1-R7, R11",
+        "docs/rete/interventi-robustezza.md R1-R7, R11",
         "GAP-TBC #125"
       ],
       "controlli": [
@@ -348,8 +348,8 @@
       "verifica": "Nomi interni risolti da cavo e Wi-Fi staff; rete ospiti esclusa; servizi raggiungibili.",
       "responsabile": "IT Manager e gestore RMM",
       "fonti": [
-        "docs/interventi-robustezza.md R12, R20",
-        "docs/risoluzione-nomi-interni.md"
+        "docs/rete/interventi-robustezza.md R12, R20",
+        "docs/rete/risoluzione-nomi-interni.md"
       ],
       "controlli": [
         "A.8.21",
@@ -369,8 +369,8 @@
       "verifica": "Accesso TLS senza avvisi, rinnovo e revoca documentati, chiave privata assente dalla rete.",
       "responsabile": "IT Manager e RSGSI",
       "fonti": [
-        "docs/autorita-certificazione-interna.md",
-        "docs/esposizione-servizi-interni.md"
+        "docs/sicurezza/autorita-certificazione-interna.md",
+        "docs/rete/esposizione-servizi-interni.md"
       ],
       "controlli": [
         "A.8.24",
@@ -394,7 +394,7 @@
       "verifica": "Stampa e scansione riuscite, SMB solo verso NAS dedicato, traffico stampanti verso PC negato.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/segmentazione-lan-m22.md",
+        "docs/rete/segmentazione-lan-m22.md",
         "roadmap M22b"
       ],
       "controlli": [
@@ -421,7 +421,7 @@
       "fonti": [
         "correzione IT Manager 28/09/2026",
         "roadmap M13c-10, M22c",
-        "docs/mappatura-porte-fisiche.md"
+        "docs/rete/mappatura-porte-fisiche.md"
       ],
       "controlli": [
         "A.8.22",
@@ -445,7 +445,7 @@
       "responsabile": "IT Manager e responsabili applicativi",
       "fonti": [
         "roadmap M22d",
-        "docs/virtualizzazione-proxmox-e-bridge.md"
+        "docs/rete/virtualizzazione-proxmox-e-bridge.md"
       ],
       "controlli": [
         "A.8.22"
@@ -468,7 +468,7 @@
       "responsabile": "IT Manager",
       "fonti": [
         "roadmap M22e",
-        "docs/segmentazione-lan-m22.md"
+        "docs/rete/segmentazione-lan-m22.md"
       ],
       "controlli": [
         "A.8.22",
@@ -495,7 +495,7 @@
       "responsabile": "IT Manager",
       "fonti": [
         "GAP-TBC #122, #123, #134, #143",
-        "docs/pendenze-aperte.md"
+        "docs/stato/pendenze-aperte.md"
       ],
       "controlli": [
         "A.8.20"
@@ -517,7 +517,7 @@
       "responsabile": "IT Manager e responsabile applicativo",
       "fonti": [
         "roadmap M4-M9",
-        "docs/virtualizzazione-proxmox-e-bridge.md"
+        "docs/rete/virtualizzazione-proxmox-e-bridge.md"
       ],
       "controlli": [
         "A.8.22",
@@ -540,7 +540,7 @@
       "responsabile": "IT Manager",
       "fonti": [
         "roadmap M15",
-        "docs/virtualizzazione-proxmox-e-bridge.md"
+        "docs/rete/virtualizzazione-proxmox-e-bridge.md"
       ],
       "controlli": [
         "A.8.20",
@@ -564,7 +564,7 @@
       "fonti": [
         "roadmap M14, M7",
         "GAP-TBC FW-004, FW-006, FW-007",
-        "docs/firewall-seeweb-opnsense.md",
+        "docs/firewall/firewall-seeweb-opnsense.md",
         "roadmap M31"
       ],
       "controlli": [
@@ -589,7 +589,7 @@
       "verifica": "Test da staff e ospiti verso servizi consentiti e vietati, con log del firewall.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/segmentazione-lan-m22.md",
+        "docs/rete/segmentazione-lan-m22.md",
         "ADR-014",
         "GAP-TBC #194"
       ],
@@ -613,10 +613,10 @@
       "verifica": "Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/vendor-management.md",
-        "docs/design-and-security.md",
+        "docs/operativita/vendor-management.md",
+        "docs/sicurezza/design-and-security.md",
         "roadmap Fase 4",
-        "docs/firewall-seeweb-opnsense.md",
+        "docs/firewall/firewall-seeweb-opnsense.md",
         "roadmap M31"
       ],
       "controlli": [
@@ -639,8 +639,8 @@
       "verifica": "Ogni chiusura ha output o verbale; i rilievi critici e alti sono riprovati.",
       "responsabile": "RSGSI e IT Manager",
       "fonti": [
-        "docs/vulnerability-assessment-nov2025.md",
-        "docs/design-and-security.md"
+        "docs/sicurezza/vulnerability-assessment-nov2025.md",
+        "docs/sicurezza/design-and-security.md"
       ],
       "controlli": [
         "A.8.8",
@@ -661,7 +661,7 @@
       "verifica": "Esportazione datata per la flotta e decisione documentata sui dispositivi fuori criterio.",
       "responsabile": "IT Manager e RSGSI",
       "fonti": [
-        "docs/design-and-security.md",
+        "docs/sicurezza/design-and-security.md",
         "GAP-TBC #113"
       ],
       "controlli": [
@@ -683,10 +683,10 @@
       "verifica": "Evento ricevuto, letto e preso in carico entro il tempo stabilito.",
       "responsabile": "IT Manager e RSGSI",
       "fonti": [
-        "docs/design-and-security.md",
+        "docs/sicurezza/design-and-security.md",
         "GAP-TBC #200",
-        "docs/log-collector-integrazione.md",
-        "docs/firewall-seeweb-opnsense.md",
+        "docs/osservabilita/log-collector-integrazione.md",
+        "docs/firewall/firewall-seeweb-opnsense.md",
         "roadmap M31"
       ],
       "controlli": [
@@ -709,7 +709,7 @@
       "responsabile": "IT Manager e fornitore elettrico",
       "fonti": [
         "GAP-TBC #148",
-        "docs/livello-fisico-ed-elettrico.md"
+        "docs/rete/livello-fisico-ed-elettrico.md"
       ],
       "controlli": [
         "A.7.11",
@@ -731,7 +731,7 @@
       "responsabile": "IT Manager e fornitore elettrico",
       "fonti": [
         "GAP-TBC #202",
-        "docs/livello-fisico-ed-elettrico.md"
+        "docs/rete/livello-fisico-ed-elettrico.md"
       ],
       "controlli": [
         "A.7.11",
@@ -775,7 +775,7 @@
       "verifica": "Verbali di prova, deviazioni dai tempi attesi e azioni correttive assegnate.",
       "responsabile": "RSGSI e responsabili di servizio",
       "fonti": [
-        "docs/business-continuity-disaster-recovery.md"
+        "docs/sicurezza/business-continuity-disaster-recovery.md"
       ],
       "controlli": [
         "A.5.29",
@@ -799,8 +799,8 @@
       "verifica": "Inventario con proprietario, funzione, posizione, alimentazione e data di verifica per ogni apparato.",
       "responsabile": "IT Manager",
       "fonti": [
-        "docs/pendenze-aperte.md",
-        "docs/livello-fisico-ed-elettrico.md"
+        "docs/stato/pendenze-aperte.md",
+        "docs/rete/livello-fisico-ed-elettrico.md"
       ],
       "controlli": [
         "A.5.9",
@@ -821,7 +821,7 @@
       "verifica": "Documento di ambito approvato dalla direzione e coerente con asset e contratti.",
       "responsabile": "Direzione e RSGSI",
       "fonti": [
-        "docs/business-continuity-disaster-recovery.md sezione PSGSI",
+        "docs/sicurezza/business-continuity-disaster-recovery.md sezione PSGSI",
         "ISO/IEC 27001:2022"
       ],
       "controlli": [
@@ -843,7 +843,7 @@
       "responsabile": "Direzione e RSGSI",
       "fonti": [
         "ISO/IEC 27001:2022/Amd 1:2024",
-        "docs/business-continuity-disaster-recovery.md"
+        "docs/sicurezza/business-continuity-disaster-recovery.md"
       ],
       "controlli": [
         "4.1",
@@ -889,7 +889,7 @@
       "responsabile": "RSGSI",
       "fonti": [
         "Checklist ISO27001 rev4 locale",
-        "docs/design-and-security.md"
+        "docs/sicurezza/design-and-security.md"
       ],
       "controlli": [
         "6.1.3"
@@ -934,7 +934,7 @@
       "verifica": "Una esecuzione documentata o esercizio per ciascuna procedura critica.",
       "responsabile": "IT Manager e RSGSI",
       "fonti": [
-        "docs/runbook-anomalie.md",
+        "docs/operativita/runbook-anomalie.md",
         "roadmap Fase 5"
       ],
       "controlli": [
@@ -956,8 +956,8 @@
       "verifica": "Esercitazione con tempi, decisioni, verbale e miglioramenti assegnati.",
       "responsabile": "RSGSI e Comitato di crisi",
       "fonti": [
-        "docs/cybersecurity-governance.md",
-        "docs/business-continuity-disaster-recovery.md"
+        "docs/sicurezza/cybersecurity-governance.md",
+        "docs/sicurezza/business-continuity-disaster-recovery.md"
       ],
       "controlli": [
         "A.5.24",
@@ -979,7 +979,7 @@
       "verifica": "Schede fornitore con rischio, proprietario, ultima revisione e azioni aperte.",
       "responsabile": "RSGSI e responsabile acquisti",
       "fonti": [
-        "docs/vendor-management.md",
+        "docs/operativita/vendor-management.md",
         "ISO/IEC 27001:2022"
       ],
       "controlli": [
@@ -1002,7 +1002,7 @@
       "verifica": "Elenco accessi approvato dai proprietari, revoche eseguite e registri di formazione.",
       "responsabile": "RSGSI e responsabili di servizio",
       "fonti": [
-        "docs/cybersecurity-governance.md",
+        "docs/sicurezza/cybersecurity-governance.md",
         "ISO/IEC 27001:2022"
       ],
       "controlli": [
@@ -1051,7 +1051,7 @@
       "responsabile": "Direzione",
       "fonti": [
         "ISO/IEC 27001:2022",
-        "docs/business-continuity-disaster-recovery.md"
+        "docs/sicurezza/business-continuity-disaster-recovery.md"
       ],
       "controlli": [
         "9.3",
@@ -1119,7 +1119,7 @@
       "data": "2026-09-30",
       "stato": "in_corso",
       "nota": "30/09: letti i task Proxmox delle ultime tre notti. Nove job OK su dieci; il job VM 207 delle 03:45 fallisce ogni notte per timeout del lock. I tre job aggiunti per 207, 208 e 209 non hanno lockwait=1440, presente sugli altri sette. Ultimo job alle 08:15, doppia partenza alle 04:30 ancora presente. Correggere configurazione e misurare sette notti.",
-      "evidenza": "API task Proxmox 28-30/09/2026; snapshot Proxmox 30/09/2026; docs/business-continuity-disaster-recovery.md"
+      "evidenza": "API task Proxmox 28-30/09/2026; snapshot Proxmox 30/09/2026; docs/sicurezza/business-continuity-disaster-recovery.md"
     },
     {
       "id": "ISO-08",
@@ -1137,7 +1137,7 @@
       "id": "ISO-30",
       "data": "2026-09-30",
       "stato": "in_corso",
-      "nota": "Il progetto collegato D:/log-collector ha versionato il primo componente e definito il disegno della futura VM; al 30/09 la VM e le sorgenti non risultano ancora attive. Alla creazione verificare rete, SSH, flussi e prove di ricezione/allarme prima di dichiarare copertura. Riferimento: docs/log-collector-integrazione.md.",
+      "nota": "Il progetto collegato D:/log-collector ha versionato il primo componente e definito il disegno della futura VM; al 30/09 la VM e le sorgenti non risultano ancora attive. Alla creazione verificare rete, SSH, flussi e prove di ricezione/allarme prima di dichiarare copertura. Riferimento: docs/osservabilita/log-collector-integrazione.md.",
       "fornitura": {
         "stato": "condizionata",
         "dettaglio": "VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme",
@@ -1149,20 +1149,20 @@
       "data": "2026-10-02",
       "stato": "in_corso",
       "nota": "Collettore dei log AdS in servizio: VM 210 ads-collector creata il 01/10/2026 e misurata nello snapshot del 02/10; sorgenti host Proxmox (TLS 6514) e firewall USG FLEX (syslog 514) collaudate il 02/10 con login riusciti e falliti; restano NAS, custodia esterna della prova e analisi",
-      "evidenza": "docs/log-collector-integrazione.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-07",
       "stato": "in_corso",
-      "nota": "Raccolta degli accessi amministrativi verificata su Proxmox, firewall, NAS QNAP e iLO 5. Su NAS INTRA3 e iLO osservati login riusciti e falliti; sincronizzazione temporale confrontata con il collettore. Separazione D7 degli accessi NAS ordinari e degli eventi tecnici iLO ancora non installata; catena D-1 provata solo in locale; mancano monitoraggio automatico, TSA, WORM e nomina/elenco AdS approvati. Evidenze e limiti in docs/log-collector-integrazione.md e docs/design-and-security.md.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-3-nas.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+      "nota": "Raccolta degli accessi amministrativi verificata su Proxmox, firewall, NAS QNAP e iLO 5. Su NAS INTRA3 e iLO osservati login riusciti e falliti; sincronizzazione temporale confrontata con il collettore. Separazione D7 degli accessi NAS ordinari e degli eventi tecnici iLO ancora non installata; catena D-1 provata solo in locale; mancano monitoraggio automatico, TSA, WORM e nomina/elenco AdS approvati. Evidenze e limiti in docs/osservabilita/log-collector-integrazione.md e docs/sicurezza/design-and-security.md.",
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-3-nas.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-08",
       "stato": "in_corso",
-      "nota": "Approvata ritenzione locale di 90 giorni per gli eventi iLO tecnici separati dagli accessi AdS. Preparati rotazione per file giornalieri, permessi root:root, job di scadenza e timer alle 03:00; prova WSL della soglia e prova Debian 13 Docker dei due flussi passate. Nessuna installazione sul collettore; avviso di capienza solo nel journal, senza presa in carico automatica. D7 NAS e custodia esterna restano aperti. Dettaglio in docs/log-collector-integrazione.md.",
+      "nota": "Approvata ritenzione locale di 90 giorni per gli eventi iLO tecnici separati dagli accessi AdS. Preparati rotazione per file giornalieri, permessi root:root, job di scadenza e timer alle 03:00; prova WSL della soglia e prova Debian 13 Docker dei due flussi passate. Nessuna installazione sul collettore; avviso di capienza solo nel journal, senza presa in carico automatica. D7 NAS e custodia esterna restano aperti. Dettaglio in docs/osservabilita/log-collector-integrazione.md.",
       "evidenza": "D:/log-collector/docs/runbook-componente-4-ilo.md; D:/log-collector/tests/test_ilo_other_retain.sh; D:/log-collector/tests/debian13/verifica-config.sh"
     },
     {
@@ -1170,35 +1170,35 @@
       "data": "2026-10-08",
       "stato": "in_corso",
       "nota": "Preflight reale del flusso iLO tecnico: rsyslog attivo, configurazione corrente presente, directory tecnica ancora assente, /var/log al 44% con 8590400 KiB disponibili; candidata locale generata ma non installata. Restano hash e backup del file attivo, collaudo reale, misura del volume e monitoraggio della capienza.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-08",
       "stato": "in_corso",
       "nota": "Baseline SHA-256 del file rsyslog attivo acquisita; nuovo filtro iLO non installato. Perimetro esteso a 55/55 nodi della topologia, inclusi apparati del fornitore, telefoni, stampanti e OT, con esito per nodo. Restano collaudo dei canali Nebula, VM, endpoint e fornitori, filtri AdS e monitoraggio in esercizio.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/matrice-sorgenti-rete.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/matrice-sorgenti-rete.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-08",
       "stato": "in_corso",
       "nota": "Verificati 18753 eventi Nebula di due switch: nessun messaggio login o auth nel campione. Due multifunzione fisiche documentate restano fuori dai 55 nodi del JSON e richiedono censimento e verifica dei log amministrativi. La candidata rsyslog iLO e ancora non installata.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/matrice-sorgenti-rete.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/matrice-sorgenti-rete.md"
     },
     {
       "id": "ISO-35",
       "data": "2026-10-08",
       "stato": "in_corso",
       "nota": "Censite individualmente nella topologia le due multifunzione di rete: Kyocera Piano Terra su switch 30HP porta 6 verificata, Canon Piano 1 con porta switch ancora da attribuire. Mappa rigenerata a 57 nodi e 71 collegamenti; per entrambe restano proprietario, alimentazione e audit amministrativo da verificare.",
-      "evidenza": "data/network-topology.json; docs/network-map.html; docs/livello-fisico-ed-elettrico.md; docs/log-collector-integrazione.md"
+      "evidenza": "data/network-topology.json; docs/stato/network-map.html; docs/rete/livello-fisico-ed-elettrico.md; docs/osservabilita/log-collector-integrazione.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-08",
       "stato": "in_corso",
       "nota": "Filtro rsyslog iLO installato sul collettore reale con backup SHA-256 verificato, candidata e configurazione completa validate da rsyslogd, servizio riavviato e attivo. Restano prova post-cambio degli eventi di accesso e tecnici, timer di ritenzione 90 giorni e monitoraggio in esercizio.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-4-ilo.md"
     },
     {
       "id": "ISO-30",
@@ -1331,14 +1331,14 @@
       "data": "2026-10-08",
       "stato": "in_corso",
       "nota": "08/10/2026: progettata la migrazione dei segreti locali con prove isolate, verifica del server MCP e rollback. La migrazione non e stata ancora eseguita; il server attuale resta operativo.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
       "nota": "09/10/2026: creato il file locale dei quattro segreti con ACL limitato; script e writer adattati e collaudati con dati finti. Configurazione MCP attiva invariata, valori precedenti conservati temporaneamente per rollback. Restano prove reali e cutover.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md"
     },
     {
       "id": "ISO-41",
@@ -1370,70 +1370,70 @@
       "data": "2026-10-09",
       "stato": "in_corso",
       "nota": "09/10/2026: prova MCP con PROXMOX_ALLOW_DANGER=false: catalogo e connessione locale OK, list_nodes reale KO; rollback della baseline verificato e list_nodes torna OK. Il token PVEAuditor resta di sola lettura. Restano SEC-025, correzione della safety policy e verifica TLS con CA valida; .env non isola i segreti dai processi dello stesso utente.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md, gate MCP e rollback 09/10/2026"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md, gate MCP e rollback 09/10/2026"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
       "nota": "Preflight sicurezza MCP: causa del blocco list_nodes confermata nel wheel privo di safety_policy.json; candidata locale limitata a dieci GET provata offline. Certificato Proxmox letto senza token: CA interna, IP URL fuori SAN, nome DNS da risolvere. Configurazione attiva invariata; TLS e flag di pericolo ancora aperti in attesa di CA integra e collaudo reale.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md, 09/10/2026"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
       "nota": "Due script MCP di sola lettura preparati nel progetto rete, copia e sintassi verificate; launcher attivo e file .mcp.json invariati. Resta verifica della CA Proxmox, corrispondenza nome certificato, prova TLS senza token e collaudo read-only prima del cambio.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md, 09/10/2026"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
       "nota": "CA Proxmox pubblica ricostruita dalla Shell e autofirma valida; confronto impronta con nodo ancora atteso. Test TLS senza token con Python 3.13 rifiuta la CA senza keyUsage per VERIFY_X509_STRICT. Python 3.12 del MCP non attiva quel flag: prova reale separata ancora richiesta; MCP attivo invariato.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md, 09/10/2026"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
       "nota": "Runtime MCP Python 3.12: handshake TLS 1.3 verificato con CA e nome DNS, senza HTTP e senza token. Python 3.13 rigoroso rifiuta la CA priva di keyUsage. Restano confronto impronta CA da Shell, risoluzione nome, test list_nodes del candidato e cutover con rollback.",
-      "evidenza": "docs/runbook-migrazione-segreti-locali.md, 09/10/2026"
+      "evidenza": "docs/sicurezza/runbook-migrazione-segreti-locali.md, 09/10/2026"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
-      "nota": "CA Proxmox: impronta SHA-256 confrontata con la Shell del nodo, copia privata verificata; prova TLS Python 3.12 riuscita, Python 3.13 rifiuta keyUsage assente. Audit in docs/evidenze-sicurezza-mcp-proxmox.md. Mancano mappatura hosts elevata, URL DNS, prova MCP reale e cutover; nessun flag attivo cambiato.",
-      "evidenza": "docs/evidenze-sicurezza-mcp-proxmox.md"
+      "nota": "CA Proxmox: impronta SHA-256 confrontata con la Shell del nodo, copia privata verificata; prova TLS Python 3.12 riuscita, Python 3.13 rifiuta keyUsage assente. Audit in docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md. Mancano mappatura hosts elevata, URL DNS, prova MCP reale e cutover; nessun flag attivo cambiato.",
+      "evidenza": "docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
-      "nota": "MCP Proxmox: nome DNS e CA autenticata, URL privato aggiornato, candidato read-only verificato sul nodo reale con 10 tool, rifiuto di delete_instance e list_nodes OK. Cutover locale con backup; claude mcp list Connected. Manca ultima prova list_nodes sulla configurazione attiva. Audit: docs/evidenze-sicurezza-mcp-proxmox.md.",
-      "evidenza": "docs/evidenze-sicurezza-mcp-proxmox.md"
+      "nota": "MCP Proxmox: nome DNS e CA autenticata, URL privato aggiornato, candidato read-only verificato sul nodo reale con 10 tool, rifiuto di delete_instance e list_nodes OK. Cutover locale con backup; claude mcp list Connected. Manca ultima prova list_nodes sulla configurazione attiva. Audit: docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md.",
+      "evidenza": "docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-09",
       "stato": "in_corso",
-      "nota": "SEC-025 chiuso nel perimetro MCP Proxmox: .mcp.json attivo con ALLOW_DANGER=false e VERIFY_SSL=true; CA autenticata, catalogo di 10 tool di lettura, delete_instance rifiutato, list_nodes reale riuscito anche post-cutover, Claude Connected. Restano TLS del client PowerShell, upgrade CA/Python e gate M30 distinti. Audit: docs/evidenze-sicurezza-mcp-proxmox.md.",
-      "evidenza": "docs/evidenze-sicurezza-mcp-proxmox.md"
+      "nota": "SEC-025 chiuso nel perimetro MCP Proxmox: .mcp.json attivo con ALLOW_DANGER=false e VERIFY_SSL=true; CA autenticata, catalogo di 10 tool di lettura, delete_instance rifiutato, list_nodes reale riuscito anche post-cutover, Claude Connected. Restano TLS del client PowerShell, upgrade CA/Python e gate M30 distinti. Audit: docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md.",
+      "evidenza": "docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-12",
       "stato": "in_corso",
-      "nota": "Dossier tecnico pubblicato: flusso MCP originale e attivo, quattordici prove con esiti negativi e positivi, custodia delle chiavi, rollback, fonti ufficiali e criteri per i limiti residui. SEC-025 resta sanato nel MCP; il bypass TLS del client PowerShell, la CA non compatibile con Python 3.13 e l'isolamento fra processi dello stesso account sono tracciati separatamente. Evidenza: docs/dossier-sicurezza-mcp-proxmox.md.",
-      "evidenza": "docs/dossier-sicurezza-mcp-proxmox.md"
+      "nota": "Dossier tecnico pubblicato: flusso MCP originale e attivo, quattordici prove con esiti negativi e positivi, custodia delle chiavi, rollback, fonti ufficiali e criteri per i limiti residui. SEC-025 resta sanato nel MCP; il bypass TLS del client PowerShell, la CA non compatibile con Python 3.13 e l'isolamento fra processi dello stesso account sono tracciati separatamente. Evidenza: docs/sicurezza/dossier-sicurezza-mcp-proxmox.md.",
+      "evidenza": "docs/sicurezza/dossier-sicurezza-mcp-proxmox.md"
     },
     {
       "id": "ISO-41",
       "data": "2026-10-12",
       "stato": "in_corso",
       "nota": "Client PowerShell Proxmox senza bypass TLS: CA, nome e pin verificati nel runtime 5.1; dry-run reale riuscito il 12/10, snapshot validato e non promosso. Restano task pianificato, PowerShell 7, revoca e guest-agent 403.",
-      "evidenza": "docs/dossier-sicurezza-mcp-proxmox.md §10; docs/evidenze-sicurezza-mcp-proxmox.md SEC-PS-01..04"
+      "evidenza": "docs/sicurezza/dossier-sicurezza-mcp-proxmox.md §10; docs/sicurezza/evidenze-sicurezza-mcp-proxmox.md SEC-PS-01..04"
     },
     {
       "id": "ISO-30",
@@ -1547,7 +1547,7 @@
       "id": "ISO-30",
       "data": "2026-10-14",
       "stato": "in_corso",
-      "nota": "Nel collettore D:/log-collector: Commit manuale del lettore verificato a5fe489: HEAD e origin/main locali coincidono; ls-remote in sola lettura conferma lo stesso SHA su GitHub. Il push precedente è riuscito, ma il controllo SSH successivo è scaduto e non ha registrato l'impronta. La ripetizione della chiusura si ferma correttamente perché HEAD è già cambiato; non rifare il commit dei sedici file. Le tre schede che coprono lettore e fixture sono riconciliate a a5fe489; le altre ancore restano valide nelle rispettive aree. Il lettore è locale su due originali esportati: nessun flusso Seeweb automatico o login del provider raccolto sulla VM. L'utente conferma sette URL: Cloud Backup, appliance pubblica, clienti, supporto, Cloud Center, ESXi e firewall privato, con valori nel livello privato. Il Word invariato, SHA beac5702ebe722aa84955e687aa1642b8d21aace3be5b932ce1d92cbd889d114, associa storicamente i due ingressi firewall alla stessa appliance; identità e prodotto/versione correnti da verificare. Tre schermate Cloud Center lette: Foundation e appliance sulla rete privata, 16 core/128 GB/250 GB, famiglia VMware 7 senza build letta, datacenter Milano, scheda Eventi visibile ma non aperta. Backup: Nessun Backup del prodotto Foundation non prova assenza del diverso Cloud Backup delle mail. Area clienti e ticket mantenuti nel censimento admin, senza capacità di export assunte. API pubblica Shared CPU non prova audit Foundation; Syslog ESXi e canali firewall solo candidati condizionati ai prodotti effettivi. Doc di dettaglio D:/log-collector/docs/sorgenti-log-seeweb.md, inventario e prove solo privati. L'utente autorizza il Word anche per le credenziali: tabella letta per attribuire i portali, nessuna credenziale usata per login o copiata nei file pubblicabili. Nessun comando su host, API di tenant, backup o regola modificati. Ribadita la timeline unica con network-design: fonti, stato e lacune aggiornati nello stesso giro nel progetto rete; ISO-30 rimane in_corso. Prossimo riscontro tecnico: dashboard del firewall per identità/versione e poi registri reali/export. Copia email, cause/job dei due Error del 13/10, cadenza, silenzio, canali, permessi e retention ancora aperti. Offline AdS Nebula rimandato, gate Nebula/D7 e Proxmox pianificato, PowerShell 7, dieci guest-agent 403, audit fonti ADR conservati. Nove file del template di altra lavorazione preservati; nuove annotazioni e censimento non committati. Commit, push e deploy manuali."
+      "nota": "Nel collettore D:/log-collector: Commit manuale del lettore verificato a5fe489: HEAD e origin/main locali coincidono; ls-remote in sola lettura conferma lo stesso SHA su GitHub. Il push precedente è riuscito, ma il controllo SSH successivo è scaduto e non ha registrato l'impronta. La ripetizione della chiusura si ferma correttamente perché HEAD è già cambiato; non rifare il commit dei sedici file. Le tre schede che coprono lettore e fixture sono riconciliate a a5fe489; le altre ancore restano valide nelle rispettive aree. Il lettore è locale su due originali esportati: nessun flusso Seeweb automatico o login del provider raccolto sulla VM. L'utente conferma sette URL: Cloud Backup, appliance pubblica, clienti, supporto, Cloud Center, ESXi e firewall privato, con valori nel livello privato. Il Word invariato, SHA beac5702ebe722aa84955e687aa1642b8d21aace3be5b932ce1d92cbd889d114, associa storicamente i due ingressi firewall alla stessa appliance; identità e prodotto/versione correnti da verificare. Tre schermate Cloud Center lette: Foundation e appliance sulla rete privata, 16 core/128 GB/250 GB, famiglia VMware 7 senza build letta, datacenter Milano, scheda Eventi visibile ma non aperta. Backup: Nessun Backup del prodotto Foundation non prova assenza del diverso Cloud Backup delle mail. Area clienti e ticket mantenuti nel censimento admin, senza capacità di export assunte. API pubblica Shared CPU non prova audit Foundation; Syslog ESXi e canali firewall solo candidati condizionati ai prodotti effettivi. Doc di dettaglio D:/log-collector/docs/osservabilita/sorgenti-log-seeweb.md, inventario e prove solo privati. L'utente autorizza il Word anche per le credenziali: tabella letta per attribuire i portali, nessuna credenziale usata per login o copiata nei file pubblicabili. Nessun comando su host, API di tenant, backup o regola modificati. Ribadita la timeline unica con network-design: fonti, stato e lacune aggiornati nello stesso giro nel progetto rete; ISO-30 rimane in_corso. Prossimo riscontro tecnico: dashboard del firewall per identità/versione e poi registri reali/export. Copia email, cause/job dei due Error del 13/10, cadenza, silenzio, canali, permessi e retention ancora aperti. Offline AdS Nebula rimandato, gate Nebula/D7 e Proxmox pianificato, PowerShell 7, dieci guest-agent 403, audit fonti ADR conservati. Nove file del template di altra lavorazione preservati; nuove annotazioni e censimento non committati. Commit, push e deploy manuali."
     },
     {
       "id": "ISO-25",
@@ -1583,7 +1583,7 @@
       "id": "ISO-28",
       "data": "2026-10-14",
       "stato": "in_corso",
-      "nota": "Secondo VA Onova consegnato il 14/10/2026: dieci rilievi unici per 87 istanze sul solo segmento delle postazioni, una Alta (firmware USG FLEX 500 5.42, CVE-2026-14818), otto Medie, una Bassa. Fotografia in docs/vulnerability-assessment-ott2026.md; gap propri 215-220. Il perimetro firmato non e' agli atti, quindi nessun rilievo del VA 2025 si chiude per assenza nel nuovo report. Nessuna remediation applicata in questo giro."
+      "nota": "Secondo VA Onova consegnato il 14/10/2026: dieci rilievi unici per 87 istanze sul solo segmento delle postazioni, una Alta (firmware USG FLEX 500 5.42, CVE-2026-14818), otto Medie, una Bassa. Fotografia in docs/sicurezza/vulnerability-assessment-ott2026.md; gap propri 215-220. Il perimetro firmato non e' agli atti, quindi nessun rilievo del VA 2025 si chiude per assenza nel nuovo report. Nessuna remediation applicata in questo giro."
     },
     {
       "id": "ISO-27",
@@ -1619,7 +1619,7 @@
       "id": "ISO-30",
       "data": "2026-10-15",
       "stato": "in_corso",
-      "nota": "M32: l’operatore sceglie console Linux locale senza abbonamenti. Studio pronto per Agent Netdata, Prometheus, Grafana OSS e Loki/Alloy; originali tecnici e accessi nei rispettivi archivi del collettore. Dieci VM configurate Linux nello snapshot e un host fisico Ollama distinto. Dimensionamento, pilota e ricezione da misurare; M29 resta valido, nessuna installazione. Dettaglio in docs/osservabilita-linux-netdata.md."
+      "nota": "M32: l’operatore sceglie console Linux locale senza abbonamenti. Studio pronto per Agent Netdata, Prometheus, Grafana OSS e Loki/Alloy; originali tecnici e accessi nei rispettivi archivi del collettore. Dieci VM configurate Linux nello snapshot e un host fisico Ollama distinto. Dimensionamento, pilota e ricezione da misurare; M29 resta valido, nessuna installazione. Dettaglio in docs/osservabilita/osservabilita-linux-netdata.md."
     },
     {
       "id": "ISO-30",
@@ -1727,28 +1727,28 @@
       "id": "ISO-30",
       "data": "2026-10-17",
       "stato": "in_corso",
-      "nota": "M32: pilota PC Prometheus/Grafana/Loki/Alloy con soli dati interni e sintetici verificato; due rotazioni ravvicinate a pari dimensione ricevute dopo correzione Alloy, guard v0 offline limitato alla fixture. Preflight Proxmox live con RAM, swap e thin misurati, senza misura di si/so o budget hub e due LXC QA. Nessun flusso reale, retention effettiva e gate AdS ancora aperti. Dettagli in docs/log-collector-integrazione.md e docs/normalizzazione-retention-capienza.md."
+      "nota": "M32: pilota PC Prometheus/Grafana/Loki/Alloy con soli dati interni e sintetici verificato; due rotazioni ravvicinate a pari dimensione ricevute dopo correzione Alloy, guard v0 offline limitato alla fixture. Preflight Proxmox live con RAM, swap e thin misurati, senza misura di si/so o budget hub e due LXC QA. Nessun flusso reale, retention effettiva e gate AdS ancora aperti. Dettagli in docs/osservabilita/log-collector-integrazione.md e docs/osservabilita/normalizzazione-retention-capienza.md."
     },
     {
       "id": "ISO-30",
       "data": "2026-10-19",
       "stato": "in_corso",
       "nota": "Pilot PC del collettore riprovato con publisher a segmenti completi, riavvio e rotazione; soli dati sintetici. Sette query negative del 17/10 e due del 19/10 separate da circa 38 ore non attestano assenza continua. Docker fermo. Restano sorgenti reali, allarmi, quote e ritenzione effettiva, budget hub e due LXC QA, custodia e gate AdS.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-19",
       "stato": "in_corso",
       "nota": "Prova di guasto del pilot PC: controllo e secondo evento presenti, evento letto da Alloy durante fermo Loki assente dopo riavvio Alloy entro 90 secondi e al probe. Stesso 2/3 con WAL experimental su volume esistente; errore di segmento WAL allo shutdown, causa aperta, variante rimossa. Trasporto reale bloccato fino a coda durevole, replay, quota e duplicati provati. QA, hub e gate AdS invariati.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-19",
       "stato": "in_corso",
       "nota": "Pilot PC: un record sintetico mancante dopo fermo Loki e riavvio Alloy è stato validato dal guard, inviato manualmente con HTTP 204 e letto una volta; secondo giro senza invio. La riparazione copre un solo evento recente, non è automatica e query+push possono duplicare sotto concorrenza. Gate di coda durevole, replay generale, quota e flussi reali invariato; QA e hub non distribuiti.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/pilot/monitoring-hub/README.md"
     },
     {
       "id": "ISO-30",
@@ -1768,14 +1768,14 @@
       "data": "2026-10-20",
       "stato": "in_corso",
       "nota": "Risposta Seeweb letta il 20/10: indicati menu dei log e confronto Backup; ticket chiuso. Audit amministrativo, export/Syslog, regola WAN 29, certificato GUI e piano di aggiornamento restano aperti; nessuna modifica all'appliance o raccolta centrale.",
-      "evidenza": "docs/firewall-seeweb-opnsense.md"
+      "evidenza": "docs/firewall/firewall-seeweb-opnsense.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-20",
       "stato": "in_corso",
       "nota": "20/10/2026: direttiva dell'IT Manager ADR-037, il presidio misura la prestazione e non la sola raggiungibilita'. Un servizio di inferenza della LAN ha servito per cinque giorni a 1,91 parole al secondo invece di 43,99 restando raggiungibile, attivo e corretto: nessun evento o soglia oggi definiti lo avrebbero mostrato. Gli eventi e le soglie di questo controllo comprendono ora, per ogni sorgente, il segnale da cui dipende il suo valore; sull'host di inferenza memoria video a modello caricato, riga di avvio che dichiara la libreria trovata e campione periodico di velocita'. Letture preparate nel runbook, nessuna serie raccolta: lavoro M32g, gap 222-223, nessun avanzamento di copertura.",
-      "evidenza": "docs/inferenza-gpu-persa-al-riavvio.md; docs/runbook-monitoraggio-linux.md"
+      "evidenza": "docs/osservabilita/inferenza-gpu-persa-al-riavvio.md; docs/osservabilita/runbook-monitoraggio-linux.md"
     },
     {
       "id": "ISO-27",
@@ -1811,35 +1811,35 @@
       "data": "2026-10-21",
       "stato": "completato",
       "nota": "Eseguito il 21/10/2026 dall'IT Manager con comandi preparati e verificati da questa sessione. La pubblicazione del contenitore PostgreSQL del sito e' passata da tutte le interfacce al solo loopback, cambiando una riga nel descrittore dei servizi e ricreando il contenitore, perche' la pubblicazione di una porta si fissa alla creazione e un riavvio non l'avrebbe applicata. Il volume e' dichiarato esterno con il nome reale, quindi i dati non dipendevano dalla ricreazione; una copia temporanea del database e' stata comunque presa prima e rimossa dopo. L'applicazione non e' in contenitore, gira sull'host e raggiunge il database su loopback, quindi non e' stata toccata.",
-      "evidenza": "Misura prima e dopo, stesso comando: apertura di una connessione verso la porta sull'indirizzo di LAN della macchina, da RAGGIUNGIBILE a connessione rifiutata. Binding letto dal motore passato da HostIp vuoto a 127.0.0.1; tabella di ascolto del sistema passata da tutte le interfacce a 127.0.0.1:5432. Integrita' verificata dopo la ricreazione: 343 tabelle presenti e volume intrawelt-pgdata invariato. Dettaglio tecnico in docs/esposizione-servizi-interni.md e approfondimento didattico in .claude/context/refactor-01-filtro-e-contenitori.md"
+      "evidenza": "Misura prima e dopo, stesso comando: apertura di una connessione verso la porta sull'indirizzo di LAN della macchina, da RAGGIUNGIBILE a connessione rifiutata. Binding letto dal motore passato da HostIp vuoto a 127.0.0.1; tabella di ascolto del sistema passata da tutte le interfacce a 127.0.0.1:5432. Integrita' verificata dopo la ricreazione: 343 tabelle presenti e volume intrawelt-pgdata invariato. Dettaglio tecnico in docs/rete/esposizione-servizi-interni.md e approfondimento didattico in .claude/context/refactor-01-filtro-e-contenitori.md"
     },
     {
       "id": "ISO-05",
       "data": "2026-10-21",
       "stato": "completato",
       "nota": "Effetto verificato sul contenitore in esercizio il 21/10/2026 e invariato. Rilevato lo stesso giorno un rischio di regressione che non annulla la chiusura ma la circoscrive, difetto #242: la correzione vive in un solo albero di lavoro su tre del progetto del sito e non e' ancora committata, mentre gli altri due portano ancora la pubblicazione su tutte le interfacce nel proprio descrittore. Un comando di ricreazione lanciato da uno di quegli alberi riaprirebbe la porta senza errori. La chiusura resta valida per cio' che e' stato misurato, cioe' il servizio in esercizio; la propagazione della configurazione ai tre rami e' lavoro del progetto del sito ed e' tracciata come pendenza.",
-      "evidenza": "Misura prima e dopo sul servizio in esercizio: connessione verso la porta sull'indirizzo di LAN da riuscita a rifiutata; binding da HostIp vuoto a 127.0.0.1; ascolto da tutte le interfacce a 127.0.0.1:5432; 343 tabelle integre e volume invariato dopo la ricreazione. Misura del rischio residuo: lettura del descrittore nei tre alberi, uno corretto e due ancora con la pubblicazione aperta. Dettaglio in docs/esposizione-servizi-interni.md, approfondimento in .claude/context/refactor-01-filtro-e-contenitori.md"
+      "evidenza": "Misura prima e dopo sul servizio in esercizio: connessione verso la porta sull'indirizzo di LAN da riuscita a rifiutata; binding da HostIp vuoto a 127.0.0.1; ascolto da tutte le interfacce a 127.0.0.1:5432; 343 tabelle integre e volume invariato dopo la ricreazione. Misura del rischio residuo: lettura del descrittore nei tre alberi, uno corretto e due ancora con la pubblicazione aperta. Dettaglio in docs/rete/esposizione-servizi-interni.md, approfondimento in .claude/context/refactor-01-filtro-e-contenitori.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-21",
       "stato": "in_corso",
       "nota": "21/10: pilota sintetico del collettore provato su tmpfs WSL 16 MiB con due bind mount, soglia al 20% ed ENOSPC; corretto lock residuo. Audit QA: autorizzazione solo in RAM, evento backup non durevole se il job fallisce, CLI esterna diretta. Mancano power loss, carico, allarme ricevuto, budget hub e due LXC, sorgenti e trasporto reali.",
-      "evidenza": "D:/log-collector/pilot/monitoring-hub/README.md; docs/integrazione-log-qa-verifier.md"
+      "evidenza": "D:/log-collector/pilot/monitoring-hub/README.md; docs/osservabilita/integrazione-log-qa-verifier.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-21",
       "stato": "in_corso",
       "nota": "Produttore QA: candidato non versionato registra la prova locale su SQLite privata prima del worker e blocca la CLI in modo server; 458 prove sintetiche verdi. Mancano custodia indipendente, retention e restore, evento backup_selected durevole, trasporto, indice e due LXC. Nessun flusso reale o avanzamento del controllo ISO-30.",
-      "evidenza": "docs/integrazione-log-qa-verifier.md"
+      "evidenza": "docs/osservabilita/integrazione-log-qa-verifier.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-22",
       "stato": "in_corso",
       "nota": "QA staging d994af0: outbox locale di backup_selected prima della chiamata esterna. Collettore main 5e46478: ricezione offline con limite logico di byte e lock POSIX; prove sintetiche e WSL. Mancano trasporto autenticato, ricevuta/replay, quota fisica e allarme, archivio riservato con retention/restore, indice e due LXC. Nessun flusso QA reale o copertura operativa nuova.",
-      "evidenza": "docs/integrazione-log-qa-verifier.md; D:/log-collector/docs/integrazione-log-qa-verifier.md"
+      "evidenza": "docs/osservabilita/integrazione-log-qa-verifier.md; D:/log-collector/docs/osservabilita/integrazione-log-qa-verifier.md"
     },
     {
       "id": "ISO-43",
@@ -1852,34 +1852,41 @@
       "data": "2026-10-23",
       "stato": "in_corso",
       "nota": "QA staging 02f1e40 e collettore main b29612c pubblicati: trasporto SSH con ricevuta e replay provato in locale. Il controllo mount dell'archivio e' solo nel nuovo diff del collettore. Seeweb: l'utente riferisce risposta inviata al ticket dopo screenshot_103; conferma del provider e flusso Syslog assenti. Mancano quota fisica, allarme, due LXC, prova fra host e perimetro AdS Cliente-1 concordato; nessuna copertura operativa nuova.",
-      "evidenza": "docs/integrazione-log-qa-verifier.md; docs/firewall-seeweb-opnsense.md; docs/log-collector-integrazione.md"
+      "evidenza": "docs/osservabilita/integrazione-log-qa-verifier.md; docs/firewall/firewall-seeweb-opnsense.md; docs/osservabilita/log-collector-integrazione.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-23",
       "stato": "in_corso",
       "nota": "Collettore main 3e12aa6: D6 candidato con politica per sorgente, timer alle 00:45 e guardia sul mount /srv/ads; nove prove locali e verifica sintattica systemd. Timer e heartbeat non installati, allarme esterno e custodia indipendente ancora aperti.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-26",
       "stato": "in_corso",
       "nota": "Collettore main 213d19b pubblicato: D6 v2 con data di attivazione per sorgente e recupero candidato fino a 213 giorni; 16 prove locali verdi. Timer, heartbeat e allarme esterno non installati o collaudati; D7, custodia indipendente e perimetro Cliente-1 89/90 ancora aperti. Nessuna nuova copertura operativa.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-26",
       "stato": "in_corso",
       "nota": "Collettore main 3d72338 pubblicato: recupero locale dei manifest fino a 213 giorni e verifica integrale dello storico prima della nuova chiusura; prova WSL rossa sul codice precedente e verde sul commit. Timer, heartbeat e allarme esterno non in esercizio; durata e I/O sulla VM, retention con ancoraggio, D7 e custodia indipendente ancora aperti. Nessuna copertura Cliente-1 89/90 dichiarata completa.",
-      "evidenza": "docs/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
     },
     {
       "id": "ISO-30",
       "data": "2026-10-26",
       "stato": "in_corso",
       "nota": "Collettore main 2e57ad9 pubblicato: ricevente heartbeat Windows D6 candidato, RFC 5424 via TLS e IP pilota; UDP, RFC 3164 e IP estranei separati. Test Debian 13 e 34 prove Python verdi. Fluent Bit Windows, timer VM, ritenzione del rifiutato, allarme esterno, D7 e custodia indipendente ancora aperti; Cliente-1 89/90 non chiuse."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-26",
+      "stato": "in_corso",
+      "nota": "Collettore main 8773aa6 pubblicato: Fluent Bit 4.1.1 Linux verifica il nome TLS; la fixture RFC 5424 del marker attraversa il test Debian fino a D6. Il pilota Windows, i timer sulla VM, la ritenzione del rifiutato, D7, allarme esterno e custodia indipendente restano aperti; Cliente-1 89/90 non chiuse.",
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md"
     }
   ]
 }

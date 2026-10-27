@@ -74,7 +74,7 @@ Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO 
 ### Lezioni apprese
 
 - Le regole di posta M365 non sono tutte visibili da Outlook → monitorare via Purview periodicamente
-- La regola firewall FW-001 deve essere corretta (action=DENY); vedi docs/runbook-anomalie.md
+- La regola firewall FW-001 deve essere corretta (action=DENY); vedi docs/operativita/runbook-anomalie.md
 - Necessità di formazione anti-phishing per tutti i dipendenti (gap ISO-003)
 
 ## 13/02/2026 - Ticket Aruba: analisi backup e WAF VPS SCENIA
@@ -143,7 +143,7 @@ Analisi su Zyxel USG FLEX 500: verifica se il firewall blocca il traffico VoIP/S
 
 ## 04/03/2026 - Meeting Odoo portale SCENIA (Referente-OpenForce-1, OpenForce)
 
-Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo. Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopranzi@intrawelt.com (dedicato, senza licenza aggiuntiva). Ambiente test: intrawelt-test.openforce.it. Warning: xml-rpc deprecato da v19, rimosso da v20 → migrare a json-rpc in futuro. Dettagli tecnici: docs/helpdesk-operations.md §Integrazione portale SCENIA.
+Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo. Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopranzi@intrawelt.com (dedicato, senza licenza aggiuntiva). Ambiente test: intrawelt-test.openforce.it. Warning: xml-rpc deprecato da v19, rimosso da v20 → migrare a json-rpc in futuro. Dettagli tecnici: _notes/progetti-collegati/helpdesk-operations.md §Integrazione portale SCENIA.
 
 ## Febbraio-Aprile 2026 - Esercizio Proxmox: lock vzdump, freeze VM ricorrente, arrivi hardware
 
@@ -288,7 +288,7 @@ La configurazione e' propedeutica alla migrazione al centralino cloud Vianova: i
 
 Fonte: `Analisi_Zyxel_USG_FLEX_500.docx`, backup `startup-config.conf` datato 19/05/2026 (2215 righe, firmware ZLD 5.42(ABUJ.1)).
 
-Prima analisi strutturata del file di configurazione del firewall: porte fisiche e port-grouping (P4/P5/P6 in bridge L2 sotto lan1, nonostante le etichette logiche lan2/dmz), interfacce WAN/LAN/DMZ, VPN (due tunnel IPsec verso lo stesso peer SEEWEB, VPN remote-access IKEv2, SSL VPN), NAT/virtual server, security policy e UTM. Individuate dieci anomalie (FW-001 - FW-010), la piu' critica delle quali e' la regola `Blocco_Gruppo_IP_Phishing_Elisa` con `action allow` invece di `deny`, introdotta durante la remediation dell'incidente phishing del 13-15/01/2026: la regola, essendo la prima valutata dal motore, fa passare indisturbato qualunque traffico dagli undici IP della lista invece di bloccarlo. Dettaglio completo delle dieci anomalie in `docs/firewall-zyxel-usg-flex-500.md`.
+Prima analisi strutturata del file di configurazione del firewall: porte fisiche e port-grouping (P4/P5/P6 in bridge L2 sotto lan1, nonostante le etichette logiche lan2/dmz), interfacce WAN/LAN/DMZ, VPN (due tunnel IPsec verso lo stesso peer SEEWEB, VPN remote-access IKEv2, SSL VPN), NAT/virtual server, security policy e UTM. Individuate dieci anomalie (FW-001 - FW-010), la piu' critica delle quali e' la regola `Blocco_Gruppo_IP_Phishing_Elisa` con `action allow` invece di `deny`, introdotta durante la remediation dell'incidente phishing del 13-15/01/2026: la regola, essendo la prima valutata dal motore, fa passare indisturbato qualunque traffico dagli undici IP della lista invece di bloccarlo. Dettaglio completo delle dieci anomalie in `docs/firewall/firewall-zyxel-usg-flex-500.md`.
 
 Parallelamente viene prodotta un'analisi comparativa su come collocare correttamente una VM Proxmox in DMZ (`zyxel-dmz-proxmox.md` e i diagrammi `dmz_con_trunk.svg` / `dmz_senza_trunk.svg`, archiviati in `.claude/context/diagrams/firewall-dmz-2026/`): la porta DMZ del firewall (P7) e' oggi fisicamente isolata dal segmento su cui e' collegato Proxmox, quindi una VM raggiunta via NAT ma con IP in subnet LAN non e' realmente in DMZ, e' un host LAN con port forwarding. Le due opzioni valutate sono un secondo cavo dedicato da P7 a una seconda NIC del server (scartata: rigida, consuma porte, non scala) e un trunk 802.1Q che porta la VLAN DMZ sullo stesso cavo fisico gia' usato dalla LAN, smistata poi da un bridge Proxmox VLAN-aware. La seconda opzione e' quella adottata nel piano di revisione del 05/06/2026.
 
@@ -316,11 +316,11 @@ Separatamente, lo stesso giorno myOffice (Referente-MyOffice-1, reparto Telefoni
 
 ## 01/07/2026 - M1: correzione guidata delle due regole allow->deny
 
-Fonte: sessione guidata passo-passo sulla GUI del firewall, con screenshot Screenpresso a ogni passaggio. Dettaglio riga per riga in `docs/firewall-zyxel-usg-flex-500-live.conf`.
+Fonte: sessione guidata passo-passo sulla GUI del firewall, con screenshot Screenpresso a ogni passaggio. Dettaglio riga per riga in `docs/firewall/firewall-zyxel-usg-flex-500-live.conf`.
 
 Eseguita la Fase 0 del piano del 05/06/2026, indipendentemente dal resto della sequenza a sei fasi (che resta da applicare). Sulla regola `Blocco_Gruppo_IP_Phishing_Elisa` (Policy Control, riga 1): action corretta da `allow` a `deny`, log impostato su `log alert`, e l'oggetto `IP_09_phishing_2026_Elisa` (203.0.113.5, l'IP pubblico del firewall stesso) rimosso dal gruppo `Bad_IP_Phishing_Elisa_2026`, che nel frattempo si conferma composto da undici membri (IP_01-IP_11). Sulla regola gemella `malicious_IP_12052025` (riga 4): action corretta da `allow` a `deny`, il log era gia' attivo. Entrambe le modifiche si sono rivelate scritte immediatamente sul dispositivo al click di OK sul dialogo di modifica, senza richiedere un Apply separato sulla pagina Policy Control. Verificato su due screenshot indipendenti per ciascuna modifica (prima e dopo).
 
-Osservazione incidentale: la lista delle security policy mostra due regole non ancora censite in `docs/firewall-zyxel-usg-flex-500.md`, `BLOCCO_IP_SOSPETTI` (riga 7, action reject) e `EGETRAD_WEB_TEST` (riga 11): da includere nel prossimo giro di riconciliazione della scheda, non urgente.
+Osservazione incidentale: la lista delle security policy mostra due regole non ancora censite in `docs/firewall/firewall-zyxel-usg-flex-500.md`, `BLOCCO_IP_SOSPETTI` (riga 7, action reject) e `EGETRAD_WEB_TEST` (riga 11): da includere nel prossimo giro di riconciliazione della scheda, non urgente.
 
 ## Aprile-Giugno 2026 - Redesign sito intrawelt.com
 
@@ -492,7 +492,7 @@ Correzione del 23/07/2026 su questa stessa voce: l'assegnazione delle due fibre 
 
 Confermato anche, sulla porta 8 del 54HP (Vianova DHCP fonia, PVID 2, FW-012), che una seconda porta dello stesso switch, la porta 6, condivide lo stesso PVID 2: il ruolo di questa porta non e' confermato, il pannello d'insieme di Nebula mostra solo velocita'/PoE/uplink per porta, non il PVID assegnato. Resta aperto anche il sintomo di TEL-002: i due telefoni IP del Piano Terra, collegati a porte dello switch XGS2220-30HP stesso (non solo al tratto del vano ascensore come descritto il 07/07), non risultano visibili neppure dopo la conferma del trunk diretto; non e' chiaro se il sintomo precede o segue l'attivazione di quel collegamento.
 
-Aggiornati di conseguenza: `GAP-TBC.md` (NET-008 #102, TEL-002 #103 e nuova voce #116), `docs/network-diagram.md` (topologia ASCII e VLAN), e i diagrammi in `.claude/context/diagrams/firewall-dmz-2026/` — nuovo `rete_stato_attuale_17072026.drawio` con la topologia corrente, note di aggiornamento aggiunte a `rete_stato_attuale_29052026.drawio`, `rete_stato_target_08072026.drawio` e `rete_fonia_voip_08072026_2.drawio-persona.drawio` per marcare cosa e' confermato e cosa resta un target non applicato (in particolare la fonia su VLAN 100/DHCP-firewall di quest'ultimo, mai realizzata: l'implementazione reale usa VLAN 2 e DHCP Vianova sulla porta 8).
+Aggiornati di conseguenza: `GAP-TBC.md` (NET-008 #102, TEL-002 #103 e nuova voce #116), `docs/stato/network-diagram.md` (topologia ASCII e VLAN), e i diagrammi in `.claude/context/diagrams/firewall-dmz-2026/` — nuovo `rete_stato_attuale_17072026.drawio` con la topologia corrente, note di aggiornamento aggiunte a `rete_stato_attuale_29052026.drawio`, `rete_stato_target_08072026.drawio` e `rete_fonia_voip_08072026_2.drawio-persona.drawio` per marcare cosa e' confermato e cosa resta un target non applicato (in particolare la fonia su VLAN 100/DHCP-firewall di quest'ultimo, mai realizzata: l'implementazione reale usa VLAN 2 e DHCP Vianova sulla porta 8).
 
 ## 17-20/07/2026 - GroupShare (Seeweb): certificato HTTPS scomparso, ripristinata solo la connettivita' HTTP
 
@@ -500,7 +500,7 @@ Fonte: `handoff-SSL.md`, comunicato dall'utente. Continua il filone GroupShare a
 
 Il 17/07/2026 il portale `https://gs.intrawelt.com` e' diventato irraggiungibile sulla 443 (`ERR_CONNECTION_TIMED_OUT`), confermato sia da un client sulla LAN Intrawelt sia da rete esterna, mentre la porta 80 rispondeva regolarmente — non un problema di trust del certificato, la connessione TCP non arrivava proprio a destinazione. Diagnosi condotta da Alessio Sopranzi con Persona-E (referente RWS/GroupShare) e Persona-H (Punto Informatica) sulla VM stessa: nessun listener sulla 443, nessun binding SSL registrato, nessun certificato pubblico per il dominio nello store (solo il certificato interno `identity.sdl.com`, non toccato), sito IIS "SDL Server" con solo binding HTTP. Causa radice: certificato e binding HTTPS rimossi o mai ricreati, probabilmente alla scadenza del certificato precedente.
 
-Scelto win-acme (Let's Encrypt) per il ripristino automatico (certificato + binding 443 + rinnovo periodico), con un problema iniziale risolto (il binding HTTP esistente senza host header impediva a win-acme di identificare il sito) ma **il percorso non e' stato portato a termine**: per sbloccare subito i Project Manager, bloccati con i client Trados Studio, si e' ripristinata la sola connettivita' HTTP normale, non la cifratura HTTPS. Il traffico verso il portale GroupShare, incluse le credenziali applicative, viaggia oggi in chiaro. Registrato come gap **SEC-015** (`GAP-TBC.md` #117) e in `design-and-security.md` §A.13.2; dettaglio tecnico completo con diagnosi e comandi in `docs/runbook-anomalie.md` §SEC-015. Il completamento del binding HTTPS via win-acme resta il fix identificato ma non applicato.
+Scelto win-acme (Let's Encrypt) per il ripristino automatico (certificato + binding 443 + rinnovo periodico), con un problema iniziale risolto (il binding HTTP esistente senza host header impediva a win-acme di identificare il sito) ma **il percorso non e' stato portato a termine**: per sbloccare subito i Project Manager, bloccati con i client Trados Studio, si e' ripristinata la sola connettivita' HTTP normale, non la cifratura HTTPS. Il traffico verso il portale GroupShare, incluse le credenziali applicative, viaggia oggi in chiaro. Registrato come gap **SEC-015** (`GAP-TBC.md` #117) e in `design-and-security.md` §A.13.2; dettaglio tecnico completo con diagnosi e comandi in `docs/operativita/runbook-anomalie.md` §SEC-015. Il completamento del binding HTTPS via win-acme resta il fix identificato ma non applicato.
 
 ## 08/07/2026 - Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino
 
@@ -512,11 +512,11 @@ Applicata la segmentazione Wi-Fi staff pianificata il 15/07 (VLAN 40, decisione 
 
 Entro pochi minuti dall'ultima porta applicata, la rete Wi-Fi ha smesso di essere visibile del tutto (non solo irraggiungibile) su due dispositivi diversi, mentre i dati letti dallo switch (collegamento fisico attivo, alimentazione PoE, impostazioni di porta corrette) non mostravano alcuna anomalia — segno che il problema viveva nell'access point stesso, non nello switch. Dato che i tre access point restano inaccessibili (credenziali perse, nessuna dashboard, vedi AP-001), non è stato possibile determinare la causa esatta. Ripristinate le tre porte alla configurazione precedente con lo stesso strumento usato per applicarle: servizio Wi-Fi confermato tornato entro un quarto d'ora dalla prima segnalazione.
 
-La configurazione lato firewall (interfaccia, zona, DHCP, regole di sicurezza) resta applicata e valida per un nuovo tentativo. L'episodio rafforza, con una prova pratica, la decisione già presa di pianificare la sostituzione dei tre access point invece di continuare a farli convivere con altri interventi di rete. Dettaglio tecnico completo in `docs/runbook-anomalie.md` §NET-005.
+La configurazione lato firewall (interfaccia, zona, DHCP, regole di sicurezza) resta applicata e valida per un nuovo tentativo. L'episodio rafforza, con una prova pratica, la decisione già presa di pianificare la sostituzione dei tre access point invece di continuare a farli convivere con altri interventi di rete. Dettaglio tecnico completo in `docs/operativita/runbook-anomalie.md` §NET-005.
 
 ## 20/07/2026 - Fase B Wi-Fi: scelto il preventivo Punto Informatica per 3 AP Zyxel
 
-Ricevuto e scelto un preventivo di Punto Informatica (17/07/2026) per tre access point Zyxel NWA130BE-EU0101, Wi-Fi 7 (802.11be) tri-radio, gestibili in NebulaFlex standalone o cloud-managed dalla stessa organizzazione Nebula gia' in uso per i due switch. La quantita' di tre unita' copre le tre ubicazioni AP staff/guest gia' mappate (PianoTerra, PianoPrimo, PianoSecondo), coerente con il piano multi-SSID (staff + guest sullo stesso AP) gia' deciso il 15/07/2026. L'AP EsternoIrrigazione (centrale irrigazione tetto) resta fuori scope, decisione separata non ancora presa. Importo, sconto e riferimento del documento non riportati per policy di anonimizzazione (`.claude/rules/anonymization.md`). Acquisto e consegna non ancora confermati. Dettaglio completo in `docs/runbook-anomalie.md` §AP-001; roadmap aggiornata (M13b).
+Ricevuto e scelto un preventivo di Punto Informatica (17/07/2026) per tre access point Zyxel NWA130BE-EU0101, Wi-Fi 7 (802.11be) tri-radio, gestibili in NebulaFlex standalone o cloud-managed dalla stessa organizzazione Nebula gia' in uso per i due switch. La quantita' di tre unita' copre le tre ubicazioni AP staff/guest gia' mappate (PianoTerra, PianoPrimo, PianoSecondo), coerente con il piano multi-SSID (staff + guest sullo stesso AP) gia' deciso il 15/07/2026. L'AP EsternoIrrigazione (centrale irrigazione tetto) resta fuori scope, decisione separata non ancora presa. Importo, sconto e riferimento del documento non riportati per policy di anonimizzazione (`.claude/rules/anonymization.md`). Acquisto e consegna non ancora confermati. Dettaglio completo in `docs/operativita/runbook-anomalie.md` §AP-001; roadmap aggiornata (M13b).
 
 ## 20/07/2026 - Fix errore 657rx: app M365 bloccate dopo reset password (workplace join orfano)
 
@@ -524,7 +524,7 @@ Intervento di helpdesk su una postazione Windows con account locale: dopo il res
 
 La diagnosi con `dsregcmd /status` ha isolato la causa: non la password e nemmeno il TPM (`TpmProtected : NO`, chiave nel Software KSP), ma una registrazione "Accesso aziendale o scolastico" (workplace join) vecchia e orfana, con certificato di dispositivo datato 2017 e keyset software corrotto. Le app passano dal broker AAD, che tentava di autenticarsi con quella chiave di dispositivo inaccessibile invece che con la password, fallendo sempre. Un account Windows locale temporaneo confermava il login M365 funzionante, circoscrivendo il guasto al profilo utente e non alla macchina.
 
-Rimossa la registrazione orfana (`dsregcmd /leave`, poi eliminazione manuale del certificato MS-Organization-Access dallo store certificati utente e della chiave `HKCU\...\WorkplaceJoin`), riavviata la postazione e verificato `WorkplaceJoined : NO`, il nuovo login M365 ha ricreato una registrazione pulita (`WamDefaultSet : YES`, certificato con data recente) e le app hanno ripreso ad autenticare. Resta come igiene consigliata la rimozione dell'eventuale record di dispositivo orfano lato Entra ID (portale Dispositivi), a chiudere il ciclo di vita della vecchia identita'. Procedura riproducibile completa, con codici errore e passaggi accessori, in `docs/runbook-anomalie.md` §END-001; nota di igiene delle identita' di dispositivo in `design-and-security.md` §A.9.2.
+Rimossa la registrazione orfana (`dsregcmd /leave`, poi eliminazione manuale del certificato MS-Organization-Access dallo store certificati utente e della chiave `HKCU\...\WorkplaceJoin`), riavviata la postazione e verificato `WorkplaceJoined : NO`, il nuovo login M365 ha ricreato una registrazione pulita (`WamDefaultSet : YES`, certificato con data recente) e le app hanno ripreso ad autenticare. Resta come igiene consigliata la rimozione dell'eventuale record di dispositivo orfano lato Entra ID (portale Dispositivi), a chiudere il ciclo di vita della vecchia identita'. Procedura riproducibile completa, con codici errore e passaggi accessori, in `docs/operativita/runbook-anomalie.md` §END-001; nota di igiene delle identita' di dispositivo in `design-and-security.md` §A.9.2.
 
 ## 22/07/2026 - Wi-Fi ospiti su VLAN 90: navigazione ripristinata (SNAT mancante)
 
@@ -586,7 +586,7 @@ Delimitato anche il perimetro documentale, perche' la domanda si riproporra' a o
 
 ### Stessa giornata: aperto il design della segmentazione interna (M22)
 
-Nella seconda parte della sessione si e' passati dal riallineamento al progetto, aprendo il documento di design del micro-step M22 (`docs/segmentazione-lan-m22.md`) con il diagramma target versionato in `.claude/context/diagrams/segmentazione-target-m22.mmd`. Il documento e' scritto su tre livelli, come richiesto per questo progetto: concettuale, per spiegare perche' una convenzione di ottetto non e' un confine di sicurezza e cosa un tag 802.1Q compra davvero; tecnico, con il disegno target a cinque segmenti, la matrice dei flussi consentiti e la sintassi di configurazione nell'idioma gia' verificato su questo firewall; operativo, con la sequenza passo per passo, la verifica e il criterio di rollback.
+Nella seconda parte della sessione si e' passati dal riallineamento al progetto, aprendo il documento di design del micro-step M22 (`docs/rete/segmentazione-lan-m22.md`) con il diagramma target versionato in `.claude/context/diagrams/segmentazione-target-m22.mmd`. Il documento e' scritto su tre livelli, come richiesto per questo progetto: concettuale, per spiegare perche' una convenzione di ottetto non e' un confine di sicurezza e cosa un tag 802.1Q compra davvero; tecnico, con il disegno target a cinque segmenti, la matrice dei flussi consentiti e la sintassi di configurazione nell'idioma gia' verificato su questo firewall; operativo, con la sequenza passo per passo, la verifica e il criterio di rollback.
 
 Il principio adottato e' che il design non riparte da zero ma si innesta su quello che questo progetto ha gia' costruito: il precedente completo della VLAN 40 (interfaccia taggata sullo stesso port-group `lan1`, DHCP applicato dalla sezione nascosta della GUI, zona dedicata assegnata a mano), la lezione della VLAN 90 sul campo `Interface Type` e il mascheramento automatico, la convenzione di indirizzamento in cui l'ottetto coincide con l'ID VLAN, gli script Nebula in lettura e scrittura, e i due diagrammi drawio di stato attuale e target come base grafica.
 
@@ -650,7 +650,7 @@ La conseguenza sul progetto di segmentazione e' doppia. Da un lato dimensiona il
 
 ### Aperto il registro dei micro-interventi di robustezza
 
-Da questa osservazione e' nato un artefatto nuovo, `docs/interventi-robustezza.md`, su indicazione dell'IT Manager. Le analisi di questo progetto producono due tipi di risultato: difetti strutturali, che richiedono progetto, finestre e coordinamento, e difetti puntuali che si scoprono guardando dentro un apparato per un'altra ragione — una credenziale di fabbrica mai cambiata, un annuncio multicast inutile, una porta rimasta in una VLAN di test, un campo descrittivo vuoto. Il secondo tipo ha un rapporto tra riduzione del rischio e costo altissimo e un rischio di rompere qualcosa quasi nullo, ma tenuto insieme ai micro-step strutturali finisce per aspettare indefinitamente.
+Da questa osservazione e' nato un artefatto nuovo, `docs/rete/interventi-robustezza.md`, su indicazione dell'IT Manager. Le analisi di questo progetto producono due tipi di risultato: difetti strutturali, che richiedono progetto, finestre e coordinamento, e difetti puntuali che si scoprono guardando dentro un apparato per un'altra ragione — una credenziale di fabbrica mai cambiata, un annuncio multicast inutile, una porta rimasta in una VLAN di test, un campo descrittivo vuoto. Il secondo tipo ha un rapporto tra riduzione del rischio e costo altissimo e un rischio di rompere qualcosa quasi nullo, ma tenuto insieme ai micro-step strutturali finisce per aspettare indefinitamente.
 
 Il registro li raccoglie con una regola di ammissione esplicita, che e' l'unica cosa che impedisce a un contenitore del genere di diventare una lista di lavori arretrati: un intervento entra solo se non richiede finestre di manutenzione, non tocca il piano dati di apparati centrali e ha un rollback di una sola azione. Nove voci alla data di apertura, da R1 a R9: cambio delle credenziali di fabbrica della multifunzione e conservazione nel password manager, filtro IP sull'apparato come controllo compensativo dove il firewall non arriva, disabilitazione di Bonjour, compilazione del campo Posizione, ripristino della porta 19 dello switch del Piano Terra da PVID 90 a PVID 1, rimozione delle porte di stampa orfane sulle postazioni, conversione delle stampanti da indirizzo statico a riserva DHCP, spostamento delle destinazioni di scansione su una share dedicata del NAS, e sostituzione dell'utenza nominale con un account di servizio. Ognuna con motivo, procedura, verifica, criterio di rollback e stato; una sola, la conversione a riserva DHCP, comporta pochi minuti di indisponibilita' perche' l'apparato richiede il riavvio della rete per applicare il cambio.
 
@@ -762,7 +762,7 @@ La scelta del suffisso e' quindi diventata il primo sotto-passo, e non e' una fo
 
 La decisione ha anche fatto emergere un passo che non era nel piano. I client cablati ricevono il firewall come DNS e risolveranno i nomi nuovi senza interventi, ma la **Wi-Fi staff no**: il suo ambito DHCP, configurato il 16/07/2026, distribuisce due resolver pubblici, quindi un dispositivo staff non risolverebbe ne' il NAS ne' le stampanti ne' il portale interno. La nota che lo prevedeva era gia' scritta nella scheda firewall al momento della creazione di quell'ambito, ed e' ora diventata un sotto-passo: impostare il firewall come primo DNS di quel segmento, coerentemente con la postura di ADR-014 che tratta la Wi-Fi staff come una postazione cablata. Sulla rete ospiti invece non si tocca nulla, perche' e' corretto che un ospite non risolva i nomi interni. I client VPN ricevono gia' il firewall come DNS, quindi guadagnano la risoluzione dei nomi interni anche da remoto: e' un beneficio che nessun file `hosts` distribuito a mano ha mai garantito.
 
-Procedura completa dei quattro sotto-passi, elenco dei nomi pienamente qualificati e verifiche in `docs/interventi-robustezza.md` §R12.
+Procedura completa dei quattro sotto-passi, elenco dei nomi pienamente qualificati e verifiche in `docs/rete/interventi-robustezza.md` §R12.
 
 ### Correzione di priorita' nella stessa giornata: R12 non era un prerequisito
 
@@ -800,7 +800,7 @@ L'apparato colma un vuoto tipico di questo genere di migrazione, e vale la pena 
 
 Tre questioni di rete restano aperte prima dell'installazione e sono registrate nella scheda di telefonia: su quale segmento si attesta l'apparato, se la sua funzione di router NAT va disabilitata — un secondo NAT interno e' causa classica di audio unidirezionale e, su una LAN piatta, un apparato che distribuisce indirizzi per conto proprio e' anche un rischio di conflitto DHCP — e come si colloca fisicamente rispetto al vano ascensore, che e' lo stesso tratto a cui era stato attribuito il primo sintomo di TEL-002. Va inoltre chiarito il rapporto con il Patton SmartNode 5551, che e' l'attuale gateway con porte FXS e FXO: se l'HT-812 ne assorbe una funzione, se lo sostituisce, o se convivono durante la transizione.
 
-Dettaglio in `docs/telefono-pbx-voip.md` §Gateway FXS consegnato per il telefono dell'ascensore.
+Dettaglio in `docs/telefonia/telefono-pbx-voip.md` §Gateway FXS consegnato per il telefono dell'ascensore.
 
 ## 31/07/2026 - Preventivo per l'access point da esterno di M13c e per un UPS nuovo
 
@@ -812,7 +812,7 @@ Ne segue anche una promozione di priorita' che vale la pena spiegare, perche' e'
 
 Il secondo apparato e' un **UPS rack Addpower TP130N-1500**, line interactive da 1500 VA e 1350 W, convertibile tower/rack 19", otto prese IEC. Il documento non dice se sostituisca l'Emerson Liebert attuale o se lo affianchi. Il punto rilevante per la rete e' che la comunicazione di serie e' USB e seriale RS232, mentre la scheda SNMP Ethernet e' opzionale: prenderla significa avere un nuovo host di rete, da collocare direttamente nel segmento IoT/OT di M22c con la gestione restretta alle postazioni IT — cioe' l'occasione di non ripetere l'errore che UPS-001 documenta, un apparato di infrastruttura finito nella rete ospiti e rimasto li' per anni. Non prenderla significa rinunciare al monitoraggio in rete dell'alimentazione, che e' una perdita di capacita' e non un risparmio neutro, e va detto come tale perche' il piano di continuita' presuppone di sapere in che stato sia l'UPS. Da rifare in ogni caso il conto dell'autonomia sul carico reale, dato che i 116 minuti dichiarati dal produttore valgono su un carico da PC e monitor mentre il carico vero e' server, NAS e centralino.
 
-Dettaglio in `docs/runbook-anomalie.md` §AP-001 (aggiornamento 03/08/2026) e §UPS-001 (aggiornamento 03/08/2026); sotto-passi in `.claude/context/roadmap.md` M13c-5 e M13c-6.
+Dettaglio in `docs/operativita/runbook-anomalie.md` §AP-001 (aggiornamento 03/08/2026) e §UPS-001 (aggiornamento 03/08/2026); sotto-passi in `.claude/context/roadmap.md` M13c-5 e M13c-6.
 
 ---
 
@@ -921,7 +921,7 @@ Restano due voci hardware che al 13/07 erano dichiarate da applicare e il cui st
 
 ## 06/08/2026 - Il livello elettrico entra nella documentazione, e il parco telefonico digitale non c'e' piu'
 
-Tre file passati a mano dall'IT Manager chiudono in una sola sessione due lacune che il progetto dichiarava aperte da mesi. Il documento `STATO RETE INTRAWELT.docx`, comparso nel delta della stessa mattina sotto `Cybersec & IT Governance` e scritto dall'IT Manager, descrive per la prima volta l'alimentazione dei due armadi del Piano 2 e la mappa completa fra porte degli switch e apparati; la scheda dei telefoni prodotta dal progetto il 05/08 torna compilata con modelli, prese e ubicazioni dei cinque Yealink, con l'identificazione dell'apparato sulla porta 3 del 30HP e con l'etichetta reale dell'adattatore analogico dell'ascensore. Ne nasce la scheda `docs/livello-fisico-ed-elettrico.md` con la sua controparte non anonimizzata in `_notes/`, secondo la regola dei due layer, e ne nascono sei difetti nuovi. Il terzo file, l'estratto tematico del 03/08, torna invariato e serve solo da confronto.
+Tre file passati a mano dall'IT Manager chiudono in una sola sessione due lacune che il progetto dichiarava aperte da mesi. Il documento `STATO RETE INTRAWELT.docx`, comparso nel delta della stessa mattina sotto `Cybersec & IT Governance` e scritto dall'IT Manager, descrive per la prima volta l'alimentazione dei due armadi del Piano 2 e la mappa completa fra porte degli switch e apparati; la scheda dei telefoni prodotta dal progetto il 05/08 torna compilata con modelli, prese e ubicazioni dei cinque Yealink, con l'identificazione dell'apparato sulla porta 3 del 30HP e con l'etichetta reale dell'adattatore analogico dell'ascensore. Ne nasce la scheda `docs/rete/livello-fisico-ed-elettrico.md` con la sua controparte non anonimizzata in `_notes/`, secondo la regola dei due layer, e ne nascono sei difetti nuovi. Il terzo file, l'estratto tematico del 03/08, torna invariato e serve solo da confronto.
 
 ### L'alimentazione: tre gruppi di continuita', e quattro cose che non vanno
 
@@ -967,7 +967,7 @@ Ne sono usciti quattro difetti, e la ratio per cui contano e' la stessa per tutt
 
 ## 25/08/2026 - Il ramo del server spiegato per intero, e la porta 7 confermata dallo switch stesso
 
-Giornata di documentazione e di misura, nata da una domanda dell'IT Manager sul modo in cui il server e' attaccato alla rete, e proseguita chiedendo conto di ogni termine usato nella risposta. L'esito documentale e' la scheda `docs/virtualizzazione-proxmox-e-bridge.md`, che tiene insieme il deep-dive tecnico e il fondamento didattico e che va letta insieme a questa voce.
+Giornata di documentazione e di misura, nata da una domanda dell'IT Manager sul modo in cui il server e' attaccato alla rete, e proseguita chiedendo conto di ogni termine usato nella risposta. L'esito documentale e' la scheda `docs/rete/virtualizzazione-proxmox-e-bridge.md`, che tiene insieme il deep-dive tecnico e il fondamento didattico e che va letta insieme a questa voce.
 
 ### Perche' il censimento delle porte e il lavoro sui bridge sono due binari, e la correzione di sequenza
 
@@ -1003,7 +1003,7 @@ Otto difetti nuovi, dal #159 al #166. Il piu' grave e' il gestore delle password
 
 Due cose vanno dette sul metodo, perche' la misura non e' completa e dichiararlo fa parte del risultato. La prima e' che su sei macchine su sette il comando e' stato eseguito da un utente non privilegiato: l'elenco delle porte in ascolto e' comunque completo e affidabile, perche' quel dato il kernel lo espone a chiunque, ma mancano il nome del processo che tiene aperta ciascuna porta e l'elenco dei container, e su tre macchine la risposta "nessun docker" e' un errore di permessi e non un'assenza, come dimostra la presenza delle reti interne del motore. La seconda e' che dove i container pubblicano porte il rimedio host-based non e' una regola di filtro, perche' il motore dei container inserisce regole valutate prima di quella catena: e' la pubblicazione stessa che va portata su loopback, il che e' una modifica di una riga e non richiede alcun filtro.
 
-Matrice completa, spiegazione della differenza fra ascolto su tutte le interfacce e ascolto locale, e ricadute sul piano in `docs/esposizione-servizi-interni.md`.
+Matrice completa, spiegazione della differenza fra ascolto su tutte le interfacce e ascolto locale, e ricadute sul piano in `docs/rete/esposizione-servizi-interni.md`.
 
 ## 31/08/2026 - La conclusione del censimento viene corretta: un filtro puo' vivere a quattro livelli, ne era stato guardato uno
 
@@ -1163,7 +1163,7 @@ Ne discende una sequenza obbligata che vale la pena scrivere perche' e' controin
 
 ## 02/09/2026 - I nomi interni: il resolver del firewall, e perche' oggi molti nomi non sono scritti da nessuna parte
 
-Giornata nata da una domanda dell'IT Manager che sembrava di dettaglio e non lo era: se il certificato di IntraLino contiene gia' il nome corto, perche' quel nome non compare nella tabella dei record del firewall. La risposta ha aperto una materia che il progetto aveva toccato tre volte senza mai spiegarla, e le ha dedicato una scheda propria, `docs/risoluzione-nomi-interni.md`.
+Giornata nata da una domanda dell'IT Manager che sembrava di dettaglio e non lo era: se il certificato di IntraLino contiene gia' il nome corto, perche' quel nome non compare nella tabella dei record del firewall. La risposta ha aperto una materia che il progetto aveva toccato tre volte senza mai spiegarla, e le ha dedicato una scheda propria, `docs/rete/risoluzione-nomi-interni.md`.
 
 ### Le due domande che un navigatore fa, e che si confondono in una
 

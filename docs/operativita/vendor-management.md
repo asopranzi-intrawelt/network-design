@@ -1,0 +1,313 @@
+# Vendor Management – Intrawelt S.a.s.
+
+Registro fornitori IT e contratti attivi. Owner: Alessio Sopranzi.  
+Aggiornato: giugno 2026.
+
+---
+
+## Vianova S.p.A. – ISP e telefonia
+
+Due migrazioni distinte verso lo stesso fornitore, in due fasi separate: la linea dati (fibra FTTO, sostituzione di TIM) nel 2025, e il centralino cloud (PBX, sostituzione del sistema telefonico tradizionale) tra fine 2025 e il 2026. La prima e' conclusa e ampiamente documentata; la seconda e' **in corso** ed e' l'oggetto della nota PORT-TAGGING riservata al racconto completo a lavori conclusi (vedi `current-work.md`).
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | ISP primario, PBX cloud, linee dati |
+| Contratto | FTTO 1 Gbps + Ponte Radio backup + Telefonia cloud |
+| Inizio servizio telefonia (tradizionale) | Aprile 2024 |
+| Migrazione linea dati (TIM → Vianova) | Marzo-Luglio 2025, completata (dettaglio in `2025-q2-migrazione-tim-vianova.md`) |
+| Migrazione centralino cloud (PBX → Vianova UCC) | In corso da dicembre 2025, non ancora conclusa |
+| Costo | Dato amministrativo, non riportato (vedi `.claude/rules/anonymization.md`) |
+| IP pubblici | Pool 203.0.113.x/28 (14 IP utilizzabili) |
+| Hardware fornito (linea dati) | Router Vianova R-1000 x2 (HSRP), UPS-700 |
+| SLA | [TBC] |
+| Contatto tecnico | Referente-Vianova-3 (Referente-Vianova-3, Key Account Manager), Referente-Vianova-4 (Referente-Vianova-4, Sales Manager) |
+| Offerta commerciale (linea dati) | Proposta scritta datata 07/02/2024, tramite il partner My Office/Centro Ufficio Group (Referente-Vianova-1, Vianova Specialist). Canone a due voci (rete fissa FTTO 1Gbps a progetto + opzione traffico flat), contributo di installazione escluso da questa scheda per policy. Durata pluriennale con tacito rinnovo, disdetta a preavviso; penale di recesso anticipato |
+
+**Evoluzione rapporto — linea dati (2024-2025, conclusa):**
+
+| Data | Evento |
+|------|--------|
+| Apr 2024 | Prima fattura Vianova (solo telefonia tradizionale) |
+| 10/12/2024 | Decisione di migrare anche la linea dati da TIM a Vianova |
+| 20/01/2025 | Sopralluogo TIM per FTTO (infrastruttura Vianova usa rete fisica TIM) |
+| 29/03-01/04/2025 | Consegna hardware Vianova (router R-1000, UPS) — vedi `2025-q2-migrazione-tim-vianova.md` |
+| 07/04/2025 | Primo appuntamento tecnico Vianova per attivazione dati |
+| Mag 2025 | TIM ADSL dismessa fisicamente |
+| Lug 2025 | Contratto TIM cessato completamente (disdetta 15/05/2025, router Huawei non ancora restituiti) |
+
+**Evoluzione rapporto — centralino cloud (dic. 2025-2026, in corso):**
+
+| Data | Evento |
+|------|--------|
+| 31/12/2025 | Consegna hardware per il centralino cloud (switch/telefoni, dettaglio in `2026-switch-piano-terra.md` e vendor-management.md §Punto Informatica) |
+| 02/02/2026 | Primo appuntamento tecnico Vianova per l'attivazione del centralino cloud |
+| 13/03/2026 | Acquisto switch Piano Terra Zyxel XGS2220-30HP (Punto Informatica) |
+| 24/03/2026 | Acquisto telefoni IP Yealink (Punto Informatica) |
+| — | Tagging VLAN fonia in corso, racconto completo riservato a lavori conclusi |
+
+---
+
+## Zyxel – Firewall e switch
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Firewall UTM + Switch managed L2/L3 |
+| Prodotti | USG FLEX 500, XGS2220-54HP (P2), XGS2220-30HP (PT, apr 2026) |
+| Gestione | Zyxel Nebula cloud portal (zero-touch) |
+| Licenze | Nebula Professional Pack su **tutti e sei** i dispositivi in inventario (3 access point NWA130BE, 2 switch XGS2220, USG FLEX 500), piu' il Gold Security Pack del solo firewall. Modello License 2.0, per dispositivo: il livello dell'organizzazione e' il **minimo** fra i suoi apparati, e la Nebula OpenAPI risponde **solo** in stato Pro (il Plus non abilita nemmeno la chiave). Vedi ADR-022 |
+| Supporto | Persona-H (Punto Informatica) tramite portale Nebula |
+| Scadenza licenza | **22/11/2027**, data che vincola l'organizzazione perche' e' la piu' vicina (switch XGS2220-54HP). Le altre, co-terminate: 30HP 27/11/2027, USG FLEX 500 25/11/2027, i tre access point 08/12/2027. **A parte** il Gold Security Pack del firewall, che scade il **19/12/2026**. Presidiare in anticipo: alla scadenza scatta una grazia di quindici giorni e poi l'organizzazione cade a Base Pack, spegnendo la OpenAPI (precedente NEB-002 del 05/08/2026) |
+| Note | XGS2220-30HP installato 08/05/2026. **Correzione del 06/08/2026**: l'affermazione precedente secondo cui gli access point non erano Zyxel/Nebula era vera al 14/07/2026 e non lo e' piu'. I tre Ubiquiti EOL sono stati sostituiti dai tre **NWA130BE** della Fase B, entrati nell'organizzazione Nebula il **21/07/2026** e oggi gestiti insieme ai due switch. Resta fuori il quarto Ubiquiti EOL "EsternoIrrigazione", oggetto di M13c: vedi `runbook-anomalie.md` §AP-001. Vincolo introdotto dallo stesso ingresso: un apparato adottato senza licenza fa cadere tutta l'organizzazione dopo quindici giorni, ed e' esattamente cio' che e' successo il 05/08/2026 |
+
+---
+
+## Punto Informatica – Partner hardware e RMM
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Partner hardware, NinjaOne RMM, supporto infrastructure |
+| Ragione sociale | Punto Informatica snc, Via Giammarco 28 Fermo (FM) / sede operativa Via Andrea Costa 7 Porto San Giorgio (FM) |
+| Contatto principale | Persona-H |
+| SLA hardware | 2 ore (accordo verbale) |
+| RMM | NinjaOne – gestione centralizzata endpoint remoti |
+| Ambito | Fornitura hardware (NAS, server, switch, AP), manutenzione |
+| Preventivo Wi-Fi Fase B | Preventivo del 17/07/2026 per 3x access point Zyxel NWA130BE-EU0101 (Wi-Fi 7), scelto dall'utente il 20/07/2026 — dettaglio tecnico in `runbook-anomalie.md` §AP-001; importo e riferimento del documento fuori dai file tracciati per policy di anonimizzazione |
+| Modalità fatturazione | Preventivo → ordine → fattura per singolo acquisto (nessun contratto quadro noto) |
+| Acquisto switch Piano Terra | Zyxel XGS2220-30HP-EU0101F acquistato con preventivo del 13/03/2026 (vedi `2026-switch-piano-terra.md` per il dettaglio tecnico dello switch); importi non riportati per policy |
+| Acquisto telefoni VoIP | 2× Yealink SIP-T31G e 3× Yealink SIP-T34W acquistati con preventivo del 24/03/2026; importi non riportati per policy |
+
+---
+
+## NinjaOne – RMM
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Remote Monitoring and Management |
+| Vendor RMM | NinjaOne (gestito da Persona-H / Punto Informatica) |
+| Funzioni attive | Monitoring endpoint, remote access, patching, alerting |
+| Endpoint gestiti | Tutte le postazioni Windows aziendali + server |
+| Integrazione | Bitdefender GravityZone (alert correlati) |
+| Costo | Incluso nel rapporto con Punto Informatica [TBC] |
+
+---
+
+## Bitdefender – Endpoint Security
+
+| Campo | Valore |
+|-------|--------|
+| Prodotto | GravityZone, abbonamento mensile MSP, tipo di prodotto Endpoint Security, modello di protezione "a la carte" (verificato in console il 07/09/2026; le diciture "Business Security Enterprise" qui e "Business Security Premium" in `infrastructure-timeline/2025-q3-q4.md` erano entrambe errate) |
+| Funzionalità attive | AV, EDR, XDR, exploit defense, network attack defense |
+| Funzionalità pianificate | Risk Management + Patch Management (modulo VA interno) |
+| Licenze | Trenta posti totali, ventotto riservati utilizzati, due disponibili (console GravityZone, 07/09/2026) |
+| Console | GravityZone cloud console |
+| Integrazione | NinjaOne RMM |
+
+---
+
+## Seeweb – IaaS Cloud
+
+Aggiornamento operativo del 14/10/2026: sette punti di accesso censiti in [Sorgenti Seeweb](../osservabilita/sorgenti-log-seeweb.md); SWB-02/SWB-07 confermati sulla stessa OPNsense 21.1.5. [Dossier firewall](../firewall/firewall-seeweb-opnsense.md) completo delle93 schermate ricevute (incluse tutte 14 rotte e sei pagine Activity): NAT, alias, regole, VPN, stati, servizi e log, con lacune dichiarate. Firmware fuori supporto upstream, certificato GUI indicato scaduto, VPN IKEv1 e pubblicazione GroupShare 80/8080 alimentano M31 e M14; nessuna correzione applicata. Un vicino NetApp con due sessioni TCP 445 dalla sede è osservato, ruolo/proprietà/backup ancora da attribuire senza creare nuovi nodi. Tre schermate Cloud Center già lette; build ESXi e Eventi ancora da verificare. Due report email letti in locale, nessun flusso Seeweb automatico sulla VM. Il contratto generale 2014 (artt. 1-2, 4 e 6) rimanda alla scheda del servizio e non attribuisce espressamente a Seeweb il patching di OPNsense; il supporto ha proposto un avanzamento in più sessioni, ancora da definire e non accettato.
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Infrastructure as a Service (cloud VE) |
+| Servizi | VM cloud, hosting siti web aziendali |
+| Prodotto | Foundation Server Pro (server dedicato, CPU Intel Xeon Silver/Gold 2a-4a gen., storage SAN condiviso, banda 10 Gbps) |
+| Connessione | VPN site-to-site IPsec IKEv1 (PSE-SEEWEB, peer <IP-SEEWEB-PEER>) |
+| Rete privata cloud | <rete-privata-seeweb>, VLAN ID 437 |
+| Endpoint cloud | domv.intrawelt.com e altri |
+| Costo | [TBC] |
+| Note | VPN tunnel always-on. Aggressive mode IKEv1 – valutare upgrade a IKEv2 per sicurezza. |
+
+**VM ospitate su Seeweb (dettaglio host ESXi):**
+
+| VM | Ruolo | Rationale storica |
+|----|-------|--------------------|
+| WINGROUPSHARE (10.77.116.3) | Backup TM/glossari e cartella "utili" (Cobian Backup); riavvio periodico dei servizi Trados GroupShare via RDP | Messa in cloud (non su server Intrawelt) probabilmente per questione di banda verso l'esterno, risalente al periodo COVID |
+| WINSRV2019 (10.77.116.4) | Desktop remoto per PM e DTP (due profili: DTP1 con AutoCAD, DTP2 per progetti Studio Trados di grandi dimensioni) | Accesso alle VM consentito solo da indirizzi locali per motivi di sicurezza, modificabile dal firewall cloud |
+
+L'accesso alle VM e' policy-limitato agli indirizzi locali via firewall cloud SEEWEB. Un disco di rete aggiuntivo (~150 GB) risulta collegato a WINSRV2019 nella stessa classe di indirizzi SEEWEB e punta alla stessa cartella di WINGROUPSHARE, con una connessione verso il NAS documenti: la fonte stessa non ne chiarisce lo scopo esatto ("da capire che cosa sono questi 150GB di roba").
+
+**Predecessore dismesso.** Prima dell'attuale Foundation Server Pro, il ruolo di WINGROUPSHARE era coperto da una singola VM cloud Seeweb di fascia inferiore (prodotto "Cloud Server 280SPU"), raggiunta tramite un CNAME `groupshare.intrawelt.it` configurato su Fastnet. Risulta dismessa e non compare piu' nelle rilevazioni dell'infrastruttura da giugno 2024 in poi.
+
+---
+
+## Microsoft – M365 e Azure
+
+| Campo | Valore |
+|-------|--------|
+| Servizi | Microsoft 365, Exchange Online, SharePoint, Teams, Azure AD/Entra ID |
+| Tenant | intrawelt.com |
+| Admin globale | asopranzi@intrawelt.com |
+| Azure admin | asopranzi, persona-j, persona-e, persona-m |
+| MFA enforcement | Attivo su account Azure admin da 01/10/2025 |
+| Mail server | Exchange Online (Microsoft, non on-premise) |
+| Storage mail | Metadati: 21gg max (vincolo garante) |
+| Note | Politica archiviazione da rivedere. Regolamento uso sistemi informativi da produrre. |
+
+---
+
+## Onova S.p.A. – VA non credenzialato
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Vulnerability Assessment esterno |
+| Servizio erogato | VA non credenzialato perimetro interno/esterno |
+| Data | 06/11/2025 |
+| Report | docs/sicurezza/vulnerability-assessment-nov2025.md |
+| Criticità trovate | 8 (di cui 2 CRITICHE, 3 ALTE) |
+| Costo | [TBC] |
+| Note | Unica VA formale effettuata finora. Anomalie non ancora tutte risolte. |
+
+---
+
+## Proelium – Penetration Test (valutazione)
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Penetration Test esterno (in valutazione) |
+| Contatti | Referente-Proelium-1, Referente-Proelium-2 |
+| Fondazione | 2025 |
+| Specializzazione | Application security web, external PT, internal PT |
+| Incontro | 19/01/2026 (call informativa) |
+| Preventivo | Preventivo del 22/01/2026, solo VA: pacchetto singolo (2 giornate) o pacchetto triennale (3× 2 giornate, scontato). Importi non riportati per policy. Validita' 60 giorni (scaduta, non accettata) |
+| Servizio | Black-box external: enumerazione asset, servizi esposti, brute force, web compromise |
+| Piattaforma | SaaS proprietaria (app.proelium.io): risultati in tempo reale, storico report e vulnerabilita' fixate |
+| Stato | Non ancora ingaggiato. Decisione subordinata a piano budget 2026. |
+
+Dalla call informativa del 19/01/2026 (fonte: `notes (19012026) VA esterno.docx`): l'approccio standard per un primo ingaggio parte dalla superficie esterna, con enumerazione degli asset e dei servizi esposti a partire dal dominio principale. Il VA e' dichiaratamente attivita' light (strumenti di scansione noleggiati da terze parti piu' revisione esperta dei falsi positivi, senza sfruttamento delle vulnerabilita'); il valore del fornitore sta nel penetration test manuale, che sulla rete esterna lavora black-box servizio per servizio (brute force sulle autenticazioni, compromissione dei web server) e sulle web app segue una metodologia verticale graybox, con credenziali per ogni ruolo applicativo. I progetti possono essere annuali, con riapertura del ciclo di test ogni 6-12 mesi e reportistica scaricabile con storico. Il preventivo copre il solo VA: da remoto, previa manleva firmata, con conferma del perimetro e preavviso a SOC e provider coinvolti; deliverable un report tecnico (sintesi executive piu' dettaglio con evidenze replicabili, impatto, probabilita' e rimedio per ogni vulnerabilita'). Fatturazione 40% all'ordine e 60% alla consegna del report.
+
+---
+
+## RWS / SDL – GroupShare (Trados)
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Piattaforma CAT (Computer-Aided Translation) |
+| Prodotto | GroupShare (server traducenti, project management) |
+| Server | WINGROUPSHARE – IP 10.77.116.3 (raggiungibile via LAN/VPN) |
+| Accesso remoto | VPN IKEv2 (RemoteAccess_Wiz) o SSL VPN |
+| Note | Integrazione con workflow traduzione Intrawelt. Gestione utenti PM e traduttori. |
+
+---
+
+## QNAP – NAS
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | NAS storage (hardware) |
+| Dispositivi | HERO (10.61.20.169), INTRA (10.61.20.168), INTRA2 (10GbE, .177), INTRA3 (.172), DOC (.170 – HP HPX1400) |
+| Storage policy | HERO = archivio principale progetti PM; INTRA/INTRA2 = backup; INTRA3 = condivisioni mappate dai due amministratori interni (uso dichiarato il 05/10/2026); DOC = documenti/utili |
+| Backup | Vedi tabella sotto per dispositivo; schema completo in business-continuity-disaster-recovery.md |
+
+**Inventario sistematico (consolidato 10/07/2026 dalla timeline; firmware di HERO, INTRA, INTRA2 e INTRA3 letti sui pannelli il 02-05/10/2026 nel progetto log-collector; gli altri dati storici restano da riconciliare):**
+
+| NAS | Modello | RAID / capacita' | Ruolo e stato | Backup |
+|-----|---------|-------------------|---------------|--------|
+| HERO (10.61.20.169) | QNAP TS-h1677XU-RP, QuTS hero h5.2.10.3577 build 20260731 | RAID attivo, capacita' non censita | Produzione: archivio principale progetti PM, drive `H:` mappato sui client. Storage primario di lavoro. Replica offsite su Azure Blob Storage (container `<container>`, storage account `<storage-account>`, resource group `<resource-group>`) via QNAP Hybrid Backup Sync con QuDedup (formato deduplicato `.qdff`) | Riceve backup da INTRA2 (cartella utili, dump VM); a sua volta replicato su Azure Blob |
+| INTRA (10.61.20.168) | QNAP TS-410U, QTS 4.2.6 build 20240618 | Non censita | Target primario backup Cobian e MKSBackup VM. Archivio secondario | Riceve: dump completo di tutte le VM Proxmox (`\\10.61.20.168\Backup\dump`), usato anche come procedura di emergenza per il ripristino del nodo Proxmox |
+| INTRA2 (10.61.20.177) | QNAP TS-435XeU-4G, QTS 5.2.9.3451 build 20260327 | RAID 5, 4 dischi da 8 TB (~21 TB raw, ~14-15 TB netti dopo l'espansione del 10/01/2025; prima erano 4 dischi da 2.73 TB, ~10.92 TB raw/~8.19 TB netti) | Produzione: backup di HERO e della cartella utili, oltre ai job Veeam Agent giornalieri di tutte le postazioni fisiche (`Backup_Ufficio\BackupPDL`, retention 7 giorni). Fine 2024: spazio quasi esaurito con fail su backup incrementale; risolto con l'espansione dischi di gennaio 2025. Nuova crisi di spazio giu-lug 2025 (causa: disco esterno Toshiba "anni vecchi" collegato durante un backup) | E' il target di backup per HERO, le postazioni fisiche (Veeam) e i dump VM; a sua volta non risulta replicato altrove |
+| INTRA3 (10.61.20.172 / .173, due schede di rete) | QNAP TS-210, QTS 4.2.6 build 20240618, 249 MB di RAM (pannello del 05/10/2026) | Storico: RAID 1 su due dischi da 2 TB, uno con scansione bad blocks ferma all'1%; stato attuale dei dischi da verificare | La formattazione del 2025 e' storica: il 05/10/2026 l'IT Manager conferma che le condivisioni sono montate come unita' di rete dai soli due amministratori interni. Contenuti e accessi effettivi da verificare: il 06/10 la registrazione delle connessioni e' risultata spenta | Nessun job di backup censito; da verificare sul NAS |
+| DOC (10.61.20.170) | HP StorageWorks X1400 G2 (HPX1400), Windows Server 2008, Intel Xeon E5503, alimentatore 500W | Non censita (controller RAID HP, modello esatto non identificato dalla fonte) | Archivio storico cartella `utili` e certificati SSL. Smantellamento in corso da giugno 2025 per fine supporto Windows Server 2008 (rischio sicurezza: nessuna patch da anni): dati spostati su INTRA2, poi su una cartella `utili-new` su INTRA2. Destinazione finale non decisa nella fonte: scartate le opzioni "buttare via" e "Proxmox Backup Server" (compatibilita' hardware incerta), resta aperta la conversione a NAS Linux con OpenMediaVault | Nessuno (in dismissione) |
+
+Il progetto `D:/log-collector` ha verificato il 02/10/2026 HERO e INTRA2 come sorgenti syslog TLS sulla 6514 e INTRA come sorgente UDP sulla 514, tutti con NTP su INRIM e collaudi degli accessi e dell'ora superati. Per INTRA3 il pannello del 05/10 verifica modello, firmware, memoria, fuso mostrato e accessibilita' web; lo screenshot 21 del 06/10 mostra System Connection Logs vuoto e il comando Start Logging, quindi la registrazione delle connessioni e' spenta. Lo screenshot 22 del 06/10 mostra HTTP, SSH, FTP e Telnet selezionati nelle opzioni dei log, ma SMB non selezionato: anche avviando la registrazione con queste opzioni non si vedrebbero le connessioni alle unita' mappate. Lo screenshot 27 mostra l'invio syslog disattivato, il server vuoto e il campo UDP 514 inattivo; anche l'invio dei log di connessione e' disabilitato finche' non si avviano i log locali. Lo screenshot 28 mostrava NTP su `pool.ntp.org` ogni 7 giorni e fuso di Roma; dopo `Apply`, lo screenshot 30 mostra `ntp1.inrim.it` ogni ora, mentre successo della sincronizzazione e scarto non sono verificati. Lo screenshot 29 mostra l'adeguamento automatico all'ora legale attivo per il periodo 29/03/2026 - 25/10/2026, con offset di 60 minuti e senza tabella personalizzata. L'utente riferisce di aver applicato le opzioni HTTP, SSH, Telnet e SMB attivi e FTP spento, senza schermata. Lo screenshot 32 successivo mostra `Stop Logging`, 326 righe locali e operazioni `SAMBA` sui file: la registrazione e la copertura SMB sono attive, mentre il volume giornaliero e gli eventuali accessi non AdS restano da misurare. L'utente riferisce `Changes applied` dopo aver configurato l'invio syslog verso il collettore via UDP 514 con eventi e connessioni; la ricezione e i collaudi restano da verificare. La dichiarazione sulle unita' mappate non prova il contenuto del NAS ne' l'assenza di altri accessi. Dettaglio e prove nel runbook NAS del progetto sorgente.
+
+Cross-riferimenti narrativi per il dettaglio cronologico: `2023-baseline.md` (stato di partenza), `2025-q1-server-vianova.md` (migrazione dischi INTRA2, riconnessione INTRA3), `2025-q3-q4.md` (crisi di spazio giu-lug 2025), `business-continuity-disaster-recovery.md` (procedure di emergenza), `runbook-anomalie.md` NAS-001 (HERO irraggiungibile).
+
+---
+
+## Aruba – DNS e domini
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Registrar/hosting domini, DNS |
+| Domini gestiti (registrar) | ~20 domini di marketing per nicchia di traduzione (traduzionetecnica.net/.com, traduzionemedica, traduzionifinanziarie, traduzionifarmaceutiche, traduzionilegale, traduzionimanuali, traduzionibilanci, traduzionicertificate/-a, traduzioniurgenti, ecc.), via Tucows Domains Inc. o Aruba S.p.A. come registrar; rinnovi annuali marzo 2026 |
+| intrawelt.de | Registrato presso DENIC tramite Aruba, DNS gestito da Aruba; contenuto sito redirect gestito da Fastnet verso `intrawelt.com/de/` (non confondere con l'hosting, che resta su Aruba); rinnovo anticipato a dicembre per gennaio |
+| intrawebsite.it | Dominio dismesso, non piu' rinnovato: scaduto il 30/10/2025. Ospitava un vecchio sito WordPress, redirect verso `intrawelt.com`. Il certificato SSL DV associato si autorinnova su Aruba (WordPress hosting gestito) fino al 06/07/2026: da revocare esplicitamente dopo la scadenza del dominio, altrimenti resta attivo su un dominio ormai spirato |
+| Architettura redirect legacy | I ~20 domini di nicchia puntavano storicamente a una VM `Ubuntu 1404-DOMV` (landing page dedicata per dominio). Migrazione pianificata: le pagine vengono spostate come sottopagine di `intrawelt.com` (es. `intrawelt.com/domv/<dominio>`), il redirect viene impostato su Aruba, e la VM Ubuntu 1404-DOMV viene infine spenta. Il redirect finale per la maggior parte dei domini passa fisicamente dal firewall ZYXEL USG FLEX 500 |
+| DNS panel | `managehosting.aruba.it`; record supportati A, CNAME, TXT, MX, AAAA, DMARC, DKIM, SPF, SRV, CAA |
+| Name server storici | dns.technorail.com, dns2.technorail.com, dns3.arubadns.net, dns4.arubadns.cz (Aruba) |
+
+---
+
+## Fastnet SpA – Hosting Plesk, DNS primario, compliance ICANN
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Hosting web (Plesk), gestione DNS del dominio primario, registrar per alcuni domini (es. .de tramite DENIC), liaison compliance ICANN |
+| Sede | Via O. Zuccarini 1, Ancona |
+| Referenti | Referente-FASTNET-1 (IT Specialist, gestione ordinaria e compliance ICANN), Referente-FASTNET-2 (supporto tecnico certificati SSL) |
+| Hosting intrawelt.com | Due ambienti Plesk distinti: "produzione" e "test", entrambi con DNS gestito da Fastnet ma hosting fisico che si appoggia anche ad Aruba secondo l'analisi interna. Sottodominio `scenia.intrawelt.com` sulla stessa infrastruttura Plesk |
+| Certificati SSL | Let's Encrypt via Plesk con rinnovo automatico. **Limite tecnico**: il rinnovo automatico del certificato *wildcard* richiede che il DNS del dominio sia gestito direttamente dal pannello Plesk per la verifica via record DNS; quando il DNS e' gestito altrove (come per intrawelt.com, DNS di fatto distribuito), Plesk non completa la verifica wildcard. L'11/05/2026 Fastnet ha dovuto riemettere il certificato di intrawelt.com **senza wildcard** (con rinnovo automatico attivo sul solo dominio principale e sottodomini configurati) dopo ripetuti fallimenti di rinnovo del wildcard |
+| Compliance ICANN | Fastnet fa da tramite per la validazione annuale obbligatoria dei contatti di registrazione domini (richiesta ICANN, eseguita tramite EuroDNS/domainvalidation.com): ricorre annualmente (thread di giugno 2025 e maggio 2026), con frizioni operative ricorrenti (link di validazione scaduti, verifica telefonica con codici a 6 cifre su un numero fisso configurato per riceverne solo 4) |
+| intrawelt.it | Alias del dominio principale, redirect HTTP 301 gestito da dentro Fastnet |
+
+---
+
+## Openforce – Sviluppo T-Rex / Odoo
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Sviluppo software (ERP Odoo, T-Rex) |
+| Progetto | T-Rex: sistema gestione tour (migrazione/sviluppo Odoo 18) |
+| Stato | [TBC] – in sviluppo 2025-2026 |
+| Note | Fatture Odoo generate in formato italiano (fattura elettronica). |
+
+---
+
+## Consulente-ISO27001-1 – Consulenza ISO 27001
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Consulente esterno ISO/IEC 27001 |
+| Incontro iniziale | 18/04/2025 |
+| Roadmap proposta | Gap analysis → ISMS design → audit interno → audit esterno |
+| Certificazione personale parallela | ISO 27001 Foundation + CompTIA Security+ SY0-701 (Alessio) |
+| Note | Consulente suggerisce CISSP come riconoscimento formale. Disciplinare lavoratori da produrre come primo step. |
+
+---
+
+## Yealink – Telefoni IP
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Terminali VoIP |
+| Modelli | T34W (Piano Terra: Persona-A 1-1, Persona-B 1-2, Persona-C 0-x), T31G (Piano 2: Persona-D, Sala-1) |
+| VLAN | Voice VLAN 2, LLDP-MED, CoS 5, DSCP EF (46) |
+| Integrazione PBX | Cloud Vianova (transizione in corso da centralino fisico) |
+
+---
+
+## MyOffice – Reseller Vianova
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Reseller/intermediario Vianova |
+| Referente | Referente-Vianova-1 (referente-vianova-1@myofficegroup.it) |
+| Servizi | Preventivo, contratto e gestione commerciale Vianova FTTO; centralino cloud |
+| Note | MyOffice gestisce la relazione con Vianova. Riunione in sede 17/12/2024 (preventivo). Riunione centralino cloud 09/06/2026. |
+
+---
+
+## INFOCERT – Firma digitale
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | CA (Certification Authority) firma digitale |
+| Piano | GoSign Pro (certificati firma digitale su dominio INFOCERT) |
+| Intestatario | Persona-A (a nome azienda) |
+| Rinnovo | 22/11/2024 (verifica rinnovo eseguita); rinnovo periodico |
+| Portale | mysign.infocert.it (credenziali in Cartella_riservata_IT) |
+
+---
+
+## Cappelli Design – Sito web intrawelt.com
+
+| Campo | Valore |
+|-------|--------|
+| Tipologia | Agenzia web design |
+| Contatto | Referente-CappelliDesign-1 (marketing@cappellidesign.com) |
+| Progetto | Redesign sito intrawelt.com (aprile 2026) |
+| Stato | In corso: primo rilascio esclusi Ricerca, Solution finder, slider, modulo consulenza; secondo rilascio TBD |
+| CMS | WordPress (https://intrawelt.com/wp-login.php) – accesso Cappelli Design: utente <utente-amministratore-wordpress> (ruolo Amministratore) |
+| Gestore WordPress | Persona-E (persona-e@intrawelt.com) |

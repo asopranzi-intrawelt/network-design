@@ -4,7 +4,7 @@
     OpenAPI, per isolare un solo AP durante un test di connessione senza ambiguita' su
     quale access point stia realmente rispondendo al client di prova.
 .DESCRIPTION
-    Nato dall'incidente del 16/07/2026 (docs/runbook-anomalie.md §NET-005): un client
+    Nato dall'incidente del 16/07/2026 (docs/operativita/runbook-anomalie.md §NET-005): un client
     Wi-Fi in un punto dell'edificio puo' agganciare un AP diverso da quello che si sta
     testando, rendendo inconcludente un test fatto solo con uno smartphone. Questo
     script spegne temporaneamente l'alimentazione PoE (non la VLAN, non altre

@@ -13,3 +13,11 @@ Fino a quella data lo script passava i soli file **tracciati**, e ne derivava un
 ## Il numero del primo passaggio
 
 La ragione per cui questo controllo esiste, e va usato, e' un numero. Il primo passaggio, il 06/08/2026, ha trovato **centoquarantotto riscontri** su ottantanove file tracciati, di cui una trentina erano valori reali veri: indirizzi cablati dentro tre script, MAC di switch dentro due script di scrittura, indirizzi pubblici di macchine virtuali di progetto, caselle di posta personali di dipendenti e referenti, importi contrattuali, e un caso che vale da solo la regola, cioe' una voce di work-log che pubblicava **la corrispondenza fra un segnaposto e la persona reale**, che e' il dato piu' sensibile di tutta la materia perche' rende reversibile ogni altra anonimizzazione. Nessuno di quei residui era stato introdotto di proposito, e nessuno apparteneva alla sessione che li ha scoperti.
+
+## Casi spostati dalla regola il 26/10/2026
+
+La misura che giustifica i riscontri non bloccanti del layer privato. La misura del 07/09/2026 lo rende evidente, ed e' il numero che spiega la scelta: **10.844** riscontri nel layer privato, su centonovantuno file ignorati, contro **zero** bloccanti nel perimetro pubblico. Fra i file piu' densi c'e' `_notes/.anonymization-map.md` con trecento riscontri, che e' la mappa dei segnaposto e per definizione contiene tutti i valori reali del progetto: se quei riscontri fossero bloccanti, il controllo fallirebbe per il solo fatto di esistere.
+
+L'esclusione dichiarata nel file dei pattern. Al 07/09/2026 l'unica esclusione dichiarata e' un prefisso che e' contemporaneamente reale e la subnet predefinita di milioni di router domestici, quindi renderlo bloccante segnalerebbe per sempre menzioni legittime.
+
+L'audit del 26/10/2026. Una lettura integrale riga per riga del perimetro pubblicabile, in otto lotti delegati e decisi nella conversazione principale, ha trovato circa 1.100 riscontri su un repository che il controllo dichiarava pulito: clienti, identificativi amministrativi, nomi di battesimo, un token d'invito, IP scritti con il trattino basso nei nomi di oggetti firewall e documenti interi di altri progetti. Il dettaglio e' nel registro di lavoro alla stessa data e in ADR-041.

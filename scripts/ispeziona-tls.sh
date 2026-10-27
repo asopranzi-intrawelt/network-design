@@ -7,7 +7,7 @@
 # e di che natura siano, cioe' autofirmati oppure emessi da un'autorita' interna.
 #
 # L'ultima domanda e' quella che orienta la scelta fra un certificato per servizio
-# e un'autorita' interna: vedi docs/esposizione-servizi-interni.md.
+# e un'autorita' interna: vedi docs/rete/esposizione-servizi-interni.md.
 #
 # Non scrive nulla e non legge nessuna chiave privata: dei certificati stampa solo
 # i campi pubblici (soggetto, emittente, validita'), mai il contenuto delle chiavi.

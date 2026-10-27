@@ -23,7 +23,7 @@
    "Snapshot Nebula e Proxmox del 23/09/2026: Test-TopologyDrift.py, 39 confronti e zero scostamenti",
    "Registro GAP-TBC, aggiornamenti del 16/09/2026: due alimentatori sul server (#202), lentezza del deposito NAS (#204)",
    "D:/log-collector, screenshot 13 di NAS-INTRA3 e dichiarazione dell'IT Manager del 05/10/2026 (modello, firmware e uso delle condivisioni)",
-   "docs/livello-fisico-ed-elettrico.md e docs/interventi-robustezza.md, due multifunzione di rete; porta Kyocera Piano Terra verificata, porta Canon Piano 1 da attribuire",
+   "docs/rete/livello-fisico-ed-elettrico.md e docs/rete/interventi-robustezza.md, due multifunzione di rete; porta Kyocera Piano Terra verificata, porta Canon Piano 1 da attribuire",
    "Secondo Vulnerability Assessment Onova del 13/10/2026, consegnato il 14/10 (composizione del segmento delle postazioni, due dispositivi embedded attribuiti, conferma indipendente dell'inventario degli apparati di rete)"
   ],
   "verifica": {

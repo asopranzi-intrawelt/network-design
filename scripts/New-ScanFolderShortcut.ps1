@@ -4,7 +4,7 @@
     scegliendo la forma del percorso (indirizzo o nome) che per quell'utente funziona davvero.
 .DESCRIPTION
     Script di distribuzione pensato per essere eseguito dall'RMM (NinjaOne) su ciascuna
-    postazione, come parte dell'intervento R8 di `docs/interventi-robustezza.md`: le
+    postazione, come parte dell'intervento R8 di `docs/rete/interventi-robustezza.md`: le
     destinazioni di scansione delle due multifunzione passano dalle cartelle condivise delle
     postazioni a sette condivisioni nascoste sul NAS, e ogni utente deve poter raggiungere la
     propria in un clic.
@@ -13,7 +13,7 @@
     punta a un percorso UNC: non consuma una lettera di unita', non si riconnette all'accesso,
     non compare come disco e non genera attese all'avvio quando il NAS non risponde. Su queste
     postazioni le lettere sono scarse e gia' occupate da mappature persistenti. Spiegazione
-    estesa in `docs/collegamento-vs-unita-di-rete.md`.
+    estesa in `docs/rete/collegamento-vs-unita-di-rete.md`.
 
     PERCHE' SI PROVANO DUE FORME DELLO STESSO PERCORSO. Le credenziali di Windows sono
     memorizzate **per nome di destinazione**: una credenziale salvata per il nome del NAS non
@@ -68,7 +68,7 @@
     .\scripts\New-ScanFolderShortcut.ps1 -NasAddress 10.0.0.10 -NasName NAS
     Forma da usare per la distribuzione unica: la condivisione arriva dal campo personalizzato.
 .NOTES
-    Intervento R8 di `docs/interventi-robustezza.md`; vincoli sull'RMM in ADR-017.
+    Intervento R8 di `docs/rete/interventi-robustezza.md`; vincoli sull'RMM in ADR-017.
     Compatibile con PowerShell 5.1.
 #>
 [CmdletBinding()]

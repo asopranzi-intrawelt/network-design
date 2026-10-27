@@ -41,3 +41,9 @@ output/
 # rigenerano, e questa e' informazione che deve sopravvivere alla macchina.
 # Non contiene segreti: i nomi delle variabili non sono segreti.
 !.env.example
+
+# --- Vault Obsidian (radice del repository) ---
+# Si versiona solo app.json, che fissa link Markdown relativi e cartelle escluse;
+# stato dell'area di lavoro, plugin e temi restano personali.
+.obsidian/*
+!.obsidian/app.json

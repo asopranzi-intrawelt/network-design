@@ -302,7 +302,7 @@ def analizza(pat, files):
                     continue
                 if base.startswith(reali):
                     aggiungi("IP REALE", f, ln, riga, ip, origine)
-                elif base.startswith(("10.", "10.61.", "172.")):
+                elif base.startswith(("10.", "192.168.", "172.")):
                     aggiungi("IP privato fuori schema", f, ln, riga, ip, origine)
                 else:
                     aggiungi("IP pubblico da valutare", f, ln, riga, ip, origine)

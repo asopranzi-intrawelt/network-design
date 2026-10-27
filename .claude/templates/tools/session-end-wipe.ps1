@@ -335,7 +335,7 @@ if ($altre.Count -gt 0 -and -not $Forza) {
     try {
       . $libreria -Libreria
       $magazzinoTutti = Read-Magazzino (Split-Path -Parent $base) $null
-      $legamiTutti = @(Get-Cliente-8 @(Get-ProcessiClaude) $magazzinoTutti)
+      $legamiTutti = @(Get-Legami @(Get-ProcessiClaude) $magazzinoTutti)
       if (-not $script:payloadHook) { foreach ($l in $legamiTutti) { $l.Processo.Proprio = $false } }
       $script:protezione = Get-Protezione $legamiTutti
       $chiusa = if ($SessioneChiusa) { $SessioneChiusa } elseif ($script:payloadHook) { [string]$script:payloadHook.session_id } else { '' }

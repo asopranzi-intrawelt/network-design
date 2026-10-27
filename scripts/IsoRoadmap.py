@@ -31,7 +31,7 @@ from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data" / "iso27001-interventi.json"
-MARKDOWN = ROOT / "docs" / "roadmap-iso27001-operativa.md"
+MARKDOWN = ROOT / "docs" / "sicurezza" / "roadmap-iso27001-operativa.md"
 STYLE = ROOT / "scripts" / "iso-roadmap-style.css"
 INTERACTIONS = ROOT / "scripts" / "iso-roadmap-interactions.js"
 GLOSSARY = ROOT / "data" / "iso27001-glossario.json"

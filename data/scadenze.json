@@ -11,21 +11,21 @@
       "riconciliato_il": "2026-10-05",
       "vm_nome_previsto": "ads-collector",
       "ssh_windows_stato": "da_configurare",
-      "dove": "docs/log-collector-integrazione.md"
+      "dove": "docs/osservabilita/log-collector-integrazione.md"
     },
     {
       "id": "integrita-docs",
       "percorso_locale": "D:/integrità-docs",
       "commit_riconciliato": "dc1ede0ec7c5ae25e4f5bccc71c79329e60203a5",
       "riconciliato_il": "2026-10-14",
-      "dove": "docs/integrita-docs-integrazione.md"
+      "dove": "docs/osservabilita/integrita-docs-integrazione.md"
     },
     {
       "id": "intrawelt-qa-verifier",
       "percorso_locale": "D:/intrawelt-qa-verifier",
       "commit_riconciliato": "71a38928562dc6e9c679b09709de2cbb8d6df01f",
       "riconciliato_il": "2026-10-20",
-      "dove": "docs/integrazione-log-qa-verifier.md"
+      "dove": "docs/osservabilita/integrazione-log-qa-verifier.md"
     },
     {
       "id": "intrawelt-website",
@@ -34,7 +34,7 @@
       "riconciliato_il": "2026-10-21",
       "accesso_stato": "configurato",
       "accesso_mancante": "nessuno: alias intra-newsite attivo dal 20/10/2026, chiave dedicata, lettura verificata anche in modalita non interattiva",
-      "dove": "docs/sito-nuovo-integrazione.md",
+      "dove": "docs/sito-vps/sito-nuovo-integrazione.md",
       "nota_chiave": "chiave senza frase di accesso, DECISO dall IT Manager il 20/10/2026: raggiunge una macchina di sviluppo sulla LAN interna, e una frase imporrebbe ssh-agent caricato a ogni avvio perche il controllo interroga in modalita non interattiva. Questione chiusa, non riaprirla",
       "ramo": "ricerca-e-consegne-grafiche",
       "nota_alberi": "il progetto ha tre alberi di lavoro: intrawelt-website su staging, lavoro-consegne su ricerca-e-consegne-grafiche, lavoro-mailing su fase-7-invii-e-mailing. Il suo ADR-034 stabilisce che la memoria sta sulla branch piu avanti, che e ricerca-e-consegne-grafiche: 36 decisioni contro 16 su staging e zero su main. Il canale legge quell albero per percorso assoluto e non copia nulla altrove, secondo la norma alberi-di-lavoro"
@@ -79,7 +79,7 @@
       "data": "2027-12-20",
       "preavviso_giorni": 60,
       "rompe": "I servizi di sicurezza del firewall, non la gestione cloud: e' una licenza con ciclo proprio e va presidiata a parte. Finche' il salto di un anno non e' spiegato, la data qui sotto e' quella dell'ultima misura ma non va trattata come definitiva",
-      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026 (letto in precedenza il 09/09/2026 con valore diverso); docs/vendor-management.md scheda Zyxel; ADR-022"
+      "dove": "Pannello Licenze e inventario, misurato il 10/09/2026 (letto in precedenza il 09/09/2026 con valore diverso); docs/operativita/vendor-management.md scheda Zyxel; ADR-022"
     },
     {
       "id": "QNAP-FRANCOFORTE",
@@ -87,7 +87,7 @@
       "data": "2026-10-24",
       "preavviso_giorni": 45,
       "rompe": "Non rompe piu' niente da se': il contenuto che questa data minacciava e' stato rimosso in anticipo. Il rischio si e' spostato sulla ritenzione del cestino, voce QNAP-CESTINO",
-      "dove": "STOR-003 (#187); docs/business-continuity-disaster-recovery.md"
+      "dove": "STOR-003 (#187); docs/sicurezza/business-continuity-disaster-recovery.md"
     },
     {
       "id": "QNAP-CESTINO",
@@ -95,7 +95,7 @@
       "data": "2026-10-09",
       "preavviso_giorni": 5,
       "rompe": "Nulla, secondo la risposta dell'IT Manager. Lo svuotamento a mano anticipa il recupero dello spazio; l'automatismo lo fa comunque a questa data",
-      "dove": "STOR-003 (#187) e STOR-004 (#192); docs/business-continuity-disaster-recovery.md"
+      "dove": "STOR-003 (#187) e STOR-004 (#192); docs/sicurezza/business-continuity-disaster-recovery.md"
     },
     {
       "id": "NEB-AP-ESTERNO",
@@ -111,7 +111,7 @@
       "data": "2027-11-15",
       "preavviso_giorni": 45,
       "rompe": "Dopo la scadenza non si possono firmare rilasci nuovi; le firme gia' apposte con marca temporale restano valide. Si rinnova con scripts/emetti-firma-codice.sh dalla chiavetta dell'autorita'",
-      "dove": "docs/autorita-certificazione-interna.md, sezione del 14/10/2026"
+      "dove": "docs/sicurezza/autorita-certificazione-interna.md, sezione del 14/10/2026"
     },
     {
       "id": "PKI-CA-AZIENDALE",
@@ -119,7 +119,7 @@
       "data": "2036-10-11",
       "preavviso_giorni": 365,
       "rompe": "Ogni certificato emesso dall'autorita' smette di essere attendibile; la nuova autorita' va creata e installata su tutte le postazioni con almeno un anno di anticipo",
-      "dove": "docs/autorita-certificazione-interna.md, ADR-025"
+      "dove": "docs/sicurezza/autorita-certificazione-interna.md, ADR-025"
     },
     {
       "id": "VPS-PORTALE-AI",
@@ -127,7 +127,7 @@
       "data": "2026-10-29",
       "preavviso_giorni": 30,
       "rompe": "Il rinnovo attinge al credito prepagato dell'account <account-cloud>, che e' uno solo per tutte e tre le VPS: se il credito non copre, non si ferma un servizio ma il portale in produzione. Le tre scadenze cadono in una finestra di quindici giorni, quindi vanno guardate insieme e non una per volta",
-      "dove": "docs/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
+      "dove": "docs/sito-vps/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
     },
     {
       "id": "VPS-INTRAWELT-WEBSITE",
@@ -135,7 +135,7 @@
       "data": "2026-11-10",
       "preavviso_giorni": 30,
       "rompe": "Stesso credito prepagato unico. La macchina non serve ancora nulla, quindi un mancato rinnovo oggi non interrompe un servizio, ma perde l'impianto gia' fatto e la sola chiave autorizzata (#224)",
-      "dove": "docs/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
+      "dove": "docs/sito-vps/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
     },
     {
       "id": "VPS-TEST-PORTALEAI",
@@ -143,7 +143,7 @@
       "data": "2026-11-12",
       "preavviso_giorni": 30,
       "rompe": "Stesso credito prepagato unico. E' la macchina su cui vive l'unico tunnel di protezione realmente in esercizio: perderla significa perdere il precedente funzionante su cui si modella l'hardening del sito",
-      "dove": "docs/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
+      "dove": "docs/sito-vps/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
     }
   ],
   "freschezza": [
@@ -216,7 +216,7 @@
       "validita_giorni": 60,
       "domanda": "In console: quanti posti liberi ci sono adesso? Con due su trenta, l'inserimento di tre postazioni esaurisce la copertura e la terza resta scoperta senza che nessuno lo dica",
       "a_chi": "IT Manager",
-      "dove": "docs/vendor-management.md scheda Bitdefender, misurato da un'altra sessione il 07/09/2026. NON e' una scadenza: e' un abbonamento mensile MSP, quindi non esiste una data annuale da presidiare e non va aggiunta al blocco scadenze. Cio' che invecchia qui e' la capacita' residua, non il tempo"
+      "dove": "docs/operativita/vendor-management.md scheda Bitdefender, misurato da un'altra sessione il 07/09/2026. NON e' una scadenza: e' un abbonamento mensile MSP, quindi non esiste una data annuale da presidiare e non va aggiunta al blocco scadenze. Cio' che invecchia qui e' la capacita' residua, non il tempo"
     },
     {
       "id": "QNAP-RIPRISTINO",
@@ -246,7 +246,7 @@
       "validita_giorni": 180,
       "domanda": "Leggere i job di backup ibrido sul NAS: sono due job distinti verso due destinazioni, o uno solo descritto due volte nella documentazione?",
       "a_chi": "IT Manager",
-      "dove": "STOR-002 (#186), STOR-003 (#187), docs/business-continuity-disaster-recovery.md"
+      "dove": "STOR-002 (#186), STOR-003 (#187), docs/sicurezza/business-continuity-disaster-recovery.md"
     },
     {
       "id": "MFP-SCANSIONE",
@@ -266,7 +266,7 @@
       "validita_giorni": 30,
       "domanda": "Le domande che restano sono tre e nessuna riguarda la cifratura: quali dati aziendali risiedono su quella macchina, che cosa accade al suo contenuto e alla sua gestione quando quella persona cessa il rapporto, e se esista una regola scritta su quali dispositivi non aziendali possano entrare nella gestione endpoint",
       "a_chi": "IT Manager",
-      "dove": "docs/infrastructure-timeline/ingestion-checklist.md, triage del 04/09/2026. Da leggere insieme al filone BitLocker aperto da un'altra sessione il 07/09/2026 (#188 SEC-044, #189 SEC-045, #190 SEC-046): quel lavoro riguarda macchine Windows 11 **Pro**, quindi NON risponde a questa domanda, che e' su una Home dove BitLocker non esiste per edizione. Le due cose vanno tenute distinte e insieme: chi sta censendo la copertura della cifratura e' la persona che puo' dire in un minuto se quella macchina sia del parco gestito"
+      "dove": "_notes/ingestione/ingestion-checklist.md, triage del 04/09/2026. Da leggere insieme al filone BitLocker aperto da un'altra sessione il 07/09/2026 (#188 SEC-044, #189 SEC-045, #190 SEC-046): quel lavoro riguarda macchine Windows 11 **Pro**, quindi NON risponde a questa domanda, che e' su una Home dove BitLocker non esiste per edizione. Le due cose vanno tenute distinte e insieme: chi sta censendo la copertura della cifratura e' la persona che puo' dire in un minuto se quella macchina sia del parco gestito"
     },
     {
       "id": "PSK-SEEWEB",
@@ -274,7 +274,7 @@
       "stato": "RISPOSTA 08/09/2026: l'IT Manager dichiara di **non sapere** se sia mai stata ruotata. Ai fini operativi la risposta e' equivalente a un no, perche' una chiave la cui ultima rotazione nessuno puo' datare va trattata come mai ruotata: e' il 2018 fino a prova contraria",
       "verificata_il": "2026-09-08",
       "validita_giorni": 45,
-      "domanda": "La rotazione va pianificata: procedura in docs/firewall-zyxel-usg-flex-500.md, sezione sulla rotazione della chiave del tunnel",
+      "domanda": "La rotazione va pianificata: procedura in docs/firewall/firewall-zyxel-usg-flex-500.md, sezione sulla rotazione della chiave del tunnel",
       "a_chi": "IT Manager",
       "dove": "SEC-023 (#138); FW-006, M14"
     },
@@ -326,7 +326,7 @@
       "validita_giorni": 7,
       "domanda": "La collisione delle 04:30 e' stata sciolta? Nella pagina dei task del nodo: i dieci lavori dell'ultima notte risultano tutti riusciti, e a che ora ha finito l'ultimo? Se l'ultimo finisce dentro l'orario di lavoro, il backup sta contendendo I/O agli utenti ed e' un secondo problema oltre alla lentezza del deposito",
       "a_chi": "IT Manager",
-      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; docs/business-continuity-disaster-recovery.md sezione Storage e backup"
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #200; docs/sicurezza/business-continuity-disaster-recovery.md sezione Storage e backup"
     },
     {
       "id": "PVE-RIPRISTINO-TEMPO",
@@ -336,7 +336,7 @@
       "validita_giorni": 90,
       "domanda": "Si puo' ripristinare una macchina piccola e spenta, per esempio la 203, cronometrando? E' la sola misura che trasforma il tempo di ripristino da stima in dato, e va rifatta dopo il risanamento del NAS per avere i due numeri a confronto",
       "a_chi": "IT Manager",
-      "dove": "docs/business-continuity-disaster-recovery.md sezione Piano di Disaster Recovery; GAP-TBC.md #200"
+      "dove": "docs/sicurezza/business-continuity-disaster-recovery.md sezione Piano di Disaster Recovery; GAP-TBC.md #200"
     },
     {
       "id": "PVE-SSB-ORDINE",
@@ -386,7 +386,7 @@
       "validita_giorni": 7,
       "domanda": "Al prossimo cambio del parco VM, confrontare automaticamente guest operativi, membri dei pool e selettori dei job; per l'esito delle corse leggere separatamente il registro dei task del nodo",
       "a_chi": "IT Manager",
-      "dove": "docs/infrastructure-timeline/GAP-TBC.md #203 (STOR-006); M28-7; docs/business-continuity-disaster-recovery.md"
+      "dove": "docs/infrastructure-timeline/GAP-TBC.md #203 (STOR-006); M28-7; docs/sicurezza/business-continuity-disaster-recovery.md"
     },
     {
       "id": "PVE-NAS-LINK",

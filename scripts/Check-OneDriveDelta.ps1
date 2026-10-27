@@ -2,7 +2,7 @@
 # Confronta lo stato corrente di una o piu' cartelle OneDrive con una baseline
 # salvata localmente e riporta i file nuovi, modificati ed eliminati. Serve al
 # check di inizio sessione del progetto network-design: la checklist di
-# ingestione (docs/infrastructure-timeline/ingestion-checklist.md) fotografa un
+# ingestione (_notes/ingestione/ingestion-checklist.md) fotografa un
 # momento preciso, e questo script dice cosa e' cambiato da allora senza rileggere
 # nulla a mano. Lavoro deterministico: nessun contenuto viene letto, solo percorsi,
 # dimensioni e date di modifica.
@@ -345,7 +345,7 @@ function Invoke-DeltaCheck($target, $maxList, $updateBaseline) {
         Write-Output "Nessuna variazione: la checklist di ingestione resta allineata."
     } else {
         Write-Output ""
-        Write-Output "Triage: registrare le voci rilevanti in docs/infrastructure-timeline/ingestion-checklist.md,"
+        Write-Output "Triage: registrare le voci rilevanti in _notes/ingestione/ingestion-checklist.md,"
         Write-Output "poi rieseguire con -UpdateBaseline per accettare lo stato corrente."
     }
 

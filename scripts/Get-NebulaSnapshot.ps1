@@ -11,7 +11,7 @@
     Nato per rispondere a una domanda operativa precisa: quali dispositivi (per MAC
     address) sono collegati a quale porta di quale switch, per identificare gli access
     point WiFi fisici quando non compaiono come dispositivi gestiti in Nebula (vedi
-    docs/runbook-anomalie.md §AP-001).
+    docs/operativita/runbook-anomalie.md §AP-001).
 
     La chiave API non viene mai scritta su disco da questo script. Ordine di risoluzione:
     parametro -ApiKey, poi file privato .env, infine prompt a runtime

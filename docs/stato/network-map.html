@@ -1,0 +1,4781 @@
+﻿<!doctype html>
+<!--
+  FILE GENERATO. NON MODIFICARE A MANO.
+  Fonte:      data/network-topology.json
+  Generatore: scripts/Build-NetworkMap.ps1
+  Decisione:  ADR-023, micro-step M26
+  Generato il 26/10/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
+  e soprattutto crea una seconda verita' accanto alla fonte: correggere la fonte.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topologia di rete Intrawelt</title>
+<style>
+:root{
+  --iw-black:#000; --iw-purple:#4D11A7; --iw-cyan:#57CCF6; --iw-green:#AFD100; --iw-lblue:#8CE1FF;
+  --iw-ink:#0A0A0A; --iw-muted:#4C4C63; --iw-disabled:#ACB0CD; --iw-inverse:#fff;
+  --iw-surface:#fff; --iw-sunken:#F4F5F9; --iw-border:#D0D4E3; --iw-border-strong:#ACB0CD;
+  --iw-error:#E7000B; --iw-success:#92B500;
+  --iw-grad-brand:linear-gradient(270deg,#57CCF6 7.21%,#AFD100 16.83%,#00CECE 67.79%,#4D11A7 96.15%);
+  --iw-font-sans:"Altro Var","Altro Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --iw-font-serif:"Altro Serif","Altro Var",Georgia,serif;
+  --iw-track:.2em; --iw-mod:20px;
+  --tela:var(--iw-sunken); --carta:var(--iw-surface); --inch:var(--iw-ink);
+  --filo:var(--iw-border); --filo-forte:var(--iw-border-strong); --tenue:var(--iw-muted);
+  --accento:var(--iw-purple);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-tema="chiaro"]){
+    --tela:#000; --carta:#0A0A0A; --inch:#fff; --filo:#2A2A38; --filo-forte:#3D3D52;
+    --tenue:#9BA0BC; --accento:var(--iw-lblue);
+  }
+}
+:root[data-tema="scuro"]{
+  --tela:#000; --carta:#0A0A0A; --inch:#fff; --filo:#2A2A38; --filo-forte:#3D3D52;
+  --tenue:#9BA0BC; --accento:var(--iw-lblue);
+}
+*{box-sizing:border-box;border-radius:0}
+html,body{height:100%}
+body{margin:0;background:var(--tela);color:var(--inch);font-family:var(--iw-font-sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.caps{text-transform:uppercase;letter-spacing:var(--iw-track);font-size:11px;font-weight:500}
+button,input,select{font:inherit;color:inherit;border-radius:0}
+
+/* ---------- testata ---------- */
+.filetto{height:var(--iw-mod);background:var(--iw-grad-brand)}
+header.testa{background:var(--carta);border-bottom:1px solid var(--filo);padding:18px 24px 14px}
+header.testa h1{margin:0;font-size:24px;font-weight:500;letter-spacing:-.01em}
+header.testa .sotto{margin-top:4px;color:var(--tenue);font-size:13px;max-width:110ch}
+header.testa .meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--tenue);font-size:11px;text-transform:uppercase;letter-spacing:var(--iw-track)}
+.orientamento{padding:10px 24px;background:var(--carta);border-bottom:1px solid var(--filo);font-size:12px}
+.orientamento p{margin:4px 0}
+.orientamento a{color:var(--accento);margin-right:16px}
+.orientamento summary{cursor:pointer;color:var(--accento)}
+#stato-verifica[data-scaduta="true"]{color:var(--iw-error)}
+.guida-vista{padding:8px 24px;margin:0;color:var(--tenue);font-size:12px;border-bottom:1px solid var(--filo)}
+button:focus-visible,a:focus-visible,.nodo:focus-visible .box{outline:2px solid var(--accento);outline-offset:3px}
+.nodo.incerto .box{stroke-dasharray:2 4;stroke:var(--accento)}
+
+/* ---------- barra comandi ---------- */
+.barra{position:sticky;top:0;z-index:30;background:var(--carta);border-bottom:1px solid var(--filo);
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 24px}
+.gruppo{display:flex;align-items:center;gap:0;border:1px solid var(--filo)}
+.gruppo>button{background:transparent;border:0;border-right:1px solid var(--filo);padding:7px 13px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:var(--iw-track);font-size:11px;font-weight:500;transition:background 220ms cubic-bezier(.2,.6,.2,1),color 220ms cubic-bezier(.2,.6,.2,1)}
+.gruppo>button:last-child{border-right:0}
+.gruppo>button:hover{background:var(--tela)}
+.gruppo>button[aria-pressed="true"]{background:var(--inch);color:var(--carta)}
+.sep{flex:1}
+.campo{border:1px solid var(--filo);background:var(--carta);padding:7px 10px;min-width:200px}
+.campo::placeholder{color:var(--iw-disabled)}
+.mini{background:transparent;border:1px solid var(--filo);padding:6px 10px;cursor:pointer;font-size:12px}
+.mini:hover{background:var(--tela)}
+.mini[aria-pressed="true"]{background:var(--inch);color:var(--carta);border-color:var(--inch)}
+
+/* ---------- filtri ---------- */
+.filtri{background:var(--carta);border-bottom:1px solid var(--filo);padding:8px 24px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.fila{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fila>.et{color:var(--tenue);text-transform:uppercase;letter-spacing:var(--iw-track);font-size:10px;margin-right:2px;min-width:74px}
+.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--filo);background:transparent;padding:4px 9px;font-size:11px;cursor:pointer;
+  transition:background 220ms cubic-bezier(.2,.6,.2,1),border-color 220ms cubic-bezier(.2,.6,.2,1),opacity 120ms}
+.tag:hover{border-color:var(--filo-forte)}
+.tag[aria-pressed="false"]{opacity:.4}
+.tag .sw{width:14px;height:3px;display:inline-block}
+.tag .sw.tratteggio{background-image:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px)}
+
+/* ---------- corpo ---------- */
+main{display:flex;height:calc(100vh - 210px);min-height:520px}
+#tela{flex:1;position:relative;overflow:hidden;background:var(--tela);cursor:grab}
+#tela.trascino{cursor:grabbing}
+#grafo{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+/* in alto a destra e non in basso a sinistra: li' copriva la legenda della
+   vista Porte, ed era una delle sovrapposizioni segnalate */
+.hud{position:absolute;right:12px;top:12px;display:flex;gap:6px;z-index:10}
+.hud button{background:var(--carta);border:1px solid var(--filo);width:32px;height:32px;cursor:pointer;font-size:15px;line-height:1}
+.hud button.largo{width:auto;padding:0 12px;font-size:11px;text-transform:uppercase;letter-spacing:var(--iw-track)}
+.hud button:hover{background:var(--tela)}
+.vuoto{position:absolute;inset:0;display:none;place-items:center;color:var(--tenue);font-size:13px;text-align:center;padding:40px}
+.vuoto.on{display:grid}
+
+/* ---------- pannello ---------- */
+aside{width:396px;flex:0 0 396px;background:var(--carta);border-left:1px solid var(--filo);overflow-y:auto}
+aside .vuoto-p{padding:24px;color:var(--tenue);font-size:13px}
+aside .cap{position:sticky;top:0;background:var(--carta);border-bottom:1px solid var(--filo);padding:16px 20px 12px;z-index:2}
+aside .cap .occhiello{color:var(--tenue);font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track)}
+aside .cap h2{margin:4px 0 0;font-size:20px;font-weight:500;line-height:1.2}
+aside .cap .chiudi{position:absolute;top:12px;right:14px;background:transparent;border:1px solid var(--filo);width:26px;height:26px;cursor:pointer;line-height:1}
+aside .sez{padding:14px 20px;border-bottom:1px solid var(--filo)}
+aside .sez>h3{margin:0 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);color:var(--tenue);font-weight:500}
+aside p{margin:0 0 8px}
+aside p:last-child{margin-bottom:0}
+.kv{display:grid;grid-template-columns:104px 1fr;gap:3px 10px;font-size:12.5px}
+.kv dt{color:var(--tenue)}
+.kv dd{margin:0}
+.rigalink{border:1px solid var(--filo);padding:8px 10px;margin-bottom:6px;font-size:12.5px}
+.rigalink:last-child{margin-bottom:0}
+.rigalink .capo{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.rigalink .verso{font-weight:500}
+.rigalink .dett{color:var(--tenue);font-size:11.5px;margin-top:3px}
+.rigalink .crit{color:var(--iw-error);font-size:11.5px;margin-top:4px}
+.gapriga{display:flex;gap:8px;align-items:baseline;font-size:12.5px;padding:5px 0;border-bottom:1px dotted var(--filo)}
+.gapriga:last-child{border-bottom:0}
+.grav{font-size:9.5px;text-transform:uppercase;letter-spacing:var(--iw-track);padding:1px 6px;border:1px solid currentColor;white-space:nowrap}
+.grav.alta{color:var(--iw-error)}
+.grav.media{color:var(--iw-purple)}
+.grav.bassa{color:var(--tenue)}
+:root[data-tema="scuro"] .grav.media{color:var(--iw-lblue)}
+@media (prefers-color-scheme:dark){:root:not([data-tema="chiaro"]) .grav.media{color:var(--iw-lblue)}}
+.catena{list-style:none;margin:0;padding:0;font-size:12.5px}
+.catena li{padding:4px 0 4px 16px;position:relative}
+.catena li::before{content:"";position:absolute;left:3px;top:12px;width:8px;height:1px;background:var(--filo-forte)}
+.catena li .nm{font-weight:500}
+.catena li .ds{color:var(--tenue);font-size:11.5px}
+
+/* ---------- svg ---------- */
+.nodo{cursor:pointer}
+.nodo .box{fill:var(--carta);stroke:var(--filo);stroke-width:1}
+.nodo .accento{stroke-width:0}
+.nodo .nm{font-size:12.5px;font-weight:500;fill:var(--inch)}
+.nodo .sb{font-size:10px;fill:var(--tenue);letter-spacing:.06em;text-transform:uppercase}
+.nodo .ic{stroke:var(--inch);stroke-width:1;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nodo.progetto .box{stroke-dasharray:4 3;stroke:var(--filo-forte)}
+.nodo.progetto .nm,.nodo.progetto .sb{fill:var(--tenue)}
+.nodo.progetto .ic{stroke:var(--tenue)}
+.nodo:hover .box{stroke:var(--inch)}
+.nodo.sel .box{stroke:var(--inch);stroke-width:2}
+.nodo.spento{opacity:.16}
+.nodo.contesto{opacity:.42}
+.nodo.contesto .box{stroke-dasharray:2 3}
+.nodo.radice .box{stroke:var(--accento);stroke-width:2.5}
+.nodo.trovato .box{stroke:var(--accento);stroke-width:2}
+.etichette-arco.spento{opacity:.07}
+.nastro{background:var(--carta);border-bottom:1px solid var(--filo);padding:7px 24px;display:none;align-items:center;gap:12px;font-size:12.5px}
+.nastro.on{display:flex}
+.nastro .et{color:var(--tenue);text-transform:uppercase;letter-spacing:var(--iw-track);font-size:10px}
+.nastro strong{font-weight:500}
+.nastro .conta{color:var(--tenue)}
+.nodo .badge{fill:var(--iw-error)}
+.nodo .badgetxt{font-size:9px;fill:#fff;font-weight:500}
+.arco{fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.arco.spento{opacity:.07}
+.arco.acceso{stroke-width:2.6}
+.arco.progetto{stroke-dasharray:6 4}
+.arco-hit{fill:none;stroke:transparent;stroke-width:12;cursor:pointer}
+.corsia rect{fill:var(--carta);opacity:.45}
+.corsia text{font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);fill:var(--tenue)}
+.corsia line{stroke:var(--filo);stroke-width:1}
+.colonna line{stroke:var(--filo);stroke-width:1;stroke-dasharray:2 4}
+.colonna text{font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);fill:var(--tenue)}
+.portalab{font-size:9px;fill:var(--tenue)}
+/* testi liberi, fuori da un gruppo .nodo: senza fill esplicito restano neri e
+   spariscono su fondo scuro, che e' quello che e' successo alla prima resa
+   della vista Porte */
+.titolo-sw{font-size:15px;font-weight:500;fill:var(--inch)}
+.sotto-sw{font-size:10.5px;fill:var(--tenue);letter-spacing:.04em}
+.leg-sw{font-size:10.5px;fill:var(--tenue)}
+.velolab{font-size:9.5px;fill:var(--inch);font-weight:500}
+.velolab-bg{fill:var(--tela)}
+
+/* ---------- piede ---------- */
+footer{background:var(--carta);border-top:1px solid var(--filo);padding:0 0 28px}
+footer h3{margin:0 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);color:var(--tenue);font-weight:500}
+footer ul{margin:0;padding-left:16px;font-size:12px;color:var(--tenue)}
+footer li{margin-bottom:3px}
+
+/* La legenda sta attaccata al disegno, perche' e' cio' che serve mentre lo si
+   guarda. Il resto e' materiale di consultazione e sta chiuso: in una pagina
+   dove il disegno e' il contenuto, tre colonne di testo sempre aperte sotto
+   rubano attenzione e allungano lo scorrimento senza servire quasi mai. */
+.banda-legenda{padding:14px 24px 16px;border-bottom:1px solid var(--filo)}
+.leg{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:11.5px;margin-bottom:6px}
+.leg:last-child{margin-bottom:0}
+.leg span{display:inline-flex;align-items:center;gap:6px;color:var(--tenue)}
+.leg i{width:18px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block}
+
+.fisarmonica{border-bottom:1px solid var(--filo)}
+.fisarmonica>summary{list-style:none;cursor:pointer;padding:11px 24px;display:flex;align-items:center;gap:10px;
+  font-size:10px;text-transform:uppercase;letter-spacing:var(--iw-track);font-weight:500;color:var(--inch);
+  transition:background 220ms cubic-bezier(.2,.6,.2,1)}
+.fisarmonica>summary::-webkit-details-marker{display:none}
+.fisarmonica>summary::before{content:"+";font-size:14px;line-height:1;width:12px;color:var(--tenue)}
+.fisarmonica[open]>summary::before{content:"2"}
+.fisarmonica>summary:hover{background:var(--tela)}
+.fisarmonica .conteggio{color:var(--tenue);letter-spacing:0;text-transform:none;font-weight:400;font-size:11px}
+.corpo-fis{padding:2px 24px 18px;font-size:12px;color:var(--tenue);max-width:120ch}
+.corpo-fis p{margin:0}
+.avviso{border-left:3px solid var(--iw-error);padding:8px 12px;background:var(--tela);font-size:12.5px;margin:16px 24px 0}
+
+@media print{
+  .barra,.filtri,.hud,aside{display:none!important}
+  main{height:auto;display:block}
+  #tela{overflow:visible;height:70vh;min-height:480px}
+  #grafo{position:relative;height:100%}
+  body{background:#fff}
+}
+@media (max-width:1100px){
+  main{flex-direction:column;height:auto}
+  #tela{height:70vh}
+  aside{width:auto;flex:none;border-left:0;border-top:1px solid var(--filo);max-height:60vh}
+}
+</style>
+</head>
+<body>
+<div class="filetto"></div>
+<header class="testa">
+  <h1 id="tit">Topologia di rete Intrawelt</h1>
+  <div class="sotto" id="sotto"></div>
+  <div class="meta" id="metariga"></div>
+</header>
+
+<section class="orientamento" aria-label="Stato dello snapshot">
+  <nav aria-label="Documentazione"><a href="../README.md">Indice documentale</a><a href="snapshot-infrastruttura.md">Snapshot completo</a><a href="network-diagram.md">Guida alla topologia</a></nav>
+  <p id="stato-verifica"></p>
+  <details><summary>Copertura e limiti della verifica</summary><div id="limiti-verifica"></div></details>
+</section>
+
+<div class="barra">
+  <div class="gruppo" id="viste">
+    <button data-vista="logica" aria-pressed="true">Logica</button>
+    <button data-vista="fisica" aria-pressed="false">Fisica</button>
+    <button data-vista="segmenti" aria-pressed="false">Segmenti</button>
+    <button data-vista="elettrica" aria-pressed="false">Elettrica</button>
+    <button data-vista="porte" aria-pressed="false">Porte</button>
+  </div>
+  <input class="campo" id="cerca" type="search" aria-label="Cerca apparato, porta o nota" placeholder="Cerca apparato, porta, nota&hellip;" autocomplete="off">
+  <button class="mini" id="btn-difetti" aria-pressed="false">Solo con voci</button>
+  <button class="mini" id="btn-progetto" aria-pressed="false">Mostra il pianificato</button>
+  <button class="mini" id="btn-porte" aria-pressed="true">Etichette di porta</button>
+  <div class="sep"></div>
+  <button class="mini" id="btn-tema">Tema</button>
+  <button class="mini" id="btn-stampa">Stampa</button>
+  <button class="mini" id="btn-reset">Ripristina vista</button>
+</div>
+
+<div class="nastro" id="nastro">
+  <span class="et">Ramo isolato</span>
+  <strong id="nastro-nome"></strong>
+  <span class="conta" id="nastro-conta"></span>
+  <button class="mini" id="nastro-esci">Mostra tutta la rete</button>
+</div>
+
+<div class="filtri">
+  <div class="fila" id="f-mezzo"><span class="et">Mezzo</span></div>
+  <div class="fila" id="f-vlan"><span class="et">VLAN</span></div>
+  <div class="fila" id="f-cont"><span class="et">Luogo</span></div>
+</div>
+
+<p class="guida-vista" id="guida-vista" aria-live="polite"></p>
+<main>
+  <div id="tela">
+    <svg id="grafo" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Topologia interattiva: seleziona un nodo per i dettagli"><g id="mondo"></g></svg>
+    <div class="vuoto" id="vuoto">Nessun apparato risponde ai filtri attivi.</div>
+    <div class="hud">
+      <button id="z-meno" title="Riduci">&minus;</button>
+      <button id="z-piu" title="Ingrandisci">+</button>
+      <button id="z-fit" class="largo" title="Inquadra tutto">Inquadra</button>
+    </div>
+  </div>
+  <aside id="pannello"><div class="vuoto-p">Seleziona un apparato o un collegamento nel disegno per vederne la scheda. Passando il puntatore su un nodo si accendono i suoi soli collegamenti.</div></aside>
+</main>
+
+<footer>
+  <section class="banda-legenda">
+    <h3>Come si legge</h3>
+    <div class="leg" id="legmezzo"></div>
+    <div class="leg" id="legstato"></div>
+  </section>
+
+  <details class="fisarmonica">
+    <summary>Perimetro <span class="conteggio" id="c-perim"></span></summary>
+    <div class="corpo-fis"><p id="perim"></p></div>
+  </details>
+  <details class="fisarmonica">
+    <summary>Fonti <span class="conteggio" id="c-fonti"></span></summary>
+    <div class="corpo-fis"><ul id="fonti"></ul></div>
+  </details>
+  <details class="fisarmonica">
+    <summary>Rischi, difetti e verifiche <span class="conteggio" id="c-gap"></span></summary>
+    <div class="corpo-fis"><div id="gaplista"></div></div>
+  </details>
+
+  <div class="avviso" id="avvertenza"></div>
+</footer>
+
+<script type="application/json" id="topo">{
+ "meta": {
+  "titolo": "Topologia di rete Intrawelt",
+  "aggiornato": "2026-10-14",
+  "revisione": 15,
+  "avvertenza": "Fonte di verita' della mappa interattiva, secondo ADR-023. Il file HTML generato da qui NON si modifica mai a mano: si corregge questo file e si rigenera con scripts/Build-NetworkMap.ps1. Valori anonimizzati secondo .claude/rules/anonymization.md: la traduzione vive in _notes/.anonymization-map.md.",
+  "perimetro": "Apparati di rete, server, storage, alimentazione e utenze di impianto, piu' il livello di virtualizzazione dell'unico server fisico (bridge e macchine virtuali) e i due servizi fuori sede che pubblicano il sito. Fuori perimetro in questa revisione, per scelta: le singole postazioni di lavoro, che compaiono come gruppo aggregato. Le due multifunzione sono nodi individuali; la porta di Piano 1 resta da attribuire.",
+  "fonti": [
+   "STATO RETE INTRAWELT.docx, IT Manager, 06/08/2026 (catena fisica, porte, alimentazione)",
+   "Snapshot Nebula del 06/08/2026 (PVID, VLAN ammesse, velocita', tabelle MAC)",
+   "startup-config.conf del 03/08/2026, non versionato (interfacce e zone del firewall)",
+   "Scheda telefoni restituita compilata dall'IT Manager, 06/08/2026",
+   "Risposte dell'IT Manager del 06/08/2026 (alimentazione, softphone, apparati smantellati)",
+   "API Proxmox interrogata il 24/08/2026 via MCP di sola lettura (inventario VM, bridge per VM)",
+   "output/proxmox-config.md dello snapshot 08/07/2026, non versionato (topologia dei bridge dell'host)",
+   "diario-impianto-vps.md, 13/08/2026 (impianto VPS di produzione e VM 209 di staging)",
+   "handoff-Per Alessio.md, 21/08/2026 (assetto dei tre ambienti del sito)",
+   "STATO_DELL_ARTE_2026-08-21.md, letto sulla VM 209 il 24/08/2026 (stato del sito, runtime e persistenza)",
+   "lldpcli sull'host Proxmox, 25/08/2026 (conferma diretta della corrispondenza vmbr1 - porta 7)",
+   "Snapshot NinjaOne del 25/08/2026 (incrocio tabella MAC / endpoint gestiti, nove porte attribuite)",
+   "Censimento M27-7 della protezione host-based, 25-28/08/2026 (porte in ascolto sulle macchine Linux)",
+   "Dismissione della VM 206 comunicata dall'IT Manager il 31/08/2026, con backup verificato sul NAS",
+   "Snapshot Nebula e Proxmox del 23/09/2026: Test-TopologyDrift.py, 39 confronti e zero scostamenti",
+   "Registro GAP-TBC, aggiornamenti del 16/09/2026: due alimentatori sul server (#202), lentezza del deposito NAS (#204)",
+   "D:/log-collector, screenshot 13 di NAS-INTRA3 e dichiarazione dell'IT Manager del 05/10/2026 (modello, firmware e uso delle condivisioni)",
+   "docs/rete/livello-fisico-ed-elettrico.md e docs/rete/interventi-robustezza.md, due multifunzione di rete; porta Kyocera Piano Terra verificata, porta Canon Piano 1 da attribuire",
+   "Secondo Vulnerability Assessment Onova del 13/10/2026, consegnato il 14/10 (composizione del segmento delle postazioni, due dispositivi embedded attribuiti, conferma indipendente dell'inventario degli apparati di rete)"
+  ],
+  "verifica": {
+   "data": "2026-10-08",
+   "validita-giorni": 7,
+   "esito": "40 confronti automatici, zero scostamenti",
+   "ambito": "Porte e inventario Nebula; bridge e attestazioni delle VM Proxmox. Otto VM aggregate non hanno un nodo individuale; la porta fisica della Canon Piano 1 resta da attribuire.",
+   "conferma-umana": "IT Manager, 23/09/2026: nessuna modifica esterna dal riallineamento del 22/09.",
+   "limiti": [
+    "La verifica automatica non collauda policy firewall, applicazioni, backup o continuita elettrica.",
+    "La catena WAN conserva attestazioni ripetute sulla P2 del router principale: cablaggio da verificare sul posto.",
+    "La presenza residua del vecchio access point e il cablaggio della seconda alimentazione del server non sono confermati.",
+    "Il delta documentale esterno e triagiato ma non completamente ingerito: vedere ingestion-checklist.",
+    "Correzione IT Manager 28/09/2026: la porta 4 raggiunge il WBE530, la centralina usa il suo Wi-Fi e l'inverter la seconda porta Ethernet dell'AP. Il GS-105B appartiene alla topologia storica e non e' nel percorso attivo. La sorgente elettrica del WBE530 resta da confermare.",
+    "Il VA del 13/10/2026 ha misurato la sola fascia delle postazioni: la fascia dei server, quella delle stampanti e le VLAN 40 e 90 non sono coperte da quella fonte, e il perimetro firmato non e' agli atti (#218).",
+    "Il VA trova viva la scheda di rete del gruppo di continuita' Liebert, che il progetto dava per non rispondente dal 21/07/2026: finche' non la si guarda, la premessa di ELE-001 resta in discussione (#220)."
+   ]
+  }
+ },
+ "vlan": [
+  {
+   "id": 1,
+   "nome": "Nativa dati",
+   "descrizione": "LAN piatta /19: postazioni, server, stampanti sono alias di indirizzo, non VLAN",
+   "colore": "#5b7c99"
+  },
+  {
+   "id": 2,
+   "nome": "Fonia",
+   "descrizione": "LAN telefonica del fornitore, DHCP e gateway suoi, non passa dal firewall",
+   "colore": "#c08a3e"
+  },
+  {
+   "id": 40,
+   "nome": "Wi-Fi staff",
+   "descrizione": "Accesso pieno alla LAN per scelta deliberata (ADR-014)",
+   "colore": "#4f8a6d"
+  },
+  {
+   "id": 90,
+   "nome": "Wi-Fi ospiti",
+   "descrizione": "Interfaccia general sul firewall, SNAT esplicito, sola uscita Internet",
+   "colore": "#8a5f8f"
+  },
+  {
+   "id": 30,
+   "nome": "Stampanti (progetto)",
+   "descrizione": "Non esiste ancora: e' il primo segmento di M22b",
+   "colore": "#9a9a9a",
+   "stato": "progetto"
+  },
+  {
+   "id": 201,
+   "nome": "DMZ (progetto)",
+   "descrizione": "Segmento di pubblicazione progettato il 05/06/2026 e mai attivato: gateway 10.61.201.1 sul firewall, indirizzamento statico, uscita verso Internet consentita e ritorno verso la LAN negato. Non serve al sito, che va in produzione fuori sede; serve ai progetti interni che verranno pubblicati, a partire dal portale asset.",
+   "colore": "#9a9a9a",
+   "stato": "progetto"
+  }
+ ],
+ "livelli": [
+  {
+   "id": "internet",
+   "nome": "Internet e accesso"
+  },
+  {
+   "id": "fornitore",
+   "nome": "Apparati del fornitore"
+  },
+  {
+   "id": "perimetro",
+   "nome": "Perimetro"
+  },
+  {
+   "id": "core",
+   "nome": "Commutazione"
+  },
+  {
+   "id": "distribuzione",
+   "nome": "Distribuzione e rami"
+  },
+  {
+   "id": "servizi",
+   "nome": "Virtualizzazione e servizi"
+  },
+  {
+   "id": "utenze",
+   "nome": "Utenze"
+  }
+ ],
+ "contenitori": [
+  {
+   "id": "rack-sx",
+   "nome": "Armadio sinistro",
+   "sito": "CED Piano 2",
+   "descrizione": "Tutto cio' che sta fra Internet e la LAN, piu' i due apparati di commutazione principali. Se si spegne, si spegne tutto."
+  },
+  {
+   "id": "rack-dx",
+   "nome": "Armadio destro",
+   "sito": "CED Piano 2",
+   "descrizione": "Storage e calcolo."
+  },
+  {
+   "id": "pt",
+   "nome": "Piano Terra",
+   "sito": "Piano Terra",
+   "descrizione": "Distribuzione del piano. Nessun gruppo di continuita': vedi ELE-004."
+  },
+  {
+   "id": "esterno",
+   "nome": "Esterno e tetto",
+   "sito": "Copertura e locale caldaia",
+   "descrizione": "Tratta cablata verso l'esterno e antenna sul tetto."
+  },
+  {
+   "id": "edificio",
+   "nome": "Edificio",
+   "sito": "Piani 1 e 2",
+   "descrizione": "Apparati distribuiti nei piani."
+  },
+  {
+   "id": "cloud",
+   "nome": "Fuori sede",
+   "sito": "Cloud pubblico",
+   "descrizione": "Servizi che non stanno in azienda e non passano dal firewall Intrawelt."
+  }
+ ],
+ "nodi": [
+  {
+   "id": "internet",
+   "nome": "Internet",
+   "tipo": "cloud",
+   "livello": "internet",
+   "contenitore": null,
+   "note": "Tre percorsi indipendenti, il cui failover avviene dentro gli apparati del fornitore e non e' visibile al firewall."
+  },
+  {
+   "id": "fibra",
+   "nome": "Fibra",
+   "tipo": "linea",
+   "livello": "internet",
+   "contenitore": null,
+   "note": "Servizio primario."
+  },
+  {
+   "id": "vdsl",
+   "nome": "Linea VDSL",
+   "tipo": "linea",
+   "livello": "internet",
+   "contenitore": null,
+   "note": "Secondo backup, attestata sulla porta xDSL del router 2."
+  },
+  {
+   "id": "antenna",
+   "nome": "Antenna sul tetto",
+   "tipo": "radio",
+   "livello": "internet",
+   "contenitore": "esterno",
+   "note": "Primo backup. Termina a monte del firewall, sulla ETH10 del MikroTik: non e' un ramo della LAN.",
+   "alimentazione": null
+  },
+  {
+   "id": "iniettore",
+   "nome": "Iniettore PoE dell'antenna",
+   "tipo": "alimentatore",
+   "livello": "internet",
+   "contenitore": "edificio",
+   "note": "Sotto gruppo di continuita', confermato il 04/08/2026. Il gruppo che lo alimenta e' quello di Sala-1, di modello ignoto.",
+   "alimentazione": "ups-sala1",
+   "gap": [
+    "NET-018"
+   ]
+  },
+  {
+   "id": "aconnic",
+   "nome": "Aconnic Acceed 2102",
+   "tipo": "terminazione",
+   "livello": "fornitore",
+   "contenitore": "rack-sx",
+   "note": "Apparato di terminazione della fibra. Censito per la prima volta il 06/08/2026.",
+   "alimentazione": "ciabatta-3-sx"
+  },
+  {
+   "id": "mikrotik",
+   "nome": "MikroTik RB2011UiAS-RM",
+   "tipo": "router",
+   "livello": "fornitore",
+   "contenitore": "rack-sx",
+   "note": "Riceve l'antenna sulla ETH10 e alimenta l'iniettore in PoE. Proprieta', amministratore e credenziali non noti: R17.",
+   "alimentazione": "ciabatta-2-sx",
+   "gap": [
+    "NET-018"
+   ]
+  },
+  {
+   "id": "r1000-1",
+   "nome": "Vianova R-1000 (principale)",
+   "tipo": "router",
+   "livello": "fornitore",
+   "contenitore": "rack-sx",
+   "note": "La WAN entra qui. Unico apparato del tratto WAN alimentato dal Back-UPS ES 400.",
+   "alimentazione": "backups"
+  },
+  {
+   "id": "r1000-2",
+   "nome": "Vianova R-1000 (backup)",
+   "tipo": "router",
+   "livello": "fornitore",
+   "contenitore": "rack-sx",
+   "note": "Porta la linea VDSL sulla propria porta xDSL.",
+   "alimentazione": "ciabatta-3-sx"
+  },
+  {
+   "id": "s1000",
+   "nome": "Vianova S-1000",
+   "tipo": "switch-fornitore",
+   "livello": "fornitore",
+   "contenitore": "rack-sx",
+   "note": "Sdoppia dati e voce: la porta 4 ai dati verso il firewall, la porta 1 alla fonia verso il 54HP. E' qui che le due reti si separano, non nel firewall.",
+   "alimentazione": "ciabatta-2-sx"
+  },
+  {
+   "id": "firewall",
+   "nome": "Zyxel USG FLEX 500",
+   "tipo": "firewall",
+   "livello": "perimetro",
+   "contenitore": "rack-sx",
+   "note": "WAN sulla P2, LAN1 sulla P5. Quattordici interfacce di cui alcune residue (FW-013). Alimentato in fondo a tre ciabatte in cascata.",
+   "alimentazione": "ciabatta-1-sx",
+   "gap": [
+    "ELE-002",
+    "FW-013"
+   ]
+  },
+  {
+   "id": "sw54",
+   "nome": "Zyxel XGS2220-54HP",
+   "nebula": "Switch piano 2 (rack)",
+   "tipo": "switch",
+   "livello": "core",
+   "contenitore": "rack-sx",
+   "note": "Core del Piano 2, L3, 48 porte PoE++ e 6 SFP+. Tutto il traffico verso il firewall passa da una sola porta a 1 Gbps in rame, la 33.",
+   "alimentazione": "smartups"
+  },
+  {
+   "id": "swqnap",
+   "nome": "QNAP QSW-1208-8c",
+   "tipo": "switch-non-gestito",
+   "livello": "core",
+   "contenitore": "rack-sx",
+   "note": "Ramo storage e postazioni a 10 Gbps. Non gestito: su questo tratto non esiste alcun controllo di livello 2 e non potra' partecipare al tagging di M22.",
+   "alimentazione": "smartups"
+  },
+  {
+   "id": "sw30",
+   "nome": "Zyxel XGS2220-30HP",
+   "nebula": "Switch piano terra",
+   "tipo": "switch",
+   "livello": "core",
+   "contenitore": "pt",
+   "note": "Distribuzione del Piano Terra, L3, 24 porte PoE+ con budget 400 W. Non risulta sotto nessun gruppo di continuita'.",
+   "alimentazione": null,
+   "gap": [
+    "ELE-004"
+   ]
+  },
+  {
+   "id": "srv-gen10",
+   "nome": "Server HP ProLiant Gen10",
+   "tipo": "server",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "Nodo Proxmox con dieci guest censiti, incluso un template. Quattro interfacce dati: eth2, eth3 ed eth4 sul 54HP, eth1 sul QNAP; iLO su cavo dedicato. Inventario del 16/09/2026: due alimentatori da 800 W presenti e sani. La fonte fisica documenta PS2 sulla Ciabatta 2 DX; la sorgente di PS1 resta da verificare sul posto (#202).",
+   "alimentazione": "ciabatta-2-dx",
+   "gap": [
+    "ELE-005",
+    "NET-022",
+    "NET-026"
+   ],
+   "alimentazione-note": "Secondo alimentatore presente; sorgente non documentata. Il disegno mostra soltanto la tratta conosciuta e non prova indipendenza elettrica."
+  },
+  {
+   "id": "ilo",
+   "nome": "iLO del server",
+   "tipo": "gestione",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "Gestione fuori banda su una classe mai descritta come segmento: e' l'adiacenza che la segmentazione dovrebbe eliminare per prima.",
+   "alimentazione": "ciabatta-2-dx"
+  },
+  {
+   "id": "pc-backup",
+   "nome": "PC di backup Proxmox",
+   "tipo": "server",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "Ex postazione, tenuto come via di rientro se cade il nodo. Alimentato dal Naicon.",
+   "alimentazione": "ciabatta-1-dx"
+  },
+  {
+   "id": "nas-hero",
+   "nome": "NAS-HERO",
+   "tipo": "storage",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "QNAP ts-h1677xv-rp, storage Proxmox e destinazione di backup. Due alimentatori, entrambi sotto lo stesso gruppo.",
+   "alimentazione": "ciabatta-1-dx",
+   "alimentazione-2": "ciabatta-2-dx",
+   "gap": [
+    "ELE-003"
+   ]
+  },
+  {
+   "id": "nas-intra",
+   "nome": "NAS-INTRA",
+   "tipo": "storage",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "Due schede di rete sulle porte 2 e 4 dello stesso switch: ridondanza di scheda, non di apparato. Share Backup e dump delle VM. Misure del 16/09/2026: scrittura 10,5 MB/s, lettura 15,8 MB/s; altro deposito a 110 MB/s dallo stesso nodo. Il problema e specifico di questo deposito o della sua attestazione; la causa resta da diagnosticare (#204). La lettura supera il tetto di un collegamento a 100 Mb/s.",
+   "alimentazione": "ciabatta-2-dx",
+   "gap": [
+    "STOR-007"
+   ]
+  },
+  {
+   "id": "nas-intra2",
+   "nome": "NAS-INTRA2",
+   "tipo": "storage",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "QNAP ts-435XeU. Destinazione delle scansioni dopo R8, sette condivisioni nascoste con un solo account di servizio.",
+   "alimentazione": "ciabatta-2-dx"
+  },
+  {
+   "id": "nas-intra3",
+   "nome": "NAS-INTRA3",
+   "tipo": "storage",
+   "livello": "distribuzione",
+   "contenitore": "rack-dx",
+   "note": "QNAP TS-210, QTS 4.2.6 build 20240618. Condivisioni montate come unita di rete dai due amministratori interni (dichiarazione 05/10/2026); contenuti e log da verificare. Alimentazione non documentata.",
+   "alimentazione": null
+  },
+  {
+   "id": "ollama",
+   "nome": "Host Ollama (IntraLino)",
+   "tipo": "server",
+   "livello": "distribuzione",
+   "contenitore": "edificio",
+   "note": "Sulla porta 46 del 54HP. Migliaia di link flap, uno ogni 14-16 secondi, ciascuno con ricalcolo STP: causa non isolata.",
+   "alimentazione": null,
+   "gap": [
+    "NET-010"
+   ]
+  },
+  {
+   "id": "consegna-fonia",
+   "nome": "Consegna fonia del fornitore",
+   "tipo": "fornitore",
+   "livello": "distribuzione",
+   "contenitore": "rack-sx",
+   "note": "Untagged sulla porta 8. Tre indirizzi appresi, di cui uno virtuale VRRP: sono i router del fornitore in ridondanza.",
+   "alimentazione": null,
+   "gap": [
+    "NET-019"
+   ]
+  },
+  {
+   "id": "ht812",
+   "nome": "Grandstream HT812 v2",
+   "tipo": "voce",
+   "livello": "distribuzione",
+   "contenitore": "rack-sx",
+   "note": "Adattatore analogico dell'ascensore, gia' installato e collegato. Ha un NAT interno da disattivare, e non e' piu' una precauzione condizionale da quando l'etichetta ha confermato il modello. Si alimenta a 12V in continua e non in PoE: nel documento dell'IT Manager e' fra i due carichi del Back-UPS ES 400, quindi la sua corrente e' nota ed e' protetta.",
+   "alimentazione": "backups",
+   "gap": [
+    "NET-019"
+   ]
+  },
+  {
+   "id": "ascensore",
+   "nome": "Telefono dell'ascensore",
+   "tipo": "telefono",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Apparecchio analogico sulla presa a parete 2.8.1, servito dalla porta FXS dell'adattatore. E' un obbligo di sicurezza, non un interno come gli altri.",
+   "alimentazione": null
+  },
+  {
+   "id": "ap-pt",
+   "nome": "Access point Piano Terra",
+   "nebula": "AP piano terra",
+   "tipo": "ap",
+   "livello": "distribuzione",
+   "contenitore": "pt",
+   "note": "Zyxel NWA130BE, Wi-Fi 7. Multi-SSID staff e ospiti sullo stesso apparato.",
+   "alimentazione": "poe-sw30"
+  },
+  {
+   "id": "ap-p1",
+   "nome": "Access point Piano 1",
+   "nebula": "AP Piano 1",
+   "tipo": "ap",
+   "livello": "distribuzione",
+   "contenitore": "edificio",
+   "note": "Zyxel NWA130BE, presa 1-8-1.",
+   "alimentazione": "poe-sw54"
+  },
+  {
+   "id": "ap-p2",
+   "nome": "Access point Piano 2",
+   "nebula": "AP Piano 2",
+   "tipo": "ap",
+   "livello": "distribuzione",
+   "contenitore": "edificio",
+   "note": "Zyxel NWA130BE. Collocazione fra CED ed esterno tetto ancora ambigua nel rilievo.",
+   "alimentazione": "poe-sw54"
+  },
+  {
+   "id": "suprema",
+   "nome": "Terminale presenze Suprema",
+   "tipo": "iot",
+   "livello": "utenze",
+   "contenitore": "pt",
+   "note": "Unita' master della rilevazione presenze, presa 0-10-1, RS485 verso il lettore esterno. Tratta dati personali, e la sua unita' esterna e' fisicamente accessibile fuori dal perimetro.",
+   "alimentazione": "poe-sw30",
+   "gap": [
+    "NET-021",
+    "NET-020"
+   ]
+  },
+  {
+   "id": "ap-esterno",
+   "nome": "Access point esterno",
+   "nebula": "AP esterno",
+   "tipo": "ap",
+   "livello": "distribuzione",
+   "contenitore": "esterno",
+   "note": "Zyxel WBE530, Wi-Fi 7, in servizio dal 09/09/2026 in protezione da esterno sul ponte 0-8-1 / 0-9-1. La centralina si connette via Wi-Fi; l'inverter usa la seconda porta Ethernet dell'AP (IT Manager, 28/09/2026). Dichiarato per uso interno dal produttore: rischio ambientale in SEC-051. La rete radio e' su VLAN 1, sola banda 2,4 GHz, senza isolamento: NET-032. La presenza fisica residua dei vecchi apparati e' da verificare, ma non sono nel percorso attivo descritto dall'IT Manager.",
+   "alimentazione": null,
+   "gap": [
+    "SEC-051",
+    "NET-032"
+   ],
+   "alimentazione-note": "La porta 4 del 30HP risulta configurata per erogare PoE, ma la sorgente che alimenta effettivamente il WBE530 va confermata sul posto."
+  },
+  {
+   "id": "irrigazione",
+   "nome": "Centrale di irrigazione",
+   "tipo": "ot",
+   "livello": "utenze",
+   "contenitore": "esterno",
+   "note": "Usa il Wi-Fi del WBE530 secondo l'IT Manager (28/09/2026). Il collaudo e' un ciclo di irrigazione reale, non un ping. La vecchia attribuzione del cavo di categoria 6 alla centralina e' superata.",
+   "alimentazione": null,
+   "gap": [
+    "NET-020"
+   ]
+  },
+  {
+   "id": "inverter",
+   "nome": "Inverter del fotovoltaico",
+   "tipo": "ot",
+   "livello": "utenze",
+   "contenitore": "esterno",
+   "note": "Asset di rete mai censito: marca, modello, indirizzo e porte esposte da rilevare (R18). Un inverter moderno tipicamente contatta il cloud del produttore.",
+   "alimentazione": null,
+   "gap": [
+    "NET-020"
+   ]
+  },
+  {
+   "id": "ap-eol",
+   "nome": "Access point fuori supporto",
+   "tipo": "ap-eol",
+   "livello": "utenze",
+   "contenitore": "esterno",
+   "note": "Apparato fuori supporto censito prima della sostituzione con WBE530 del 09/09/2026. Rimozione fisica non confermata nelle fonti disponibili: presenza residua da verificare, non attestazione di esercizio attuale.",
+   "alimentazione": null,
+   "gap": [
+    "SEC-018",
+    "NET-020"
+   ],
+   "verifica": "da-verificare"
+  },
+  {
+   "id": "tel-1",
+   "nome": "Telefono IP, amministrazione Piano 1",
+   "tipo": "telefono",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Yealink SIP-T34W, presa 1.1.2. Porta 3 del 54HP: PVID 2 ma accetta qualunque VLAN taggata.",
+   "alimentazione": "poe-sw54",
+   "gap": [
+    "NET-019"
+   ]
+  },
+  {
+   "id": "tel-2",
+   "nome": "Telefono IP, amministrazione Piano 1",
+   "tipo": "telefono",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Yealink SIP-T31G, presa 1.2.1. Porta 5 del 54HP: e' una delle due configurate correttamente, ammette la sola VLAN 2.",
+   "alimentazione": "poe-sw54"
+  },
+  {
+   "id": "tel-3",
+   "nome": "Telefono IP, Sala-1",
+   "tipo": "telefono",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Yealink SIP-T31G, presa 2.3.7.",
+   "alimentazione": "poe-sw54",
+   "gap": [
+    "NET-019"
+   ]
+  },
+  {
+   "id": "tel-4",
+   "nome": "Telefono IP, ufficio centrale Piano Terra",
+   "tipo": "telefono",
+   "livello": "utenze",
+   "contenitore": "pt",
+   "note": "Yealink SIP-T31G, presa 0.3.1.",
+   "alimentazione": "poe-sw30",
+   "gap": [
+    "NET-019"
+   ]
+  },
+  {
+   "id": "tel-5",
+   "nome": "Telefono IP, reception",
+   "tipo": "telefono",
+   "livello": "utenze",
+   "contenitore": "pt",
+   "note": "Yealink SIP-T34W, presa 0.5.3. Porta 23 del 30HP: e' la configurazione di riferimento, ammette la sola VLAN 2.",
+   "alimentazione": "poe-sw30"
+  },
+  {
+   "id": "postazioni-10g",
+   "nome": "Sei postazioni a 10 Gbps",
+   "tipo": "gruppo",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Prese 1.6.8, 1.5.3, 1.5.2, 1.5.9, 1.5.12 e 1.3.3 sul ramo QNAP. Fuori perimetro di questa revisione: qui compaiono come gruppo.",
+   "alimentazione": null
+  },
+  {
+   "id": "postazioni-lan",
+   "nome": "Postazioni cablate (gruppo)",
+   "tipo": "gruppo",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Circa quaranta postazioni distribuite sui due switch. Le due multifunzione sono censite come nodi individuali; le singole postazioni restano aggregate.",
+   "alimentazione": null
+  },
+  {
+   "id": "mfp-pt",
+   "nome": "Multifunzione Piano Terra",
+   "tipo": "stampante",
+   "livello": "utenze",
+   "contenitore": "pt",
+   "note": "Kyocera TASKalfa 2552ci; porta 6 dello XGS2220-30HP e PVID 1 documentati nella mappa fisica. Log degli accessi al pannello ancora da ricognire.",
+   "alimentazione": null
+  },
+  {
+   "id": "mfp-p1",
+   "nome": "Multifunzione Piano 1",
+   "tipo": "stampante",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Canon della serie iR-ADV C5840 secondo la documentazione; modello preciso e porta switch da confermare. Log degli accessi al pannello ancora da ricognire.",
+   "alimentazione": null
+  },
+  {
+   "id": "softphone",
+   "nome": "Softphone Vianova One",
+   "tipo": "gruppo-voce",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Ventisette utenze telefoniche che dal 31/07/2026 vivono come applicazione sugli endpoint Windows. La loro voce nasce sulla LAN dati, non sulla VLAN 2, e attraversa il firewall senza marcatura di qualita'.",
+   "alimentazione": null,
+   "gap": [
+    "TEL-005"
+   ]
+  },
+  {
+   "id": "wifi-staff",
+   "nome": "Rete Wi-Fi staff",
+   "tipo": "rete-radio",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "VLAN 40, accesso pieno alla LAN per scelta deliberata. Riceve due resolver pubblici, quindi non risolve i nomi interni.",
+   "alimentazione": null,
+   "gap": [
+    "NET-005"
+   ]
+  },
+  {
+   "id": "wifi-guest",
+   "nome": "Rete Wi-Fi ospiti",
+   "tipo": "rete-radio",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "VLAN 90, interfaccia general sul firewall con SNAT esplicito e sola uscita Internet.",
+   "alimentazione": null
+  },
+  {
+   "id": "vmbr0",
+   "nome": "Bridge vmbr0",
+   "tipo": "bridge",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Bridge Linux dell'host Proxmox sulla porta eno1. E' l'unico dei quattro a portare un indirizzo proprio, 10.61.20.11/19 con gateway 10.61.20.1, cioe' l'indirizzo con cui si amministra l'hypervisor: ne segue che e' anche l'unico la cui riconfigurazione puo' far perdere l'accesso al server, ed e' la ragione per cui il micro-step M5 prescrive di applicare 'ifreload -a' dalla console iLO e non da SSH. Non e' VLAN-aware. Vi sono attestate la prima scheda della VM 100, la VM 202, la VM 208 e la VM 810.",
+   "alimentazione": null
+  },
+  {
+   "id": "vmbr1",
+   "nome": "Bridge vmbr1",
+   "tipo": "bridge",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Bridge Linux sulla porta eno2, senza indirizzo sull'host. Vi e' attestata la sola seconda scheda della VM 100, quindi e' il piu' scarico dei quattro. Rilevante per la DMZ: l'analisi comparativa del 29/05/2026 aveva scartato l'ipotesi del cavo dedicato perche' 'consuma una porta fisica aggiuntiva e non scala', ma quella premessa non regge piu' alla misura, perche' le porte sono quattro e i bridge sono gia' quattro. L'ipotesi va riaperta prima di eseguire M4-M6, non dopo.",
+   "alimentazione": null
+  },
+  {
+   "id": "vmbr2",
+   "nome": "Bridge vmbr2",
+   "tipo": "bridge",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Bridge Linux sulla porta eno3, senza indirizzo sull'host. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla porta 9 del 54HP, che la mappa fisica chiama eth3. **Aggiornato il 31/08/2026**: vi era attestata anche la VM 206, dismessa in quella data; resta la sola VM 209. Bridge puro, non VLAN-aware, nessun tag sulle macchine: la macchina sta sulla stessa LAN piatta di tutto il resto dell'azienda.",
+   "alimentazione": null
+  },
+  {
+   "id": "vmbr3",
+   "nome": "Bridge vmbr3",
+   "tipo": "bridge",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Bridge Linux sulla porta eno4, senza indirizzo sull'host. Vi sono attestate le VM 203 (spenta), 204, 205, 207 e 602.",
+   "alimentazione": null
+  },
+  {
+   "id": "vm209",
+   "nome": "VM 209 IntraNewSite",
+   "tipo": "server",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Ambiente di sviluppo e staging del sito nuovo, creato il 12/08/2026 e in lavorazione continua fino al 21/08. Ubuntu 24.04.2 Desktop, quattro processori virtuali, 8 GB di memoria con ballooning a 4, disco da 80 GB sullo storage SERVIZI, agente QEMU attivo, avvio automatico. Indirizzo statico 10.61.20.209 con maschera /19 e gateway 10.61.20.1. Sopra gira Payload 3.88 con Next.js 16, servito da 'next dev' e non da una immagine costruita: e' un ambiente di prova, non una preproduzione, e la lentezza della prima apertura di una schermata e' la compilazione a richiesta e non un difetto della rete. Il pannello di amministrazione risponde sulla porta 3000, in ascolto su tutte le interfacce e quindi raggiungibile da qualunque host della LAN piatta: l'unica difesa e' l'autenticazione applicativa (NET-024). Se il firewall di sistema della macchina sia attivo non e' verificato da questo progetto. Il contenuto caricato dalla redazione vive su disco locale della macchina, non su un archivio esterno, quindi la sua continuita' dipende interamente dal backup della VM. Il primo indirizzo era stato preso via DHCP nella fascia .10 invece che nella .20: non era un errore di configurazione ma la LAN piatta che si manifesta, perche' con maschera /19 le due fasce sono la stessa rete servita da piu' ambiti.",
+   "alimentazione": null,
+   "gap": [
+    "NET-024",
+    "NET-027"
+   ]
+  },
+  {
+   "id": "vm208",
+   "nome": "VM 208 portaleAsset",
+   "tipo": "server",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Portale di censimento degli asset informatici, pilota interno. Pubblica sulle porte 80 e 443 direttamente sulla LAN piatta, che e' il difetto NET-011, e la sua esposizione verso l'esterno e' stata esplicitamente rimandata 'dietro la DMZ': e' quindi oggi il primo e unico consumatore dichiarato del segmento 201.",
+   "alimentazione": null,
+   "gap": [
+    "NET-011"
+   ]
+  },
+  {
+   "id": "vm207",
+   "nome": "VM 207 websiteAnalyst",
+   "tipo": "server",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Macchina di analisi, sei processori virtuali e 16 GB senza ballooning, due dischi per complessivi 128 GB. Il suo dimensionamento e' documentato in due file di handoff prodotti da un'altra sessione di lavoro il 13/07/2026 e rimasti invisibili al controllo del delta per quasi un mese: e' il caso che ha fatto correggere la lista di esclusione.",
+   "alimentazione": null
+  },
+  {
+   "id": "vm-altre",
+   "nome": "Altre VM di servizio",
+   "tipo": "gruppo",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "Le restanti macchine dell'hypervisor, raggruppate perche' non cambiano la lettura della rete: WinServer2022 con due schede su due bridge distinti, PasswordManager, ConvertitoreRuolini, GanttTool, Intralino, la macchina di prova della migrazione e un modello spento. Nessuna porta un tag di VLAN: stanno tutte sulla stessa LAN piatta.",
+   "alimentazione": null
+  },
+  {
+   "id": "dmz-vm",
+   "nome": "Prima VM in DMZ",
+   "tipo": "server",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "stato": "progetto",
+   "note": "Non esiste. E' il proxy inverso previsto dal piano del 05/06/2026 a 10.61.201.10, da pubblicare sull'alias wan1:2 del firewall. L'indirizzo pubblico e' gia' configurato sull'apparato e si trova in stato di spegnimento: l'intervento e' riaccenderlo, non chiederne uno nuovo al fornitore.",
+   "alimentazione": null,
+   "gap": [
+    "FW-014"
+   ]
+  },
+  {
+   "id": "vps-aruba",
+   "nome": "VPS Intrawelt-Website",
+   "tipo": "cloud",
+   "livello": "internet",
+   "contenitore": "cloud",
+   "note": "Produzione del sito nuovo, fuori sede: Ubuntu 24.04 con quattro processori, 8 GB e 80 GB, indirizzo pubblico 192.0.2.10, accesso solo a chiave con utente non privilegiato e accesso di amministrazione disabilitato, firewall di sistema aperto sulle sole 22, 80 e 443, Docker installato e cartella di distribuzione ancora vuota in attesa della prima immagine. Non passa dal firewall Intrawelt e non sta in DMZ, ed e' esattamente la ragione per cui la DMZ non e' un prerequisito della pubblicazione del sito.",
+   "alimentazione": null
+  },
+  {
+   "id": "hosting-fastnet",
+   "nome": "Hosting Fastnet",
+   "tipo": "cloud",
+   "livello": "internet",
+   "contenitore": "cloud",
+   "note": "Hosting Plesk dove vive il sito pubblico di oggi, 198.51.100.35, con il DNS del dominio puntato qui. Sullo stesso hosting e' stata depositata anche la versione dell'agenzia, senza che il DNS la raggiunga. Fuori perimetro Intrawelt: nessun apparato di questa mappa lo controlla.",
+   "alimentazione": null
+  },
+  {
+   "id": "pg209",
+   "nome": "PostgreSQL del sito",
+   "tipo": "storage",
+   "livello": "servizi",
+   "contenitore": "rack-dx",
+   "note": "PostgreSQL 17 del sito, sulla VM 209. **Correzione del 28/08/2026, misurata**: la revisione precedente affermava che stesse sulla sola rete interna di Docker e non avesse un indirizzo proprio sulla LAN. Il censimento M27-7 misura la porta 5432 in ascolto su tutte le interfacce della macchina, quindi il database e' raggiungibile da qualunque host della LAN piatta con la sola autenticazione del motore a difenderlo (#161). Resta da determinare, con il censimento come amministratore, se l'ascolto sia del motore installato sulla macchina o della pubblicazione di un container. Lo schema si sposta in produzione replicando tredici migrazioni versionate, non sincronizzando il database.",
+   "alimentazione": null,
+   "gap": [
+    "NET-027"
+   ]
+  },
+  {
+   "id": "ups-liebert-nic",
+   "nome": "Scheda di rete del gruppo di continuita' Liebert",
+   "tipo": "iot",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "Scheda Liebert IntelliSlot rilevata viva dal VA del 13/10/2026 nella fascia delle postazioni, con la porta 6004 aperta. Il progetto la dava per non rispondente dalla scansione del 21/07/2026, quindi l'attribuzione del fornitore, che viene da fingerprinting non autenticato, va confermata guardando l'apparato. Porta di switch non attribuita. E' l'unico gruppo di continuita' che abbia mai avuto una via di allarme.",
+   "alimentazione": null,
+   "gap": [
+    "ELE-001"
+   ]
+  },
+  {
+   "id": "domotica-mh",
+   "nome": "Server domotico e videocitofonico BTicino",
+   "tipo": "ot",
+   "livello": "utenze",
+   "contenitore": "edificio",
+   "note": "MyHome server del Piano 2, gia' descritto nella mappa fisica come governo di luci, allarmi e termostati ma mai censito come nodo di rete. Il VA del 13/10/2026 lo misura sulla fascia delle postazioni con il protocollo DNP3 sulla 20000 e due servizi web sulla 8080 e sulla 8081. Porta di switch non attribuita; destinazione il segmento IoT e OT di M22c.",
+   "alimentazione": null,
+   "gap": [
+    "NET-020"
+   ]
+  }
+ ],
+ "collegamenti": [
+  {
+   "da": "internet",
+   "a": "fibra",
+   "mezzo": "logico",
+   "note": "Servizio primario"
+  },
+  {
+   "da": "internet",
+   "a": "vdsl",
+   "mezzo": "logico",
+   "note": "Secondo backup"
+  },
+  {
+   "da": "internet",
+   "a": "antenna",
+   "mezzo": "radio",
+   "note": "Primo backup"
+  },
+  {
+   "da": "antenna",
+   "a": "iniettore",
+   "mezzo": "rame",
+   "note": "Discesa dal tetto"
+  },
+  {
+   "da": "iniettore",
+   "a": "mikrotik",
+   "mezzo": "rame",
+   "porta-b": "ETH10",
+   "note": "L'iniettore prende PoE dalla ETH1 e porta il segnale radio sulla ETH10"
+  },
+  {
+   "da": "fibra",
+   "a": "aconnic",
+   "mezzo": "fibra",
+   "note": "Terminazione"
+  },
+  {
+   "da": "aconnic",
+   "a": "r1000-1",
+   "mezzo": "rame",
+   "note": "Uscita Ethernet verso la WAN"
+  },
+  {
+   "da": "r1000-1",
+   "a": "mikrotik",
+   "mezzo": "rame",
+   "porta-a": "P1",
+   "porta-b": "ETH1",
+   "note": "Alimenta il MikroTik in PoE"
+  },
+  {
+   "da": "r1000-1",
+   "a": "r1000-2",
+   "mezzo": "rame",
+   "porta-a": "P2",
+   "porta-b": "P1"
+  },
+  {
+   "da": "vdsl",
+   "a": "r1000-2",
+   "mezzo": "rame",
+   "porta-b": "xDSL",
+   "note": "RJ11"
+  },
+  {
+   "da": "r1000-1",
+   "a": "s1000",
+   "mezzo": "rame",
+   "porta-a": "P2",
+   "porta-b": "P7"
+  },
+  {
+   "da": "r1000-1",
+   "a": "s1000",
+   "mezzo": "rame",
+   "porta-a": "P2",
+   "porta-b": "P8",
+   "note": "Porta la WAN"
+  },
+  {
+   "da": "s1000",
+   "a": "firewall",
+   "mezzo": "rame",
+   "porta-a": "P4",
+   "porta-b": "P2 (WAN1)",
+   "note": "Ramo dati"
+  },
+  {
+   "da": "s1000",
+   "a": "sw54",
+   "mezzo": "rame",
+   "porta-a": "P1",
+   "porta-b": "8",
+   "vlan": [
+    2
+   ],
+   "note": "Ramo voce, consegna untagged alla VLAN della fonia"
+  },
+  {
+   "da": "firewall",
+   "a": "sw54",
+   "mezzo": "rame",
+   "porta-a": "P5 (LAN1)",
+   "porta-b": "33",
+   "velocita": "1 Gb/s",
+   "vlan": [
+    1,
+    40,
+    90
+   ],
+   "criticita": "Collo di bottiglia dell'uscita WAN e del routing centrale: tutta la rete passa da qui a 1 Gbps mentre la dorsale interna va a 10."
+  },
+  {
+   "da": "sw54",
+   "a": "sw30",
+   "mezzo": "fibra",
+   "porta-a": "51",
+   "porta-b": "29",
+   "velocita": "10 Gb/s",
+   "vlan": [
+    1,
+    2,
+    40,
+    90
+   ],
+   "note": "Dorsale fra i piani"
+  },
+  {
+   "da": "sw54",
+   "a": "swqnap",
+   "mezzo": "fibra",
+   "porta-a": "52",
+   "porta-b": "P4",
+   "velocita": "10 Gb/s",
+   "note": "Ramo storage"
+  },
+  {
+   "da": "sw54",
+   "a": "nas-intra",
+   "mezzo": "rame",
+   "porta-a": "2",
+   "note": "Prima scheda di rete"
+  },
+  {
+   "da": "sw54",
+   "a": "nas-intra",
+   "mezzo": "rame",
+   "porta-a": "4",
+   "note": "Seconda scheda di rete"
+  },
+  {
+   "da": "sw54",
+   "a": "nas-intra3",
+   "mezzo": "rame",
+   "porta-a": "38"
+  },
+  {
+   "da": "sw54",
+   "a": "srv-gen10",
+   "mezzo": "rame",
+   "porta-a": "7",
+   "porta-b": "eth2"
+  },
+  {
+   "da": "sw54",
+   "a": "srv-gen10",
+   "mezzo": "rame",
+   "porta-a": "9",
+   "porta-b": "eth3"
+  },
+  {
+   "da": "sw54",
+   "a": "srv-gen10",
+   "mezzo": "rame",
+   "porta-a": "11",
+   "porta-b": "eth4"
+  },
+  {
+   "da": "sw54",
+   "a": "ilo",
+   "mezzo": "rame",
+   "porta-a": "22"
+  },
+  {
+   "da": "sw54",
+   "a": "pc-backup",
+   "mezzo": "rame",
+   "porta-a": "14"
+  },
+  {
+   "da": "sw54",
+   "a": "ollama",
+   "mezzo": "rame",
+   "porta-a": "46",
+   "criticita": "Migliaia di link flap con ricalcolo STP: NET-010."
+  },
+  {
+   "da": "sw54",
+   "a": "consegna-fonia",
+   "mezzo": "rame",
+   "porta-a": "8",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "sw54",
+   "a": "ht812",
+   "mezzo": "rame",
+   "porta-a": "6",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "ht812",
+   "a": "ascensore",
+   "mezzo": "FXS",
+   "note": "Uscita verso la presa a parete 2.8.1"
+  },
+  {
+   "da": "sw54",
+   "a": "ap-p1",
+   "mezzo": "rame",
+   "porta-a": "41",
+   "vlan": [
+    1,
+    40,
+    90
+   ],
+   "note": "Trunk multi-SSID"
+  },
+  {
+   "da": "sw54",
+   "a": "ap-p2",
+   "mezzo": "rame",
+   "porta-a": "45",
+   "vlan": [
+    1,
+    40,
+    90
+   ],
+   "note": "Trunk multi-SSID"
+  },
+  {
+   "da": "sw54",
+   "a": "tel-1",
+   "mezzo": "rame",
+   "porta-a": "3",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "sw54",
+   "a": "tel-2",
+   "mezzo": "rame",
+   "porta-a": "5",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "sw54",
+   "a": "tel-3",
+   "mezzo": "rame",
+   "porta-a": "44",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "sw54",
+   "a": "postazioni-lan",
+   "mezzo": "rame",
+   "note": "Porte non dettagliate in questa revisione"
+  },
+  {
+   "da": "swqnap",
+   "a": "nas-hero",
+   "mezzo": "fibra",
+   "porta-a": "P1"
+  },
+  {
+   "da": "swqnap",
+   "a": "nas-intra2",
+   "mezzo": "fibra",
+   "porta-a": "P3"
+  },
+  {
+   "da": "swqnap",
+   "a": "srv-gen10",
+   "mezzo": "rame",
+   "porta-b": "eth1"
+  },
+  {
+   "da": "swqnap",
+   "a": "postazioni-10g",
+   "mezzo": "rame",
+   "porta-a": "P5, P6, P7, P8, P10, P12"
+  },
+  {
+   "da": "sw30",
+   "a": "ap-pt",
+   "mezzo": "rame",
+   "porta-a": "1",
+   "vlan": [
+    1,
+    40,
+    90
+   ],
+   "note": "Trunk multi-SSID"
+  },
+  {
+   "da": "sw30",
+   "a": "suprema",
+   "mezzo": "rame",
+   "porta-a": "3",
+   "velocita": "100 Mb/s",
+   "criticita": "PVID 1 e allowedVLAN all: la porta accetta qualunque tag."
+  },
+  {
+   "da": "sw30",
+   "a": "ap-esterno",
+   "mezzo": "rame",
+   "porta-a": "4",
+   "velocita": "1 Gb/s",
+   "criticita": "Presa 0-8-1 in locale caldaia, ponte verso 0-9-1. Misurato 1 Gb/s il 09/09/2026 dopo il montaggio dell'AP. La porta accetta qualunque tag; alimentazione PoE effettiva da confermare."
+  },
+  {
+   "da": "ap-esterno",
+   "a": "irrigazione",
+   "mezzo": "radio",
+   "note": "Connessione Wi-Fi confermata dall'IT Manager il 28/09/2026."
+  },
+  {
+   "da": "ap-esterno",
+   "a": "inverter",
+   "mezzo": "rame",
+   "note": "Seconda porta Ethernet del WBE530, confermata dall'IT Manager il 28/09/2026."
+  },
+  {
+   "da": "sw30",
+   "a": "tel-4",
+   "mezzo": "rame",
+   "porta-a": "13",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "sw30",
+   "a": "tel-5",
+   "mezzo": "rame",
+   "porta-a": "23",
+   "vlan": [
+    2
+   ]
+  },
+  {
+   "da": "sw30",
+   "a": "mfp-pt",
+   "mezzo": "rame",
+   "porta-a": "6",
+   "note": "Porta 6 del 30HP documentata; PVID 1. Collegamento Canon Piano 1 ancora da attribuire."
+  },
+  {
+   "da": "sw30",
+   "a": "postazioni-lan",
+   "mezzo": "rame",
+   "note": "Porte non dettagliate in questa revisione"
+  },
+  {
+   "da": "ap-pt",
+   "a": "wifi-staff",
+   "mezzo": "radio",
+   "vlan": [
+    40
+   ]
+  },
+  {
+   "da": "ap-p1",
+   "a": "wifi-staff",
+   "mezzo": "radio",
+   "vlan": [
+    40
+   ]
+  },
+  {
+   "da": "ap-p2",
+   "a": "wifi-staff",
+   "mezzo": "radio",
+   "vlan": [
+    40
+   ]
+  },
+  {
+   "da": "ap-pt",
+   "a": "wifi-guest",
+   "mezzo": "radio",
+   "vlan": [
+    90
+   ]
+  },
+  {
+   "da": "ap-p1",
+   "a": "wifi-guest",
+   "mezzo": "radio",
+   "vlan": [
+    90
+   ]
+  },
+  {
+   "da": "ap-p2",
+   "a": "wifi-guest",
+   "mezzo": "radio",
+   "vlan": [
+    90
+   ]
+  },
+  {
+   "da": "postazioni-lan",
+   "a": "softphone",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "criticita": "La voce dei ventisette softphone nasce qui, sulla LAN dati, e non sulla VLAN 2: TEL-005."
+  },
+  {
+   "da": "srv-gen10",
+   "a": "vmbr0",
+   "mezzo": "logico",
+   "porta-b": "eno1",
+   "note": "Bridge dell'host sulla prima porta, eno1. **Determinato il 24/08/2026**: i MAC delle macchine attestate qui compaiono sulla porta 52 del 54HP, che e' il ramo verso lo switch QNAP non gestito, quindi eno1 corrisponde alla presa che la mappa fisica chiama eth1. Ne discende il fatto che conta: l'indirizzo di gestione dell'hypervisor, 10.61.20.11/19, raggiunge la rete **attraverso uno switch non gestito**, dove non esiste controllo di livello 2, non si possono taggare VLAN e non c'e' visibilita' per porta."
+  },
+  {
+   "da": "srv-gen10",
+   "a": "vmbr1",
+   "mezzo": "logico",
+   "porta-a": "7",
+   "porta-b": "eno2",
+   "note": "Bridge dell'host sulla seconda porta, eno2. **Confermato il 25/08/2026 da LLDP**: interrogato con `lldpcli show neighbors ports eno2`, il vicino si annuncia come lo switch del Piano 2 e dichiara `PortID: local 7`, quindi la corrispondenza con la porta 7 del 54HP non e' piu' dedotta dagli indirizzi delle macchine ma dichiarata dall'apparato. La mappa fisica chiama quella presa eth2. E' il piu' scarico dei quattro, con la sola seconda scheda della VM 100, ed e' su uno switch gestito: e' quindi il candidato per la VLAN 201 della DMZ, e la scelta non poggia piu' su un solo indirizzo."
+  },
+  {
+   "da": "srv-gen10",
+   "a": "vmbr2",
+   "mezzo": "logico",
+   "porta-a": "9",
+   "porta-b": "eno3",
+   "note": "Bridge su eno3, corrispondente alla porta 9 del 54HP secondo la tabella MAC del 24/08/2026. Dopo la dismissione della VM 206 il 31/08/2026 resta attestata la VM 209."
+  },
+  {
+   "da": "srv-gen10",
+   "a": "vmbr3",
+   "mezzo": "logico",
+   "porta-a": "11",
+   "porta-b": "eno4",
+   "note": "Bridge dell'host sulla quarta porta, eno4. Determinato il 24/08/2026 dalla tabella MAC: corrisponde alla **porta 11 del 54HP**, che la mappa fisica chiama eth4."
+  },
+  {
+   "da": "vmbr2",
+   "a": "vm209",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "note": "Staging del sito nuovo, indirizzo statico nella LAN piatta."
+  },
+  {
+   "da": "vmbr0",
+   "a": "vm208",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "note": "Portale asset, oggi affacciato sulla LAN piatta sulle porte 80 e 443."
+  },
+  {
+   "da": "vmbr0",
+   "a": "vm-altre",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "note": "WinServer2022 prima scheda, PasswordManager e la macchina di prova della migrazione."
+  },
+  {
+   "da": "vmbr1",
+   "a": "vm-altre",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "note": "Seconda scheda di WinServer2022, unica attestazione su questo bridge."
+  },
+  {
+   "da": "vmbr3",
+   "a": "vm207",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "note": "Macchina di analisi."
+  },
+  {
+   "da": "vmbr3",
+   "a": "vm-altre",
+   "mezzo": "logico",
+   "vlan": [
+    1
+   ],
+   "note": "ConvertitoreRuolini, GanttTool, Intralino e un modello spento."
+  },
+  {
+   "da": "internet",
+   "a": "vps-aruba",
+   "mezzo": "logico",
+   "note": "Il sito nuovo, quando sara' distribuito, risponde da qui e non attraversa nessun apparato di questa mappa."
+  },
+  {
+   "da": "internet",
+   "a": "hosting-fastnet",
+   "mezzo": "logico",
+   "note": "Il sito pubblico di oggi risponde da qui: il DNS del dominio punta all'hosting, non alla sede."
+  },
+  {
+   "da": "firewall",
+   "a": "sw54",
+   "mezzo": "rame",
+   "porta-a": "P7 (ge7)",
+   "porta-b": "da assegnare",
+   "velocita": "1 Gb/s",
+   "vlan": [
+    201
+   ],
+   "stato": "progetto",
+   "note": "Braccio della DMZ previsto dal piano: porta dedicata sul firewall verso una porta di accesso dello switch con PVID 201. Non cablato. Il piano lo descrive come braccio parallelo e non in serie, cioe' LAN e DMZ escono da due porte diverse dello stesso firewall e i due percorsi non si incrociano."
+  },
+  {
+   "da": "sw54",
+   "a": "srv-gen10",
+   "mezzo": "rame",
+   "vlan": [
+    201
+   ],
+   "stato": "progetto",
+   "note": "Tratta taggata verso l'hypervisor, prevista dal piano come VLAN 201 sopra il collegamento LAN gia' esistente. Quale collegamento e quale bridge la porteranno e' la decisione da riaprire: il piano scritto a maggio diceva vmbr0, cioe' il bridge che porta l'indirizzo di gestione, ma la misura del 24/08/2026 mostra tre bridge senza indirizzo, di cui vmbr1 quasi vuoto.",
+   "criticita": "Configurare il bridge di gestione per la VLAN significa applicare a caldo una modifica sull'unica via d'accesso all'hypervisor. Su un bridge senza indirizzo la stessa modifica non ha quel rischio."
+  },
+  {
+   "da": "vmbr1",
+   "a": "dmz-vm",
+   "mezzo": "logico",
+   "vlan": [
+    201
+   ],
+   "stato": "progetto",
+   "note": "Attestazione prevista della prima macchina in DMZ, sul bridge scelto per il segmento. Disegnata su vmbr1 come ipotesi da verificare, non come decisione presa."
+  },
+  {
+   "da": "vm209",
+   "a": "pg209",
+   "mezzo": "logico",
+   "note": "Rete interna di Docker sulla macchina virtuale. Non attraversa nessun apparato di questa mappa."
+  }
+ ],
+ "alimentazione": [
+  {
+   "id": "parete-sx",
+   "nome": "Rete elettrica, armadio sinistro",
+   "tipo": "parete",
+   "alimentato-da": null,
+   "note": "Punto di consegna a parete."
+  },
+  {
+   "id": "ciabatta-4-sx",
+   "nome": "Ciabatta 4 SX",
+   "tipo": "ciabatta",
+   "alimentato-da": "parete-sx",
+   "note": "Sorgente non protetta di ENTRAMBI i gruppi dell'armadio sinistro: e' il punto di guasto singolo che la ridondanza apparente fra i due non copre.",
+   "gap": [
+    "ELE-002"
+   ]
+  },
+  {
+   "id": "smartups",
+   "nome": "APC Smart-UPS SC 1500",
+   "tipo": "ups",
+   "alimentato-da": "ciabatta-4-sx",
+   "note": "Line interactive. Pacco batterie originale sostituito nel novembre 2024, quindi circa ventuno mesi di eta'. Nessuna scheda di rete: non manda allarmi.",
+   "gap": [
+    "ELE-001"
+   ]
+  },
+  {
+   "id": "scatolina-sx",
+   "nome": "Scatolina bianca SX",
+   "tipo": "ciabatta",
+   "alimentato-da": "smartups",
+   "note": "Ciabatta a due prese. Primo anello della cascata che arriva al firewall."
+  },
+  {
+   "id": "ciabatta-2-sx",
+   "nome": "Ciabatta 2 SX",
+   "tipo": "ciabatta",
+   "alimentato-da": "scatolina-sx"
+  },
+  {
+   "id": "ciabatta-1-sx",
+   "nome": "Ciabatta 1 SX",
+   "tipo": "ciabatta",
+   "alimentato-da": "ciabatta-2-sx",
+   "note": "Alimenta il firewall e nient'altro: la cascata sembra nata per dedicargli una presa, ma il risultato sono quattro connessioni in serie.",
+   "gap": [
+    "ELE-002"
+   ]
+  },
+  {
+   "id": "ciabatta-3-sx",
+   "nome": "Ciabatta 3 SX",
+   "tipo": "ciabatta",
+   "alimentato-da": "scatolina-sx"
+  },
+  {
+   "id": "backups",
+   "nome": "APC Back-UPS ES 400",
+   "tipo": "ups",
+   "alimentato-da": "ciabatta-4-sx",
+   "note": "Line interactive, il piu' piccolo dei tre. Nessun documento di acquisto o manutenzione presso il fornitore abituale: eta' e stato delle batterie ignoti.",
+   "gap": [
+    "ELE-001"
+   ]
+  },
+  {
+   "id": "parete-dx",
+   "nome": "Rete elettrica, armadio destro",
+   "tipo": "parete",
+   "alimentato-da": null
+  },
+  {
+   "id": "scatolina-dx",
+   "nome": "Scatolina bianca DX",
+   "tipo": "ciabatta",
+   "alimentato-da": "parete-dx"
+  },
+  {
+   "id": "naicon",
+   "nome": "Naicon UPServer 4000 VA rack",
+   "tipo": "ups",
+   "alimentato-da": "scatolina-dx",
+   "note": "Online a doppia conversione, 4 kVA e 2,70 kW, sei batterie 12V 9Ah, installato nel febbraio 2025. Comunicazione USB e RS232 a targa: nessuna interfaccia di rete, quindi nessun allarme. E' l'unico dei tre con architettura online, ed e' sull'armadio meno sensibile alla micro-interruzione.",
+   "gap": [
+    "ELE-001"
+   ]
+  },
+  {
+   "id": "ciabatta-1-dx",
+   "nome": "Ciabatta 1 DX",
+   "tipo": "ciabatta",
+   "alimentato-da": "naicon"
+  },
+  {
+   "id": "ciabatta-2-dx",
+   "nome": "Ciabatta 2 DX",
+   "tipo": "ciabatta",
+   "alimentato-da": "naicon"
+  },
+  {
+   "id": "ups-sala1",
+   "nome": "Gruppo di continuita' di Sala-1",
+   "tipo": "ups",
+   "alimentato-da": null,
+   "note": "Alimenta l'iniettore PoE dell'antenna. Modello, fornitore ed eta' ignoti: cercato il 06/08/2026 in tutti i documenti del fornitore abituale dal 2024 e nella libreria amministrativa, nessuna traccia.",
+   "gap": [
+    "ELE-001"
+   ]
+  },
+  {
+   "id": "poe-sw54",
+   "nome": "PoE dal XGS2220-54HP",
+   "tipo": "poe",
+   "alimentato-da": "smartups",
+   "note": "Gli apparati alimentati in PoE ereditano la continuita' del proprio switch."
+  },
+  {
+   "id": "poe-sw30",
+   "nome": "PoE dal XGS2220-30HP",
+   "tipo": "poe",
+   "alimentato-da": null,
+   "note": "Lo switch del Piano Terra non e' sotto continuita', quindi tutto cio' che alimenta in PoE cade al primo black-out: due telefoni, la reception, l'access point, il terminale presenze e la tratta esterna.",
+   "gap": [
+    "ELE-004"
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "id": "ELE-001",
+   "titolo": "Nessuna visibilita' sull'alimentazione e nessun allarme",
+   "numero": 145,
+   "gravita": "alta"
+  },
+  {
+   "id": "ELE-002",
+   "titolo": "Il firewall e' in fondo a tre ciabatte in cascata",
+   "numero": 146,
+   "gravita": "alta"
+  },
+  {
+   "id": "ELE-003",
+   "titolo": "Ridondanza di alimentazione apparente e non reale",
+   "numero": 147,
+   "gravita": "alta"
+  },
+  {
+   "id": "ELE-004",
+   "titolo": "Il Piano Terra non ha continuita' elettrica",
+   "numero": 148,
+   "gravita": "alta"
+  },
+  {
+   "id": "NET-005",
+   "titolo": "Wi-Fi staff con accesso completo alla LAN: rischio accettato",
+   "numero": null,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-010",
+   "titolo": "Link flap continui sulla porta 46 del 54HP",
+   "numero": 115,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-018",
+   "titolo": "MikroTik e iniettore censiti: proprieta e gestione da chiarire",
+   "numero": 137,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-019",
+   "titolo": "Porte di fonia che accettano qualunque VLAN taggata",
+   "numero": 143,
+   "gravita": "alta"
+  },
+  {
+   "id": "NET-020",
+   "titolo": "La tratta esterna accetta qualunque VLAN taggata",
+   "numero": 144,
+   "gravita": "alta"
+  },
+  {
+   "id": "NET-021",
+   "titolo": "Terminale di rilevazione presenze non inventariato",
+   "numero": 149,
+   "gravita": "alta"
+  },
+  {
+   "id": "SEC-018",
+   "titolo": "Vecchio access point fuori supporto: presenza residua da verificare",
+   "numero": 124,
+   "gravita": "alta"
+  },
+  {
+   "id": "TEL-005",
+   "titolo": "La fonia si e' spostata sulla LAN dati",
+   "numero": 151,
+   "gravita": "media"
+  },
+  {
+   "id": "FW-013",
+   "titolo": "Interfacce residue sul firewall",
+   "numero": 130,
+   "gravita": "bassa"
+  },
+  {
+   "id": "NET-011",
+   "titolo": "Il portale asset pubblica sulle porte 80 e 443 direttamente sulla LAN piatta",
+   "numero": 121,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-022",
+   "titolo": "Quattro bridge e quattro cavi verso lo stesso dominio di broadcast",
+   "numero": 152,
+   "gravita": "alta"
+  },
+  {
+   "id": "FW-014",
+   "titolo": "Il segmento DMZ 201 resta progettato e non attivo, con un consumatore in attesa",
+   "numero": 154,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-024",
+   "titolo": "Il pannello di amministrazione del CMS di staging e' esposto a tutta la LAN piatta",
+   "numero": 155,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-026",
+   "titolo": "L'indirizzo di gestione dell'hypervisor passa da uno switch non gestito",
+   "numero": 157,
+   "gravita": "alta"
+  },
+  {
+   "id": "NET-027",
+   "titolo": "Database del sito di staging pubblicato su tutta la LAN",
+   "numero": 161,
+   "gravita": "alta"
+  },
+  {
+   "id": "SEC-051",
+   "titolo": "Access point per interni installato fuori: rischio ambientale residuo",
+   "numero": 197,
+   "gravita": "media"
+  },
+  {
+   "id": "NET-032",
+   "titolo": "Rete radio esterna su VLAN 1 senza isolamento; ambito di erogazione da verificare",
+   "numero": 198,
+   "gravita": "alta"
+  },
+  {
+   "id": "ELE-005",
+   "titolo": "Due alimentatori server presenti: indipendenza delle sorgenti da verificare",
+   "numero": 202,
+   "gravita": "alta"
+  },
+  {
+   "id": "STOR-007",
+   "titolo": "Deposito NAS principale lento: causa da diagnosticare",
+   "numero": 204,
+   "gravita": "alta"
+  },
+  {
+   "id": "VA26-005",
+   "titolo": "Eccezioni temporanee del VA non verificate come rimosse",
+   "numero": 219,
+   "gravita": "alta"
+  },
+  {
+   "id": "VA26-006",
+   "titolo": "Scheda di rete del gruppo di continuita' che risponde: premessa di ELE-001 da rivedere",
+   "numero": 220,
+   "gravita": "media"
+  }
+ ]
+}
+</script>
+<script type="application/json" id="porte">{
+  "meta": {
+    "titolo": "Matrice delle porte degli switch gestiti",
+    "misura-del": "2026-09-23T07:30:06",
+    "estratto-da": "output/nebula-snapshot.json (ignorato da git)",
+    "generatore": "scripts/Export-PortMatrix.py",
+    "avvertenza": "File derivato e tracciato. Non si modifica a mano: si rilancia lo snapshot Nebula e poi questo script. Contiene solo dati di configurazione delle porte piu' due aggregati della tabella MAC, cioe' il numero di stazioni distinte viste e le VLAN in cui si vedono. Gli indirizzi MAC non escono da qui per costruzione, e un controllo lo verifica prima di scrivere.",
+    "campi": "n numero di porta; attiva abilitazione amministrativa; trunk modalita' 802.1Q; pvid VLAN nativa; vlan-ammesse elenco o \"all\"; poe presente solo sulle porte con alimentazione, vero se erogante; collegamento velocita' negoziata o nullo se la porta e' spenta o scollegata; stazioni numero di indirizzi distinti nella tabella MAC; vlan-viste VLAN in cui quel traffico appare."
+  },
+  "switch": [
+    {
+      "nodo": "sw54",
+      "modello": "XGS2220-54HP",
+      "porte-totali": 54,
+      "porte": [
+        {
+          "n": 1,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 2,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 3,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 4,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 5,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "2"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 6,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 7,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 2,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 8,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 9,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 2,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 10,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 11,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 4,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 12,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 13,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 14,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 15,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 16,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 17,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 18,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 19,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 20,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 21,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 22,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 23,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 24,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 25,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 26,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 27,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 28,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 29,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 30,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 31,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 32,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 33,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1,
+            40
+          ]
+        },
+        {
+          "n": 34,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 35,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 36,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 37,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 38,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 39,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 40,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 41,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 42,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 43,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 44,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 45,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 46,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 47,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 48,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 49,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 50,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 51,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": "10 Gb/s",
+          "stazioni": 14,
+          "vlan-viste": [
+            1,
+            2,
+            40
+          ]
+        },
+        {
+          "n": 52,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": "10 Gb/s",
+          "stazioni": 8,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 53,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 54,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        }
+      ]
+    },
+    {
+      "nodo": "sw30",
+      "modello": "XGS2220-30HP",
+      "porte-totali": 30,
+      "porte": [
+        {
+          "n": 1,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "40",
+            "90"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 2,
+          "vlan-viste": [
+            1,
+            40
+          ]
+        },
+        {
+          "n": 2,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 3,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 4,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 3,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 5,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 6,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 7,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 8,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 9,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 10,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 11,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 12,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 13,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 14,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "100 Mb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            1
+          ]
+        },
+        {
+          "n": 15,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 16,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 17,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 18,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 19,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 90,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 20,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 21,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "2"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 22,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": "10 Mb/s",
+          "stazioni": 0
+        },
+        {
+          "n": 23,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 2,
+          "vlan-ammesse": [
+            "2"
+          ],
+          "poe": true,
+          "collegamento": "1 Gb/s",
+          "stazioni": 1,
+          "vlan-viste": [
+            2
+          ]
+        },
+        {
+          "n": 24,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 25,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 26,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "poe": true,
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 27,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 28,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "all"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        },
+        {
+          "n": 29,
+          "attiva": true,
+          "trunk": true,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1",
+            "2",
+            "40",
+            "90"
+          ],
+          "collegamento": "10 Gb/s",
+          "stazioni": 29,
+          "vlan-viste": [
+            1,
+            2,
+            40
+          ]
+        },
+        {
+          "n": 30,
+          "attiva": true,
+          "trunk": false,
+          "pvid": 1,
+          "vlan-ammesse": [
+            "1"
+          ],
+          "collegamento": null,
+          "stazioni": 0
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>
+"use strict";
+/* ============================================================================
+   Mappa di rete Intrawelt. Tutto cio' che segue disegna a partire dal solo
+   contenuto di data/network-topology.json inlineato qui sopra: nessuna
+   coordinata e' scritta a mano, il posizionamento e' calcolato a ogni apertura.
+   Impianto del disegno: assegnazione di rango per corsia, nodi fittizi sugli
+   archi lunghi, ordinamento per baricentro per ridurre gli incroci, poi
+   coordinate orizzontali per mediana con ripacchettamento. E' la ricetta di
+   Sugiyama ridotta all'osso, che e' quanto serve a 55 nodi.
+   ========================================================================= */
+var D = JSON.parse(document.getElementById('topo').textContent);
+var NODI = D.nodi || [], LINK = D.collegamenti || [], PWR = D.alimentazione || [];
+var byId = {}; NODI.forEach(function(n){ byId[n.id] = n; });
+var LIV = (D.livelli||[]).map(function(l){ return l.id; });
+var LIVNOME = {}; (D.livelli||[]).forEach(function(l){ LIVNOME[l.id]=l.nome; });
+var CONT = {}; (D.contenitori||[]).forEach(function(c){ CONT[c.id]=c; });
+var VLAN = {}; (D.vlan||[]).forEach(function(v){ VLAN[v.id]=v; });
+var GAP = {}; (D.gap||[]).forEach(function(g){ GAP[g.id]=g; });
+var PWRID = {}; PWR.forEach(function(p){ PWRID[p.id]=p; });
+
+/* --- colore di segmento: la fonte porta valori fuori sistema, qui si rimappano
+   sui colori istituzionali. Il grigio resta ai segmenti in stato di progetto. --- */
+var COL_VLAN = {1:'#4C4C63', 2:'#4D11A7', 40:'#AFD100', 90:'#57CCF6', 30:'#ACB0CD', 201:'#ACB0CD'};
+var COL_MEZZO = {
+  fibra:{c:'#57CCF6', d:'', et:'Fibra'},
+  rame:{c:'#4C4C63', d:'', et:'Rame'},
+  radio:{c:'#4D11A7', d:'7 4', et:'Radio'},
+  logico:{c:'#ACB0CD', d:'2 4', et:'Logico'},
+  FXS:{c:'#AFD100', d:'', et:'FXS analogico'}
+};
+function colMezzo(m){ return COL_MEZZO[m] || {c:'#4C4C63', d:'', et:m}; }
+
+/* --- icone: riquadro 24, tratto 1px, currentColor, nessun riempimento --- */
+var IC = {
+  cloud:'M6 17h11a3.5 3.5 0 0 0 .3-7 5 5 0 0 0-9.6-1.2A3.9 3.9 0 0 0 6 17Z',
+  linea:'M3 12h5m8 0h5M8 9v6h8V9Z',
+  radio:'M12 20V11m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-5-6a6 6 0 0 1 10 0M4.5 6a10 10 0 0 1 15 0',
+  alimentatore:'M13 3 5 14h6l-1 7 8-11h-6l1-7Z',
+  terminazione:'M4 8h16v8H4Zm3 2v4m4-4v4m4-4v4',
+  router:'M3 14h18v5H3Zm3 2.5h.01M9 16.5h.01M12 16.5h.01M17 5l-5 5m5-5h-4m4 0v4',
+  'switch-fornitore':'M3 13h18v7H3Zm3 2.5h2m3 0h2m3 0h2M8 4v6m8-6v6M8 7h8',
+  fornitore:'M4 20V9l8-5 8 5v11Zm5 0v-6h6v6',
+  firewall:'M4 5h16v14H4Zm0 4.7h16M4 14.3h16M9 5v4.7m6 0v4.6m-6 0v4.7',
+  switch:'M3 13h18v7H3Zm3 2.5h2m3 0h2m3 0h2M8 4l3 5m5-5-3 5',
+  'switch-non-gestito':'M3 13h18v7H3Zm3 2.5h2m3 0h2m3 0h2M12 4v5',
+  bridge:'M4 16h16M6 16v-3m12 3v-3M4 12h16M9 12V9m6 3V9M8 6h8',
+  ap:'M12 20v-6m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-4.5-1.5a5 5 0 0 1 9 0M5 6.5a9 9 0 0 1 14 0',
+  'ap-eol':'M12 20v-6m0 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm-4.5-1.5a5 5 0 0 1 9 0M4 4l16 16',
+  server:'M4 4h16v6H4Zm0 10h16v6H4ZM7 7h.01M7 17h.01M11 7h5m-5 10h5',
+  gestione:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0-9V3m0 18v-3m6-6h3M3 12h3m11.6-5.6 2-2m-15.2 15.2 2-2m11.2 0 2 2M4.4 6.4l2 2',
+  storage:'M4 5h16v5H4Zm0 9h16v5H4ZM7 7.5h.01M7 16.5h.01M11 7.5h6m-6 9h6',
+  stampante:'M5 9V4h14v5M5 18H3v-8h18v8h-2M5 15h14v5H5Zm12-3h.01',
+  telefono:'M7 3h10v18H7Zm2 3h6m-6 3h6m-6 3h6m-3 4h.01',
+  voce:'M4 8h16v8H4Zm4 8v3h8v-3M8 11h.01M12 11h.01M16 11h.01',
+  'gruppo-voce':'M5 9h9v7H5Zm3 7v3h5v-3M8 12h.01M11 12h.01M17 6h3v9h-3',
+  gruppo:'M3 6h7v5H3Zm11 0h7v5h-7ZM3 15h7v4H3Zm11 0h7v4h-7Z',
+  'rete-radio':'M12 18a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm-4-3.5a6 6 0 0 1 8 0M5 11a10 10 0 0 1 14 0M2.5 7.5a14 14 0 0 1 19 0',
+  iot:'M8 8h8v8H8Zm3-5v3m2-3v3m-2 15v-3m2 3v-3M3 11h3m-3 2h3m15-2h3m-3 2h3',
+  ot:'M12 3v4m0 10v4M3 12h4m10 0h4M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
+  parete:'M4 4h16v16H4Zm5 5h.01M15 9h.01M9 14h6',
+  ciabatta:'M3 10h18v5H3Zm3 1.5h2m4-1.5v-4m-1 5.5h2m4-1.5h2',
+  ups:'M4 6h16v12H4Zm3 3h4l-2 3h3l-4 4M15 9h3m-3 3h3m-3 3h3',
+  poe:'M13 3 6 13h5l-1 8 8-11h-5l1-7ZM3 20h18'
+};
+function icona(tipo){ return IC[tipo] || 'M4 6h16v12H4Z'; }
+
+/* --------------------------------------------------------------------------
+   Stato dell'interfaccia
+   ----------------------------------------------------------------------- */
+var S = {
+  vista:'logica',
+  mezzi:{}, vlan:{}, cont:{},
+  soloDifetti:false, mostraProgetto:false, mostraPorte:true,
+  cerca:'', sel:null, hover:null,
+  vb:{x:0,y:0,w:1000,h:700}, fitCache:{}, iso:null
+};
+Object.keys(COL_MEZZO).forEach(function(m){ S.mezzi[m]=true; });
+Object.keys(VLAN).forEach(function(v){ S.vlan[v]=true; });
+Object.keys(CONT).forEach(function(c){ S.cont[c]=true; });
+S.cont['__nessuno']=true;
+
+/* --------------------------------------------------------------------------
+   Derivate: VLAN per nodo, difetti per nodo, catena elettrica
+   ----------------------------------------------------------------------- */
+var VLAN_NODO = {};
+NODI.forEach(function(n){ VLAN_NODO[n.id] = {}; });
+LINK.forEach(function(l){
+  (l.vlan||[]).forEach(function(v){
+    if(VLAN_NODO[l.da]) VLAN_NODO[l.da][v]=1;
+    if(VLAN_NODO[l.a]) VLAN_NODO[l.a][v]=1;
+  });
+});
+/* Ricaduta dichiarata: solo una minoranza di collegamenti porta il campo vlan.
+   Un nodo senza alcuna VLAN dichiarata sui propri archi non viene attribuito
+   d'ufficio alla VLAN nativa: finisce nel gruppo "non dichiarata", perche'
+   attribuirlo sarebbe un'inferenza travestita da dato. */
+function vlanDi(id){ return Object.keys(VLAN_NODO[id]||{}).map(Number).sort(function(a,b){return a-b;}); }
+
+var INC = {}; NODI.forEach(function(n){ INC[n.id]=[]; });
+LINK.forEach(function(l,i){
+  if(INC[l.da]) INC[l.da].push(i);
+  if(INC[l.a] && l.a!==l.da) INC[l.a].push(i);
+});
+
+/* Isolamento di un ramo. La domanda operativa vera non e' "chi tocca questo
+   apparato" ma "che cosa sta dietro": se devo intervenire sullo switch di un piano
+   voglio vedere tutto cio' che dipende da lui, e la sola spina che lo alimenta di
+   traffico, non l'intera azienda. Discendenti per chiusura in avanti sugli archi,
+   antenati per chiusura all'indietro: i primi sono il ramo, i secondi sono il
+   contesto e si disegnano attenuati, perche' non sono l'oggetto dell'intervento. */
+function isolamento(id){
+  var GIU = {}, SU = {};
+  LINK.forEach(function(l){
+    if(l.stato === 'progetto' && !S.mostraProgetto) return;
+    (GIU[l.da] = GIU[l.da] || []).push(l.a);
+    (SU[l.a] = SU[l.a] || []).push(l.da);
+  });
+  var dentro = {}, disc = {}, ant = {};
+  dentro[id] = 1;
+  var coda = [id], g = 0;
+  while(coda.length && g++ < 500){
+    var x = coda.pop();
+    (GIU[x] || []).forEach(function(y){ if(!dentro[y]){ dentro[y] = 1; disc[y] = 1; coda.push(y); } });
+  }
+  /* Il contesto a monte si ferma a due salti. Risalire fino a Internet aggiungerebbe
+     otto ranghi di catena WAN che a chi deve intervenire su un piano non dicono
+     niente, e allungherebbero il disegno tanto da impedire di vedere il ramo tutto
+     insieme, che e' la sola ragione per cui lo si isola. Due salti bastano a
+     rispondere alla domanda "da dove pende". */
+  var frontiera = [id];
+  for(var salto = 0; salto < 2; salto++){
+    var prossima = [];
+    frontiera.forEach(function(x2){
+      (SU[x2] || []).forEach(function(y){
+        if(!dentro[y]){ dentro[y] = 1; ant[y] = 1; prossima.push(y); }
+      });
+    });
+    frontiera = prossima;
+    if(!frontiera.length) break;
+  }
+  return {dentro:dentro, disc:disc, ant:ant, radice:id};
+}
+
+function catenaElettrica(id){
+  var n = byId[id], out = [];
+  if(!n) return out;
+  [n.alimentazione, n['alimentazione-2']].forEach(function(start){
+    if(!start) return;
+    var ramo = [], cur = start, guard = 0;
+    while(cur && PWRID[cur] && guard++ < 20){ ramo.push(PWRID[cur]); cur = PWRID[cur]['alimentato-da']; }
+    out.push(ramo);
+  });
+  return out;
+}
+
+/* --------------------------------------------------------------------------
+   Motore di disposizione
+   ----------------------------------------------------------------------- */
+var LARG = 152, ALT = 44, GAPX = 16, GAPY = 82, GAPD = 7, MAXFILA = 9;
+function passo(a, b){ return (a.dummy || b.dummy) ? GAPD : GAPX; }
+
+function costruisciGrafo(vista){
+  /* Restituisce {nodi:[{id,rank,rif,tipo,...}], archi:[{i,da,a,...}], corsie:[], colonne:[]} */
+  if(vista === 'elettrica') return grafoElettrico();
+  var visibili = NODI.filter(nodoVisibile);
+  var set = {}; visibili.forEach(function(n){ set[n.id]=1; });
+  var archi = [];
+  LINK.forEach(function(l,i){
+    if(!set[l.da] || !set[l.a]) return;
+    if(!arcoVisibile(l)) return;
+    archi.push({idx:i, da:l.da, a:l.a, l:l});
+  });
+  var rango = {}, corsie = [];
+  if(vista === 'segmenti'){
+    /* Nella vista per segmenti si disegnano i soli collegamenti che dichiarano
+       una VLAN. Gli altri quaranta non sono "senza VLAN": sono collegamenti di
+       cui la fonte non registra il tag, e disegnarli qui li farebbe leggere come
+       un'informazione che non c'e'. */
+    archi = archi.filter(function(e){ return e.l.vlan && e.l.vlan.length; });
+    var conteggio = {};
+    visibili.forEach(function(n){
+      var vs = vlanDi(n.id);
+      var v = vs.length ? vs[0] : -1;
+      conteggio[v] = (conteggio[v] || 0) + 1;
+      n.__v = v;
+    });
+    var gruppi = Object.keys(VLAN).map(Number).sort(function(a,b){return a-b;})
+      .filter(function(v){ return conteggio[v]; });
+    if(conteggio[-1]) gruppi.push(-1);
+    gruppi.forEach(function(v,k){
+      corsie.push({r:k,
+        nome: v === -1
+          ? 'Nessuna VLAN dichiarata sugli archi di questi apparati'
+          : ('VLAN ' + v + ' · ' + VLAN[v].nome + (VLAN[v].stato === 'progetto' ? ' · pianificata' : '')),
+        col: v === -1 ? null : (COL_VLAN[v] || null)});
+    });
+    visibili.forEach(function(n){ rango[n.id] = Math.max(0, gruppi.indexOf(n.__v)); });
+    var vuote = Object.keys(VLAN).map(Number).filter(function(v){ return !conteggio[v]; });
+    if(vuote.length) corsie.__vuote = vuote;
+  } else {
+    var base = {};
+    visibili.forEach(function(n){ base[n.id] = Math.max(0, LIV.indexOf(n.livello)); });
+    /* Sotto-rango dentro la corsia, per gli archi che non la lasciano. Nella vista
+       fisica non serve e fa danno: li' le colonne sono i luoghi e due apparati dello
+       stesso armadio stanno gia' affiancati nella cella, quindi il sotto-rango
+       raddoppierebbe l'altezza per separare cose che non hanno bisogno di esserlo. */
+    var sub = {}; visibili.forEach(function(n){ sub[n.id]=0; });
+    if(vista !== 'fisica'){
+      for(var it=0; it<14; it++){
+        var mosso = false;
+        archi.forEach(function(e){
+          if(base[e.da] !== base[e.a]) return;
+          if(sub[e.a] < sub[e.da] + 1){ sub[e.a] = sub[e.da] + 1; mosso = true; }
+        });
+        if(!mosso) break;
+      }
+      /* Qui era stato provato di spezzare su piu' file le righe di sole foglie
+         troppo lunghe, ed e' stato tolto perche' misurato controproducente:
+         abbassare una foglia di una riga allunga il suo arco, che diventa un nodo
+         fittizio in piu' su ogni rango attraversato. Il conto reale e' stato
+         cinquantatre fittizi in piu' e due ranghi in piu' per una riduzione di
+         larghezza trascurabile. La larghezza non nasce dalle righe lunghe: nasce
+         dai vuoti, e si aggredisce li' (vedi il passo di compattazione). */
+    }
+    var chiavi = {};
+    visibili.forEach(function(n){ chiavi[base[n.id]*100 + sub[n.id]] = 1; });
+    var ordinate = Object.keys(chiavi).map(Number).sort(function(a,b){return a-b;});
+    var mappa = {}; ordinate.forEach(function(k,i){ mappa[k]=i; });
+    visibili.forEach(function(n){ rango[n.id] = mappa[base[n.id]*100 + sub[n.id]]; });
+    ordinate.forEach(function(k,i){
+      var liv = LIV[Math.floor(k/100)];
+      var primo = i===0 || Math.floor(ordinate[i-1]/100) !== Math.floor(k/100);
+      corsie.push({r:i, nome: primo ? (LIVNOME[liv]||liv) : '', col:null});
+    });
+  }
+  var nodi = visibili.map(function(n){
+    return {id:n.id, rif:n, rank:rango[n.id], ordine:0, x:0, y:0, w:LARG, h:ALT, dummy:false,
+            col: (n.contenitore && CONT[n.contenitore]) ? n.contenitore : '__nessuno'};
+  });
+  var colonne = null;
+  if(vista === 'fisica'){
+    /* Vista fisica: le corsie restano le righe, i luoghi diventano colonne.
+       Ne esce una matrice luogo per livello, che e' il modo piu' diretto per
+       rispondere alla domanda "che cosa c'e' dentro quell'armadio, e a che
+       altezza logica sta". La disposizione qui non e' libera: e' una griglia. */
+    var ordine = (D.contenitori||[]).map(function(c){ return c.id; });
+    var usate = {}; nodi.forEach(function(n){ usate[n.col] = 1; });
+    colonne = ordine.filter(function(c){ return usate[c]; });
+    if(usate['__nessuno']) colonne.push('__nessuno');
+  }
+  return {nodi:nodi, archi:archi, corsie:corsie, colonne:colonne,
+          sequenziale:(vista === 'segmenti'), vista:vista};
+}
+
+function grafoElettrico(){
+  /* Secondo grafo sullo stesso patrimonio: dalla presa a parete all'apparato. */
+  var nodi = [], archi = [], prof = {};
+  function profondita(p, g){
+    if(prof[p.id] !== undefined) return prof[p.id];
+    if(g > 20) return 0;
+    var su = p['alimentato-da'];
+    prof[p.id] = (su && PWRID[su]) ? profondita(PWRID[su], g+1) + 1 : 0;
+    return prof[p.id];
+  }
+  PWR.forEach(function(p){ profondita(p, 0); });
+  var maxp = 0; PWR.forEach(function(p){ maxp = Math.max(maxp, prof[p.id]); });
+  PWR.forEach(function(p){
+    nodi.push({id:'pwr:'+p.id, rif:{id:'pwr:'+p.id, nome:p.nome, tipo:p.tipo, note:p.note,
+      gap:p.gap, contenitore:null, _pwr:true}, rank:prof[p.id], ordine:0, x:0, y:0, w:LARG, h:ALT, dummy:false});
+    if(p['alimentato-da'] && PWRID[p['alimentato-da']]){
+      archi.push({idx:-1, da:'pwr:'+p['alimentato-da'], a:'pwr:'+p.id, l:{mezzo:'rame', note:'Derivazione elettrica'}});
+    }
+  });
+  NODI.filter(nodoVisibile).forEach(function(n){
+    var fonti = [n.alimentazione, n['alimentazione-2']].filter(Boolean);
+    if(!fonti.length) return;
+    nodi.push({id:n.id, rif:n, rank:maxp+1, ordine:0, x:0, y:0, w:LARG, h:ALT, dummy:false});
+    fonti.forEach(function(f){
+      if(PWRID[f]) archi.push({idx:-1, da:'pwr:'+f, a:n.id, l:{mezzo:'rame', note:'Alimenta'}});
+    });
+  });
+  var corsie = [];
+  for(var r=0; r<=maxp+1; r++){
+    corsie.push({r:r, nome: r===0 ? 'Rete elettrica' : (r===maxp+1 ? 'Apparati alimentati' : 'Derivazione '+r), col:null});
+  }
+  nodi.forEach(function(n){ n.col = '__nessuno'; });
+  return {nodi:nodi, archi:archi, corsie:corsie, colonne:null, vista:'elettrica'};
+}
+
+function disponi(G){
+  var idx = {}; G.nodi.forEach(function(n){ idx[n.id]=n; });
+  /* 1. nodi fittizi sugli archi che saltano piu' di un rango */
+  var segmenti = [], contatore = 0;
+  G.archi.forEach(function(e){
+    var a = idx[e.da], b = idx[e.a];
+    if(!a || !b) return;
+    var r1 = a.rank, r2 = b.rank;
+    if(r1 === r2){ e.tipo='piatto'; e.catena=[a,b]; segmenti.push(e); return; }
+    var giu = r2 > r1, passo = giu ? 1 : -1, catena = [a], prev = a;
+    for(var r = r1 + passo; r !== r2; r += passo){
+      var d = {id:'__d'+(contatore++), rif:null, rank:r, ordine:0, x:0, y:0, w:8, h:8, dummy:true, col:a.col};
+      G.nodi.push(d); idx[d.id]=d; catena.push(d); prev = d;
+    }
+    catena.push(b);
+    e.tipo = 'normale'; e.catena = catena; segmenti.push(e);
+  });
+  /* 2. righe */
+  var righe = {};
+  G.nodi.forEach(function(n){ (righe[n.rank] = righe[n.rank] || []).push(n); });
+  var ranghi = Object.keys(righe).map(Number).sort(function(a,b){return a-b;});
+  ranghi.forEach(function(r){ righe[r].forEach(function(n,i){ n.ordine = i; }); });
+  /* 3. vicinato lungo la catena (i fittizi contano) */
+  var su = {}, giu = {};
+  G.nodi.forEach(function(n){ su[n.id]=[]; giu[n.id]=[]; });
+  segmenti.forEach(function(e){
+    for(var i=0; i<e.catena.length-1; i++){
+      var a = e.catena[i], b = e.catena[i+1];
+      if(a.rank === b.rank) continue;
+      var alto = a.rank < b.rank ? a : b, basso = a.rank < b.rank ? b : a;
+      giu[alto.id].push(basso.id); su[basso.id].push(alto.id);
+    }
+  });
+  /* 4. ordinamento per baricentro, andata e ritorno */
+  function baricentro(n, verso){
+    var vic = (verso === 'su' ? su[n.id] : giu[n.id]);
+    if(!vic.length) return n.ordine;
+    var s = 0; vic.forEach(function(v){ s += idx[v].ordine; });
+    return s / vic.length;
+  }
+  for(var pass=0; pass<16; pass++){
+    var verso = (pass % 2 === 0) ? 'su' : 'giu';
+    var seq = (verso === 'su') ? ranghi : ranghi.slice().reverse();
+    seq.forEach(function(r){
+      var fila = righe[r];
+      fila.forEach(function(n){ n._b = baricentro(n, verso); });
+      fila.sort(function(a,b){ return (a._b - b._b) || (a.ordine - b.ordine); });
+      fila.forEach(function(n,i){ n.ordine = i; });
+    });
+  }
+  /* 5a. vista fisica: le colonne sono i luoghi, la x non si ottimizza, si assegna */
+  if(G.colonne){
+    var pos = {}; G.colonne.forEach(function(c,i){ pos[c] = i; });
+    var capienza = {}; G.colonne.forEach(function(c){ capienza[c] = 1; });
+    ranghi.forEach(function(r){
+      var conta = {};
+      righe[r].forEach(function(n){ if(n.dummy) return; conta[n.col] = (conta[n.col]||0) + 1; });
+      Object.keys(conta).forEach(function(c){ capienza[c] = Math.max(capienza[c]||1, conta[c]); });
+    });
+    var off = {}, cur = 0;
+    G.colonne.forEach(function(c){ off[c] = cur; cur += capienza[c] * (LARG + GAPX) + 40; });
+    G.colOffset = off; G.colCapienza = capienza; G.colFine = cur;
+    ranghi.forEach(function(r){
+      var conta2 = {};
+      righe[r].sort(function(a,b){ return (pos[a.col] - pos[b.col]) || (a.ordine - b.ordine); });
+      righe[r].forEach(function(n,i){
+        n.ordine = i;
+        var c = n.col, k = conta2[c] || 0;
+        if(n.dummy){
+          /* il fittizio non occupa uno slot: viaggia sul bordo della sua colonna */
+          n.x = (off[c] === undefined ? 0 : off[c]) + capienza[c] * (LARG + GAPX) - 20;
+        } else {
+          conta2[c] = k + 1;
+          n.x = off[c] + k * (LARG + GAPX);
+        }
+      });
+    });
+    ranghi.forEach(function(r,i){ righe[r].forEach(function(n){ n.y = i * (ALT + GAPY); }); });
+    G.righe = righe; G.ranghi = ranghi; G.segmenti = segmenti;
+    G.larg = cur; G.altez = ranghi.length * (ALT + GAPY);
+    ancora(G, idx);
+    return G;
+  }
+  /* 5a-bis. vista per segmenti: le righe sono scaffali, si impacchetta e si centra.
+     L'ottimizzazione per mediana qui farebbe danno, perche' spingerebbe una riga
+     da un solo apparato lontano dal centro inseguendo i vicini di un'altra riga. */
+  if(G.sequenziale){
+    var largMax = 0;
+    ranghi.forEach(function(r){
+      var cur2 = 0, prec2 = null;
+      righe[r].forEach(function(n){
+        if(prec2) cur2 += passo(prec2, n);
+        n.x = cur2; cur2 += n.w; prec2 = n;
+      });
+      largMax = Math.max(largMax, cur2);
+    });
+    ranghi.forEach(function(r,i){
+      var fila = righe[r];
+      if(!fila.length) return;
+      var fine = fila[fila.length-1].x + fila[fila.length-1].w;
+      var off2 = (largMax - fine) / 2;
+      fila.forEach(function(n){ n.x += off2; n.y = i * (ALT + GAPY); });
+    });
+    G.righe = righe; G.ranghi = ranghi; G.segmenti = segmenti;
+    G.larg = largMax; G.altez = ranghi.length * (ALT + GAPY);
+    ancora(G, idx);
+    return G;
+  }
+  /* 5b. vista libera: x per mediana con ripacchettamento, y per rango */
+  ranghi.forEach(function(r){
+    righe[r].forEach(function(n,i){ n.x = i * (LARG + GAPX); });
+  });
+  function mediana(n){
+    var vic = su[n.id].concat(giu[n.id]);
+    if(!vic.length) return n.x;
+    var xs = vic.map(function(v){ return idx[v].x + idx[v].w/2; }).sort(function(a,b){return a-b;});
+    var m = xs.length % 2 ? xs[(xs.length-1)/2] : (xs[xs.length/2-1] + xs[xs.length/2]) / 2;
+    return m - n.w/2;
+  }
+  for(var p2=0; p2<8; p2++){
+    var seq2 = (p2 % 2 === 0) ? ranghi : ranghi.slice().reverse();
+    seq2.forEach(function(r){
+      var fila = righe[r];
+      fila.forEach(function(n){ n._d = mediana(n); });
+      /* sinistra -> destra */
+      var cur = -1e9, prec = null;
+      fila.forEach(function(n){
+        var minimo = prec ? cur + passo(prec, n) : -1e9;
+        var x = Math.max(n._d, minimo);
+        n.x = x; cur = x + n.w; prec = n;
+      });
+      /* destra -> sinistra, per riportare indietro chi era stato spinto */
+      cur = 1e9; prec = null;
+      for(var i = fila.length - 1; i >= 0; i--){
+        var n2 = fila[i];
+        var massimo = prec ? cur - passo(prec, n2) - n2.w : 1e9;
+        n2.x = Math.min(n2.x, massimo);
+        if(n2.x < n2._d) n2.x = Math.min(n2._d, massimo);
+        cur = n2.x; prec = n2;
+      }
+    });
+  }
+  /* 5c. compattazione dei vuoti. L'ottimizzazione per mediana allinea bene i nodi
+     con i loro vicini ma lascia golfi di spazio vuoto dove una riga corta insegue
+     una riga lunga: misurato, e' da li' che venivano quasi duemila pixel di
+     larghezza su cinquemila. Qui i vuoti oltre una certa soglia vengono riportati
+     alla soglia, riga per riga, conservando l'ordine e quindi il numero di incroci.
+     Gli archi diventano un po' piu' obliqui, il disegno si legge molto meglio. */
+  var VUOTOMAX = LARG * 1.2;
+  ranghi.forEach(function(r){
+    var fila = righe[r].slice().sort(function(a,b){ return a.x - b.x; });
+    if(fila.length < 2) return;
+    var orig = fila.map(function(n){ return n.x; });
+    for(var i=1; i<fila.length; i++){
+      var g = passo(fila[i-1], fila[i]);
+      var vuoto = orig[i] - (orig[i-1] + fila[i-1].w);
+      fila[i].x = fila[i-1].x + fila[i-1].w + Math.max(g, Math.min(vuoto, g + VUOTOMAX));
+    }
+  });
+
+  /* 6. y, e centratura orizzontale delle righe */
+  var minX = 1e9, maxX = -1e9;
+  ranghi.forEach(function(r,i){
+    righe[r].forEach(function(n){
+      n.y = i * (ALT + GAPY);
+      minX = Math.min(minX, n.x); maxX = Math.max(maxX, n.x + n.w);
+    });
+  });
+  var largTot = maxX - minX;
+  ranghi.forEach(function(r){
+    var fila = righe[r];
+    if(!fila.length) return;
+    var a = fila[0].x, b = fila[fila.length-1].x + fila[fila.length-1].w;
+    var off = (largTot - (b - a)) / 2 - (a - minX);
+    fila.forEach(function(n){ n.x += off - minX; });
+  });
+  G.righe = righe; G.ranghi = ranghi; G.segmenti = segmenti;
+  G.larg = largTot; G.altez = ranghi.length * (ALT + GAPY);
+  ancora(G, idx);
+  return G;
+}
+
+/* Punti di attacco. Senza questo passo tutti gli archi di un nodo escono dallo
+   stesso punto e sotto lo switch con venti collegamenti incidenti si forma un
+   pettine illeggibile. Qui gli attacchi si distribuiscono sul bordo del nodo,
+   ordinati per la posizione di cio' a cui vanno: e' anche l'ordine con cui le
+   porte stanno fisicamente sull'apparato, quindi il disegno smette di
+   incrociarsi da solo. */
+function ancora(G, idx){
+  var lati = {};
+  G.segmenti.forEach(function(e){
+    if(e.tipo === 'piatto') return;
+    var a = e.catena[0], b = e.catena[e.catena.length-1];
+    var n1 = e.catena[1], n2 = e.catena[e.catena.length-2];
+    if(!n1 || !n2) return;
+    var latoA = n1.rank > a.rank ? 'giu' : 'su';
+    var latoB = n2.rank < b.rank ? 'su' : 'giu';
+    (lati[a.id+'|'+latoA] = lati[a.id+'|'+latoA] || []).push({e:e, capo:'A', verso:n1.x + n1.w/2});
+    (lati[b.id+'|'+latoB] = lati[b.id+'|'+latoB] || []).push({e:e, capo:'B', verso:n2.x + n2.w/2});
+  });
+  Object.keys(lati).forEach(function(k){
+    var lista = lati[k], n = idx[k.split('|')[0]];
+    if(!n) return;
+    lista.sort(function(p,q){ return p.verso - q.verso; });
+    var m = lista.length;
+    var marg = Math.min(13, n.w / (m + 1));
+    var luce = n.w - marg * 2;
+    lista.forEach(function(p, i){
+      var x = n.x + marg + (m === 1 ? luce / 2 : luce * i / (m - 1));
+      if(p.capo === 'A') p.e.ancoraA = x; else p.e.ancoraB = x;
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Filtri
+   ----------------------------------------------------------------------- */
+function nodoVisibile(n){
+  if(S.iso && !S.iso.dentro[n.id]) return false;
+  if(!S.mostraProgetto && n.stato === 'progetto') return false;
+  if(S.soloDifetti && !(n.gap && n.gap.length)) return false;
+  var c = n.contenitore || '__nessuno';
+  if(S.cont[c] === false) return false;
+  return true;
+}
+function arcoVisibile(l){
+  if(S.iso && !(S.iso.dentro[l.da] && S.iso.dentro[l.a])) return false;
+  if(!S.mostraProgetto && l.stato === 'progetto') return false;
+  if(S.mezzi[l.mezzo] === false) return false;
+  if(l.vlan && l.vlan.length){
+    var uno = l.vlan.some(function(v){ return S.vlan[v] !== false; });
+    if(!uno) return false;
+  }
+  return true;
+}
+/* La prima ricerca faceva "contiene" su nome, tipo, note e note dei collegamenti,
+   tutto allo stesso peso. Su una fonte dove le note sono prosa lunga il risultato
+   era che cercare "firewall" accendeva dieci nodi, fra cui Internet e l'antenna sul
+   tetto, perche' le loro note nominano il firewall. Adesso ogni riscontro ha un
+   peso, e la ricerca ha una soglia: la prosa vale solo se non c'e' di meglio. */
+function normalizza(t){
+  return String(t || '').toLowerCase()
+    .replace(/[àá]/g, 'a').replace(/[èé]/g, 'e').replace(/[ìí]/g, 'i')
+    .replace(/[òó]/g, 'o').replace(/[ùú]/g, 'u').replace(/['’`]/g, '');
+}
+function punteggio(n, q){
+  if(!q) return 0;
+  var nome = normalizza(n.nome), id = normalizza(n.id), tipo = normalizza(n.tipo);
+  if(nome === q || id === q) return 100;
+  if(nome.indexOf(q) === 0 || id.indexOf(q) === 0) return 80;
+  if(nome.indexOf(q) >= 0 || id.indexOf(q) >= 0) return 60;
+  /* numero di porta: "33" e anche "porta 33" */
+  var soloNum = q.replace(/^porta\s*/, '');
+  if(/^\d+$/.test(soloNum)){
+    var trovata = false;
+    (INC[n.id] || []).forEach(function(i){
+      var l = LINK[i];
+      if(String(l['porta-a'] || '').replace(/\D/g, '') === soloNum ||
+         String(l['porta-b'] || '').replace(/\D/g, '') === soloNum) trovata = true;
+    });
+    if(trovata) return 70;
+  }
+  if(tipo.indexOf(q) >= 0) return 40;
+  if((n.gap || []).join(' ').toLowerCase().indexOf(q) >= 0) return 35;
+  if(n.contenitore && normalizza((CONT[n.contenitore] || {}).nome).indexOf(q) >= 0) return 30;
+  if(normalizza(n.note).indexOf(q) >= 0) return 10;
+  var nc = 0;
+  (INC[n.id] || []).forEach(function(i){ if(normalizza(LINK[i].note).indexOf(q) >= 0) nc = 10; });
+  return nc;
+}
+var CACHE_RIC = {q:null, out:[]};
+function risultati(){
+  var q = normalizza(S.cerca);
+  if(CACHE_RIC.q === q) return CACHE_RIC.out;
+  if(!q){ CACHE_RIC = {q:q, out:[]}; return CACHE_RIC.out; }
+  var out = [];
+  NODI.forEach(function(n){
+    if(!nodoVisibile(n)) return;
+    var pt = punteggio(n, q);
+    if(pt) out.push({n:n, pt:pt});
+  });
+  out.sort(function(a, b){ return (b.pt - a.pt) || a.n.nome.localeCompare(b.n.nome); });
+  /* Soglia: se esiste almeno un riscontro forte, quelli deboli non contano.
+     E' cio' che impedisce a una parola citata in una nota di sporcare il risultato. */
+  if(out.length && out[0].pt >= 60) out = out.filter(function(r){ return r.pt >= 40; });
+  CACHE_RIC = {q:q, out:out};
+  return out;
+}
+function invalidaRicerca(){ CACHE_RIC = {q:null, out:[]}; }
+var INSIEME_RIC = null;
+function combacia(n){
+  if(!S.cerca) return true;
+  if(!INSIEME_RIC || INSIEME_RIC.q !== normalizza(S.cerca)){
+    var m = {};
+    risultati().forEach(function(r){ m[r.n.id] = 1; });
+    INSIEME_RIC = {q:normalizza(S.cerca), m:m};
+  }
+  return !!INSIEME_RIC.m[n.id];
+}
+
+/* --------------------------------------------------------------------------
+   Disegno
+   ----------------------------------------------------------------------- */
+var NS = 'http://www.w3.org/2000/svg';
+function el(t, a){ var e = document.createElementNS(NS, t); if(a) for(var k in a) e.setAttribute(k, a[k]); return e; }
+function txt(t){ return document.createTextNode(t); }
+function taglia(s, n){ s = String(s||''); return s.length > n ? s.slice(0, n-1) + '…' : s; }
+
+var svg = document.getElementById('grafo'), mondo = document.getElementById('mondo');
+var Gcur = null;
+
+/* --------------------------------------------------------------------------
+   Vista Porte. Non e' un grafo e non passa dal motore di disposizione: e' il
+   prospetto dei due switch gestiti come si vedono in faccia al rack, numeri
+   dispari sopra e pari sotto, con gli ultimi sei separati perche' sono gli
+   uplink. I dati vengono da data/port-matrix.json, estratto dallo snapshot
+   Nebula tenendo fuori gli indirizzi MAC.
+   ----------------------------------------------------------------------- */
+var MATRICE = (function(){
+  var el2 = document.getElementById('porte');
+  if(!el2) return null;
+  try { return JSON.parse(el2.textContent); } catch(e){ return null; }
+})();
+var COL_VEL = {'10 Gb/s':'#4D11A7', '1 Gb/s':'#AFD100', '100 Mb/s':'#57CCF6', '10 Mb/s':'#E7000B'};
+var CELLA = 30, CELLAH = 26, CELLAGAP = 4;
+
+/* Occupazione di una porta. Serve a rispondere alla domanda che ci si fa davanti
+   a un armadio, cioe' "quante porte libere ho e dove", che finora i dati
+   contenevano e la mappa non formulava. Le due letture restano separate: la barra
+   in basso dice la velocita' negoziata, il filetto a sinistra dice chi la occupa. */
+var OCCUPAZIONE = {
+  censita:  {colore:'#4D11A7', et:'apparato censito nella fonte'},
+  utenza:   {colore:'#ACB0CD', et:'una singola utenza, coperta dal gruppo aggregato'},
+  multipla: {colore:'#57CCF6', et:'piu’ apparati dietro la stessa porta'},
+  muta:     {colore:'#E7000B', et:'collegamento attivo e nessun traffico'},
+  libera:   {colore:null,      et:'libera, disponibile per una permuta'},
+  spenta:   {colore:null,      et:'disabilitata da configurazione'}
+};
+function occupazione(p, noto){
+  if(!p.attiva) return 'spenta';
+  if(noto) return 'censita';
+  if(!p.collegamento) return 'libera';
+  if(!p.stazioni) return 'muta';
+  return p.stazioni === 1 ? 'utenza' : 'multipla';
+}
+
+function porteNoteDallaFonte(){
+  /* Che cosa la topologia dice essere attaccato a una porta. Serve a far vedere
+     nello stesso disegno le due cose che oggi vivono separate: cio' che la fonte
+     racconta e cio' che l'apparato misura. */
+  var m = {};
+  LINK.forEach(function(l){
+    [['da','porta-a'],['a','porta-b']].forEach(function(coppia){
+      var sid = l[coppia[0]], grezzo = l[coppia[1]];
+      if(!grezzo) return;
+      var mm = String(grezzo).match(/^\s*(\d+)\s*$/);
+      if(!mm) return;
+      var altro = coppia[0] === 'da' ? l.a : l.da;
+      m[sid + ':' + parseInt(mm[1], 10)] = {nodo:altro, link:l};
+    });
+  });
+  return m;
+}
+
+function disegnaPorte(){
+  while(mondo.firstChild) mondo.removeChild(mondo.firstChild);
+  ETICHETTE = [];
+  var vuoto = document.getElementById('vuoto');
+  if(!MATRICE || !MATRICE.switch || !MATRICE.switch.length){
+    vuoto.textContent = 'La matrice delle porte non e\' stata generata. Si produce con '
+      + 'scripts/Export-PortMatrix.py a partire dallo snapshot Nebula, e finisce in '
+      + 'data/port-matrix.json.';
+    vuoto.classList.add('on');
+    Gcur = {nodi:[], archi:[], segmenti:[], ranghi:[], righe:{}, larg:0, altez:0, vista:'porte'};
+    return;
+  }
+  vuoto.classList.remove('on');
+  vuoto.textContent = 'Nessun apparato risponde ai filtri attivi.';
+
+  var note = porteNoteDallaFonte();
+  var g = el('g');
+  mondo.appendChild(g);
+  var y = 0, largMax = 0, libereTotali = 0;
+
+  MATRICE.switch.forEach(function(sw){
+    var nodo = sw.nodo ? byId[sw.nodo] : null;
+    var titolo = el('text', {x:0, y:y, 'class':'titolo-sw'});
+    titolo.appendChild(txt((nodo ? nodo.nome : sw.modello) + '  ·  ' + sw['porte-totali'] + ' porte'));
+    g.appendChild(titolo);
+
+    var conta = {};
+    sw.porte.forEach(function(p){
+      var st = occupazione(p, note[sw.nodo + ':' + p.n]);
+      conta[st] = (conta[st] || 0) + 1;
+    });
+    var pezzi = [];
+    if(conta.libera) pezzi.push(conta.libera + ' libere');
+    if(conta.censita) pezzi.push(conta.censita + ' censite');
+    if(conta.utenza) pezzi.push(conta.utenza + ' con una singola utenza');
+    if(conta.multipla) pezzi.push(conta.multipla + ' con piu’ apparati');
+    if(conta.muta) pezzi.push(conta.muta + ' attive ma mute');
+    if(conta.spenta) pezzi.push(conta.spenta + ' disabilitate');
+    var sotto = el('text', {x:0, y:y + 16, 'class':'sotto-sw'});
+    sotto.appendChild(txt(pezzi.join(' · ')));
+    g.appendChild(sotto);
+    var sotto2 = el('text', {x:0, y:y + 30, 'class':'sotto-sw'});
+    sotto2.appendChild(txt(sw.porte.filter(function(p){ return p.trunk; }).length + ' in trunk · '
+      + sw.porte.filter(function(p){ return p.poe; }).length + ' erogano PoE'));
+    g.appendChild(sotto2);
+    libereTotali += (conta.libera || 0);
+
+    var tot = sw.porte.length, uplink = 6, banco = tot - uplink;
+    y += 48;
+
+    sw.porte.forEach(function(p){
+      var indice = p.n - 1;
+      var inUplink = p.n > banco;
+      var i = inUplink ? (p.n - banco - 1) : indice;
+      var colonna = Math.floor(i / 2);
+      var riga = i % 2;
+      var x = colonna * (CELLA + CELLAGAP);
+      if(inUplink) x += Math.ceil(banco / 2) * (CELLA + CELLAGAP) + 26;
+      var cy = y + riga * (CELLAH + CELLAGAP);
+
+      var noto = note[sw.nodo + ':' + p.n];
+      var cella = el('g', {'class':'porta', transform:'translate(' + x + ',' + cy + ')'});
+      var box = el('rect', {x:0, y:0, width:CELLA, height:CELLAH,
+        fill:'var(--carta)', stroke: p.collegamento ? 'var(--filo-forte)' : 'var(--filo)',
+        'stroke-width': noto ? 1.6 : 1});
+      if(!p.attiva || !p.collegamento) box.setAttribute('stroke-dasharray', '3 2');
+      cella.appendChild(box);
+
+      if(p.collegamento){
+        cella.appendChild(el('rect', {x:0, y:CELLAH - 3, width:CELLA, height:3,
+          fill: COL_VEL[p.collegamento] || 'var(--filo-forte)'}));
+      }
+      var occ = occupazione(p, noto);
+      if(OCCUPAZIONE[occ].colore){
+        cella.appendChild(el('rect', {x:0, y:0, width:3, height:CELLAH - 3,
+          fill: OCCUPAZIONE[occ].colore}));
+      }
+      if(p.trunk){
+        cella.appendChild(el('path', {d:'M0 0 L7 0 L0 7 Z', fill:'var(--inch)'}));
+      }
+      if(p.poe){
+        cella.appendChild(el('circle', {cx:CELLA - 5, cy:5, r:2.2, fill:'var(--iw-success)'}));
+      }
+      var qn = (S.cerca || '').replace(/^porta\s*/i, '').trim();
+      if(qn && /^\d+$/.test(qn)){
+        if(parseInt(qn, 10) === p.n) box.setAttribute('stroke-width', '2.5'),
+                                     box.setAttribute('stroke', 'var(--accento)');
+        else cella.setAttribute('opacity', '.22');
+      }
+      var num = el('text', {x:CELLA/2, y:CELLAH/2 + 3, 'text-anchor':'middle'});
+      num.setAttribute('style', 'font-size:10px;fill:' + (p.collegamento ? 'var(--inch)' : 'var(--tenue)'));
+      num.appendChild(txt(String(p.n)));
+      cella.appendChild(num);
+
+      var tt = el('title');
+      tt.appendChild(txt('Porta ' + p.n + ' · ' + OCCUPAZIONE[occ].et
+        + (p.collegamento ? ' · ' + p.collegamento : '')
+        + ' · PVID ' + p.pvid + (p.trunk ? ' · trunk' : '')
+        + (noto ? ' · ' + ((byId[noto.nodo] || {}).nome || noto.nodo) : '')));
+      cella.appendChild(tt);
+      cella.style.cursor = 'pointer';
+      cella.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        S.sel = {tipo:'porta', sw:sw, p:p, noto:noto};
+        scheda();
+      });
+      g.appendChild(cella);
+      largMax = Math.max(largMax, x + CELLA);
+    });
+    y += 2 * (CELLAH + CELLAGAP) + 44;
+  });
+
+  /* Legenda propria di questa vista: due canali indipendenti, la barra in basso
+     per la velocita' negoziata e il filetto a sinistra per chi occupa la porta. */
+  var leg = el('g', {transform:'translate(0,' + y + ')'});
+  var tl = el('text', {x:0, y:0, 'class':'titolo-sw'});
+  tl.setAttribute('style', 'font-size:13px');
+  tl.appendChild(txt(libereTotali + (libereTotali === 1 ? ' porta libera in tutto' : ' porte libere in tutto')
+    + ', disponibili per una permuta senza toccare niente'));
+  leg.appendChild(tl);
+
+  var lx = 0;
+  var t0 = el('text', {x:0, y:24, 'class':'leg-sw'});
+  t0.appendChild(txt('barra in basso, velocita’ negoziata:')); leg.appendChild(t0);
+  lx = 190;
+  [['10 Gb/s','#4D11A7'], ['1 Gb/s','#AFD100'], ['100 Mb/s','#57CCF6'], ['10 Mb/s','#E7000B']]
+    .forEach(function(v){
+      leg.appendChild(el('rect', {x:lx, y:21, width:18, height:3, fill:v[1]}));
+      var t = el('text', {x:lx + 24, y:25, 'class':'leg-sw'});
+      t.appendChild(txt(v[0])); leg.appendChild(t);
+      lx += 24 + v[0].length * 6.2 + 22;
+    });
+
+  var t1 = el('text', {x:0, y:44, 'class':'leg-sw'});
+  t1.appendChild(txt('filetto a sinistra, chi occupa la porta:')); leg.appendChild(t1);
+  var ly = 60;
+  ['censita', 'utenza', 'multipla', 'muta', 'libera'].forEach(function(k){
+    var o = OCCUPAZIONE[k];
+    if(o.colore) leg.appendChild(el('rect', {x:6, y:ly - 8, width:3, height:11, fill:o.colore}));
+    else leg.appendChild(el('rect', {x:6, y:ly - 8, width:3, height:11, fill:'none',
+      stroke:'var(--filo)', 'stroke-dasharray':'2 2'}));
+    var t = el('text', {x:18, y:ly, 'class':'leg-sw'});
+    t.appendChild(txt(o.et)); leg.appendChild(t);
+    ly += 16;
+  });
+
+  [['angolo pieno in alto a sinistra', 'porta in trunk'],
+   ['pallino verde in alto a destra', 'eroga PoE'],
+   ['bordo tratteggiato', 'nessun collegamento negoziato']]
+    .forEach(function(v, i){
+      var t = el('text', {x:0, y:ly + 8 + i * 16, 'class':'leg-sw'});
+      t.appendChild(txt(v[0] + ': ' + v[1])); leg.appendChild(t);
+    });
+  g.appendChild(leg);
+  y += ly + 8 + 3 * 16;
+
+  mondo.setAttribute('transform', 'translate(70,56)');
+  Gcur = {nodi:[], archi:[], segmenti:[], ranghi:[], righe:{}, larg:largMax, altez:y, vista:'porte'};
+  /* Qui l'inquadratura completa entra e va usata: un prospetto di porte tagliato
+     a meta' non serve a niente, e la soglia alta lo tagliava per una manciata di
+     pixel. */
+  if(!S.fitCache[S.vista]){ inquadra(0.6); S.fitCache[S.vista] = 1; }
+  else applicaVB();
+}
+
+/* Un comando che c'e' ma non fa niente e' peggio di un comando che non c'e':
+   nella vista Porte i filtri per mezzo, VLAN e luogo non hanno nessun effetto, e
+   lasciarli visibili faceva credere che fossero rotti. */
+function adattaBarra(){
+  var v = S.vista;
+  var mostra = {
+    filtri:   v !== 'porte',
+    vlan:     v === 'logica' || v === 'fisica' || v === 'segmenti',
+    mezzo:    v !== 'porte' && v !== 'elettrica',
+    difetti:  v !== 'porte',
+    progetto: v !== 'porte' && v !== 'elettrica',
+    porte:    v !== 'porte' && v !== 'elettrica'
+  };
+  document.querySelector('.filtri').style.display = mostra.filtri ? '' : 'none';
+  document.getElementById('f-vlan').style.display = mostra.vlan ? '' : 'none';
+  document.getElementById('f-mezzo').style.display = mostra.mezzo ? '' : 'none';
+  document.getElementById('btn-difetti').style.display = mostra.difetti ? '' : 'none';
+  document.getElementById('btn-progetto').style.display = mostra.progetto ? '' : 'none';
+  document.getElementById('btn-porte').style.display = mostra.porte ? '' : 'none';
+  document.getElementById('cerca').placeholder = (v === 'porte')
+    ? 'Cerca un numero di porta…' : 'Cerca apparato, porta, nota…';
+}
+
+function ridisegna(){
+  adattaBarra();
+  var guide = {
+    logica:'Percorso documentato da accesso a servizi. Trascina per esplorare, usa Inquadra per la vista completa; seleziona un nodo per i dettagli.',
+    fisica:'Apparati raggruppati per luogo. Le linee rappresentano collegamenti censiti, non percorsi alternativi provati.',
+    segmenti:'Compaiono soltanto i collegamenti con VLAN dichiarata nella fonte. Un arco senza VLAN non prova che sia sulla VLAN nativa.',
+    elettrica:'Catene elettriche censite dalla presa ai dispositivi. Una seconda alimentazione senza sorgente nota resta fuori dal disegno.',
+    porte:'Matrice delle porte derivata dallo snapshot Nebula, con data di misura distinta dalla revisione topologica.'
+  };
+  document.getElementById('guida-vista').textContent = guide[S.vista] || '';
+  if(S.vista === 'porte' && MATRICE && MATRICE.meta) document.getElementById('guida-vista').textContent += ' Misura: ' + (MATRICE.meta['misura-del'] || 'data ignota') + '.';
+  if(S.vista === 'porte') return disegnaPorte();
+  var G = disponi(costruisciGrafo(S.vista));
+  Gcur = G;
+  while(mondo.firstChild) mondo.removeChild(mondo.firstChild);
+  document.getElementById('vuoto').classList.toggle('on', G.nodi.filter(function(n){return !n.dummy;}).length === 0);
+
+  var M = 60;
+  RIF_NODI = {};
+  var gCorsie = el('g', {'class':'corsia'}), gCol = el('g', {'class':'colonna'}),
+      gArchi = el('g'), gEtich = el('g'), gNodi = el('g');
+  mondo.appendChild(gCorsie); mondo.appendChild(gCol);
+  mondo.appendChild(gArchi); mondo.appendChild(gEtich); mondo.appendChild(gNodi);
+
+  /* colonne dei luoghi, solo nella vista fisica */
+  if(G.colonne && G.colOffset){
+    G.colonne.forEach(function(c){
+      var x0 = G.colOffset[c], larg = G.colCapienza[c] * (LARG + GAPX);
+      var nome = c === '__nessuno' ? 'Non collocato' : (CONT[c] ? CONT[c].nome : c);
+      var sito = c === '__nessuno' ? '' : (CONT[c] ? CONT[c].sito : '');
+      var t = el('text', {x:x0, y:-30});
+      t.appendChild(txt(nome + (sito ? ' · ' + sito : ''))); gCol.appendChild(t);
+      gCol.appendChild(el('line', {x1:x0 - 20, y1:-24, x2:x0 - 20, y2:G.altez}));
+      gCol.appendChild(el('line', {x1:x0 + larg + 20, y1:-24, x2:x0 + larg + 20, y2:G.altez}));
+    });
+  }
+
+  /* corsie: la riga attraversa tutto il disegno, l'etichetta resta agganciata al
+     bordo sinistro della vista, altrimenti scompare al primo spostamento e la
+     mappa perde il solo riferimento che dice a che altezza logica si sta guardando */
+  ETICHETTE = [];
+  G.corsie.forEach(function(c){
+    var y = c.r * (ALT + GAPY);
+    if(!c.nome) return;
+    var ln = el('line', {x1:-3000, y1:y+24, x2:G.larg+3000, y2:y+24});
+    gCorsie.appendChild(ln);
+    var g = el('g');
+    var sf = el('rect', {x:0, y:y+2, width: c.nome.length * 6.4 + 14, height:18, fill:'var(--tela)'});
+    g.appendChild(sf);
+    var t = el('text', {x:6, y:y+15, 'text-anchor':'start'});
+    t.appendChild(txt(c.nome)); g.appendChild(t);
+    gCorsie.appendChild(g);
+    ETICHETTE.push(g);
+  });
+  if(G.corsie.__vuote && G.corsie.__vuote.length){
+    var yv = G.corsie.length * (ALT + GAPY) + 8;
+    var tv2 = el('text', {x:0, y:yv, 'class':'portalab'});
+    tv2.appendChild(txt('Non compaiono qui: VLAN ' + G.corsie.__vuote.join(', ') +
+      '. Nessun collegamento della fonte le dichiara, quindi nessun apparato vi e\' attribuibile senza inferire.'));
+    gCorsie.appendChild(tv2);
+    ETICHETTE.push(tv2);
+  }
+
+  /* Archi. Si disegnano una volta sola, senza sapere niente dello stato di
+     evidenziazione: quello si applica dopo, cambiando classi. Prima ogni
+     passaggio del puntatore su un nodo ricostruiva l'intero disegno, con il
+     risultato che l'elemento sotto il cursore veniva distrutto e ricreato e la
+     mappa sfarfallava. */
+  RIF_ARCHI = {};
+  G.segmenti.forEach(function(e){
+    var l = e.l, cm = colMezzo(l.mezzo);
+    var colore = cm.c;
+    if(S.vista === 'segmenti' && l.vlan && l.vlan.length) colore = COL_VLAN[l.vlan[0]] || cm.c;
+    var pts = puntiArco(e);
+    var d = percorso(pts);
+    var cls = 'arco' + (l.stato === 'progetto' ? ' progetto' : '');
+    var p = el('path', {d:d, 'class':cls, stroke:colore, 'stroke-dasharray': (l.stato==='progetto' ? '6 4' : (l.verifica === 'da-verificare' ? '2 5' : cm.d))});
+    gArchi.appendChild(p);
+    var hit = el('path', {d:d, 'class':'arco-hit'});
+    hit.addEventListener('click', function(ev){
+      ev.stopPropagation(); S.sel = {tipo:'arco', idx:e.idx, l:l, e:e}; scheda(); applicaEvidenza();
+    });
+    gArchi.appendChild(hit);
+
+    var gEt = el('g', {'class':'etichette-arco'});
+    if(S.mostraPorte){
+      /* Le etichette di porta si sfalsano in verticale a numero alterno: gli
+         attacchi distribuiti sul bordo del nodo le avvicinano tanto da farle
+         collidere, e nove coppie si sovrapponevano davvero. */
+      if(l['porta-a'] && pts.length > 1) etichettaPorta(gEt, pts[0], pts[1], l['porta-a'], colore);
+      if(l['porta-b'] && pts.length > 1) etichettaPorta(gEt, pts[pts.length-1], pts[pts.length-2], l['porta-b'], colore);
+    }
+    if(l.velocita){
+      var mid = pts[Math.floor(pts.length/2)];
+      var gv = el('g');
+      var w = l.velocita.length * 5.6 + 8;
+      gv.appendChild(el('rect', {x:mid.x - w/2, y:mid.y - 7, width:w, height:14, 'class':'velolab-bg'}));
+      var tv = el('text', {x:mid.x, y:mid.y + 3.5, 'text-anchor':'middle', 'class':'velolab'});
+      tv.appendChild(txt(l.velocita)); gv.appendChild(tv);
+      gEt.appendChild(gv);
+    }
+    gEtich.appendChild(gEt);
+    (RIF_ARCHI[e.idx] = RIF_ARCHI[e.idx] || []).push(p, gEt);
+  });
+
+  /* nodi */
+  G.nodi.forEach(function(n){
+    if(n.dummy) return;
+    var r = n.rif;
+    var cls = 'nodo';
+    if(r.stato === 'progetto') cls += ' progetto';
+    if(r.verifica === 'da-verificare') cls += ' incerto';
+    if(S.iso && S.iso.ant[n.id]) cls += ' contesto';
+    if(S.iso && S.iso.radice === n.id) cls += ' radice';
+    var g = el('g', {'class':cls, transform:'translate('+n.x+','+n.y+')', tabindex:'0', role:'button', 'aria-label':r.nome + (r.verifica === 'da-verificare' ? ', presenza da verificare' : '')});
+    RIF_NODI[n.id] = g;
+    g.appendChild(el('rect', {'class':'box', x:0, y:0, width:n.w, height:n.h}));
+    var accento = coloreAccento(r);
+    if(accento) g.appendChild(el('rect', {'class':'accento', x:0, y:0, width:3, height:n.h, fill:accento}));
+    var ico = el('path', {'class':'ic', d:icona(r.tipo), transform:'translate(11,11) scale(.82)'});
+    g.appendChild(ico);
+    var ng = (r.gap||[]).length;
+    /* Il distintivo dei difetti stava in alto a destra e mangiava le ultime
+       lettere del nome: "Zyxel USG FLEX 500" usciva come "Zyxel USG FLEX 5...".
+       Sta in basso a destra, accanto al sottotitolo che e' sempre corto, e la
+       riga del nome torna disponibile per intero. */
+    var t1 = el('text', {'class':'nm', x:34, y:19});
+    t1.appendChild(txt(taglia(r.nome, 21))); g.appendChild(t1);
+    var t2 = el('text', {'class':'sb', x:34, y:33});
+    t2.appendChild(txt(taglia(sottotitolo(r), ng ? 20 : 25))); g.appendChild(t2);
+    if(ng){
+      g.appendChild(el('circle', {'class':'badge', cx:n.w-11, cy:n.h-11, r:7.5}));
+      var tb = el('text', {'class':'badgetxt', x:n.w-11, y:n.h-7.5, 'text-anchor':'middle'});
+      tb.appendChild(txt(String(ng))); g.appendChild(tb);
+    }
+    var titolo = el('title'); titolo.appendChild(txt(r.nome + (r.note ? ' — ' + taglia(r.note, 180) : '')));
+    g.appendChild(titolo);
+    g.addEventListener('mouseenter', function(){ S.hover = n.id; applicaEvidenza(); });
+    g.addEventListener('mouseleave', function(){ if(S.hover === n.id){ S.hover = null; applicaEvidenza(); } });
+    g.addEventListener('click', function(ev){ ev.stopPropagation(); S.sel = {tipo:'nodo', id:n.id, rif:r}; scheda(); applicaEvidenza(); });
+    g.addEventListener('keydown', function(ev){ if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); S.sel = {tipo:'nodo', id:n.id, rif:r}; scheda(); applicaEvidenza(); } });
+    if(!r._pwr){
+      g.addEventListener('dblclick', function(ev){
+        ev.stopPropagation(); ev.preventDefault();
+        S.hover = null;
+        if(S.iso && S.iso.radice === n.id) esciIsolamento(); else isola(n.id);
+      });
+    }
+    gNodi.appendChild(g);
+  });
+
+  piazzaEtichettePorta();
+  mondo.setAttribute('transform', 'translate(70,56)');
+  applicaEvidenza();
+  if(!S.fitCache[S.vista]){ inquadra(0.85); S.fitCache[S.vista] = 1; }
+  else applicaVB();
+}
+
+function sottotitolo(r){
+  if(r._pwr) return r.tipo;
+  var parti = [];
+  if(r.stato === 'progetto') parti.push('progetto');
+  if(r.verifica === 'da-verificare') parti.push('da verificare');
+  if(r.contenitore && CONT[r.contenitore]) parti.push(CONT[r.contenitore].nome);
+  else parti.push(r.tipo);
+  return parti.join(' · ');
+}
+function coloreAccento(r){
+  if(r._pwr) return r.tipo === 'ups' ? '#AFD100' : (r.tipo === 'parete' ? '#4D11A7' : '#ACB0CD');
+  if(r.stato === 'progetto') return '#ACB0CD';
+  if(r.verifica === 'da-verificare') return '#c08a3e';
+  var vs = vlanDi(r.id);
+  if(S.vista === 'segmenti' && vs.length) return COL_VLAN[vs[0]] || null;
+  var perLivello = {internet:'#57CCF6', fornitore:'#8CE1FF', perimetro:'#E7000B', core:'#4D11A7',
+                    distribuzione:'#AFD100', servizi:'#00CECE', utenze:'#ACB0CD'};
+  return perLivello[r.livello] || null;
+}
+
+function puntiArco(e){
+  var pts = [];
+  for(var i=0; i<e.catena.length; i++){
+    var n = e.catena[i];
+    var cx = n.x + n.w/2;
+    if(n.dummy){ pts.push({x:cx, y:n.y + 4}); continue; }
+    if(i === 0) pts.push({x: (e.ancoraA !== undefined ? e.ancoraA : cx), y:e.catena[1] && e.catena[1].rank < n.rank ? n.y : n.y + n.h});
+    else if(i === e.catena.length-1) pts.push({x: (e.ancoraB !== undefined ? e.ancoraB : cx), y:e.catena[i-1].rank < n.rank ? n.y : n.y + n.h});
+    else pts.push({x:cx, y:n.y + n.h/2});
+  }
+  if(e.tipo === 'piatto' && pts.length === 2){
+    /* arco dentro la stessa riga: scavalca sopra la fila */
+    var a = e.catena[0], b = e.catena[1];
+    var y = a.y - 26;
+    return [{x:a.x + a.w/2, y:a.y}, {x:a.x + a.w/2, y:y}, {x:b.x + b.w/2, y:y}, {x:b.x + b.w/2, y:b.y}];
+  }
+  return pts;
+}
+function percorso(pts){
+  if(pts.length < 2) return '';
+  var d = 'M' + pts[0].x + ' ' + pts[0].y, R = 9;
+  for(var i=1; i<pts.length; i++){
+    var p0 = pts[i-1], p1 = pts[i];
+    if(Math.abs(p1.x - p0.x) < 0.5){ d += ' L' + p1.x + ' ' + p1.y; continue; }
+    var ym = (p0.y + p1.y) / 2;
+    var s = p1.x > p0.x ? 1 : -1;
+    var r = Math.min(R, Math.abs(p1.x - p0.x)/2, Math.abs(ym - p0.y), Math.abs(p1.y - ym));
+    if(r < 2){ d += ' L' + p1.x + ' ' + p1.y; continue; }
+    d += ' L' + p0.x + ' ' + (ym - r);
+    d += ' Q' + p0.x + ' ' + ym + ' ' + (p0.x + s*r) + ' ' + ym;
+    d += ' L' + (p1.x - s*r) + ' ' + ym;
+    d += ' Q' + p1.x + ' ' + ym + ' ' + p1.x + ' ' + (ym + r);
+    d += ' L' + p1.x + ' ' + p1.y;
+  }
+  return d;
+}
+/* Le etichette di porta non si posizionano una per una: si raccolgono tutte,
+   e alla fine si risolvono le collisioni spostandole in verticale. Uno
+   sfalsamento fisso a numero alterno non basta, ed e' stato misurato: riduce le
+   coppie sovrapposte da nove a quattro e li' si ferma, perche' le quattro che
+   restano sono fra archi diversi e nessuna regola locale le vede. */
+var ETICHETTE_PORTA = [];
+function etichettaPorta(g, p, verso, testo, colore){
+  var t = String(testo);
+  ETICHETTE_PORTA.push({g:g, x:p.x + 5, y:p.y + (verso.y > p.y ? 11 : -5),
+                        t:t, c:colore, giu:verso.y > p.y, w:t.length * 5.2 + 2, h:9});
+}
+function piazzaEtichettePorta(){
+  var messe = [];
+  function collide(a, b){
+    return a.x < b.x + b.w && b.x < a.x + a.w && a.y - a.h < b.y && b.y - b.h < a.y;
+  }
+  ETICHETTE_PORTA.sort(function(a, b){ return (a.y - b.y) || (a.x - b.x); });
+  ETICHETTE_PORTA.forEach(function(lab){
+    var passo = lab.giu ? 9 : -9;
+    for(var tentativo = 0; tentativo < 6; tentativo++){
+      var libero = true;
+      for(var i = 0; i < messe.length; i++) if(collide(lab, messe[i])){ libero = false; break; }
+      if(libero) break;
+      lab.y += passo;
+    }
+    messe.push(lab);
+    var t = el('text', {x:lab.x, y:lab.y, 'class':'portalab', fill:lab.c});
+    t.appendChild(txt(lab.t));
+    lab.g.appendChild(t);
+  });
+  ETICHETTE_PORTA = [];
+}
+
+var RIF_NODI = {}, RIF_ARCHI = {};
+
+/* Applica evidenziazione, selezione e ricerca senza ridisegnare niente: tocca
+   solo le classi degli elementi gia' sul posto. Prima ogni passaggio del
+   puntatore ricostruiva l'intero disegno, distruggendo e ricreando l'elemento
+   sotto il cursore. */
+function applicaEvidenza(){
+  var accesi = insiemeAcceso();
+  var selezionato = (S.sel && S.sel.tipo === 'nodo') ? S.sel.id : null;
+  var q = S.cerca, trovati = 0;
+  for(var id in RIF_NODI){
+    var g = RIF_NODI[id], rif = byId[id];
+    var ok = !q || !rif || combacia(rif);
+    if(q && rif && ok) trovati++;
+    g.classList.toggle('spento', !!((accesi && !accesi.nodi[id]) || !ok));
+    g.classList.toggle('sel', id === selezionato);
+    g.classList.toggle('trovato', !!(q && ok));
+  }
+  for(var idx in RIF_ARCHI){
+    var vivo = !accesi || accesi.archi[idx] === 1;
+    RIF_ARCHI[idx].forEach(function(x){
+      x.classList.toggle('spento', !vivo);
+      x.classList.toggle('acceso', !!(accesi && vivo));
+    });
+  }
+  return trovati;
+}
+
+function insiemeAcceso(){
+  var focus = S.hover || (S.sel && S.sel.tipo === 'nodo' ? S.sel.id : null);
+  if(!focus) return null;
+  var nodi = {}, archi = {};
+  nodi[focus] = 1;
+  (INC[focus]||[]).forEach(function(i){
+    archi[i] = 1;
+    nodi[LINK[i].da] = 1; nodi[LINK[i].a] = 1;
+  });
+  return {nodi:nodi, archi:archi};
+}
+
+/* --------------------------------------------------------------------------
+   Inquadratura, zoom, trascinamento
+   ----------------------------------------------------------------------- */
+var ETICHETTE = [];
+function applicaVB(){
+  svg.setAttribute('viewBox', S.vb.x+' '+S.vb.y+' '+S.vb.w+' '+S.vb.h);
+  /* le etichette di corsia inseguono il bordo sinistro della vista */
+  var x = S.vb.x - 70 + 8;
+  for(var i=0; i<ETICHETTE.length; i++) ETICHETTE[i].setAttribute('transform', 'translate('+x+',0)');
+}
+/* scalaMinima: un disegno da cinquanta nodi non entra leggibile in un portatile,
+   e comprimerlo finche' ci sta e' esattamente il modo di renderlo inutile. Quando
+   l'inquadratura completa scenderebbe sotto la soglia di leggibilita' si parte
+   invece dall'alto a scala leggibile, e il pulsante Inquadra resta li' per chi
+   vuole l'insieme. */
+function inquadra(scalaMinima){
+  var bb;
+  try { bb = mondo.getBBox(); } catch(e){ return; }
+  if(!bb || !bb.width) return;
+  var pad = 44, rw = svg.clientWidth || 1200, rh = svg.clientHeight || 700;
+  var sc = Math.min(rw / (bb.width + pad*2), rh / (bb.height + pad*2));
+  if(scalaMinima && sc < scalaMinima){
+    var w0 = rw / scalaMinima, h0 = rh / scalaMinima;
+    S.vb = {x: bb.x + bb.width/2 - w0/2, y: bb.y - pad, w:w0, h:h0};
+    applicaVB(); return;
+  }
+  var w = rw / sc, h = rh / sc;
+  S.vb = {x: bb.x - (w - bb.width)/2, y: bb.y - (h - bb.height)/2, w:w, h:h};
+  applicaVB();
+}
+function portaSu(id){
+  if(!Gcur) return;
+  var n = null;
+  Gcur.nodi.forEach(function(x){ if(!x.dummy && x.id === id) n = x; });
+  if(!n) return;
+  var rw = svg.clientWidth || 1200, rh = svg.clientHeight || 700, sc = 0.95;
+  S.vb = {x: n.x + n.w/2 - rw/(2*sc), y: n.y + n.h/2 - rh/(2*sc), w: rw/sc, h: rh/sc};
+  applicaVB();
+}
+function zoom(f, cx, cy){
+  var rw = svg.clientWidth || 1000, rh = svg.clientHeight || 700;
+  if(cx === undefined){ cx = S.vb.x + S.vb.w/2; cy = S.vb.y + S.vb.h/2; }
+  var nw = S.vb.w / f, nh = S.vb.h / f;
+  if(nw < 200 || nw > 40000) return;
+  S.vb = {x: cx - (cx - S.vb.x) / f, y: cy - (cy - S.vb.y) / f, w:nw, h:nh};
+  applicaVB();
+}
+function svgPunto(ev){
+  var r = svg.getBoundingClientRect();
+  return {x: S.vb.x + (ev.clientX - r.left) / r.width * S.vb.w,
+          y: S.vb.y + (ev.clientY - r.top) / r.height * S.vb.h};
+}
+var tela = document.getElementById('tela'), trascino = null;
+tela.addEventListener('wheel', function(ev){ ev.preventDefault(); var p = svgPunto(ev); zoom(ev.deltaY < 0 ? 1.12 : 1/1.12, p.x, p.y); }, {passive:false});
+tela.addEventListener('pointerdown', function(ev){
+  if(ev.target.closest && ev.target.closest('.nodo, .arco-hit')) return;
+  trascino = {x:ev.clientX, y:ev.clientY, vb:{x:S.vb.x, y:S.vb.y}};
+  tela.classList.add('trascino'); tela.setPointerCapture(ev.pointerId);
+});
+tela.addEventListener('pointermove', function(ev){
+  if(!trascino) return;
+  var r = svg.getBoundingClientRect();
+  S.vb.x = trascino.vb.x - (ev.clientX - trascino.x) / r.width * S.vb.w;
+  S.vb.y = trascino.vb.y - (ev.clientY - trascino.y) / r.height * S.vb.h;
+  applicaVB();
+});
+['pointerup','pointercancel','pointerleave'].forEach(function(t){
+  tela.addEventListener(t, function(){ trascino = null; tela.classList.remove('trascino'); });
+});
+tela.addEventListener('click', function(ev){
+  if(ev.target.closest && ev.target.closest('.nodo, .arco-hit')) return;
+  S.sel = null; scheda(); applicaEvidenza();
+});
+
+function isola(id){
+  if(!byId[id]) return;
+  S.iso = isolamento(id);
+  S.fitCache = {};
+  aggiornaNastro();
+  ridisegna();
+  /* Un ramo isolato e' piccolo: qui l'inquadratura completa quasi sempre entra
+     leggibile, e vederlo tutto insieme e' esattamente il motivo per cui lo si isola. */
+  inquadra(0.45);
+}
+function esciIsolamento(){
+  if(!S.iso) return;
+  var era = S.iso.radice;
+  S.iso = null; S.fitCache = {};
+  aggiornaNastro();
+  ridisegna();
+  portaSu(era);
+}
+function aggiornaNastro(){
+  var n = document.getElementById('nastro');
+  n.classList.toggle('on', !!S.iso);
+  if(!S.iso) return;
+  document.getElementById('nastro-nome').textContent = (byId[S.iso.radice] || {}).nome || S.iso.radice;
+  var nd = Object.keys(S.iso.disc).length, na = Object.keys(S.iso.ant).length;
+  document.getElementById('nastro-conta').textContent =
+    nd + (nd === 1 ? ' apparato a valle' : ' apparati a valle') + ', ' +
+    na + (na === 1 ? ' a monte come contesto' : ' a monte come contesto') +
+    '. Il contesto e\' disegnato attenuato: non e\' parte del ramo.';
+}
+
+/* --------------------------------------------------------------------------
+   Scheda laterale
+   ----------------------------------------------------------------------- */
+var pannello = document.getElementById('pannello');
+function h(tag, cls, testo){ var e = document.createElement(tag); if(cls) e.className = cls; if(testo !== undefined) e.textContent = testo; return e; }
+function sezione(titolo){ var s = h('div','sez'); if(titolo) s.appendChild(h('h3',null,titolo)); return s; }
+
+function scheda(){
+  /* Con una ricerca attiva, deselezionare non riporta al testo generico ma
+     all'elenco dei risultati: altrimenti un clic sullo sfondo cancella l'esito
+     della ricerca lasciando pero' la casella piena, e sembra che si sia rotta. */
+  if(!S.sel && S.cerca){ schedaRicerca(); return; }
+  pannello.innerHTML = '';
+  if(!S.sel){
+    pannello.appendChild(h('div','vuoto-p','Seleziona un apparato o un collegamento nel disegno per vederne la scheda. Passando il puntatore su un nodo si accendono i suoi soli collegamenti.'));
+    return;
+  }
+  if(S.sel.tipo === 'arco') return schedaArco(S.sel.l);
+  if(S.sel.tipo === 'porta') return schedaPorta(S.sel.sw, S.sel.p, S.sel.noto);
+  var r = S.sel.rif;
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello', r._pwr ? 'Sorgente di alimentazione' : ((LIVNOME[r.livello]||r.livello||'') + (r.stato === 'progetto' ? ' · pianificato' : ''))));
+  cap.appendChild(h('h2',null,r.nome));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){ S.sel = null; scheda(); ridisegna(); });
+  cap.appendChild(x);
+  pannello.appendChild(cap);
+
+  if(!r._pwr){
+    var sa = h('div','sez');
+    var attivo = S.iso && S.iso.radice === r.id;
+    var b1 = h('button','mini', attivo ? 'Esci dal ramo isolato' : 'Isola questo ramo');
+    b1.setAttribute('aria-pressed', attivo ? 'true' : 'false');
+    b1.addEventListener('click', function(){ if(attivo) esciIsolamento(); else isola(r.id); });
+    sa.appendChild(b1);
+    var b2 = h('button','mini','Inquadra qui');
+    b2.style.marginLeft = '6px';
+    b2.addEventListener('click', function(){ portaSu(r.id); });
+    sa.appendChild(b2);
+    var quanti = Object.keys(isolamento(r.id).disc).length;
+    sa.appendChild(h('div','dett', quanti
+      ? ('Il ramo documentato raggiunge ' + quanti + (quanti === 1 ? ' altro nodo.' : ' altri nodi.') + ' Non e una simulazione di guasto o failover. Doppio clic per isolare.')
+      : 'Nessun apparato dipende da questo: e\' una foglia della topologia.'));
+    sa.querySelector('.dett').style.marginTop = '8px';
+    sa.querySelector('.dett').style.color = 'var(--tenue)';
+    sa.querySelector('.dett').style.fontSize = '11.5px';
+    pannello.appendChild(sa);
+  }
+
+  var s1 = sezione('Identita');
+  var dl = document.createElement('dl'); dl.className = 'kv';
+  function kv(k, v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
+  kv('Identificatore', r.id.replace(/^pwr:/,''));
+  kv('Tipo', r.tipo);
+  if(r.verifica === 'da-verificare') kv('Verifica', 'Presenza o collegamento da confermare');
+  if(!r._pwr){
+    kv('Corsia', LIVNOME[r.livello] || r.livello);
+    kv('Luogo', r.contenitore && CONT[r.contenitore] ? CONT[r.contenitore].nome + ' — ' + CONT[r.contenitore].sito : 'non collocato');
+    var vs = vlanDi(r.id);
+    kv('Segmenti', vs.length ? vs.map(function(v){ return 'VLAN ' + v + (VLAN[v] ? ' (' + VLAN[v].nome + ')' : ''); }).join(', ') : 'nessuno dichiarato sui suoi archi');
+    kv('Collegamenti', String((INC[r.id]||[]).length));
+  }
+  s1.appendChild(dl); pannello.appendChild(s1);
+
+  if(r.note){ var sn = sezione('Nota'); sn.appendChild(h('p',null,r.note)); pannello.appendChild(sn); }
+  if(r['alimentazione-note']){ var sp = sezione('Limite del rilievo elettrico'); sp.appendChild(h('p',null,r['alimentazione-note'])); pannello.appendChild(sp); }
+
+  if(!r._pwr){
+    var inc = INC[r.id] || [];
+    if(inc.length){
+      var sl = sezione('Collegamenti (' + inc.length + ')');
+      inc.forEach(function(i){
+        var l = LINK[i], altro = l.da === r.id ? l.a : l.da;
+        var uscente = l.da === r.id;
+        var cm = colMezzo(l.mezzo);
+        var box = h('div','rigalink');
+        var capo = h('div','capo');
+        var v = h('span','verso', (uscente ? '→ ' : '← ') + ((byId[altro]||{}).nome || altro));
+        capo.appendChild(v);
+        var mz = h('span',null, cm.et + (l.stato === 'progetto' ? ' · progetto' : ''));
+        mz.style.color = cm.c; mz.style.fontSize = '11px'; capo.appendChild(mz);
+        box.appendChild(capo);
+        var d = [];
+        var pQui = uscente ? l['porta-a'] : l['porta-b'];
+        var pLa = uscente ? l['porta-b'] : l['porta-a'];
+        if(pQui) d.push('porta locale ' + pQui);
+        if(pLa) d.push('porta remota ' + pLa);
+        if(l.velocita) d.push(l.velocita);
+        if(l.vlan && l.vlan.length) d.push('VLAN ' + l.vlan.join(', '));
+        if(d.length) box.appendChild(h('div','dett', d.join(' · ')));
+        if(l.note) box.appendChild(h('div','dett', l.note));
+        if(l.criticita) box.appendChild(h('div','crit', l.criticita));
+        box.addEventListener('click', function(){ S.sel = {tipo:'arco', idx:i, l:l}; scheda(); ridisegna(); });
+        box.style.cursor = 'pointer';
+        sl.appendChild(box);
+      });
+      pannello.appendChild(sl);
+    }
+    var catene = catenaElettrica(r.id);
+    if(catene.length){
+      var sc = sezione('Catena elettrica');
+      catene.forEach(function(ramo, k){
+        if(catene.length > 1) sc.appendChild(h('div','dett','Alimentatore ' + (k+1)));
+        var ul = h('ul','catena');
+        ramo.forEach(function(p){
+          var li = document.createElement('li');
+          li.appendChild(h('span','nm', p.nome));
+          li.appendChild(h('div','ds', p.tipo + (p.gap && p.gap.length ? ' · ' + p.gap.join(', ') : '')));
+          ul.appendChild(li);
+        });
+        sc.appendChild(ul);
+      });
+      pannello.appendChild(sc);
+    }
+  }
+  if(r.gap && r.gap.length){
+    var sg = sezione('Difetti aperti');
+    r.gap.forEach(function(id){
+      var g = GAP[id];
+      var riga = h('div','gapriga');
+      riga.appendChild(h('span','grav ' + (g ? g.gravita : 'bassa'), g ? g.gravita : '?'));
+      riga.appendChild(h('span',null, id + (g ? ' · ' + g.titolo : '') + (g && g.numero ? ' (#' + g.numero + ')' : '')));
+      sg.appendChild(riga);
+    });
+    pannello.appendChild(sg);
+  }
+}
+
+/* La ricerca ha un esito, e l'esito va mostrato. Prima l'unico riscontro era
+   che il disegno si spegneva: con zero risultati sembrava rotta, e con venti non
+   si sapeva quali fossero. */
+function schedaRicerca(){
+  if(!S.cerca){ S.sel = null; scheda(); return; }
+  var out = risultati();
+  pannello.innerHTML = '';
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello','Ricerca'));
+  cap.appendChild(h('h2', null, out.length === 0 ? 'Nessun riscontro'
+    : (out.length + (out.length === 1 ? ' risultato' : ' risultati'))));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){
+    document.getElementById('cerca').value = '';
+    S.cerca = ''; invalidaRicerca(); INSIEME_RIC = null; applicaEvidenza(); scheda();
+  });
+  cap.appendChild(x);
+  pannello.appendChild(cap);
+
+  if(!out.length){
+    var sv = sezione(null);
+    sv.appendChild(h('p', null, 'Niente corrisponde a "' + S.cerca + '". Si cerca per nome di '
+      + 'apparato, identificatore, tipo, luogo, codice di difetto o numero di porta — "33" e anche '
+      + '"porta 33". Il testo delle note conta solo se non ce n’e’ uno migliore.'));
+    pannello.appendChild(sv);
+    return;
+  }
+  var sl = sezione(null);
+  out.forEach(function(r){
+    var box = h('div','rigalink');
+    var capo = h('div','capo');
+    capo.appendChild(h('span','verso', r.n.nome));
+    var forza = r.pt >= 60 ? 'nel nome' : (r.pt >= 40 ? 'nel tipo o nel luogo'
+      : (r.pt >= 35 ? 'in un difetto' : 'solo nelle note'));
+    var f = h('span', null, forza);
+    f.style.fontSize = '11px'; f.style.color = 'var(--tenue)';
+    capo.appendChild(f);
+    box.appendChild(capo);
+    box.appendChild(h('div','dett', (LIVNOME[r.n.livello] || r.n.livello || '')
+      + (r.n.contenitore && CONT[r.n.contenitore] ? ' · ' + CONT[r.n.contenitore].nome : '')
+      + ' · ' + ((INC[r.n.id] || []).length) + ' collegamenti'));
+    box.style.cursor = 'pointer';
+    box.addEventListener('click', function(){
+      S.sel = {tipo:'nodo', id:r.n.id, rif:r.n};
+      scheda(); applicaEvidenza(); portaSu(r.n.id);
+    });
+    sl.appendChild(box);
+  });
+  pannello.appendChild(sl);
+}
+
+function schedaPorta(sw, p, noto){
+  var nodo = sw.nodo ? byId[sw.nodo] : null;
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello', (nodo ? nodo.nome : sw.modello)));
+  cap.appendChild(h('h2', null, 'Porta ' + p.n));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){ S.sel = null; scheda(); });
+  cap.appendChild(x); pannello.appendChild(cap);
+
+  var s = sezione('Misurato sull\'apparato');
+  var dl = document.createElement('dl'); dl.className = 'kv';
+  function kv(k, v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
+  kv('Abilitata', p.attiva ? 'si' : 'no, disabilitata da configurazione');
+  kv('Collegamento', p.collegamento || 'nessuno');
+  kv('Modalita', p.trunk ? 'trunk 802.1Q' : 'accesso');
+  kv('PVID', String(p.pvid));
+  kv('VLAN ammesse', (p['vlan-ammesse'] || []).join(', '));
+  if(p.poe !== undefined) kv('PoE', p.poe ? 'eroga alimentazione' : 'presente ma non eroga');
+  kv('Stazioni viste', String(p.stazioni));
+  if(p['vlan-viste']) kv('VLAN osservate', p['vlan-viste'].join(', '));
+  s.appendChild(dl); pannello.appendChild(s);
+
+  /* Le due letture messe una accanto all'altra: e' il punto della vista. */
+  var sf = sezione('Cosa ne dice la fonte');
+  if(noto){
+    var altro = byId[noto.nodo];
+    sf.appendChild(h('p', null, 'La topologia dichiara qui ' + ((altro && altro.nome) || noto.nodo) + '.'));
+    var b = h('button','mini','Vai all\'apparato');
+    b.addEventListener('click', function(){
+      S.vista = 'logica';
+      [].forEach.call(document.querySelectorAll('#viste button'), function(y){
+        y.setAttribute('aria-pressed', y.dataset.vista === 'logica' ? 'true' : 'false');
+      });
+      S.sel = {tipo:'nodo', id:noto.nodo, rif:altro};
+      S.fitCache = {}; scheda(); ridisegna(); portaSu(noto.nodo);
+    });
+    sf.appendChild(b);
+    if(noto.link && noto.link.note) sf.appendChild(h('div','dett', noto.link.note));
+  } else if(!p.attiva){
+    sf.appendChild(h('p', null, 'Porta disabilitata da configurazione. Non e\' libera nel senso di '
+      + 'utilizzabile subito: prima va riabilitata, e conviene sapere perche\' era stata spenta.'));
+  } else if(!p.collegamento){
+    var pl = h('p', null, 'Nessun collegamento negoziato e niente di censito: porta libera, '
+      + 'disponibile per una permuta senza toccare nient\'altro.');
+    pl.style.color = 'var(--iw-success)';
+    sf.appendChild(pl);
+  } else if(p.stazioni === 1){
+    sf.appendChild(h('p', null, 'Un solo indirizzo visto in VLAN ' + ((p['vlan-viste'] || [p.pvid]).join(', '))
+      + ': e\' una singola utenza, cioe' + '’' + ' una postazione o una stampante. Non e\' una lacuna: '
+      + 'le postazioni sono fuori dal perimetro dichiarato della mappa e compaiono nel gruppo aggregato. '
+      + 'Se serve il nome di quella specifica macchina, la fonte giusta e\' il censimento degli endpoint, '
+      + 'non questa mappa.'));
+  } else if(p.stazioni > 1){
+    var pm = h('p', null, p.stazioni + ' indirizzi distinti su una sola porta: dietro c\'e\' altro, '
+      + 'tipicamente uno switch o un apparato con piu\' interfacce. Questa merita di essere censita.');
+    pm.style.color = 'var(--iw-error)';
+    sf.appendChild(pm);
+  } else {
+    var pz = h('p', null, 'Il collegamento e\' negoziato' + (p.collegamento ? ' a ' + p.collegamento : '')
+      + ' ma la tabella MAC non vede **nessun** indirizzo: un cavo che si aggancia e non porta traffico. '
+      + 'Non e\' una postazione e non e\' una porta libera. E\' il caso da verificare sul posto (#156).');
+    pz.style.color = 'var(--iw-error)';
+    sf.appendChild(pz);
+  }
+  pannello.appendChild(sf);
+
+  if(p.collegamento === '10 Mb/s' || p.collegamento === '100 Mb/s'){
+    var sa = sezione('Da guardare');
+    var t = h('p', null, 'Su uno switch gigabit una negoziazione a ' + p.collegamento
+      + ' merita una verifica: le cause tipiche sono un cavo o una permuta con coppie danneggiate, '
+      + 'oppure un apparato vecchio. Quale delle due, questo dato non lo dice.');
+    t.style.color = 'var(--iw-error)';
+    sa.appendChild(t); pannello.appendChild(sa);
+  }
+
+  var sm = sezione('Provenienza');
+  sm.appendChild(h('p', null, 'Misura del ' + ((MATRICE.meta || {})['misura-del'] || 'data ignota')
+    + ', estratta dallo snapshot Nebula in data/port-matrix.json. Gli indirizzi MAC non escono da '
+    + 'quel file: restano soltanto il conteggio delle stazioni e le VLAN in cui si vedono.'));
+  pannello.appendChild(sm);
+}
+
+function schedaArco(l){
+  var cap = h('div','cap');
+  cap.appendChild(h('div','occhiello','Collegamento' + (l.stato === 'progetto' ? ' · pianificato' : '')));
+  cap.appendChild(h('h2', null, ((byId[l.da]||{}).nome || l.da) + ' → ' + ((byId[l.a]||{}).nome || l.a)));
+  var x = h('button','chiudi','×');
+  x.addEventListener('click', function(){ S.sel = null; scheda(); ridisegna(); });
+  cap.appendChild(x); pannello.appendChild(cap);
+  var s = sezione('Dati');
+  var dl = document.createElement('dl'); dl.className = 'kv';
+  function kv(k,v){ if(v === undefined || v === null || v === '') return; dl.appendChild(h('dt',null,k)); dl.appendChild(h('dd',null,v)); }
+  kv('Mezzo', colMezzo(l.mezzo).et);
+  kv('Porta origine', l['porta-a']);
+  kv('Porta destinazione', l['porta-b']);
+  kv('Velocita', l.velocita);
+  kv('VLAN', l.vlan && l.vlan.length ? l.vlan.map(function(v){ return v + (VLAN[v] ? ' (' + VLAN[v].nome + ')' : ''); }).join(', ') : undefined);
+  kv('Stato', l.stato === 'progetto' ? 'pianificato, non realizzato' : (l.verifica === 'da-verificare' ? 'collegamento da confermare' : 'collegamento documentato'));
+  s.appendChild(dl); pannello.appendChild(s);
+  if(l.note){ var sn = sezione('Nota'); sn.appendChild(h('p',null,l.note)); pannello.appendChild(sn); }
+  if(l.criticita){ var sc2 = sezione('Criticita'); var p = h('p',null,l.criticita); p.style.color = 'var(--iw-error)'; sc2.appendChild(p); pannello.appendChild(sc2); }
+}
+
+/* --------------------------------------------------------------------------
+   Intestazione, filtri, piede
+   ----------------------------------------------------------------------- */
+(function intestazione(){
+  document.getElementById('tit').textContent = D.meta.titolo || 'Topologia di rete';
+  document.getElementById('sotto').textContent = 'Ogni elemento del disegno nasce da data/network-topology.json. Il file non si modifica a mano: si corregge la fonte e si rigenera.';
+  var verifica = D.meta.verifica || {}, oggi = new Date();
+  var dataVerifica = verifica.data ? new Date(verifica.data + 'T00:00:00Z') : null;
+  var eta = dataVerifica ? Math.floor((oggi - dataVerifica) / 86400000) : Infinity;
+  var scaduta = eta < 0 || eta > (verifica['validita-giorni'] || 0);
+  var stato = document.getElementById('stato-verifica');
+  stato.dataset.scaduta = String(scaduta);
+  stato.textContent = scaduta
+    ? 'Verifica scaduta o assente. La mappa e una fotografia documentale del ' + (D.meta.aggiornato || 'giorno non dichiarato') + '; rileggere le fonti vive.'
+    : 'Verifica ' + verifica.data + ': ' + verifica.esito + '. Perimetro: ' + verifica.ambito;
+  var limiti = document.getElementById('limiti-verifica');
+  if(verifica['conferma-umana']) limiti.appendChild(h('p',null,verifica['conferma-umana']));
+  (verifica.limiti || []).forEach(function(l){ limiti.appendChild(h('p',null,l)); });
+  var m = document.getElementById('metariga');
+  [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
+   ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
+   ['Sorgenti elettriche', String(PWR.length)], ['Voci di rischio', String((D.gap||[]).length)],
+   ['Generato', '26/10/2026']].forEach(function(p){
+    var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
+  });
+  document.getElementById('perim').textContent = D.meta.perimetro || '';
+  var ul = document.getElementById('fonti');
+  (D.meta.fonti||[]).forEach(function(f){ var li = document.createElement('li'); li.textContent = f; ul.appendChild(li); });
+  document.getElementById('c-fonti').textContent = (D.meta.fonti||[]).length + ' fonti dichiarate';
+  document.getElementById('c-perim').textContent = 'cosa entra nella mappa e cosa no';
+  var alti = (D.gap||[]).filter(function(g){ return g.gravita === 'alta'; }).length;
+  document.getElementById('c-gap').textContent = (D.gap||[]).length + ' voci censite, di cui ' + alti + ' ad alta gravita';
+  document.getElementById('avvertenza').textContent = D.meta.avvertenza || '';
+  var gl = document.getElementById('gaplista');
+  (D.gap||[]).slice().sort(function(a,b){
+    var o = {alta:0, media:1, bassa:2};
+    return (o[a.gravita] - o[b.gravita]) || String(a.id).localeCompare(String(b.id));
+  }).forEach(function(g){
+    var riga = h('div','gapriga');
+    riga.appendChild(h('span','grav ' + g.gravita, g.gravita));
+    riga.appendChild(h('span', null, g.id + ' · ' + g.titolo + (g.numero ? ' (#' + g.numero + ')' : '')));
+    gl.appendChild(riga);
+  });
+  var lm = document.getElementById('legmezzo');
+  Object.keys(COL_MEZZO).forEach(function(k){
+    var s = document.createElement('span'); var i = document.createElement('i');
+    i.style.borderTopColor = COL_MEZZO[k].c;
+    if(COL_MEZZO[k].d) i.style.borderTopStyle = 'dashed';
+    s.appendChild(i); s.appendChild(document.createTextNode(COL_MEZZO[k].et)); lm.appendChild(s);
+  });
+  var ls = document.getElementById('legstato');
+  [['Tratto continuo, riquadro pieno', 'collegamento censito'],
+   ['Tratteggio e riquadro tratteggiato', 'pianificato, non realizzato'],
+   ['Tratteggio corto', 'presenza o collegamento da confermare'],
+   ['Pallino rosso sul riquadro', 'numero di difetti aperti sull’apparato']].forEach(function(p){
+    var s = document.createElement('span'); s.textContent = p[0] + ': ' + p[1]; ls.appendChild(s);
+  });
+})();
+
+function chip(cont, etichetta, attivo, colore, tratteggio, onclick){
+  var b = document.createElement('button');
+  b.className = 'tag'; b.setAttribute('aria-pressed', attivo ? 'true' : 'false');
+  if(colore){
+    var sw = document.createElement('span'); sw.className = 'sw' + (tratteggio ? ' tratteggio' : '');
+    if(tratteggio){ sw.style.color = colore; } else { sw.style.background = colore; }
+    b.appendChild(sw);
+  }
+  b.appendChild(document.createTextNode(etichetta));
+  b.addEventListener('click', function(){
+    var nuovo = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', nuovo ? 'true' : 'false');
+    onclick(nuovo); ridisegna();
+  });
+  cont.appendChild(b);
+  return b;
+}
+(function filtri(){
+  var fm = document.getElementById('f-mezzo');
+  Object.keys(COL_MEZZO).forEach(function(k){
+    chip(fm, COL_MEZZO[k].et, true, COL_MEZZO[k].c, !!COL_MEZZO[k].d, function(v){ S.mezzi[k] = v; });
+  });
+  var fv = document.getElementById('f-vlan');
+  Object.keys(VLAN).map(Number).sort(function(a,b){return a-b;}).forEach(function(v){
+    var o = VLAN[v];
+    chip(fv, v + ' · ' + o.nome, true, COL_VLAN[v] || '#ACB0CD', o.stato === 'progetto', function(x){ S.vlan[v] = x; });
+  });
+  var fc = document.getElementById('f-cont');
+  Object.keys(CONT).forEach(function(c){
+    chip(fc, CONT[c].nome, true, null, false, function(x){ S.cont[c] = x; });
+  });
+  chip(fc, 'Non collocato', true, null, false, function(x){ S.cont['__nessuno'] = x; });
+})();
+
+document.getElementById('viste').addEventListener('click', function(ev){
+  var b = ev.target.closest('button'); if(!b) return;
+  S.vista = b.dataset.vista; S.sel = null; S.fitCache = {};
+  [].forEach.call(this.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+  scheda(); ridisegna();
+});
+function interruttore(id, chiave){
+  var b = document.getElementById(id);
+  b.addEventListener('click', function(){
+    S[chiave] = !S[chiave];
+    if(chiave === 'mostraProgetto' && S.iso){ S.iso = isolamento(S.iso.radice); aggiornaNastro(); }
+    b.setAttribute('aria-pressed', S[chiave] ? 'true' : 'false');
+    ridisegna();
+  });
+}
+interruttore('btn-difetti','soloDifetti');
+interruttore('btn-progetto','mostraProgetto');
+interruttore('btn-porte','mostraPorte');
+document.getElementById('cerca').addEventListener('input', function(){
+  S.cerca = this.value.trim();
+  invalidaRicerca(); INSIEME_RIC = null;
+  if(S.vista === 'porte'){ ridisegna(); return; }
+  applicaEvidenza();
+  schedaRicerca();
+});
+document.getElementById('z-piu').addEventListener('click', function(){ zoom(1.25); });
+document.getElementById('z-meno').addEventListener('click', function(){ zoom(1/1.25); });
+document.getElementById('z-fit').addEventListener('click', function(){ inquadra(); });
+document.getElementById('btn-stampa').addEventListener('click', function(){ inquadra(); setTimeout(function(){ window.print(); }, 80); });
+document.getElementById('btn-reset').addEventListener('click', function(){
+  S.vista = 'logica'; S.sel = null; S.iso = null; S.hover = null; S.soloDifetti = false; S.mostraProgetto = false; S.mostraPorte = true; S.cerca = ''; S.fitCache = {};
+  Object.keys(S.mezzi).forEach(function(k){ S.mezzi[k] = true; });
+  Object.keys(S.vlan).forEach(function(k){ S.vlan[k] = true; });
+  Object.keys(S.cont).forEach(function(k){ S.cont[k] = true; });
+  document.getElementById('cerca').value = ''; invalidaRicerca(); INSIEME_RIC = null;
+  [['btn-difetti',false],['btn-progetto',false],['btn-porte',true]].forEach(function(p){ document.getElementById(p[0]).setAttribute('aria-pressed', String(p[1])); });
+  [].forEach.call(document.querySelectorAll('#viste button'), function(b){ b.setAttribute('aria-pressed', String(b.dataset.vista === 'logica')); });
+  [].forEach.call(document.querySelectorAll('.tag'), function(b){ b.setAttribute('aria-pressed','true'); });
+  aggiornaNastro(); scheda(); ridisegna(); inquadra();
+});
+document.getElementById('btn-tema').addEventListener('click', function(){
+  var cur = document.documentElement.getAttribute('data-tema');
+  var scuroSistema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var next = cur === 'scuro' ? 'chiaro' : (cur === 'chiaro' ? (scuroSistema ? 'scuro' : 'chiaro') : 'scuro');
+  document.documentElement.setAttribute('data-tema', next);
+  ridisegna();
+});
+document.getElementById('nastro-esci').addEventListener('click', esciIsolamento);
+document.addEventListener('keydown', function(ev){
+  if(ev.key === 'Escape'){
+    if(S.iso){ esciIsolamento(); return; }
+    S.sel = null; scheda(); ridisegna();
+  }
+  if(ev.key === 'i' && S.sel && S.sel.tipo === 'nodo' && !/input|textarea/i.test(document.activeElement.tagName)){
+    if(S.iso && S.iso.radice === S.sel.id) esciIsolamento(); else isola(S.sel.id);
+  }
+  if(ev.key === 'f' && !/input|textarea/i.test(document.activeElement.tagName)) inquadra();
+});
+window.addEventListener('resize', function(){ inquadra(0.85); });
+
+/* Il frammento dell'indirizzo sceglie cosa aprire: una vista fra #fisica,
+   #segmenti, #elettrica, oppure un ramo isolato con #isola=<identificatore>, e le
+   due cose si combinano con la virgola. Serve a rimandare qualcuno direttamente al
+   punto di cui si sta parlando invece di dirgli "poi clicca sul terzo pulsante e
+   fai doppio clic sullo switch del piano terra". */
+var ISO_INIZIALE = null;
+(function daFrammento(){
+  var f = decodeURIComponent((location.hash || '').replace('#',''));
+  if(!f) return;
+  f.split(',').forEach(function(pezzo){
+    pezzo = pezzo.trim();
+    if(['logica','fisica','segmenti','elettrica','porte'].indexOf(pezzo) >= 0){
+      S.vista = pezzo;
+      [].forEach.call(document.querySelectorAll('#viste button'), function(x){
+        x.setAttribute('aria-pressed', x.dataset.vista === pezzo ? 'true' : 'false');
+      });
+    } else if(pezzo.indexOf('isola=') === 0){
+      var id = pezzo.slice(6);
+      if(byId[id]) ISO_INIZIALE = id;
+    }
+  });
+})();
+
+if(ISO_INIZIALE){ S.iso = isolamento(ISO_INIZIALE); aggiornaNastro(); }
+ridisegna();
+inquadra(ISO_INIZIALE ? 0.45 : 0.85);
+</script>
+</body>
+</html>

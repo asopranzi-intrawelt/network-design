@@ -24,7 +24,7 @@ Schede e documenti tecnici in `.claude/context/` e `docs/` sono versionati: stat
 
 Questo repository è la fonte degli strumenti di rete. Indice, descrizione e vincoli di ogni famiglia sono in `.claude/context/STACK.md`: consultarli quando si tocca uno script.
 
-Gli artefatti derivati non si modificano mai a mano. La timeline SVG, la mappa `docs/network-map.html`, la roadmap ISO con le sue copie su Desktop e in OneDrive, la matrice delle porte e la riconciliazione Onova nascono tutte da una fonte tracciata e da uno script: se un dato e' sbagliato si corregge la fonte e si rigenera, altrimenti nasce una seconda verita' accanto alla prima.
+Gli artefatti derivati non si modificano mai a mano. La timeline SVG, la mappa `docs/stato/network-map.html`, la roadmap ISO con le sue copie su Desktop e in OneDrive, la matrice delle porte e la riconciliazione Onova nascono tutte da una fonte tracciata e da uno script: se un dato e' sbagliato si corregge la fonte e si rigenera, altrimenti nasce una seconda verita' accanto alla prima.
 
 L'agente registra automaticamente, senza chiedere all'utente di lanciare comandi, ogni avanzamento o correzione ISO nella stessa sessione in cui aggiorna il progetto o riceve la notizia: `python scripts/IsoRoadmap.py advance <ID> --stato <stato> --nota "..."`, con `--evidenza "..."` quando lo stato e' `completato`. Il comando rigenera la vista di progetto e le copie private. Il registro puo' seguire un avanzamento comunicato o verificato, ma non scoprire un cambiamento fisico su un apparato non interrogabile: quel limite si dichiara e si chiede evidenza, invece di promuovere un rilievo a risolto senza prova.
 
@@ -68,12 +68,12 @@ Schede tecniche, sotto `.claude/context/`, con frontmatter di riconciliazione.
 .claude/context/diagrams/               topologie di rete e diagrammi infrastrutturali
 ```
 
-Documentazione strutturata, sotto `docs/`. L'indice con i percorsi di lettura e' `docs/README.md`, che li elenca tutti e resta la porta d'ingresso: qui bastano le tre viste che si aprono piu' spesso.
+Documentazione strutturata, sotto `docs/`, ordinata per aree dal 26/10/2026 (ADR-041): `stato`, `rete`, `firewall`, `telefonia`, `sicurezza`, `osservabilita`, `sito-vps`, `operativita`, `archivio` e `infrastructure-timeline`, ciascuna con un `README.md` che la indicizza: un documento nuovo entra nell'area e nel suo indice nello stesso giro. L'indice con i percorsi di lettura e' `docs/README.md`, che resta la porta d'ingresso ed e' anche la nota iniziale del vault Obsidian, che coincide con la radice del repository (`.obsidian/app.json` versionato, il resto ignorato).
 
 ```
-docs/README.md                    indice della documentazione e percorsi di lettura
-docs/snapshot-infrastruttura.md   fotografia documentale datata: fonti, topologia, limiti e pendenze
-docs/pendenze-aperte.md           vista consolidata di cio' che resta da sanare; non e' una fonte, punta ai registri
+docs/README.md                          indice della documentazione, aree e percorsi di lettura
+docs/stato/snapshot-infrastruttura.md   fotografia documentale datata: fonti, topologia, limiti e pendenze
+docs/stato/pendenze-aperte.md           vista consolidata di cio' che resta da sanare; non e' una fonte, punta ai registri
 ```
 
 Regole sempre attive, sotto `.claude/rules/`. Ogni file qui dentro entra in contesto a ogni sessione e concorre al budget che `python .claude/templates/tools/misura-istruzioni.py --root .` misura. Le prime due sono di questo progetto, le altre arrivano dal template; i casi che le giustificano stanno in `.claude/norme/`, che non si carica all'avvio.
@@ -126,8 +126,8 @@ Le operazioni di git add, commit e push restano sempre manuali dell'utente. Per 
 
 ## Regola M30: tracciamento a ogni gate
 
-Per ogni passo della migrazione dei segreti locali, aggiornare nello stesso giro `docs/runbook-migrazione-segreti-locali.md`, ADR-031, SEC-052 (#209), M30, `docs/pendenze-aperte.md`, `docs/infrastructure-timeline/2026-q4-segreti-e-collettore.md` e rigenerare `timeline.svg`; aggiornare `data/iso27001-interventi.json` con `IsoRoadmap.py advance` e verificare HTML `output`, Desktop e archivio ISO. Scrivere esito, evidenza priva di valori, stato del rollback, memoria e resume. Finche' i gate non passano, distinguere sempre il design dall'esercizio.
+Per ogni passo della migrazione dei segreti locali, aggiornare nello stesso giro `docs/sicurezza/runbook-migrazione-segreti-locali.md`, ADR-031, SEC-052 (#209), M30, `docs/stato/pendenze-aperte.md`, `docs/infrastructure-timeline/2026-q4-segreti-e-collettore.md` e rigenerare `timeline.svg`; aggiornare `data/iso27001-interventi.json` con `IsoRoadmap.py advance` e verificare HTML `output`, Desktop e archivio ISO. Scrivere esito, evidenza priva di valori, stato del rollback, memoria e resume. Finche' i gate non passano, distinguere sempre il design dall'esercizio.
 
 ## Nota MCP
 
-Il client Proxmox MCP usa un token di sola lettura dal `.env` privato; ADR-007 e ADR-031 descrivono configurazione e cutover. Task, retention e limiti sono in `docs/processo-fonti-vive-retention.md`; lo snapshot completo resta affidato a `scripts/Get-ProxmoxSnapshot.ps1`.
+Il client Proxmox MCP usa un token di sola lettura dal `.env` privato; ADR-007 e ADR-031 descrivono configurazione e cutover. Task, retention e limiti sono in `docs/osservabilita/processo-fonti-vive-retention.md`; lo snapshot completo resta affidato a `scripts/Get-ProxmoxSnapshot.ps1`.

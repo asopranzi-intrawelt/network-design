@@ -215,7 +215,7 @@ $registro = Join-Path $OutputDir 'password-da-recuperare.txt'
 if ($dasanare) {
     $testo = @()
     $testo += "Host su cui le credenziali vanno recuperate o l'accesso ripristinato"
-    $testo += "Prodotto da scripts/Invoke-HostCensus.ps1. Vedi gap #162 e docs/esposizione-servizi-interni.md."
+    $testo += "Prodotto da scripts/Invoke-HostCensus.ps1. Vedi gap #162 e docs/rete/esposizione-servizi-interni.md."
     $testo += ''
     $testo += ($dasanare | Format-Table -AutoSize Host, Esito, Nota | Out-String)
     $testo | Set-Content -Path $registro -Encoding UTF8

@@ -11,7 +11,7 @@ last-verified: 07d97db
 .\scripts\Get-ProxmoxSnapshot.ps1 -ProxmoxHost 10.61.20.11
 ```
 
-Lo script legge il token di sola lettura dal `.env` privato del progetto; senza token può richiedere un ticket interattivo. Il task locale giornaliero è osservato il 16/10/2026 con esito 0. Fonte, TLS e segreti sono descritti nel runbook M30; processo della postazione e retention in `docs/processo-fonti-vive-retention.md`.
+Lo script legge il token di sola lettura dal `.env` privato del progetto; senza token può richiedere un ticket interattivo. Il task locale giornaliero è osservato il 16/10/2026 con esito 0. Fonte, TLS e segreti sono descritti nel runbook M30; processo della postazione e retention in `docs/osservabilita/processo-fonti-vive-retention.md`.
 
 Output prodotto in `output/` (ignorato da git):
 - `output/proxmox-snapshot.json` — dati grezzi completi (JSON)
@@ -109,7 +109,7 @@ Va detto con onesta' cio' che **non e' stato provato**: tutto quanto sopra e' ve
 
 ## Collegarsi alle macchine virtuali
 
-Si consulta `_notes/registro-credenziali.md` prima di chiedere alias o utenti all'IT Manager, confrontando la tabella con `docs/esposizione-servizi-interni.md`. La nota privata conserva la corrispondenza fra identificatore e nome Proxmox, prompt della macchina, alias `Host`, utente e nome del file chiave. Non si leggono ne' si copiano contenuti delle chiavi private e non si salvano password. Se la configurazione SSH della macchina cambia, la tabella si aggiorna nella stessa sessione.
+Si consulta `_notes/registro-credenziali.md` prima di chiedere alias o utenti all'IT Manager, confrontando la tabella con `docs/rete/esposizione-servizi-interni.md`. La nota privata conserva la corrispondenza fra identificatore e nome Proxmox, prompt della macchina, alias `Host`, utente e nome del file chiave. Non si leggono ne' si copiano contenuti delle chiavi private e non si salvano password. Se la configurazione SSH della macchina cambia, la tabella si aggiorna nella stessa sessione.
 
 ## Attivazione manuale della retention, 16/10/2026
 

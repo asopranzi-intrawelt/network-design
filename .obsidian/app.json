@@ -1,0 +1,16 @@
+{
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": false,
+  "attachmentFolderPath": "_notes/allegati",
+  "userIgnoreFilters": [
+    "_notes/archivio-sessioni/",
+    "output/",
+    "scripts/",
+    "tools/",
+    "tests/",
+    "deploy/",
+    "node_modules/"
+  ]
+}

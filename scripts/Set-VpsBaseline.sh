@@ -16,7 +16,7 @@
 # leggere si dichiara non verificabile, mai buono. Un comando elevato che
 # fallisce restituisce un vuoto che somiglia a un'assenza, e un ripiego che
 # somiglia a una misura e' peggio di un errore. Il perche' dei singoli passi
-# sta in docs/runbook-baseline-vps.md.
+# sta in docs/sito-vps/runbook-baseline-vps.md.
 
 set -uo pipefail
 
