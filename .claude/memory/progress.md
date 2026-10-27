@@ -1,5 +1,17 @@
 # Work-log
 
+## Rapporto d'incidente USB recepito nella scheda dell'autorita', 27/10/2026
+
+Su richiesta dell'utente, da una sessione aperta sul progetto delle postazioni Windows, e' stato recepito il rapporto congiunto del 26/10/2026 sul guasto USB della postazione dell'IT Manager. Il racconto tecnico vive anonimizzato nel documento 18 di quel progetto e qui non si duplica. Aggiunta alla scheda dell'autorita' la sezione del 27/10/2026: nessun ruolo di autorita' di Windows sulla postazione, verificato da due sessioni e coerente con ADR-025; causa probabile a monte del supporto, quindi connettore sospetto da non riusare; supporto nuovo di marca con seriale univoco, perche' il guasto esponeva il segnaposto di fabbrica dei controller anonimi; protocollo di rilettura di un supporto che cede. Aperta in `docs/stato/pendenze-aperte.md` una sezione con quattro voci: supporto nuovo e decisione su ADR-025, causa a monte, gruppo di continuita' della postazione, sospensione USB come impostazione di base della flotta. Nessun seriale, identita' di volume o nome di sessione scritto; guard-rail 0 bloccanti. Lasciate intatte le modifiche non committate di un'altra sessione presenti in questo file, nel registro ISO e in altri sette file.
+
+File scritti e riletti: `docs/sicurezza/autorita-certificazione-interna.md`, `docs/stato/pendenze-aperte.md`, questo work-log. **Template:** nessuna.
+
+## Percorso della coda Windows allineato, 27/10/2026
+
+L'utente ha pubblicato il collettore `f5acb3b` e la rete `4c48bdf`, entrambi puliti e uguali ai remoti. Il monitor usa ora il percorso `storage.path` del file passato, senza ripiegare sul runtime predefinito; la prova del runtime diverso è rossa sul difetto e verde sulla correzione. Dieci test mirati e il probe Fluent Bit 5.1.3 sono verdi, ma il job NinjaOne e il file effettivo del servizio non sono ancora verificati. Security, soglie, VM e allarme esterno aperti; ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati dossier, due schede, fonte ISO, timeline e memoria; nessun Git di scrittura dell'agente.
+
+**Template:** nessuna.
+
 ## Monitor della coda Windows allineato, 27/10/2026
 
 L'utente ha pubblicato il collettore `55af8ca` e la rete `7ab60f4`, entrambi puliti e uguali al remoto. Il monitor nel bundle richiede soglie esplicite, misura byte della coda, spazio libero e anzianità dei chunk, distinguendo allarme da misura fallita. Otto prove mirate verdi; la mutazione della soglia byte rende rossa la prova pertinente. Il binario Windows ha prodotto un chunk offline segnalato dal monitor e recuperato dopo riavvio. Soglie reali, NinjaOne, Security, VM e allarme ancora aperti; ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati dossier, schede, fonte ISO, timeline e memoria; nessun Git di scrittura dell'agente.
@@ -3639,3 +3651,15 @@ Consegna tecnica in sola lettura: installazioni, processi caricati e fonti uffic
 **Stato.** Il ramo riscritto e' in `refs/riscritta/main`, l'albero di lavoro e' intatto. Mancano tre gesti dell'utente: riallineare `main` a quel ramo senza toccare i file, `chiudi -NoPush` e il push forzato. Su GitHub i commit vecchi restano raggiungibili per hash finche' la piattaforma non li elimina.
 
 **Template:** nessuna.
+
+## Pacchetto grc-skills nel template e prima gap analysis ISO 27001, 27/10/2026
+
+**Template.** Ramo `pacchetto/grc-skills` in `E:/template-grc-skills`, controlli di `chiudi -SoloControlli` verdi: pacchetto con nove skill alla release `v2.1.0` (451 KB, solo Markdown, scansione con 0 segnali alti), strumento `grc-skills.py` con autotest, voce di catalogo (96 voci), sezione Govern nel filone di sicurezza e riga in FILONI, fonte registrata in `fonti-a-monte` (177 fonti, tutte verificate), esclusione per cartella in `fix-dashes` e `fix-accents`, esclusione per decisione nel guard-rail di `anonymization`. Corrette con gli strumenti tre forme accentate e due trattini lunghi preesistenti, che fermavano `chiudi`.
+
+**Progetto.** Istanziate `iso27001` e `nis2` con adapter Codex (bridge OK, 19 skill); guard-rail esteso e pulito sulle categorie bloccanti; ISO-39 portato a in corso.
+
+**Misura.** Registro ISO al 27/10/2026: 1 completato, 17 in corso, 29 da fare; 40 controlli dell'Annex A citati su 93, calcolati da codice sul riferimento della skill. Perimetro: stato registrato, non misurato sugli apparati; documenti SGSI originali in OneDrive non riletti.
+
+**Fonte non letta.** Il post Reddit indicato dall'utente è registrato nelle fonti di scouting del template come non letto: Reddit risponde 403 e l'aggiramento è stato negato.
+
+**Template:** nessuna, la capacità è risalita direttamente.

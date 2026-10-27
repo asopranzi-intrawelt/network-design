@@ -138,6 +138,36 @@ def _git(*argomenti):
     return [f for f in out.split("\n") if f.strip()]
 
 
+def escludi_per_decisione(pat, trovati):
+    """Toglie i riscontri di una categoria sotto un percorso dichiarato, e lo dice.
+
+    Serve ai testi altrui copiati verbatim, come le skill di conformita' del pacchetto
+    grc-skills: una sanzione del GDPR o una soglia della NIS2 ha la forma di un importo ma
+    e' testo di legge, e una casella d'esempio ha la forma di un indirizzo personale. Ogni
+    voce porta il prefisso, le categorie e il motivo; senza motivo la voce e' ignorata,
+    perche' un'esclusione senza ragione e' una svista che sembra una decisione. Le categorie
+    sono elencate una per una: un prefisso escluso per gli importi resta controllato per
+    gli indirizzi, i nomi e i segreti.
+    """
+    voci = [v for v in pat.get("percorsi_esclusi_per_decisione", [])
+            if v.get("prefisso") and v.get("categorie") and v.get("motivo")]
+    if not voci:
+        return trovati
+    tenuti = collections.defaultdict(list)
+    tolti = collections.Counter()
+    for cat, elenco in trovati.items():
+        for r in elenco:
+            percorso = r[0].replace("\\", "/")
+            voce = next((v for v in voci if percorso.startswith(v["prefisso"]) and cat in v["categorie"]), None)
+            if voce:
+                tolti[(voce["prefisso"], voce["motivo"])] += 1
+            else:
+                tenuti[cat].append(r)
+    for (prefisso, motivo), n in sorted(tolti.items()):
+        print("esclusi per decisione: %d riscontri sotto %s (%s)" % (n, prefisso, motivo))
+    return tenuti
+
+
 def file_perimetro(includi_ignorati):
     """Restituisce [(percorso, origine)] con origine tracciato/non tracciato/ignorato.
 
@@ -384,6 +414,7 @@ def main():
     pat = carica_pattern(args.patterns)
     files = file_perimetro(args.tutti)
     trovati, saltati = analizza(pat, files)
+    trovati = escludi_per_decisione(pat, trovati)
     conteggio = collections.Counter(origine for _, origine in files)
 
     ordine = ["IP REALE", "MAC REALE", "SEGRETO LETTERALE", "NOME PROPRIO", "EMAIL PERSONALE",

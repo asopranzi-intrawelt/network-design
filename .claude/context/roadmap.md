@@ -6,7 +6,7 @@ last-verified: 920c616
 
 ## Coda del pilota Windows, 27/10/2026
 
-Il checkpoint `55af8ca` aggiunge al bundle il controllo di coda e lo prova con un chunk prodotto dal binario Windows durante un fermo del ricevitore. Il prossimo gate è misurare crescita della coda e spazio sul pilota, fissare soglie e recapito NinjaOne, poi provare Security, bookmark e ricezione sulla VM. ISO-30 e Cliente-1 89/90 restano in corso; le date non cambiano.
+Il checkpoint `f5acb3b` fa leggere al monitor `storage.path` dal file Fluent Bit passato con `-ConfigFile`; una prova del runtime diverso diventava rossa sul vecchio codice. Sul pilota bisogna verificare che quel file sia realmente quello del servizio, misurare coda e spazio e provare l'allarme NinjaOne. Poi restano Security, bookmark e VM. ISO-30 e Cliente-1 89/90 restano in corso; le date non cambiano.
 
 ## Pilota Windows del collettore, 27/10/2026
 

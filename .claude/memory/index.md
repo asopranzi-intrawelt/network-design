@@ -1,8 +1,12 @@
 # Snapshot di sincronizzazione
 
+## Skill di conformità e gap analysis ISO 27001, 27/10/2026
+
+Pacchetto `grc-skills` costruito nel template sul ramo `pacchetto/grc-skills` (controlli verdi, commit e merge manuali dell'utente) e istanziato qui con `iso27001` e `nis2` (ADR-042). Il guard-rail di anonimizzazione accetta esclusioni dichiarate per prefisso e categoria. Prima verifica in `docs/sicurezza/gap-analysis-iso27001.md`: 40 controlli su 93 citati dal registro, quattro lacune critiche per il calendario (perimetro, nomine, SoA, audit interno e riesame). ISO-39 in corso.
+
 ## Monitor Windows nel bundle, 27/10/2026
 
-Collettore `55af8ca` pubblicato: monitor di coda PowerShell incluso nel bundle, due prove del monitor e sei del renderer verdi. Il controllo ha segnalato il chunk fittizio lasciato dal binario con TLS locale assente; replay riuscito dopo il riavvio. Nessun job NinjaOne, evento Security reale o invio alla VM collaudato. ISO-30 e Cliente-1 89/90 in corso.
+Collettore `f5acb3b` pubblicato: il monitor legge il percorso di coda dalla configurazione passata, fallisce senza prompt su argomenti assenti e distingue sano, allarme e misura impossibile. Dieci test mirati verdi, mutazione del runtime predefinito rilevata e probe con binario Windows riuscito su chunk offline. Nessun job NinjaOne, evento Security reale o invio alla VM collaudato. ISO-30 e Cliente-1 89/90 in corso.
 
 ## Collettore Windows e VM, 27/10/2026
 

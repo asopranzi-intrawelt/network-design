@@ -18,7 +18,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
 
 ## Stato del programma
 
-- Interventi: **47**; da fare 29, in corso 17, bloccati 0, completati 1, non applicabili 0.
+- Interventi: **47**; da fare 28, in corso 18, bloccati 0, completati 1, non applicabili 0.
 - Forniture: **1 necessarie**, 12 condizionate da diagnosi o decisione, 2 da verificare. Le etichette indicano una necessita' tecnica o di servizio, non un acquisto autorizzato.
 - Le configurazioni di firewall, il ripristino dei backup e l'indipendenza elettrica richiedono ancora prove dirette; la riconciliazione della mappa non li certifica.
 - La checklist ISO locale conta 93 controlli ma non contiene prove compilate; lo Statement of Applicability va riconciliato con misure e documenti datati.
@@ -253,7 +253,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-27):** Collettore 55af8ca pubblicato: monitor locale della coda Fluent Bit Windows nel bundle, soglie esplicite e codici distinti; chunk fittizio offline segnalato e ripreso dopo riavvio. Otto prove mirate verdi. Mancano soglie misurate, NinjaOne, Security reale, VM e allarme esterno; Cliente-1 89/90 aperte.
+  - **Ultimo stato (2026-10-27):** Collettore f5acb3b pubblicato: monitor Windows legge storage.path dal file Fluent Bit passato con -ConfigFile; dieci prove mirate e replay fittizio con binario 5.1.3 verdi. Mancano verifica del file del servizio, soglie reali, NinjaOne, Security, VM e allarme esterno; Cliente-1 89/90 aperte.
   - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
@@ -311,12 +311,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
   - **Fonti:** docs/infrastructure-timeline/GAP-TBC.md, ISO/IEC 27001:2022.
   - **Ultimo stato (2026-10-16):** Registrati gli scenari del processo fonti vive: dipendenza da PC e sessione, segreti dello stesso utente, perdita/capienza delle evidenze, backup e recupero; presidi e trattamenti aperti nella procedura. Proprietario/delegato e accettazione del residuo da formalizzare nel SGSI; nessuna conformità complessiva attestata.
 
-- **ISO-39 | Statement of Applicability dei 93 controlli** - **Da fare**; Nessuna fornitura prevista.
+- **ISO-39 | Statement of Applicability dei 93 controlli** - **In corso**; Nessuna fornitura prevista.
   - **Azione:** Riconciliare la checklist locale con misure attuali; motivare applicabilita', esclusioni, implementazione, responsabile e prova per ogni controllo.
   - **Chiusura verificabile:** SoA approvato, nessun 'Fatto' privo di evidenza, numerazione Annex A 2022 corretta.
   - **Responsabile:** RSGSI. **Dipendenze:** ISO-38. **Controlli:** 6.1.3.
   - **Fonti:** Checklist ISO27001 rev4 locale, docs/sicurezza/design-and-security.md.
-  - **Ultimo stato (2026-09-28):** La checklist contiene 93 controlli e nessuna prova compilata.
+  - **Ultimo stato (2026-10-27):** Copertura calcolata con la skill iso27001 (grc-skills v2.1.0): il registro cita 40 dei 93 controlli; dei 53 restanti la gap analysis distingue quelli gia' trattati in altri documenti, quelli di rete mancanti e quelli che dipendono dal perimetro (ISO-36). Bozza di classificazione, non ancora SoA.
 
 - **ISO-40 | Obiettivi e indicatori misurabili** - **Da fare**; Nessuna fornitura prevista.
   - **Azione:** Fissare metriche e soglie per backup, ripristino, patch, esposizioni, revisioni accessi e allarmi, con frequenza e proprietario.

@@ -4,7 +4,7 @@ last-verified: 920c616
 
 ## Monitor della coda Windows pubblicato, esercizio aperto, 27/10/2026
 
-Il collettore `55af8ca` include nel bundle Fluent Bit Windows un controllo PowerShell di sola lettura della coda. Richiede soglie esplicite per byte, spazio libero e anzianità del chunk; distingue sano (0), allarme (2) e misura impossibile (3). Otto prove mirate sono verdi. Il binario 5.1.3 ha lasciato un chunk fittizio con ricevitore TLS spento: il monitor lo ha segnalato e dopo il riavvio sono arrivati vecchio e nuovo record. NinjaOne, soglie misurate, Security reale, VM e allarme esterno restano da collaudare. ISO-30 e Cliente-1 89/90 restano in corso.
+Il collettore `f5acb3b` è pubblicato. Il monitor PowerShell ora richiede `-ConfigFile` e legge `storage.path` dalla sezione `[SERVICE]`, evitando di controllare automaticamente un runtime predefinito vuoto mentre la coda vera cresce. Senza argomenti termina con codice 3 senza prompt. Dieci prove mirate e una prova con Fluent Bit Windows 5.1.3 sono verdi: il monitor ha segnalato un chunk fittizio offline, poi recuperato con un record nuovo al riavvio in 19,2 secondi nel giro misurato. Non è provato che il job NinjaOne riceva il file usato dal servizio. Soglie, Security, bookmark, VM e allarme esterno restano da collaudare; ISO-30 e Cliente-1 89/90 restano in corso.
 
 ## Collettore Windows pubblicato, esercizio ancora aperto, 27/10/2026
 

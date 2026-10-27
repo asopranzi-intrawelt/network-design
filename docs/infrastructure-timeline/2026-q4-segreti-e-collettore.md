@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## La coda Windows segue lo storage configurato, 27/10/2026
+
+Collettore `f5acb3b` pubblicato: il monitor legge `storage.path` dal file Fluent Bit passato con `-ConfigFile`; dieci prove mirate e il replay di un chunk fittizio con il binario Windows sono verdi. Configurazione del servizio, Security reale, soglie, VM e allarme restano da collaudare. ISO-30 e Cliente-1 89/90 in corso.
+
 ## Il monitor Windows segnala la coda offline, 27/10/2026
 
 Collettore `55af8ca` pubblicato: monitor PowerShell nel bundle, soglie esplicite e codici distinti per allarme e misura fallita. Il binario Fluent Bit ha prodotto un chunk fittizio con ricevitore spento, segnalato dal monitor e poi recuperato. Nessun NinjaOne o servizio installato; Security, capienza, VM e allarme esterno aperti. ISO-30 e Cliente-1 89/90 restano in corso.

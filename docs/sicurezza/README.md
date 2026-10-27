@@ -6,6 +6,7 @@ Quest'area raccoglie ciò che serve al percorso ISO 27001 della rete: la roadmap
 |---|---|---|
 | [Roadmap ISO 27001 operativa](roadmap-iso27001-operativa.md) | quali interventi servono, in quale fase, con quali forniture | generato da `scripts/IsoRoadmap.py` |
 | [Design e sicurezza](design-and-security.md) | principi, dichiarazione di applicabilità e piano di implementazione | governance |
+| [Gap analysis ISO 27001:2022](gap-analysis-iso27001.md) | quali clausole e quali dei 93 controlli mancano al registro, e in che ordine chiuderli | verifica datata, 27/10/2026 |
 | [Governance della sicurezza](cybersecurity-governance.md) | cronologia e stato delle attività di sicurezza 2024-2026 | registro |
 | [VA ottobre 2026](vulnerability-assessment-ott2026.md) | il secondo ciclo di verifica esterna, base corrente della riconciliazione | sintesi |
 | [VA novembre 2025](vulnerability-assessment-nov2025.md) | il primo ciclo, conservato per i rilievi storici | storico |

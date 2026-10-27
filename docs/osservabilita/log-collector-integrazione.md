@@ -2,7 +2,7 @@
 
 ## Monitor della coda del pilota Windows, 27/10/2026
 
-Il collettore `main` `55af8ca` include nel bundle Windows il monitor `ads-windows-queue-health.ps1`. Legge metadati della coda Fluent Bit e spazio libero, richiede soglie esplicite e distingue i codici 0, 2 e 3. Due prove PowerShell e sei prove renderer sono verdi; nel probe con Fluent Bit 5.1.3 ha segnalato un chunk fittizio durante il fermo del ricevitore, poi recapitato al riavvio. Non prova l'età dell'evento, il tasso, il servizio, Security, la consegna sulla VM o un alert ricevuto. Soglie e destinatario NinjaOne dipendono dalla misura sul pilota. ISO-30 e Cliente-1 89/90 restano in corso; dettagli nel runbook del componente 5 del collettore.
+Il collettore `main` `f5acb3b` corregge il monitor incluso nel bundle Windows: `-ConfigFile` è richiesto e `storage.path` viene letto dalla sezione `[SERVICE]` del file passato. Un runtime predefinito vuoto non produce più un verde quando la configurazione passata indica altrove. Dieci prove mirate sono verdi; la prova del runtime diverso era rossa sul codice precedente e una mutazione la rende di nuovo rossa. Nel probe con Fluent Bit 5.1.3 il monitor ha segnalato il chunk fittizio offline, poi recuperato con un record nuovo in 19,2 secondi nel giro misurato. Sul pilota va verificato che il job usi il file del servizio; soglie, Security, bookmark, VM e allarme esterno restano aperti. ISO-30 e Cliente-1 89/90 restano in corso. Dettaglio nel runbook del componente 5 del collettore.
 
 ## Pilota Windows e misura VM, 27/10/2026
 
