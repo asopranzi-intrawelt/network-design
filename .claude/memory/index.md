@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Filone sito nuovo e posta automatica, 27/10/2026
+
+Si riprende da `_notes/HANDOFF-sito-2026-10-27.md` e dalla lista viva `_notes/lista-sito-produzione.txt`. Aperti: punti 5, 7, 8 e 9 del sito; fine dell'autenticazione di base SMTP su Microsoft 365 entro fine dicembre 2026 (`M365-SMTP-BASIC`), con tre caselle da migrare.
+
 ## Skill di conformità e gap analysis ISO 27001, 27/10/2026
 
 Pacchetto `grc-skills` costruito nel template sul ramo `pacchetto/grc-skills` (controlli verdi, commit e merge manuali dell'utente) e istanziato qui con `iso27001` e `nis2` (ADR-042). Il guard-rail di anonimizzazione accetta esclusioni dichiarate per prefisso e categoria. Prima verifica in `docs/sicurezza/gap-analysis-iso27001.md`: 40 controlli su 93 citati dal registro, quattro lacune critiche per il calendario (perimetro, nomine, SoA, audit interno e riesame). ISO-39 in corso.

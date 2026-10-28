@@ -241,8 +241,8 @@ section{margin-top:96px}
     <div class="g"><div class="k">@</div><div class="full">intrawelt.com</div><p>Il dominio «nudo», senza niente davanti. In rubrica si scrive con la chiocciola.</p></div>
     <div class="g"><div class="k">www</div><div class="full">www.intrawelt.com</div><p>L'indirizzo del sito che la gente scrive. Non ha un indirizzo suo: è un <b>soprannome</b> di vserver.</p></div>
     <div class="g"><div class="k">vserver</div><div class="full">vserver.intrawelt.com</div><p>Il nome dato alla <b>macchina di Fastnet su cui gira il sito</b> (probabilmente sta per «virtual server»). Nessuno lo scrive nel browser: serve a tenere l'indirizzo in un posto solo.</p></div>
-    <div class="g"><div class="k">scenia</div><div class="full">scenia.intrawelt.com</div><p>Un altro sito, ospitato sulla stessa macchina di Fastnet (stesso indirizzo).</p></div>
-    <div class="g"><div class="k">anteprima</div><div class="full">anteprima.intrawelt.com</div><p>Nome nuovo da aggiungere: porta al sito nuovo sulla VPS, per provarlo senza toccare il resto.</p></div>
+    <div class="g"><div class="k">scenia</div><div class="full">scenia.intrawelt.com</div><p>Sottodominio creato a febbraio nel pannello Fastnet, sullo stesso hosting del sito: oggi mostra una pagina vuota. Non c&rsquo;&egrave; niente da migrare, ma <b>prima di disdire l&rsquo;hosting</b> va deciso dove farlo puntare.</p></div>
+    <div class="g"><div class="k">anteprima</div><div class="full">anteprima.intrawelt.com</div><p>Creato da Fastnet il 26 ottobre: porta al sito nuovo sulla VPS, visibile solo dalla sede. Si toglie al passaggio.</p></div>
     <div class="g"><div class="k">_dmarc</div><div class="full">_dmarc.intrawelt.com</div><p>Nome «di servizio» dove si scrive la regola DMARC della posta. Il trattino basso vuol dire: non è un sito.</p></div>
     <div class="g"><div class="k">selector1/2</div><div class="full">nomi di servizio</div><p>Dove sono pubblicate le chiavi DKIM con cui Microsoft firma le nostre mail.</p></div>
     <div class="g"><div class="k">Il trucco</div><div class="full">perché il soprannome</div><p>Quando sposteremo il sito basterà cambiare l'indirizzo di <b>vserver</b>: www lo segue da solo.</p></div>
@@ -301,7 +301,7 @@ section{margin-top:96px}
           <div class="box vps"><b>Sito</b>VPS Aruba, aperta a tutti</div>
           <div class="box mail"><b>Posta</b>Microsoft 365, uguale</div>
         </div>
-        <div class="box off"><b>Hosting Fastnet</b>Dismesso (ma Fastnet tiene ancora la rubrica)</div>
+        <div class="box off"><b>Hosting Fastnet</b>Dismesso dopo aver deciso dove punta scenia (Fastnet tiene ancora la rubrica)</div>
       </div>
     </div>
   </div>
@@ -314,7 +314,54 @@ section{margin-top:96px}
 
 <!-- 4 -->
 <section>
-  <div class="eyebrow"><i></i>4 · Il vocabolario</div>
+  <div class="eyebrow"><i></i>4 · Il lucchetto</div>
+  <h2>Perch&eacute; il certificato se lo prende la macchina da sola</h2>
+  <p class="sub">Il lucchetto che vedi nel browser dice che chi risponde a quel nome &egrave; autorizzato a farlo. Non si compra e non si installa a mano: &egrave; un dialogo fra due macchine che dura pochi secondi e si ripete da solo ogni tre mesi.</p>
+  <div class="cast">
+    <div class="card">
+      <span class="tag t-reg">1 · La richiesta</span>
+      <h3>Vorrei un certificato</h3>
+      <p class="who">Il proxy chiama l&rsquo;autorit&agrave;</p>
+      <p>Il programma che sta davanti al sito contatta un&rsquo;autorit&agrave; di certificazione e chiede un certificato per <b>anteprima.intrawelt.com</b>. L&rsquo;autorit&agrave; che usiamo &egrave; gratuita e lavora solo con le macchine: nessun modulo, nessun acquisto.</p>
+    </div>
+    <div class="card">
+      <span class="tag t-dns">2 · La sfida</span>
+      <h3>Dimostra che &egrave; tuo</h3>
+      <p class="who">L&rsquo;autorit&agrave; risponde</p>
+      <p>Non pu&ograve; fidarsi sulla parola, altrimenti chiunque otterrebbe un certificato per un nome altrui. Risponde quindi con un <b>codice usa e getta</b> e una condizione: fammelo trovare sul sito che dici di controllare.</p>
+    </div>
+    <div class="card">
+      <span class="tag t-host">3 · La prova</span>
+      <h3>Va a bussare</h3>
+      <p class="who">La verifica passa da Internet</p>
+      <p>Il proxy espone il codice su un percorso convenzionale, in chiaro, sulla porta 80. L&rsquo;autorit&agrave; interroga il DNS, scopre dove punta il nome, arriva alla macchina e legge: se trova il codice che ha dato, la prova &egrave; fatta.</p>
+      <div class="like">Il 26 ottobre la verifica &egrave; arrivata da <b>cinque punti di controllo diversi</b>, sparsi per il mondo. Tutti e cinque hanno ricevuto risposta.</div>
+    </div>
+    <div class="card">
+      <span class="tag t-mail">4 · Il rinnovo</span>
+      <h3>E si ripete da solo</h3>
+      <p class="who">Novanta giorni per volta</p>
+      <p>Il certificato dura novanta giorni. Il proxy non aspetta la scadenza: quando ne restano una trentina rifa' lo stesso dialogo da capo. Finch&eacute; il nome punta qui e la porta resta aperta, non deve ricordarsene nessuno.</p>
+    </div>
+  </div>
+  <div class="warn" style="margin-top:32px">
+    <div class="w">
+      <div class="eyebrow"><i></i>Le due condizioni</div>
+      <h3>Perch&eacute; abbiamo dovuto aspettare Fastnet</h3>
+      <p>La prova del passo 3 spiega da sola le due cose che servivano. Il <b style="color:#fff">nome deve gi&agrave; puntare alla macchina</b>, altrimenti l&rsquo;autorit&agrave; va a bussare da un&rsquo;altra parte: per questo il certificato non si poteva ottenere prima che il record esistesse.</p>
+      <p>E la <b style="color:#fff">porta in chiaro deve restare raggiungibile da chiunque</b>, perch&eacute; quella verifica arriva da Internet e non dall&rsquo;ufficio.</p>
+    </div>
+    <div class="w">
+      <div class="eyebrow"><i style="background:var(--red)"></i>La trappola evitata</div>
+      <h3>Una difesa scritta male avrebbe bloccato il lucchetto</h3>
+      <p>Il sito di anteprima ammette solo l&rsquo;indirizzo dell&rsquo;ufficio. Una restrizione scritta senza eccezioni avrebbe respinto anche le cinque richieste di verifica, e il certificato <b style="color:#fff">non sarebbe mai arrivato</b>.</p>
+      <p>Per questo nella configurazione il solo percorso della verifica resta aperto a tutti, mentre tutto il resto &egrave; chiuso. &Egrave; l&rsquo;unica porta lasciata socchiusa, e serve a questo.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow"><i></i>5 · Il vocabolario</div>
   <h2>Le parole del documento, una riga ciascuna</h2>
   <p class="sub">Ogni riga della rubrica si chiama <b>record</b> e ha un tipo. Questi sono i tipi che compaiono.</p>
   <div class="gloss">
@@ -330,12 +377,16 @@ section{margin-top:96px}
     <div class="g"><div class="k">TTL</div><div class="full">time to live</div><p>Quanto tempo gli altri tengono in memoria una risposta. Da noi: 24 ore.</p></div>
     <div class="g"><div class="k">Risolutore</div><div class="full">resolver</div><p>Chi fa le domande per il tuo PC e ricorda le risposte. Ha copie, non l'originale.</p></div>
     <div class="g"><div class="k">Autoritativo</div><div class="full">authoritative</div><p>Chi ha la rubrica originale e «sa» la risposta invece di ricordarla.</p></div>
+    <div class="g"><div class="k">HTTPS</div><div class="full">il lucchetto</div><p>La conversazione fra browser e sito &egrave; cifrata, e il sito ha dimostrato di essere chi dice. Senza, quello che si scrive viaggia in chiaro.</p></div>
+    <div class="g"><div class="k">Certificato</div><div class="full">certificate</div><p>Il documento che lega un nome a chi lo controlla. Dura novanta giorni e si rinnova da solo.</p></div>
+    <div class="g"><div class="k">CA</div><div class="full">autorit&agrave; di certificazione</div><p>Chi emette i certificati e prima verifica che il nome sia davvero tuo. La nostra &egrave; gratuita e automatica.</p></div>
+    <div class="g"><div class="k">Sfida</div><div class="full">challenge</div><p>Il codice usa e getta che l&rsquo;autorit&agrave; chiede di esporre sul sito per dimostrare che lo controlli.</p></div>
   </div>
 </section>
 
 <!-- 5 -->
 <section>
-  <div class="eyebrow"><i></i>5 · Le due cose da non sbagliare</div>
+  <div class="eyebrow"><i></i>6 · Le due cose da non sbagliare</div>
   <h2>Dove ci si fa male</h2>
   <div class="warn" style="margin-top:32px">
     <div class="w">
@@ -361,17 +412,19 @@ section{margin-top:96px}
 
 <!-- 6 -->
 <section>
-  <div class="eyebrow"><i></i>6 · E dopo</div>
+  <div class="eyebrow"><i></i>7 · E dopo</div>
   <h2>Cosa viene dopo il passaggio</h2>
   <div class="cast" style="grid-template-columns:repeat(3,1fr);margin-top:32px">
     <div class="card"><h3>Dipendere meno da Fastnet</h3><p>Ogni modifica è un ticket, anche il «torna indietro». A sito stabile, si valuta di spostare la rubrica presso un gestore dove la possiamo cambiare noi. Mai lo stesso giorno del sito: due rischi insieme non si capisce chi ha rotto cosa.</p></div>
     <div class="card"><h3>Protezione davanti al sito (D1)</h3><p>Un servizio tipo «scudo» vuole diventare lui il DNS autoritativo, cioè prendersi tutta la rubrica. Quindi si potrà fare solo più avanti, con lo spostamento della zona.</p></div>
     <div class="card"><h3>Certificati (il lucchetto https)</h3><p>Oggi li rinnova l'hosting Fastnet. Spento l'hosting, li rinnoverà Caddy sulla VPS da solo, purché il nome punti alla VPS e la porta 80 resti aperta.</p></div>
+    <div class="card"><h3>Posta del sito</h3><p>Il sito vecchio spedisce gi&agrave; da Microsoft 365, non dal server Fastnet che compare nella lista SPF. Dopo la disdetta quella voce si toglie, e il sito nuovo spedir&agrave; da Microsoft con l&rsquo;autenticazione moderna, perch&eacute; quella con utente e password Microsoft la spegne a fine dicembre 2026.</p></div>
+    <div class="card"><h3>Dall&rsquo;ufficio</h3><p>Dalla rete interna il dominio senza www oggi non risolve: il DNS del firewall risponde da s&eacute; per intrawelt.com invece di chiedere a Fastnet. Va sistemato prima del passaggio, altrimenti l&rsquo;ufficio non vedr&agrave; il sito nuovo.</p></div>
   </div>
 </section>
 
 <div class="foot">
-  <span>Fonte: D:\network-design\docs\sito-vps\dns-domini-come-funziona.md · stato misurato il 26/10/2026</span>
+  <span>Fonte: D:\network-design\docs\sito-vps\dns-domini-come-funziona.md · aggiornato il 28/10/2026</span>
   <span>Gli indirizzi IP sono segnaposto, come nel documento originale</span>
 </div>
 </div>

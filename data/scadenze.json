@@ -1,8 +1,8 @@
 {
   "_commento": "Registro delle affermazioni che invecchiano. Attua ADR-026. Nessun valore reale: solo date, cadenze e riferimenti a documenti tracciati. Non contiene importi, identificativi d'ordine, indirizzi ne' nomi di persona. Lo legge scripts/Test-Allineamento.py; la logica degli invarianti sta nello script, qui stanno i soli dati.",
   "_regola": "Ogni affermazione dei file tracciati deve avere una verifica meccanica, una scadenza dichiarata, oppure una marcatura esplicita di non verificabile con la domanda gia' scritta. Un'affermazione senza nessuna delle tre invecchia in silenzio.",
-  "revisione": 26,
-  "aggiornato": "2026-10-20",
+  "revisione": 29,
+  "aggiornato": "2026-10-27",
   "progetti_collegati": [
     {
       "id": "log-collector",
@@ -144,6 +144,46 @@
       "preavviso_giorni": 30,
       "rompe": "Stesso credito prepagato unico. E' la macchina su cui vive l'unico tunnel di protezione realmente in esercizio: perderla significa perdere il precedente funzionante su cui si modella l'hardening del sito",
       "dove": "docs/sito-vps/piano-produzione-sito-nuovo.md; pannello cloud.it, misurato il 20/10/2026"
+    },
+    {
+      "id": "M365-SMTP-BASIC",
+      "cosa": "Microsoft 365 disattiva di default l'autenticazione di base per l'invio SMTP dalle applicazioni (SMTP AUTH) nei tenant esistenti a fine dicembre 2026, secondo il messaggio MC786329 aggiornato il 27/01/2026; l'amministratore puo' riattivarla, la rimozione definitiva sara' annunciata nella seconda meta' del 2027. Il sito attuale spedisce con questa modalita', misurato il 27/10/2026 dalle impostazioni del plugin di posta; altri servizi automatici dell'azienda probabilmente la usano",
+      "data": "2026-12-31",
+      "preavviso_giorni": 75,
+      "rompe": "Ogni applicazione che spedisce posta aziendale con utente e password smette di spedire senza errori visibili a chi la usa: moduli del sito attuale, notifiche dei portali e dei gestionali. Prima della data: censire i mittenti dal rapporto dei client SMTP AUTH dell'interfaccia di amministrazione di Exchange, poi passare ciascuno all'autenticazione moderna o a un canale di invio dedicato",
+      "dove": "docs/stato/pendenze-aperte.md, voce sulla fine dell'autenticazione di base; https://mc.merill.net/message/MC786329"
+    },
+    {
+      "id": "NODE-22-EOL",
+      "cosa": "Fine del supporto della linea 22 di Node.js, oggi in esercizio nell'immagine del sito nuovo, secondo il calendario ufficiale letto il 27/10/2026. Proposto il passaggio alla 24 nel prossimo aggiornamento",
+      "data": "2027-04-30",
+      "preavviso_giorni": 120,
+      "rompe": "Dopo questa data la linea non riceve piu' correzioni di sicurezza: il sito resta esposto a ogni avviso successivo",
+      "dove": "docs/sito-vps/runbook-primo-rilascio-sito.md; https://github.com/nodejs/Release/blob/main/schedule.json"
+    },
+    {
+      "id": "NODE-24-EOL",
+      "cosa": "Fine del supporto della linea 24 di Node.js, quella proposta per il sito nuovo; il passaggio alla 26 va pianificato prima",
+      "data": "2028-04-30",
+      "preavviso_giorni": 180,
+      "rompe": "Come sopra, per la linea successiva",
+      "dove": "docs/sito-vps/runbook-primo-rilascio-sito.md; https://github.com/nodejs/Release/blob/main/schedule.json"
+    },
+    {
+      "id": "DOMINIO-INTRAWELT-COM",
+      "cosa": "Rinnovo del dominio intrawelt.com, a tacito rinnovo presso il fornitore dell'hosting, data comunicata dal fornitore a marzo 2026",
+      "data": "2027-02-28",
+      "preavviso_giorni": 30,
+      "rompe": "Un rinnovo mancato spegne sito e posta insieme, perche' la posta usa lo stesso dominio",
+      "dove": "docs/stato/pendenze-aperte.md, voce sul piano di manutenzione del sito"
+    },
+    {
+      "id": "POSTA-SITO-CERTIFICATO",
+      "cosa": "Scadenza del certificato con cui l'applicazione Entra della posta del sito si autentica a Microsoft Graph, generato il 28/10/2026 con validita' di 730 giorni; la chiave privata vive solo nel livello privato delle macchine del sito",
+      "data": "2028-10-27",
+      "preavviso_giorni": 60,
+      "rompe": "Alla scadenza il sito smette di spedire le mail dei moduli senza nessun errore visibile al visitatore; il certificato nuovo va generato, caricato in Entra e installato prima",
+      "dove": "docs/sito-vps/runbook-primo-rilascio-sito.md, sezione sulla posta del sito"
     }
   ],
   "freschezza": [
