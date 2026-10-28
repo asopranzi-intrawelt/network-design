@@ -1,5 +1,89 @@
 # Work-log
 
+## Chiusura della sessione del filone sito, 28/10/2026
+
+Chiusura con wipe su richiesta dell'IT Manager, con l'altra sessione aperta sullo stesso albero. Registrate per il template le lezioni L-019, L-020, L-021, L-022 e L-023. Aggiornati indice, handoff con lo stato di chiusura e il primo micro-passo, file di ripresa condiviso con un solo rimando. Controlli di chiusura e commit limitati ai file del filone, perche' l'altra sessione ha lavoro non committato nello stesso albero.
+
+File scritti e riletti: `.claude/memory/lezioni-template.md`, `.claude/memory/index.md`, `_notes/HANDOFF-sito-2026-10-27.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** L-019, L-020, L-021, L-022, L-023
+
+## Desktop ridotto a una versione per file; destinazione originaria di scenia, 28/10/2026
+
+Su richiesta dell'IT Manager, che si stava perdendo fra le versioni, il Desktop tiene ora una sola versione per file con nomi senza data; le versioni superate sono spostate, non cancellate, nell'archivio privato degli artefatti, e lo script di sincronizzazione e i generatori puntano al nome nuovo della roadmap. L'IT Manager ha precisato che `scenia.intrawelt.com` era destinato a una pagina di atterraggio su SCENIA dentro il sito aziendale, non ancora usata: il consiglio cambia da toglierlo a rimandarlo alla sezione SCENIA del sito nuovo dal proxy del dominio definitivo. Si procede un micro-passo alla volta in chat.
+
+File scritti e riletti: `_notes/artefatti-desktop/` (archivio, script, generatori), `_notes/lista-sito-produzione.txt`, `_notes/report-smtp.txt`, la roadmap sul Desktop, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Report sui rimandi per i colleghi, e causa del vertice irrisolto dalla sede, 28/10/2026
+
+Su richiesta dell'IT Manager scritto un report breve di appoggio su G7 e G8 con il messaggio pronto per i colleghi, sincronizzato sul Desktop insieme al CSV completo; aggiunto allo script di sincronizzazione. Per G12 misurato dal server dei nomi del firewall che la zona del dominio e' generata dal firewall stesso, con serie variabile, e che per i nomi antenati dei record interni, il vertice e `int`, la risposta e' vuota per ogni tipo di record senza inoltro, mentre gli altri nomi sono inoltrati; scritti meccanismo e due rimedi nella scheda della risoluzione dei nomi, aggiornati pendenze, lista e roadmap. Direttiva: ogni risposta si chiude con l'elenco G1-G17.
+
+File scritti e riletti: `_notes/sito-vecchio/report-rimandi-sito-vecchio.txt`, `_notes/artefatti-desktop/sincronizza.py`, `docs/rete/risoluzione-nomi-interni.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Inventario degli indirizzi del sito attuale e bozza dei rimandi, 28/10/2026
+
+Inventario dalla mappa del sito attuale dalle 13:08:35 alle 13:24, circa 15 minuti e mezzo per la lentezza del server attuale: 403 indirizzi in tre sotto-mappe, tutti 200, nessuno gia' rimandato; distribuzione per lingua e tipo e date di modifica registrate nel runbook. Bozza dei rimandi per famiglia, con un secondo passaggio sui percorsi tradotti di inglese e tedesco che ha portato da 133 a zero gli indirizzi senza famiglia; destinazioni proposte, da confermare con chi sviluppa. Spiegata in parole semplici la scelta su scenia. Aggiornate roadmap (G7 chiuso, G8 bozza, G11 spiegato), lista, runbook, handoff.
+
+File scritti e riletti: `_notes/sito-vecchio/url-sito-vecchio-2026-10-28.csv`, `_notes/sito-vecchio/rimandi-bozza-2026-10-28.csv`, `_notes/sito-vecchio/inventario_url.py`, `_notes/sito-vecchio/bozza_rimandi.py`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Elenco completo del go-live nella roadmap e nella lista, 28/10/2026
+
+Su richiesta dell'IT Manager, scritto l'elenco completo di cio' che separa l'anteprima dal sito pubblicato, diciassette voci da G1 a G17 con stato misurato e responsabile, come sezione della roadmap sul Desktop e in testa alla lista dei punti; il generatore della sezione e' salvato fra gli artefatti privati del progetto. L'inventario degli indirizzi del sito attuale e' ancora in corso.
+
+File scritti e riletti: la roadmap sul Desktop, `_notes/lista-sito-produzione.txt`, `_notes/artefatti-desktop/genera-sezione-go-live.py`, questo work-log. **Template:** nessuna
+
+## Proxy per il dominio definitivo preparato, dominio secondario scoperto, inventario degli indirizzi avviato, 28/10/2026
+
+Dalle 13:08, su richiesta dell'IT Manager. Misurato che il sito attuale ha come canonico il dominio senza prefisso e vi rimanda con 301 il `www` e il dominio secondario, che ha zona e rimando presso lo stesso fornitore: alla disdetta il secondario smetterebbe di rispondere, fatto nuovo registrato nelle pendenze e nei messaggi al fornitore. Scritto `Caddyfile.produzione` con i rimandi equivalenti, senza restrizione e senza intestazione contro l'indicizzazione, con il blocco dei rimandi da compilare; validato con l'immagine in esercizio in un contenitore usa e getta. Avviato l'inventario degli indirizzi dalla mappa del sito attuale: 403 indirizzi in tre sotto-mappe, controllo di ciascuno lento per la lentezza del server attuale, in corso in background.
+
+File scritti e riletti: `deploy/vps-sito/caddy/Caddyfile.produzione`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, `_notes/sito-vecchio/inventario_url.py`, questo work-log. **Template:** nessuna
+
+## Confronto dei ruoli fra collettore dei log e contenitore del salvataggio, 28/10/2026
+
+Su richiesta dell'IT Manager tabellata la differenza tecnica di ruolo fra il collettore dei log degli accessi amministrativi e il contenitore `backup-sito`: tipo di ospite, compito, verso del traffico, credenziali, che cosa custodiscono, controllo della norma, conseguenze di una compromissione e rapporto fra i due. Scritta nel runbook, richiamata in ADR-044, riportata in linguaggio piano nella lista.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `.claude/memory/decisions.md`, `_notes/lista-sito-produzione.txt`, questo work-log. **Template:** nessuna
+
+## ADR-044, salvataggio del sito in un contenitore dedicato, in coda dopo il go-live, 28/10/2026
+
+L'IT Manager ha approvato il contenitore LXC dedicato `backup-sito` sul nodo Proxmox, con scrittura sul NAS INTRA; registrata ADR-044 con le ragioni, le alternative scartate e il rischio di andare online prima del salvataggio, che il piano metteva prima. Precisato che un contenitore non e' una macchina virtuale completa ma un ospite a pieno titolo, da inventariare. Il lavoro e' un rilascio dentro il rilascio, con otto passi scritti nella lista, nel runbook e nella roadmap come voce 23; in coda per decisione dell'IT Manager, priorita' al go-live.
+
+File scritti e riletti: `.claude/memory/decisions.md`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Il collettore dei log non ospita il salvataggio del sito, 28/10/2026
+
+L'IT Manager ha proposto il collettore dei log degli accessi amministrativi come esecutore del salvataggio notturno del sito. Spiegato e registrato perche' lo sconsiglio pur andando bene tecnicamente: e' la macchina che custodisce le prove degli accessi, con requisiti di integrita', e ospitarvi una chiave che entra nella produzione del sito mescolerebbe il controllo con il controllato, oltre a condividere disco e orari notturni. Resta la proposta di un contenitore dedicato e minimo sul nodo Proxmox. Decisione aperta.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, questo work-log. **Template:** nessuna
+
+## Ramo della posta spinto, rami ripuliti, scelta dell'esecutore del salvataggio, 28/10/2026
+
+L'IT Manager ha committato e spinto il ramo `posta-e-moduli` (`f1b370e`) ed eseguito la pulizia dei rami: su GitHub restano quattro rami. Spiegato al collaboratore, tramite l'IT Manager, che la cartella nuova risultava vuota solo per una lettura non aggiornata del gestore dei file, e che i file di contesto non vanno salvati nel ramo di ricerca. Sull'esecutore del salvataggio notturno corretta la premessa che lo limitava alle due postazioni: il filtro della VPS ammette l'indirizzo della sede, comune a tutte le macchine, e cio' che limita sono le chiavi; esposte le ragioni per una macchina dedicata sul nodo Proxmox invece di una postazione. Decisione aperta.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Ramo posta-e-moduli e salvataggio del sito su NAS, 28/10/2026
+
+Creato sulla macchina di sviluppo il ramo `posta-e-moduli` da `staging`, con i materiali di contesto copiati dal ramo di ricerca dove erano rimasti non salvati, l'adattatore Graph ripreso identico dal commit del ramo cancellato, le due librerie e un documento di avvio per il collaboratore; controllo dei tipi senza errori. Annotato che l'handoff di partenza dava per presente un file che stava sul ramo cancellato. Spiegato e registrato il salvataggio automatico: le copie oggi sono solo manuali e sulla VPS stessa, il salvataggio notturno di Proxmox non copre la VPS, destinazione decisa un NAS aziendale, proposta di estrazione da una macchina interna in SSH; segnalato che l'indirizzo scritto dall'IT Manager non e' valido e che il NAS della cartella dei dump e' un altro. Verificato che i comandi di pulizia dei rami non erano stati eseguiti.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log; sulla macchina di sviluppo la cartella `~/lavoro-posta`. **Template:** nessuna
+
+## Rami del sito allineati e censiti, 28/10/2026
+
+L'IT Manager ha allineato il ramo di ricerca a `staging` in una cartella separata, unito la richiesta numero 9 in `staging` senza cancellare il ramo, e cancellato il ramo del mailing dopo l'archiviazione. Censiti tutti i rami contando i commit fuori da `staging`: nessuno ne ha; consegnati i comandi per togliere i due rami di sicurezza gia' uniti, un ramo locale del 21/10 e la cartella di lavoro di sicurezza, e per aggiornare `staging` e `main` locali sulla macchina di sviluppo.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Next.js 16.4.3 in produzione, e rami del sito, 28/10/2026
+
+Richiesta numero 8 unita dall'IT Manager, `main` a `5750bbc`, `staging` allineato a `9d91b65`. Rilascio in produzione con la procedura del mattino: copia verificata, costruzione in 1 minuto e 52 secondi, circa 3,9 secondi di fermo, verifiche superate, immagini precedenti conservate. Per i rami: lette prima le cartelle di lavoro, trovato lavoro non salvato in entrambe, archiviato per copia quello del ramo del mailing da cancellare, comprese le patch dell'adattatore Graph e un censimento dei moduli scritto lo stesso giorno da altri; provata senza commit l'unione di `staging` nel ramo di ricerca, nessun conflitto; scelto di farla in una cartella separata per non toccare il lavoro in corso del collaboratore. Comandi consegnati all'IT Manager.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Next.js 16.4.3 preparato e provato, 28/10/2026
+
+Su segnalazione dell'IT Manager verificata sul registro dei pacchetti la `16.4.3` come versione stabile corrente, del 23/10, compresa nell'intervallo di Payload. Registrata la mia mancata verifica dell'ultima patch nel rilascio del mattino, e il chiarimento che il passaggio da `16.1.6` riguarda SCENIA. Ramo `sicurezza/next-16.4.3` da `main` sulla macchina di sviluppo: costruzione in 2 minuti e 20 secondi, prova di avvio superata con pagina iniziale identica al byte, eslint invariato. Commit e unione all'IT Manager. Commit `fbcac0f` di questo repository spinto dall'IT Manager.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, questo work-log. **Template:** nessuna
+
 ## Versioni fissate e rotazione dei registri in produzione, 28/10/2026
 
 Con il consenso esplicito dell'IT Manager applicato il descrittore nuovo: tre contenitori ricreati alle 12:18:48, tutto risponde alle 12:19:03, circa 15,5 secondi di fermo; immagini con impronta e registri a rotazione in esercizio, letti dalla configurazione effettiva. Verifiche superate, pagina iniziale identica al byte, banca dati intatta, certificato conservato. Registrato un mio errore di misura, pagine di zero byte causate dal `curl` di Windows che non poteva scrivere in un percorso in stile Unix dopo aver disattivato la conversione dei percorsi, corretto ripetendo la prova. Voci 18 e 20 chiuse.

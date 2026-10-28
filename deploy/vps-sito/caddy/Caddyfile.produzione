@@ -1,0 +1,69 @@
+# Configurazione del proxy inverso per il dominio definitivo. NON E' IN ESERCIZIO.
+#
+# Preparata il 28/10/2026 e da attivare il giorno del passaggio del dominio, al posto di
+# Caddyfile: si copia sulla VPS come caddy/Caddyfile, si cambiano i valori nel file .env
+# accanto al descrittore e si ricrea il solo contenitore del proxy. La procedura completa,
+# con l'ordine rispetto alle richieste al fornitore del DNS, sta nel runbook del primo
+# rilascio; il ritorno indietro e' rimettere il Caddyfile dell'anteprima.
+#
+# Come nel file dell'anteprima, i nomi non sono scritti qui ma arrivano dall'ambiente:
+#   SITO_NOME    il dominio principale senza prefisso, quello che il sito attuale usa come
+#                indirizzo canonico; e' lo stesso valore che oggi vale per l'anteprima e
+#                che il giorno del passaggio cambia
+#   SITO_ALIAS   il dominio secondario, che oggi l'hosting attuale rimanda al principale
+#
+# Rispetto al file dell'anteprima cambiano tre cose, e nessun'altra. Cade la restrizione
+# alla provenienza aziendale, perche' un sito pubblicato che respinge il pubblico e' un
+# guasto. Cade l'intestazione che chiede ai motori di non indicizzare, per la stessa
+# ragione. E si aggiungono i rimandi permanenti che oggi fa l'hosting attuale e che con la
+# sua disdetta sparirebbero: il prefisso www verso il dominio principale, e il dominio
+# secondario, con e senza www, verso il principale. Misurato il 28/10/2026 che il sito
+# attuale usa il dominio senza prefisso come canonico e rimanda li' sia il www sia il
+# dominio secondario con codice 301: si conserva lo stesso comportamento, perche' cambiare
+# l'indirizzo canonico nello stesso giorno del passaggio costerebbe posizionamento.
+
+{$SITO_NOME} {
+
+	route {
+		# I rimandi dagli indirizzi del sito attuale a quelli del sito nuovo, costruiti
+		# dall'inventario della mappa del sito attuale. Vanno prima dell'applicazione,
+		# perche' un indirizzo vecchio che arriva all'applicazione risponde 404 e perde il
+		# posizionamento che aveva. Si compilano prima del passaggio; finche' il blocco e'
+		# vuoto, gli indirizzi vecchi rispondono 404.
+		#
+		# RINVII-INIZIO
+		# redir /vecchio-percorso/ /nuovo-percorso 301
+		# RINVII-FINE
+
+		# Come nell'anteprima, l'applicazione si raggiunge per nome sulla rete interna.
+		reverse_proxy app:3000
+	}
+
+	log {
+		output file /data/access.log {
+			roll_size 50MiB
+			roll_keep 10
+		}
+		format json
+	}
+
+	encode zstd gzip
+}
+
+# Il prefisso www rimanda al dominio principale, conservando il percorso.
+www.{$SITO_NOME} {
+	redir https://{$SITO_NOME}{uri} 301
+}
+
+# Il dominio secondario, con e senza www, rimanda al principale. Oggi lo fa l'hosting
+# attuale: senza questo blocco, alla disdetta il dominio secondario smetterebbe di
+# rispondere. Richiede che il fornitore del DNS faccia puntare qui anche i suoi record.
+{$SITO_ALIAS}, www.{$SITO_ALIAS} {
+	redir https://{$SITO_NOME}{uri} 301
+}
+
+# Il sottodominio di SCENIA: blocco da aggiungere solo se la decisione aperta lo vuole
+# rimandato al sito del prodotto invece che tolto. Non attivo.
+# scenia.{$SITO_NOME} {
+# 	redir https://<sito del prodotto>{uri} 301
+# }

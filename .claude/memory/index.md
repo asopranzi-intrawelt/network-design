@@ -2,7 +2,7 @@
 
 ## Filone sito nuovo e posta automatica, 27/10/2026
 
-Si riprende da `_notes/HANDOFF-sito-2026-10-27.md` e dalla lista viva `_notes/lista-sito-produzione.txt`. Aperti: punti 5, 7, 8 e 9 del sito; fine dell'autenticazione di base SMTP su Microsoft 365 entro fine dicembre 2026 (`M365-SMTP-BASIC`), con tre caselle da migrare.
+Si riprende da `_notes/HANDOFF-sito-2026-10-27.md` e dalla lista viva `_notes/lista-sito-produzione.txt`, che in testa ha l'elenco del go-live G1-G17. Stato alla chiusura del 28/10: sito in produzione su anteprima con Next.js 16.4.3 e Node 24.22.1, versioni fissate e registri a rotazione; posta del sito via Graph configurata e provata (ADR-043); ramo `posta-e-moduli` per il collaboratore; proxy per il dominio definitivo pronto e non attivo; inventario di 403 indirizzi e bozza dei rimandi; causa del vertice irrisolto dalla sede misurata. Primo passo alla ripresa: il micro-passo 1, record del dominio sul firewall, poi verifica dalla sede. Salvataggio notturno in coda (ADR-044). Fine dell'autenticazione di base SMTP su Microsoft 365 entro fine dicembre 2026 (`M365-SMTP-BASIC`): mittenti censiti nel report SMTP privato.
 
 ## Skill di conformità e gap analysis ISO 27001, 27/10/2026
 
