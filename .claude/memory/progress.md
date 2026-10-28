@@ -1,5 +1,187 @@
 # Work-log
 
+## Versioni fissate e rotazione dei registri in produzione, 28/10/2026
+
+Con il consenso esplicito dell'IT Manager applicato il descrittore nuovo: tre contenitori ricreati alle 12:18:48, tutto risponde alle 12:19:03, circa 15,5 secondi di fermo; immagini con impronta e registri a rotazione in esercizio, letti dalla configurazione effettiva. Verifiche superate, pagina iniziale identica al byte, banca dati intatta, certificato conservato. Registrato un mio errore di misura, pagine di zero byte causate dal `curl` di Windows che non poteva scrivere in un percorso in stile Unix dopo aver disattivato la conversione dei percorsi, corretto ripetendo la prova. Voci 18 e 20 chiuse.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Ritorno indietro documentato; versioni fissate e rotazione dei registri preparate, 28/10/2026
+
+Scritta nel runbook la procedura di ritorno indietro dell'aggiornamento applicativo, con la condizione che la rende sicura, cioe' l'assenza di migrazioni, e la variante per un rilascio che migra. Per le voci 18 e 20: misurato che l'immagine del proxy coincide con `2.11.7-alpine` e che l'etichetta `17.11` della banca dati su Docker Hub punta gia' a un'immagine diversa da quella in esercizio; descrittore versionato modificato con etichetta e impronta delle immagini in esercizio e rotazione dei registri, verificato identico a quello sulla VPS prima della modifica, copiato accanto e validato, vecchio conservato. La sostituzione e la ricreazione dei contenitori sono state bloccate dal classificatore dei permessi dell'agente; verificato che nulla era cambiato. Comandi consegnati all'IT Manager.
+
+File scritti e riletti: `deploy/vps-sito/compose.yml`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Aggiornamento di sicurezza del sito in produzione, 28/10/2026
+
+Unita la richiesta numero 7, `main` a `4cc02f3`. Sulla VPS: copia della banca dati, 343 blocchi di dati verificati, e dei file caricati, in due secondi; prelievo di `main`; costruzione dell'immagine con etichetta nuova in 2 minuti e 4 secondi, immagine precedente conservata; sostituzione del solo contenitore applicativo con circa 3,6 secondi di sito fermo; Node 24.22.1 in esercizio. Verifiche del primo rilascio ripetute dalla sede e superate, file riservati 403 senza autenticazione. Osservati la pagina iniziale piu' leggera, coerente con la versione nuova, e il catalogo pubblico dei documenti senza percorso dei file. Punto 7 chiuso.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Staging allineato, 28/10/2026
+
+L'IT Manager ha unito il ramo di sicurezza in `staging`, che passa da `2aee9aa` a `1a703e4`, 213 file, spinto. La mole viene dai trentatre commit di `main` assenti da `staging`, dieci migrazioni comprese, non dai due commit di sicurezza. Resta la richiesta di unione del ramo di sicurezza verso `main`, collegamento consegnato.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Commit del filone sito spinti, e preparazione dell'allineamento di staging, 28/10/2026
+
+L'IT Manager ha eseguito i commit preparati: ramo di sicurezza del sito con due commit, ramo del mailing con due commit, questo repository con `3d2a52f` limitato ai file del filone. Decisione: il lavoro sulla posta riparte dal collaboratore su un ramo nuovo da `staging` allineato, il ramo del mailing resta come riferimento con l'adattatore Graph recuperabile. Misurati i rami: `staging` due commit avanti e trentatre indietro rispetto a `main`; prova di unione del ramo di sicurezza in `staging` senza commit, in un albero temporaneo poi rimosso: nessun conflitto, i commit propri di `staging` toccano soltanto gli strumenti del template. Comandi dell'unione consegnati all'IT Manager.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Consegna della prima mail del sito, eslint ripristinato, versionamento preparato, 28/10/2026
+
+La mail di prova e' arrivata nella casella IT alle 11:26. Eslint del progetto del sito non partiva su nessun ramo per il caricamento con `FlatCompat` di `eslint-config-next` 16: configurazione riscritta con le importazioni dirette su ramo di sicurezza e ramo del mailing; ora gira e mostra errori preesistenti del codice, 29 e 11, delle famiglie dei collegamenti interni e degli hook di React, mentre l'adattatore di posta e' pulito. Controlli di chiusura di questo progetto: falliscono soltanto sulla misura delle istruzioni, che supera la soglia per lavoro dell'altra sessione, quindi niente `chiudi`; si propone un commit esplicito dei soli file del filone sito, mentre pendenze e work-log contengono lavoro di entrambe le sessioni e attendono. Verificato che l'alias della postazione e quello della macchina di sviluppo autenticano lo stesso account GitHub.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, `_notes/COMMIT-MSG.txt`, questo work-log; sulla macchina di sviluppo `eslint.config.mjs` in due rami. **Template:** nessuna
+
+## Posta del sito: permesso verificato, adattatore Graph scritto, primo invio accettato, 28/10/2026
+
+Assegnato dall'IT Manager il ruolo di invio all'applicazione sul campo ristretto; il test di autorizzazione ha dato vero per la casella del sito e falso per la casella generale. Sul ramo del mailing della macchina di sviluppo riscritto l'adattatore di posta: Graph con certificato in esercizio, Mailpit solo locale per le prove, rifiuto di ogni altra configurazione e di ogni mittente diverso dalla casella del sito. Controllo dei tipi superato; controllo di stile non eseguibile per un difetto di configurazione preesistente del ramo. Variabili aggiunte al file di ambiente privato, dopo aver spostato fuori dall'albero una copia che git non ignorava. Primo invio reale verso la casella IT accettato da Graph con 202; consegna da confermare.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, `_notes/report-smtp.txt`, la roadmap sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log; sulla macchina di sviluppo `src/utilities/posta.ts`, `package.json`, `package-lock.json` e `.env` del ramo del mailing. **Template:** nessuna
+
+## ADR-043 sulla posta del sito, copia del certificato e nota sul censimento dei certificati, 28/10/2026
+
+L'IT Manager ha deciso di tenere autofirmato il certificato dell'applicazione Entra della posta del sito, dopo la spiegazione che Entra non verifica la catena e che usare la chiave dell'autorita' aziendale aggiungerebbe esposizione senza beneficio, e di conservarne una copia nella cartella riservata IT. Copiati parte pubblica e chiave privata dalla macchina di sviluppo. Registrata ADR-043. Aggiunta nella scheda dell'autorita' aziendale la nota per il censimento dei certificati, con la distinzione per scopo fra certificati di servizio, di firma del codice e credenziali di applicazione, e allineata la voce delle pendenze.
+
+File scritti e riletti: `.claude/memory/decisions.md`, `docs/sicurezza/autorita-certificazione-interna.md`, `docs/stato/pendenze-aperte.md`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Applicazione Entra e certificato della posta del sito, 28/10/2026
+
+L'IT Manager ha registrato in Entra l'applicazione della posta del sito, solo per l'organizzazione. Generato sulla macchina di sviluppo il certificato con cui l'applicazione si autentica: RSA 2048, 730 giorni, chiave privata con permessi del solo utente fuori dal repository, parte pubblica consegnata sul Desktop per il caricamento. Scadenza registrata come `POSTA-SITO-CERTIFICATO`, revisione 29 del registro. Annotato che l'ID oggetto mostrato nella pagina della registrazione non e' quello da usare nei comandi Exchange.
+
+File scritti e riletti: `data/scadenze.json`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `_notes/lista-sito-produzione.txt`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Tracciamento completo del deploy e procedura Entra ID per la posta del sito, 28/10/2026
+
+Su direttiva ripetuta dell'IT Manager, ogni passaggio del deploy dal 26/10 e' ora nel registro tecnico giorno per giorno del runbook del primo rilascio, con le misure disponibili del tempo: le due costruzioni (2 minuti e 48 secondi in produzione, 6 minuti e 42 secondi sulla macchina di sviluppo) e, come misura indiretta della finestra di lavoro, gli orari degli screenshot fatti per l'agente (246 il 27/10 fra le 09:11 e le 17:42, 27 il 28/10 fra le 09:14 e le 10:47). Scritta nello stesso runbook la procedura Entra ID ed Exchange per la posta del sito, letta dalla documentazione Microsoft sul controllo di accesso per applicazioni: registrazione, segreto o certificato con scadenza, nessun permesso di invio in Entra perche' i permessi si sommano, ID dell'entita' servizio e non della registrazione, ruolo `Application Mail.Send` su un campo limitato alla casella del sito, prova con il comando dedicato e cache fra 30 minuti e 2 ore. Seeweb non usa la casella del sito. Creata la cartella privata degli artefatti del Desktop con lo script di sincronizzazione e il generatore del report html.
+
+File scritti e riletti: `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt`, `_notes/report-smtp.txt`, `_notes/artefatti-desktop/` (script e copie), `_notes/HANDOFF-sito-2026-10-27.md`, il report html sul Desktop, questo work-log. **Template:** nessuna
+
+## Aggiornamento di sicurezza del sito provato sulla macchina di sviluppo, posta moderna, report per i colleghi, 28/10/2026
+
+Verificata prima la compatibilita': Payload 3.88 dichiara Next.js da 16.2.6 a 17 esclusa. Sulla macchina di sviluppo creato il ramo `sicurezza/stack-ottobre-2026` dal riferimento in produzione, in un albero separato, con Next.js 16.4.1, React 19.2.9, sharp 0.35.5 e immagine Node 24.22.1; lockfile rigenerato. Immagine costruita in 6 minuti e 42 secondi contro la banca dati di sviluppo e avviata in prova: pagina iniziale, pannello e contatti rispondono 200, Node 24.22.1 in esercizio. Nessun commit: e' dell'IT Manager. Il registro conferma che il sito non ha canale di posta.
+
+Su indicazione dell'IT Manager la posta del sito nasce gia' moderna: il ramo del mailing usa SMTP con password e va portato a Microsoft Graph con un'applicazione il cui permesso di invio e' limitato alla casella del sito; ripristino dei moduli secondo la tabella dei 38. Completato il report SMTP con Odoo (server Microsoft, porta 25, password), NAS gia' autorizzati con accesso moderno, n8n che non spedisce, Keycloak in sviluppo, Seeweb da confermare; prodotta la versione per i colleghi con il foglio di stile del design system gia' in uso nella roadmap.
+
+File scritti e riletti: `_notes/lista-sito-produzione.txt`, `_notes/report-smtp.txt`, `Report SMTP - posta automatica.html`, la roadmap sul Desktop, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Configurazione corrente del firewall nel progetto, e i mittenti della casella del sito, 28/10/2026
+
+L'IT Manager ha scaricato dalla GUI la configurazione in esercizio del firewall, 2266 righe. Poiche' il firewall non puo' andare su Nebula, la fotografia si rinnova a mano: salvata nel livello privato in `_notes/firewall/startup-config-2026-10-28.conf`, verificato che git la ignora, e dichiarata nella scheda del firewall come riferimento dello stato reale al posto del file target del 05/06. Letta per due domande. Posta: il firewall spedisce registro giornaliero e avvisi dalla casella del sito con autenticazione di base verso il server Microsoft. DNS interno: una ventina di record sotto il sottodominio interno e due inoltri generici, nessun record per il vertice, quindi la causa del vertice irrisolto dalla LAN resta un'ipotesi da provare. Nella lettura un comando ha mostrato a video il valore cifrato della password della casella del sito: non e' stato scritto in nessun file.
+
+Dagli screenshot: Proxmox ha la sola destinazione sendmail predefinita, quindi la casella personale sta nel programma di posta dell'host; i tre NAS spediscono dalla casella del sito con il provider Outlook.com, da vedere se con password o accesso Microsoft; lo strumento di avvisi gira sulla postazione dell'IT Manager e va migrato. Lo sviluppo dell'invio del sito nuovo si fa sul ramo dedicato della VM di sviluppo.
+
+File scritti e riletti: `_notes/firewall/startup-config-2026-10-28.conf`, `docs/firewall/firewall-zyxel-usg-flex-500.md`, `docs/stato/pendenze-aperte.md`, `_notes/report-smtp.txt` e `_notes/lista-sito-produzione.txt` con copie sul Desktop, questo work-log. **Template:** nessuna
+
+## Notifiche di Proxmox e del firewall lette dalle fotografie del progetto, 28/10/2026
+
+Su indicazione dell'IT Manager lette le fotografie che il progetto gia' raccoglie. Proxmox, fotografia automatica del 28/10: dieci job di backup con notifica solo in caso di errore a tre destinatari, uno esterno; il mittente e' la casella personale dell'IT Manager, dal rapporto Exchange, e 74 messaggi in 23 giorni sono troppi per notifiche di soli errori, quindi o i backup falliscono spesso o partono altri avvisi, da guardare. Firewall: il report giornaliero arriva dal cloud del produttore, non dalle caselle aziendali; la configurazione corrente non e' salvata nel progetto, e una configurazione di un firewall dismesso usava l'invio Microsoft con autenticazione di base su una terza casella che oggi nel rapporto non compare. Switch e access point notificano dal cloud del produttore. Restano da guardare NAS, Seeweb, multifunzione e UPS.
+
+File scritti e riletti: `_notes/report-smtp.txt` con copia sul Desktop, `docs/stato/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Mittenti di posta automatica cercati in D:\ e sulle VM, moduli del sito attuale, 28/10/2026
+
+Due subagent in sola lettura. Nei progetti di D:\: lo strumento di avvisi sulle caselle spedisce ogni giorno dalla casella del sito con autenticazione di base, candidato principale per i 948 messaggi non di WordPress; il gestionale usa la casella TREX; SCENIA spedisce con una libreria SMTP il cui server sta nel file di ambiente, non letto; un servizio di avvisi usa un fornitore esterno e non e' toccato. Sulle sette VM raggiungibili nessun programma di posta di sistema e nessun file con il server Microsoft o le tre caselle; restano da guardare a mano le configurazioni che vivono nelle banche dati delle applicazioni (Odoo, n8n, Keycloak) e gli apparati (Proxmox, NAS, firewall, Seeweb, multifunzione). Host Proxmox e VM 206 non raggiunti. Esportati i 38 moduli del sito attuale: tabella modulo-destinatario nella lista; nel sito nuovo quattro moduli che non spediscono. Aperto, su richiesta dell'IT Manager, il report SMTP vivo con copia sul Desktop.
+
+File scritti e riletti: `_notes/report-smtp.txt` con copia sul Desktop, `_notes/lista-sito-produzione.txt` con copia sul Desktop, la roadmap sul Desktop, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Rapporto SMTP AUTH dettagliato, moduli del sito vecchio, ISO 27001 del sito, 28/10/2026
+
+Analizzato il rapporto dettagliato dei client SMTP AUTH (5.391 righe, 02-25/10, tutte con autenticazione di base). La casella personale dell'IT Manager e' usata dall'host Proxmox per le notifiche, 74 messaggi: un apparato spedisce con credenziali personali. La casella del gestionale TREX spedisce da un solo punto, 5.288 messaggi. La casella del sito spedisce da quattro punti, e solo 104 messaggi su 1.072 portano l'identificativo di WordPress: altri programmi la usano e vanno individuati prima di toccarla. Origini mascherate nel rapporto.
+
+L'IT Manager, che sviluppa il sito, chiede di ricostruire la tabella modulo, mittente e destinatario del sito vecchio per ricollegare i moduli portati nel nuovo: via indicata, l'esportazione dei moduli di contatto dagli strumenti di WordPress; ripiego, il backup della VM 206 sul NAS. Registrata come punto 12 la verifica ISO 27001 del sito con le skill di conformita' gia' installate, dopo il passaggio, con la precisazione che la certificazione riguarda l'organizzazione e non il sito. Aggiunte alla roadmap le voci 18-22: etichette mobili, riavvii, rotazione dei registri, moduli, ISO. Allineati presentazione, pagina DNS nelle due copie e lezione personale, che riceve il caso del DNS interno che oscura il vertice del dominio e le due sorprese del rapporto. Direttiva: i quattro file del Desktop, cioe' lista, roadmap, presentazione e pagina DNS, piu' la lezione personale, si aggiornano sempre.
+
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, roadmap, presentazione e pagina DNS sul Desktop, `docs/sito-vps/dns-domini-spiegato-semplice.html`, la lezione personale, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Piano di manutenzione del sito dopo la messa in produzione, 27/10/2026
+
+Su richiesta dell'IT Manager scritto l'elenco completo della manutenzione del sito, con cadenze e responsabili, senza aprire documenti nuovi: punto 11 della lista privata del filone e sezione della roadmap del Desktop, con un rimando nelle pendenze e un paragrafo nel runbook del primo rilascio. Le voci coprono componenti applicative, contenitori e macchina, dati, sicurezza e accessi, posta, dominio e DNS, costi e contratti, contenuti e legale, monitoraggio e documentazione. Misurati sulla VPS quattro fatti che il piano deve sanare: etichette mobili sulle immagini del proxy e della banca dati, aggiornamenti automatici attivi senza riavvio automatico, registri dei contenitori senza rotazione, salvataggio e monitoraggio assenti; disco al 12 per cento; migrazioni della banca dati gia' esplicite e non automatiche. Aggiunte al registro delle scadenze, revisione 28, `NODE-22-EOL`, `NODE-24-EOL` e `DOMINIO-INTRAWELT-COM`; lo script di allineamento le legge, verificato.
+
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, la roadmap del 27/10 sul Desktop, `docs/stato/pendenze-aperte.md`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `data/scadenze.json`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Punto 7: controllo di sicurezza dello stack del sito, 27/10/2026
+
+Letto anche il rilascio di sicurezza di Node.js del 21/10/2026 dalla pagina ufficiale: dieci voci, correzione della linea 22 nella 22.23.4; confrontate una per una con il codice del sito, nessuna raggiungibile, la piu' seria (Brotli) non esercitata dal codice applicativo. L'immagine base e' fissata a 22.17.0 nel Dockerfile. Resoconto per voce nella lista privata, al punto 7. Su domanda dell'IT Manager proposta di passare subito alla linea 24 di Node invece di restare sulla 22, con il calendario ufficiale letto lo stesso giorno: fine della 22 il 30/04/2027, della 24 il 30/04/2028, la 26 LTS dal 28/10/2026 e rinviata.
+
+Inventario in sola lettura sulla VPS con l'alias `vps-sito`, nessun aggiornamento e nessun riavvio. Versioni in esercizio lette dentro i contenitori e nel sorgente al commit `e535aa4`: Next.js 16.3.0, React 19.2.6, Payload 3.88.0, sharp 0.34.2, Node 22.17.0 su Alpine 3.22, Caddy 2.11.7, PostgreSQL 17.11, Docker 29.7.2, Ubuntu 24.04.4 con un solo aggiornamento di sicurezza in attesa. Confronto con gli avvisi gia' salvati con hash nel dossier del censimento del 26/10.
+
+Correzione dello stesso giorno, dopo la lettura delle condizioni di ogni avviso: delle tre esecuzioni di codice da remoto critiche nessuna risulta sfruttabile oggi (React solo in casi rari non presenti, Cache Components non usate, contenitore su musl e non glibc), mentre e' raggiungibile il blocco del servizio con le Server Actions; il giudizio che segue sull'avviso React era esagerato. Su richiesta dell'IT Manager non si aprono documenti nuovi: lo studio vive nella lista privata, nella roadmap del Desktop e nella voce delle pendenze. Giudizio iniziale: il fatto che cambia la priorita' e' l'avviso React del 14/10/2026, esecuzione di codice da remoto non autenticata nei Server Components, che include la 19.2.6. Il sito usa l'App Router, quindi lo tratto come raggiungibile: e' un'inferenza dalla struttura del codice, non una prova d'attacco, che non si fa. Oggi la sola mitigazione e' la restrizione del proxy alla sede. Della serie Next.js di ottobre risulta non raggiungibile quello su `use cache`, assente dal codice; da verificare quello sulle immagini SVG; raggiungibili blocco del servizio, cache e SSRF. Non ho potuto leggere la versione di React incorporata in Next.js nell'uscita autoconsistente: il rimedio non cambia. Rimedio scritto nelle pendenze, nella lista e nella roadmap: da fare presto e non al passaggio.
+
+File scritti e riletti: `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt` con copia sul Desktop, la roadmap del 27/10 sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Punto di ripresa del filone sito, 27/10/2026
+
+Riscritto per intero `_notes/HANDOFF-sito-2026-10-27.md` come punto di ripresa del filone del sito e della fine dell'autenticazione di base SMTP: come si riprende, regola di convivenza con l'altra sessione, file del filone, stato dei punti da 1 a 10, inventario della posta, esito del rapporto SMTP AUTH, stati temporanei da non dimenticare e prossimo passo. Aggiunto un rimando in testa a `.claude/memory/index.md` e a `_notes/RESUME_PROMPT.md`, cosi' che una sessione nuova lo trovi. Richiesto lo stesso giorno il rapporto dettagliato SMTP AUTH, in arrivo per posta all'IT Manager.
+
+File scritti e riletti: `_notes/HANDOFF-sito-2026-10-27.md`, `.claude/memory/index.md`, `_notes/RESUME_PROMPT.md`, questo work-log. **Template:** nessuna
+
+## Stato di SMTP AUTH nel tenant, letto da PowerShell, 27/10/2026
+
+L'IT Manager ha eseguito in sola lettura i comandi di Exchange Online. SMTP AUTH e' acceso a livello di organizzazione; nessuna casella lo imposta per conto proprio, quindi la casella del sito e tutte le altre ereditano l'organizzazione; nessun criterio di autenticazione predefinito; un unico criterio, dedicato all'IMAP del gestionale Odoo, con l'SMTP di base negato. Letto subito dopo: e' assegnato alla sola casella funzionale del portale SCENIA, che quindi oggi non puo' spedire in SMTP con autenticazione di base; ho segnalato che l'IMAP con autenticazione di base in Exchange Online e' gia' ritirato da Microsoft, quindi quel criterio potrebbe non avere piu' effetto: e' un'inferenza dalla documentazione, non una misura. L'elenco dei mittenti che usano davvero SMTP AUTH non esce da questi comandi: sta nel rapporto dei client SMTP AUTH dell'interfaccia di Exchange. Letto sugli ultimi 7 giorni: tre mittenti, tutti con autenticazione di base, cioe' la casella del sito (186 messaggi, due versioni di TLS), quella del gestionale TREX (1750) e quella personale dell'IT Manager (58, programma mittente ignoto). Riletto su 90 giorni: stessi tre e nessun altro. Richiesto il rapporto dettagliato per l'origine degli invii della casella personale.
+
+File scritti e riletti: `docs/stato/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Il sito attuale spedisce da Microsoft 365 con autenticazione di base, e la scadenza di fine dicembre, 27/10/2026
+
+Letti dalle impostazioni del plugin SMTP del sito attuale: invio verso il server di Microsoft 365 sulla porta di invio autenticato con TLS, una casella funzionale come mittente e utente, password in una costante del file di configurazione, nessuna connessione di riserva. Il server di posta del fornitore che compare nel record SPF non serve quindi al sito.
+
+Verificato sulla fonte Microsoft, messaggio MC786329 aggiornato il 27/01/2026: a fine dicembre 2026 l'autenticazione di base dell'invio SMTP dalle applicazioni viene disattivata di default nei tenant esistenti, riattivabile dall'amministratore, con rimozione definitiva da annunciare nella seconda meta' del 2027. La data precedente di aprile 2026 e' superata. L'IT Manager voleva fissarla ad anno nuovo: la scadenza cade prima, quindi registrata come `M365-SMTP-BASIC` in `data/scadenze.json` con data 31/12/2026 e preavviso di 75 giorni, cosi' che lo script di allineamento la riporti a ogni avvio. Aperta la voce trasversale nelle pendenze, perche' secondo l'IT Manager riguarda anche SCENIA, il gestionale e altri servizi di posta automatica.
+
+File scritti e riletti: `data/scadenze.json` (revisione 27), `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt` con copia sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, la lezione personale, questo work-log. **Template:** nessuna
+
+## Inventario della posta del sito attuale, primo giro, 27/10/2026
+
+Entrato l'IT Manager nel pannello del sito attuale, dopo aver corretto il file hosts della postazione: le due righe decommentate puntavano alla VM 206 dismessa e producevano il timeout; aggiunta una riga temporanea verso l'indirizzo pubblico dell'hosting, registrata nell'handoff come da togliere. Letto da sei screenshot l'elenco dei 26 plugin. La posta passa da un plugin SMTP con l'avviso di Microsoft sulla fine dell'autenticazione di base, il che corregge la mia inferenza dal record SPF: il sito attuale con ogni probabilita' spedisce gia' da Microsoft 365, non dal server del fornitore, da confermare nelle impostazioni del plugin. Moduli Contact Form 7; due plugin Mailchimp suggeriscono una newsletter dal feed RSS. Aggiornati lista, pendenze, handoff e lezione personale.
+
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, la lezione personale sul DNS, questo work-log. **Template:** nessuna
+
+## Dalla LAN il dominio senza prefisso non risolve, 27/10/2026
+
+L'IT Manager non riesce ad aprire il pannello del sito attuale: il browser dichiara `intrawelt.com` inesistente. Misurato dalla postazione: il server dei nomi della LAN risponde per il dominio con un proprio record di inizio autorita' e nessun indirizzo, mentre i due server autoritativi del fornitore e due risolutori pubblici restituiscono l'indirizzo dell'hosting; `www`, `vserver`, `anteprima` e `scenia` risolvono anche dalla LAN. La causa sul firewall e' un'ipotesi da verificare sulla GUI. L'aggiramento con `www` non regge: misurato che `www` risponde con un rimando al login sul dominio senza prefisso, quindi dalla sede il pannello del sito attuale non si apre in nessun modo. Proposta all'IT Manager una voce temporanea nel file hosts della sua postazione, da togliere dopo l'inventario, oppure la connessione da rete mobile. Aperta la voce nelle pendenze, aggiornata la lista.
+
+File scritti e riletti: `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt` con copia sul Desktop, questo work-log. **Template:** nessuna
+
+## Lezione personale sul DNS aggiornata, e regola del filone sito, 27/10/2026
+
+Direttiva dell'IT Manager: ciò che impara nel filone del sito si scrive anche, anonimizzato e astratto, nella sua lezione personale sul DNS, fuori dal progetto; il percorso e le convenzioni stanno nell'handoff privato del filone. Aggiunte due sezioni, il nome lasciato a puntare nel vuoto con il rischio di furto del sottodominio, e la posta che parte da un sito con la lettura congiunta di SPF e DMARC; aggiornati indice, checklist e glossario; verificato che il file non contiene nomi reali. Stabilito anche che ogni micro-passo del filone si salva nello stesso giro in lista, roadmap, handoff e work-log.
+
+File scritti e riletti: la lezione personale con copia precedente accanto, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+
+## Posta del sito: si replica quella del sito attuale, 27/10/2026
+
+Decisione dell'IT Manager: la posta inviata dal sito attuale va replicata nel sito nuovo, che e' nato da una copia locale del sito attuale su una VM interna poi dismessa. Letti lo stesso giorno da un risolutore pubblico i record del dominio. Il mittente autorizzato elenca Microsoft 365 e un server di posta del fornitore dell'hosting e termina in rifiuto duro; la politica di autenticazione e' di sola osservazione. Questo corregge due affermazioni: la mia dello stesso giorno, che attribuiva il rifiuto alla politica di autenticazione, e quella del runbook, che parla di un mittente autorizzato che termina in rifiuto, che e' esatta per il mittente e non per la politica. Che il sito attuale spedisca dal server del fornitore e' un'inferenza dal record, da confermare sul pannello del sito attuale. Via registrata: stesse mail attraverso Microsoft 365 da una casella dedicata, senza toccare i record della posta, e prova d'invio dall'anteprima.
+
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, la roadmap del 27/10 sul Desktop, `docs/stato/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Lista viva dei punti del sito, controllo di sicurezza e posta aperti, 27/10/2026
+
+Su richiesta dell'IT Manager i punti del resoconto sul sito diventano una lista numerata da 1 a 10 in un file unico che si aggiorna a ogni avanzamento: `_notes/lista-sito-produzione.txt`, con copia sul Desktop. Sostituisce il testo per i colleghi scritto poco prima, che e' stato rimosso per non tenere due versioni. Punti nuovi: il 7, controllo di sicurezza sullo stack; l'8, come il sito spedisce la posta; il 9, la destinazione di `scenia.intrawelt.com`, con la spiegazione del rischio di un nome lasciato puntare a un indirizzo che il fornitore puo' riassegnare e il consiglio di toglierlo se non serve.
+
+Corretta una mia affermazione dello stesso giorno: avevo indicato come soglia di aggiornamento del framework la `16.3.6`, che e' quella dell'avviso di settembre; il censimento del 26/10 registra avvisi critici di ottobre che includono la `16.3.0`, con correzione nella `16.4.1`. Corrette la roadmap e la presentazione; il punto 8 parte da zero, perche' il progetto non conosce il canale di posta del sito.
+
+Aggiunte alla roadmap del Desktop le voci 15, 16 e 17, e al registro delle pendenze le voci del controllo di sicurezza e della posta.
+
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, la roadmap del 27/10 sul Desktop, la presentazione per i colleghi, `docs/stato/pendenze-aperte.md`, questo work-log. **Template:** nessuna
+
+## Che cos'e' scenia.intrawelt.com, accertato dalla corrispondenza, 27/10/2026
+
+Letti su richiesta dell'IT Manager tre messaggi del fornitore dell'hosting (febbraio e marzo 2026) e un messaggio esportato in PDF, poi cancellato dal Desktop come chiesto. Il sottodominio e' stato creato il 13/02/2026 dall'IT Manager con il comando di aggiunta sottodominio del pannello Plesk di `intrawelt.com`, con hosting proprio e certificato dedicato; il fornitore ha poi creato su richiesta un record di verifica per un certificato. Nel progetto non c'e' traccia di contenuti pubblicati: oggi risponde la pagina predefinita del pannello, e l'unico intento scritto, dell'aprile 2026, e' che il sottodominio resti a regime. Ne discende che sta nello spazio web da disdire ma non c'e' niente da migrare: va deciso soltanto dove farlo puntare, con una riga nel messaggio del passaggio. Tolta dal testo per i colleghi la domanda preliminare al fornitore, che non serve piu'; allineati la voce delle pendenze, il runbook, la roadmap e la pagina DNS su entrambe le copie, la presentazione.
+
+File scritti e riletti: `docs/stato/pendenze-aperte.md`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/sito-vps/dns-domini-spiegato-semplice.html`, `_notes/messaggio-team-sito-2026-10-27.txt` con copia sul Desktop, la roadmap del 27/10 e la pagina DNS sul Desktop, la presentazione per i colleghi, questo work-log. **Template:** nessuna
+
+## Testo per i colleghi sul sito verificato, artefatti riallineati, scenia da mettere al sicuro, 27/10/2026
+
+Verificato contro runbook e work-log il resoconto del proprietario sul primo rilascio, da girare ai colleghi. Corretto in sei punti: la pubblicazione non dipende solo dal contenuto, perche' restano salvataggio con prova di ripristino, presidio e aggiornamento del framework dalla 16.3.0 ad almeno la 16.3.6; `www` e' un `CNAME` verso `vserver`, quindi TTL e cambio d'indirizzo si chiedono per il dominio senza prefisso e per `vserver`; la verifica dell'indirizzo reale del visitatore e' chiusa perche' il codice non usa quel dato; l'eccezione per il certificato sta nella restrizione del proxy e non in quella SSH del 23/10; il CMYK e' buona pratica e non difetto misurato. Il proprietario dichiara le slide con testo di riempimento come la seconda e la terza; il progetto aveva misurato solo la seconda.
+
+Fatto nuovo: `scenia.intrawelt.com` serve, dichiarato dall'IT Manager, e un risolutore pubblico lo risolve sullo stesso indirizzo della macchina dell'hosting, dove oggi risponde la pagina predefinita del pannello. Una mia prima formulazione in sessione lo dava per destinato a sparire con la disdetta: era un'inferenza, non un fatto, e la domanda va posta al fornitore. Aperta la voce nel registro delle pendenze; superata nello stesso registro la voce che imponeva di spostare la zona prima della disdetta, contraddetta dalla conferma scritta del fornitore del 26/10.
+
+Riallineati gli artefatti con il design system: nuova vista di roadmap sul Desktop datata 27/10 (credito rimisurato a circa un mese, voce 7 non piu' superata, framework, scenia, accesso di emergenza, vincolo della data non piu' solo di contenuto); presentazione per i colleghi aggiornata in sei testi e sette piedi di pagina, dopo copia di sicurezza datata, non vista a video; le due copie della pagina DNS illustrata, che erano divergenti, riportate allo stesso contenuto, con la copia versionata priva dei caratteri incorporati per la licenza.
+
+File scritti e riletti: `docs/stato/pendenze-aperte.md`, `docs/sito-vps/runbook-primo-rilascio-sito.md`, `docs/sito-vps/dns-domini-spiegato-semplice.html`, `_notes/messaggio-team-sito-2026-10-27.txt` con copia sul Desktop, `C:/Users/Utente/Desktop/Roadmap sito in produzione - 27-10-2026.html`, `C:/Users/Utente/Desktop/DNS intrawelt.com.html`, `C:/Users/Utente/Desktop/Sito e rete - aggiornamento colleghi.pptx`, questo work-log. **Template:** nessuna
+
 ## Rapporto d'incidente USB recepito nella scheda dell'autorita', 27/10/2026
 
 Su richiesta dell'utente, da una sessione aperta sul progetto delle postazioni Windows, e' stato recepito il rapporto congiunto del 26/10/2026 sul guasto USB della postazione dell'IT Manager. Il racconto tecnico vive anonimizzato nel documento 18 di quel progetto e qui non si duplica. Aggiunta alla scheda dell'autorita' la sezione del 27/10/2026: nessun ruolo di autorita' di Windows sulla postazione, verificato da due sessioni e coerente con ADR-025; causa probabile a monte del supporto, quindi connettore sospetto da non riusare; supporto nuovo di marca con seriale univoco, perche' il guasto esponeva il segnaposto di fabbrica dei controller anonimi; protocollo di rilettura di un supporto che cede. Aperta in `docs/stato/pendenze-aperte.md` una sezione con quattro voci: supporto nuovo e decisione su ADR-025, causa a monte, gruppo di continuita' della postazione, sospensione USB come impostazione di base della flotta. Nessun seriale, identita' di volume o nome di sessione scritto; guard-rail 0 bloccanti. Lasciate intatte le modifiche non committate di un'altra sessione presenti in questo file, nel registro ISO e in altri sette file.
@@ -3663,3 +3845,15 @@ Consegna tecnica in sola lettura: installazioni, processi caricati e fonti uffic
 **Fonte non letta.** Il post Reddit indicato dall'utente è registrato nelle fonti di scouting del template come non letto: Reddit risponde 403 e l'aggiramento è stato negato.
 
 **Template:** nessuna, la capacità è risalita direttamente.
+
+**Aggiunta del 27/10/2026, pomeriggio.** Commit `162bba0` spinto. Sul ramo del template il primo commit e' `8295fd8`; il secondo, preparato, porta gli studi orfani di `main`, la sostituzione a ogni copia degli indirizzi su domini reali nelle skill (uno solo alla `v2.1.0`, nel modello d'informativa GDPR) e il passaggio di scouting sul thread Reddit, letto da Arctic Shift: sei candidati, nessuno adottato.
+
+**Aggiunta del 27/10/2026, sorveglianza delle fonti.** Il controllo delle fonti a monte del template non era agganciato all'avvio: stava solo come istruzione nel CLAUDE.md, e al 27/10 le fonti da guardare erano 57. Sul ramo `fonti/reddit-e-gist` del template (albero `E:/template-fonti`, controlli verdi): hook di avvio che mostra l'ultimo esito e lancia il controllo in sottofondo (102 s misurati, rapporto in `_notes/fonti-a-monte/` del template), tipi `reddit:` e `gist:` nel registro, censimento che si ferma su un link di condivisione Reddit. Sorvegliati ora il thread `reddit:ClaudeAI/1xevkyg` (65 commenti) e due gist, uno dei quali, di `book-to-skill`, non era mai stato sorvegliato. La raccolta GRC era gia' nel registro per release.
+
+**Ancora il 27/10/2026.** Aggiunto al registro del template il tipo `web:` per qualunque pagina senza repository ne' feed, sorvegliata per impronta del testo visibile (stabile su due letture di `snitchplugin.com`). Con thread Reddit, gist e pagine web nessuna forma di fonte indicata dal proprietario resta fuori dal censimento; 186 fonti, 70 prove su 70.
+
+**Allineamento del 27/10/2026 al commit `d36db37` del template.** 37 progetti committati, 35 spinti (`pwmanager-vm` senza chiave GitHub per scelta, `serp.systems` senza remoto); qui il commit e' `5d352a4`. Conflitti da chiudere a mano in 5 progetti, 5 copie remote di SCENIA da approvare o escludere. La passata si era bloccata mezz'ora su un comando SSH verso `vm207` che non tornava: il trasporto SSH del template ora fa girare ogni comando remoto sotto `timeout` di 300 s, provato in locale (comando normale invariato, comando appeso chiuso con 124), sullo stesso ramo `fonti/reddit-e-gist`.
+
+**Dopo l'allineamento.** Il commit `5d352a4` ha portato esempi finti degli strumenti del template che il guard-rail di anonimizzazione bloccava, qui e in otto progetti: il guard-rail esclude ora per costruzione indirizzi e importi sotto `.claude/templates/` (correzione anche sul ramo del template). Resta il carico delle istruzioni a 104.770 caratteri, oltre la soglia, che ferma `chiudi` qui: in pendenze, da fare alla prossima ripresa. Il commit di questo giro aspetta anche l'altra sessione aperta qui, che ha modifiche in `docs/sito-vps/`.
+
+**Seconda passata e decisioni del 27/10/2026.** Template `90243b3` allineato: 37 committati, 35 spinti, qui `2c859ed`. Decisioni del proprietario: escluse dall'allineamento le copie remote di SCENIA (per host), il sorgente del sito su `vps-sito` e le quattordici cartelle locali con `.claude` senza sistema di progetto; approvata la tabella delle skill di conformita' per progetto. Conflitti, installazione delle skill negli altri progetti e le 57 fonti da guardare spettano a una sessione del template, con il passaggio in `_notes/handoff-2026-10-27-grc-e-allineamento.md` del template.

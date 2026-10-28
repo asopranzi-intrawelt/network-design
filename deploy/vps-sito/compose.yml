@@ -36,12 +36,31 @@
 
 name: intrawelt-sito
 
+# Rotazione dei registri, comune ai tre servizi. Il formato predefinito del motore scrive
+# i registri di ogni contenitore in un file che cresce senza limite, fino a riempire il
+# disco; misurato il 27/10/2026 che sulla macchina non c'era nessuna rotazione. Qui ogni
+# contenitore tiene al massimo tre file da dieci megabyte. Sta nel descrittore e non nella
+# configurazione del motore perche' cosi' e' versionata e non richiede di riavviare il
+# motore, che fermerebbe tutti i contenitori; vale dalla prima ricreazione del contenitore.
+x-registri: &registri
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+
 services:
 
   postgres:
-    image: postgres:17
+    # Etichetta della versione e impronta dell'immagine, non un'etichetta mobile. Con
+    # `postgres:17` ogni ricostruzione poteva prendere una versione diversa senza che nessuno
+    # lo decidesse, e il 28/10/2026 e' stato misurato che l'etichetta `17.11` su Docker Hub
+    # era gia' stata ricostruita e puntava a un'immagine diversa da quella in esercizio.
+    # L'impronta fissa esattamente l'immagine in esercizio; l'etichetta resta per chi legge.
+    # Si aggiorna di proposito, cambiando entrambe.
+    image: postgres:17.11@sha256:b8faeff7712663c2773a190181e1246e37e364b887611c04658c28b44e2408fe
     container_name: intrawelt-pg
     restart: unless-stopped
+    logging: *registri
 
     environment:
       POSTGRES_USER: intrawelt
@@ -85,6 +104,7 @@ services:
     image: intrawelt-sito:${TAG:-locale}
     container_name: intrawelt-app
     restart: unless-stopped
+    logging: *registri
 
     env_file:
       - ./env/app.env
@@ -111,9 +131,13 @@ services:
     # malformate, delle connessioni lente, dei limiti di dimensione e della limitazione di
     # frequenza, che il server applicativo non sa fare. La scelta di Caddy segue la
     # struttura di cartelle gia' creata sulla macchina all'impianto, che prevede caddy/.
-    image: caddy:2-alpine
+    # Etichetta e impronta, per la stessa ragione della banca dati: `caddy:2-alpine` era
+    # mobile. L'impronta e' quella dell'immagine in esercizio, che il 28/10/2026 coincideva
+    # con `2.11.7-alpine`.
+    image: caddy:2.11.7-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f
     container_name: intrawelt-caddy
     restart: unless-stopped
+    logging: *registri
 
     # L'unico servizio che pubblica. Le due porte sono gia' ammesse dal filtro della
     # macchina da qualunque provenienza, perche' servono il sito.
