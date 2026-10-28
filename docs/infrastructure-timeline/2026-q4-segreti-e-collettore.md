@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 28/10/2026 - Seeweb conferma IPsec e il collettore prepara l'inventario AdS
+
+L'utente riferisce di aver inviato il seguito a Seeweb; il provider conferma il tunnel IPsec senza NAT per Syslog, ma l'IPv4 sorgente effettivo e la prova di ricezione sono ancora attesi. Nel collettore un preflight candidato conta i mittenti già presenti nell'archivio AdS senza aprire log né pubblicare IP, per riconciliare i parametri prima di restringere l'ingresso rsyslog. Nessun filtro o inoltro reale è stato modificato; ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## La coda Windows segue lo storage configurato, 27/10/2026
 
 Collettore `f5acb3b` pubblicato: il monitor legge `storage.path` dal file Fluent Bit passato con `-ConfigFile`; dieci prove mirate e il replay di un chunk fittizio con il binario Windows sono verdi. Configurazione del servizio, Security reale, soglie, VM e allarme restano da collaudare. ISO-30 e Cliente-1 89/90 in corso.

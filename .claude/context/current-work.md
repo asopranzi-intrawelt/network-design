@@ -2,6 +2,10 @@
 last-verified: 920c616
 ---
 
+## Seeweb e inventario mittenti AdS, 28/10/2026
+
+L'utente riferisce di aver inviato a Seeweb il seguito che consente la verifica preliminare dell'IPv4 sorgente e della rotta IPsec, chiedendo il nostro via prima dell'inoltro. Testo effettivo e ricevuta non sono disponibili qui. Il provider ha confermato il percorso privato senza NAT, ma l'IP osservato e la prova di ricezione restano attesi. Nel collettore `87ed83a` è pubblicato il misuratore della verifica storica; il diff successivo contiene un preflight che conta le sole directory dei mittenti AdS senza leggere log né mostrare IP. Il ruleset candidato attuale manda ancora in AdS i mittenti LAN senza filtro esplicito: i parametri privati non censiscono tutte le fonti potenzialmente operative. Il filtro non cambia finché i mittenti presenti e silenziosi non sono riconciliati sulla VM. ISO-30 e Cliente-1 89/90 restano in corso; nessun flusso Seeweb è attivo.
+
 ## Monitor della coda Windows pubblicato, esercizio aperto, 27/10/2026
 
 Il collettore `f5acb3b` è pubblicato. Il monitor PowerShell ora richiede `-ConfigFile` e legge `storage.path` dalla sezione `[SERVICE]`, evitando di controllare automaticamente un runtime predefinito vuoto mentre la coda vera cresce. Senza argomenti termina con codice 3 senza prompt. Dieci prove mirate e una prova con Fluent Bit Windows 5.1.3 sono verdi: il monitor ha segnalato un chunk fittizio offline, poi recuperato con un record nuovo al riavvio in 19,2 secondi nel giro misurato. Non è provato che il job NinjaOne riceva il file usato dal servizio. Soglie, Security, bookmark, VM e allarme esterno restano da collaudare; ISO-30 e Cliente-1 89/90 restano in corso.
