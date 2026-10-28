@@ -6,6 +6,7 @@ Quest'area serve quando si interviene: i runbook delle anomalie, ciascuno nello 
 |---|---|---|
 | [Runbook delle anomalie](runbook-anomalie.md) | come si verifica e si corregge ciascuna anomalia nota | runbook |
 | [Fornitori](vendor-management.md) | chi fornisce che cosa, con quale contatto funzionale e quale scadenza | registro |
+| [Servizio di monitoraggio delle caselle](servizio-monitoraggio-caselle.md) | dove gira il monitoraggio delle caselle di posta, perche' va spostato su una macchina virtuale dedicata, da che cosa dipende e che cosa resta aperto sulla saturazione degli archivi | scheda |
 
 La continuità operativa, con la scala delle urgenze, è nell'area [sicurezza](../sicurezza/business-continuity-disaster-recovery.md).
 
