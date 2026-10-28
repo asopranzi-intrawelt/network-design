@@ -4009,7 +4009,7 @@
 <foreignObject id="ev-248-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta">28/10/2026 &#8212; Seeweb conferma IPsec e il collettore prepara l'inventario AdS</p>
-<p>L'utente riferisce di aver inviato il seguito a Seeweb; il provider conferma il tunnel IPsec senza NAT per Syslog, ma l'IPv4 sorgente effettivo e la prova di ricezione sono ancora attesi. Nel collettore un preflight candidato conta i mittenti già presenti nell'archivio AdS senza aprire log né pubblicare IP, per riconciliare i parametri prima di restringere l'ingresso rsyslog. Nessun filtro o inoltro reale è stato modificato; ISO-30 e Cliente-1 89/90 restano in corso.</p>
+<p>L'utente riferisce di aver inviato il seguito a Seeweb; il provider conferma il tunnel IPsec senza NAT per Syslog, ma l'IPv4 sorgente effettivo e la prova di ricezione sono ancora attesi. Il collettore 7f412d2 pubblica un preflight che conta i mittenti già presenti nell'archivio AdS senza aprire log né pubblicare IP, per riconciliare i parametri prima di restringere l'ingresso rsyslog. Una sonda SSH ha raggiunto la VM ma l'account non ha potuto aprire l'archivio: nessun mittente reale è stato contato. Il renderer prepara un filtro opt-in con sorgenti AdS esplicite e deposito tecnico per gli ignoti; resta non installato finché inventario, ritenzione, capienza e allarme non siano verificati. Nessun inoltro reale è stato modificato; ISO-30 e Cliente-1 89/90 restano in corso.</p>
 </div>
 </foreignObject>
 </g>

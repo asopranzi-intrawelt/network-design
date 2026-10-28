@@ -3941,3 +3941,13 @@ Consegna tecnica in sola lettura: installazioni, processi caricati e fonti uffic
 **Dopo l'allineamento.** Il commit `5d352a4` ha portato esempi finti degli strumenti del template che il guard-rail di anonimizzazione bloccava, qui e in otto progetti: il guard-rail esclude ora per costruzione indirizzi e importi sotto `.claude/templates/` (correzione anche sul ramo del template). Resta il carico delle istruzioni a 104.770 caratteri, oltre la soglia, che ferma `chiudi` qui: in pendenze, da fare alla prossima ripresa. Il commit di questo giro aspetta anche l'altra sessione aperta qui, che ha modifiche in `docs/sito-vps/`.
 
 **Seconda passata e decisioni del 27/10/2026.** Template `90243b3` allineato: 37 committati, 35 spinti, qui `2c859ed`. Decisioni del proprietario: escluse dall'allineamento le copie remote di SCENIA (per host), il sorgente del sito su `vps-sito` e le quattordici cartelle locali con `.claude` senza sistema di progetto; approvata la tabella delle skill di conformita' per progetto. Conflitti, installazione delle skill negli altri progetti e le 57 fonti da guardare spettano a una sessione del template, con il passaggio in `_notes/handoff-2026-10-27-grc-e-allineamento.md` del template.
+
+## Carico delle istruzioni riportato sotto soglia, 28/10/2026
+
+**Misura.** Dopo l'allineamento al template `ff5524f`, che ha aggiunto la regola sempre attiva `recupero-dei-fatti.md`, `misura-istruzioni.py` dava 106.342 caratteri di progetto su 100.000 e fermava ogni `chiudi`. Perimetro: `CLAUDE.md`, `CLAUDE.local.md` e `.claude/rules/*.md`, misurati dallo strumento del template.
+
+**Intervento.** `.claude/rules/fonti-e-riallineamento.md` tiene ora il principio, le cinque classi in forma breve e il protocollo; il testo integrale precedente, con tabelle, radici OneDrive, progetti della classe D, licenza Nebula, piano USG FLEX, cadenze e punti ciechi, e' in `.claude/skills/fonti-di-rete/RIFERIMENTO.md`, invariato salvo la testata. Riga di innesco nel `CLAUDE.md`, adapter Codex generato. I rimandi alla regola in `data/scadenze.json` e negli script restano validi, perche' il file esiste ancora e la skill e' nominata nella sua testata.
+
+**Esito.** Progetto a 95.843 caratteri, regole sempre attive 81.525; bridge Claude/Codex OK con 20 skill. Pendenza del carico chiusa.
+
+**Template:** nessuna.

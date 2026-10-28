@@ -2,9 +2,13 @@
 last-verified: 920c616
 ---
 
+## Ricevitore strict candidato e archivio VM non leggibile, 28/10/2026
+
+Il collettore `7f412d2` e la rete `98f270b` sono stati pubblicati dall'utente. Il preflight dei mittenti è versionato, ma la sonda SSH di sola lettura ha raggiunto la VM senza poter aprire `/srv/ads/` con l'account usato: nessun mittente reale è stato contato. Una variante opt-in del renderer separa gli IP AdS censiti, Seeweb, iLO, accessi locali e mittenti ignoti; non è installata. Con i parametri privati attuali la lista AdS di rete è vuota, quindi il render strict si arresta. Prima di attivarlo occorrono inventario autorizzato, riconciliazione delle fonti silenziose, ritenzione, capienza e allarme dell'archivio tecnico. Seeweb non ha ancora comunicato l'IP sorgente; ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## Seeweb e inventario mittenti AdS, 28/10/2026
 
-L'utente riferisce di aver inviato a Seeweb il seguito che consente la verifica preliminare dell'IPv4 sorgente e della rotta IPsec, chiedendo il nostro via prima dell'inoltro. Testo effettivo e ricevuta non sono disponibili qui. Il provider ha confermato il percorso privato senza NAT, ma l'IP osservato e la prova di ricezione restano attesi. Nel collettore `87ed83a` è pubblicato il misuratore della verifica storica; il diff successivo contiene un preflight che conta le sole directory dei mittenti AdS senza leggere log né mostrare IP. Il ruleset candidato attuale manda ancora in AdS i mittenti LAN senza filtro esplicito: i parametri privati non censiscono tutte le fonti potenzialmente operative. Il filtro non cambia finché i mittenti presenti e silenziosi non sono riconciliati sulla VM. ISO-30 e Cliente-1 89/90 restano in corso; nessun flusso Seeweb è attivo.
+L'utente riferisce di aver inviato a Seeweb il seguito che consente la verifica preliminare dell'IPv4 sorgente e della rotta IPsec, chiedendo il nostro via prima dell'inoltro. Testo effettivo e ricevuta non sono disponibili qui. Il provider ha confermato il percorso privato senza NAT, ma l'IP osservato e la prova di ricezione restano attesi. Il collettore `7f412d2` pubblica il preflight che conta le sole directory dei mittenti AdS senza leggere log né mostrare IP. Il ruleset in esercizio manda ancora in AdS i mittenti LAN senza filtro esplicito: i parametri privati non censiscono tutte le fonti potenzialmente operative. Il filtro non cambia finché i mittenti presenti e silenziosi non sono riconciliati sulla VM. ISO-30 e Cliente-1 89/90 restano in corso; nessun flusso Seeweb è attivo.
 
 ## Monitor della coda Windows pubblicato, esercizio aperto, 27/10/2026
 

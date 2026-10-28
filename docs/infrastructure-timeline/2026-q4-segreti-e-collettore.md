@@ -2,7 +2,7 @@
 
 ## 28/10/2026 - Seeweb conferma IPsec e il collettore prepara l'inventario AdS
 
-L'utente riferisce di aver inviato il seguito a Seeweb; il provider conferma il tunnel IPsec senza NAT per Syslog, ma l'IPv4 sorgente effettivo e la prova di ricezione sono ancora attesi. Nel collettore un preflight candidato conta i mittenti già presenti nell'archivio AdS senza aprire log né pubblicare IP, per riconciliare i parametri prima di restringere l'ingresso rsyslog. Nessun filtro o inoltro reale è stato modificato; ISO-30 e Cliente-1 89/90 restano in corso.
+L'utente riferisce di aver inviato il seguito a Seeweb; il provider conferma il tunnel IPsec senza NAT per Syslog, ma l'IPv4 sorgente effettivo e la prova di ricezione sono ancora attesi. Il collettore `7f412d2` pubblica un preflight che conta i mittenti già presenti nell'archivio AdS senza aprire log né pubblicare IP, per riconciliare i parametri prima di restringere l'ingresso rsyslog. Una sonda SSH ha raggiunto la VM ma l'account non ha potuto aprire l'archivio: nessun mittente reale è stato contato. Il renderer prepara un filtro opt-in con sorgenti AdS esplicite e deposito tecnico per gli ignoti; resta non installato finché inventario, ritenzione, capienza e allarme non siano verificati. Nessun inoltro reale è stato modificato; ISO-30 e Cliente-1 89/90 restano in corso.
 
 ## La coda Windows segue lo storage configurato, 27/10/2026
 

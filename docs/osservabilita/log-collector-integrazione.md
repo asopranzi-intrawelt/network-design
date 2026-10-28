@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Lista esplicita dei mittenti: candidata, 28/10/2026
+
+Il renderer del collettore prepara una modalità opt-in che invia in AdS solo le sorgenti di rete censite, conserva gli accessi locali e separa Seeweb, iLO e mittenti ignoti. Il deposito degli ignoti è tecnico e richiede durata, capienza e allarme prima dell'uso. La sonda SSH ha raggiunto la VM ma l'account non ha accesso a `/srv/ads/`, quindi l'inventario reale non è stato misurato; la modalità resta non installata. L'IP Seeweb e la prova del flusso non sono ancora disponibili. ISO-30 e Cliente-1 89/90 restano in corso; il dettaglio operativo è nel runbook del componente 2.
+
 ## Monitor della coda del pilota Windows, 27/10/2026
 
 Il collettore `main` `f5acb3b` corregge il monitor incluso nel bundle Windows: `-ConfigFile` è richiesto e `storage.path` viene letto dalla sezione `[SERVICE]` del file passato. Un runtime predefinito vuoto non produce più un verde quando la configurazione passata indica altrove. Dieci prove mirate sono verdi; la prova del runtime diverso era rossa sul codice precedente e una mutazione la rende di nuovo rossa. Nel probe con Fluent Bit 5.1.3 il monitor ha segnalato il chunk fittizio offline, poi recuperato con un record nuovo in 19,2 secondi nel giro misurato. Sul pilota va verificato che il job usi il file del servizio; soglie, Security, bookmark, VM e allarme esterno restano aperti. ISO-30 e Cliente-1 89/90 restano in corso. Dettaglio nel runbook del componente 5 del collettore.
