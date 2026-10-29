@@ -1,5 +1,25 @@
 # Work-log
 
+## 29/10/2026 - Salvataggio del sito anticipato (G17): codice provato, procedura, livello didattico
+
+Decisione dell'IT Manager: il contenitore `backup-sito` si crea prima del go-live. Letti in sola lettura con il server MCP: nodo `pve`, nessun contenitore LXC, nessun template di contenitore scaricato, `SERVIZI` con 362 GB liberi, `NAS_INTRA` con 2,87 TB liberi, VM 210 su `vmbr0` senza VLAN. Il codice è in `deploy/backup-sito/`.
+
+- `copia-sito` è il comando forzato sulla VPS. `salva_sito.py` riceve l'archivio, lo verifica con `pg_restore --list` e una soglia di 343 tabelle, conserva 14, 8 e 12 copie e dà tre esiti.
+- Prove: 9 verdi su Windows e Debian trixie, 5 mutazioni rilevate. Prova completa con PostgreSQL 17 vero: soglia rispettata, soglia superata, dump troncato e destinazione assente danno ciascuno l'esito atteso. `systemd-analyze verify` superato.
+- Corretto prima della consegna un commento del timer che dava per misurato un carico del NAS mai misurato, e una frase del runbook sull'utente dei rilasci.
+
+Documentazione tecnica:
+
+- `docs/rete/virtualizzazione-proxmox-e-bridge.md` ha una sezione su contenitori LXC e macchine virtuali: kernel condiviso, namespace e cgroup, contenitore non privilegiato con la mappatura degli utenti, NAS montato dal nodo con utenza dedicata, rete, risorse, ratio. Le fonti ufficiali sono dichiarate da rileggere: non sono state aperte in sessione.
+- Il runbook del primo rilascio ha la procedura in 12 passi e la registrazione delle prove.
+
+Livello didattico, che l'IT Manager ha fatto notare essere rimasto indietro dall'adozione del 20/10: voce 2 in `studio-didattico-master.md` e deep-dive `refactor-02-salvataggio-del-sito.md`, entrambi puliti a `lint-prosa.py`. Il presidio:
+
+- aggiunta al `CLAUDE.md` la riga che dice quando si scrive una voce didattica (carico istruzioni a 97.197 su 100.000);
+- registrata la lezione L-025 per il template.
+
+Aggiornati `STACK.md`, pendenze, lista, roadmap tramite il generatore e la presentazione: due frasi superate o non verificate, compresa «Fastnet avvisato», mai confermata. Nessun subagent. **Template:** L-025.
+
 ## 29/10/2026 - Artefatti per i colleghi riallineati, G18 in roadmap
 
 Su domanda dell'IT Manager, verificato quali artefatti condivisi erano rimasti indietro rispetto alla direttiva del 28/10, che li vuole aggiornati a ogni passo. Erano aggiornati lista, roadmap e report dei rimandi. Erano fermi al 28/10 la presentazione per i colleghi, la pagina DNS e la lezione personale. Ora sono aggiornati.

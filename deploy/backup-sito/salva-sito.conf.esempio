@@ -1,0 +1,26 @@
+# Modello della configurazione del salvataggio notturno del sito (G17).
+#
+# Si copia nel contenitore backup-sito come /etc/salva-sito/salva-sito.conf, permessi
+# 0640, proprietario root e gruppo copie, e non entra in git.
+
+# Cartella del NAS montata nel contenitore dal nodo Proxmox (punto di montaggio mp0).
+SALVA_DESTINAZIONE=/srv/copie
+
+# Destinazione SSH della VPS: utente operativo e nome, come nel registro credenziali.
+# La chiave e' legata sulla VPS al solo comando copia-sito.
+SALVA_SSH=<utente-operativo>@<nome-della-vps>
+SALVA_CHIAVE=/etc/salva-sito/chiave
+SALVA_KNOWN_HOSTS=/etc/salva-sito/known_hosts
+
+# Blocchi di dati di tabella sotto i quali la copia non vale: il 28/10/2026 la copia
+# logica di produzione ne conteneva 343. Si aggiorna quando lo schema cresce, rimisurando.
+SALVA_TABELLE_MINIME=343
+
+# Conservazione: copie giornaliere, settimanali (domenica) e mensili (primo del mese).
+SALVA_GIORNALIERE=14
+SALVA_SETTIMANALI=8
+SALVA_MENSILI=12
+
+# Comando che riceve il testo dell'avviso sullo standard input. Vuoto: solo il giornale
+# di sistema. Canale e destinatario sono la stessa decisione aperta della sonda (G13).
+SALVA_COMANDO_AVVISO=

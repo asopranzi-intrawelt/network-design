@@ -1,0 +1,24 @@
+# Salvataggio notturno del sito (G17, ADR-044): un'esecuzione, avviata dal timer omonimo.
+#
+# Gira come utente `copie` (uid 1000 nel contenitore, 101000 sul nodo), proprietario
+# della cartella del NAS montata in /srv/copie e della chiave dedicata. Codici d'uscita:
+# 0 sano, 1 allarme, 2 copia impossibile; 1 e 2 lasciano l'unita' in stato failed.
+[Unit]
+Description=Salvataggio notturno del sito nuovo verso il NAS
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/srv/copie
+
+[Service]
+Type=oneshot
+User=copie
+Group=copie
+ExecStart=/usr/bin/python3 /opt/salva-sito/salva_sito.py
+EnvironmentFile=/etc/salva-sito/salva-sito.conf
+StateDirectory=salva-sito
+ProtectSystem=strict
+ReadWritePaths=/srv/copie
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+TimeoutStartSec=2h

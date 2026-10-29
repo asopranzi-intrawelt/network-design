@@ -1,0 +1,14 @@
+[Unit]
+Description=Salvataggio notturno del sito nuovo
+
+[Timer]
+# I salvataggi del nodo verso lo stesso NAS sono scaglionati fra le 21:00 e le 06:00
+# (design-and-security.md). La copia del sito pesa poche decine di megabyte, ma l'orario
+# va confrontato con il lavoro del nodo che cade alle 02:30 prima dell'attivazione: non
+# e' stato misurato.
+OnCalendar=*-*-* 02:30
+RandomizedDelaySec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

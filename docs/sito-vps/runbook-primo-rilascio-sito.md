@@ -279,7 +279,50 @@ Scaletta unica, scritta il 29/10/2026 per il passaggio annunciato per la settima
 
 Il passo 7 merita una nota. In Next.js una variabile con il prefisso `NEXT_PUBLIC_` può essere incorporata al momento della costruzione: si chiede a chi sviluppa se questo sito la legge in costruzione o in esecuzione. Nel dubbio si ricostruisce, perché costa due o tre minuti, misurati al 28/10.
 
-Il ritorno indietro, finché l'hosting attuale non è disdetto, è questo. Si chiede al fornitore di rimettere i record del web sull'hosting attuale: con il TTL a 300 secondi l'effetto arriva in pochi minuti. Si toglie il record del vertice dal firewall. Sulla VPS si rimettono il `Caddyfile` dell'anteprima e il `TAG` precedente. I contenuti inseriti nel sito nuovo dopo il passaggio restano nella sua banca dati. Per questo la disdetta si manda solo a sito stabile, e la richiesta di togliere il record di anteprima si può rinviare a dopo le verifiche.
+Finché l'hosting attuale resta attivo, il ritorno indietro è questo. Si chiede al fornitore di rimettere i record del web sull'hosting attuale: con il TTL a 300 secondi l'effetto arriva in pochi minuti. Si toglie il record del vertice dal firewall. Sulla VPS si rimettono il `Caddyfile` dell'anteprima e il `TAG` precedente. I contenuti inseriti nel sito nuovo dopo il passaggio restano nella sua banca dati. Per questo la disdetta si manda solo a sito stabile, e la richiesta di togliere il record di anteprima si può rinviare a dopo le verifiche.
+
+## Il contenitore `backup-sito`: creazione e prima copia, passo per passo
+
+Il 29/10/2026 l'IT Manager ha deciso di anticipare a prima del go-live il salvataggio notturno (G17). Il motivo nasce lo stesso giorno: iscrizioni alla newsletter e invii dei moduli si salvano nella banca dati del sito, quindi da quel momento la VPS custodisce dati personali che esistono solo lì. Le differenze tecniche fra contenitore e macchina virtuale, e la ratio della scelta, stanno in `docs/rete/virtualizzazione-proxmox-e-bridge.md`, sezione «Contenitori LXC e macchine virtuali».
+
+Il codice è in `deploy/backup-sito/`, versionato e senza valori reali:
+
+- `copia-sito`: il comando forzato che la VPS esegue per la chiave del contenitore;
+- `salva_sito.py` e le sue prove: ricezione, verifica, conservazione;
+- le unità `salva-sito.service` e `salva-sito.timer`;
+- il modello `salva-sito.conf.esempio`.
+
+La copia la va a prendere il contenitore, la VPS non la spinge, perché la VPS non deve poter raggiungere la rete della sede. Una copia che non supera la verifica non sostituisce nessuna copia buona. Le copie conservate sono 14 giornaliere, 8 settimanali (la domenica) e 12 mensili (il primo del mese), come proposto in ADR-044.
+
+| N | Dove | Chi | Passo | Verifica |
+|---|---|---|---|---|
+| 1 | NAS INTRA, pannello | IT Manager | Cartella condivisa `backup-sito` e utenza del NAS dedicata, con diritti solo su quella cartella | Con quell'utenza la cartella si apre, le altre no |
+| 2 | Nodo `pve`, shell | IT Manager | `pveam update`, poi `pveam available --section system`; si scarica in `local` il template Debian standard più recente offerto, il 13 se c'è, altrimenti il 12 | Il template compare in `local:vztmpl` |
+| 3 | Nodo `pve` | IT Manager | File delle credenziali dell'utenza del punto 1 in `/root/.cred-backup-sito`, permessi 0600; cartella `/mnt/backup-sito`; riga in `/etc/fstab` di tipo `cifs` con `credentials=`, `uid=101000,gid=101000,file_mode=0600,dir_mode=0700,_netdev,nofail`; `mount /mnt/backup-sito` | `findmnt /mnt/backup-sito` mostra la condivisione; un file creato lì appare sul NAS |
+| 4 | Nodo `pve` | IT Manager | `pct create 211` dal template, con `--hostname backup-sito --unprivileged 1 --cores 1 --memory 512 --swap 256 --rootfs SERVIZI:8 --net0 name=eth0,bridge=vmbr0,ip=dhcp,firewall=1 --onboot 1 --mp0 /mnt/backup-sito,mp=/srv/copie` | `pct config 211` riporta `unprivileged: 1` e `mp0` |
+| 5 | Firewall, GUI | IT Manager | Riserva DHCP per l'indirizzo fisico della scheda del contenitore e record DNS `backup-sito` (R7, R12) | Il contenitore riceve sempre lo stesso indirizzo |
+| 6 | Contenitore, con `pct enter 211` | IT | `apt install python3 openssh-client postgresql-client`; utente `copie` con identificativo 1000; `/opt/salva-sito/salva_sito.py`; chiave `ssh-keygen -t ed25519` in `/etc/salva-sito/chiave`, di proprietà di `copie`, permessi 0600 | `ls -ln /srv/copie` mostra il proprietario 1000; `pg_restore --version` è almeno 17 |
+| 7 | VPS | IT | `copia-sito` in `/usr/local/sbin/`, proprietario root, 0755; riga `restrict,command="/usr/local/sbin/copia-sito"` con la chiave pubblica del punto 6 nel file `authorized_keys` dell'utente operativo | Dal contenitore, `ssh` con quella chiave restituisce un archivio e non una shell |
+| 8 | Contenitore | IT | Impronta della VPS in `/etc/salva-sito/known_hosts`, confrontata con quella già nota del registro credenziali; configurazione da `salva-sito.conf.esempio`; unità in `/etc/systemd/system/`, permessi 0644 | `systemd-analyze verify` sulle due unità |
+| 9 | Contenitore | IT | Prima copia a mano: `systemctl start salva-sito.service` | Esito `sano`; 343 o più tabelle; copia presente in `giornaliere` sul NAS |
+| 10 | Contenitore | IT | `systemctl enable --now salva-sito.timer` | `systemctl list-timers` mostra la prossima esecuzione alle 02:30 |
+| 11 | Repository | IT | Inventario di rete (`data/network-topology.json`), mappa rigenerata, registro delle pendenze, roadmap ISO se tocca un intervento | Mappa riconciliata senza scostamenti |
+| 12 | Macchina di prova | IT | Prima prova di ripristino: banca dati con `pg_restore` in un PostgreSQL 17 usa e getta, file caricati estratti, conteggi confrontati, tempo misurato | Tempo e conteggi scritti in questo registro |
+
+Due cose sono da verificare al passo 7 e non si possono decidere da qui. La prima è se l'utente operativo della VPS possa leggere entrambe le cartelle dei file caricati: se una delle due non è leggibile, il comando fallisce e il contenitore dà allarme. Si corregge con una regola `sudo` limitata a `copia-sito`, non allargando i permessi delle cartelle. La seconda è se `docker compose` funzioni per quell'utente senza `sudo`: questo registro non dice con quale utente siano stati lanciati i rilasci.
+
+L'orario delle 02:30 cade dentro la finestra dei salvataggi del nodo verso lo stesso NAS, scaglionati fra le 21:00 e le 06:00. Prima del passo 10 va confrontato con il lavoro del nodo programmato a quell'ora, perché non è stato misurato.
+
+**29/10/2026, codice del salvataggio scritto e provato, contenitore non ancora creato.**
+
+- `salva_sito.py` ha 9 prove senza rete, verdi su Windows con Python 3.13.14 e in Debian trixie con Python 3.13.5. Cinque mutazioni le rendono rosse: soglia delle tabelle ignorata, cartelle non controllate, nessuna potatura, settimanale nel giorno sbagliato, file parziale lasciato sul NAS.
+- La prova completa è stata fatta in un contenitore Debian trixie con PostgreSQL 17 vero. Una banca dati di tre tabelle è stata copiata con `pg_dump -Fc`, impacchettata come fa `copia-sito` e passata allo script.
+  - Con soglia 3, esito sano e copia conservata; con soglia 4, allarme.
+  - Con la copia della banca dati troncata, `pg_restore --list` fallisce e l'esito è allarme: la copia non viene conservata.
+  - Con la destinazione assente, l'esito è «copia impossibile», codice 2.
+- `systemd-analyze verify` è superato per le due unità, e `copia-sito` supera il controllo di sintassi della shell.
+
+Non provati da qui: il comando forzato sulla VPS vera, i permessi delle cartelle, il montaggio CIFS con la mappatura degli utenti e la prova di ripristino. Sono i passi 3, 7, 9 e 12.
 
 ## Che cosa questo rilascio non copre
 

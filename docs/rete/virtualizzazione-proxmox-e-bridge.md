@@ -225,6 +225,56 @@ La seconda riguarda la diagnosi. Quando la console Proxmox non risponde, oggi no
 
 La terza riguarda l'esposizione dei servizi. Tre difetti aperti sono manifestazioni diverse dello stesso fatto strutturale, cioe' che le macchine virtuali stanno sulla LAN piatta senza niente in mezzo: il portale asset della VM 208 che pubblica su 80 e 443 verso l'intero dominio di broadcast (#121, NET-011), il pannello di amministrazione del CMS di staging sulla VM 209 raggiungibile da qualunque host con la sola autenticazione applicativa a difenderlo (#155, NET-024), e la DMZ progettata da tre mesi che non esiste e che ha gia' un inquilino in attesa (#154, FW-015). Nessuno dei tre si risolve sul singolo servizio: si risolvono con M22 e con il segmento 201.
 
+## Contenitori LXC e macchine virtuali: che cosa cambia, e perché `backup-sito` è un contenitore
+
+Sezione scritta il 29/10/2026, quando l'IT Manager ha deciso di anticipare a prima del go-live il contenitore del salvataggio notturno del sito (G17, ADR-044). È il primo contenitore LXC del nodo: il 29/10 l'elenco dei contenitori di `pve`, letto con il server MCP di sola lettura, è vuoto, e tutti gli undici ospiti sono macchine virtuali. Le affermazioni sul comportamento di Proxmox vengono dalla documentazione ufficiale indicata in fondo alla sezione, che in questa sessione non è stata riaperta: vanno rilette prima della creazione. Le misure del nodo sono state lette il 29/10.
+
+### Due modi di ospitare, una sola differenza da cui discende il resto
+
+Una macchina virtuale di Proxmox è un computer simulato da QEMU con l'accelerazione KVM: ha un firmware, nel caso della VM 210 OVMF in modalità UEFI, dischi e schede di rete virtuali `virtio`, e un sistema operativo che si avvia con il proprio kernel come farebbe su un server fisico. Il nodo vede la macchina virtuale come un unico processo che ne contiene un'altra.
+
+Un contenitore LXC non simula nessun hardware e non ha un kernel proprio. I suoi programmi sono processi ordinari del kernel del nodo, gli stessi che si vedrebbero con `ps` sul nodo. Il kernel li tiene separati con due meccanismi. I *namespace* decidono che cosa un processo vede: i propri processi, i propri file montati, la propria scheda di rete, il proprio nome di macchina, i propri utenti. I *cgroup* decidono quanto consuma: processore, memoria, disco. Il contenitore è quindi un recinto dentro lo stesso sistema operativo, e la macchina virtuale è un secondo sistema operativo.
+
+Da questa differenza discende ogni riga della tabella seguente.
+
+| Aspetto | Macchina virtuale (come la 210) | Contenitore LXC (come sarà la 211) |
+|---|---|---|
+| Kernel | proprio, aggiornato dentro l'ospite | quello del nodo, aggiornato con il nodo |
+| Sistemi operativi possibili | qualunque, anche Windows | solo Linux, con il kernel del nodo |
+| Avvio | firmware, caricatore, kernel: decine di secondi | avvio dei soli processi: pochi secondi |
+| Memoria | quella configurata, tenuta tutta se il ballooning è spento (la 210 ha `balloon: 0` e 2 GB) | conta solo quella usata dai processi, con un tetto |
+| Disco | un disco virtuale con un file system che solo l'ospite monta | un volume che il nodo monta e presenta come cartella radice |
+| Montare una condivisione di rete | lo fa l'ospite da sé | un contenitore non privilegiato non può: lo fa il nodo, che poi la passa dentro |
+| Confine di isolamento | l'hypervisor: chi sfugge alla macchina deve violare QEMU e KVM | il kernel condiviso: un difetto del kernel sfruttabile dal contenitore riguarda il nodo |
+| Strumenti di gestione | `qm`, agente QEMU nell'ospite | `pct`, con `pct enter` e `pct exec` senza bisogno di SSH |
+| Salvataggio del nodo | `vzdump`, con istantanea del disco | `vzdump`, con istantanea del volume su `lvmthin`; le cartelle passate dal nodo non entrano |
+
+### Privilegiato o non privilegiato, e perché qui solo il secondo
+
+Un contenitore può essere privilegiato, e allora l'utente root al suo interno è root anche per il kernel del nodo, oppure non privilegiato. In questo secondo caso entra in gioco il namespace degli utenti: ogni identificativo del contenitore è spostato su un intervallo riservato del nodo, che per Proxmox parte da 100000. Root del contenitore, cioè l'utente 0, sul nodo è l'utente 100000, che non possiede niente; l'utente `copie` che il contenitore userà, con identificativo 1000, sul nodo è 101000.
+
+La conseguenza pratica è che chi prendesse il controllo del contenitore, anche come root, si troverebbe sul nodo come un utente senza diritti. Per `backup-sito` questo conta più che per un ospite qualunque, perché il contenitore custodisce una chiave che entra nella produzione del sito. Un contenitore privilegiato con quella chiave sarebbe, in caso di compromissione, un accesso amministrativo al nodo che ospita tutte le altre macchine.
+
+### Il NAS: perché lo monta il nodo, con un'utenza e una cartella proprie
+
+Un contenitore non privilegiato non può montare da sé una condivisione SMB, perché il montaggio di un file system di rete è un'operazione che il kernel concede solo a chi ha privilegi sul nodo. Il percorso è quindi in due tempi. Il nodo monta la condivisione dedicata con credenziali proprie e con le opzioni `uid=101000,gid=101000`, così che i file risultino dell'utente `copie` quando li si guarda da dentro. Poi la passa nel contenitore come punto di montaggio `mp0` sulla cartella `/srv/copie`.
+
+Il NAS INTRA è già montato sul nodo come storage `NAS_INTRA`, quello dove scrivono i salvataggi di tutte le macchine. Passare al contenitore una cartella di quel montaggio sarebbe più rapido, ed è la scelta che si scarta. Quel montaggio usa le credenziali con cui il nodo scrive le copie dell'intero parco, quindi un contenitore compromesso potrebbe leggerle o cancellarle. Con una condivisione e un'utenza del NAS dedicate, il danno possibile resta confinato alle copie del sito. Le cartelle passate dal nodo non entrano nel salvataggio del contenitore, quindi le copie non vengono copiate una seconda volta dentro il salvataggio del nodo.
+
+### Rete, risorse e che cosa il contenitore non fa
+
+Il contenitore sta su `vmbr0`, la stessa LAN della VM 210, perché oggi il nodo non ha un segmento separato per i servizi, come descritto più sopra. Prende l'indirizzo dal DHCP del firewall con una riserva, e il nome `backup-sito` va sul DNS del firewall: è la direzione di R7 e R12 in `interventi-robustezza.md`. Non espone nessun servizio. Esce soltanto verso la VPS sulla porta SSH e verso il DNS. Il filtro di Proxmox sull'interfaccia, attivato con `firewall=1`, ha effetto solo se il firewall di Proxmox è attivo a livello di datacenter, cosa che questo progetto non ha censito.
+
+Le risorse previste sono un processore, 512 MB di memoria e 8 GB di disco sul volume `SERVIZI`, che il 29/10 ha 362 GB liberi su 1.074. Il NAS INTRA, visto dal nodo, ha 2,87 TB liberi su 5,9. Una copia del sito pesava il 28/10 circa 38 MB: 1,59 MB di banca dati e 36,9 MB di file caricati. Con 34 copie conservate siamo nell'ordine di 1,3 GB, che crescerà con i contenuti.
+
+### La ratio, e quando una macchina virtuale sarebbe la scelta giusta
+
+Il lavoro di `backup-sito` è uno script che gira una volta per notte e per il resto del tempo dorme. Una macchina virtuale costerebbe in ogni momento la memoria configurata, un kernel in più da aggiornare e un firmware. Un contenitore a riposo non costa quasi nulla e si aggiorna con il nodo. Il prezzo è un confine di isolamento più debole, compensato da quattro scelte già descritte: contenitore non privilegiato, nessun servizio in ascolto, chiave legata sulla VPS al solo comando di copia, condivisione del NAS dedicata.
+
+La macchina virtuale resta la scelta giusta in quattro casi: quando serve un sistema operativo o un kernel diverso da quello del nodo; quando l'ospite deve montare da sé file system o caricare moduli del kernel; quando esegue codice di cui non ci si fida o riceve traffico dall'esterno; quando deve far girare a sua volta dei contenitori Docker. Il collettore dei log, la VM 210, ricade nel terzo caso: riceve connessioni dalla rete e custodisce prove che devono restare integre, quindi giustifica il confine più forte.
+
+Documentazione ufficiale di riferimento, da rileggere prima della creazione: [Linux Container](https://pve.proxmox.com/wiki/Linux_Container) e [Unprivileged LXC containers](https://pve.proxmox.com/wiki/Unprivileged_LXC_containers) nella wiki di Proxmox VE, e il manuale di `pct` per i punti di montaggio.
+
 ## Rilevanza ISO27001
 
 I fatti di questa scheda toccano quattro controlli dell'Annex A, e sono gia' registrati nel registro dei gap con il codice corrispondente. A.8.22, segregazione delle reti, e' il controllo centrale: la riga della scheda `design-and-security.md` che descriveva la situazione come "segmentazione fisica tramite bridge separati" e' stata corretta il 25/08/2026, perche' la misura mostra che i quattro bridge non segregano. A.8.20, sicurezza delle reti, e' toccato dal tratto non gestito sulla via di amministrazione. A.8.9, gestione delle configurazioni, era il controllo del difetto #153, ora risolto. A.8.14, ridondanza degli impianti, riguarda la sorgente non ancora verificata del secondo alimentatore e l'assenza di aggregazione delle schede.

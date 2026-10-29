@@ -1,0 +1,24 @@
+#!/bin/sh
+# Comando forzato della chiave di backup-sito (G17, ADR-044). Si installa sulla VPS del
+# sito in /usr/local/sbin/copia-sito, proprietario root, permessi 0755, e si lega alla
+# chiave pubblica del contenitore nel file authorized_keys dell'utente operativo:
+#
+#   restrict,command="/usr/local/sbin/copia-sito" ssh-ed25519 AAAA... backup-sito
+#
+# Con quella riga la chiave non apre una shell, non inoltra porte e non esegue altro che
+# questo file, qualunque comando chieda il client: SSH ignora la richiesta e mette il
+# comando richiesto in SSH_ORIGINAL_COMMAND, che qui non si legge di proposito.
+#
+# Scrive sullo standard output un archivio tar con la copia logica della banca dati e le
+# due cartelle dei file caricati. Non scrive niente di durevole sulla VPS: la copia della
+# banca dati passa da una cartella temporanea che si cancella all'uscita.
+set -eu
+
+CARTELLA=/opt/intrawelt-new-website
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT INT TERM
+
+cd "$CARTELLA"
+# Formato personalizzato: compresso, e pg_restore ne elenca il contenuto senza ripristinarlo.
+docker compose exec -T postgres pg_dump -U intrawelt -d intrawelt -Fc > "$tmp/banca-dati.dump"
+tar -cf - -C "$CARTELLA" media private-uploads -C "$tmp" banca-dati.dump
