@@ -26,7 +26,7 @@ Questa sezione dice in forma semplice cio' che il resto della scheda dice con pr
 
 ## Che cosa succede davvero quando digiti un nome
 
-Un computer non sa parlare con i nomi: sa parlare solo con gli indirizzi. Quando digiti `https://intralino/login`, prima che parta un solo pacchetto verso quel servizio, il sistema operativo deve trasformare la parola `intralino` in un indirizzo numerico. Quella trasformazione si chiama *risoluzione*, e avviene prima di tutto il resto.
+Un computer non sa parlare con i nomi: sa parlare solo con gli indirizzi. Quando digiti `https://prodotto-2/login`, prima che parta un solo pacchetto verso quel servizio, il sistema operativo deve trasformare la parola `prodotto-2` in un indirizzo numerico. Quella trasformazione si chiama *risoluzione*, e avviene prima di tutto il resto.
 
 Il punto che sfugge, e che genera meta' della confusione su questa materia, e' che la risoluzione **non e' un solo meccanismo**. Il sistema operativo ne ha diversi, li prova in un ordine stabilito, e si ferma al primo che risponde. Ne discende che due nomi apparentemente simili possono essere risolti da meccanismi completamente diversi, e che un nome puo' funzionare per anni senza che nessuno sappia chi stia rispondendo.
 
@@ -36,13 +36,13 @@ L'ordine, su una postazione Windows tipica, e' questo. Prima la memoria di cio' 
 
 Un meccanismo a domanda diffusa funziona nel modo piu' semplice che si possa immaginare: invece di chiedere a un servizio che sa le risposte, si chiede a tutti.
 
-La postazione spedisce sulla rete locale un pacchetto che dice, in sostanza, "chi di voi si chiama `intralino`?". Quel pacchetto non ha un destinatario preciso: viene consegnato a **ogni** apparato del segmento, che lo riceve, lo guarda, e nella quasi totalita' dei casi lo scarta perche' non lo riguarda. La macchina che porta quel nome invece risponde direttamente al mittente: "sono io, ecco il mio indirizzo". Fine.
+La postazione spedisce sulla rete locale un pacchetto che dice, in sostanza, "chi di voi si chiama `prodotto-2`?". Quel pacchetto non ha un destinatario preciso: viene consegnato a **ogni** apparato del segmento, che lo riceve, lo guarda, e nella quasi totalita' dei casi lo scarta perche' non lo riguarda. La macchina che porta quel nome invece risponde direttamente al mittente: "sono io, ecco il mio indirizzo". Fine.
 
 Su questa rete i meccanismi di questa famiglia sono tre e convivono. Il piu' antico e' quello dei *nomi NetBIOS*[^netbios], eredita' delle reti Windows degli anni Novanta, che risolve i nomi corti delle macchine ed e' ancora attivo per compatibilita'. Il piu' recente in casa Microsoft e' *LLMNR*[^llmnr], introdotto per sostituire il precedente e che fa la stessa cosa in modo piu' moderno. E c'e' *mDNS*[^mdns], nato in ambito Apple e oggi universale, che e' quello che risolve i nomi che finiscono in `.local` e che su questa rete e' attivo su piu' macchine, come il censimento dell'esposizione ha misurato trovando il relativo servizio in ascolto.
 
 Tre pregi spiegano perche' siano ancora in uso. Non richiedono nessuna configurazione: si accende una macchina, dichiara il proprio nome, e da quel momento gli altri la trovano. Non richiedono nessun server: non c'e' niente da installare, mantenere o salvare. E funzionano subito, anche su una rete improvvisata.
 
-Questo e' il senso della frase "oggi `intralino` sta sul broadcast": quel nome non e' scritto da nessuna parte, non c'e' un record in nessun sistema, e nessuno lo ha mai configurato. Funziona perche' la macchina risponde quando qualcuno lo grida sulla rete.
+Questo e' il senso della frase "oggi `prodotto-2` sta sul broadcast": quel nome non e' scritto da nessuna parte, non c'e' un record in nessun sistema, e nessuno lo ha mai configurato. Funziona perche' la macchina risponde quando qualcuno lo grida sulla rete.
 
 ## Perche' e' fragile, e perche' e' un problema proprio adesso
 
@@ -58,7 +58,7 @@ E' la stessa trappola che questo progetto ha gia' incontrato tre volte in forme 
 
 La fragilita' e' la ragione per cui se ne parla in un progetto di rete. Ce n'e' pero' una seconda, di natura diversa, che vale la pena rendere esplicita perche' non e' intuitiva.
 
-In un meccanismo a domanda diffusa **non esiste alcuna verifica di chi risponde**. La postazione chiede "chi si chiama `intralino`?" e crede alla prima risposta che arriva. Nulla impedisce a un apparato qualunque del segmento di rispondere "sono io" a una domanda che non lo riguarda.
+In un meccanismo a domanda diffusa **non esiste alcuna verifica di chi risponde**. La postazione chiede "chi si chiama `prodotto-2`?" e crede alla prima risposta che arriva. Nulla impedisce a un apparato qualunque del segmento di rispondere "sono io" a una domanda che non lo riguarda.
 
 Ne discende un attacco classico e completamente automatizzato: una macchina compromessa sul segmento risponde a tutte le domande diffuse che passano, si fa credere il servizio cercato, e riceve i tentativi di autenticazione destinati a quello vero. Su una rete Windows quei tentativi contengono materiale di autenticazione riutilizzabile. L'attacco non richiede di violare nulla: richiede soltanto di stare sullo stesso segmento e di rispondere piu' in fretta.
 
@@ -72,7 +72,7 @@ La risposta viene da un servizio designato e non da chiunque passi, quindi l'att
 
 Su questa rete il servizio esiste gia' e nessuno lo sapeva. La verifica dell'ambito DHCP del 30/07/2026 mostra che le postazioni della LAN principale ricevono come primo server dei nomi **il firewall stesso**. Manca solo il contenuto: la lettura della sua configurazione, il 02/09/2026, conferma che la tabella dei record di indirizzo e' vuota e che il firewall si limita a inoltrare ogni domanda a due resolver pubblici.
 
-## L'esempio completo: IntraLino, prima e dopo, passo per passo
+## L'esempio completo: Prodotto-2, prima e dopo, passo per passo
 
 Le tre situazioni si capiscono meglio seguendo un singolo pacchetto. La postazione dell'IT Manager sta nella classe delle postazioni, il servizio sta su una macchina virtuale nella classe dei server, e per come e' fatta oggi la rete quelle due classi **non sono due reti**: la maschera `/19` le comprende entrambe, quindi sono lo stesso segmento con due fasce di indirizzi diverse. E' un punto che vale la pena fissare perche' e' la radice di tutto: nella LAN piatta la separazione fra postazioni e server e' una convenzione di numerazione, non un confine.
 
@@ -168,7 +168,7 @@ Il conteggio complessivo e' di **ottanta nomi distinti** su diciotto file, con u
 
 #### Il dato che serviva, e conferma il timore
 
-**`intralino` compare in tutti e diciotto i file.** Non su qualcuno: su tutti. Ne discende che il record che stiamo per pubblicare sul firewall sarebbe oscurato su ogni postazione del parco, perche' il file viene prima. Il record da solo non cambierebbe nulla per nessuno, e senza il censimento lo avremmo scoperto interrogando una macchina a caso e concludendo che il firewall non funziona.
+**`prodotto-2` compare in tutti e diciotto i file.** Non su qualcuno: su tutti. Ne discende che il record che stiamo per pubblicare sul firewall sarebbe oscurato su ogni postazione del parco, perche' il file viene prima. Il record da solo non cambierebbe nulla per nessuno, e senza il censimento lo avremmo scoperto interrogando una macchina a caso e concludendo che il firewall non funziona.
 
 Seguono per diffusione il nome di un NAS, presente in quindici file, e il nome di fabbrica del server Windows, presente in undici. Sono i tre nomi da pubblicare per primi, perche' sono quelli su cui la rimozione delle righe romperebbe piu' gente.
 
@@ -306,7 +306,7 @@ La domanda e' stata posta due volte dall'IT Manager, ed e' quella giusta: se si 
 
 Il fondamento e' uno solo: **pubblicare un record e' un'operazione additiva**. Non rimuove niente, non sostituisce niente, non modifica il comportamento di nulla che gia' funzioni. Aggiunge una risposta possibile a una domanda che oggi trova risposta altrove o non la trova affatto. Da questo discendono i quattro casi, che coprono ogni utente e ogni servizio.
 
-**Primo caso, chi usa un nome che ha nel proprio file degli host.** E' la situazione della maggioranza, e per il nome di IntraLino e' la situazione di tutti e diciotto i file censiti. Il file viene consultato **prima** del servizio dei nomi: finche' quella riga esiste, la risposta arriva da li' e il firewall non viene nemmeno interrogato. Non c'e' quindi neanche un cambiamento teorico: la strada nuova esiste ma nessuno la percorre.
+**Primo caso, chi usa un nome che ha nel proprio file degli host.** E' la situazione della maggioranza, e per il nome di Prodotto-2 e' la situazione di tutti e diciotto i file censiti. Il file viene consultato **prima** del servizio dei nomi: finche' quella riga esiste, la risposta arriva da li' e il firewall non viene nemmeno interrogato. Non c'e' quindi neanche un cambiamento teorico: la strada nuova esiste ma nessuno la percorre.
 
 **Secondo caso, chi usa un nome che nel proprio file non c'e'.** Oggi quel nome si risolve per domanda diffusa, e funziona perche' la rete e' piatta. Da adesso si risolvera' per interrogazione al firewall, che risponde con lo stesso identico indirizzo. L'utente digita quello di sempre e arriva dove arrivava prima: cambia il meccanismo, non il risultato. E' l'unico caso in cui qualcosa cambia davvero, ed e' invisibile per costruzione.
 
@@ -320,11 +320,11 @@ Ne discende la conclusione, che vale la pena enunciare come regola generale e no
 
 Il secondo chiarimento chiesto dall'IT Manager riguarda il senso dell'operazione: perche' costruire un servizio dei nomi interno se oggi tutto funziona senza. La risposta e' che quattro lavori gia' pianificati lo richiedono, e nessuno dei quattro puo' procedere senza.
 
-**I certificati.** Un certificato certifica un nome e il navigatore lo verifica contro il nome digitato. Senza nomi risolvibili non si possono emettere certificati utilizzabili, quindi resta bloccato il collegamento del gestore delle password, che oggi non e' raggiungibile affatto, e resta bloccata la riemissione del certificato di IntraLino dalla nuova autorita' aziendale. E' la dipendenza che ha fatto scoprire tutto il resto.
+**I certificati.** Un certificato certifica un nome e il navigatore lo verifica contro il nome digitato. Senza nomi risolvibili non si possono emettere certificati utilizzabili, quindi resta bloccato il collegamento del gestore delle password, che oggi non e' raggiungibile affatto, e resta bloccata la riemissione del certificato di Prodotto-2 dalla nuova autorita' aziendale. E' la dipendenza che ha fatto scoprire tutto il resto.
 
 **La segmentazione.** Quando i servizi cambieranno segmento cambieranno indirizzo. Con un servizio dei nomi si corregge un record e vale per tutti; senza, si tocca ogni postazione una per una. E soprattutto i nomi che oggi vivono sulla domanda diffusa smetteranno di risolvere del tutto, tutti insieme e senza che nessuno li abbia toccati.
 
-**La zona di pubblicazione.** Un proxy inverso smista le richieste in base al **nome** richiesto, non alla porta. Senza nomi si puo' solo pubblicare per porta, che e' esattamente cio' che oggi rende difficile governare IntraLino con i suoi quattro servizi su quattro porte diverse: ogni porta e' una regola in piu' da aprire in ogni filtro futuro.
+**La zona di pubblicazione.** Un proxy inverso smista le richieste in base al **nome** richiesto, non alla porta. Senza nomi si puo' solo pubblicare per porta, che e' esattamente cio' che oggi rende difficile governare Prodotto-2 con i suoi quattro servizi su quattro porte diverse: ogni porta e' una regola in piu' da aprire in ogni filtro futuro.
 
 **La pulizia dei file degli host.** Non si possono togliere quelle righe finche' non esiste un equivalente che risolva allo stesso modo. Il servizio dei nomi **e'** quell'equivalente: senza, i file restano dove sono, con tutto cio' che il censimento vi ha trovato dentro.
 
@@ -336,7 +336,7 @@ I record sono stati creati sul firewall dall'IT Manager. La pagina non ha un pul
 
 | Nome | Serve | Nota |
 |---|---|---|
-| `intralino.int.intrawelt.com` | IntraLino | presente in tutti e diciotto i file censiti |
+| `prodotto-2.int.intrawelt.com` | Prodotto-2 | presente in tutti e diciotto i file censiti |
 | `nas-intra2.int.intrawelt.com` | NAS | in quindici file |
 | `win-v712i9qhqt9.int.intrawelt.com` | server Windows | nome di fabbrica, tenuto per compatibilita' |
 | `presenze.int.intrawelt.com` | rilevazione presenze | nome di ruolo nuovo, oggi il servizio si raggiunge per indirizzo |
@@ -465,13 +465,13 @@ Resta fuori da questo intervento, e va posto come domanda all'IT Manager, quali 
 
 ## Il suffisso di ricerca, cioe' come far sopravvivere i nomi corti
 
-Resta un problema pratico. Un servizio dei nomi lavora con nomi completi, del tipo `intralino.int.intrawelt.com`, mentre le persone digitano nomi corti come `intralino`. Se il nome corto smette di funzionare, ogni segnalibro e ogni configurazione vanno aggiornati, che e' esattamente il lavoro che si vuole evitare.
+Resta un problema pratico. Un servizio dei nomi lavora con nomi completi, del tipo `prodotto-2.int.intrawelt.com`, mentre le persone digitano nomi corti come `prodotto-2`. Se il nome corto smette di funzionare, ogni segnalibro e ogni configurazione vanno aggiornati, che e' esattamente il lavoro che si vuole evitare.
 
-La soluzione esiste da sempre e si chiama *suffisso di ricerca*: si dice alle postazioni, tramite lo stesso ambito DHCP che gia' distribuisce indirizzo e server dei nomi, che quando incontrano un nome corto devono provare ad attaccarci un suffisso e chiedere quello. Con suffisso `int.intrawelt.com`, una postazione che cerca `intralino` domanda al firewall `intralino.int.intrawelt.com`, ottiene la risposta, e l'utente non si accorge di nulla.
+La soluzione esiste da sempre e si chiama *suffisso di ricerca*: si dice alle postazioni, tramite lo stesso ambito DHCP che gia' distribuisce indirizzo e server dei nomi, che quando incontrano un nome corto devono provare ad attaccarci un suffisso e chiedere quello. Con suffisso `int.intrawelt.com`, una postazione che cerca `prodotto-2` domanda al firewall `prodotto-2.int.intrawelt.com`, ottiene la risposta, e l'utente non si accorge di nulla.
 
 Il vantaggio e' che il nome corto continua a funzionare **ma cambia chi risponde**: non piu' il broadcast, che sparira' con la segmentazione ed e' attaccabile, ma il servizio dei nomi. Si conserva la comodita' e si perde la fragilita'.
 
-Una precisazione che serve quando si arriva ai certificati, ed e' la causa di un equivoco frequente. Il completamento del nome avviene **solo** per la risoluzione: il navigatore continua a sapere che tu hai digitato `intralino`, e verifica il certificato contro quello, non contro il nome completo. Ne discende che un certificato deve contenere **entrambi** i nomi se si vuole che entrambe le forme funzionino senza avvisi. E' il motivo per cui i certificati emessi in questo progetto portano il nome completo e quello corto insieme.
+Una precisazione che serve quando si arriva ai certificati, ed e' la causa di un equivoco frequente. Il completamento del nome avviene **solo** per la risoluzione: il navigatore continua a sapere che tu hai digitato `prodotto-2`, e verifica il certificato contro quello, non contro il nome completo. Ne discende che un certificato deve contenere **entrambi** i nomi se si vuole che entrambe le forme funzionino senza avvisi. E' il motivo per cui i certificati emessi in questo progetto portano il nome completo e quello corto insieme.
 
 ## Lo stato di questa rete, misurato
 
@@ -507,4 +507,4 @@ Resta fuori da questo intervento, e va affrontato quando la segmentazione arrive
 
 Dalla sede il dominio aziendale senza prefisso non risolve, mentre da Internet risolve normalmente; ne discende che dalla sede il sito attuale non apre il proprio pannello, perche' il prefisso `www` rimanda proprio al dominio senza prefisso, e che dopo il passaggio la sede non vedrebbe il sito nuovo. La configurazione corrente del firewall, letta il 28/10, contiene una ventina di record di indirizzo, tutti sotto `int.intrawelt.com` piu' uno sotto un dominio locale, e due inoltri generici verso resolver esterni, e nessun record per il vertice. Le interrogazioni dello stesso giorno al server dei nomi del firewall descrivono il meccanismo, che e' una misura e non piu' un'ipotesi. Il firewall risponde come autorita' per `intrawelt.com` con un record di inizio autorita' generato da se', con server primario e responsabile sullo stesso dominio e un numero di serie che cambia fra un'interrogazione e la successiva. Per un nome che non e' antenato dei suoi record, come `www` o il nome della scoperta automatica della posta, inoltra la domanda e restituisce la risposta pubblica. Per un nome che e' antenato dei suoi record, cioe' `intrawelt.com` e `int.intrawelt.com`, risponde che il nome esiste ma non ha dati, senza inoltrare, e questo vale per ogni tipo di record: indirizzo, scambiatore della posta e testo. Dalla sede risultano quindi vuoti anche i record della posta e delle politiche di autenticazione del dominio; oggi non rompe la posta, che non dipende da interrogazioni fatte dalla sede, ma rende sbagliata ogni verifica della zona fatta da qui.
 
-Due rimedi, di portata diversa. Il primo, sufficiente per il go-live, e' aggiungere sul firewall un record di indirizzo per il vertice, che punti all'indirizzo su cui il sito risponde: oggi l'hosting attuale, dal passaggio la VPS. Ripara il sito, non i record della posta, e diventa un passo obbligato della procedura di passaggio, perche' un record locale dimenticato sull'indirizzo vecchio terrebbe la sede sul sito vecchio dopo che il resto del mondo e' passato al nuovo. Il secondo, quello che toglie la causa, e' non far ospitare al firewall i nomi interni come record propri sotto il dominio pubblico: un resolver interno dedicato che serva la sola zona `int.intrawelt.com` e inoltri tutto il resto, con il firewall che vi rimanda le richieste di quella zona, lascerebbe il dominio pubblico interamente ai suoi server autoritativi. E' un intervento sulla risoluzione dei nomi di tutta la sede, da pianificare a parte e non nel giorno del passaggio.
+Due rimedi, di portata diversa. Il primo, sufficiente per il go-live, e' aggiungere sul firewall un record di indirizzo per il vertice, che punti all'indirizzo su cui il sito risponde. Per decisione dell'IT Manager del 29/10/2026 il record si crea soltanto il giorno del passaggio, già sulla VPS, e non prima verso l'hosting attuale: fino ad allora chi ha bisogno del dominio senza prefisso usa il file hosts della propria postazione. Ripara il sito, non i record della posta, e diventa un passo obbligato della procedura di passaggio, perche' un record locale dimenticato sull'indirizzo vecchio terrebbe la sede sul sito vecchio dopo che il resto del mondo e' passato al nuovo. Il secondo, quello che toglie la causa, e' non far ospitare al firewall i nomi interni come record propri sotto il dominio pubblico: un resolver interno dedicato che serva la sola zona `int.intrawelt.com` e inoltri tutto il resto, con il firewall che vi rimanda le richieste di quella zona, lascerebbe il dominio pubblico interamente ai suoi server autoritativi. E' un intervento sulla risoluzione dei nomi di tutta la sede, da pianificare a parte e non nel giorno del passaggio.

@@ -1,12 +1,12 @@
 ﻿# 2024 - Arrivo IT manager, primo interventi, decisione Vianova
 
-## Ottobre 2024 - Inizio progetto SCENIA con Partner-Accademico-1
+## Ottobre 2024 - Inizio progetto Prodotto-1 con Partner-Accademico-1
 
-Avvio della collaborazione con il laboratorio di Partner-Accademico-1 (Referente-Accademico-1) per lo sviluppo di ScenIA, piattaforma SaaS AI per traduzione. Intrawelt e' Processor GDPR Art. 28; il partner accademico e' il Titolare del trattamento nella fase iniziale.
+Avvio della collaborazione con il laboratorio di Partner-Accademico-1 (Referente-Accademico-1) per lo sviluppo di Prodotto-1, piattaforma SaaS AI per traduzione. Intrawelt e' Processor GDPR Art. 28; il partner accademico e' il Titolare del trattamento nella fase iniziale.
 
 Stack iniziale: LLM via API OpenAI, sviluppo prototipo RAG. Responsabile tecnico Intrawelt: Alessio Sopranzi. Responsabile accademico: Referente-Accademico-1 + Persona-J (PM lato Intrawelt).
 
-## Fine 2024 - Inizio sviluppo IntraLino RAG
+## Fine 2024 - Inizio sviluppo Prodotto-2 RAG
 
 Prima installazione Ollama (llama3.2) e ChromaDB su host locale. Sperimentazione RAG per automazione interna (glossari Trados, recupero TM). Stack iniziale non dockerizzato; evolve nel corso del 2025 verso architettura stabile con n8n 2.x come orchestratore workflow.
 

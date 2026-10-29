@@ -56,7 +56,7 @@ $mesi = @{ "gennaio"=1; "febbraio"=2; "marzo"=3; "aprile"=4; "maggio"=5; "giugno
 # Aree di competenza: colori dai token Intrawelt (institutional, interaction,
 # semantic, neutral). Il tag testuale distingue le categorie anche senza colore.
 $categorie = @(
-    @{ Tag="AI";     Nome="AI e automazione";          Colore="#6B15EC"; Kw=@("intralino","scenia","ollama","rag ","n8n","qdrant","gpu","benchmark","tinker","thinking","partner-accademico-1","aidapt","chroma","automazione","api odoo","export tm","power platform","app desktop","pyqt") },
+    @{ Tag="AI";     Nome="AI e automazione";          Colore="#6B15EC"; Kw=@("prodotto-2","prodotto-1","ollama","rag ","n8n","qdrant","gpu","benchmark","tinker","thinking","partner-accademico-1","aidapt","chroma","automazione","api odoo","export tm","power platform","app desktop","pyqt") },
     @{ Tag="SEC";    Nome="Sicurezza e compliance";    Colore="#E7000B"; Kw=@("phishing","bitdefender","iso 27001","gdpr","dpa","dpia","vulnerability","pentest","proelium","onova","cve","mfa","ssl","certificat","password","segreti","credenzial","crittograf","audit","questionario","nis2","breach","ransomware","csrf","sicurezza","regolamento","2fa","cybersecurity","malware","spoofing") },
     @{ Tag="TEL";    Nome="Telefonia e linee";         Colore="#4D11A7"; Kw=@("vianova","tim:","da tim","fibercop","ftto","centralino","voip","pbx","ivr","telefon","sip-","fonia","linea","linee","ponte radio","pec","disdetta") },
     @{ Tag="RETE";   Nome="Rete e switching";          Colore="#12ACE5"; Kw=@("vlan","switch","trunk","cablaggio","dorsale","sfp","wi-fi","dhcp","dns","tagging","porte","porta ","rack","10 gbps","scan-to-folder","scanner","stampant","nebula") },

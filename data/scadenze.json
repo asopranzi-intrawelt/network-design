@@ -123,7 +123,7 @@
     },
     {
       "id": "VPS-PORTALE-AI",
-      "cosa": "Rinnovo mensile della VPS di produzione del portale SCENIA, piano VPS-O4A8-Linux, attivata il 29/12/2025. MISURATO IL 20/10/2026 dal pannello, dopo il ripristino dell'accesso: e' la piu' vicina delle tre e cade a nove giorni dalla lettura",
+      "cosa": "Rinnovo mensile della VPS di produzione del portale Prodotto-1, piano VPS-O4A8-Linux, attivata il 29/12/2025. MISURATO IL 20/10/2026 dal pannello, dopo il ripristino dell'accesso: e' la piu' vicina delle tre e cade a nove giorni dalla lettura",
       "data": "2026-10-29",
       "preavviso_giorni": 30,
       "rompe": "Il rinnovo attinge al credito prepagato dell'account <account-cloud>, che e' uno solo per tutte e tre le VPS: se il credito non copre, non si ferma un servizio ma il portale in produzione. Le tre scadenze cadono in una finestra di quindici giorni, quindi vanno guardate insieme e non una per volta",
@@ -139,7 +139,7 @@
     },
     {
       "id": "VPS-TEST-PORTALEAI",
-      "cosa": "Rinnovo mensile della VPS di staging del portale SCENIA, piano VPS-O2A4-Linux, attivata il 12/01/2026. MISURATO IL 20/10/2026 dal pannello",
+      "cosa": "Rinnovo mensile della VPS di staging del portale Prodotto-1, piano VPS-O2A4-Linux, attivata il 12/01/2026. MISURATO IL 20/10/2026 dal pannello",
       "data": "2026-11-12",
       "preavviso_giorni": 30,
       "rompe": "Stesso credito prepagato unico. E' la macchina su cui vive l'unico tunnel di protezione realmente in esercizio: perderla significa perdere il precedente funzionante su cui si modella l'hardening del sito",

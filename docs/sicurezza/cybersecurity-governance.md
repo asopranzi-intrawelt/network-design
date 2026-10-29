@@ -87,7 +87,7 @@ Fonte: `_ 📜 GDPR E ISO27001/PSGSI POLITICA DELLA SICUREZZA DELLA INFORMAZIONI
 
 Il SGSI (Sistema di Gestione della Sicurezza delle Informazioni) di Intrawelt copre:
 - Networking e sistemi informativi
-- Sviluppo e gestione di soluzioni SaaS (SCENIA)
+- Sviluppo e gestione di soluzioni SaaS (Prodotto-1)
 - Servizi (traduzione, project management)
 
 ### Obiettivi strategici SGSI
@@ -175,7 +175,7 @@ Blocco schermo automatico dopo **5 minuti** di inattività.
 
 | ID | Dispositivo | Severità | Stato |
 |----|-------------|----------|-------|
-| FW-001 | Regola Phishing_Elisa action=ALLOW | CRITICA | Aperto |
+| FW-001 | Regola Phishing_Persona-I action=ALLOW | CRITICA | Aperto |
 | FW-002 | Switch management su VLAN Guest (.90.37) | CRITICA | Aperto |
 | UPS-001 | UPS Emerson Liebert su VLAN Guest (.90.33) | ALTA | Aperto |
 | EOL-001 | MyHome Server CentOS 7.6 EOL (.90.40) | ALTA | Aperto |
@@ -197,7 +197,7 @@ Controlli implementati:
 - DKIM configurato su Exchange Online
 - DMARC in modalità `p=none`, cioè solo monitoraggio, misurato sul DNS pubblico il 15/10/2026 (vedi §Email Authentication)
 - Filtri anti-spam Exchange Online
-- Regola firewall `Blocco_Gruppo_IP_Phishing_Elisa` (action=ALLOW → BUG FW-001)
+- Regola firewall `Blocco_Gruppo_IP_Phishing_Persona-I` (action=ALLOW → BUG FW-001)
 - Miniguida phishing condivisa su gruppo Teams da Alessio
 
 Gap:
@@ -230,7 +230,7 @@ Punti chiave emersi dalla riunione Consulente-ISO27001-1 (18/04/2025):
 - Dispositivi personali BYOD: politica da formalizzare
 - Badge accesso sala server: da implementare (doppio valore: security + ISO 27001)
 
-**DPIA SCENIA:** Prodotta nel 2026 per il progetto SCENIA (AI translation platform).
+**DPIA Prodotto-1:** Prodotta nel 2026 per il progetto Prodotto-1 (AI translation platform).
 
 ### Procedura di audit mailbox via eDiscovery (M365 Purview)
 
@@ -278,7 +278,7 @@ I tre scostamenti aperti sono di natura diversa e vanno portati a chi tiene i co
 
 Un quarto fatto, di custodia documentale e non di contenuto, merita una riga perche' si ripete facilmente: l'accordo di riservatezza del 09/04/2021, firmato da entrambe le parti, non era reperibile nell'archivio di Intrawelt ed e' stato richiesto al fornitore il 22/10/2026, che lo ha restituito la sera stessa insieme alla nomina firmata. La prova dell'adempimento esisteva, ma stava solo dalla controparte.
 
-Nota: AIDAPT S.r.l. (sub-processor SCENIA) documentato separatamente in `_notes/progetti-collegati/scenia-project.md` (DPA SCENIA Art. 28 v1.7 in negoziazione a giugno 2026).
+Nota: AIDAPT S.r.l. (sub-processor Prodotto-1) documentato separatamente in `_notes/progetti-collegati/prodotto-1-project.md` (DPA Prodotto-1 Art. 28 v1.7 in negoziazione a giugno 2026).
 
 ---
 
@@ -304,7 +304,7 @@ Fonte: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Procedura_Data_Breac
 ### Documentazione obbligatoria
 Ogni breach (anche sotto soglia notifica) va registrato nel Registro Data Breach con: n. scheda, data, luogo, cause, banche dati coinvolte, tipologia dati, conseguenze, piano intervento, esito notifiche.
 
-Gap attuale: procedura non ancora integrata con la catena notifica SCENIA (Titolare ScenIA → AIDAPT 48h vs. art. 33 GDPR 72h — vedi scenia-project.md §DRP §6).
+Gap attuale: procedura non ancora integrata con la catena notifica Prodotto-1 (Titolare Prodotto-1 → AIDAPT 48h vs. art. 33 GDPR 72h — vedi prodotto-1-project.md §DRP §6).
 
 ---
 
@@ -396,11 +396,11 @@ Cartella: `Cybersec & IT Governance/Privacy (GDPR e Contratti)/Confidentiality_S
 
 Tutti i template sono in formato .doc (vecchio Word). Usati per accordi di riservatezza con traduttori, interpreti e collaboratori freelance.
 
-### NDA con Collaboratore-Esterno-1 (developer SCENIA, ott 2025)
+### NDA con Collaboratore-Esterno-1 (developer Prodotto-1, ott 2025)
 
 Documento: `_ 📜 GDPR E ISO27001/_GDPR compliance/Accordi di non riservatezza (NDA)/<Collaboratore-Esterno-1>/AccordoDiRiservatezza_rev1.docx`
 
-NDA reciproco Intrawelt ↔ Collaboratore-Esterno-1 (libero professionista IT). Firmato contestualmente alla proposta di collaborazione del 29/10/2025. Copertura: codice sorgente, architetture, dati clienti SCENIA, API keys, credenziali.
+NDA reciproco Intrawelt ↔ Collaboratore-Esterno-1 (libero professionista IT). Firmato contestualmente alla proposta di collaborazione del 29/10/2025. Copertura: codice sorgente, architetture, dati clienti Prodotto-1, API keys, credenziali.
 
 ---
 

@@ -368,7 +368,7 @@
   },
   {
    "id": "ollama",
-   "nome": "Host Ollama (IntraLino)",
+   "nome": "Host Ollama (Prodotto-2)",
    "tipo": "server",
    "livello": "distribuzione",
    "contenitore": "edificio",
@@ -706,7 +706,7 @@
    "tipo": "gruppo",
    "livello": "servizi",
    "contenitore": "rack-dx",
-   "note": "Le restanti macchine dell'hypervisor, raggruppate perche' non cambiano la lettura della rete: WinServer2022 con due schede su due bridge distinti, PasswordManager, ConvertitoreRuolini, GanttTool, Intralino, la macchina di prova della migrazione e un modello spento. Nessuna porta un tag di VLAN: stanno tutte sulla stessa LAN piatta.",
+   "note": "Le restanti macchine dell'hypervisor, raggruppate perche' non cambiano la lettura della rete: WinServer2022 con due schede su due bridge distinti, PasswordManager, ConvertitoreRuolini, GanttTool, Prodotto-2, la macchina di prova della migrazione e un modello spento. Nessuna porta un tag di VLAN: stanno tutte sulla stessa LAN piatta.",
    "alimentazione": null
   },
   {
@@ -1291,7 +1291,7 @@
    "vlan": [
     1
    ],
-   "note": "ConvertitoreRuolini, GanttTool, Intralino e un modello spento."
+   "note": "ConvertitoreRuolini, GanttTool, Prodotto-2 e un modello spento."
   },
   {
    "da": "internet",

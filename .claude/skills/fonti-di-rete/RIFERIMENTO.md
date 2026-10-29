@@ -141,4 +141,4 @@ Il primo e' l'intervento manuale senza traccia: una porta cambiata su una GUI da
 
 Il secondo e' l'app di assistente su un altro account, che non lascia file leggibili da qui: il suo unico canale verso questo progetto e' un handoff scritto a mano.
 
-Il terzo e' la documentazione di IntraLino, che vive su una macchina virtuale e che l'IT Manager ha dichiarato come fonte da portare in una sessione futura: fino ad allora le sezioni IntraLino di questo progetto restano parziali e sono etichettate come tali.
+Il terzo e' la documentazione di Prodotto-2, che vive su una macchina virtuale e che l'IT Manager ha dichiarato come fonte da portare in una sessione futura: fino ad allora le sezioni Prodotto-2 di questo progetto restano parziali e sono etichettate come tali.

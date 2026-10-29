@@ -67,21 +67,21 @@ Write-Host "Avvio: $timestamp`n"
 
 # --- CHECK 1: FW-001 - Regola Phishing action=ALLOW ---
 # Non possiamo testare la FW rule via PS senza API Zyxel; leggiamo GAP-TBC se esiste
-Write-Host "[FW-001] Verifica regola Blocco_Gruppo_IP_Phishing_Elisa..." -ForegroundColor Yellow
+Write-Host "[FW-001] Verifica regola Blocco_Gruppo_IP_Phishing_Persona-I..." -ForegroundColor Yellow
 $gapFile = Join-Path $PSScriptRoot '..\docs\GAP-TBC.md'
 if (Test-Path $gapFile) {
     $gapContent = Get-Content $gapFile -Raw
     if ($gapContent -match 'FW-001') {
         $resolved = $gapContent -match 'FW-001.*\[x\]|FW-001.*risolto|FW-001.*chiuso'
         if ($resolved) {
-            Add-Result 'FW-001' 'Regola Phishing_Elisa action=ALLOW' 'OK' 'Risolto' 'Stato risolto trovato in GAP-TBC.md'
+            Add-Result 'FW-001' 'Regola Phishing_Persona-I action=ALLOW' 'OK' 'Risolto' 'Stato risolto trovato in GAP-TBC.md'
         } else {
-            Add-Result 'FW-001' 'Regola Phishing_Elisa action=ALLOW' 'CRITICA' 'APERTO' `
+            Add-Result 'FW-001' 'Regola Phishing_Persona-I action=ALLOW' 'CRITICA' 'APERTO' `
                 'GAP-TBC.md indica anomalia non risolta. Accedere a USG FLEX 500 e correggere action=DENY.'
         }
     }
 } else {
-    Add-Result 'FW-001' 'Regola Phishing_Elisa action=ALLOW' 'CRITICA' 'NON VERIFICABILE' `
+    Add-Result 'FW-001' 'Regola Phishing_Persona-I action=ALLOW' 'CRITICA' 'NON VERIFICABILE' `
         'File GAP-TBC.md non trovato. Verificare manualmente sulla Web GUI firewall.'
 }
 

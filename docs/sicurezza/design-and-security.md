@@ -49,7 +49,7 @@ Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applic
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.6.1 | Sicurezza delle informazioni nel project management | SI | Parziale | SCENIA: DPIA prodotta. Altri progetti non coperti. |
+| A.6.1 | Sicurezza delle informazioni nel project management | SI | Parziale | Prodotto-1: DPIA prodotta. Altri progetti non coperti. |
 | A.6.2 | Lavoro a distanza e telelavoro | SI | Parziale | VPN attiva. Policy uso device personali da formalizzare. |
 | A.6.3 | Separazione dei compiti | SI | Parziale | Struttura piccola, separazione limitata. |
 
@@ -136,7 +136,7 @@ Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applic
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.14.1 | Sicurezza nei processi di sviluppo | SI | Parziale | SCENIA: requisiti sicurezza AIDAPT documentati. Sviluppo interno IntraLino: sicurezza ad-hoc. |
+| A.14.1 | Sicurezza nei processi di sviluppo | SI | Parziale | Prodotto-1: requisiti sicurezza AIDAPT documentati. Sviluppo interno Prodotto-2: sicurezza ad-hoc. |
 | A.14.2 | Sicurezza dei servizi di sviluppo e supporto | SI | Parziale | Repository GitHub. CI/CD non formalizzato. **Aggiornamento 27/07/2026**: due progetti applicativi girano su VM Proxmox aziendali (VM207, VM208) con repository propri. Manca una regola scritta su dove viva il codice prodotto su asset aziendali: uno dei due repository ha un secondo remote verso l'account GitHub personale di un collaboratore, con l'identita' di commit locale di quella persona, e non esiste procedura di revoca dell'accesso all'uscita di un collaboratore (SEC-017, `GAP-TBC.md` #121). Sul lato separazione degli ambienti, il pilota della VM208 ha una decisione di progetto per isolare pre-produzione e produzione sulla stessa VM, attuata alla data solo a livello di configurazione. |
 | A.14.3 | Dati di test | SI | Parziale | Uso dati reali in test [TBC – da verificare]. |
 
@@ -172,7 +172,7 @@ Nota: la SoA è la dichiarazione formale di quali controlli ISO27001 sono applic
 
 | ID | Controllo | Applicabile | Stato | Note |
 |----|-----------|-------------|-------|------|
-| A.18.1 | Conformità a requisiti legali e contrattuali | SI | Parziale | GDPR: DPIA SCENIA prodotta. Disciplinare lavoratori da produrre. |
+| A.18.1 | Conformità a requisiti legali e contrattuali | SI | Parziale | GDPR: DPIA Prodotto-1 prodotta. Disciplinare lavoratori da produrre. |
 | A.18.2 | Riesame della sicurezza delle informazioni | SI | NO – Non attivo | Riesame formale non pianificato. Da includere in ISMS. |
 
 ---

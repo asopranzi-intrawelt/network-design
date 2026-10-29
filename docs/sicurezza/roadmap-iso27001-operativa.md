@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -35,7 +35,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
 - **ISO-11 - Copertura e cifratura della copia fuori sede:** Capacita' o servizio cloud aggiuntivo solo se la misura dimostra che il piano attuale non copre il perimetro approvato. Decisione: Definire prima perimetro e ritenzione.
 - **ISO-21 - Segmenti postazioni, server e management:** Eventuali porte gestite o apparati aggiuntivi soltanto se il censimento delle porte mostra insufficienza. Decisione: Usare la capacita' esistente prima di acquistare.
 - **ISO-25 - VPN moderne e failover WAN:** Intervento del fornitore di connettivita' se le modifiche ai peer o al failover non sono gestibili internamente. Decisione: Confermare responsabilita' e condizioni del servizio.
-- **ISO-27 - Patch e configurazioni di riferimento:** Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico. Decisione: Chiarire titolarita' e scheda contrattuale, concordare e approvare per iscritto piano e costo prima dell'ordine.
+- **ISO-27 - Patch e configurazioni di riferimento:** Upgrade OPNsense proposto gratuitamente da Seeweb; eventuali licenze o sostituzioni restano decisioni separate dopo diagnosi.. Decisione: Confermare per iscritto gratuità e perimetro, poi approvare release, snapshot hypervisor, console, rollback e prove dei servizi prima dell'intervento; nessun ordine per l'upgrade gratuito..
 - **ISO-28 - Remediation del vulnerability assessment:** Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi. Decisione: Definire perimetro della verifica prima dell'incarico.
 - **ISO-29 - Cifratura endpoint e dispositivo personale in RMM:** Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato. Decisione: Confrontare il requisito con le funzioni RMM gia' disponibili.
 - **ISO-30 - Log e allarmi di rete e infrastruttura:** VM e spazio di archiviazione da dimensionare dopo misura dei volumi; eventuali schede SNMP UPS solo se necessarie ai requisiti di allarme. Decisione: Verificare capacita' Proxmox e NAS e misurare volumi e ritenzione prima di acquistare.
@@ -228,12 +228,12 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
 
 ### 3. Controlli ripetibili - dicembre 2026-gennaio 2027
 
-- **ISO-27 | Patch e configurazioni di riferimento** - **In corso**; FORNITURA CONDIZIONATA. Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico.
+- **ISO-27 | Patch e configurazioni di riferimento** - **In corso**; FORNITURA CONDIZIONATA. Upgrade OPNsense proposto gratuitamente da Seeweb; eventuali licenze o sostituzioni restano decisioni separate dopo diagnosi..
   - **Azione:** Censire versioni di firewall, switch, AP, NAS, Proxmox e VM; fissare finestre, priorita', eccezioni e verifica post aggiornamento. Priorità cloud Seeweb: OPNsense 21.1.5 fuori supporto upstream e certificato GUI indicato scaduto; concordare proprietà, backup/console e rollback.
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/operativita/vendor-management.md, docs/sicurezza/design-and-security.md, roadmap Fase 4, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-20):** 20/10: screenshot_111, Seeweb propone aggiornamento OPNsense in piu' sessioni con salvataggio configurazioni; offerta non accettata. Il contratto generale 2014 non assegna esplicitamente il patching del firewall: servono scheda servizio e accordi vigenti. OPNsense 21.1.5 fuori supporto upstream; prima del cambio definire release e percorso testati, backup ripristinabile, console, finestra, rollback e prove VPN/GroupShare/GUI/log. Nessuna modifica eseguita.
+  - **Ultimo stato (2026-10-29):** Correzione della fornitura dopo il ticket Seeweb del 29/10: l'upgrade è offerto gratuitamente; nessuna conferma operativa finché mancano piano tecnico e criteri di ritorno.
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
@@ -253,8 +253,7 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-27. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-27):** Collettore f5acb3b pubblicato: monitor Windows legge storage.path dal file Fluent Bit passato con -ConfigFile; dieci prove mirate e replay fittizio con binario 5.1.3 verdi. Mancano verifica del file del servizio, soglie reali, NinjaOne, Security, VM e allarme esterno; Cliente-1 89/90 aperte.
-  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; D:/log-collector/docs/runbook-componente-5-catena.md
+  - **Ultimo stato (2026-10-29):** Ticket Seeweb 29/10: test UDP con cattura concordabile dopo ricevitore pronto; applicatore del collettore pubblicato e controllo del ruleset candidato, ma nessun Syslog reale ricevuto. Restano preflight privilegiato, campione GUI/SSH, volume, retention e allarme.
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

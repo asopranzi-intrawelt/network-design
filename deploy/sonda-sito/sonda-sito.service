@@ -1,0 +1,23 @@
+# Sonda del sito nuovo (G13): un'esecuzione, avviata dal timer omonimo.
+#
+# Codici d'uscita: 0 sano, 1 allarme, 2 misura impossibile. 1 e 2 lasciano l'unita' in
+# stato failed, visibile con `systemctl --failed`; l'avviso alla persona lo manda la
+# sonda stessa al cambio di stato, non questa unita'.
+[Unit]
+Description=Sonda del sito nuovo: disponibilita', tempo di risposta, certificato
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/sonda-sito/sonda_sito.py
+EnvironmentFile=/etc/sonda-sito/sonda-sito.conf
+# Utente effimero e cartella di stato gestita da systemd (/var/lib/sonda-sito), che la
+# sonda legge da STATE_DIRECTORY: stato degli avvisi e serie delle misure.
+DynamicUser=yes
+StateDirectory=sonda-sito
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+TimeoutStartSec=180

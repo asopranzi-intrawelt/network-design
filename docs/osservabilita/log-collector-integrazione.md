@@ -1,5 +1,18 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Pilot Seeweb preparato, non installato, 29/10/2026
+
+Il collettore `00a9455` ha pubblicato l'applicatore del bundle Seeweb ancorato alle due configurazioni lette sulla VM: hash, indirizzo di destinazione, sintassi, servizi, backup e ritorno. Il commit pubblicato `dfc284b` vincola nel manifesto privato anche l'intero ruleset nftables attivo; il baseline è stato caricato in Debian 13 e la sua impronta è verificata dallo stesso codice. Sedici prove locali passano, ma l'account SSH ordinario non può leggere il ruleset attivo sulla VM e `sudo -n` richiede password. Nessuna installazione, cattura o ricezione Seeweb è avvenuta. Il provider offre il test UDP concordato e un aggiornamento OPNsense gratuito separato; ISO-30 e Cliente-1 89/90 restano in corso.
+
+
+## Seeweb, Canon MyOffice e PBX cloud, 29/10/2026
+
+Seeweb ha comunicato l'IP sorgente dell'OPNsense e verificato pacchetti cifrati nel tunnel verso la VM. Il parametro privato del collettore include ora quel solo mittente e il render locale lo instrada al deposito tecnico; nessun target è installato o evento Syslog ricevuto. L'utente conferma che MyOffice gestisce la sola Canon del Piano 1, distinta dalla Kyocera. La lettera Albalog su ReadMeter 7 descrive telemetria SNMP della stampante inviata da un agente su PC a SatWeb Portal, non audit amministrativo; l'utente ha chiesto al fornitore date corrette, sede dell'agente e possibilità di inoltro dei registri. Il PBX Vianova UCC usa già i softphone e richiede una ricognizione separata degli accessi amministrativi cloud e dei cambi di configurazione. Nessuno dei due flussi è raccolto.
+
+## Controllo della quarantena Syslog: candidato, 28/10/2026
+
+Il collettore prepara ispezione oraria e ritenzione con durata esplicita del deposito dei mittenti ignoti. Una radice vuota è sana; assenza dell'archivio, filesystem almeno all'80% e misura fallita sono esiti distinti. Test POSIX e sintassi systemd sono verdi. Nessun servizio è installato: l'80% riguarda l'intero filesystem, non limita i byte della quarantena, e l'esito locale non è ancora recapitato a un responsabile. Restano inventario reale, durata approvata, quota o volume separato e prova dell'allarme. ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## Lista esplicita dei mittenti: candidata, 28/10/2026
 
 Il renderer del collettore prepara una modalità opt-in che invia in AdS solo le sorgenti di rete censite, conserva gli accessi locali e separa Seeweb, iLO e mittenti ignoti. Il deposito degli ignoti è tecnico e richiede durata, capienza e allarme prima dell'uso. La sonda SSH ha raggiunto la VM ma l'account non ha accesso a `/srv/ads/`, quindi l'inventario reale non è stato misurato; la modalità resta non installata. L'IP Seeweb e la prova del flusso non sono ancora disponibili. ISO-30 e Cliente-1 89/90 restano in corso; il dettaglio operativo è nel runbook del componente 2.

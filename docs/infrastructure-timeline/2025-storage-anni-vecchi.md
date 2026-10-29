@@ -1,6 +1,6 @@
 # Storage degli anni vecchi - consolidamento backup storico 2009-2023
 
-> Fonte: `Intrawelt_anni_vecchi_2026-05-20_15-44.html`, uno strumento interattivo autocontenuto (HTML+JS con dati incorporati, palette Scenia) costruito per tracciare la migrazione dell'archivio storico. Lo strumento conserva uno snapshot iniziale datato 08/01/2026 e un secondo snapshot incorporato al momento del salvataggio del file, il 20/05/2026 15:44, che e' la fotografia usata come stato corrente in questa pagina. La cartella sorgente e' `ARCHITETTURA SERVER-CLOUD-LINEE/` (root, file sciolto).
+> Fonte: `Intrawelt_anni_vecchi_2026-05-20_15-44.html`, uno strumento interattivo autocontenuto (HTML+JS con dati incorporati, palette Prodotto-1) costruito per tracciare la migrazione dell'archivio storico. Lo strumento conserva uno snapshot iniziale datato 08/01/2026 e un secondo snapshot incorporato al momento del salvataggio del file, il 20/05/2026 15:44, che e' la fotografia usata come stato corrente in questa pagina. La cartella sorgente e' `ARCHITETTURA SERVER-CLOUD-LINEE/` (root, file sciolto).
 
 ## Cos'e' l'archivio "anni vecchi"
 

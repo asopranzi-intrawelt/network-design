@@ -1,0 +1,40 @@
+# Modello della configurazione della sonda del sito (G13).
+#
+# Si copia sulla macchina che esegue la sonda come /etc/sonda-sito/sonda-sito.conf e
+# non entra in git: nomi e destinatari sono scelte di esercizio. Le soglie sotto sono
+# quelle derivate dal riferimento misurato il 29/10/2026 dalla sede, scritto nel
+# registro del runbook del primo rilascio: si cambiano rimisurando, non a sentimento.
+
+# I due percorsi. La pagina pubblica e' pre-generata e dice che cosa vede il
+# visitatore; il percorso applicativo passa per applicazione e banca dati. Il giorno del
+# passaggio il nome cambia da quello di anteprima al dominio definitivo.
+SONDA_URL_PAGINA=https://<nome-del-sito>/
+SONDA_URL_APP=https://<nome-del-sito>/api/pages?limit=1&depth=0
+
+# Che cosa deve contenere una risposta sana: un 200 con una pagina d'errore non basta.
+# systemd toglie le virgolette esterne, quindi il valore JSON "docs" va fra apici
+# singoli per arrivare alla sonda con le doppie.
+SONDA_MARCATORE_PAGINA=</html>
+SONDA_MARCATORE_APP='"docs"'
+
+# Tempo al primo byte, mediana di tre campioni. Riferimento sano: circa 0,14 s la
+# pagina e 0,17 s il percorso applicativo, quindi la soglia sta a circa sei volte.
+SONDA_SOGLIA_PAGINA_S=1.0
+SONDA_SOGLIA_APP_S=1.0
+SONDA_CAMPIONI=3
+SONDA_TIMEOUT_S=10
+
+# Il proxy rinnova il certificato a circa trenta giorni dalla scadenza: sotto i venti
+# vuol dire che il rinnovo non avviene da una decina di giorni.
+SONDA_GIORNI_CERTIFICATO=20
+
+# Bersaglio esterno che distingue il sito caduto dal collegamento della sede caduto.
+SONDA_RIFERIMENTO=1.1.1.1:443
+
+# Esecuzioni consecutive con lo stesso esito prima di avvisare, in entrambe le direzioni.
+SONDA_CONSECUTIVI=2
+
+# Comando che riceve il testo dell'avviso sullo standard input. Vuoto: l'avviso va solo
+# nel giornale di sistema, che non raggiunge nessuno. Canale e destinatario sono una
+# decisione aperta, vedi il registro del runbook.
+SONDA_COMANDO_AVVISO=

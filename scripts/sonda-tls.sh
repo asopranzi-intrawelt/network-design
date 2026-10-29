@@ -7,7 +7,7 @@
 # osservato dal navigatore a determinare se comparira' un avviso, non il file su
 # disco. Serve anche nei casi in cui il certificato vive dentro un contenitore la cui
 # immagine non porta gli strumenti per leggerlo, che e' il caso incontrato il
-# 01/09/2026 sull'immagine minimale del contenitore di inoltro di IntraLino.
+# 01/09/2026 sull'immagine minimale del contenitore di inoltro di Prodotto-2.
 #
 # Uso: sonda-tls.sh host:porta [host:porta ...]
 # Non scrive nulla, non invia credenziali, non completa una sessione applicativa:

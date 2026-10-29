@@ -188,12 +188,12 @@ Restano due affinamenti. La regola 12 `GUEST_Outgoing` ha `To: any` troppo largo
 
 Stato al 19/05/2026 (backup di riferimento): 34 regole attive + default-deny (action deny log alert). **Aggiornato il 16/07/2026**: 9 regole rimosse durante la pulizia per M13a (vedi §NAT e virtual server, Disallineamento risolto), poi 2 regole nuove aggiunte per la VLAN 40 (`WIFI_STAFF_to_LAN1_deny` priorita' 1, `WIFI_STAFF_Outgoing` priorita' 2 — l'ordine e' stato invertito una volta per errore in fase di creazione e corretto con "Move" prima di Apply, stesso principio dell'anomalia FW-001: il motore valuta dall'alto in basso e si ferma alla prima corrispondenza) — **27 regole attive** dopo l'applicazione. Organizzate per coppia di zone (sorgente, destinazione).
 
-**Regola 1 - Anomalia critica**: `Blocco_Gruppo_IP_Phishing_Elisa`
+**Regola 1 - Anomalia critica**: `Blocco_Gruppo_IP_Phishing_Persona-I`
 - Sorgente: WAN. Action: **allow** (dovrebbe essere deny).
 - Contiene 11 IP raccolti dall'incidente phishing 08/01/2026.
 - Includeva anche 203.0.113.5 (IP pubblico del firewall stesso, rimosso).
 - Poiche' e' la prima regola e il motore si ferma alla prima corrispondenza, quegli IP scavalcano tutti i controlli successivi.
-- **Fix immediato**: cambiare action in deny, aggiungere log alert, rimuovere 203.0.113.5 dal gruppo Bad_IP_Phishing_Elisa_2026.
+- **Fix immediato**: cambiare action in deny, aggiungere log alert, rimuovere 203.0.113.5 dal gruppo Bad_IP_Phishing_Persona-I_2026.
 
 **Regola gemella - Anomalia**: `malicious_IP_12052025`
 - Blocco in uscita verso 4.207.164.234, anche questa con action allow.
@@ -419,7 +419,7 @@ Non si ruota una chiave pre-condivisa "per provare se funziona" in orario di lav
 
 | ID | Descrizione | Stato |
 |----|-------------|-------|
-| FW-001 | Regola Blocco_Gruppo_IP_Phishing_Elisa: action allow invece di deny | **Corretto 01/07/2026** (deny + log alert, IP_09_phishing_2026_Elisa/203.0.113.5 rimosso dal gruppo) |
+| FW-001 | Regola Blocco_Gruppo_IP_Phishing_Persona-I: action allow invece di deny | **Corretto 01/07/2026** (deny + log alert, IP_09_phishing_2026_Persona-I/203.0.113.5 rimosso dal gruppo) |
 | FW-002 | Regola malicious_IP_12052025: action allow invece di deny | **Corretto 01/07/2026** (deny, log gia' presente) |
 | FW-003 | secure-policy 8/9/10 attive ma virtual server corrispondenti deactivate | Verificare intento |
 | FW-004 | Rotte statiche dipendono da router downstream 10.61.100.1 non monitorato | Da rimuovere con dismissione LAN2 |

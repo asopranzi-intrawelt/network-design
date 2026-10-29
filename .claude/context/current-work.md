@@ -2,6 +2,18 @@
 last-verified: 920c616
 ---
 
+## Risposta Seeweb e ricognizione MyOffice, 29/10/2026
+## Nuovo ticket Seeweb: test e upgrade gratuiti, 29/10/2026
+
+Il provider offre dopo il nostro via una prova UDP con cattura sulla VM e confronto degli esiti; propone gratuitamente undici passaggi OPNsense in una sessione con disservizio previsto fino a due ore. Il collettore `00a9455` prepara applicatore e rollback, poi pubblica in `dfc284b` il controllo del ruleset attivo; non installa nulla. L'account SSH ordinario non può leggere le regole attive, quindi il preflight privilegiato resta manuale. Il tipo di snapshot, la console indipendente, la release finale e i test VPN/servizi vanno chiariti prima dell'upgrade. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10; testo effettivo e ricevuta non sono disponibili qui. Nessuna autorizzazione o prova reale di Syslog; ISO-27/30 e Cliente-1 89/90 in corso.
+
+
+Seeweb ha comunicato l'IP sorgente dell'OPNsense e visto pacchetti cifrati nel tunnel verso la VM; non ha ancora inviato una prova Syslog. Il collettore ha impostato il solo mittente nel parametro privato e verificato il render locale, senza installazione. La risposta preparata rinvia l'inoltro fino al via per pochi eventi GUI/SSH. L'utente conferma che MyOffice gestisce una sola Canon; ReadMeter 7 è telemetria dei consumabili tramite agente su PC, con risposta del fornitore attesa alla mail di chiarimento. Gli audit amministrativi del PBX cloud Vianova UCC sono da ricognire separatamente. ISO-30 e Cliente-1 89/90 restano in corso.
+
+## Quarantena Syslog: ritenzione e ispezione candidate, 28/10/2026
+
+Nel collettore il deposito dei mittenti ignoti ha ora una candidata di ritenzione con giorni espliciti e una sonda oraria locale. Il vuoto è sano; archivio mancante, filesystem almeno all'80% e misura fallita hanno esiti distinti. Tre prove POSIX in Debian e la verifica delle unità systemd passano. Il codice non è installato: prima della variante strict servono inventario VM leggibile, durata approvata, quota o filesystem isolato, misura del costo della scansione e allarme ricevuto. ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## Ricevitore strict candidato e archivio VM non leggibile, 28/10/2026
 
 Il collettore `7f412d2` e la rete `98f270b` sono stati pubblicati dall'utente. Il preflight dei mittenti è versionato, ma la sonda SSH di sola lettura ha raggiunto la VM senza poter aprire `/srv/ads/` con l'account usato: nessun mittente reale è stato contato. Una variante opt-in del renderer separa gli IP AdS censiti, Seeweb, iLO, accessi locali e mittenti ignoti; non è installata. Con i parametri privati attuali la lista AdS di rete è vuota, quindi il render strict si arresta. Prima di attivarlo occorrono inventario autorizzato, riconciliazione delle fonti silenziose, ritenzione, capienza e allarme dell'archivio tecnico. Seeweb non ha ancora comunicato l'IP sorgente; ISO-30 e Cliente-1 89/90 restano in corso.
@@ -43,7 +55,7 @@ Il collettore `8773aa6` è sul remoto: ricevente candidato RFC 5424/TLS per il m
 
 ## Censimento runtime e integrita, 26/10/2026
 
-Su richiesta dell'utente, ricognizione dei progetti aziendali e degli host collegati, escluso il materiale personale. Dossier privato filtrato in `_notes/vulnerabilita-runtime/2026-10-26/`; fonte tecnica in [design e sicurezza](design-and-security.md#censimento-runtime-2026-10-26). Undici host aziendali su dodici raggiunti, WordPress non verificato. PHP .13 corrisponde alla correzione Ubuntu sulle quattro VM osservate; priorita aperte sui runtime dei container IntraLino e Next nei due progetti aziendali. Versioni affette e sfruttabilita restano distinte; nessun aggiornamento o riavvio. Ricognizione parziale, non attestazione di assenza di compromissione; nessun gate ISO chiuso. Preservato il lavoro parallelo sul sito e sugli altri filoni.
+Su richiesta dell'utente, ricognizione dei progetti aziendali e degli host collegati, escluso il materiale personale. Dossier privato filtrato in `_notes/vulnerabilita-runtime/2026-10-26/`; fonte tecnica in [design e sicurezza](design-and-security.md#censimento-runtime-2026-10-26). Undici host aziendali su dodici raggiunti, WordPress non verificato. PHP .13 corrisponde alla correzione Ubuntu sulle quattro VM osservate; priorita aperte sui runtime dei container Prodotto-2 e Next nei due progetti aziendali. Versioni affette e sfruttabilita restano distinte; nessun aggiornamento o riavvio. Ricognizione parziale, non attestazione di assenza di compromissione; nessun gate ISO chiuso. Preservato il lavoro parallelo sul sito e sugli altri filoni.
 
 ## Catena AdS pubblicata e gate operativi, 26/10/2026
 
@@ -65,9 +77,9 @@ L'utente ha precisato che la scadenza del 20/12 riguarda i 19 requisiti dichiara
 
 Chiusure manuali confermate: QA `staging` `d994af0`, collettore `main` `5e46478`, entrambi allineati al remoto. L'outbox tecnico QA precede la chiamata al backup e il ricevitore del collettore archivia offline con limite logico e lock POSIX. La prova è sintetica; mancano trasporto autenticato, ricevuta/replay, quota fisica/allarme, archivio riservato con retention/restore, indice e due LXC. M32e e ISO-30 restano in corso. Dettagli in `docs/osservabilita/integrazione-log-qa-verifier.md` e `docs/osservabilita/log-collector-integrazione.md`; il lavoro concorrente sulla VPS del sito non cambia questo stato.
 
-## Certificati: emissione IntraLino e censimento della rete, 22/10/2026
+## Certificati: emissione Prodotto-2 e censimento della rete, 22/10/2026
 
-IntraLino: certificato aziendale installato e verificato nel solo ambiente TEST il22/10/2026 alle15:22 UTC, scadenza24/11/2027. Audit indipendente: TLS rigoroso su due nomi e due ingressi, rifiuti di nome errato/CA assente e HTTP anonimo coerente. Produzione sui certificati precedenti; vecchia autorità e coppia ancora necessarie. Chiave CA offline, trust store invariati. Censimento complessivo, rinnovi/revoca e distribuzione ai client restano aperti. Prova privata in `_notes/pki/intralino-emissione-2026-10-22.json`; fonte canonica `docs/sicurezza/autorita-certificazione-interna.md`. Nessun cambio di stato ISO o scansione generale.
+Prodotto-2: certificato aziendale installato e verificato nel solo ambiente TEST il22/10/2026 alle15:22 UTC, scadenza24/11/2027. Audit indipendente: TLS rigoroso su due nomi e due ingressi, rifiuti di nome errato/CA assente e HTTP anonimo coerente. Produzione sui certificati precedenti; vecchia autorità e coppia ancora necessarie. Chiave CA offline, trust store invariati. Censimento complessivo, rinnovi/revoca e distribuzione ai client restano aperti. Prova privata in `_notes/pki/prodotto-2-emissione-2026-10-22.json`; fonte canonica `docs/sicurezza/autorita-certificazione-interna.md`. Nessun cambio di stato ISO o scansione generale.
 
 La lettura riguarda questo rilievo e la relativa procedura: non attesta allineamento delle altre aree o copertura di un controllo ISO. Preservate le modifiche parallele già presenti.
 

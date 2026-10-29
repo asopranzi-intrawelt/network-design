@@ -4,7 +4,7 @@
   Fonte:      data/network-topology.json
   Generatore: scripts/Build-NetworkMap.ps1
   Decisione:  ADR-023, micro-step M26
-  Generato il 26/10/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
+  Generato il 29/10/2026. Ogni modifica manuale viene persa alla prossima rigenerazione,
   e soprattutto crea una seconda verita' accanto alla fonte: correggere la fonte.
 -->
 <html lang="it">
@@ -672,7 +672,7 @@ footer li{margin-bottom:3px}
   },
   {
    "id": "ollama",
-   "nome": "Host Ollama (IntraLino)",
+   "nome": "Host Ollama (Prodotto-2)",
    "tipo": "server",
    "livello": "distribuzione",
    "contenitore": "edificio",
@@ -1010,7 +1010,7 @@ footer li{margin-bottom:3px}
    "tipo": "gruppo",
    "livello": "servizi",
    "contenitore": "rack-dx",
-   "note": "Le restanti macchine dell'hypervisor, raggruppate perche' non cambiano la lettura della rete: WinServer2022 con due schede su due bridge distinti, PasswordManager, ConvertitoreRuolini, GanttTool, Intralino, la macchina di prova della migrazione e un modello spento. Nessuna porta un tag di VLAN: stanno tutte sulla stessa LAN piatta.",
+   "note": "Le restanti macchine dell'hypervisor, raggruppate perche' non cambiano la lettura della rete: WinServer2022 con due schede su due bridge distinti, PasswordManager, ConvertitoreRuolini, GanttTool, Prodotto-2, la macchina di prova della migrazione e un modello spento. Nessuna porta un tag di VLAN: stanno tutte sulla stessa LAN piatta.",
    "alimentazione": null
   },
   {
@@ -1595,7 +1595,7 @@ footer li{margin-bottom:3px}
    "vlan": [
     1
    ],
-   "note": "ConvertitoreRuolini, GanttTool, Intralino e un modello spento."
+   "note": "ConvertitoreRuolini, GanttTool, Prodotto-2 e un modello spento."
   },
   {
    "da": "internet",
@@ -4619,7 +4619,7 @@ function schedaArco(l){
   [['Aggiornato', D.meta.aggiornato], ['Revisione', String(D.meta.revisione)],
    ['Nodi', String(NODI.length)], ['Collegamenti', String(LINK.length)],
    ['Sorgenti elettriche', String(PWR.length)], ['Voci di rischio', String((D.gap||[]).length)],
-   ['Generato', '26/10/2026']].forEach(function(p){
+   ['Generato', '29/10/2026']].forEach(function(p){
     var s = document.createElement('span'); s.textContent = p[0] + ' ' + p[1]; m.appendChild(s);
   });
   document.getElementById('perim').textContent = D.meta.perimetro || '';

@@ -75,7 +75,7 @@ Quella zona, finché il registrar delega a `regulus` e `rigel`, non la interroga
    |  qui vive LA ZONA, cioe' la tabella del dominio:               |
    |     www                CNAME  vserver.intrawelt.com            |
    |     vserver            A      198.51.100.35                    |
-   |     scenia             A      198.51.100.35                    |
+   |     prodotto-1             A      198.51.100.35                    |
    |     @                  MX     ...mail.protection.outlook.com   |
    |     @                  TXT    SPF                              |
    |     _dmarc             TXT    DMARC                            |
@@ -91,7 +91,7 @@ Quella zona, finché il registrar delega a `regulus` e `rigel`, non la interroga
    |  HOSTING: 198.51.100.35       |   |  POSTA: Microsoft 365         |
    |  macchina Fastnet con Plesk   |   |  riceve e conserva la posta   |
    |  serve il sito attuale        |   |  di @intrawelt.com            |
-   |  e scenia.intrawelt.com       |   |  Fastnet non la vede mai      |
+   |  e prodotto-1.intrawelt.com       |   |  Fastnet non la vede mai      |
    +-------------------------------+   +-------------------------------+
 
    MODIFICHE ALLA ZONA: solo Fastnet. Intrawelt apre un ticket.

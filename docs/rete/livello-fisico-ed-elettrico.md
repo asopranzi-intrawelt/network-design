@@ -152,7 +152,7 @@ Le assegnazioni vengono dal documento dell'IT Manager; PVID e VLAN ammesse dallo
 | 41 | access point Zyxel NWA130BE, Piano 1 | 1 | 1, 40, 90 | trunk multi-SSID |
 | 44 | telefono IP Yealink, Sala-1 | 2 | tutte | NET-019 |
 | 45 | access point Zyxel NWA130BE, Piano 2 | 1 | 1, 40, 90 | trunk multi-SSID |
-| 46 | host Ollama del progetto IntraLino | 1 | — | migliaia di link flap, NET-010 |
+| 46 | host Ollama del progetto Prodotto-2 | 1 | — | migliaia di link flap, NET-010 |
 | 51 (SFP+) | XGS2220-30HP, dorsale | 1 | tutte | 10 Gbps in fibra |
 | 52 (SFP+) | QNAP QSW-1208-8c, porta P4 | 1 | tutte | 10 Gbps in fibra, ramo storage |
 

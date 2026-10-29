@@ -5,7 +5,7 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <mxCell id="hdr" value="ZYXEL USG FLEX 500 — usgflex500 — CONFIGURAZIONE TARGET 06/2026&#10;Rimossi: WAN_TRUNK • LAN2 • rotte statiche • router downstream — Corretto: blocco phishing Elisa (deny) — Aggiunto: DMZ→Proxmox via switch trunk" style="text;html=1;fontSize=14;fontStyle=1;align=center;fillColor=#1a5276;fontColor=#ffffff;verticalAlign=middle" vertex="1" parent="1">
+        <mxCell id="hdr" value="ZYXEL USG FLEX 500 — usgflex500 — CONFIGURAZIONE TARGET 06/2026&#10;Rimossi: WAN_TRUNK • LAN2 • rotte statiche • router downstream — Corretto: blocco phishing Persona-I (deny) — Aggiunto: DMZ→Proxmox via switch trunk" style="text;html=1;fontSize=14;fontStyle=1;align=center;fillColor=#1a5276;fontColor=#ffffff;verticalAlign=middle" vertex="1" parent="1">
           <mxGeometry x="60" y="20" width="1280" height="60" as="geometry" />
         </mxCell>
 
@@ -53,7 +53,7 @@
           <mxGeometry x="1030" y="560" width="280" height="90" as="geometry" />
         </mxCell>
 
-        <mxCell id="sec" value="&lt;b&gt;Secure Policy — correzioni e nuove regole&lt;/b&gt;&#10;1. Blocco_Gruppo_IP_Phishing_Elisa: from WAN, sourceip Bad_IP_Phishing_Elisa_2026 → &lt;b&gt;DENY + log alert&lt;/b&gt; (era ALLOW per errore)&#10;   • Rimosso IP_09 = 203.0.113.5 (IP WAN del firewall stesso, inserito per errore nella blocklist)&#10;4. malicious_IP_12052025: destinationip 4.207.164.234 → &lt;b&gt;DENY&lt;/b&gt; (era ALLOW)&#10;19. WAN_to_DMZ_WEB: WAN → DMZ, dest SRV-DMZ-WEB, HTTP/HTTPS, allow (NUOVA)&#10;22. DMZ_to_WAN: allow (ATTIVATA) — 23. DMZ_to_LAN1_Deny: deny + log alert (NUOVA, difesa in profondità)&#10;19-20. OPT_to_LAN1_Deny / OPT_to_DMZ_Deny: isolamento guest (NUOVE) — GUEST_Outgoing limitata a WAN&#10;28. DMZ_to_Device: solo DNS verso ZyWALL (ATTIVATA) — Policy LAN2 e RDP-da-guest RIMOSSE — default-rule: deny log alert" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#ca6f1e;fontSize=10;align=left;spacing=8" vertex="1" parent="1">
+        <mxCell id="sec" value="&lt;b&gt;Secure Policy — correzioni e nuove regole&lt;/b&gt;&#10;1. Blocco_Gruppo_IP_Phishing_Persona-I: from WAN, sourceip Bad_IP_Phishing_Persona-I_2026 → &lt;b&gt;DENY + log alert&lt;/b&gt; (era ALLOW per errore)&#10;   • Rimosso IP_09 = 203.0.113.5 (IP WAN del firewall stesso, inserito per errore nella blocklist)&#10;4. malicious_IP_12052025: destinationip 4.207.164.234 → &lt;b&gt;DENY&lt;/b&gt; (era ALLOW)&#10;19. WAN_to_DMZ_WEB: WAN → DMZ, dest SRV-DMZ-WEB, HTTP/HTTPS, allow (NUOVA)&#10;22. DMZ_to_WAN: allow (ATTIVATA) — 23. DMZ_to_LAN1_Deny: deny + log alert (NUOVA, difesa in profondità)&#10;19-20. OPT_to_LAN1_Deny / OPT_to_DMZ_Deny: isolamento guest (NUOVE) — GUEST_Outgoing limitata a WAN&#10;28. DMZ_to_Device: solo DNS verso ZyWALL (ATTIVATA) — Policy LAN2 e RDP-da-guest RIMOSSE — default-rule: deny log alert" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#ca6f1e;fontSize=10;align=left;spacing=8" vertex="1" parent="1">
           <mxGeometry x="100" y="720" width="1210" height="170" as="geometry" />
         </mxCell>
 

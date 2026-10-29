@@ -4,34 +4,34 @@ Runbook operativi per le anomalie documentate in GAP-TBC.md e VA 2025. Ogni runb
 
 ---
 
-## FW-001: Regola Blocco_Gruppo_IP_Phishing_Elisa con action=ALLOW
+## FW-001: Regola Blocco_Gruppo_IP_Phishing_Persona-I con action=ALLOW
 
 **Severity**: CRITICA  
 **Origine**: VA Onova nov 2025, confermato analisi manuale  
 **Stato**: APERTO
 
 ### Contesto
-La regola di sicurezza perimetrale `Blocco_Gruppo_IP_Phishing_Elisa` esiste sulla USG FLEX 500 per bloccare un gruppo di IP associati a campagne phishing/spoofing verso Elisa/gruppo. L'azione è configurata come `ALLOW` invece di `DENY`, rendendo la regola completamente inoperante.
+La regola di sicurezza perimetrale `Blocco_Gruppo_IP_Phishing_Persona-I` esiste sulla USG FLEX 500 per bloccare un gruppo di IP associati a campagne phishing/spoofing verso Persona-I/gruppo. L'azione è configurata come `ALLOW` invece di `DENY`, rendendo la regola completamente inoperante.
 
 ### Verifica pre-fix
 
 ```powershell
 # 1. Verifica tramite CLI SSH al firewall (o export config XML)
 #    Accedere alla Web GUI: https://10.61.20.1:443 (o IP mgmt FW)
-#    Security Policy > Firewall Rules > cerca "Phishing_Elisa"
+#    Security Policy > Firewall Rules > cerca "Phishing_Persona-I"
 #    Verificare il campo Action (deve essere DROP o REJECT, non ALLOW)
 
 # 2. Verifica export configurazione
 #    Maintenance > Configuration > Export
 #    Aprire XML e cercare:
-#    <action>allow</action> dentro il blocco <name>Blocco_Gruppo_IP_Phishing_Elisa</name>
+#    <action>allow</action> dentro il blocco <name>Blocco_Gruppo_IP_Phishing_Persona-I</name>
 ```
 
 ### Procedura fix
 
 1. Accedere alla Web GUI USG FLEX 500 come Admin
 2. Navigare: `Security Policy > Policy Control > IPv4 Rules`
-3. Trovare la regola `Blocco_Gruppo_IP_Phishing_Elisa`
+3. Trovare la regola `Blocco_Gruppo_IP_Phishing_Persona-I`
 4. Cliccare Modifica (matita)
 5. Campo `Action`: cambiare da `Allow` a `Deny`
 6. Salvare e applicare
@@ -40,7 +40,7 @@ La regola di sicurezza perimetrale `Blocco_Gruppo_IP_Phishing_Elisa` esiste sull
 **Alternativa CLI (SSH):**
 ```
 configure
-security-policy ipv4 name "Blocco_Gruppo_IP_Phishing_Elisa"
+security-policy ipv4 name "Blocco_Gruppo_IP_Phishing_Persona-I"
 action deny
 commit
 exit
@@ -50,7 +50,7 @@ exit
 
 ```powershell
 # Testare da postazione interna che un IP del gruppo sia irraggiungibile:
-# 1. Estrarre un IP dal gruppo "Gruppo_IP_Phishing_Elisa" dalla Web GUI
+# 1. Estrarre un IP dal gruppo "Gruppo_IP_Phishing_Persona-I" dalla Web GUI
 # 2. Da cmd/PS: Test-NetConnection -ComputerName <IP_dal_gruppo> -Port 80
 #    Atteso: TCP connection timeout (non refused) = firewall droppat
 
@@ -473,7 +473,7 @@ La conseguenza documentale e' che NET-005 non si chiude con una ACL sulla sola W
 
 ## NAS-001: NAS HERO irraggiungibile
 
-**Severity**: BASSA **Origine**: nota IntraLino_Knowledge, senza data **Stato**: procedura nota, nessuna causa root documentata
+**Severity**: BASSA **Origine**: nota Prodotto-2_Knowledge, senza data **Stato**: procedura nota, nessuna causa root documentata
 
 ### Contesto
 NAS HERO (10.61.20.169) risulta talvolta irraggiungibile dalla rete, con un popup di errore di connessione al tentativo di accesso. Nessuna causa root e' documentata nella fonte.

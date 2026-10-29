@@ -151,6 +151,12 @@ services:
     environment:
       SITO_NOME: ${SITO_NOME:?manca SITO_NOME nel file .env accanto al descrittore}
       PROVENIENZA_AMMESSA: ${PROVENIENZA_AMMESSA:?manca PROVENIENZA_AMMESSA nel file .env accanto al descrittore}
+      # Usato solo da Caddyfile.produzione, per il dominio secondario; vuoto con l'anteprima.
+      # Mancava fino al 29/10/2026: il valore scritto nel .env non arrivava al proxy.
+      SITO_ALIAS: ${SITO_ALIAS:-}
+      # Il sottodominio del prodotto e la sua destinazione, solo per Caddyfile.produzione.
+      PRODOTTO_NOME: ${PRODOTTO_NOME:-}
+      PRODOTTO_DESTINAZIONE: ${PRODOTTO_DESTINAZIONE:-}
 
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro

@@ -38,7 +38,7 @@ INTERNET
    │    SSL VPN 443                    pool 10.61.230.10-250        │
    │                                                                  │
    │  UTM: BPP + CIP, SSL inspection, sandbox, IP reputation HIGH     │
-   │  CRITICAL FW-001: Blocco_Gruppo_IP_Phishing_Elisa action=ALLOW   │
+   │  CRITICAL FW-001: Blocco_Gruppo_IP_Phishing_Persona-I action=ALLOW   │
    └──────────────────────────────────────────────────────────────────┘
                │ 1 Gbps copper (collo di bottiglia vs backbone 10G)
                │ P4 → porta 33 switch Piano 2

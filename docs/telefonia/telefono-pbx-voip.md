@@ -1,5 +1,9 @@
 # Telefonia e PBX - Stato e migrazione Vianova
 
+## Registri del centralino cloud, ricognizione del 29/10/2026
+
+L'utente chiede di valutare la raccolta dei log del PBX Vianova UCC, nel rapporto gestito commercialmente tramite MyOffice. La migrazione ai softphone e la rimozione del Panasonic sono già documentate qui. Il prossimo riscontro riguarda gli accessi amministrativi al portale PBX e le modifiche di configurazione con attore, esito e ora, se il fornitore offre un export o un'API. Eventi di servizio e dati di chiamata sono flussi separati. Non è disponibile un campione né un flusso verso il collettore; il PBX cloud non diventa una sorgente AdS verificata per la sola presenza nella topologia.
+
 ## Stato attuale (giugno 2026)
 
 ### Centralino fisico: Panasonic KX-NCP1000

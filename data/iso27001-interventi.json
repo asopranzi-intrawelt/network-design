@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-27",
+  "aggiornato": "2026-10-29",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -626,8 +626,8 @@
       ],
       "fornitura": {
         "stato": "condizionata",
-        "dettaglio": "Intervento Seeweb di aggiornamento proposto; eventuali licenze o sostituzione solo dopo diagnosi e piano tecnico",
-        "decisione": "Chiarire titolarita' e scheda contrattuale, concordare e approvare per iscritto piano e costo prima dell'ordine"
+        "dettaglio": "Upgrade OPNsense proposto gratuitamente da Seeweb; eventuali licenze o sostituzioni restano decisioni separate dopo diagnosi.",
+        "decisione": "Confermare per iscritto gratuità e perimetro, poi approvare release, snapshot hypervisor, console, rollback e prove dei servizi prima dell'intervento; nessun ordine per l'upgrade gratuito."
       },
       "stato_iniziale": "da_fare"
     },
@@ -1931,6 +1931,29 @@
       "data": "2026-10-27",
       "stato": "in_corso",
       "nota": "Copertura calcolata con la skill iso27001 (grc-skills v2.1.0): il registro cita 40 dei 93 controlli; dei 53 restanti la gap analysis distingue quelli gia' trattati in altri documenti, quelli di rete mancanti e quelli che dipendono dal perimetro (ISO-36). Bozza di classificazione, non ancora SoA."
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "Ticket Seeweb 29/10: test UDP con cattura concordabile dopo ricevitore pronto; applicatore del collettore pubblicato e controllo del ruleset candidato, ma nessun Syslog reale ricevuto. Restano preflight privilegiato, campione GUI/SSH, volume, retention e allarme."
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "Ticket Seeweb 29/10: OPNsense 21.1.5 su UFS, proposta di aggiornamento gratuito in undici passaggi con fino a due ore di disservizio previsto. Nessun intervento autorizzato; attendere release finale, conferma snapshot hypervisor e backup esterno, console, soglia di rollback e prove VPN/IPsec, NAT e servizi."
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "Correzione della fornitura dopo il ticket Seeweb del 29/10: l'upgrade è offerto gratuitamente; nessuna conferma operativa finché mancano piano tecnico e criteri di ritorno.",
+      "fornitura": {
+        "stato": "condizionata",
+        "dettaglio": "Upgrade OPNsense proposto gratuitamente da Seeweb; eventuali licenze o sostituzioni restano decisioni separate dopo diagnosi.",
+        "decisione": "Confermare per iscritto gratuità e perimetro, poi approvare release, snapshot hypervisor, console, rollback e prove dei servizi prima dell'intervento; nessun ordine per l'upgrade gratuito."
+      }
     }
   ]
 }

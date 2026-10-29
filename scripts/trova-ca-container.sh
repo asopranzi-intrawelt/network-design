@@ -2,7 +2,7 @@
 # Individua da dove un contenitore prende il proprio certificato.
 #
 # Serve quando la ricerca sull'host non trova nulla ma il servizio presenta un
-# certificato valido, che e' la situazione incontrata il 01/09/2026 su IntraLino: il
+# certificato valido, che e' la situazione incontrata il 01/09/2026 su Prodotto-2: il
 # certificato esiste, perche' la sonda dalla rete lo legge, ma non sta in nessuna
 # cartella dell'host fra quelle esaminate. Le possibilita' sono tre e questo script
 # le distingue: il certificato e' incorporato nell'immagine, oppure arriva da un

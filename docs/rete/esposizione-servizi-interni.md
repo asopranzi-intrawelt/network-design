@@ -41,7 +41,7 @@ Nessuno dei tre nomi e' sbagliato, ma la loro convivenza e' una trappola: un com
 | 207 | websiteAnalyst | `10.61.20.24` | `vm207` | `intrawelt` | `Ubuntu24` |
 | 208 | portaleAsset | `10.61.20.25` | `asset-vm` | `portale-asset-it` | `asset` |
 | 209 | IntraNewSite | `10.61.20.209` | nessuno | `intrawelt-site` | `intrawelt-site-...` |
-| 602 | Intralino | `10.61.20.60` | `intralino` | `developer` | `developer-std-...` |
+| 602 | Prodotto-2 | `10.61.20.60` | `prodotto-2` | `developer` | `developer-std-...` |
 | 810 | TESTNEWEGETRADBOOT | `10.61.20.90` | nessuno | `root` | `ubuntegetrad` |
 
 Tre osservazioni che discendono dalla tabella. La prima e' che l'indirizzo della VM 205 non era stato rilevato dal censimento e si e' recuperato proprio da qui, dalla configurazione SSH della postazione: e' `.61` e non un indirizzo adiacente agli altri, il che spiega perche' nessuno lo ricordasse. La seconda e' che due macchine su nove non hanno un alias e vanno raggiunte per indirizzo, il che le rende piu' facili da dimenticare in un censimento. La terza e' che quattro macchine condividono il nome host `Ubuntu24`, che e' il difetto #166: in questa tabella la distinzione la fa l'indirizzo, ma in un registro di eventi non la farebbe nessuno.
@@ -102,7 +102,7 @@ Questa e' la prima passata, del 25-28/08/2026, ed e' superata per le cinque macc
 | 205 | GanttTool | `10.61.20.61` | `ufw` inattivo, solo catene del motore dei container | nessuna | 22, 80, 9001 | 631, 3306, e i contenitori non pubblicati | censita il 01/09/2026, vedi §La VM 205 |
 | 207 | websiteAnalyst | `10.61.20.24` | Ubuntu 24.04.2 LTS | non installato | 22, 80, 8000 | 3306, 631 | da verificare |
 | 209 | IntraNewSite | `10.61.20.209` | Ubuntu 24.04.4 LTS | non installato | 22, 3000, 5432 | 631 | da verificare |
-| 602 | Intralino | `10.61.20.60` | Ubuntu 25.10 | non installato | 22, 80, 443, 4443, 5443, 5444 | nessuna | da verificare |
+| 602 | Prodotto-2 | `10.61.20.60` | Ubuntu 25.10 | non installato | 22, 80, 443, 4443, 5443, 5444 | nessuna | da verificare |
 | 810 | TESTNEWEGETRADBOOT | `10.61.20.90` | Ubuntu 24.04.4 LTS | installato, inattivo | 22, 80, 3389, 8080, 8090 | 3350 | da verificare |
 | 205 | GanttTool | non rilevato | non rilevato | non rilevato | non rilevato | non rilevato | macchina non accessibile, #162 |
 | 208 | portaleAsset | `10.61.20.25` | non rilevato | non rilevato | 80 e 443 note da NET-011, il resto non rilevato | non rilevato | macchina non accessibile, #162 |
@@ -266,11 +266,11 @@ Il secondo e' PostgreSQL della VM 209, in ascolto sulla porta 5432 su tutte le i
 
 Il terzo sono le due macchine su cui non si entra piu'. Sulla 205 la macchina non arriva alla schermata di accesso e la password va reimpostata; sulla 208 la password locale non e' piu' quella conosciuta. Il punto non e' il fastidio: e' che la 208 e' il portale asset, cioe' proprio il servizio che il piano di segmentazione deve spostare per primo, e non lo si puo' ne' ispezionare ne' riconfigurare finche' non vi si rientra. La reimpostazione su una macchina virtuale Proxmox si fa dalla console, avviando in modalita' di manutenzione, ed e' un intervento con interruzione di servizio da programmare. Tracciato come #162.
 
-Il quarto sono gli ambienti di prova esposti accanto alla produzione. Sulla 602 convivono due pile complete di Intralino, quella in esercizio sulle porte 80, 443 e 5443 e quella di test sulle 4443 e 5444, entrambe raggiungibili da chiunque; sulla 810 la stessa cosa con `getrad-app` sulla 8080 e `getrad-test-app` sulla 8090. Un ambiente di prova ha per definizione dati di prova, credenziali deboli e correzioni non ancora applicate, e non ha ragione di essere raggiungibile da tutta l'azienda. Tracciato come #163.
+Il quarto sono gli ambienti di prova esposti accanto alla produzione. Sulla 602 convivono due pile complete di Prodotto-2, quella in esercizio sulle porte 80, 443 e 5443 e quella di test sulle 4443 e 5444, entrambe raggiungibili da chiunque; sulla 810 la stessa cosa con `getrad-app` sulla 8080 e `getrad-test-app` sulla 8090. Un ambiente di prova ha per definizione dati di prova, credenziali deboli e correzioni non ancora applicate, e non ha ragione di essere raggiungibile da tutta l'azienda. Tracciato come #163.
 
 Il quinto e' il servizio di scrivania remota `xrdp` sulla porta 3389 della VM 810, in ascolto su tutte le interfacce. E' un canale di accesso interattivo completo alla macchina, esposto all'intera LAN piatta, su una macchina che e' un ambiente di prova di una migrazione. Tracciato come #164.
 
-Il sesto e' la versione di sistema della VM 602, Ubuntu 25.10. Le versioni intermedie di Ubuntu, cioe' quelle che non sono LTS, hanno nove mesi di supporto, il che collocherebbe la fine del supporto di questa a luglio 2026, quindi gia' trascorsa. Il dato va confermato sulla pagina del ciclo di vita del fornitore prima di essere trattato come fatto, ma se confermato significa che la macchina che ospita Intralino non riceve piu' aggiornamenti di sicurezza. Tracciato come #165, con la sua riserva scritta.
+Il sesto e' la versione di sistema della VM 602, Ubuntu 25.10. Le versioni intermedie di Ubuntu, cioe' quelle che non sono LTS, hanno nove mesi di supporto, il che collocherebbe la fine del supporto di questa a luglio 2026, quindi gia' trascorsa. Il dato va confermato sulla pagina del ciclo di vita del fornitore prima di essere trattato come fatto, ma se confermato significa che la macchina che ospita Prodotto-2 non riceve piu' aggiornamenti di sicurezza. Tracciato come #165, con la sua riserva scritta.
 
 Il settimo e' minore e riguarda l'igiene: quattro macchine distinte rispondono con lo stesso nome host, `Ubuntu24`. Non produce un guasto, ma rende ambiguo ogni registro, ogni traccia di accesso e ogni diagnosi che si appoggi al nome invece che all'indirizzo. Tracciato come #166.
 
@@ -305,7 +305,7 @@ Legge e non scrive nulla, e va eseguito come amministratore su ciascuna macchina
 Dal 31/08/2026 non si incolla a mano: vive in `scripts/censimento-host.sh` e si lancia dalla postazione con `scripts/Invoke-HostCensus.ps1`, che lo copia su ciascun host indicato, lo esegue e raccoglie l'esito in `output/`. La ragione non e' la comodita': un comando con apici annidati passato attraverso PowerShell e poi attraverso una shell remota si rompe per citazione prima ancora di essere sbagliato nel merito, e nove ripetizioni a mano sono nove occasioni di sbagliarne una in silenzio. Gli host si indicano con gli alias del `~/.ssh/config` della postazione, che non fa parte di questo repository, quindi lo script non contiene indirizzi.
 
 ```powershell
-.\scripts\Invoke-HostCensus.ps1 -Target odoo-vm, pwmanager-vm, wordpress-vm, vm207, intralino, asset-vm
+.\scripts\Invoke-HostCensus.ps1 -Target odoo-vm, pwmanager-vm, wordpress-vm, vm207, prodotto-2, asset-vm
 ```
 
 Il contenuto dello script, per chi voglia leggerlo senza aprirlo, e' il seguente.
@@ -435,13 +435,13 @@ Non e' un dettaglio di inventario. Un sistema di ticket contiene per natura desc
 
 ### Un limite dello strumento, dichiarato
 
-La ricognizione ha guardato dentro il sistema operativo dell'host e non dentro i contenitori. Sulla macchina di IntraLino non ha trovato alcun certificato, ma quella macchina **serve traffico cifrato**, perche' il suo contenitore di inoltro pubblica la porta cifrata verso la rete: il certificato esiste e vive dentro il contenitore, dove lo sguardo dello strumento non arriva.
+La ricognizione ha guardato dentro il sistema operativo dell'host e non dentro i contenitori. Sulla macchina di Prodotto-2 non ha trovato alcun certificato, ma quella macchina **serve traffico cifrato**, perche' il suo contenitore di inoltro pubblica la porta cifrata verso la rete: il certificato esiste e vive dentro il contenitore, dove lo sguardo dello strumento non arriva.
 
 E' esattamente il certificato a cui l'IT Manager si riferiva, e la sua natura resta quindi da determinare. La domanda che conta e' se sia autofirmato dal contenitore, cioe' il caso comune, oppure emesso da un'autorita' gia' esistente, nel qual caso non ci sarebbe nulla da creare.
 
 ## Certificato per servizio o autorita' interna: la domanda posta il 01/09/2026
 
-L'IT Manager ha osservato che su alcune macchine un certificato esiste gia', per esempio su quella di IntraLino dove e' la macchina stessa a fornirlo, e ha chiesto se non sia quella la scelta giusta. La domanda va sciolta prima di generare il primo certificato per il gestore delle password, perche' le due strade divergono al primo comando e tornare indietro costa il doppio.
+L'IT Manager ha osservato che su alcune macchine un certificato esiste gia', per esempio su quella di Prodotto-2 dove e' la macchina stessa a fornirlo, e ha chiesto se non sia quella la scelta giusta. La domanda va sciolta prima di generare il primo certificato per il gestore delle password, perche' le due strade divergono al primo comando e tornare indietro costa il doppio.
 
 ### Che cosa fa davvero un certificato, e perche' il browser si lamenta
 
@@ -461,7 +461,7 @@ Il costo si ribalta quindi con il numero di servizi. Con un servizio solo l'auto
 
 ### Perche' in questo caso la risposta e' l'autorita' interna
 
-I servizi interni che avranno bisogno di un certificato non sono uno. Ci sono gia' il gestore delle password, il portale asset, IntraLino, l'applicativo di pianificazione, e ci saranno il proxy inverso della DMZ e i servizi che vi verranno pubblicati. Sono almeno cinque, e il piano di segmentazione ne prevede altri.
+I servizi interni che avranno bisogno di un certificato non sono uno. Ci sono gia' il gestore delle password, il portale asset, Prodotto-2, l'applicativo di pianificazione, e ci saranno il proxy inverso della DMZ e i servizi che vi verranno pubblicati. Sono almeno cinque, e il piano di segmentazione ne prevede altri.
 
 C'e' pero' una ragione piu' forte del conteggio, e riguarda cio' che questo progetto sta facendo adesso. Il piano di segmentazione spostera' i servizi su segmenti diversi, il che significa che **cambieranno indirizzo**. Un certificato autofirmato generato oggi per un indirizzo diventa sbagliato quando quell'indirizzo cambia, esattamente come le liste di indirizzi letterali del difetto #171, e va rigenerato e reinstallato su ogni postazione. Un'autorita' interna emette invece certificati per **nomi**, e un nome puo' continuare a valere quando l'indirizzo dietro di esso cambia: e' la stessa ragione per cui la segmentazione ha bisogno di una risoluzione dei nomi che funzioni.
 
@@ -483,7 +483,7 @@ La distinzione si legge nei campi pubblici del certificato: se soggetto ed emitt
 
 ## L'autorita' interna esiste gia', ed e' di un progetto: la sonda del 01/09/2026
 
-La sonda dalla rete ha risposto alla domanda lasciata aperta. Il certificato che serve il traffico cifrato di IntraLino, su entrambe le porte cifrate che quella macchina pubblica, **non e' autofirmato**: soggetto ed emittente sono distinti, e l'emittente e' un'autorita' di certificazione interna creata per quel progetto. Il certificato e' valido fino alla meta' del 2028 ed e' emesso per un nome semplice, senza alcun suffisso di dominio.
+La sonda dalla rete ha risposto alla domanda lasciata aperta. Il certificato che serve il traffico cifrato di Prodotto-2, su entrambe le porte cifrate che quella macchina pubblica, **non e' autofirmato**: soggetto ed emittente sono distinti, e l'emittente e' un'autorita' di certificazione interna creata per quel progetto. Il certificato e' valido fino alla meta' del 2028 ed e' emesso per un nome semplice, senza alcun suffisso di dominio.
 
 Esiste quindi gia' in azienda la capacita' di emettere certificati, ed e' una buona notizia: significa che qualcuno ha gia' fatto il lavoro di generare un'autorita' e di firmarci un certificato, quindi la strada e' praticata e non teorica. Non significa pero' che quell'autorita' sia gia' l'autorita' aziendale, e le ragioni sono tre.
 
@@ -507,7 +507,7 @@ L'autorita' porta il nome di un progetto, non dell'azienda. Non e' un ostacolo t
 
 Le tre considerazioni pesano diversamente a seconda di un solo dato, che non e' ancora stato misurato: **se quell'autorita' sia gia' installata fra quelle attendibili sulle postazioni**.
 
-Se lo e', esiste un patrimonio da non buttare, cioe' un'installazione gia' fatta su ogni postazione, e la scelta ragionevole diventa mettere in sicurezza la chiave esistente e continuare a usarla, magari riemettendo l'autorita' con un nome aziendale quando scadra'. Se non lo e', e gli utenti di IntraLino superano semplicemente l'avviso del navigatore, allora non c'e' nessun patrimonio da preservare: creare un'autorita' aziendale nuova, con custodia della chiave documentata e nomi decisi, costa esattamente quanto adottare quella esistente, e produce un impianto piu' pulito.
+Se lo e', esiste un patrimonio da non buttare, cioe' un'installazione gia' fatta su ogni postazione, e la scelta ragionevole diventa mettere in sicurezza la chiave esistente e continuare a usarla, magari riemettendo l'autorita' con un nome aziendale quando scadra'. Se non lo e', e gli utenti di Prodotto-2 superano semplicemente l'avviso del navigatore, allora non c'e' nessun patrimonio da preservare: creare un'autorita' aziendale nuova, con custodia della chiave documentata e nomi decisi, costa esattamente quanto adottare quella esistente, e produce un impianto piu' pulito.
 
 Il dato si legge sulla postazione, fra i certificati di autorita' attendibili della macchina e dell'utente, ed e' una lettura che non modifica nulla.
 
@@ -535,7 +535,7 @@ Il progetto non raccomanda l'una o l'altra finche' quei due numeri mancano, ma s
 
 ## Dove sta la chiave dell'autorita', e un errore di metodo da non ripetere
 
-La prima ricerca, eseguita per contenuto sull'host di IntraLino il 01/09/2026, non aveva trovato alcun certificato di autorita', e questa scheda ne aveva concluso che la chiave non fosse sul server e si trovasse presumibilmente altrove. **La conclusione era sbagliata**, e l'IT Manager ha avuto ragione a dubitarne osservando che la chiave doveva stare dentro la macchina.
+La prima ricerca, eseguita per contenuto sull'host di Prodotto-2 il 01/09/2026, non aveva trovato alcun certificato di autorita', e questa scheda ne aveva concluso che la chiave non fosse sul server e si trovasse presumibilmente altrove. **La conclusione era sbagliata**, e l'IT Manager ha avuto ragione a dubitarne osservando che la chiave doveva stare dentro la macchina.
 
 L'esame di dove il contenitore prenda il proprio certificato l'ha localizzata subito: il contenitore di inoltro riceve certificato e chiave da due innesti in sola lettura provenienti da una cartella dell'host dedicata proprio a questo, `/var/lib/ca/`. Era li' dall'inizio. La prima ricerca non l'ha vista perche' il suo elenco di percorsi non comprendeva quella cartella.
 
@@ -559,25 +559,25 @@ Resta un dato da verificare che cambia il peso di tutto il resto: **se la chiave
 
 ## La decisione, presa il 01/09/2026: si crea un'autorita' aziendale
 
-L'IT Manager ha aggiunto il dato che mancava: **tutta l'azienda usera' IntraLino via browser**. Non e' un dettaglio di adozione, e' l'informazione che chiude la scelta, e vale la pena mostrare perche' la ribalta.
+L'IT Manager ha aggiunto il dato che mancava: **tutta l'azienda usera' Prodotto-2 via browser**. Non e' un dettaglio di adozione, e' l'informazione che chiude la scelta, e vale la pena mostrare perche' la ribalta.
 
-Il ragionamento fino a quel momento contrapponeva il costo di distribuire un'autorita' nuova su tutte le postazioni al vantaggio di riusarne una gia' installata. Ma se tutta l'azienda usera' IntraLino, allora **l'autorita' dovra' comunque essere installata su tutte le postazioni**, perche' oggi lo e' solo su quella di chi amministra. La distribuzione capillare non e' un costo della strada nuova: e' un costo di entrambe, gia' messo in conto dal progetto applicativo.
+Il ragionamento fino a quel momento contrapponeva il costo di distribuire un'autorita' nuova su tutte le postazioni al vantaggio di riusarne una gia' installata. Ma se tutta l'azienda usera' Prodotto-2, allora **l'autorita' dovra' comunque essere installata su tutte le postazioni**, perche' oggi lo e' solo su quella di chi amministra. La distribuzione capillare non e' un costo della strada nuova: e' un costo di entrambe, gia' messo in conto dal progetto applicativo.
 
 Ne discende che il confronto si semplifica. Se la distribuzione avviene con l'autorita' esistente, l'azienda si lega per dieci anni a un'ancora di fiducia che porta il nome di un progetto e la cui chiave non si sa dove sia. Se avviene con un'autorita' aziendale creata adesso, la stessa identica distribuzione produce un impianto con la custodia documentata e il nome giusto. **Il costo e' lo stesso, il risultato no.**
 
-C'e' anche una finestra che si chiude. Oggi l'autorita' esistente e' installata, per quanto misurato, su una sola postazione: sostituirla costa una disinstallazione. Dopo il rilascio di IntraLino sarebbe su tutte, e sostituirla costerebbe quanto la distribuzione stessa. E' l'asimmetria temporale gia' segnalata, che qui smette di essere teorica e ha una data.
+C'e' anche una finestra che si chiude. Oggi l'autorita' esistente e' installata, per quanto misurato, su una sola postazione: sostituirla costa una disinstallazione. Dopo il rilascio di Prodotto-2 sarebbe su tutte, e sostituirla costerebbe quanto la distribuzione stessa. E' l'asimmetria temporale gia' segnalata, che qui smette di essere teorica e ha una data.
 
 ### Che cosa comporta, e su chi ricade
 
 Per questo progetto: generare l'autorita' aziendale, documentarne la custodia, definire lo schema dei nomi interni con M25 ed emettere i certificati.
 
-Per il progetto IntraLino: **riemettere il proprio certificato** dall'autorita' nuova e aggiornare la propria configurazione e il proprio repository, come l'IT Manager ha fatto notare. Non e' lavoro di rete e non si fa da qui: e' un intervento su un altro progetto, con un proprio versionamento sulla macchina, ed e' esattamente il tipo di dipendenza che questo repository non risolve ma dichiara. Va comunicato con un documento di consegna nelle radici sorvegliate, secondo il protocollo delle fonti, perche' altrimenti resta una decisione presa qui e ignorata la'.
+Per il progetto Prodotto-2: **riemettere il proprio certificato** dall'autorita' nuova e aggiornare la propria configurazione e il proprio repository, come l'IT Manager ha fatto notare. Non e' lavoro di rete e non si fa da qui: e' un intervento su un altro progetto, con un proprio versionamento sulla macchina, ed e' esattamente il tipo di dipendenza che questo repository non risolve ma dichiara. Va comunicato con un documento di consegna nelle radici sorvegliate, secondo il protocollo delle fonti, perche' altrimenti resta una decisione presa qui e ignorata la'.
 
-L'ordine conta e ha una sola sequenza sensata: prima lo schema dei nomi, poi l'autorita', poi i certificati nuovi, poi la distribuzione dell'autorita' sulle postazioni **contestuale** al rilascio di IntraLino, che e' l'occasione in cui qualcuno tocchera' comunque tutte le postazioni. Fare la distribuzione due volte e' l'unico errore veramente costoso di questa materia.
+L'ordine conta e ha una sola sequenza sensata: prima lo schema dei nomi, poi l'autorita', poi i certificati nuovi, poi la distribuzione dell'autorita' sulle postazioni **contestuale** al rilascio di Prodotto-2, che e' l'occasione in cui qualcuno tocchera' comunque tutte le postazioni. Fare la distribuzione due volte e' l'unico errore veramente costoso di questa materia.
 
 ### Cio' che resta dell'autorita' esistente
 
-Non va cancellata subito. Finche' il certificato di IntraLino non e' riemesso, quell'autorita' e' cio' che rende il servizio utilizzabile senza avvisi su almeno una postazione. Va disinstallata quando l'ultimo certificato che ha firmato e' stato sostituito, e va comunque **trovata la sua chiave** anche solo per distruggerla consapevolmente: una chiave di autorita' che resta in giro, e la cui autorita' e' ancora attendibile su qualche postazione dimenticata, e' un modo per firmare identita' che qualcuno continuera' ad accettare.
+Non va cancellata subito. Finche' il certificato di Prodotto-2 non e' riemesso, quell'autorita' e' cio' che rende il servizio utilizzabile senza avvisi su almeno una postazione. Va disinstallata quando l'ultimo certificato che ha firmato e' stato sostituito, e va comunque **trovata la sua chiave** anche solo per distruggerla consapevolmente: una chiave di autorita' che resta in giro, e la cui autorita' e' ancora attendibile su qualche postazione dimenticata, e' un modo per firmare identita' che qualcuno continuera' ad accettare.
 
 ## Cosa resta aperto
 

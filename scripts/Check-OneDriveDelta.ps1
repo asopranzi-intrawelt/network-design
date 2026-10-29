@@ -9,7 +9,7 @@
 #
 # Perimetro di default: due librerie OneDrive distinte, ciascuna con la propria
 # baseline. "Documenti - IT" e' la libreria tecnica principale (mappatura porte,
-# ARCHITETTURA, Cybersec, SCENIA, ecc.). "IT + Administration - Documenti" e' la
+# ARCHITETTURA, Cybersec, Prodotto-1, ecc.). "IT + Administration - Documenti" e' la
 # libreria amministrativa/fornitori (contratti, fatture, corrispondenza vendor:
 # Vianova, myOffice, Seeweb, AWS, Zyxel, ecc.), scoperta il 09/07/2026 tramite un
 # collegamento .lnk dentro ARCHITETTURA SERVER-CLOUD-LINEE e aggiunta al perimetro

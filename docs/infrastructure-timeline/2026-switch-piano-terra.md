@@ -6,9 +6,9 @@ Proelium Law Firm (studio legale con expertise cybersecurity/GDPR) viene ingaggi
 
 Parallelo con Consulente-ISO27001-1 (ISO 27001): due percorsi distinti, coordinati da Alessio.
 
-## Gennaio-Marzo 2026 - IntraLino: sviluppo architettura n8n stabile
+## Gennaio-Marzo 2026 - Prodotto-2: sviluppo architettura n8n stabile
 
-Stack IntraLino si consolida:
+Stack Prodotto-2 si consolida:
 - Ollama (llama3.2, porta 11500, systemd service)
 - ChromaDB (porta 8000, persistent store)
 - n8n 2.12.3 (Docker, orchestratore workflow)
@@ -34,7 +34,7 @@ Case study elaborato nel documento: **Enterprise Technical Documentation SaaS** 
 - Fine-tuning incrementale: LoRA su Tinker triggered da n8n su nuovi documenti.
 - Deploy: pesi esportati come inference endpoint; RAG via Ollama in LAN per query real-time; interfaccia utente per ingegneri/operations.
 
-Rilevanza per IntraLino roadmap: questo studio documenta il ragionamento su come evolvere IntraLino (attualmente ChromaDB + Ollama + n8n) verso fine-tuning specializzato su documentazione tecnica Intrawelt, senza dipendenza da API cloud esterne.
+Rilevanza per Prodotto-2 roadmap: questo studio documenta il ragionamento su come evolvere Prodotto-2 (attualmente ChromaDB + Ollama + n8n) verso fine-tuning specializzato su documentazione tecnica Intrawelt, senza dipendenza da API cloud esterne.
 
 ## 13-15/01/2026 - Incidente phishing/compromissione regole Exchange
 
@@ -67,7 +67,7 @@ Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO 
 ### Remediation
 
 - Regola sospetta rimossa via PowerShell EXO
-- Creata regola firewall "Blocco_Gruppo_IP_Phishing_Elisa" sul Zyxel USG FLEX 500 → ma la regola aveva erroneamente `action=ALLOW` invece di `DENY` (gap FW-001)
+- Creata regola firewall "Blocco_Gruppo_IP_Phishing_Persona-I" sul Zyxel USG FLEX 500 → ma la regola aveva erroneamente `action=ALLOW` invece di `DENY` (gap FW-001)
 - Analisi malware: file `Malware-List_2026-01-13_2026-01-15_UTC.xlsx` (lista IP/domini bloccati)
 - Email scomparse: verificato che Persona-A stava eliminando da info (auto-quarantena)
 
@@ -77,11 +77,11 @@ Due regole trovate **non visibili da Outlook Classic Windows 11** (solo via EXO 
 - La regola firewall FW-001 deve essere corretta (action=DENY); vedi docs/operativita/runbook-anomalie.md
 - Necessità di formazione anti-phishing per tutti i dipendenti (gap ISO-003)
 
-## 13/02/2026 - Ticket Aruba: analisi backup e WAF VPS SCENIA
+## 13/02/2026 - Ticket Aruba: analisi backup e WAF VPS Prodotto-1
 
-Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §Ticket Aruba
+Fonte: `Prodotto-1/SECURITY/DPA/SaaS security.docx` §Ticket Aruba
 
-Alessio apre ticket Aruba <account-cloud>, ID **<ticket-fornitore-cloud>** per chiarire le opzioni di backup e WAF della VPS di produzione SCENIA (O2A4: 4 vCPUs, 8 GB RAM, 80 GB storage, 50 TB/mese data transfer, Ubuntu 22.04 LTS, IP <IP-SCENIA-VPS-PROD>).
+Alessio apre ticket Aruba <account-cloud>, ID **<ticket-fornitore-cloud>** per chiarire le opzioni di backup e WAF della VPS di produzione Prodotto-1 (O2A4: 4 vCPUs, 8 GB RAM, 80 GB storage, 50 TB/mese data transfer, Ubuntu 22.04 LTS, IP <IP-PRODOTTO-1-VPS-PROD>).
 
 **Risposta Aruba su backup VPS:**
 - SWITCH OFF SERVER = spegnimento, RESET = riavvio, INIZIALIZZA = reset a stato iniziale (perde tutti i dati).
@@ -95,9 +95,9 @@ Alessio apre ticket Aruba <account-cloud>, ID **<ticket-fornitore-cloud>** per c
 
 Decisione post-ticket: ModSecurity v3 + OWASP valutato ma abbandonato (troppo pesante su risorse). Cloudflare Free come soluzione alternativa (vedi sezione 11/05/2026).
 
-## Gennaio-Febbraio 2026 - CVE patch SCENIA (React / Next.js)
+## Gennaio-Febbraio 2026 - CVE patch Prodotto-1 (React / Next.js)
 
-Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §CVE tracking
+Fonte: `Prodotto-1/SECURITY/DPA/SaaS security.docx` §CVE tracking
 
 ### CVE-2025-66478 (React/Next.js – critical 10.0, gen 2026)
 
@@ -141,9 +141,9 @@ Analisi su Zyxel USG FLEX 500: verifica se il firewall blocca il traffico VoIP/S
 
 **Esito:** nessuna Security Policy blocca le subnet sopra in uscita; i log (`Monitor → Log`) non riportano alcun blocco per nessuno degli IP/porte verificati. Conclusione: il firewall USG FLEX 500 **non è la causa** del problema centralino.
 
-## 04/03/2026 - Meeting Odoo portale SCENIA (Referente-OpenForce-1, OpenForce)
+## 04/03/2026 - Meeting Odoo portale Prodotto-1 (Referente-OpenForce-1, OpenForce)
 
-Pianificazione integrazione portale SaaS SCENIA → creazione SO in T-Rex/Odoo. Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopranzi@intrawelt.com (dedicato, senza licenza aggiuntiva). Ambiente test: intrawelt-test.openforce.it. Warning: xml-rpc deprecato da v19, rimosso da v20 → migrare a json-rpc in futuro. Dettagli tecnici: _notes/progetti-collegati/helpdesk-operations.md §Integrazione portale SCENIA.
+Pianificazione integrazione portale SaaS Prodotto-1 → creazione SO in T-Rex/Odoo. Protocollo: xml-rpc standard Odoo (no moduli aggiuntivi). Utente servizio: asopranzi@intrawelt.com (dedicato, senza licenza aggiuntiva). Ambiente test: intrawelt-test.openforce.it. Warning: xml-rpc deprecato da v19, rimosso da v20 → migrare a json-rpc in futuro. Dettagli tecnici: _notes/progetti-collegati/helpdesk-operations.md §Integrazione portale Prodotto-1.
 
 ## Febbraio-Aprile 2026 - Esercizio Proxmox: lock vzdump, freeze VM ricorrente, arrivi hardware
 
@@ -151,7 +151,7 @@ Fonte: `_DA SISTEMARE (Alessio)/PROXMOX/` (note datate, ingerite l'08/07/2026).
 
 Il 16/02/2026 il backup notturno della VM809 (TESTNEWEGETRAD, disco 258 GB su storage SERVIZI, destinazione NAS_HERO, snapshot zstd, keep-last=5) fallisce con "can't acquire lock '/var/run/vzdumplock' - got timeout". La diagnosi esclude un job concorrente (`ps` pulito) e punta a un lock orfano lasciato da un job interrotto; i dump risultano comunque presenti sulla share di backup. I log in `/var/log/vzdump/` di quella data fotografano la popolazione VM in backup a febbraio 2026: 100, 201-205, 601, 602, 801-803, 809, 900-902, piu' un log della VM101 datato febbraio 2025 (conferma che la VM101 e' esistita: vedi gap #106). L'inventario e' piu' ampio di quello dello snapshot v3 di giugno 2026: la riconciliazione VM per VM e' rimandata al re-run dello snapshot (M18).
 
-Il 15/04/2026, in chat con Persona-H, viene discussa una VM che a intervalli di uptime si blocca completamente e accetta solo lo stop forzato dal nodo (escluse cause lato SPICE); il titolo della nota indica come pista il cambio del driver della scheda video. Nella stessa chat Persona-H annuncia l'arrivo della scheda video e del transceiver 10 Gbit: con ogni probabilita' sono i componenti montati nelle settimane successive (connettori SFP+ della dorsale sostituiti l'08/05/2026; GPU RTX 5060 Ti installata l'08/06/2026 sull'host Ollama di IntraLino, vedi sezione Benchmark DoE).
+Il 15/04/2026, in chat con Persona-H, viene discussa una VM che a intervalli di uptime si blocca completamente e accetta solo lo stop forzato dal nodo (escluse cause lato SPICE); il titolo della nota indica come pista il cambio del driver della scheda video. Nella stessa chat Persona-H annuncia l'arrivo della scheda video e del transceiver 10 Gbit: con ogni probabilita' sono i componenti montati nelle settimane successive (connettori SFP+ della dorsale sostituiti l'08/05/2026; GPU RTX 5060 Ti installata l'08/06/2026 sull'host Ollama di Prodotto-2, vedi sezione Benchmark DoE).
 
 ## 03-23/04/2026 - NinjaOne: attivazione backup e nota Archiver
 
@@ -207,9 +207,9 @@ Sulla porta 29 dello switch Piano Terra nuovo: attaccato il convertitore (slot S
 
 Situazione DHCP: il problema e' che se sta attaccato il cavo della classe .90 e si spengono e riaccendono gli switch senza VLAN taggate si crea un conflitto. Rimozione del DHCP server classe .90 e' pendente come task (vedi GAP-TBC.md).
 
-## 11/05/2026 - Architettura sicurezza VPS SCENIA: Cloudflare Zero Trust (con Collaboratore-Esterno-1)
+## 11/05/2026 - Architettura sicurezza VPS Prodotto-1: Cloudflare Zero Trust (con Collaboratore-Esterno-1)
 
-Fonte: `SCENIA/SECURITY/DPA/SaaS security.docx` §Ragionamento con Collaboratore-Esterno-1 architettura sicurezza VPS
+Fonte: `Prodotto-1/SECURITY/DPA/SaaS security.docx` §Ragionamento con Collaboratore-Esterno-1 architettura sicurezza VPS
 
 Decisione architetturale presa il 11/05/2026 in riunione con Collaboratore-Esterno-1.
 
@@ -224,17 +224,17 @@ Motivazione:
 - Account Cloudflare: dash.cloudflare.com (piano Free)
 - Zero Trust: <team>.cloudflareaccess.com (team name)
 - NS delegati a Cloudflare: kaiser.ns.cloudflare.com, tara.ns.cloudflare.com (già delegati da Register.it)
-- cloudflared installato su VPS staging (<IP-SCENIA-VPS-STAGING>) via apt GPG key
+- cloudflared installato su VPS staging (<IP-PRODOTTO-1-VPS-STAGING>) via apt GPG key
 - Porte 80/443 chiuse con `ufw deny`; accesso SSH consentito solo da IP Intrawelt e IP del collaboratore esterno (<IP-COLLABORATORE-ESTERNO>)
 - Nginx proxy su porta 80 → Next.js porta 3000
 
-**DNS scenia.it (stato al momento del setup):**
+**DNS <dominio-prodotto-1> (stato al momento del setup):**
 | Dominio | A record | Ruolo |
 |---------|----------|-------|
-| scenia.it | <IP-SCENIA-VPS-PROD> | Sito istituzionale (one-page) |
-| portal.scenia.it | <IP-SCENIA-VPS-PROD> | Portale produzione (Trados Accelerate) |
-| contact.scenia.it | <IP-SCENIA-VPS-PROD> | Landing form contatti (design Persona-M) |
-| staging-portal.scenia.it | <IP-SCENIA-VPS-STAGING> | Portale staging (proxato Cloudflare) |
+| <dominio-prodotto-1> | <IP-PRODOTTO-1-VPS-PROD> | Sito istituzionale (one-page) |
+| portal.<dominio-prodotto-1> | <IP-PRODOTTO-1-VPS-PROD> | Portale produzione (Trados Accelerate) |
+| contact.<dominio-prodotto-1> | <IP-PRODOTTO-1-VPS-PROD> | Landing form contatti (design Persona-M) |
+| staging-portal.<dominio-prodotto-1> | <IP-PRODOTTO-1-VPS-STAGING> | Portale staging (proxato Cloudflare) |
 
 **Produzione:** cloudflared tunnel pianificato anche per VPS produzione nella fase successiva. Fail2Ban attivo su entrambe le VPS (ban IP dopo 3-4 tentativi SSH falliti). Mailtrap usato per email transazionale (form contatto, webhook portale). Lynis come tool di auditing OS della VPS.
 
@@ -288,7 +288,7 @@ La configurazione e' propedeutica alla migrazione al centralino cloud Vianova: i
 
 Fonte: `Analisi_Zyxel_USG_FLEX_500.docx`, backup `startup-config.conf` datato 19/05/2026 (2215 righe, firmware ZLD 5.42(ABUJ.1)).
 
-Prima analisi strutturata del file di configurazione del firewall: porte fisiche e port-grouping (P4/P5/P6 in bridge L2 sotto lan1, nonostante le etichette logiche lan2/dmz), interfacce WAN/LAN/DMZ, VPN (due tunnel IPsec verso lo stesso peer SEEWEB, VPN remote-access IKEv2, SSL VPN), NAT/virtual server, security policy e UTM. Individuate dieci anomalie (FW-001 - FW-010), la piu' critica delle quali e' la regola `Blocco_Gruppo_IP_Phishing_Elisa` con `action allow` invece di `deny`, introdotta durante la remediation dell'incidente phishing del 13-15/01/2026: la regola, essendo la prima valutata dal motore, fa passare indisturbato qualunque traffico dagli undici IP della lista invece di bloccarlo. Dettaglio completo delle dieci anomalie in `docs/firewall/firewall-zyxel-usg-flex-500.md`.
+Prima analisi strutturata del file di configurazione del firewall: porte fisiche e port-grouping (P4/P5/P6 in bridge L2 sotto lan1, nonostante le etichette logiche lan2/dmz), interfacce WAN/LAN/DMZ, VPN (due tunnel IPsec verso lo stesso peer SEEWEB, VPN remote-access IKEv2, SSL VPN), NAT/virtual server, security policy e UTM. Individuate dieci anomalie (FW-001 - FW-010), la piu' critica delle quali e' la regola `Blocco_Gruppo_IP_Phishing_Persona-I` con `action allow` invece di `deny`, introdotta durante la remediation dell'incidente phishing del 13-15/01/2026: la regola, essendo la prima valutata dal motore, fa passare indisturbato qualunque traffico dagli undici IP della lista invece di bloccarlo. Dettaglio completo delle dieci anomalie in `docs/firewall/firewall-zyxel-usg-flex-500.md`.
 
 Parallelamente viene prodotta un'analisi comparativa su come collocare correttamente una VM Proxmox in DMZ (`zyxel-dmz-proxmox.md` e i diagrammi `dmz_con_trunk.svg` / `dmz_senza_trunk.svg`, archiviati in `.claude/context/diagrams/firewall-dmz-2026/`): la porta DMZ del firewall (P7) e' oggi fisicamente isolata dal segmento su cui e' collegato Proxmox, quindi una VM raggiunta via NAT ma con IP in subnet LAN non e' realmente in DMZ, e' un host LAN con port forwarding. Le due opzioni valutate sono un secondo cavo dedicato da P7 a una seconda NIC del server (scartata: rigida, consuma porte, non scala) e un trunk 802.1Q che porta la VLAN DMZ sullo stesso cavo fisico gia' usato dalla LAN, smistata poi da un bridge Proxmox VLAN-aware. La seconda opzione e' quella adottata nel piano di revisione del 05/06/2026.
 
@@ -298,7 +298,7 @@ Fonte: `Revisione_Rete_DMZ_Proxmox.docx`, `Piano_Operativo_Migrazione.docx`, `LE
 
 Il piano operativo traduce l'anomalia FW-001 e l'architettura DMZ a trunk in una sequenza di sei fasi con applicazione dal seriale del firewall, ciascuna con un proprio punto di ritorno esplicito: Fase 0 corregge subito, via GUI e senza attendere la finestra di manutenzione, la regola phishing (allow -> deny, rimozione dell'IP del firewall stesso dal gruppo); Fase 1 prepara backup, verifica fisicamente console seriale e accesso iLO, e conferma il prerequisito non ancora validato che lo switch XGS2220-54HP supporti 802.1Q; le Fasi 2 e 3 configurano VLAN 201 sullo switch e bridge VLAN-aware su Proxmox a impatto nullo sulla produzione (nessun cavo ancora spostato); la Fase 4 posa il cavo da P7 e valida la catena L2 con `arping`/`tcpdump` prima di toccare il firewall, spiegando perche' un ping ordinario possa legittimamente non rispondere in quel momento; la Fase 5 applica la configurazione aggiornata dalla console seriale con una doppia rete di protezione, lo startup-config precedente resta intatto finche' la verifica non e' conclusa, piu' un meccanismo di `lastgood` automatico lato firewall; la Fase 6 verifica nell'ordine in cui gli utenti se ne accorgerebbero (prima la navigazione LAN, poi la SSL VPN, poi il tunnel IPsec, poi il raggiungimento della VM DMZ), consolida con 48 ore di osservazione log e chiude con le pulizie fisiche del cablaggio provvisorio.
 
-Il file `startup-config.conf` datato 05/06/2026 e conservato con il piano contiene gia' in testa un changelog che descrive gli otto interventi previsti (rimozione WAN_TRUNK e delle rotte statiche legate a LAN2, correzione delle due regole allow->deny, attivazione della zona DMZ senza pool DHCP, pubblicazione web via `wan1:2`): e' la configurazione target preparata per il caricamento in Fase 5, **non** un backup post-applicazione. Alla data del 01/07/2026 la Fase 0 (fix della regola phishing) non risulta ancora eseguita sul dispositivo fisico: verificato con l'utente che l'intera sequenza resta da applicare nella prossima finestra di manutenzione. La regola `Blocco_Gruppo_IP_Phishing_Elisa` con `action allow` e' quindi ancora attiva in produzione: vedi runbook-anomalie.md e la nuova priorita' assegnata in `.claude/context/roadmap.md`.
+Il file `startup-config.conf` datato 05/06/2026 e conservato con il piano contiene gia' in testa un changelog che descrive gli otto interventi previsti (rimozione WAN_TRUNK e delle rotte statiche legate a LAN2, correzione delle due regole allow->deny, attivazione della zona DMZ senza pool DHCP, pubblicazione web via `wan1:2`): e' la configurazione target preparata per il caricamento in Fase 5, **non** un backup post-applicazione. Alla data del 01/07/2026 la Fase 0 (fix della regola phishing) non risulta ancora eseguita sul dispositivo fisico: verificato con l'utente che l'intera sequenza resta da applicare nella prossima finestra di manutenzione. La regola `Blocco_Gruppo_IP_Phishing_Persona-I` con `action allow` e' quindi ancora attiva in produzione: vedi runbook-anomalie.md e la nuova priorita' assegnata in `.claude/context/roadmap.md`.
 
 ## 09/06/2026 - Provisioning utente e app Vianova One (centralino cloud)
 
@@ -318,7 +318,7 @@ Separatamente, lo stesso giorno myOffice (Referente-MyOffice-1, reparto Telefoni
 
 Fonte: sessione guidata passo-passo sulla GUI del firewall, con screenshot Screenpresso a ogni passaggio. Dettaglio riga per riga in `docs/firewall/firewall-zyxel-usg-flex-500-live.conf`.
 
-Eseguita la Fase 0 del piano del 05/06/2026, indipendentemente dal resto della sequenza a sei fasi (che resta da applicare). Sulla regola `Blocco_Gruppo_IP_Phishing_Elisa` (Policy Control, riga 1): action corretta da `allow` a `deny`, log impostato su `log alert`, e l'oggetto `IP_09_phishing_2026_Elisa` (203.0.113.5, l'IP pubblico del firewall stesso) rimosso dal gruppo `Bad_IP_Phishing_Elisa_2026`, che nel frattempo si conferma composto da undici membri (IP_01-IP_11). Sulla regola gemella `malicious_IP_12052025` (riga 4): action corretta da `allow` a `deny`, il log era gia' attivo. Entrambe le modifiche si sono rivelate scritte immediatamente sul dispositivo al click di OK sul dialogo di modifica, senza richiedere un Apply separato sulla pagina Policy Control. Verificato su due screenshot indipendenti per ciascuna modifica (prima e dopo).
+Eseguita la Fase 0 del piano del 05/06/2026, indipendentemente dal resto della sequenza a sei fasi (che resta da applicare). Sulla regola `Blocco_Gruppo_IP_Phishing_Persona-I` (Policy Control, riga 1): action corretta da `allow` a `deny`, log impostato su `log alert`, e l'oggetto `IP_09_phishing_2026_Persona-I` (203.0.113.5, l'IP pubblico del firewall stesso) rimosso dal gruppo `Bad_IP_Phishing_Persona-I_2026`, che nel frattempo si conferma composto da undici membri (IP_01-IP_11). Sulla regola gemella `malicious_IP_12052025` (riga 4): action corretta da `allow` a `deny`, il log era gia' attivo. Entrambe le modifiche si sono rivelate scritte immediatamente sul dispositivo al click di OK sul dialogo di modifica, senza richiedere un Apply separato sulla pagina Policy Control. Verificato su due screenshot indipendenti per ciascuna modifica (prima e dopo).
 
 Osservazione incidentale: la lista delle security policy mostra due regole non ancora censite in `docs/firewall/firewall-zyxel-usg-flex-500.md`, `BLOCCO_IP_SOSPETTI` (riga 7, action reject) e `EGETRAD_WEB_TEST` (riga 11): da includere nel prossimo giro di riconciliazione della scheda, non urgente.
 
@@ -353,7 +353,7 @@ Risultato: la dorsale Piano Terra - Piano 2 negozia e comunica a 10 Gbps (confer
 
 ---
 
-## Gennaio-Aprile 2026 - SCENIA sviluppo full-stack (Collaboratore-Esterno-1)
+## Gennaio-Aprile 2026 - Prodotto-1 sviluppo full-stack (Collaboratore-Esterno-1)
 
 Sviluppo principale su branch con Collaboratore-Esterno-1 (collaboratore esterno, modello fork + PR). Snapshot repository analizzato: staging 27/02/2026 → main 22/04/2026 (analisi prodotta in 13_Maggio 2026 / analysis-output/).
 
@@ -374,13 +374,13 @@ Breaking change 11/03/2026: aggiunta variabile d'ambiente STORAGE_PATH per confi
 
 ER diagram: diagrammaER 18052025.png (18/05/2025, primo schema E/R definitivo); note database e diagramma.docx (evoluzione successiva).
 
-28/05/2026: studio integrazione Odoo-SCENIA documentato in `studio_integrazione Odoo 28052026.docx` (cartella odoo-related del progetto).
+28/05/2026: studio integrazione Odoo-Prodotto-1 documentato in `studio_integrazione Odoo 28052026.docx` (cartella odoo-related del progetto).
 
-## Maggio-Giugno 2026 - SCENIA DPA e DPIA ScenIA
+## Maggio-Giugno 2026 - Prodotto-1 DPA e DPIA Prodotto-1
 
-### DPA ScenIA v1.0 → v1.7
+### DPA Prodotto-1 v1.0 → v1.7
 
-Redazione del Data Processing Agreement (GDPR Art. 28) tra Intrawelt (Processor) e il Titolare del trattamento ScenIA. Collaboratore-Esterno-1 (AIDAPT) come sub-processor.
+Redazione del Data Processing Agreement (GDPR Art. 28) tra Intrawelt (Processor) e il Titolare del trattamento Prodotto-1. Collaboratore-Esterno-1 (AIDAPT) come sub-processor.
 
 Versioni DPA:
 - v1.1 (08/06/2026): prima bozza condivisa con AIDAPT
@@ -396,7 +396,7 @@ Versioni DPA:
 
 Pending: completare placeholder Parti, negoziare massimali responsabilità, inviare questionario tecnico a AIDAPT (confermato gap VA/PT).
 
-### DPIA ScenIA
+### DPIA Prodotto-1
 
 Documento DPIA in corso (template EDPB v1.0 2026). Sezioni [DA COMPLETARE]: validazione tecnica AIDAPT, dati del Titolare, misure di mitigazione residuali. Previste completamento entro luglio 2026.
 
@@ -445,13 +445,13 @@ Fonte: `_DA SISTEMARE (Alessio)/Analisi mail/marsk-17062026/analisi-problema-con
 
 **Conclusione: problema lato Cliente-2** (Power Platform Flow intermittente). Prove da comunicare a Cliente-2: trace M365 "tutti gli stati" non le mostra + gap orari precisi. Cliente-2 deve verificare log esecuzione Power Automate per le run degli orari anomali.
 
-## Maggio-Luglio 2026 - Benchmark DoE IntraLino (C1/C2/C3), GPU RTX 5060 Ti e test C4
+## Maggio-Luglio 2026 - Benchmark DoE Prodotto-2 (C1/C2/C3), GPU RTX 5060 Ti e test C4
 
 Fonte: `Sviluppo_interno, scripting (IT on FIRE)/Qdrant + Ollama + Ubuntu + n8n self-hosting/_File Benchmark e implement/` (stato progetto, guide, due report differenziali). Contenuto anonimizzato secondo `.claude/rules/anonymization.md`; la cartella sorgente contiene anche file di credenziali, mai riportati.
 
-Il benchmark applica un impianto DoE[^1] alla pipeline RAG[^2] self-hosted IntraLino per isolare due fattori: l'impatto della GPU a parita' di modello (C1, CPU con llama3.2:3B, contro C2, GPU con lo stesso modello) e l'impatto del modello a parita' di hardware (C2 contro C3, llama3.1:8b). Il confronto diretto C1-C3 e' vietato dalla metodologia perche' varierebbe due fattori insieme. Le misure quantitative (matrice A: TTFT, throughput, durata, CPU, RAM, VRAM, latenza embedding) interrogano Ollama in isolamento; quelle qualitative (matrice B: aderenza, coerenza, recall@k, preferenza pairwise) attraversano la pipeline completa e sono affidate a un panel di 5 valutatori con stimoli anchor ripresentati in cieco per misurare la deriva di giudizio.
+Il benchmark applica un impianto DoE[^1] alla pipeline RAG[^2] self-hosted Prodotto-2 per isolare due fattori: l'impatto della GPU a parita' di modello (C1, CPU con llama3.2:3B, contro C2, GPU con lo stesso modello) e l'impatto del modello a parita' di hardware (C2 contro C3, llama3.1:8b). Il confronto diretto C1-C3 e' vietato dalla metodologia perche' varierebbe due fattori insieme. Le misure quantitative (matrice A: TTFT, throughput, durata, CPU, RAM, VRAM, latenza embedding) interrogano Ollama in isolamento; quelle qualitative (matrice B: aderenza, coerenza, recall@k, preferenza pairwise) attraversano la pipeline completa e sono affidate a un panel di 5 valutatori con stimoli anchor ripresentati in cieco per misurare la deriva di giudizio.
 
-L'infrastruttura sotto benchmark e' su due host della LAN: l'host Ollama (10.61.20.58, Ubuntu 25.04, i7-7700, 16 GB RAM, Ollama su porta 11500) e lo stack Docker IntraLino (10.61.20.60, hostname `intralino`: n8n con workflow LangChain, Qdrant 1.17.1, backend Node.js, nginx con TLS da CA privata, UFW su 22/80/443). La fonte descrive i due host come "due VM Proxmox" ma attribuisce alla .58 hardware fisico dedicato, incluso l'alloggiamento fisico della GPU: incoerenza da verificare (gap #107).
+L'infrastruttura sotto benchmark e' su due host della LAN: l'host Ollama (10.61.20.58, Ubuntu 25.04, i7-7700, 16 GB RAM, Ollama su porta 11500) e lo stack Docker Prodotto-2 (10.61.20.60, hostname `prodotto-2`: n8n con workflow LangChain, Qdrant 1.17.1, backend Node.js, nginx con TLS da CA privata, UFW su 22/80/443). La fonte descrive i due host come "due VM Proxmox" ma attribuisce alla .58 hardware fisico dedicato, incluso l'alloggiamento fisico della GPU: incoerenza da verificare (gap #107).
 
 Passi salienti. Il 04/06/2026 l'embedding viene affidato al modello dedicato bge-m3 (1024 dimensioni), fisso per tutte le casistiche: tra C2 e C3 cambia solo il modello di generazione e la collezione Qdrant resta invariata, senza re-ingest. L'08/06/2026 viene installata la GPU RTX 5060 Ti 16 GB GDDR7 sull'host Ollama (driver NVIDIA 595.71.05, CUDA 13.2, uso in generazione verificato). Il 29/06/2026 vengono prodotti i due report differenziali quantitativi: a parita' di modello la GPU porta un guadagno di ordine di grandezza statisticamente significativo su tutte le metriche; il passaggio da 3B a 8B costa circa il doppio in tempo per token e memoria video senza penalizzare la reattivita'. Le sezioni qualitative dei report restano da compilare dopo le sessioni del panel (valutatori non ancora reclutati).
 
@@ -502,9 +502,9 @@ Il 17/07/2026 il portale `https://gs.intrawelt.com` e' diventato irraggiungibile
 
 Scelto win-acme (Let's Encrypt) per il ripristino automatico (certificato + binding 443 + rinnovo periodico), con un problema iniziale risolto (il binding HTTP esistente senza host header impediva a win-acme di identificare il sito) ma **il percorso non e' stato portato a termine**: per sbloccare subito i Project Manager, bloccati con i client Trados Studio, si e' ripristinata la sola connettivita' HTTP normale, non la cifratura HTTPS. Il traffico verso il portale GroupShare, incluse le credenziali applicative, viaggia oggi in chiaro. Registrato come gap **SEC-015** (`GAP-TBC.md` #117) e in `design-and-security.md` §A.13.2; dettaglio tecnico completo con diagnosi e comandi in `docs/operativita/runbook-anomalie.md` §SEC-015. Il completamento del binding HTTPS via win-acme resta il fix identificato ma non applicato.
 
-## 08/07/2026 - Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Intralino
+## 08/07/2026 - Snapshot infrastruttura v4: RAM raddoppiata, storage PROGRAMMAZIONE, VM Prodotto-2
 
-Eseguito `Get-ProxmoxSnapshot.ps1` sul nodo (primo re-run dopo la v3; output non versionato in `output/`). Delta rispetto alla v3: la RAM del nodo e' passata a 125.4 GB totali, conferma in campo dell'ordine dei 64 GB aggiuntivi del 14/11/2025; e' comparso lo storage lvmthin PROGRAMMAZIONE (1.5 TB) con il pool risorse "Programmazione"; la VM602 e' stata rinominata da ITdeveloping a "Intralino" (running, 200 GB su PROGRAMMAZIONE); la VM810 "TESTNEWEGETRADBOOT" (260 GB, running) sostituisce la VM809 dei log di febbraio; la VM803 e le VM effimere dei log vzdump (101, 201, 601, 801-803, 809, 900-902) non esistono piu'. Nove job di backup schedulati scaglionati verso NAS_INTRA piu' un secondo job della VM100 verso NAS_HERO. Invariati: firewall cluster inattivo senza regole, bridge non VLAN-aware (M5 non applicato), LAN unica /19 su vmbr0. Aperto il gap #108 (lo stato cluster riporta come IP del nodo l'indirizzo della iLO5). Riconciliati i gap #106 (popolazione VM) e #107 (gli host IntraLino .58/.60 non sono VM del nodo). Scheda `design-and-security.md` aggiornata alla v4.
+Eseguito `Get-ProxmoxSnapshot.ps1` sul nodo (primo re-run dopo la v3; output non versionato in `output/`). Delta rispetto alla v3: la RAM del nodo e' passata a 125.4 GB totali, conferma in campo dell'ordine dei 64 GB aggiuntivi del 14/11/2025; e' comparso lo storage lvmthin PROGRAMMAZIONE (1.5 TB) con il pool risorse "Programmazione"; la VM602 e' stata rinominata da ITdeveloping a "Prodotto-2" (running, 200 GB su PROGRAMMAZIONE); la VM810 "TESTNEWEGETRADBOOT" (260 GB, running) sostituisce la VM809 dei log di febbraio; la VM803 e le VM effimere dei log vzdump (101, 201, 601, 801-803, 809, 900-902) non esistono piu'. Nove job di backup schedulati scaglionati verso NAS_INTRA piu' un secondo job della VM100 verso NAS_HERO. Invariati: firewall cluster inattivo senza regole, bridge non VLAN-aware (M5 non applicato), LAN unica /19 su vmbr0. Aperto il gap #108 (lo stato cluster riporta come IP del nodo l'indirizzo della iLO5). Riconciliati i gap #106 (popolazione VM) e #107 (gli host Prodotto-2 .58/.60 non sono VM del nodo). Scheda `design-and-security.md` aggiornata alla v4.
 
 ## 16/07/2026 - Fase A Wi-Fi (M13a): applicata, incidente di 15 minuti, ripristinata
 
@@ -1089,7 +1089,7 @@ Prima di aggiungere HTTPS al gestore delle password l'IT Manager ha osservato ch
 
 Un certificato fa due cose che il linguaggio comune confonde: cifra il traffico, e per questo basta un certificato qualunque, e dimostra l'identita' di chi risponde, e per questo serve la firma di qualcuno che il navigatore gia' consideri attendibile. Un certificato autofirmato afferma la propria identita' appellandosi a se stesso, ed e' per questo che il navigatore protesta: l'avviso non e' un fastidio tecnico, e' la descrizione corretta della situazione. Il rischio di conviverci e' che un utente abituato a superare l'avviso lo superera' anche il giorno in cui l'avviso e' vero.
 
-Con certificati autofirmati per servizio le installazioni sulle postazioni crescono come il prodotto fra il numero di servizi e il numero di postazioni. Con un'autorita' interna si installa una volta sola l'autorita' su ogni postazione, e da quel momento ogni servizio nuovo funziona senza avvisi il giorno stesso. Il punto di pareggio sta intorno ai tre o quattro servizi, e qui sono gia' almeno cinque fra gestore delle password, portale asset, IntraLino, applicativo di pianificazione e il futuro proxy inverso della DMZ.
+Con certificati autofirmati per servizio le installazioni sulle postazioni crescono come il prodotto fra il numero di servizi e il numero di postazioni. Con un'autorita' interna si installa una volta sola l'autorita' su ogni postazione, e da quel momento ogni servizio nuovo funziona senza avvisi il giorno stesso. Il punto di pareggio sta intorno ai tre o quattro servizi, e qui sono gia' almeno cinque fra gestore delle password, portale asset, Prodotto-2, applicativo di pianificazione e il futuro proxy inverso della DMZ.
 
 C'e' pero' una ragione piu' forte del conteggio, e riguarda proprio il lavoro in corso: la segmentazione cambiera' gli indirizzi dei servizi, e un certificato autofirmato emesso oggi per un indirizzo diventera' sbagliato allora, con lo stesso meccanismo del difetto #171. Un'autorita' interna emette certificati per **nomi**, che sopravvivono al cambio di indirizzo.
 
@@ -1121,7 +1121,7 @@ E' il secondo in due giorni, dopo il servizio di inferenza dell'host Ollama. Il 
 
 ### L'autorita' di certificazione interna esiste gia', e appartiene a un progetto
 
-Il certificato che serve il traffico cifrato di IntraLino, interrogato dalla rete perche' l'immagine minimale del contenitore non porta gli strumenti per leggerlo dall'interno, risulta **non autofirmato**: e' emesso da un'autorita' interna creata per quel progetto, vale fino alla meta' del 2028 ed e' rilasciato per un nome semplice senza suffisso di dominio.
+Il certificato che serve il traffico cifrato di Prodotto-2, interrogato dalla rete perche' l'immagine minimale del contenitore non porta gli strumenti per leggerlo dall'interno, risulta **non autofirmato**: e' emesso da un'autorita' interna creata per quel progetto, vale fino alla meta' del 2028 ed e' rilasciato per un nome semplice senza suffisso di dominio.
 
 E' una buona notizia, perche' la capacita' di emettere certificati e' gia' stata costruita e non e' teorica. Non e' pero' automaticamente l'autorita' aziendale, per tre ragioni di peso decrescente.
 
@@ -1143,7 +1143,7 @@ E' nato anche `scripts/sonda-tls.sh`, che interroga un endpoint dalla rete invec
 
 ### La chiave era sulla macchina, e la prima ricerca aveva sbagliato
 
-La voce precedente registrava che la ricerca per contenuto non avesse trovato alcuna autorita' sull'host di IntraLino, e ne concludeva che la chiave stesse altrove. L'IT Manager ha dubitato della conclusione osservando che la chiave doveva stare dentro la macchina, e aveva ragione: chiedendo al contenitore da dove legga il proprio certificato, la risposta e' arrivata in un comando. Certificato e chiave sono innestati in sola lettura da una cartella dell'host dedicata proprio alle autorita', che la prima ricerca non aveva attraversato perche' non era nel suo elenco di percorsi.
+La voce precedente registrava che la ricerca per contenuto non avesse trovato alcuna autorita' sull'host di Prodotto-2, e ne concludeva che la chiave stesse altrove. L'IT Manager ha dubitato della conclusione osservando che la chiave doveva stare dentro la macchina, e aveva ragione: chiedendo al contenitore da dove legga il proprio certificato, la risposta e' arrivata in un comando. Certificato e chiave sono innestati in sola lettura da una cartella dell'host dedicata proprio alle autorita', che la prima ricerca non aveva attraversato perche' non era nel suo elenco di percorsi.
 
 E' il quarto errore della stessa famiglia in una settimana ed e' il piu' istruttivo, perche' riguarda uno strumento e non un ragionamento: **una ricerca per contenuto vale quanto l'elenco di percorsi che attraversa**, e un esito negativo significa "non trovato dove ho guardato", mai "non esiste". La correzione e' doppia e la seconda meta' e' quella che conta: l'elenco e' stato esteso, e il limite e' stato scritto in testa allo strumento, perche' un limite dichiarato dentro lo strumento sopravvive a chi lo ha scoperto. Ne resta anche un metodo: quando un servizio **presenta** un certificato, la chiave esiste per definizione, e la via piu' diretta non e' cercarla sul disco ma chiedere al servizio da dove la legge.
 
@@ -1163,13 +1163,13 @@ Ne discende una sequenza obbligata che vale la pena scrivere perche' e' controin
 
 ## 02/09/2026 - I nomi interni: il resolver del firewall, e perche' oggi molti nomi non sono scritti da nessuna parte
 
-Giornata nata da una domanda dell'IT Manager che sembrava di dettaglio e non lo era: se il certificato di IntraLino contiene gia' il nome corto, perche' quel nome non compare nella tabella dei record del firewall. La risposta ha aperto una materia che il progetto aveva toccato tre volte senza mai spiegarla, e le ha dedicato una scheda propria, `docs/rete/risoluzione-nomi-interni.md`.
+Giornata nata da una domanda dell'IT Manager che sembrava di dettaglio e non lo era: se il certificato di Prodotto-2 contiene gia' il nome corto, perche' quel nome non compare nella tabella dei record del firewall. La risposta ha aperto una materia che il progetto aveva toccato tre volte senza mai spiegarla, e le ha dedicato una scheda propria, `docs/rete/risoluzione-nomi-interni.md`.
 
 ### Le due domande che un navigatore fa, e che si confondono in una
 
 Quando si digita un indirizzo il navigatore fa due domande separate a due sistemi indipendenti. Dove sta, cioe' come si trasforma un nome in un indirizzo, e risponde la risoluzione dei nomi. Ed e' davvero lui, cioe' chi risponde a quel nome e' chi dice di essere, e risponde il certificato. Uno puo' funzionare senza l'altro: un nome che risolve e mostra l'avviso, oppure un certificato perfetto per un nome che nessuno risolve.
 
-Il nome corto di IntraLino non e' nella tabella del firewall perche' **la prima domanda oggi non passa dal firewall**. Quel nome non e' configurato da nessuna parte: viene risolto in multicast sul segmento, cioe' la postazione chiede a voce alta sulla rete chi si chiami cosi' e la macchina risponde. Funziona perche' nessuno lo ha mai configurato, il che e' precisamente il motivo per cui nessuno sa che esiste.
+Il nome corto di Prodotto-2 non e' nella tabella del firewall perche' **la prima domanda oggi non passa dal firewall**. Quel nome non e' configurato da nessuna parte: viene risolto in multicast sul segmento, cioe' la postazione chiede a voce alta sulla rete chi si chiami cosi' e la macchina risponde. Funziona perche' nessuno lo ha mai configurato, il che e' precisamente il motivo per cui nessuno sa che esiste.
 
 ### Perche' la segmentazione li rompera' tutti insieme
 
@@ -1197,7 +1197,7 @@ Una precisazione che serve ai certificati e che e' causa di equivoci: il complet
 
 ### Nomi assegnati
 
-`vault.int.intrawelt.com` per il gestore delle password, `asset.int.intrawelt.com` per il portale asset, `intralino.int.intrawelt.com` per IntraLino. Sciolto anche un equivoco sul suffisso: `int` sta per interno e non per il nome di un progetto.
+`vault.int.intrawelt.com` per il gestore delle password, `asset.int.intrawelt.com` per il portale asset, `prodotto-2.int.intrawelt.com` per Prodotto-2. Sciolto anche un equivoco sul suffisso: `int` sta per interno e non per il nome di un progetto.
 
 Sul portale asset l'IT Manager ha sollevato il caso piu' interessante dello schema, cioe' che dovra' essere raggiungibile anche da fuori tramite la DMZ. Un'autorita' interna non serve a chi sta fuori, perche' nel suo navigatore non e' installata e non lo sara' mai: le strade sono tre, due nomi con due certificati, un nome pubblico usato anche da dentro con il traffico che esce e rientra, oppure lo stesso nome risolto in modo diverso da dentro e da fuori, che e' la piu' economica qui perche' il resolver interno lo stiamo configurando adesso. La scelta non e' urgente ma va fatta prima di emettere il certificato del portale.
 

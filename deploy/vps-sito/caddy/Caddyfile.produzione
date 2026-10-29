@@ -62,8 +62,14 @@ www.{$SITO_NOME} {
 	redir https://{$SITO_NOME}{uri} 301
 }
 
-# Il sottodominio di SCENIA: blocco da aggiungere solo se la decisione aperta lo vuole
-# rimandato al sito del prodotto invece che tolto. Non attivo.
-# scenia.{$SITO_NOME} {
-# 	redir https://<sito del prodotto>{uri} 301
-# }
+# Il sottodominio del prodotto resta, per decisione dell'IT Manager del 29/10/2026, e
+# rimanda al sito del prodotto, dove porta anche la voce del prodotto fra le soluzioni.
+# Il giorno del passaggio il fornitore del DNS lo fa puntare qui insieme agli altri nomi:
+# lasciato sull'hosting attuale, alla disdetta indicherebbe una macchina che non lavora
+# piu' per noi. Rimando temporaneo (302) e non permanente, perche' la destinazione potra'
+# cambiare e un 301 resta nella cache dei browser. Nome e destinazione arrivano
+# dall'ambiente, come gli altri nomi: PRODOTTO_NOME e' il sottodominio completo,
+# PRODOTTO_DESTINAZIONE l'indirizzo del sito del prodotto.
+{$PRODOTTO_NOME} {
+	redir {$PRODOTTO_DESTINAZIONE} 302
+}
