@@ -1,5 +1,9 @@
 # Sorgenti Seeweb e raccolta dei log
 
+## Bundle di ricezione protetto, 29/10/2026
+
+Dopo il commit `78b2864` del collettore, il pilot locale verifica anche proprietà e permessi di bundle e backup prima di agire come root. Tre prove su percorsi scrivibili da altri erano rosse; con la guardia la suite WSL root passa 21/21. Il nuovo archivio privato contiene i quattro file previsti ed è verificato, ma non è stato trasferito sulla VM. Restano il controllo privilegiato del ruleset, l'applicazione manuale e la prova di ricezione Syslog reale. L'utente riferisce di aver risposto a Seeweb; la risposta effettiva non è disponibile qui. Nessun nuovo flusso è in esercizio.
+
 ## Upgrade distinto dalla prova Syslog, 29/10/2026
 
 Seeweb ha indicato 26.7.7 come target, snapshot hypervisor, backup completo e durata prevista dell'attività entro due ore; lo screenshot_135 è conservato privatamente con SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`. Il rischio dichiarato riguarda soprattutto la VPN. Il chiarimento non cambia il gate Syslog: la sonda SSH trova `rsyslog` e `nftables` attivi e UDP 514 in ascolto, ma nessun filtro Seeweb è installato sulla VM; il ruleset attivo richiede controllo root e non è stato ricevuto alcun evento reale. La breve prova UDP e l'upgrade restano interventi distinti.

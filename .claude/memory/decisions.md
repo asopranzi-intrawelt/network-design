@@ -664,3 +664,21 @@ Perche'. NAS INTRA, scelto in ADR-044, e' il modello piu' vecchio del parco ed e
 Condizioni. Le copie del sito contengono dati personali. Prima della prima copia va chiusa la verifica, aperta dal 07/10/2026, sui privilegi amministrativi dei capi progetto su HERO: chi amministra il NAS vede ogni cartella, permessi avanzati compresi. Il registro dei guasti riporta inoltre che HERO e' risultato a volte irraggiungibile. Lo script lo tratta come «copia impossibile», con un esito distinto, quindi una notte persa si vede; se succede spesso, la causa va cercata.
 
 Fonti: nessuna fonte esterna; scelta interna motivata dalla separazione dei guasti e dal privilegio minimo. Il dettaglio dei passi e' nel runbook del primo rilascio.
+
+## ADR-048 - Le copie del sito stanno in una cartella condivisa propria su HERO, non in una sottocartella di Backup
+
+Data: 2026-10-29. Decisione dell'IT Manager, che corregge la forma di ADR-047; resta HERO come destinazione.
+
+La decisione. Su NAS HERO esiste la cartella condivisa `backup-sito`, alla radice dello Storage pool 1. Ha una quota di 50 GB e le istantanee giornaliere alle 04:00, conservate con 7 giornaliere, 4 settimanali e 1 mensile. Lettura e scrittura spettano solo a `admin` e all'utenza dedicata `backup-sito`; l'enumerazione basata sull'accesso nasconde la cartella a chi non ha accesso. L'utenza `backup-sito` ha un divieto esplicito su `Backup`, `Multimedia` e `Public`.
+
+Perche'. In QNAP una cartella condivisa sta sempre alla radice di un volume: non si puo' creare dentro `Backup`. Inoltre, alla creazione dell'utenza, il pannello ha mostrato che il gruppo `everyone` da' lettura e scrittura su `Backup`, quindi una sottocartella li' sarebbe stata esposta a chiunque. La cartella propria ha permessi suoi. Il divieto esplicito prevale sul permesso del gruppo, come il pannello dichiara (Deny > RW > RO), ed e' provato: dal nodo, con l'utenza `backup-sito`, `Backup` risponde `NT_STATUS_ACCESS_DENIED`.
+
+Scelte collegate, tutte registrate nel runbook con la loro ragione:
+
+- crittografia della cartella non attivata, perche' le copie si cifreranno nel contenitore con una chiave pubblica;
+- WORM non attivato, perche' bloccherebbe la potatura;
+- compressione si', deduplicazione no.
+
+Conseguenze. Le istantanee mensili non si possono azzerare, e allungano di circa un mese la permanenza di un dato cancellato nelle copie: circa 13 mesi in tutto, da dichiarare nell'informativa (G19). La copia fuori sede delle copie, secondo la regola del 3-2-1, resta una voce aperta.
+
+Fonti: misure e testi del pannello QuTS hero e prova di accesso con `smbclient`, 29/10/2026. Nessuna fonte esterna letta.

@@ -421,7 +421,153 @@ Ogni micropasso registra che cosa si è fatto, perché e con quale esito, nell'o
 - `pveam available --section system | grep -i debian` mostra quali modelli Debian sono disponibili, così si scarica quello giusto al passo 2;
 - `grep -B1 -A6 "cifs: NAS_HERO" /etc/pve/storage.cfg` mostra come il nodo raggiunge già HERO: indirizzo, condivisione, utente e versione SMB, senza la password, che Proxmox tiene in un file separato. Serve a scrivere il montaggio del passo 3 con gli stessi parametri che oggi funzionano.
 
-Esito: in attesa degli output.
+Esito, letto dall'IT Manager:
+
+- il nodo offre Debian 11.7, 12.12 e 13.6; si scarica il 13.6, la versione stabile corrente, coerente con le prove fatte in Debian trixie;
+- lo storage `NAS_HERO` del nodo monta la condivisione `Backup` di HERO (`10.61.20.169`) con l'utenza di servizio `backup`, senza una versione SMB dichiarata, quindi negoziata, e con `prune-backups keep-all=1`, cioè senza nessuna potatura delle copie di Proxmox che finiscono lì.
+
+**29/10/2026, micropasso 2a: utenza sul NAS, e un rilievo.** L'IT Manager ha creato l'utenza `backup-sito` su HERO, nel gruppo `everyone`, senza cambiare altro. La finestra di creazione mostra che cosa l'utenza riceve dal gruppo: lettura e scrittura su `Backup` e `Multimedia`, sola lettura su `Public`, accesso illimitato a tutte le applicazioni. Due conseguenze. La prima: l'utenza del salvataggio vede e può cancellare tutto `Backup`, che è proprio ciò che ADR-047 voleva evitare. La seconda, più grave: se il gruppo `everyone` ha davvero lettura e scrittura su `Backup`, qualunque utente del NAS può alterare o cancellare le copie che vi si trovano; è registrato nelle pendenze. Il tentativo di creare una cartella condivisa dentro `Backup` non è riuscito: in QNAP una cartella condivisa sta sempre alla radice di un volume, e una sottocartella si governa solo con i permessi avanzati.
+
+Ne discende una correzione della procedura, proposta all'IT Manager. Al posto della sottocartella dentro `Backup` si crea una cartella condivisa propria, `backup-sito`, alla radice del volume: lettura e scrittura per `backup-sito`, nessun accesso per `everyone`. All'utenza `backup-sito` si negano esplicitamente `Backup`, `Multimedia` e `Public`, e le si tolgono le applicazioni non necessarie. Che il divieto esplicito sull'utenza prevalga sul permesso del gruppo è il comportamento che QNAP descrive, ma in questa sessione non è stato letto in una fonte: lo prova il tentativo di aprire `Backup` con quell'utenza, che deve essere respinto. Esito: l'IT Manager ha scelto la cartella condivisa propria.
+
+**29/10/2026, micropasso 2: immagine del contenitore sul nodo.** Comando eseguito dall'IT Manager sul nodo `pve`: `pveam download local debian-13-standard_13.6-1_amd64.tar.zst`, poi `pveam list local`. Che cosa fa: scarica dal sito di Proxmox l'immagine di sistema minima con cui nasce il contenitore e la mette nello storage `local`, nella cartella dei modelli. Non tocca nessun ospite. Esito, dall'orologio del nodo: scaricati 124 MB dalle 15:44:16 alle 15:44:33. Il nodo ha verificato da sé il checksum dell'immagine contro quello pubblicato («checksum verified»), quindi il file è quello originale e non è corrotto. L'immagine compare come `local:vztmpl/debian-13-standard_13.6-1_amd64.tar.zst`, 123,93 MB.
+
+**29/10/2026, micropasso 2b: cartella condivisa su HERO, in corso.** Procedura guidata di creazione della cartella condivisa del pannello QuTS hero, valori proposti alla prima schermata:
+
+- nome `backup-sito`;
+- volume «Storage pool 1», con 4,20 TB liberi;
+- allocazione *thin provisioning*: lo spazio si occupa man mano che si scrive, invece di essere riservato subito;
+- quota proposta di 862 GB;
+- istantanee non pianificate.
+
+Scegliendo il thin provisioning, il pannello avverte che non si può garantire uno spazio riservato alle istantanee e chiede se continuare.
+
+Indicazioni date all'IT Manager, con la ragione di ciascuna:
+
+- **Thin provisioning sì.** La cartella conterrà pochi GB: riservare spazio non serve, e lo spazio garantito per le istantanee conta solo su una cartella che rischia di riempire il volume.
+- **Quota 50 GB.** Le 34 copie oggi pesano circa 1,3 GB, e la quota stabilisce quanto, al massimo, un errore o un abuso dal contenitore può occupare sul volume condiviso con le altre cartelle.
+- **Istantanee pianificate, giornaliere, con conservazione di 30 giorni.** Il contenitore può cancellare file, perché pota le copie vecchie, ma non può cancellare le istantanee del NAS. Così, se il contenitore venisse compromesso e cancellasse tutte le copie, resterebbero recuperabili per un mese. Lo spazio occupato è piccolo, perché un'istantanea conserva solo ciò che nel frattempo è cambiato o è stato cancellato.
+- **Cestino di rete disattivato** sulla cartella: le copie potate finirebbero nel cestino e occuperebbero spazio senza aggiungere protezione rispetto alle istantanee.
+- **Privilegi:** `backup-sito` lettura e scrittura, `everyone` nessun accesso.
+
+Avanzamento della procedura guidata, visto dall'IT Manager alle 15:46-15:47:
+
+- quota impostata a 50 GB e thin provisioning confermato;
+- istantanee pianificate attivate, con la programmazione proposta «Giornaliero, 01:00». Il pannello dice che la conservazione si regola dopo, in «Gestione snapshot».
+
+Due cose da regolare dopo la creazione. La conservazione va portata a 30 giorni. L'orario dell'istantanea va spostato dopo il salvataggio delle 02:30, per esempio alle 04:00: un'istantanea presa alle 01:00 fotografa le copie fino alla notte prima, e quella appena arrivata resta senza protezione per quasi un giorno.
+
+**La crittografia della cartella: si decide ora o mai.** Il pannello avverte che la crittografia della cartella condivisa si attiva solo alla creazione. Funziona con una password da cui il NAS ricava la chiave. Una cartella bloccata si apre con la password o con il file della chiave, da scaricare e custodire. Se si perdono entrambi i dati sono persi, e la crittografia rallenta letture e scritture. C'è anche lo sblocco automatico all'avvio, che conserva la chiave sul NAS stesso.
+
+Che cosa protegge, e che cosa no:
+
+- protegge i dischi estratti dal NAS;
+- con lo sblocco automatico non protegge il NAS rubato intero;
+- non protegge da chi amministra il NAS, che vede la cartella sbloccata. È proprio la verifica aperta sui privilegi dei capi progetto.
+
+Senza sblocco automatico, invece, ogni riavvio del NAS lascia la cartella chiusa finché qualcuno non la apre a mano, e nel frattempo il salvataggio darebbe «copia impossibile» ogni notte.
+
+Indicazione data all'IT Manager: **non attivare la crittografia della cartella**. Si cifrano invece le copie, nel contenitore, prima che lascino il nodo, con una chiave pubblica: lo strumento previsto è `age`, presente nei pacchetti di Debian. Il contenitore ha solo la chiave pubblica e sa cifrare, non decifrare. La chiave privata sta fuori linea, nel gestore delle password dell'IT. Così le copie sono illeggibili sul NAS per chiunque, amministratori compresi; la protezione non dipende dal NAS, né da un suo riavvio; e si può aggiungere dopo senza ricreare la cartella. Il prezzo è che il ripristino richiede la chiave privata, quindi la prova di ripristino del passo 12 diventa anche la prova che quella chiave c'è e funziona.
+
+Scelta dell'IT Manager, ore 15:50: crittografia della cartella non attivata, thin provisioning confermato alla seconda richiesta del pannello.
+
+**Impostazioni di archiviazione, ore 15:50.** Valori proposti dal pannello e indicazione per ciascuno:
+
+| Opzione | Proposto | Scelta | Ragione |
+|---|---|---|---|
+| Compressione | attiva | attiva | Costa poco al processore. Sulle copie in chiaro riduce lo spazio; quando le copie saranno cifrate non ridurrà più niente, perché un dato cifrato non si comprime, ma non fa danni |
+| Deduplicazione | spenta | spenta | Su un file system ZFS come QuTS hero richiede molta memoria per tutta la vita del volume, e copie cifrate non hanno blocchi uguali da riconoscere |
+| Cache di lettura SSD | non disponibile | spenta | Le copie si scrivono di notte e si rileggono solo per un ripristino |
+| Clonazione veloce | attiva | attiva | Opzione del file system per copie interne istantanee: non interviene sul salvataggio e non costa niente |
+| Modalità I/O sincronizzata (ZIL) | Standard | Standard | Il NAS conferma la scrittura quando il programma che scrive lo chiede. «Sempre» rallenterebbe senza guadagno, «Nessuna» rischierebbe un file troncato in caso di caduta di corrente durante la copia |
+| Profilo prestazioni | 128K, file di grandi dimensioni e backup | 128K | Ogni copia è un unico archivio di decine di MB scritto in sequenza: i blocchi grandi sono quelli adatti |
+| WORM | spento | spento | Vedi sotto |
+
+Il WORM (*write once, read many*) rende i file non modificabili e non cancellabili per un periodo di conservazione, e come la crittografia si decide alla creazione. Protegge dalla cancellazione, come le istantanee, ma blocca anche la potatura. Lo script deve cancellare le copie giornaliere dopo 14 giorni, e con il WORM attivo non potrebbe: le copie si accumulerebbero fino alla fine del periodo bloccato. Le istantanee danno la stessa protezione contro la cancellazione da parte del contenitore, senza impedire la potatura. Il WORM resta lo strumento giusto per un registro che non deve cambiare mai, ed è già usato sulla cartella del registro di integrità.
+
+**Privilegi, ore 16:06.** La pagina elenca le 34 utenze del NAS e dichiara che «solo l'account admin possiede tutte le autorizzazioni per questa cartella»: una cartella condivisa nuova non eredita i permessi larghi di `Backup`. Configurazione scelta:
+
+- `admin` lettura e scrittura, come proposto da QNAP;
+- `backup-sito` lettura e scrittura;
+- nessuna spunta per le altre 33 utenze, compresa l'utenza di servizio `backup` del nodo, che quindi non hanno accesso.
+
+Il divieto esplicito sull'utenza `backup-sito` per `Backup`, `Multimedia` e `Public` si imposta dopo, dalla scheda dell'utenza. Due osservazioni vanno nelle pendenze del censimento delle utenze di HERO: le utenze sono 34, quasi tutte personali; e l'amministrazione avviene con l'account predefinito `admin`, che le buone pratiche dei NAS indicano di disattivare in favore di utenze amministrative nominative.
+
+**Proprietà e riepilogo, ore 16:10.** Valori della pagina «Proprietà» e indicazione:
+
+| Opzione | Proposto | Scelta | Ragione |
+|---|---|---|---|
+| Accesso ospite | Nega accesso | Nega accesso | Nessun accesso anonimo |
+| Nascondi unità di rete | No | No | Copre la stessa esigenza della riga sotto, che è più precisa |
+| Enumerazione basata sull'accesso della condivisione (ABSE) | No | **Sì** | Chi non ha accesso alla cartella non la vede nell'elenco delle condivisioni del NAS: le altre 33 utenze non sanno che esiste |
+| Blocco file (oplocks) | Sì | Sì | Comportamento normale di SMB, utile a un solo scrittore |
+| Crittografia SMB | non disponibile | No | Cifra il trasporto fra nodo e NAS. Non è necessaria perché le copie viaggeranno già cifrate con `age`; è disattivata probabilmente perché sul NAS non è abilitato SMB 3 in modo esclusivo, da verificare |
+| Versioni precedenti di Windows | Sì | Sì | Rende visibili le istantanee come «versioni precedenti», in sola lettura: utile per un ripristino dal PC dell'IT, e non permette di cancellarle |
+| Enumerazione basata sull'accesso (ABE), Time Machine, sincronizzazione istantanea | No | No | Non servono a questa cartella |
+
+Il riepilogo conferma il resto:
+
+- cartella `backup-sito` su «Storage pool 1», thin provisioning, quota 50 GB;
+- compressione sì, deduplicazione no, clonazione veloce sì, ZIL Standard, blocchi da 128K;
+- WORM no, crittografia della cartella no;
+- lettura e scrittura solo per `admin` e `backup-sito`.
+
+Per le istantanee mostra la pianificazione predefinita «Giornaliero, 01:00» e il piano di conservazione predefinito «Smart Versioning»: 24 orarie, 7 giornaliere, 4 settimanali, 12 mensili.
+
+Quel piano di conservazione va cambiato dopo la creazione, ed è la scelta che pesa di più dal lato dei dati personali. Con 12 istantanee mensili, una copia potata dallo script dopo i suoi 12 mesi sopravviverebbe in un'istantanea fino a 12 mesi ancora: un dato cancellato dal sito potrebbe restare quasi due anni, contro i 12 mesi dichiarati nella strategia di conservazione (G19). Indicazione: 7 giornaliere e 4 settimanali, cioè circa un mese, che basta a recuperare da una cancellazione del contenitore; nessuna mensile; orario alle 04:00, dopo il salvataggio.
+
+**Divieti sull'utenza `backup-sito`, ore 16:15.** Dalla scheda dell'utenza, «Modifica autorizzazione cartella condivisa»:
+
+- «Deny» su `Backup`, `Multimedia` e `Public`;
+- lettura e scrittura su `backup-sito`;
+- nessun accesso su tutte le altre cartelle.
+
+La finestra stessa riporta la regola di precedenza: «La priorità del privilegio è Nega accesso (Deny) > Lettura/scrittura (RW) > Solo lettura (RO)». Il divieto sull'utenza prevale dunque sul permesso del gruppo `everyone`. È letto sul pannello e non più solo ricordato; resta da provarlo con un accesso reale. La stessa finestra mostra che le altre cartelle risultano già senza accesso per l'utenza: i permessi ereditati da `everyone` riguardano solo `Backup`, `Multimedia` e `Public`.
+
+**La prova di accesso, e perché dal PC dell'IT non vale.** Dal PC dell'IT Manager, in Esplora risorse, entrambe le cartelle si aprono. È atteso, e non dice niente sull'utenza `backup-sito`: il PC era già collegato al NAS come `admin`, e Windows riusa per tutte le cartelle dello stesso server le credenziali della prima connessione. La prova va fatta con le credenziali di `backup-sito`. Il posto naturale è il nodo `pve`, che è anche dove la cartella verrà montata al micropasso 3: con `smbclient`, chiedendo l'elenco delle due cartelle con quell'utenza. Atteso: `backup-sito` elencata, `Backup` respinta con `NT_STATUS_ACCESS_DENIED`.
+
+Esito della prova, eseguita dall'IT Manager sul nodo con la password di `backup-sito`:
+
+```
+smbclient //10.61.20.169/backup-sito -U backup-sito -c 'ls'
+  .                    D   0  Thu Oct 29 16:13:45 2026
+  ..                   D   0  Thu Oct 29 16:13:45 2026
+  @Recently-Snapshot   DASR 0 Thu Oct 29 16:13:45 2026
+  52428800 blocks of size 1024. 52428620 blocks available
+smbclient //10.61.20.169/Backup -U backup-sito -c 'ls'
+  tree connect failed: NT_STATUS_ACCESS_DENIED
+```
+
+La prova è superata: l'utenza entra nella sua cartella, vuota e con i 50 GB della quota, ed è respinta su `Backup`, dove il gruppo `everyone` le avrebbe dato lettura e scrittura. La cartella `@Recently-Snapshot` ha gli attributi `DASR`: è la via in sola lettura alle istantanee, attiva con «Versioni precedenti di Windows». Lo script del salvataggio lavora solo nelle sottocartelle delle copie e non la tocca. La cartella è stata creata alle 16:13:45, orologio del NAS. Lo stato della cartella nel pannello, alle 16:21, è «Pronto», 180 KB usati.
+
+**Istantanee della cartella, ore 16:23-16:24.** App «Archiviazione e snapshot», «Gestione snapshot» della cartella `backup-sito`, «Impostazioni snapshot»:
+
+- pianificazione: giornaliera alle 04:00, invece delle 01:00 proposte, così ogni istantanea comprende la copia della notte;
+- tipo «coerenza nell'arresto anomalo», cioè lo stato della cartella come sarebbe dopo uno spegnimento improvviso. Per file che lo script scrive interi e poi rinomina, è sufficiente;
+- «smart snapshot» attivo: se nella cartella non è cambiato niente, l'istantanea non si prende.
+
+Conservazione «Smart Versioning»: 24 orarie, 7 giornaliere, 4 settimanali, 1 mensile. Le orarie non si producono, perché la pianificazione è giornaliera. Il valore 0 per le mensili, quello indicato, il pannello lo rifiuta con «Il valore deve essere un numero intero maggiore di 0»: si è messo 1.
+
+Il pannello conferma: «Pianificazione abilitata correttamente. Prossima programmazione alle 2026-10-30 04:00». Il volume ha 5,52 TB disponibili per le istantanee.
+
+Conseguenza sulla conservazione dichiarata (G19). Una copia mensile che lo script cancella dopo 12 mesi può sopravvivere nell'istantanea mensile e in quelle settimanali fino a circa un mese ancora. Un dato cancellato dal sito resta quindi nelle copie fino a circa 13 mesi, e non 12: va scritto così nell'informativa e nel messaggio all'amministrazione. In alternativa si può passare a un numero massimo di istantanee, per esempio 30, che il pannello offre come «Numero massimo di snapshot da conservare» e che dà un mese esatto.
+
+Esito: micropasso 2b completato.
+
+### Istantanea e backup su un NAS QNAP: che cosa sono e che cosa stiamo facendo
+
+Le due parole vengono usate come sinonimi, e non lo sono.
+
+Un'**istantanea** è una fotografia della cartella in un istante, conservata sugli stessi dischi della cartella. Su QuTS hero il file system è ZFS, che non riscrive mai un blocco sul posto. L'istantanea quindi non copia niente: ricorda quali blocchi formavano la cartella in quel momento, e da allora conserva solo i blocchi che nel frattempo vengono cambiati o cancellati. Per questo si prende in un attimo, occupa poco e permette di tornare indietro di un file o di tutta la cartella. Non protegge però dalla perdita del NAS: se si rompono i dischi o sparisce l'apparato, istantanee e cartella spariscono insieme.
+
+Un **backup** è una copia separata, su un altro apparato o in un altro luogo. Protegge dalla perdita dell'originale, ma richiede tempo e spazio pieno.
+
+Nel salvataggio del sito ci sono tutti e due, con ruoli diversi:
+
+- **la copia notturna dalla VPS alla cartella su HERO è il backup del sito.** Il sito vive su un apparato, la VPS presso il fornitore, e la sua copia su un altro, il NAS in sede;
+- **le istantanee della cartella su HERO proteggono quelle copie.** Se il contenitore che le scrive venisse compromesso e le cancellasse, le istantanee, che il contenitore non può toccare, permetterebbero di recuperarle fino a circa un mese indietro.
+
+Che cosa manca, secondo la regola consueta del 3-2-1, cioè tre copie dei dati, su due supporti diversi, di cui una fuori sede: oggi le copie del sito esistono sulla VPS e su HERO, ma HERO sta nella stessa sede di tutto il resto. Un evento che colpisse la sede, come un incendio, un furto o un ransomware che arrivi agli amministratori del NAS, porterebbe via le copie. La copia fuori sede è registrata nelle pendenze come passo successivo, da fare dopo il go-live.
 
 ## Che cosa questo rilascio non copre
 

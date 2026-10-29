@@ -1,5 +1,102 @@
 # Work-log
 
+## 29/10/2026 - MyOffice, Canon C5840 e ISO-30
+
+La risposta MyOffice (screenshot_170) richiede un host Windows acceso per ReadMeter 7 e non offre l'audit richiesto. VM100 Windows Server 2022 e' scelta come candidata, senza installazione. L'utente conferma Canon iR-ADV C5840 e mostra il pannello remoto con Canon Remote Operation Viewer 2.4 (screenshot_173). Evidenze e identificativi reali sono nel livello privato. Topologia e mappa sono aggiornate; ISO-30 resta in corso e la roadmap e' sincronizzata. L'audit Canon e Syslog sono ancora da verificare sul dispositivo; prima di installare ReadMeter sulla VM multiservizio servono requisiti, privilegi, destinazioni e ritorno. Nessun nuovo flusso e' attivo.
+
+## 29/10/2026 - Chiusura della sessione del filone sito: istantanee configurate, ADR-048, lezioni per il template
+
+Istantanee della cartella `backup-sito` su HERO, ore 16:23-16:24:
+
+- giornaliere alle 04:00, tipo «coerenza nell'arresto anomalo», smart snapshot attivo;
+- conservazione 24 orarie, 7 giornaliere, 4 settimanali e 1 mensile, perché il pannello rifiuta lo 0;
+- prima istantanea il 30/10 alle 04:00.
+
+Conseguenze registrate:
+
+- un dato cancellato dal sito resta nelle copie fino a circa 13 mesi, non 12. Corretti pendenza G19, strategia del runbook e messaggio per l'amministrazione in lista;
+- ADR-048 corregge la forma di ADR-047: cartella condivisa propria e non sottocartella di `Backup`, con le scelte collegate;
+- nel runbook c'è la spiegazione fra istantanea e backup, con il ruolo di ciascuno nel salvataggio del sito;
+- nelle pendenze c'è la copia fuori sede secondo la regola del 3-2-1.
+
+Lezione personale aggiornata. Registrate per il template L-027, sullo strumento di modifica e il fine riga misto, L-028, su `chiudi` con più sessioni sullo stesso albero, e L-029, sull'accesso dell'agente alla produzione nel modello di deployment.
+
+Stato alla chiusura. L'ultimo commit è `9ecc720`; le registrazioni dei micropassi 1-2b e questa chiusura entrano nel commit proposto. Il prossimo passo è il micropasso 3, descritto nel file di ripresa e nell'handoff: montaggio della cartella `backup-sito` sul nodo `pve`. Nessun subagent. **Template:** L-027, L-028, L-029.
+
+## 29/10/2026 - backup-sito, micropasso 2b completato: prova di accesso superata dal nodo
+
+Prova con `smbclient` dal nodo `pve`, utenza `backup-sito`: la cartella `backup-sito` è elencata, vuota, con la quota di 50 GB; `Backup` risponde `NT_STATUS_ACCESS_DENIED`. Il divieto sull'utenza prevale sul permesso del gruppo, come il pannello dichiara. È visibile `@Recently-Snapshot`, in sola lettura. Manca solo la regolazione delle istantanee: 04:00, 7 giornaliere e 4 settimanali. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito, micropasso 2b: divieti sull'utenza applicati, prova da fare dal nodo
+
+Ore 16:15. Sull'utenza `backup-sito` ci sono «Deny» su `Backup`, `Multimedia` e `Public` e lettura e scrittura su `backup-sito`. La finestra di QNAP dichiara la precedenza Deny > RW > RO, quindi l'affermazione prima solo ricordata è ora letta sul pannello.
+
+La prova dal PC dell'IT non vale: Windows riusa le credenziali `admin` per tutte le cartelle dello stesso server. La prova si sposta sul nodo con `smbclient` e l'utenza `backup-sito`. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito, micropasso 2b: proprietà e riepilogo della cartella
+
+Ore 16:10. Nel runbook ci sono la tabella delle proprietà con le scelte e le ragioni, e il riepilogo completo.
+
+- Unica modifica prima di confermare: attivare l'enumerazione basata sull'accesso della condivisione (ABSE), così chi non ha accesso non vede la cartella.
+- La crittografia SMB risulta non disponibile; non serve, perché le copie viaggeranno cifrate, ma la causa va verificata.
+
+Rilievo sulla conservazione delle istantanee. Il piano predefinito «Smart Versioning» tiene 12 istantanee mensili, che si sommerebbero ai 12 mesi delle copie mensili: un dato cancellato dal sito resterebbe fino a quasi due anni, contro i 12 mesi della strategia G19. Indicazione: 7 giornaliere più 4 settimanali, nessuna mensile, alle 04:00.
+
+Lezione personale aggiornata. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito, micropasso 2b: privilegi della cartella
+
+Ore 16:06. Sulla cartella nuova solo `admin`, come predefinito, e `backup-sito` hanno lettura e scrittura. Le altre 33 utenze sono senza accesso, e la pagina conferma che la cartella non eredita i permessi di `Backup`. Registrato nel runbook, senza nomi delle utenze.
+
+Nelle pendenze del censimento delle utenze di HERO: 34 utenze, quasi tutte personali, e l'amministrazione fatta con l'account predefinito `admin`, da sostituire con utenze nominative.
+
+Copiate fra le prove solo due schermate su otto, la prima e l'ultima: le altre sono elenchi di utenze personali e non aggiungono prova. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito, micropasso 2b: crittografia della cartella non attivata, impostazioni di archiviazione scelte
+
+Ore 15:50. L'IT Manager non attiva la crittografia della cartella e conferma il thin provisioning. Le copie si cifreranno nel contenitore, come indicato. Nel runbook c'è la tabella delle impostazioni di archiviazione, con proposto, scelto e ragione per ciascuna:
+
+- compressione sì, deduplicazione no;
+- cache SSD non disponibile;
+- clonazione veloce sì, ZIL Standard;
+- profilo da 128K;
+- WORM no, perché bloccherebbe la potatura: le istantanee danno la stessa protezione dalla cancellazione.
+
+Schermate copiate fra le prove; lezione personale aggiornata con WORM e istantanee. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito, micropasso 2b: la crittografia della cartella si decide alla creazione
+
+Dalle schermate della procedura guidata, ore 15:46-15:47:
+
+- quota 50 GB, thin provisioning, istantanee giornaliere proposte alle 01:00;
+- la crittografia della cartella condivisa si attiva solo alla creazione.
+
+Nel runbook: che cosa protegge la crittografia della cartella (i dischi estratti), che cosa no (il NAS intero con sblocco automatico, chi amministra il NAS) e il rischio operativo di una cartella bloccata dopo un riavvio. L'indicazione data è di non attivarla e di cifrare invece ogni copia nel contenitore con una chiave pubblica (`age`), con la chiave privata fuori linea. In attesa della scelta dell'IT Manager.
+
+Da regolare dopo la creazione: conservazione delle istantanee a 30 giorni, e orario alle 04:00, dopo il salvataggio delle 02:30.
+
+Schermate copiate fra le prove private; pendenza G17 e lezione personale aggiornate. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito: micropasso 2 fatto, 2b in corso
+
+L'IT Manager ha scelto la cartella condivisa propria su HERO.
+
+- **Micropasso 2.** L'immagine Debian 13.6 è scaricata sul nodo: 124 MB in 17 secondi secondo l'orologio del nodo, checksum verificato dal nodo, presente in `local:vztmpl`.
+- **Micropasso 2b, in corso.** Nel runbook ci sono i valori proposti dalla procedura guidata di QuTS hero e le indicazioni date, ciascuna con la sua ragione: thin provisioning, quota 50 GB, istantanee giornaliere per 30 giorni, nessun cestino di rete, privilegi solo per `backup-sito`.
+
+Le quattro schermate del NAS di oggi sono copiate come prova in `_notes/backup-sito/evidenze-2026-10-29/`, ignorata da git. Lezione personale aggiornata con istantanee e quota. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - backup-sito: micropassi 1 e 2a, rilievo sui permessi di Backup su HERO
+
+Esiti dei due micropassi, registrati nel runbook:
+
+- **Micropasso 1, letto dall'IT Manager su `pve`.** Il nodo offre Debian 13.6. Lo storage `NAS_HERO` monta `Backup` con l'utenza di servizio `backup`, versione SMB negoziata e `keep-all=1`.
+- **Micropasso 2a.** L'utenza `backup-sito` è stata creata su HERO e dal gruppo `everyone` eredita lettura e scrittura su `Backup` e `Multimedia`, sola lettura su `Public` e tutte le applicazioni. In QNAP una cartella condivisa non può stare dentro un'altra.
+
+Proposta all'IT Manager: una cartella condivisa propria, `backup-sito`, con divieti espliciti sull'utenza per le altre cartelle e la prova che l'accesso sia respinto. Va confermata, e corregge la forma di ADR-047.
+
+Rilievo nelle pendenze: `everyone` sembra avere lettura e scrittura su `Backup`, dove stanno copie del nodo per circa 195 GB. È indicato l'ordine sicuro della correzione: prima il permesso esplicito all'utenza `backup`, poi la revoca a `everyone`, poi la verifica del salvataggio del nodo. Nelle pendenze anche il censimento di quattro utenze di HERO non documentate e `keep-all=1`. Lezione personale aggiornata con l'ereditarietà dei permessi di gruppo. Corretta prima della consegna un'affermazione sulla precedenza dei divieti in QNAP, ora dichiarata da provare. Nessun subagent. **Template:** nessuna.
+
 ## 29/10/2026 - NAS HERO per le copie del sito (ADR-047), primo micropasso su pve, novità sui NAS QNAP
 
 Decisione dell'IT Manager: le copie notturne del sito vanno su NAS HERO, nella condivisione `Backup`, in una sottocartella dedicata con un'utenza che vede solo quella (ADR-047, corregge la destinazione di ADR-044).

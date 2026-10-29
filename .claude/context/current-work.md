@@ -2,6 +2,14 @@
 last-verified: 920c616
 ---
 
+## MyOffice, VM100 e audit Canon, 29/10/2026
+
+Screenshot_170: ReadMeter 7 richiede un host acceso nella giornata, idealmente Windows Server; MyOffice non può fornire i log richiesti. L'utente sceglie VM100 Windows Server 2022 come candidata, senza installazione. La VM è multiservizio, include le presenze e il firewall Windows risulta spento: prima dell'intervento servono requisiti e ritorno. L'utente conferma la Canon iR-ADV C5840; screenshot_173 mostra Remote Operation Viewer 2.4 connesso. Canon documenta audit e Syslog per la serie C5800, ma firmware, menu e log effettivi non sono verificati. Ricognizione remota in sola lettura subito; integrazione dopo il gate Seeweb e un campione. ISO-30 in corso.
+
+## Pilot Seeweb: custodia del bundle, 29/10/2026
+
+L'utente ha pubblicato il collettore `78b2864` e riferisce di aver risposto a Seeweb; testo e ricevuta non sono disponibili qui. Il successivo hardening locale rifiuta bundle e backup non custoditi da root: directory 0700 e file 0600 a singolo link. Tre prove inizialmente rosse e la suite completa di 21 test WSL root sono ora verdi; il pacchetto privato è stato rigenerato, senza trasferimento. `--check` root sulla VM, applicazione manuale e prova UDP con eventi reali restano aperti. Non cambia la copertura di ISO-30 né il piano separato dell'upgrade OPNsense.
+
 ## Risposta Seeweb e ricognizione MyOffice, 29/10/2026
 ## Chiarimento Seeweb e pilot VM, 29/10/2026
 

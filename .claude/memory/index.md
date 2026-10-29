@@ -1,5 +1,22 @@
 # Snapshot di sincronizzazione
 
+## Filone sito, chiusura del 29/10/2026: si riparte dal micropasso 3 di backup-sito
+
+Il passaggio del sito è previsto per la settimana successiva. Fastnet ha ricevuto il messaggio unico e si aspetta la risposta. Restano al team G4 (moduli; per gli allegati sopra 3 MB vale ADR-046), G5, G6, i 30 rimandi di G8 e le durate di G19, chieste all'amministrazione.
+
+Il salvataggio notturno (G17) è anticipato a prima del passaggio. Il codice è in `deploy/backup-sito/`, provato. Fatti finora:
+
+- cartella condivisa `backup-sito` su HERO creata e provata (ADR-047, ADR-048);
+- immagine Debian 13.6 scaricata sul nodo.
+
+Prossimi micropassi: montaggio della cartella sul nodo, contenitore 211, rete, cifratura delle copie con `age`, prima copia e ripristino.
+
+Il registro dei micropassi è nel runbook del primo rilascio. Rilievo aperto prioritario: `everyone` con lettura e scrittura su `Backup` di HERO.
+
+## MyOffice e audit della Canon, 29/10/2026
+
+La risposta MyOffice dello screenshot_170, SHA-256 `5F1D6C7C78A623C9F6F0F4EAAEEC4A15DCAE98AB488F73F1AEFE463EBDE99143`, non offre i log richiesti e propone ReadMeter su Windows acceso. VM100 Windows Server 2022 è scelta come candidata dall'utente, non installata; requisiti e rischio della macchina multiservizio restano da trattare. L'utente conferma Canon iR-ADV C5840 e mostra Remote Operation Viewer 2.4 connesso nello screenshot_173. La guida Canon documenta audit/CSV/Syslog per la serie, ma la funzione e i log del dispositivo reale non sono provati. Ricognizione del pannello in sola lettura subito; ISO-30 e copertura AdS invariati.
+
 ## Seeweb 26.7.7 e pilot VM, 29/10/2026
 
 Screenshot_135 privato SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`: target 26.7.7, snapshot hypervisor, backup completo, attività prevista entro due ore, disservizio durante i riavvii e VPN da verificare. Restano console, soglia di rollback, finestra e prova congiunta dei servizi. Il bundle del collettore è ancora allineato ai due file VM, ma il ruleset richiede root; lock protetto e 18 prove WSL root verdi. Sonda SSH: servizi attivi, UDP 514 in ascolto e filesystem `/srv/ads` 1%, `/var/log` 44%; nessuna prova di consegna. Nessun deploy o evento Syslog reale. ISO-27/30 e Cliente-1 89/90 in corso; il lavoro parallelo sul sito è preservato.

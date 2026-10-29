@@ -254,8 +254,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-29):** 29/10: sonda SSH di sola lettura sulla VM del collettore: indirizzo destinatario assegnato, rsyslog e nftables attivi, UDP 514 in ascolto, filesystem /srv/ads 1% e /var/log 44%. Il filtro Seeweb mirato non e installato, il ruleset attivo richiede root e nessun evento Syslog reale e ricevuto. La misura locale non prova la consegna dal tunnel; ISO-30 resta in corso.
-  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; docs/osservabilita/sorgenti-log-seeweb.md
+  - **Ultimo stato (2026-10-29):** 29/10: MyOffice non fornisce audit Canon; ReadMeter 7 proposto sulla VM100 Windows Server 2022, senza installazione e con requisiti da chiarire. Modello iR-ADV C5840 e accesso via Remote Operation Viewer confermati dall'utente. Audit e Syslog nativi da verificare sul dispositivo con campione minimizzato; nessun nuovo flusso raccolto.
+  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; screenshot_170 e screenshot_173 nel livello privato
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

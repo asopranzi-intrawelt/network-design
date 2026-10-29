@@ -1968,6 +1968,13 @@
       "stato": "in_corso",
       "nota": "29/10: sonda SSH di sola lettura sulla VM del collettore: indirizzo destinatario assegnato, rsyslog e nftables attivi, UDP 514 in ascolto, filesystem /srv/ads 1% e /var/log 44%. Il filtro Seeweb mirato non e installato, il ruleset attivo richiede root e nessun evento Syslog reale e ricevuto. La misura locale non prova la consegna dal tunnel; ISO-30 resta in corso.",
       "evidenza": "docs/osservabilita/log-collector-integrazione.md; docs/osservabilita/sorgenti-log-seeweb.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "29/10: MyOffice non fornisce audit Canon; ReadMeter 7 proposto sulla VM100 Windows Server 2022, senza installazione e con requisiti da chiarire. Modello iR-ADV C5840 e accesso via Remote Operation Viewer confermati dall'utente. Audit e Syslog nativi da verificare sul dispositivo con campione minimizzato; nessun nuovo flusso raccolto.",
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; screenshot_170 e screenshot_173 nel livello privato"
     }
   ]
 }

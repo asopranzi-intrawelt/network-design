@@ -289,6 +289,8 @@ Cross-riferimenti narrativi per il dettaglio cronologico: `2023-baseline.md` (st
 | Servizi | Preventivo, contratto e gestione commerciale Vianova FTTO; centralino cloud |
 | Note | MyOffice gestisce la relazione con Vianova. Riunione in sede 17/12/2024 (preventivo). Riunione centralino cloud 09/06/2026. |
 
+Risposta del 29/10/2026: MyOffice segue anche la sola Canon del Piano 1. Per ReadMeter 7 raccomanda un host acceso durante la giornata, preferibilmente Windows Server, e dichiara di non poter fornire i log richiesti (screenshot_170, copia privata SHA-256 `5F1D6C7C78A623C9F6F0F4EAAEEC4A15DCAE98AB488F73F1AEFE463EBDE99143`). L'utente sceglie VM100 Windows Server 2022; l'agente non è installato. Prima di concordare accesso e data chiedere requisiti, privilegi, destinazioni, dati raccolti e procedura di ritorno, dato che VM100 ospita altri servizi e il firewall risulta disattivato nel censimento. Il modello della Canon è confermato dall'utente come iR-ADV C5840; Canon Remote Operation Viewer 2.4 ne mostra il pannello remoto nello screenshot_173. Questo accesso non prova che i log nativi siano attivi: la verifica del menu, del firmware e dell'eventuale Syslog resta separata da ReadMeter.
+
 ---
 
 ## INFOCERT – Firma digitale
