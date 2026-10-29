@@ -1954,6 +1954,20 @@
         "dettaglio": "Upgrade OPNsense proposto gratuitamente da Seeweb; eventuali licenze o sostituzioni restano decisioni separate dopo diagnosi.",
         "decisione": "Confermare per iscritto gratuità e perimetro, poi approvare release, snapshot hypervisor, console, rollback e prove dei servizi prima dell'intervento; nessun ordine per l'upgrade gratuito."
       }
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "29/10: Seeweb indica target OPNsense 26.7.7, snapshot hypervisor e backup completo; due ore sono il massimo previsto dell'attivita, con fermo durante i riavvii. VPN critica e verifica dei servizi a nostro carico. Prima del via: console, posizione e ripristinabilita del backup, soglia di rollback, finestra e test congiunto IPsec, routing, NAT e servizi. Nessun upgrade eseguito.",
+      "evidenza": "docs/firewall/firewall-seeweb-opnsense.md; screenshot_135 privato SHA-256 42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "29/10: sonda SSH di sola lettura sulla VM del collettore: indirizzo destinatario assegnato, rsyslog e nftables attivi, UDP 514 in ascolto, filesystem /srv/ads 1% e /var/log 44%. Il filtro Seeweb mirato non e installato, il ruleset attivo richiede root e nessun evento Syslog reale e ricevuto. La misura locale non prova la consegna dal tunnel; ISO-30 resta in corso.",
+      "evidenza": "docs/osservabilita/log-collector-integrazione.md; docs/osservabilita/sorgenti-log-seeweb.md"
     }
   ]
 }

@@ -233,7 +233,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obie
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/operativita/vendor-management.md, docs/sicurezza/design-and-security.md, roadmap Fase 4, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-29):** Correzione della fornitura dopo il ticket Seeweb del 29/10: l'upgrade è offerto gratuitamente; nessuna conferma operativa finché mancano piano tecnico e criteri di ritorno.
+  - **Ultimo stato (2026-10-29):** 29/10: Seeweb indica target OPNsense 26.7.7, snapshot hypervisor e backup completo; due ore sono il massimo previsto dell'attivita, con fermo durante i riavvii. VPN critica e verifica dei servizi a nostro carico. Prima del via: console, posizione e ripristinabilita del backup, soglia di rollback, finestra e test congiunto IPsec, routing, NAT e servizi. Nessun upgrade eseguito.
+  - **Evidenza:** docs/firewall/firewall-seeweb-opnsense.md; screenshot_135 privato SHA-256 42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
@@ -253,7 +254,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-29):** Ticket Seeweb 29/10: test UDP con cattura concordabile dopo ricevitore pronto; applicatore del collettore pubblicato e controllo del ruleset candidato, ma nessun Syslog reale ricevuto. Restano preflight privilegiato, campione GUI/SSH, volume, retention e allarme.
+  - **Ultimo stato (2026-10-29):** 29/10: sonda SSH di sola lettura sulla VM del collettore: indirizzo destinatario assegnato, rsyslog e nftables attivi, UDP 514 in ascolto, filesystem /srv/ads 1% e /var/log 44%. Il filtro Seeweb mirato non e installato, il ruleset attivo richiede root e nessun evento Syslog reale e ricevuto. La misura locale non prova la consegna dal tunnel; ISO-30 resta in corso.
+  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; docs/osservabilita/sorgenti-log-seeweb.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

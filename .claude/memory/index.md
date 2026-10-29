@@ -1,5 +1,9 @@
 # Snapshot di sincronizzazione
 
+## Seeweb 26.7.7 e pilot VM, 29/10/2026
+
+Screenshot_135 privato SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`: target 26.7.7, snapshot hypervisor, backup completo, attività prevista entro due ore, disservizio durante i riavvii e VPN da verificare. Restano console, soglia di rollback, finestra e prova congiunta dei servizi. Il bundle del collettore è ancora allineato ai due file VM, ma il ruleset richiede root; lock protetto e 18 prove WSL root verdi. Sonda SSH: servizi attivi, UDP 514 in ascolto e filesystem `/srv/ads` 1%, `/var/log` 44%; nessuna prova di consegna. Nessun deploy o evento Syslog reale. ISO-27/30 e Cliente-1 89/90 in corso; il lavoro parallelo sul sito è preservato.
+
 ## Ticket Seeweb del 29/10: prova UDP e upgrade gratuito
 
 Nuova schermata privata SHA-256 `BE29240FBCCCD033FC6DAEABF4C418FEA3F4E861D2431F48D60DFD59CF302DCD`: test UDP concordabile dopo il via, aggiornamento OPNsense gratuito in undici passaggi con fino a due ore di fermo previsto. Il collettore `00a9455` pubblica applicatore e rollback e `dfc284b` pubblica il vincolo del ruleset, ma la VM non è modificata; il controllo delle regole attive richiede privilegi. Prima del via all'upgrade servono snapshot hypervisor confermato, release finale, console, criterio di ritorno e verifiche VPN/servizi. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10, senza testo effettivo o ricevuta nel progetto; non è un via operativo. ISO-27/30 e Cliente-1 89/90 restano aperti. Questo aggiornamento coesiste con i file paralleli del sito ancora non committati.

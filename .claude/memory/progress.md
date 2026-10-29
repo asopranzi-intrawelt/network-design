@@ -1,5 +1,32 @@
 # Work-log
 
+## 29/10/2026 - NAS HERO per le copie del sito (ADR-047), primo micropasso su pve, novità sui NAS QNAP
+
+Decisione dell'IT Manager: le copie notturne del sito vanno su NAS HERO, nella condivisione `Backup`, in una sottocartella dedicata con un'utenza che vede solo quella (ADR-047, corregge la destinazione di ADR-044).
+
+- La procedura del runbook è aggiornata, e c'è un registro dei micropassi. Il micropasso 0 è la destinazione; il micropasso 1 sono tre letture sul nodo, spiegate una per una, in attesa degli output.
+- Nuova sezione delle pendenze sui NAS QNAP, con l'indirizzo anonimizzato. La cartella delle copie di configurazione su HERO, segnalata dall'IT Manager, è ignota al progetto e non letta, e la sua condivisione `Public` fa pensare a un accesso largo. C'è poi l'idea di leggere i pannelli QNAP via interfaccia HTTP, da valutare sulle fonti ufficiali, e la nota sull'irraggiungibilità a tratti di HERO.
+- In lista c'è il messaggio pronto per l'amministrazione con le sette domande sulle durate (G19).
+
+Correzione: nel giro precedente una sostituzione nel generatore della roadmap era stata fatta senza controllare l'ancora, e non era entrata. Rifatta con il controllo.
+
+Aggiornati la roadmap tramite il generatore e la lezione personale. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - Conservazione dei dati del sito (G19), NAS del salvataggio da riconsiderare, flusso delle assenze, accesso dell'agente alla produzione
+
+Su richiesta dell'IT Manager.
+
+- **Conservazione (G19).** La strategia sta nel runbook del primo rilascio. Le durate per famiglia di dati le decide l'amministrazione, vanno nell'informativa prima del passaggio, e c'è una proposta di partenza. La pulizia giornaliera nel gestore di contenuti spetta a chi sviluppa; la crescita si sorveglia con la serie del salvataggio. I numeri citati sono del 28/10, e il disco della VPS, 80 GB, viene dal piano del 20/10; la stima della crescita è dichiarata come ipotesi. Il vincolo vero è il salvataggio: 34 copie complete moltiplicano il peso degli allegati, e un dato cancellato resta nelle copie mensili fino a 12 mesi.
+- **NAS del salvataggio.** NAS INTRA, scelto in ADR-044, è il modello più vecchio del parco ed è già la destinazione dei salvataggi del nodo. Proposto NAS HERO, a condizione di chiudere prima la verifica sui privilegi amministrativi dei capi progetto, aperta dal 07/10. Decide l'IT Manager; l'ADR si scrive dopo la decisione.
+- **Flusso delle assenze.** Il flusso di Power Automate «Assenze di oggi», alle 06:22 verso cinque persone interne, è in una sezione nuova delle pendenze, con i ruoli al posto dei nomi, i controlli ISO di riferimento e quattro verifiche. Il contenuto della mail non è stato letto.
+- **Accesso dell'agente alla produzione.** La lettura sulla VPS di produzione è stata negata dal classificatore della modalità di permesso automatica, «letture in produzione». È documentato in `deployment.md` come barriera della modalità di permesso e non tecnica, con le tre regole di lavoro che ne discendono e il riferimento ad A.8.2.
+
+Aggiornati la lista (G17, G19), la roadmap tramite il generatore (19 voci), la slide 7 con controllo visivo e l'handoff. Nessun subagent. **Template:** nessuna.
+
+## 29/10/2026 - Seeweb precisa il piano e il collettore prepara il pilot
+
+Letto screenshot_135 e conservata copia privata byte-identica, SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`. Il provider indica release 26.7.7, snapshot hypervisor e backup completo; due ore sono il limite previsto dell'attività e il disservizio avviene durante i riavvii. Rischio VPN, nessuna modifica Firewall/NAT prevista e prova dei servizi a nostro carico. Servono console, backup ripristinabile, criterio di rollback e finestra con verifica congiunta. Sul collettore le impronte dei due file VM sono riconfermate, ma il ruleset richiede root; il lock del pilot è stato protetto e 18 prove WSL root passano con mutazione discriminante. Una sonda SSH di sola lettura vede servizi attivi, UDP 514 in ascolto e filesystem `/srv/ads` 1%, `/var/log` 44%; un primo falso negativo sulla porta è stato corretto leggendo la colonna locale di `ss`, poi la misura è stata ripetuta. Non prova consegna Syslog dal tunnel. Aggiornati dossier firewall, sorgenti, integrazione, timeline, contesto e memoria; ISO-27/30 e Cliente-1 89/90 restano in corso. Nessun Git, deploy o test provider dell'agente. **Template:** nessuna.
+
 ## 29/10/2026 - Allegati sopra 3 MB (ADR-046) e posta del sito spiegata
 
 Su richiesta dell'IT Manager: aggiramento se esiste, altrimenti limite al peso. Lette il 29/10 le pagine Microsoft:

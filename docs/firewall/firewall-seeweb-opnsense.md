@@ -1,5 +1,22 @@
 # Firewall Seeweb: configurazione osservata e percorso di raccolta
 
+## Chiarimento del provider su 26.7.7, 29/10/2026
+
+Lo screenshot_135, copia privata SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`, indica 26.7.7 come target OPNsense, snapshot della VM a livello hypervisor e backup dell'intera configurazione. Le due ore sono il tempo massimo previsto dell'attività; il disservizio è durante i riavvii. Seeweb segnala la VPN come possibile criticità per la diversa gestione delle configurazioni, non prevede modifiche Firewall/NAT e affida a noi la verifica dei servizi dopo l'upgrade, intervenendo in base alla gravità. La [release 26.7.7](https://docs.opnsense.org/releases/CE_26.7.html) è documentata da OPNsense; la [guida IPsec](https://docs.opnsense.org/manual/vpnet.html) descrive la migrazione legacy ma non prova la compatibilità del tunnel di questo cliente.
+
+Prima della finestra concordare console indipendente, posizione e ripristinabilità del backup, momento dello snapshot, responsabili e soglia di rollback. Misurare prima e dopo selettori e stato IPsec, instradamento, regole/NAT e servizi pubblicati, con verifica Seeweb lato cloud e nostra lato sede. L'upgrade maggiore è [offline](https://docs.opnsense.org/manual/updates.html); la durata reale del fermo non è stata misurata. Nessun upgrade è autorizzato o eseguito. Il test Syslog UDP ha un via e una finestra separati.
+
+La prova di accettazione va eseguita sugli stessi percorsi prima e dopo l'intervento, con orari ed esiti registrati senza pubblicare indirizzi o credenziali:
+
+| Ambito | Misura prima e dopo | Referente |
+|---|---|---|
+| VPN IPsec | Phase 1/2 o SA installate, selettori, traffico nei due versi e raggiungibilità applicativa; la sola SA attiva non basta | Seeweb lato cloud, noi lato sede |
+| GroupShare | Raggiungibilità e funzione concordata dal client autorizzato; non inviare nuove credenziali su HTTP finché SEC-015 resta aperto | Noi, con supporto Seeweb se il percorso fallisce |
+| Storage e backup | Flussi SMB verso lo storage cloud e job dipendenti già censiti, con lettura o esito non distruttivo | Noi e proprietario del flusso; Seeweb per il tunnel |
+| Amministrazione e pubblicazione | Accesso amministrativo previsto, mapping NAT uno-a-uno, porte pubblicate e regole rimaste equivalenti; certificato GUI verificato separatamente | Seeweb per la configurazione cloud, noi per i servizi usati |
+
+Se un servizio critico non torna, sospendere la chiusura e applicare il criterio di ripristino concordato prima della finestra. Un'interfaccia GUI spostata o una regola ancora visibile non sostituiscono la prova del traffico.
+
 ## Test UDP e aggiornamento gratuito proposti, 29/10/2026
 
 La nuova risposta Seeweb, conservata privatamente con SHA-256 `BE29240FBCCCD033FC6DAEABF4C418FEA3F4E861D2431F48D60DFD59CF302DCD`, propone dopo il nostro via un test UDP concordato, con cattura sulla VM destinataria e confronto degli esiti. Per il rischio PHP indicato dal provider offre gratuitamente gli undici passaggi di aggiornamento OPNsense in una sessione, con snapshot, backup delle configurazioni e fino a due ore di disservizio previsto. Distingue il ripristino immediato per problemi urgenti dalla correzione di anomalie minori nella configurazione aggiornata. Non fornisce release finale, tipo di snapshot, accesso console indipendente, criterio di rollback, lista delle verifiche finali o garanzia sulle due ore. Il precedente preventivo è superato da questa nuova offerta dichiarata, ma nessun intervento è autorizzato o eseguito. L'operatore riferisce di aver inviato il messaggio di chiarimento a Seeweb il 29/10; testo effettivo e ricevuta non sono disponibili qui. Nel progetto non è documentato alcun via operativo al test UDP o all'upgrade.

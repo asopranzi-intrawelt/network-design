@@ -197,6 +197,26 @@ Due conseguenze vanno sapute. Chi legge le caselle di destinazione deve avere un
 
 Fonti: [Attach large files to Outlook messages](https://learn.microsoft.com/en-us/graph/outlook-large-attachments) e [attachment: createUploadSession](https://learn.microsoft.com/en-us/graph/api/attachment-createuploadsession) per le due strade, la soglia, i pezzi da 4 MB, il permesso e il limite predefinito di 35 MB; [user: sendMail](https://learn.microsoft.com/en-us/graph/api/user-sendmail) per il permesso `Mail.Send`; [RBAC for Applications in Exchange Online](https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac) per il ruolo `Application Mail.ReadWrite`, che non include l'invio, e per la somma dei permessi. Tutte lette il 29/10/2026. Il tetto di circa 4 MB del corpo di una richiesta è dichiarato nel codice dell'adattatore del sito e coerente con la soglia documentata, ma non è stato letto in una pagina Microsoft in questa sessione.
 
+### Conservazione dei dati raccolti dal sito: strategia proposta (G19)
+
+Sezione scritta il 29/10/2026 su richiesta dell'IT Manager, dopo la decisione di tenere i file nel pannello invece di spedirli (ADR-046). Da quel giorno il sito conserva quattro famiglie di dati personali: iscrizioni alla newsletter, messaggi dei moduli, richieste di documenti, preventivi con i loro allegati, e presto candidature con i curriculum. Finché nessuno li cancella restano per sempre. Il problema principale è la protezione dei dati: un dato personale si conserva per il tempo che serve allo scopo per cui è stato raccolto, e l'informativa deve dire quale. Lo spazio viene dopo.
+
+Quanto pesa, con le misure disponibili. La VPS ha 80 GB di disco. Il 28/10 la banca dati occupava 1,59 MB nella sua copia logica e i file caricati 36,9 MB. Una riga di richiesta pesa pochi kilobyte, quindi lo spazio lo fanno solo gli allegati, fino a 20 MB per file. Per stimare la crescita servirebbe il numero di preventivi con allegati per settimana, che il progetto non ha: con dieci preventivi a settimana da 10 MB l'uno si arriverebbe a circa 5 GB l'anno. È un'ipotesi di scuola, non una misura, ma basta a dire che il disco della VPS non è il vincolo.
+
+Il vincolo vero sta nel salvataggio notturno. Ogni copia del contenitore `backup-sito` è un archivio completo, e se ne conservano 34, fra giornaliere, settimanali e mensili. Con 5 GB di allegati, le copie sul NAS occuperebbero circa 170 GB. Senza una conservazione sul sito, quel numero cresce ogni mese. C'è poi una conseguenza da scrivere nell'informativa: un dato cancellato dal sito sopravvive nelle copie fino a dodici mesi, perché le copie mensili si tengono un anno.
+
+La strategia proposta ha tre parti.
+
+1. **Durate per famiglia di dati.** Le decide l'amministrazione, sentita la Direzione, e vanno nell'informativa privacy (G6) prima del passaggio. Proposta di partenza:
+   - newsletter: fino alla disiscrizione;
+   - messaggi e richieste di documenti: 12 mesi;
+   - preventivi non accettati: 12 mesi, mentre quelli accettati passano al gestionale e si cancellano dal sito dopo 90 giorni;
+   - candidature: 12 mesi, salvo consenso a una conservazione più lunga.
+2. **Un lavoro di pulizia nel sito.** È un compito pianificato del gestore di contenuti, che ha già una coda di lavori ogni minuto. Una volta al giorno cancella le richieste scadute insieme ai loro file e registra quante ne ha tolte. Il codice spetta a chi sviluppa il sito e può arrivare dopo il passaggio, purché le durate siano scritte prima.
+3. **Una misura che sorvegli la crescita.** Il salvataggio notturno registra già nella sua serie il peso di ogni copia: è la curva da guardare. Se la crescita lo richiederà, il passo successivo è un salvataggio che conservi una sola volta ciò che non cambia, invece di un archivio completo per notte. Oggi non serve.
+
+La proposta resta tale finché non ci sono le durate. Il controllo GDPR del dopo go-live (G18) la verifica insieme al resto.
+
 ## Registro tecnico del deploy, giorno per giorno
 
 Questo registro tiene ogni passaggio tecnico del rilascio con le sue misure, perché il costo reale di un deploy si capisce soltanto sommando i passaggi. Il tempo dell'IT Manager non è misurato da nessuno strumento; l'unica misura indiretta disponibile sono gli orari degli screenshot fatti per l'agente, contati nella cartella dello strumento di cattura: il 27/10 sono 246 fra le 09:11 e le 17:42, il 28/10 sono 27 fra le 09:14 e le 10:47 al momento della scrittura. Gli orari descrivono la finestra di lavoro, non il tempo effettivo.
@@ -359,7 +379,7 @@ La copia la va a prendere il contenitore, la VPS non la spinge, perché la VPS n
 
 | N | Dove | Chi | Passo | Verifica |
 |---|---|---|---|---|
-| 1 | NAS INTRA, pannello | IT Manager | Cartella condivisa `backup-sito` e utenza del NAS dedicata, con diritti solo su quella cartella | Con quell'utenza la cartella si apre, le altre no |
+| 1 | NAS HERO, pannello (ADR-047) | IT Manager | Utenza del NAS `backup-sito`, non amministratrice; nella condivisione `Backup` una sottocartella dedicata, con i permessi avanzati delle cartelle attivi, lettura e scrittura per quell'utenza solo sulla sottocartella | Con quell'utenza la sottocartella si apre, le altre sottocartelle di `Backup` no |
 | 2 | Nodo `pve`, shell | IT Manager | `pveam update`, poi `pveam available --section system`; si scarica in `local` il template Debian standard più recente offerto, il 13 se c'è, altrimenti il 12 | Il template compare in `local:vztmpl` |
 | 3 | Nodo `pve` | IT Manager | File delle credenziali dell'utenza del punto 1 in `/root/.cred-backup-sito`, permessi 0600; cartella `/mnt/backup-sito`; riga in `/etc/fstab` di tipo `cifs` con `credentials=`, `uid=101000,gid=101000,file_mode=0600,dir_mode=0700,_netdev,nofail`; `mount /mnt/backup-sito` | `findmnt /mnt/backup-sito` mostra la condivisione; un file creato lì appare sul NAS |
 | 4 | Nodo `pve` | IT Manager | `pct create 211` dal template, con `--hostname backup-sito --unprivileged 1 --cores 1 --memory 512 --swap 256 --rootfs SERVIZI:8 --net0 name=eth0,bridge=vmbr0,ip=dhcp,firewall=1 --onboot 1 --mp0 /mnt/backup-sito,mp=/srv/copie` | `pct config 211` riporta `unprivileged: 1` e `mp0` |
@@ -374,6 +394,8 @@ La copia la va a prendere il contenitore, la VPS non la spinge, perché la VPS n
 
 Due cose sono da verificare al passo 7 e non si possono decidere da qui. La prima è se l'utente operativo della VPS possa leggere entrambe le cartelle dei file caricati: se una delle due non è leggibile, il comando fallisce e il contenitore dà allarme. Si corregge con una regola `sudo` limitata a `copia-sito`, non allargando i permessi delle cartelle. La seconda è se `docker compose` funzioni per quell'utente senza `sudo`: questo registro non dice con quale utente siano stati lanciati i rilasci.
 
+Il passo 3 monta sul nodo la sottocartella di HERO del passo 1, non l'intera condivisione `Backup`: la riga di `/etc/fstab` punta a `//<HERO>/Backup/<sottocartella>`. Server e versione SMB si prendono dallo storage `NAS_HERO` che Proxmox già usa.
+
 L'orario delle 02:30 cade dentro la finestra dei salvataggi del nodo verso lo stesso NAS, scaglionati fra le 21:00 e le 06:00. Prima del passo 10 va confrontato con il lavoro del nodo programmato a quell'ora, perché non è stato misurato.
 
 **29/10/2026, codice del salvataggio scritto e provato, contenitore non ancora creato.**
@@ -386,6 +408,20 @@ L'orario delle 02:30 cade dentro la finestra dei salvataggi del nodo verso lo st
 - `systemd-analyze verify` è superato per le due unità, e `copia-sito` supera il controllo di sintassi della shell.
 
 Non provati da qui: il comando forzato sulla VPS vera, i permessi delle cartelle, il montaggio CIFS con la mappatura degli utenti e la prova di ripristino. Sono i passi 3, 7, 9 e 12.
+
+### Registro della creazione di `backup-sito`, micropasso per micropasso
+
+Ogni micropasso registra che cosa si è fatto, perché e con quale esito, nell'ordine in cui avviene.
+
+**29/10/2026, micropasso 0: destinazione.** L'IT Manager sceglie NAS HERO, condivisione `Backup`, sottocartella dedicata (ADR-047). Resta da chiudere, prima della prima copia, la verifica sui privilegi amministrativi dei capi progetto su HERO.
+
+**29/10/2026, micropasso 1: letture sul nodo, in sola lettura.** Nella shell del nodo `pve` tre comandi, che non modificano niente:
+
+- `pveam update` aggiorna l'elenco dei modelli di sistema scaricabili, che il nodo tiene in locale e che oggi non comprende nessun modello per contenitori;
+- `pveam available --section system | grep -i debian` mostra quali modelli Debian sono disponibili, così si scarica quello giusto al passo 2;
+- `grep -B1 -A6 "cifs: NAS_HERO" /etc/pve/storage.cfg` mostra come il nodo raggiunge già HERO: indirizzo, condivisione, utente e versione SMB, senza la password, che Proxmox tiene in un file separato. Serve a scrivere il montaggio del passo 3 con gli stessi parametri che oggi funzionano.
+
+Esito: in attesa degli output.
 
 ## Che cosa questo rilascio non copre
 

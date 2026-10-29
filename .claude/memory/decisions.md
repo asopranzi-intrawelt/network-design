@@ -652,3 +652,15 @@ Alternative scartate: `Mail.ReadWrite` limitato alla casella con il controllo di
 Conseguenze. Chi legge le caselle di destinazione deve avere nel pannello un'utenza con il ruolo adatto: preventivi per amministrazione, commerciale e HR, candidature per amministrazione e HR. La strada della bozza gia' scritta nell'adattatore del sito resta inutilizzata. La modifica al codice spetta a chi sviluppa il sito, sul ramo `posta-e-moduli`; la prova si fa con Graph attivo, con un preventivo sopra la soglia. Il controllo GDPR dopo il go-live (G18) valuta se estendere il collegamento a tutti gli allegati.
 
 Fonti: [Attach large files to Outlook messages](https://learn.microsoft.com/en-us/graph/outlook-large-attachments), [attachment: createUploadSession](https://learn.microsoft.com/en-us/graph/api/attachment-createuploadsession), [RBAC for Applications in Exchange Online](https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac), lette il 29/10/2026. Il dettaglio tecnico e' nel runbook del primo rilascio, sezione sulla posta del sito.
+
+## ADR-047 - Le copie notturne del sito vanno su NAS HERO, in una sottocartella dedicata della condivisione Backup
+
+Data: 2026-10-29. Decisione dell'IT Manager, che corregge la sola destinazione di ADR-044; esecutore, conservazione e verifica restano quelli di ADR-044.
+
+La decisione. Il contenitore `backup-sito` scrive su NAS HERO, nella condivisione `Backup`, che l'IT Manager indica come il posto dove si scrive cio' che serve. La scrittura avviene in una sottocartella propria, con un'utenza del NAS dedicata che vede solo quella sottocartella grazie ai permessi avanzati delle cartelle di QNAP. Non vede le altre sottocartelle di `Backup`.
+
+Perche'. NAS INTRA, scelto in ADR-044, e' il modello piu' vecchio del parco ed e' gia' la destinazione dei salvataggi notturni del nodo: mettere li' anche le copie del sito concentrerebbe tutte le copie sullo stesso apparato. HERO ha piu' spazio libero, e' espandibile ed e' un apparato diverso da quello dei salvataggi del nodo.
+
+Condizioni. Le copie del sito contengono dati personali. Prima della prima copia va chiusa la verifica, aperta dal 07/10/2026, sui privilegi amministrativi dei capi progetto su HERO: chi amministra il NAS vede ogni cartella, permessi avanzati compresi. Il registro dei guasti riporta inoltre che HERO e' risultato a volte irraggiungibile. Lo script lo tratta come «copia impossibile», con un esito distinto, quindi una notte persa si vede; se succede spesso, la causa va cercata.
+
+Fonti: nessuna fonte esterna; scelta interna motivata dalla separazione dei guasti e dal privilegio minimo. Il dettaglio dei passi e' nel runbook del primo rilascio.

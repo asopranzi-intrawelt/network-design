@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Bundle Seeweb riconfermato sulla VM, 29/10/2026
+
+Il collettore `dfc284b` è stato riletto dopo il messaggio del provider: le due impronte dei file live della VM coincidono ancora con il bundle privato. L'account SSH ordinario non può leggere il ruleset nftables e `sudo -n` chiede password, quindi `--check` privilegiato e installazione restano manuali. L'applicatore ora protegge il lock da link simbolici e hard link; 18 prove WSL root e una mutazione discriminante passano. Un archivio privato contiene soltanto script, manifesto e due candidati, senza trasferimento alla VM. Una sonda SSH di sola lettura conferma indirizzo destinatario assegnato, `rsyslog` e `nftables` attivi, UDP 514 in ascolto e filesystem `/srv/ads` 1%, `/var/log` 44%; non misura la consegna dal tunnel. Seeweb non ha ancora inviato un campione UDP: ISO-30 e Cliente-1 89/90 restano in corso.
+
 ## Pilot Seeweb preparato, non installato, 29/10/2026
 
 Il collettore `00a9455` ha pubblicato l'applicatore del bundle Seeweb ancorato alle due configurazioni lette sulla VM: hash, indirizzo di destinazione, sintassi, servizi, backup e ritorno. Il commit pubblicato `dfc284b` vincola nel manifesto privato anche l'intero ruleset nftables attivo; il baseline è stato caricato in Debian 13 e la sua impronta è verificata dallo stesso codice. Sedici prove locali passano, ma l'account SSH ordinario non può leggere il ruleset attivo sulla VM e `sudo -n` richiede password. Nessuna installazione, cattura o ricezione Seeweb è avvenuta. Il provider offre il test UDP concordato e un aggiornamento OPNsense gratuito separato; ISO-30 e Cliente-1 89/90 restano in corso.

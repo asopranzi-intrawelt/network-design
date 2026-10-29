@@ -1,5 +1,5 @@
-<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="6354" viewBox="0 0 1060 6354" font-family="'Altro Serif', Georgia, serif">
-<rect width="1060" height="6354" fill="#F4F5F9"/>
+<svg id="root-svg" xmlns="http://www.w3.org/2000/svg" width="1060" height="6378" viewBox="0 0 1060 6378" font-family="'Altro Serif', Georgia, serif">
+<rect width="1060" height="6378" fill="#F4F5F9"/>
 <style><![CDATA[
   .ev-summary { cursor: pointer; }
   .ev-summary rect.hit { fill: transparent; }
@@ -15,7 +15,7 @@
   .d p:last-child { margin-bottom: 0; }
 ]]></style>
 <text x="40" y="42" font-size="22" font-weight="700" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Timeline interventi infrastruttura IT</text>
-<text x="40" y="66" font-size="13" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">250 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 29/10/2026 - clicca una riga per il dettaglio</text>
+<text x="40" y="66" font-size="13" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">251 interventi documentati dal 2024 (ingresso IT manager) - contenuto anonimizzato - generato il 29/10/2026 - clicca una riga per il dettaglio</text>
 <text x="40" y="96" font-size="12" font-weight="700" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">AREE DI COMPETENZA</text>
 <circle cx="40" cy="112" r="5" fill="#6B15EC"/>
 <text x="52" y="116" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">AI e automazione <tspan fill="#4C4C63">(29)</tspan></text>
@@ -26,7 +26,7 @@
 <circle cx="790" cy="112" r="5" fill="#12ACE5"/>
 <text x="802" y="116" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Rete e switching <tspan fill="#4C4C63">(27)</tspan></text>
 <circle cx="40" cy="136" r="5" fill="#095D83"/>
-<text x="52" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Firewall e VPN <tspan fill="#4C4C63">(23)</tspan></text>
+<text x="52" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Firewall e VPN <tspan fill="#4C4C63">(24)</tspan></text>
 <circle cx="290" cy="136" r="5" fill="#92B500"/>
 <text x="302" y="140" font-size="12" fill="#0A0A0A" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Storage e backup <tspan fill="#4C4C63">(21)</tspan></text>
 <circle cx="540" cy="136" r="5" fill="#576C08"/>
@@ -4020,12 +4020,12 @@
 <circle cx="178" cy="-4" r="4.5" fill="#095D83"/>
 <text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">29/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
-<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Seeweb offre test UDP e aggiornamento gratuito <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">FW/VPN</tspan></text>
+<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Seeweb precisa l'upgrade 26.7.7 e il pilot resta locale <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">FW/VPN</tspan></text>
 </g>
 <foreignObject id="ev-249-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
-<p class="d-meta">29/10/2026 &#8212; Seeweb offre test UDP e aggiornamento gratuito</p>
-<p>Il provider propone un test UDP con cattura sul Debian e confronto in una finestra concordata dopo il nostro via. Offre inoltre gratuitamente undici passaggi di aggiornamento OPNsense in una sessione, con snapshot e backup configurazione, fino a due ore di disservizio previsto. L'appliance osservata usa UFS, quindi il tipo di snapshot va chiarito; versione finale, console, criteri di ritorno e verifiche VPN/servizi sono ancora da concordare. Il pilot del collettore è preparato e provato solo localmente; la lettura del ruleset attivo richiede privilegi non disponibili all'account SSH. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10, senza ricevuta disponibile nel progetto. Il collettore pubblica il vincolo del ruleset nel commit dfc284b; nessun pacchetto Syslog reale è ricevuto e nessun test UDP o upgrade è autorizzato. ISO-27/30 e Cliente-1 89/90 restano in corso.</p>
+<p class="d-meta">29/10/2026 &#8212; Seeweb precisa l'upgrade 26.7.7 e il pilot resta locale</p>
+<p>Il provider conferma target 26.7.7, snapshot hypervisor e backup completo; due ore sono la durata massima prevista dell'attività, mentre il disservizio avviene durante i riavvii. Indica la VPN come rischio e chiede a noi la verifica dei servizi. Console, soglia di rollback e finestra restano da concordare. Sul collettore le impronte dei due file VM sono riconfermate; la sonda SSH vede servizi attivi, UDP 514 in ascolto e filesystem /srv/ads 1%, /var/log 44%. Il lock del pilot è stato corretto e 18 prove WSL root passano. Nessun deploy o Syslog reale; la prova UDP è separata dall'upgrade. ISO-27/30 e Cliente-1 89/90 in corso.</p>
 </div>
 </foreignObject>
 </g>
@@ -4033,19 +4033,35 @@
 <g class="ev-summary" onclick="toggleEv('ev-250')">
 <rect class="hit" x="40" y="-22" width="980" height="24"/>
 <line x1="178" y1="-22" x2="178" y2="6" stroke="#D0D4E3" stroke-width="2"/>
+<circle cx="178" cy="-4" r="4.5" fill="#095D83"/>
+<text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">29/10/2026</text>
+<text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
+<text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Seeweb offre test UDP e aggiornamento gratuito <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">FW/VPN</tspan></text>
+</g>
+<foreignObject id="ev-250-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d">
+<p class="d-meta">29/10/2026 &#8212; Seeweb offre test UDP e aggiornamento gratuito</p>
+<p>Il provider propone un test UDP con cattura sul Debian e confronto in una finestra concordata dopo il nostro via. Offre inoltre gratuitamente undici passaggi di aggiornamento OPNsense in una sessione, con snapshot e backup configurazione, fino a due ore di disservizio previsto. L'appliance osservata usa UFS, quindi il tipo di snapshot va chiarito; versione finale, console, criteri di ritorno e verifiche VPN/servizi sono ancora da concordare. Il pilot del collettore è preparato e provato solo localmente; la lettura del ruleset attivo richiede privilegi non disponibili all'account SSH. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10, senza ricevuta disponibile nel progetto. Il collettore pubblica il vincolo del ruleset nel commit dfc284b; nessun pacchetto Syslog reale è ricevuto e nessun test UDP o upgrade è autorizzato. ISO-27/30 e Cliente-1 89/90 restano in corso.</p>
+</div>
+</foreignObject>
+</g>
+<g id="ev-251" class="ev-block has-detail" transform="translate(0,6308)">
+<g class="ev-summary" onclick="toggleEv('ev-251')">
+<rect class="hit" x="40" y="-22" width="980" height="24"/>
+<line x1="178" y1="-22" x2="178" y2="6" stroke="#D0D4E3" stroke-width="2"/>
 <circle cx="178" cy="-4" r="4.5" fill="#4D11A7"/>
 <text x="164" y="0" font-size="12" fill="#4C4C63" text-anchor="end" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">29/10/2026</text>
 <text class="ev-chevron" x="189" y="0" font-size="9" text-anchor="middle">&#9656;</text>
 <text x="204" y="0" font-size="13" fill="#0A0A0A" font-family="'Altro Serif', Georgia, serif">Seeweb verifica il tunnel; MyOffice e PBX in ricognizione <tspan font-size="10" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">TEL</tspan></text>
 </g>
-<foreignObject id="ev-250-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
+<foreignObject id="ev-251-fo" class="d-wrap" x="204" y="8" width="816" height="1" style="display:none;overflow:visible;">
 <div xmlns="http://www.w3.org/1999/xhtml" class="d">
 <p class="d-meta">29/10/2026 &#8212; Seeweb verifica il tunnel; MyOffice e PBX in ricognizione</p>
 <p>Seeweb comunica l'IP sorgente dell'OPNsense e riferisce una cattura dei pacchetti cifrati nel tunnel verso la VM del collettore. Il render locale ammette quel solo mittente e separa i messaggi nel deposito tecnico, ma il target non è installato e nessun evento Syslog è ricevuto. L'utente conferma che MyOffice gestisce la Canon del Piano 1 e ha chiesto chiarimenti sull'agente ReadMeter 7: la lettera Albalog descrive telemetria consumabili, non audit di login. Il PBX cloud Vianova UCC richiede una ricognizione degli accessi amministrativi ed export. ISO-30 e Cliente-1 89/90 restano in corso.</p>
 </div>
 </foreignObject>
 </g>
-<text id="footer-src" x="40" y="6338" font-size="11" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
+<text id="footer-src" x="40" y="6362" font-size="11" fill="#4C4C63" font-family="'Altro Var', 'Altro Grotesk', Arial, sans-serif">Fonte: repository network-design (github.com/asopranzi-intrawelt/network-design), docs/infrastructure-timeline/*.md</text>
 <script><![CDATA[
 (function () {
   var BLOCKS = [
@@ -4301,7 +4317,8 @@
   {id:'ev-247',type:'event',h:24},
   {id:'ev-248',type:'event',h:24},
   {id:'ev-249',type:'event',h:24},
-  {id:'ev-250',type:'event',h:24}
+  {id:'ev-250',type:'event',h:24},
+  {id:'ev-251',type:'event',h:24}
   ];
   var TOP = 176;
   var BOTTOM = 46;
@@ -4342,7 +4359,7 @@
     var total = Math.round(y + BOTTOM);
     var root = svgRoot();
     root.setAttribute('height', total);
-    var vb = (root.getAttribute('viewBox') || '0 0 1060 6354').split(' ');
+    var vb = (root.getAttribute('viewBox') || '0 0 1060 6378').split(' ');
     root.setAttribute('viewBox', vb[0] + ' ' + vb[1] + ' ' + vb[2] + ' ' + total);
     var footer = document.getElementById('footer-src');
     if (footer) { footer.setAttribute('y', total - 16); }

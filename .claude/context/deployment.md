@@ -111,6 +111,18 @@ Va detto con onesta' cio' che **non e' stato provato**: tutto quanto sopra e' ve
 
 Si consulta `_notes/registro-credenziali.md` prima di chiedere alias o utenti all'IT Manager, confrontando la tabella con `docs/rete/esposizione-servizi-interni.md`. La nota privata conserva la corrispondenza fra identificatore e nome Proxmox, prompt della macchina, alias `Host`, utente e nome del file chiave. Non si leggono ne' si copiano contenuti delle chiavi private e non si salvano password. Se la configurazione SSH della macchina cambia, la tabella si aggiorna nella stessa sessione.
 
+### L'agente e la VPS di produzione del sito, dal 29/10/2026
+
+Il 29/10/2026 l'agente di Claude Code ha provato una lettura in sola lettura sulla VPS di produzione del sito: occupazione del disco, peso dei file caricati e della banca dati. Il classificatore della modalità di permesso automatica l'ha negata con il motivo «letture in produzione» (*Production Reads*). Nello stesso giro ha negato anche una ricerca nei soli documenti locali del progetto che riguardavano quella macchina. L'agente non ha aggirato il blocco: ha usato le misure già registrate e lo ha dichiarato.
+
+Che cosa vuol dire, con precisione. Non è una barriera tecnica: sulla postazione esistono la chiave e l'alias `vps-sito`, che il registro credenziali privato dà generati il 22/10/2026. È una barriera della modalità di permesso dell'agente, che valuta ogni comando prima di eseguirlo e tratta l'accesso alla produzione come un'azione da far decidere all'utente. Lo strumento di ricerca nei file del progetto è rimasto disponibile.
+
+Ne discendono tre regole di lavoro:
+
+- ogni misura sulla VPS di produzione la lancia l'IT Manager da un terminale proprio, con il comando che l'agente prepara, e l'esito torna in sessione come testo;
+- l'agente dichiara sempre se un numero sulla produzione è misurato oggi o ripreso da una misura precedente, con la data;
+- un'eventuale autorizzazione permanente si scrive come regola esplicita nelle impostazioni dei permessi, e solo per decisione dell'IT Manager. Oggi non c'è, e la scelta di non averla è coerente con il controllo degli accessi privilegiati (A.8.2): l'accesso di un agente alla produzione resta un atto deciso volta per volta.
+
 ## Attivazione manuale della retention, 16/10/2026
 
 Il codice della retention è nel progetto; la cancellazione pianificata resta disabilitata finché l’operatore non esegue Invoke-SnapshotRetention con EnableScheduled. La politica viene scritta nel livello privato, non modifica il task e non avvia subito la pulizia. I successivi rinfreschi riusciti usano gli stessi 90 giorni; senza politica o con enabled=false restano in anteprima. Un fallimento o il superamento del budget produce marcatore e codice 3. Il task gira come utente interattivo con privilegi limitati; non è garantito quando la postazione o la sessione sono indisponibili. Migrazione a servizio, delega e recupero sono trattamenti aperti del processo ISO.

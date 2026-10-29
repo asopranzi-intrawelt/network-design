@@ -1,5 +1,9 @@
 # 2026 - Ottobre: custodia dei segreti della postazione e collettore
 
+## 29/10/2026 - Seeweb precisa l'upgrade 26.7.7 e il pilot resta locale
+
+Il provider conferma target 26.7.7, snapshot hypervisor e backup completo; due ore sono la durata massima prevista dell'attività, mentre il disservizio avviene durante i riavvii. Indica la VPN come rischio e chiede a noi la verifica dei servizi. Console, soglia di rollback e finestra restano da concordare. Sul collettore le impronte dei due file VM sono riconfermate; la sonda SSH vede servizi attivi, UDP 514 in ascolto e filesystem `/srv/ads` 1%, `/var/log` 44%. Il lock del pilot è stato corretto e 18 prove WSL root passano. Nessun deploy o Syslog reale; la prova UDP è separata dall'upgrade. ISO-27/30 e Cliente-1 89/90 in corso.
+
 ## 29/10/2026 - Seeweb offre test UDP e aggiornamento gratuito
 
 Il provider propone un test UDP con cattura sul Debian e confronto in una finestra concordata dopo il nostro via. Offre inoltre gratuitamente undici passaggi di aggiornamento OPNsense in una sessione, con snapshot e backup configurazione, fino a due ore di disservizio previsto. L'appliance osservata usa UFS, quindi il tipo di snapshot va chiarito; versione finale, console, criteri di ritorno e verifiche VPN/servizi sono ancora da concordare. Il pilot del collettore è preparato e provato solo localmente; la lettura del ruleset attivo richiede privilegi non disponibili all'account SSH. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10, senza ricevuta disponibile nel progetto. Il collettore pubblica il vincolo del ruleset nel commit `dfc284b`; nessun pacchetto Syslog reale è ricevuto e nessun test UDP o upgrade è autorizzato. ISO-27/30 e Cliente-1 89/90 restano in corso.

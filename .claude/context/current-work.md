@@ -3,6 +3,10 @@ last-verified: 920c616
 ---
 
 ## Risposta Seeweb e ricognizione MyOffice, 29/10/2026
+## Chiarimento Seeweb e pilot VM, 29/10/2026
+
+Seeweb indica 26.7.7 come target, snapshot hypervisor, backup completo, attività prevista entro due ore e disservizio nei riavvii; la VPN è il rischio principale dichiarato. Prima del via servono console, backup ripristinabile, criterio di rollback e finestra con prove cloud/sede. Il collettore `dfc284b` mantiene le due impronte live della VM; lock protetto e 18 prove WSL root verdi; sonda SSH con servizi attivi, UDP 514 in ascolto e filesystem `/srv/ads` 1%, `/var/log` 44%, ma `--check` root non è stato eseguito sulla VM e nessun evento Seeweb è ricevuto. Prova UDP e upgrade sono separati. ISO-27/30 e Cliente-1 89/90 in corso.
+
 ## Nuovo ticket Seeweb: test e upgrade gratuiti, 29/10/2026
 
 Il provider offre dopo il nostro via una prova UDP con cattura sulla VM e confronto degli esiti; propone gratuitamente undici passaggi OPNsense in una sessione con disservizio previsto fino a due ore. Il collettore `00a9455` prepara applicatore e rollback, poi pubblica in `dfc284b` il controllo del ruleset attivo; non installa nulla. L'account SSH ordinario non può leggere le regole attive, quindi il preflight privilegiato resta manuale. Il tipo di snapshot, la console indipendente, la release finale e i test VPN/servizi vanno chiariti prima dell'upgrade. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10; testo effettivo e ricevuta non sono disponibili qui. Nessuna autorizzazione o prova reale di Syslog; ISO-27/30 e Cliente-1 89/90 in corso.

@@ -1,5 +1,9 @@
 # Sorgenti Seeweb e raccolta dei log
 
+## Upgrade distinto dalla prova Syslog, 29/10/2026
+
+Seeweb ha indicato 26.7.7 come target, snapshot hypervisor, backup completo e durata prevista dell'attività entro due ore; lo screenshot_135 è conservato privatamente con SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`. Il rischio dichiarato riguarda soprattutto la VPN. Il chiarimento non cambia il gate Syslog: la sonda SSH trova `rsyslog` e `nftables` attivi e UDP 514 in ascolto, ma nessun filtro Seeweb è installato sulla VM; il ruleset attivo richiede controllo root e non è stato ricevuto alcun evento reale. La breve prova UDP e l'upgrade restano interventi distinti.
+
 ## Nuova proposta di prova UDP, 29/10/2026
 
 Il supporto propone un test UDP a orario concordato dopo il nostro via, con `tcpdump` sulla VM del collettore e confronto dei risultati. La cattura va limitata al mittente e alla porta del test e i risultati restano privati. Il ricevitore non è installato e nessun evento GUI/SSH reale è ricevuto; la sola disponibilità del provider non chiude M31f, SWB-005 o ISO-30. L'applicatore del collettore `00a9455` usa il bundle dal baseline VM e prepara backup e ritorno; il commit pubblicato `dfc284b` aggiunge il confronto del ruleset nftables attivo con l'impronta simulata in Debian 13. L'operatore riferisce di aver inviato il chiarimento a Seeweb il 29/10; testo effettivo e ricevuta non sono disponibili qui. Nessun via operativo al test UDP è documentato. La lettura SSH ordinaria del ruleset è negata per mancanza di `CAP_NET_ADMIN` e `sudo -n` richiede password, quindi il controllo privilegiato e l'applicazione restano manuali prima di fissare il test. L'offerta distinta di upgrade gratuito è nel [dossier firewall](../firewall/firewall-seeweb-opnsense.md). Fonte privata: ticket del 29/10, SHA-256 `BE29240FBCCCD033FC6DAEABF4C418FEA3F4E861D2431F48D60DFD59CF302DCD`.
