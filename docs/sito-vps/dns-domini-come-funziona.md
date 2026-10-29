@@ -127,7 +127,7 @@ Il primo passo non sposta niente: aggiunge una riga. Si chiede a Fastnet un reco
 
 ## Come sarà dopo il passaggio, nella via a rischio minore
 
-La via a rischio minore consiste nel cambiare i soli record del web e lasciare la zona dov'è. Si modificano due righe, quella del dominio senza prefisso e quella con `www`, facendole puntare alla VPS; tutte le righe della posta restano intatte perché nessuno le apre. L'hosting di Fastnet a quel punto non serve più e si può dismettere, mentre Fastnet continua a fare il DNS.
+La via a rischio minore consiste nel cambiare i soli record del web e lasciare la zona dov'è. Si modificano le righe del dominio senza prefisso e di `vserver`, a cui `www` rimanda, facendole puntare alla VPS. Aggiornamento del 29/10/2026: lo stesso vale per `prodotto-1` e, nella zona del dominio secondario `intrawelt.it`, per il suo vertice e il suo `vserver`. I rimandi verso il dominio principale li fa il proxy della VPS, e il sottodominio del prodotto resta e rimanda al sito del prodotto. Tutte le righe della posta restano intatte perché nessuno le apre. L'hosting di Fastnet si dismette solo a sito stabile, perché fino ad allora è la via del ritorno indietro; Fastnet continua comunque a fare il DNS.
 
 ```
                   REGISTRAR: EuroDNS            (invariato)
@@ -139,6 +139,7 @@ La via a rischio minore consiste nel cambiare i soli record del web e lasciare l
    |     www                CNAME  vserver                          |
    |     vserver            A      192.0.2.10        <-- CAMBIATA   |
    |     @                  A      192.0.2.10        <-- CAMBIATA   |
+   |     prodotto-1         A      192.0.2.10        <-- CAMBIATA   |
    |     anteprima          A      192.0.2.10        (poi si toglie)|
    |     @                  MX     Microsoft 365     (NON TOCCATA)  |
    |     @                  TXT    SPF               (NON TOCCATA)  |

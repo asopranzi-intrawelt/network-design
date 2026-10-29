@@ -241,7 +241,7 @@ section{margin-top:96px}
     <div class="g"><div class="k">@</div><div class="full">intrawelt.com</div><p>Il dominio «nudo», senza niente davanti. In rubrica si scrive con la chiocciola.</p></div>
     <div class="g"><div class="k">www</div><div class="full">www.intrawelt.com</div><p>L'indirizzo del sito che la gente scrive. Non ha un indirizzo suo: è un <b>soprannome</b> di vserver.</p></div>
     <div class="g"><div class="k">vserver</div><div class="full">vserver.intrawelt.com</div><p>Il nome dato alla <b>macchina di Fastnet su cui gira il sito</b> (probabilmente sta per «virtual server»). Nessuno lo scrive nel browser: serve a tenere l'indirizzo in un posto solo.</p></div>
-    <div class="g"><div class="k">prodotto-1</div><div class="full">prodotto-1.intrawelt.com</div><p>Sottodominio creato a febbraio nel pannello Fastnet, sullo stesso hosting del sito: oggi mostra una pagina vuota. Non c&rsquo;&egrave; niente da migrare, ma <b>prima di disdire l&rsquo;hosting</b> va deciso dove farlo puntare.</p></div>
+    <div class="g"><div class="k">prodotto-1</div><div class="full">prodotto-1.intrawelt.com</div><p>Sottodominio creato a febbraio nel pannello Fastnet, sullo stesso hosting del sito: oggi mostra una pagina vuota. Non c&rsquo;&egrave; niente da migrare. Deciso il 29/10: <b>resta</b>, e il giorno del passaggio punta alla VPS, che lo rimanda al sito del prodotto. Cos&igrave; alla disdetta non resta a indicare una macchina di Fastnet.</p></div>
     <div class="g"><div class="k">anteprima</div><div class="full">anteprima.intrawelt.com</div><p>Creato da Fastnet il 26 ottobre: porta al sito nuovo sulla VPS, visibile solo dalla sede. Si toglie al passaggio.</p></div>
     <div class="g"><div class="k">_dmarc</div><div class="full">_dmarc.intrawelt.com</div><p>Nome «di servizio» dove si scrive la regola DMARC della posta. Il trattino basso vuol dire: non è un sito.</p></div>
     <div class="g"><div class="k">selector1/2</div><div class="full">nomi di servizio</div><p>Dove sono pubblicate le chiavi DKIM con cui Microsoft firma le nostre mail.</p></div>
@@ -294,6 +294,8 @@ section{margin-top:96px}
           <div class="row web"><b>www</b><span>CNAME</span><span>vserver</span></div>
           <div class="row new"><b>vserver</b><span>A</span><span>192.0.2.10</span><span class="flag">Cambiata</span></div>
           <div class="row new"><b>@</b><span>A</span><span>192.0.2.10</span><span class="flag">Cambiata</span></div>
+          <div class="row new"><b>prodotto-1</b><span>A</span><span>192.0.2.10</span><span class="flag">Cambiata</span></div>
+          <div class="row new"><b>intrawelt.it</b><span>A</span><span>192.0.2.10</span><span class="flag">Cambiata, con vserver</span></div>
           <div class="row mail"><b>@</b><span>MX</span><span>Microsoft 365</span><span class="flag">Non toccata</span></div>
           <div class="row mail"><b>SPF·DKIM·DMARC</b><span>TXT</span><span>regole posta</span><span class="flag">Non toccate</span></div>
         </div>
@@ -301,7 +303,7 @@ section{margin-top:96px}
           <div class="box vps"><b>Sito</b>VPS Aruba, aperta a tutti</div>
           <div class="box mail"><b>Posta</b>Microsoft 365, uguale</div>
         </div>
-        <div class="box off"><b>Hosting Fastnet</b>Dismesso dopo aver deciso dove punta prodotto-1 (Fastnet tiene ancora la rubrica)</div>
+        <div class="box off"><b>Hosting Fastnet</b>Dismesso solo a sito stabile, perch&eacute; fino ad allora &egrave; il ritorno indietro (Fastnet tiene ancora la rubrica)</div>
       </div>
     </div>
   </div>
@@ -419,12 +421,12 @@ section{margin-top:96px}
     <div class="card"><h3>Protezione davanti al sito (D1)</h3><p>Un servizio tipo «scudo» vuole diventare lui il DNS autoritativo, cioè prendersi tutta la rubrica. Quindi si potrà fare solo più avanti, con lo spostamento della zona.</p></div>
     <div class="card"><h3>Certificati (il lucchetto https)</h3><p>Oggi li rinnova l'hosting Fastnet. Spento l'hosting, li rinnoverà Caddy sulla VPS da solo, purché il nome punti alla VPS e la porta 80 resti aperta.</p></div>
     <div class="card"><h3>Posta del sito</h3><p>Il sito vecchio spedisce gi&agrave; da Microsoft 365, non dal server Fastnet che compare nella lista SPF. Dopo la disdetta quella voce si toglie, e il sito nuovo spedir&agrave; da Microsoft con l&rsquo;autenticazione moderna, perch&eacute; quella con utente e password Microsoft la spegne a fine dicembre 2026.</p></div>
-    <div class="card"><h3>Dall&rsquo;ufficio</h3><p>Dalla rete interna il dominio senza www oggi non risolve: il DNS del firewall risponde da s&eacute; per intrawelt.com invece di chiedere a Fastnet. Va sistemato prima del passaggio, altrimenti l&rsquo;ufficio non vedr&agrave; il sito nuovo.</p></div>
+    <div class="card"><h3>Dall&rsquo;ufficio</h3><p>Dalla rete interna il dominio senza www oggi non risolve: il DNS del firewall risponde da s&eacute; per intrawelt.com invece di chiedere a Fastnet. Deciso il 29/10: il record per il dominio senza www si aggiunge sul firewall solo <b>il giorno del passaggio</b>, gi&agrave; verso la VPS. Fino ad allora chi deve vedere il sito vecchio usa il file hosts del proprio PC.</p></div>
   </div>
 </section>
 
 <div class="foot">
-  <span>Fonte: D:\network-design\docs\sito-vps\dns-domini-come-funziona.md · aggiornato il 28/10/2026</span>
+  <span>Fonte: D:\network-design\docs\sito-vps\dns-domini-come-funziona.md · aggiornato il 29/10/2026</span>
   <span>Gli indirizzi IP sono segnaposto, come nel documento originale</span>
 </div>
 </div>
