@@ -1,5 +1,9 @@
 # Work-log
 
+## 29/10/2026 - Commit della giornata pubblicato; newsletter e moduli salvati nel sito
+
+L'IT Manager ha fuso e spinto la correzione del template (`8a42d36`), e l'allineamento è arrivato qui con `83877a8`. Il controllo di anonimizzazione è ora pulito: 0 riscontri bloccanti su 698 file tracciati. Poi l'IT Manager ha lanciato `chiudi` per il lavoro del collettore. Il commit `67e4957`, «allineamento da log-collector 29/10», ha preso l'intero albero (59 file): oltre al collettore, anche sonda G13, rimandi, scaletta del passaggio, anonimizzazione dei prodotti con ADR-045, correzioni di `compose.yml` e `Caddyfile.produzione`, e memoria di ripresa. È pubblicato su `origin/main`. Il contenuto è quello voluto, ma il messaggio descrive solo una parte del commit. Non si riscrive una storia pubblica: questa voce fa da indice. Decisione del team sul ramo `posta-e-moduli`: iscrizioni alla newsletter e invii dei moduli si salvano in una tabella del gestore di contenuti e si notificano a `info@`, gestiti a mano; il gestionale è rimandato. Registrata nel runbook e nelle pendenze con le conseguenze: salvataggio, accessi al pannello, informativa, disiscrizione, registro dei trattamenti e difesa dagli invii automatici. Nessun subagent. **Template:** nessuna.
+
 ## 29/10/2026 - Risposta a Seeweb inviata e commit del pilot pubblicato
 
 L'operatore riferisce di aver inviato il chiarimento a Seeweb; testo effettivo e ricevuta non sono disponibili nel progetto. L'invio non autorizza il test UDP né l'upgrade OPNsense. Il collettore è pulito dopo `chiudi`: `dfc284b` pubblica la verifica dell'intero ruleset nftables, mentre lettura privilegiata sulla VM, installazione e ricezione Syslog restano aperte. Allineati dossier Seeweb, fonti, integrazione, timeline, contesto e indice della memoria di rete. ISO-27/30 e Cliente-1 89/90 restano in corso; nessun Git o deploy dell'agente. **Template:** nessuna.

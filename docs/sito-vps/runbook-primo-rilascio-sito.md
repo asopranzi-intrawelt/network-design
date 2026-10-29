@@ -257,6 +257,8 @@ Misurato lo stesso giorno sull'anteprima, per chi cura i contenuti (G5 e G6):
 
 La pagina iniziale non contiene collegamenti assoluti al nome di anteprima.
 
+**29/10/2026, iscrizioni alla newsletter e invii dei moduli conservati nel sito.** Il collaboratore che lavora sul ramo `posta-e-moduli` ha posto la domanda al team: la specifica del sito manda le iscrizioni a un servizio esterno, mentre la decisione del 28/10 le notifica a `info@` senza dire dove si conservano. La Direzione ha scelto di salvarle in una tabella del gestore di contenuti e di notificarle, gestendole a mano: si prevedono poche iscrizioni. Lo stesso vale per gli invii dei moduli. Il passaggio alle richieste del gestionale aziendale è rimandato, per non spostare la data. Le conseguenze per la VPS, il salvataggio, l'informativa e il registro dei trattamenti sono elencate nel registro delle pendenze.
+
 ## Il giorno del passaggio, passo per passo
 
 Scaletta unica, scritta il 29/10/2026 per il passaggio annunciato per la settimana successiva. Raccoglie i passi sparsi nel registro qui sopra. L'ordine ha una ragione: il proxy chiede i certificati per i nomi definitivi solo quando quei nomi puntano già alla VPS. Prima si cambiano i record, poi il proxy. Un proxy cambiato prima servirebbe nomi senza certificato e consumerebbe tentativi presso l'autorità di certificazione. I nomi definitivi sono il dominio principale e quello secondario, ciascuno con e senza `www`, più `prodotto-1`.
