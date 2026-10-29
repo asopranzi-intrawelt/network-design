@@ -155,6 +155,48 @@ La procedura, nell'ordine.
 
 Nel codice cambia soltanto l'adattatore di posta di Payload: il ramo del mailing del progetto del sito contiene già un adattatore che rifiuta di simulare un invio, ma costruito su SMTP con password, e va riscritto su Graph.
 
+### Perché la posta del sito non passa dalla VPS, e che cosa controlla chi la riceve
+
+Sezione scritta il 29/10/2026 su richiesta dell'IT Manager, dopo il passaggio delle prove dei moduli. La VPS non spedisce posta. Quando un modulo deve notificare una richiesta, l'applicazione chiama Microsoft Graph in HTTPS, sulla porta 443 in uscita. Si presenta come l'applicazione registrata in Entra, con il suo certificato, e chiede a Microsoft 365 di spedire un messaggio dalla casella del sito. Il messaggio lo costruisce e lo consegna Microsoft 365 dai propri server, esattamente come se fosse stato scritto in Outlook da quella casella. Ne discendono tre cose: la VPS non ha porte di posta aperte né in ingresso né in uscita; la zona DNS non va toccata; la fine dell'autenticazione di base SMTP a dicembre non riguarda il sito, perché Graph non è SMTP.
+
+Chi riceve una mail che dichiara di venire dal dominio, per esempio un server di posta esterno, fa tre controlli, tutti basati su record della zona. Letti il 29/10 con un risolutore pubblico:
+
+```
+intrawelt.com                       TXT    "v=spf1 include:spf.protection.outlook.com a:<server-di-posta-del-fornitore> -all"
+selector1._domainkey.intrawelt.com  CNAME  selector1-intrawelt-com._domainkey.intrawelt.onmicrosoft.com
+selector2._domainkey.intrawelt.com  CNAME  selector2-intrawelt-com._domainkey.intrawelt.onmicrosoft.com
+_dmarc.intrawelt.com                TXT    "v=DMARC1; p=none; fo=1; rua=mailto:<casella-funzionale-dmarc>@intrawelt.com"
+intrawelt.com                       MX     intrawelt-com.mail.protection.outlook.com
+```
+
+**SPF.** Il record SPF è l'elenco delle macchine autorizzate a spedire per il dominio. Chi riceve confronta l'indirizzo della macchina da cui la mail è arrivata con quell'elenco. Qui l'elenco autorizza i server di Microsoft 365 e un server di posta del fornitore dell'hosting, e rifiuta tutti gli altri (`-all`). Con Graph la mail esce da Microsoft 365, che è in elenco. Se la VPS spedisse da sé non lo sarebbe, e la mail verrebbe rifiutata o finirebbe nella posta indesiderata.
+
+**DKIM.** Il server che spedisce firma il messaggio con una chiave privata e mette la firma in un'intestazione. Chi riceve legge nella zona la chiave pubblica corrispondente, al nome indicato dal selettore, e verifica la firma. La firma prova che il messaggio è partito da chi detiene la chiave del dominio e che non è stato alterato per strada. Qui i due selettori puntano con un CNAME a chiavi che Microsoft 365 custodisce e ruota da sé, quindi firma Microsoft, con la chiave del dominio.
+
+**DMARC.** È la regola che lega i due controlli all'indirizzo che il destinatario vede nel campo «Da», e dice che cosa fare se falliscono. Una mail supera DMARC se almeno uno fra SPF e DKIM passa con un dominio allineato a quello del mittente visibile. Qui la politica è `p=none`: chi riceve non rifiuta e non mette in quarantena una mail che fallisce, si limita a mandare un rapporto. Per la posta del sito non cambia niente, perché passa, ma vuol dire che oggi il dominio è imitabile con poca fatica. Passare a `quarantine` è la voce M33 della roadmap.
+
+La verifica si fa al primo invio di produzione verso una casella esterna, leggendo nell'intestazione `Authentication-Results` gli esiti `spf=pass`, `dkim=pass` e `dmarc=pass`: è nel passo 10 della scaletta del passaggio.
+
+### Allegati sopra 3 MB: perché c'è una soglia, e come la si attraversa senza un permesso in più (ADR-046)
+
+Graph offre due strade per spedire un messaggio con allegati, e la documentazione Microsoft le distingue per peso.
+
+- Sotto i 3 MB: il messaggio, allegati compresi, viaggia in una sola richiesta `sendMail`, con gli allegati codificati in base64 nel corpo. La codifica gonfia il contenuto di circa un terzo, e il corpo di una richiesta ha un tetto: per questo la soglia sta a 3 MB e non oltre.
+- Fra 3 e 150 MB: si crea una bozza nella casella, si apre una sessione di caricamento per ogni allegato, si caricano i byte a pezzi di non più di 4 MB e infine si spedisce la bozza. Creare la sessione richiede il permesso `Mail.ReadWrite`.
+
+`Mail.ReadWrite` permette di creare, leggere, modificare e cancellare la posta della casella, ma non di spedire. Si può limitare alla sola casella del sito con lo stesso meccanismo di ADR-043, il ruolo `Application Mail.ReadWrite` con un campo di applicazione. Anche così, l'applicazione che oggi sa solo spedire potrebbe leggere tutto ciò che arriva nella casella del sito, comprese risposte e mancati recapiti con i dati dei visitatori. Exchange Online ha inoltre un limite predefinito di 35 MB per messaggio. Con il limite di 20 MB dei file caricati il caso tipico resta dentro, ma tre destinatari ricevono comunque tre copie dello stesso documento del cliente.
+
+La strada scelta è un aggiramento che non richiede permessi nuovi:
+
+- sotto la soglia, la notifica porta gli allegati come oggi;
+- sopra la soglia, la notifica parte senza allegati, con l'elenco dei file e il collegamento alla richiesta nel pannello di redazione.
+
+I file restano nella collezione dei file riservati, letti solo dai ruoli che le prove del 29/10 hanno verificato: preventivi da amministrazione, commerciale e HR, candidature da amministrazione e HR. Il limite di 20 MB per file non cambia. La strada della bozza scritta nel codice resta inutilizzata, e il permesso non si concede.
+
+Due conseguenze vanno sapute. Chi legge le caselle di destinazione deve avere un'utenza nel pannello con il ruolo giusto per aprire il collegamento. E la prova da fare, con Graph attivo, è un preventivo con allegati sopra la soglia che arrivi con il collegamento e senza allegati.
+
+Fonti: [Attach large files to Outlook messages](https://learn.microsoft.com/en-us/graph/outlook-large-attachments) e [attachment: createUploadSession](https://learn.microsoft.com/en-us/graph/api/attachment-createuploadsession) per le due strade, la soglia, i pezzi da 4 MB, il permesso e il limite predefinito di 35 MB; [user: sendMail](https://learn.microsoft.com/en-us/graph/api/user-sendmail) per il permesso `Mail.Send`; [RBAC for Applications in Exchange Online](https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac) per il ruolo `Application Mail.ReadWrite`, che non include l'invio, e per la somma dei permessi. Tutte lette il 29/10/2026. Il tetto di circa 4 MB del corpo di una richiesta è dichiarato nel codice dell'adattatore del sito e coerente con la soglia documentata, ma non è stato letto in una pagina Microsoft in questa sessione.
+
 ## Registro tecnico del deploy, giorno per giorno
 
 Questo registro tiene ogni passaggio tecnico del rilascio con le sue misure, perché il costo reale di un deploy si capisce soltanto sommando i passaggi. Il tempo dell'IT Manager non è misurato da nessuno strumento; l'unica misura indiretta disponibile sono gli orari degli screenshot fatti per l'agente, contati nella cartella dello strumento di cattura: il 27/10 sono 246 fra le 09:11 e le 17:42, il 28/10 sono 27 fra le 09:14 e le 10:47 al momento della scrittura. Gli orari descrivono la finestra di lavoro, non il tempo effettivo.
@@ -259,6 +301,27 @@ La pagina iniziale non contiene collegamenti assoluti al nome di anteprima.
 
 **29/10/2026, iscrizioni alla newsletter e invii dei moduli conservati nel sito.** Il collaboratore che lavora sul ramo `posta-e-moduli` ha posto la domanda al team: la specifica del sito manda le iscrizioni a un servizio esterno, mentre la decisione del 28/10 le notifica a `info@` senza dire dove si conservano. La Direzione ha scelto di salvarle in una tabella del gestore di contenuti e di notificarle, gestendole a mano: si prevedono poche iscrizioni. Lo stesso vale per gli invii dei moduli. Il passaggio alle richieste del gestionale aziendale è rimandato, per non spostare la data. Le conseguenze per la VPS, il salvataggio, l'informativa e il registro dei trattamenti sono elencate nel registro delle pendenze.
 
+**29/10/2026, prove dei moduli e della posta sul ramo `posta-e-moduli`.** Le ha fatte il collaboratore che sviluppa, sull'albero di quel ramo nella VM 209, e le ha consegnate all'IT Manager in un resoconto temporaneo che qui si riassume. Il codice non è ancora committato. Tutte le prove sono passate da Mailpit, il contenitore di prova sulla VM in ascolto solo su loopback (porte 1025 e 8025), che raccoglie i messaggi e non consegna niente all'esterno. Le righe di Graph erano disattivate: l'adattatore di posta sceglie il canale dalla configurazione, e il canale è stato verificato prima di ogni prova.
+
+Che cosa risulta provato:
+
+- Ogni modulo collegato salva la richiesta, la mette in coda e la notifica: messaggio generico, candidatura, richiesta di un documento (certificazioni e policy), preventivo con due allegati, sia dal browser sia da script.
+- Gli indirizzi di destinazione seguono le rotte decise: `info@`, `recruitment@`, e per i preventivi `info@`, `opportunita@` e `sales@`.
+- Il mittente è `Intrawelt <mailer@intrawelt.com>`, con `Reply-To` sul visitatore.
+- Un server SMTP non ammesso viene rifiutato con la notifica «Fallita», mentre la richiesta resta salvata.
+- L'endpoint del preventivo rifiuta con 403 una provenienza estranea.
+- La lettura delle richieste dipende dal ruolo: i preventivi li leggono amministrazione, commerciale e HR e non la redazione; le candidature solo amministrazione e HR; la creazione anonima diretta è negata.
+
+Che cosa non è provato, per sua dichiarazione:
+
+- Nessun modulo con Graph attivo.
+- Il campo trappola e il limite di cinque invii in dieci minuti, che sono la difesa dagli invii automatici e sono già scritti.
+- Le risposte di errore a schermo e la ripresa di una notifica rimasta indietro.
+- La newsletter del piede, non ancora collegata, e il modulo delle candidature, che non esiste ancora.
+- La firma DKIM vista da una casella esterna.
+
+Una conseguenza tocca questo progetto. Gli allegati sopra i 3 MB passano con Graph da una bozza con caricamento a sessioni. Questo richiede il permesso `Mail.ReadWrite` sulla casella del sito, che oggi non è concesso. Il preventivo di prova pesava 5,7 MB. Senza quel permesso, un preventivo con allegati pesanti fallisce in produzione. Si concede con lo stesso schema di ADR-043, cioè ruolo di Exchange per le applicazioni limitato alla sola casella, oppure si limita il peso degli allegati: è una decisione dell'IT Manager, registrata nelle pendenze.
+
 ## Il giorno del passaggio, passo per passo
 
 Scaletta unica, scritta il 29/10/2026 per il passaggio annunciato per la settimana successiva. Raccoglie i passi sparsi nel registro qui sopra. L'ordine ha una ragione: il proxy chiede i certificati per i nomi definitivi solo quando quei nomi puntano già alla VPS. Prima si cambiano i record, poi il proxy. Un proxy cambiato prima servirebbe nomi senza certificato e consumerebbe tentativi presso l'autorità di certificazione. I nomi definitivi sono il dominio principale e quello secondario, ciascuno con e senza `www`, più `prodotto-1`.
@@ -274,7 +337,7 @@ Scaletta unica, scritta il 29/10/2026 per il passaggio annunciato per la settima
 | 7 | subito dopo il 6 | IT | `NEXT_PUBLIC_SERVER_URL` sul dominio definitivo in `env/app.env`, costruzione con etichetta nuova, `TAG` nel `.env`, `docker compose up -d app` | Accesso al pannello di redazione sul dominio definitivo |
 | 8 | subito dopo | IT | Record del vertice sul firewall verso la VPS (G12); togliere la riga temporanea dal file hosts della postazione IT e svuotare la cache DNS | Dalla sede il dominio senza prefisso risolve alla VPS |
 | 9 | subito dopo | IT | Verifiche dalla sede e da una rete esterna | Dominio principale 200 senza `X-Robots-Tag`; `www` e dominio secondario 301 verso il principale; `prodotto-1` 302 verso il sito del prodotto; certificato valido per ogni nome; `rimandi.py prova` contro il dominio definitivo tutto corretto |
-| 10 | subito dopo | IT e Sito | Verifiche del primo rilascio: pannello, caricamento e cancellazione su entrambe le collezioni, file riservato non raggiungibile, invio di un modulo | Tutto come al 26/10; la mail del modulo arriva |
+| 10 | subito dopo | IT e Sito | Verifiche del primo rilascio: pannello, caricamento e cancellazione su entrambe le collezioni, file riservato non raggiungibile, invio di un modulo verso una casella esterna all'organizzazione | Tutto come al 26/10; l'adattatore attivo è Graph e nessuna riga `SMTP_` è impostata; la mail arriva con firma DKIM valida e DMARC superato nelle intestazioni |
 | 11 | dopo uno o due giorni stabili | IT | Chiedere il ripristino del TTL; poi, a sito stabile, la disdetta degli spazi web e la revisione dell'SPF | Risposte del fornitore registrate qui |
 
 Il passo 7 merita una nota. In Next.js una variabile con il prefisso `NEXT_PUBLIC_` può essere incorporata al momento della costruzione: si chiede a chi sviluppa se questo sito la legge in costruzione o in esecuzione. Nel dubbio si ricostruisce, perché costa due o tre minuti, misurati al 28/10.

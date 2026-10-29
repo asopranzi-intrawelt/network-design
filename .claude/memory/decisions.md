@@ -638,3 +638,17 @@ Che cosa e' stato fatto. Sostituite 408 occorrenze dei nomi dei prodotti in 36 f
 Che cosa non cambia. La storia git pubblicata conserva i nomi reali fino a una riscrittura pianificata, secondo la regola di anonimizzazione.
 
 Fonti: nessuna fonte esterna; decisione interna sul perimetro di cio' che si pubblica.
+
+## ADR-046 - Sopra i 3 MB la notifica del sito non porta gli allegati ma il collegamento alla richiesta
+
+Data: 2026-10-29. Decisione presa sulla direttiva dell'IT Manager: se esiste un aggiramento lo si usa, altrimenti si limita il peso degli allegati. Il caso nasce dalle prove dei moduli del 29/10. Il preventivo di prova pesava 5,7 MB, e con Microsoft Graph un messaggio con allegati sopra i 3 MB si spedisce solo creando una bozza nella casella e caricandovi i file a pezzi. Per questo serve il permesso `Mail.ReadWrite`, che l'applicazione del sito non ha (ADR-043).
+
+La decisione. Quando la somma degli allegati supera la soglia di 3 MB, la notifica parte con il solo `Mail.Send` gia' concesso. Non porta gli allegati, ma l'elenco dei file e il collegamento alla richiesta nel pannello di redazione. Sotto la soglia gli allegati viaggiano nella mail come oggi. Il permesso `Mail.ReadWrite` non si concede, e il limite di 20 MB per file non cambia.
+
+Perche'. `Mail.ReadWrite` permette di leggere, modificare e cancellare tutta la posta della casella del sito, comprese risposte e mancati recapiti con i dati dei visitatori: un'applicazione che deve solo spedire ne riceverebbe molto di piu'. Il collegamento lascia i documenti dei clienti e i curriculum in un posto solo, con l'accesso per ruolo gia' provato, invece di moltiplicarli nelle caselle di tre destinatari. Limitare il peso, l'alternativa indicata dall'IT Manager, avrebbe rifiutato documenti da tradurre che il modulo dichiara ammessi.
+
+Alternative scartate: `Mail.ReadWrite` limitato alla casella con il controllo di accesso per applicazioni di Exchange, che funziona ma allarga il permesso; un limite di peso sotto i 3 MB; SMTP con token, che ADR-043 ha gia' scartato.
+
+Conseguenze. Chi legge le caselle di destinazione deve avere nel pannello un'utenza con il ruolo adatto: preventivi per amministrazione, commerciale e HR, candidature per amministrazione e HR. La strada della bozza gia' scritta nell'adattatore del sito resta inutilizzata. La modifica al codice spetta a chi sviluppa il sito, sul ramo `posta-e-moduli`; la prova si fa con Graph attivo, con un preventivo sopra la soglia. Il controllo GDPR dopo il go-live (G18) valuta se estendere il collegamento a tutti gli allegati.
+
+Fonti: [Attach large files to Outlook messages](https://learn.microsoft.com/en-us/graph/outlook-large-attachments), [attachment: createUploadSession](https://learn.microsoft.com/en-us/graph/api/attachment-createuploadsession), [RBAC for Applications in Exchange Online](https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac), lette il 29/10/2026. Il dettaglio tecnico e' nel runbook del primo rilascio, sezione sulla posta del sito.

@@ -30,14 +30,14 @@
     {
       "id": "intrawelt-website",
       "percorso_remoto": "ssh://intra-newsite/home/intrawelt-site/lavoro-consegne",
-      "commit_riconciliato": "7be5cef35ec6d582b2fe11d66679bf3af9bd95c8",
-      "riconciliato_il": "2026-10-21",
+      "commit_riconciliato": "2ba2c44",
+      "riconciliato_il": "2026-10-29",
       "accesso_stato": "configurato",
       "accesso_mancante": "nessuno: alias intra-newsite attivo dal 20/10/2026, chiave dedicata, lettura verificata anche in modalita non interattiva",
       "dove": "docs/sito-vps/sito-nuovo-integrazione.md",
       "nota_chiave": "chiave senza frase di accesso, DECISO dall IT Manager il 20/10/2026: raggiunge una macchina di sviluppo sulla LAN interna, e una frase imporrebbe ssh-agent caricato a ogni avvio perche il controllo interroga in modalita non interattiva. Questione chiusa, non riaprirla",
       "ramo": "ricerca-e-consegne-grafiche",
-      "nota_alberi": "il progetto ha tre alberi di lavoro: intrawelt-website su staging, lavoro-consegne su ricerca-e-consegne-grafiche, lavoro-mailing su fase-7-invii-e-mailing. Il suo ADR-034 stabilisce che la memoria sta sulla branch piu avanti, che e ricerca-e-consegne-grafiche: 36 decisioni contro 16 su staging e zero su main. Il canale legge quell albero per percorso assoluto e non copia nulla altrove, secondo la norma alberi-di-lavoro"
+      "nota_alberi": "dal 29/10/2026 il progetto ha tre alberi di lavoro: intrawelt-website su staging, lavoro-consegne su ricerca-e-consegne-grafiche, lavoro-posta su posta-e-moduli; l'albero lavoro-mailing della fase 7 non esiste piu'. Il suo ADR-034 stabilisce che la memoria sta sulla branch piu avanti, che resta ricerca-e-consegne-grafiche. Riconciliato il 29/10 su 2ba2c44: 24 commit dal 21/10, gia' noti qui o di soli contenuti e grafica; il lavoro di posta-e-moduli e' nell'albero, non ancora committato"
     }
   ],
   "scadenze": [

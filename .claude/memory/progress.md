@@ -1,5 +1,41 @@
 # Work-log
 
+## 29/10/2026 - Allegati sopra 3 MB (ADR-046) e posta del sito spiegata
+
+Su richiesta dell'IT Manager: aggiramento se esiste, altrimenti limite al peso. Lette il 29/10 le pagine Microsoft:
+
+- sotto i 3 MB basta una chiamata, mentre fra 3 e 150 MB serve una bozza con sessione di caricamento, che richiede `Mail.ReadWrite`;
+- il limite predefinito di un messaggio in Exchange Online è 35 MB;
+- `Application Mail.ReadWrite` è limitabile a una casella, non include l'invio e si somma ai permessi di Entra.
+
+Letto in sola lettura il codice dell'adattatore del sito sulla VM 209: implementa entrambe le strade, con la soglia sulla somma degli allegati a 3 MiB. Il limite dei file privati è 20 MB.
+
+Decisione, ADR-046: sopra la soglia la notifica non porta allegati ma il collegamento alla richiesta nel pannello; `Mail.ReadWrite` non si concede. Il bordo da provare è un'inferenza dal calcolo: 3 MiB in base64 diventano circa 4 MiB, vicini al tetto della richiesta, che non è stato letto in una pagina Microsoft.
+
+Documentazione:
+
+- nel runbook, due sottosezioni: perché la posta non passa dalla VPS, con SPF, DKIM, DMARC e MX misurati il 29/10 (DMARC `p=none`, già voce M33), e la soglia degli allegati con le fonti;
+- pendenze aggiornate;
+- voce didattica 3 con `refactor-03-allegati-e-permessi.md`, pulite a `lint-prosa.py`;
+- in lista le indicazioni pronte per il collaboratore, compresa la prova al bordo.
+
+Le direttive dell'IT Manager sugli artefatti privati del filone sono scritte in `CLAUDE.local.md`, non versionato, così non dipendono dalla memoria di sessione. Su indicazione dell'IT Manager, il work-log versionato non cita più materiale esterno al progetto: le voci precedenti che lo facevano sono state riscritte, e il dettaglio resta nell'handoff privato. Nessun subagent. **Template:** L-026.
+
+## 29/10/2026 - Canale verso la VM 209 già attivo, sito riconciliato, prove della posta di Tommaso recepite
+
+Correzione: nel giro precedente l'agente aveva detto all'IT Manager che il canale SSH verso la VM 209 era da configurare. Aveva letto la scheda `sito-nuovo-integrazione.md`, ferma al 20/10, e non il registro `data/scadenze.json`, che lo dava `configurato` dal 20/10 con chiave dedicata. È l'errore che `recupero-dei-fatti.md` descrive: il racconto preferito alla registrazione. Riprovata la lettura non interattiva con l'alias `intra-newsite`: riuscita.
+
+- Sulla VM i tre alberi sono ora `intrawelt-website` su `staging`, `lavoro-consegne` su `ricerca-e-consegne-grafiche`, dove sta la memoria del sito per il suo ADR-034, e `lavoro-posta` su `posta-e-moduli`. L'albero del mailing della fase 7 non esiste più.
+- Riconciliati 24 commit dal 21/10: tutti già noti qui o di soli contenuti e grafica. La voce passa a `2ba2c44`.
+- Scheda di integrazione corretta in testa. Riga della VM 209 aggiornata nel registro credenziali privato.
+
+Recepito il resoconto delle prove dei moduli del 29/10, consegnato sul Desktop dal collaboratore e cancellato dopo la lettura su indicazione dell'IT Manager. Il riassunto, senza nomi, è nel registro del runbook. Ne discendono due voci:
+
+- la decisione su `Mail.ReadWrite` per gli allegati sopra i 3 MB, registrata nelle pendenze;
+- la verifica di produzione al passo 10 della scaletta: adattatore Graph attivo, nessuna riga `SMTP_`, DKIM e DMARC verificati su una casella esterna.
+
+La mail unica a Fastnet è partita, conferma dell'IT Manager. Aggiornati lista, roadmap tramite il generatore, presentazione e handoff. Nessun subagent. **Template:** nessuna.
+
 ## 29/10/2026 - Salvataggio del sito anticipato (G17): codice provato, procedura, livello didattico
 
 Decisione dell'IT Manager: il contenitore `backup-sito` si crea prima del go-live. Letti in sola lettura con il server MCP: nodo `pve`, nessun contenitore LXC, nessun template di contenitore scaricato, `SERVIZI` con 362 GB liberi, `NAS_INTRA` con 2,87 TB liberi, VM 210 su `vmbr0` senza VLAN. Il codice è in `deploy/backup-sito/`.
@@ -22,11 +58,10 @@ Aggiornati `STACK.md`, pendenze, lista, roadmap tramite il generatore e la prese
 
 ## 29/10/2026 - Artefatti per i colleghi riallineati, G18 in roadmap
 
-Su domanda dell'IT Manager, verificato quali artefatti condivisi erano rimasti indietro rispetto alla direttiva del 28/10, che li vuole aggiornati a ogni passo. Erano aggiornati lista, roadmap e report dei rimandi. Erano fermi al 28/10 la presentazione per i colleghi, la pagina DNS e la lezione personale. Ora sono aggiornati.
+Su domanda dell'IT Manager, verificato quali artefatti condivisi erano rimasti indietro rispetto alla direttiva del 28/10, che li vuole aggiornati a ogni passo. Erano aggiornati lista, roadmap e report dei rimandi. Erano fermi al 28/10 la presentazione per i colleghi e la pagina DNS. Ora sono aggiornati.
 
 - La presentazione è stata modificata sul posto con python-pptx, dopo una copia di salvataggio nell'archivio degli artefatti. Riscritti i testi di copertina, slide 7 e slide 8; le misure delle slide 2-6 restano del 28/10. Il confronto dei testi è normalizzato, perché il file scrive gli accenti in forma scomposta. Controllo visivo con DeckCraft 0.12.0: nessun testo esce dai riquadri.
 - La pagina DNS è aggiornata nelle tre copie: Desktop, copia versionata già anonimizzata e documento sorgente. Contiene il dominio `.it` e il sottodominio del prodotto verso la VPS, la disdetta solo a sito stabile e il record del firewall solo il giorno del passaggio.
-- Nella lezione personale c'è la sezione 18, «Il giorno del passaggio: l'ordine conta», con checklist e glossario rinumerati e nessun nome reale. Una prima scrittura con uno script è stata bloccata dal classificatore dei permessi senza toccare il file; la modifica è stata rifatta con lo strumento di modifica.
 
 Un errore e il suo rimedio. Un comando concatenato ha eseguito il generatore della sezione G della roadmap mentre era ancora alla versione del 28/10, dopo che lo script che doveva aggiornarlo si era fermato su un controllo. La sezione G sul Desktop e la sua copia sono così tornate al 28/10. Il generatore ora contiene G1-G18 aggiornate, ricostruite dalla lista, ed è la fonte unica: la sezione è rigenerata e controllata. Corretta anche l'affermazione «messaggio mandato a Fastnet», che nessuno aveva confermato. Aggiunta G18 in lista, roadmap e pendenze: controllo ISO 27001 e GDPR dopo il go-live, con `gdpr-compliance` da installare dal pacchetto. Nessun subagent. **Template:** nessuna.
 
@@ -252,9 +287,9 @@ File scritti e riletti: `_notes/report-smtp.txt` con copia sul Desktop, `_notes/
 
 Analizzato il rapporto dettagliato dei client SMTP AUTH (5.391 righe, 02-25/10, tutte con autenticazione di base). La casella personale dell'IT Manager e' usata dall'host Proxmox per le notifiche, 74 messaggi: un apparato spedisce con credenziali personali. La casella del gestionale TREX spedisce da un solo punto, 5.288 messaggi. La casella del sito spedisce da quattro punti, e solo 104 messaggi su 1.072 portano l'identificativo di WordPress: altri programmi la usano e vanno individuati prima di toccarla. Origini mascherate nel rapporto.
 
-L'IT Manager, che sviluppa il sito, chiede di ricostruire la tabella modulo, mittente e destinatario del sito vecchio per ricollegare i moduli portati nel nuovo: via indicata, l'esportazione dei moduli di contatto dagli strumenti di WordPress; ripiego, il backup della VM 206 sul NAS. Registrata come punto 12 la verifica ISO 27001 del sito con le skill di conformita' gia' installate, dopo il passaggio, con la precisazione che la certificazione riguarda l'organizzazione e non il sito. Aggiunte alla roadmap le voci 18-22: etichette mobili, riavvii, rotazione dei registri, moduli, ISO. Allineati presentazione, pagina DNS nelle due copie e lezione personale, che riceve il caso del DNS interno che oscura il vertice del dominio e le due sorprese del rapporto. Direttiva: i quattro file del Desktop, cioe' lista, roadmap, presentazione e pagina DNS, piu' la lezione personale, si aggiornano sempre.
+L'IT Manager, che sviluppa il sito, chiede di ricostruire la tabella modulo, mittente e destinatario del sito vecchio per ricollegare i moduli portati nel nuovo: via indicata, l'esportazione dei moduli di contatto dagli strumenti di WordPress; ripiego, il backup della VM 206 sul NAS. Registrata come punto 12 la verifica ISO 27001 del sito con le skill di conformita' gia' installate, dopo il passaggio, con la precisazione che la certificazione riguarda l'organizzazione e non il sito. Aggiunte alla roadmap le voci 18-22: etichette mobili, riavvii, rotazione dei registri, moduli, ISO. Allineati presentazione e pagina DNS nelle due copie. Direttiva: i quattro file del Desktop, cioe' lista, roadmap, presentazione e pagina DNS, si aggiornano sempre.
 
-File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, roadmap, presentazione e pagina DNS sul Desktop, `docs/sito-vps/dns-domini-spiegato-semplice.html`, la lezione personale, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, roadmap, presentazione e pagina DNS sul Desktop, `docs/sito-vps/dns-domini-spiegato-semplice.html`, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
 
 ## Piano di manutenzione del sito dopo la messa in produzione, 27/10/2026
 
@@ -290,13 +325,13 @@ Letti dalle impostazioni del plugin SMTP del sito attuale: invio verso il server
 
 Verificato sulla fonte Microsoft, messaggio MC786329 aggiornato il 27/01/2026: a fine dicembre 2026 l'autenticazione di base dell'invio SMTP dalle applicazioni viene disattivata di default nei tenant esistenti, riattivabile dall'amministratore, con rimozione definitiva da annunciare nella seconda meta' del 2027. La data precedente di aprile 2026 e' superata. L'IT Manager voleva fissarla ad anno nuovo: la scadenza cade prima, quindi registrata come `M365-SMTP-BASIC` in `data/scadenze.json` con data 31/12/2026 e preavviso di 75 giorni, cosi' che lo script di allineamento la riporti a ogni avvio. Aperta la voce trasversale nelle pendenze, perche' secondo l'IT Manager riguarda anche Prodotto-1, il gestionale e altri servizi di posta automatica.
 
-File scritti e riletti: `data/scadenze.json` (revisione 27), `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt` con copia sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, la lezione personale, questo work-log. **Template:** nessuna
+File scritti e riletti: `data/scadenze.json` (revisione 27), `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt` con copia sul Desktop, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
 
 ## Inventario della posta del sito attuale, primo giro, 27/10/2026
 
-Entrato l'IT Manager nel pannello del sito attuale, dopo aver corretto il file hosts della postazione: le due righe decommentate puntavano alla VM 206 dismessa e producevano il timeout; aggiunta una riga temporanea verso l'indirizzo pubblico dell'hosting, registrata nell'handoff come da togliere. Letto da sei screenshot l'elenco dei 26 plugin. La posta passa da un plugin SMTP con l'avviso di Microsoft sulla fine dell'autenticazione di base, il che corregge la mia inferenza dal record SPF: il sito attuale con ogni probabilita' spedisce gia' da Microsoft 365, non dal server del fornitore, da confermare nelle impostazioni del plugin. Moduli Contact Form 7; due plugin Mailchimp suggeriscono una newsletter dal feed RSS. Aggiornati lista, pendenze, handoff e lezione personale.
+Entrato l'IT Manager nel pannello del sito attuale, dopo aver corretto il file hosts della postazione: le due righe decommentate puntavano alla VM 206 dismessa e producevano il timeout; aggiunta una riga temporanea verso l'indirizzo pubblico dell'hosting, registrata nell'handoff come da togliere. Letto da sei screenshot l'elenco dei 26 plugin. La posta passa da un plugin SMTP con l'avviso di Microsoft sulla fine dell'autenticazione di base, il che corregge la mia inferenza dal record SPF: il sito attuale con ogni probabilita' spedisce gia' da Microsoft 365, non dal server del fornitore, da confermare nelle impostazioni del plugin. Moduli Contact Form 7; due plugin Mailchimp suggeriscono una newsletter dal feed RSS. Aggiornati lista, pendenze e handoff.
 
-File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, la lezione personale sul DNS, questo work-log. **Template:** nessuna
+File scritti e riletti: `_notes/lista-sito-produzione.txt` con copia sul Desktop, `docs/stato/pendenze-aperte.md`, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
 
 ## Dalla LAN il dominio senza prefisso non risolve, 27/10/2026
 
@@ -304,11 +339,11 @@ L'IT Manager non riesce ad aprire il pannello del sito attuale: il browser dichi
 
 File scritti e riletti: `docs/stato/pendenze-aperte.md`, `_notes/lista-sito-produzione.txt` con copia sul Desktop, questo work-log. **Template:** nessuna
 
-## Lezione personale sul DNS aggiornata, e regola del filone sito, 27/10/2026
+## Regola del filone sito, 27/10/2026
 
-Direttiva dell'IT Manager: ciò che impara nel filone del sito si scrive anche, anonimizzato e astratto, nella sua lezione personale sul DNS, fuori dal progetto; il percorso e le convenzioni stanno nell'handoff privato del filone. Aggiunte due sezioni, il nome lasciato a puntare nel vuoto con il rischio di furto del sottodominio, e la posta che parte da un sito con la lettura congiunta di SPF e DMARC; aggiornati indice, checklist e glossario; verificato che il file non contiene nomi reali. Stabilito anche che ogni micro-passo del filone si salva nello stesso giro in lista, roadmap, handoff e work-log.
+Direttiva dell'IT Manager su materiale privato del filone, registrata nell'handoff privato. Stabilito anche che ogni micro-passo del filone si salva nello stesso giro in lista, roadmap, handoff e work-log.
 
-File scritti e riletti: la lezione personale con copia precedente accanto, `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
+File scritti e riletti: `_notes/HANDOFF-sito-2026-10-27.md`, questo work-log. **Template:** nessuna
 
 ## Posta del sito: si replica quella del sito attuale, 27/10/2026
 
