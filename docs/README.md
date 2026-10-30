@@ -24,6 +24,7 @@ Fuori da `docs/` stanno le altre due metà del progetto. Le schede tecniche di s
 | Domanda | Documento |
 |---|---|
 | Che cosa è collegato e quanto è verificato? | [Snapshot](stato/snapshot-infrastruttura.md), [mappa](stato/network-map.html) e [guida alla topologia](stato/network-diagram.md) |
+| Da che cosa comincio, fra i lavori aperti? | [Fronti di lavoro](stato/fronti-di-lavoro.md), che li ordina e dice che cosa sblocca ciascuno |
 | Che cosa resta aperto e quali vincoli ci sono? | [Pendenze consolidate](stato/pendenze-aperte.md), [registro dei difetti](infrastructure-timeline/GAP-TBC.md) e [roadmap](../.claude/context/roadmap.md) |
 | Dove stanno cavi, armadi, corrente e porte fisiche? | [Livello fisico ed elettrico](rete/livello-fisico-ed-elettrico.md) e [mappatura delle porte](rete/mappatura-porte-fisiche.md) |
 | Come il server e le VM raggiungono la rete? | [Proxmox e bridge](rete/virtualizzazione-proxmox-e-bridge.md) e [servizi esposti](rete/esposizione-servizi-interni.md) |

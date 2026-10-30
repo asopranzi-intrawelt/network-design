@@ -2031,6 +2031,27 @@
       "stato": "in_corso",
       "nota": "30/10 pomeriggio, prima misura: lo strumento funziona (50 chiamate riuscite su 77) ma l'evidenza attesa non esiste. getLicenseInfo misura managePatchManagement a falso e il servizio risponde 403, quindi non c'e' nessuna fonte di CVE per endpoint; includeRiskScore e' rifiutato e nessun endpoint porta un punteggio di rischio, perche' anche Risk Management e' fuori licenza. In licenza restano correlatore di eventi, HyperDetect e Sandbox Analyzer. Cio' che si misura oggi: 29 endpoint gestiti su 27 posti occupati di 30, nessun agente con prodotto non aggiornato, tre con firme non aggiornate, quattro policy, un elemento in quarantena; copertura dei moduli per macchina con controllo dei dispositivi spento su cinque endpoint, anti-phishing su tre e scansione del traffico su tre. L'avanzamento sulle patch resta bloccato da una decisione commerciale, aperta fra i prerequisiti.",
       "evidenza": "output/bitdefender-snapshot.json del 30/10/2026 ore 11:16; docs/sicurezza/bitdefender-gravityzone-api.md sezione della prima misura"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: la lettura degli incidenti EDR aggiunge una fonte che il progetto non aveva e scopre una lacuna di processo. 195 incidenti dal 07/11/2025 al 30/10/2026, tutti nello stato aperto, tutti con priorita' sconosciuta e nessuno assegnato: 118 bloccati dal prodotto senza intervento umano, ma il percorso di gestione della console non e' in uso e nessuno chiude, classifica o assegna. Composizione: 64 incidenti di una sola firma comportamentale su PowerShell, su una sola postazione e nelle tre settimane di sviluppo degli strumenti di questo progetto, piu' i due falsi positivi gia' noti; sotto quel rumore stanno 32 URL di phishing su otto postazioni in undici mesi, tre rilevamenti di sottrazione credenziali su tre postazioni nello stesso giorno dell'08/01/2026, e sette firme di strumento di pentesting su una postazione che non coincidono con il VA autorizzato. Nessun incidente fra marzo e luglio 2026, da spiegare e non da dedurre.",
+      "evidenza": "output/bitdefender-snapshot.json del 30/10/2026; docs/sicurezza/bitdefender-gravityzone-api.md sezione sui 195 incidenti"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: ricevitore Seeweb postcheck locale verde; preparato verificatore read-only della finestra UDP con nove prove Linux e datagramma sintetico ricevuto in rsyslog Debian 13. Nessun evento reale dal provider; test, confronto campioni e classificazione ancora da eseguire.",
+      "evidenza": "D:/log-collector/bin/ads-seeweb-pilot-evidence.py; D:/log-collector/docs/runbook-componente-2.md"
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: l'utente riferisce di aver inviato a Seeweb la richiesta di aggiornare OPNsense dopo le 19:00 per evitare disservizi in orario lavorativo. Disponibilita del provider, costo fuori orario, presidio e rollback ancora da confermare; nessuna finestra approvata.",
+      "evidenza": "comunicazione dell'IT Manager del 30/10; docs/firewall/firewall-seeweb-opnsense.md"
     }
   ]
 }

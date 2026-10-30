@@ -1,5 +1,9 @@
 # Work-log
 
+## 30/10/2026 - Verificatore del campione Seeweb preparato
+
+L'utente riferisce di aver inviato il chiarimento a Seeweb: l'upgrade OPNsense è richiesto dopo le 19:00, con disponibilità e costo ancora da confermare. Il ricevitore del collettore ha superato il postcheck locale, ma manca la prova di consegna UDP dal provider. Il collettore prepara un verificatore in sola lettura che misura, nella finestra concordata, le righe del mittente nel deposito tecnico e in AdS senza pubblicare IP o messaggi. Nove prove Linux e un datagramma sintetico ricevuto da rsyslog in Debian 13 passano; il verificatore non è ancora installato sulla VM. Un risultato `observed` richiede eventi tecnici e zero AdS, ma la classificazione dei campioni GUI/SSH e il confronto con Seeweb restano manuali. ISO-30 e Cliente-1 89/90 in corso. Aggiornati dossier osservabilità, contesto e memoria; filone sito preservato. Nessun messaggio inviato dall'agente. **Template:** nessuna.
+
 ## 30/10/2026 - Postcheck Seeweb e richiesta di finestra serale
 
 L'utente ha verificato sul collettore, dopo `--apply`, hash dei file live e backup, servizi, sintassi rsyslog, regola nftables e listener UDP 514: tutti verdi (`SEEWEB_POSTCHECK_OK`). Il test UDP dal provider non è ancora svolto e ISO-30 resta in corso. Letto screenshot_206 del ticket e copiato privatamente con SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`: snapshot hypervisor a caldo e seconda copia backup disponibili; Seeweb opera feriali 09:00-18:00. L'utente chiede l'upgrade dopo le 19:00 per non intaccare l'operatività; disponibilità, costo e presidio del ripristino sono da chiarire. Aggiornati contesto, memoria, dossier firewall e osservabilità, ISO-27/30 da sincronizzare, senza toccare il filone sito. Nessun ticket inviato dall'agente. **Template:** nessuna.
@@ -4284,3 +4288,31 @@ Consegna tecnica in sola lettura: installazioni, processi caricati e fonti uffic
 **Template:** nessuna.
 
 **Difetto del limitatore di frequenza, stesso giorno.** La correzione contro il 429 ha rotto la prima chiamata di ogni corsa: `$script:UltimaChiamata` partiva da `[DateTime]::MinValue` e la differenza, circa 63.928.956.238.283 millisecondi, non entra in un Int32, quindi `Invoke-GzApi` moriva sulla conversione prima ancora di chiamare. Corretto confrontando prima e convertendo dopo, con il valore limitato a cinque secondi, e inizializzando a un secondo fa. La lezione e' la mia: avevo verificato la sintassi e non la logica, e un parse verde non esercita nessun ramo. Il calcolo e' stato provato isolato nei tre casi: prima chiamata senza attesa, chiamata immediata successiva con 119 ms di attesa, e il vecchio valore ormai innocuo perche' il confronto precede la conversione.
+
+## I 195 incidenti EDR, e il rumore che seppelliva il segnale, 30/10/2026
+
+**Corsa completa.** 53 chiamate riuscite, 23 fallite, nessun 429: il limitatore corretto regge. I fallimenti residui sono tutti spiegati e legittimi, cioe' moduli non in licenza (patch management, Exchange, blocklist EDR, PHASR, push) e metodi che vogliono un parametro che qui non si ha (`accountId`, `objectId`, `integrationId`). L'inventario e' tornato con il ripiego senza opzioni.
+
+**Misura.** 195 incidenti dal 07/11/2025 al 30/10/2026, su 15 postazioni. Tutti nello stato aperto, tutti con priorita' sconosciuta, nessuno assegnato. 118 bloccati dal prodotto, 77 soltanto segnalati. Per tipo: 69 malware, 20 exploit, un ransomware, una PUA, 85 altro. Gravita' da 19 a 81, mediana 27, otto a 70 o piu'. Distribuzione concentrata: una postazione porta 79 incidenti, le prime tre ne portano 115. Perimetro: cio' che la console conserva, con una finestra di ritenzione non nota.
+
+**La lacuna di processo.** Una coda di 195 incidenti aperti da un anno, senza priorita' ne' assegnatario, dice che il percorso di gestione della console non e' in uso. Non significa che nessuno abbia fatto niente, perche' il prodotto ha bloccato 118 da se'; significa che nessuno chiude, classifica o assegna, e che un registro non lavorato non e' un presidio. Registrato su ISO-30.
+
+**Il ritrovamento vero.** La firma piu' frequente, 64 incidenti su 195, e' `WMIPowershellStartedByPowershell`: una sola postazione, dal 09/10 al 30/10, tutti e 64 soltanto segnalati e nessuno bloccato. Tre settimane su una macchina, e il periodo coincide con lo sviluppo intensivo di strumenti PowerShell di questo progetto. Con i cinque `Gen:Illusion.Slingshot` e l'unico `Boxter`, sono settanta incidenti su 195 che sono con ogni probabilita' il progetto che osserva se stesso. Sotto quel rumore stavano 32 `URL.Phishing` su otto postazioni distinte in undici mesi, tutti bloccati, e tre `PrivacyThreat.PasswordStealer` su tre postazioni diverse tutte nello stesso giorno dell'08/01/2026. E' la ragione misurata della decisione ADR-050: la firma del codice e l'esclusione per editore non servono alla comodita' di chi sviluppa, servono a non seppellire il segnale.
+
+**Tre verifiche aperte nuove.** L'episodio dell'08/01/2026 su tre postazioni, che nessuno ha mai guardato come episodio. I sette `Exploit.PentestingTool.HTTP` su una sola postazione fra il 14/11/2025 e il 30/09/2026, che non coincidono con il VA autorizzato ne' per data ne' per host. Il vuoto di incidenti fra marzo e luglio 2026, che puo' essere quiete, ritenzione o modulo spento e si chiede al fornitore invece di dedurlo.
+
+**Subagent.** Nessuno.
+
+**Template:** nessuna.
+
+## Chiusura del 30/10/2026: fronti ordinati, lezioni al template, ripresa con scelta
+
+**Vista nuova.** `docs/stato/fronti-di-lavoro.md`, richiesta dall'IT Manager: una vista di primo livello che risponde a che cosa affrontare adesso, con i sei fronti aperti, il loro ordine e cio' che sblocca ciascuno. Non sostituisce nessun registro e lo dichiara in testa; indicizzata in `docs/stato/README.md` e in `docs/README.md`. L'ordine mette primo il deploy del sito, perche' e' l'unico fronte con un committente che aspetta e perche' tiene fermi due lavori che gli sono stati subordinati.
+
+**Ripresa.** `_notes/RESUME-PROMPT.md` riscritto per intero. Il file era stato ridotto a venti righe da una riscrittura delle 11:28 e aveva perso il contesto del deploy del sito, che e' stato ricostruito dalle fonti versionate: e' precisamente il caso per cui quel file si dichiara volatile. Ora si apre con la domanda all'IT Manager su quale fronte riprendere, con l'istruzione esplicita di non cominciare prima di averla posta, e con la raccomandazione dichiarata ma non imposta.
+
+**Lezioni al template.** Quattro, registrate nel registro che il template legge da se' a ogni apertura, senza scrivere nel suo albero. L-030: un parse verde non esercita nessun ramo, dal difetto del limitatore. L-031: un trasporto che puo' autenticarsi in due modi li prova invece di sceglierne uno, dai 401. L-032: una capacita' documentata dal fornitore non e' una capacita' che si ha, dal modulo delle patch fuori licenza che reggeva un intero filone. L-033: uno strumento che scrive un segreto sa anche crearlo, dal fallimento su chiave assente.
+
+**Template:** L-030, L-031, L-032, L-033.
+
+**L-028 osservata in esercizio, 30/10/2026.** Alla chiusura si e' scoperto che il commit `e91aa5e`, con messaggio «postcheck collettore», contiene gia' la maggior parte del lavoro di questa sessione: strumento Bitdefender, strumento di firma, schede della custodia dei segreti e della API, ADR-049 e ADR-050, scadenze e glossario. E' esattamente il caso della lezione L-028, cioe' un `chiudi` lanciato per un lavoro che committa l'albero intero con il proprio messaggio. Niente e' andato perduto e la storia e' completa, ma non descrive cio' che contiene, e il precedente `df90ed6` mostra che nel repository la pratica di dichiararlo nel messaggio esiste gia'. Nessuna sessione Claude concorrente risultava aperta qui al momento della verifica: le due vive erano questa e una su un altro progetto. Il messaggio preparato per la chiusura dichiara percio' l'inclusione del lavoro del collettore, che resta non committato nell'albero e non appartiene a questa sessione.

@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Campione Seeweb ancora da ricevere, 30/10/2026
+
+L'utente riferisce di aver inviato il chiarimento a Seeweb: l'upgrade OPNsense è richiesto dopo le 19:00, con disponibilità e costo ancora da confermare. Il ricevitore del collettore ha superato il postcheck locale, ma manca la prova di consegna UDP dal provider. Il collettore prepara un verificatore in sola lettura che misura, nella finestra concordata, le righe del mittente nel deposito tecnico e in AdS senza pubblicare IP o messaggi. Nove prove Linux e un datagramma sintetico ricevuto da rsyslog in Debian 13 passano; il verificatore non è ancora installato sulla VM. Un risultato `observed` richiede eventi tecnici e zero AdS, ma la classificazione dei campioni GUI/SSH e il confronto con Seeweb restano manuali. ISO-30 e Cliente-1 89/90 in corso.
+
 ## Pilot Seeweb verificato sulla VM, 30/10/2026
 
 Il pilot Seeweb v2 è applicato sul collettore. Il postcheck indipendente dell'utente ha dato `SEEWEB_POSTCHECK_OK`: hash dei due file live e del backup, servizi attivi, sintassi rsyslog, regola nftables per il solo mittente previsto e listener UDP 514. Questo prova la preparazione locale, non l'arrivo di eventi attraverso IPsec. Si può concordare un piccolo test UDP con Seeweb in una finestra separata, con pochi eventi GUI/SSH e verifica del deposito tecnico; nessun inoltro continuo o log di traffico. Lo screenshot_206 del ticket, copia privata SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`, conferma snapshot hypervisor eseguibile a caldo e seconda copia del backup disponibile. Seeweb opera nei feriali 09:00-18:00; l'utente preferisce l'upgrade OPNsense dopo le 19:00 per ridurre l'impatto. Disponibilità fuori orario, costi e presidio del ripristino devono ancora essere confermati. ISO-27/30 e Cliente-1 89/90 restano in corso.

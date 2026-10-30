@@ -2,6 +2,8 @@
 
 ## Finestra serale richiesta, 30/10/2026
 
+L'utente riferisce di aver inviato a Seeweb il chiarimento sulla fascia dopo le 19:00. La risposta del provider e l'eventuale conferma di costo e presidio sono ancora attese.
+
 Nello screenshot_206, copia privata SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`, Seeweb conferma che lo snapshot a livello hypervisor può essere eseguito a caldo e che può fornirci una seconda copia del backup di configurazione. Comunica operatività feriale 09:00-18:00 e domanda se preferiamo questa fascia. L'utente precisa che l'orario aziendale indicato era la fascia da evitare: per l'upgrade OPNsense chiede dopo le 19:00. Restano da concordare disponibilità del tecnico fuori orario, eventuali costi aggiuntivi e presidio fino a verifiche e possibile rollback. Non è stata autorizzata alcuna finestra o modifica all'appliance. Il test Syslog UDP è separato: il ricevitore locale è stato verificato, ma non è ancora arrivato alcun evento reale.
 
 ## Chiarimento del provider su 26.7.7, 29/10/2026

@@ -233,8 +233,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-30. Obie
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/operativita/vendor-management.md, docs/sicurezza/design-and-security.md, roadmap Fase 4, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-30):** 30/10 pomeriggio, prima misura: lo strumento funziona (50 chiamate riuscite su 77) ma l'evidenza attesa non esiste. getLicenseInfo misura managePatchManagement a falso e il servizio risponde 403, quindi non c'e' nessuna fonte di CVE per endpoint; includeRiskScore e' rifiutato e nessun endpoint porta un punteggio di rischio, perche' anche Risk Management e' fuori licenza. In licenza restano correlatore di eventi, HyperDetect e Sandbox Analyzer. Cio' che si misura oggi: 29 endpoint gestiti su 27 posti occupati di 30, nessun agente con prodotto non aggiornato, tre con firme non aggiornate, quattro policy, un elemento in quarantena; copertura dei moduli per macchina con controllo dei dispositivi spento su cinque endpoint, anti-phishing su tre e scansione del traffico su tre. L'avanzamento sulle patch resta bloccato da una decisione commerciale, aperta fra i prerequisiti.
-  - **Evidenza:** output/bitdefender-snapshot.json del 30/10/2026 ore 11:16; docs/sicurezza/bitdefender-gravityzone-api.md sezione della prima misura
+  - **Ultimo stato (2026-10-30):** 30/10: l'utente riferisce di aver inviato a Seeweb la richiesta di aggiornare OPNsense dopo le 19:00 per evitare disservizi in orario lavorativo. Disponibilita del provider, costo fuori orario, presidio e rollback ancora da confermare; nessuna finestra approvata.
+  - **Evidenza:** comunicazione dell'IT Manager del 30/10; docs/firewall/firewall-seeweb-opnsense.md
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
@@ -255,8 +255,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-30. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-30):** 30/10: postcheck indipendente del ricevitore Seeweb sulla VM completamente verde: hash live e backup, servizi, rsyslog, regola nftables e listener UDP 514. Manca test con eventi GUI/SSH reali dal provider, classificazione nel deposito tecnico e verifica assenza in AdS; nessun inoltro continuo.
-  - **Evidenza:** output SEEWEB_POSTCHECK_OK comunicato dall'IT Manager il 30/10; docs/osservabilita/sorgenti-log-seeweb.md
+  - **Ultimo stato (2026-10-30):** 30/10: ricevitore Seeweb postcheck locale verde; preparato verificatore read-only della finestra UDP con nove prove Linux e datagramma sintetico ricevuto in rsyslog Debian 13. Nessun evento reale dal provider; test, confronto campioni e classificazione ancora da eseguire.
+  - **Evidenza:** D:/log-collector/bin/ads-seeweb-pilot-evidence.py; D:/log-collector/docs/runbook-componente-2.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.
