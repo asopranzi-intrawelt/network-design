@@ -2,7 +2,7 @@
 
 > File generato da `data/iso27001-interventi.json` con `python scripts/IsoRoadmap.py build`. Non modificare questa vista a mano.
 
-Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
+Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-30. Obiettivo di progetto: marzo 2027. Le scadenze delle fasi sono proposte operative, non attestazioni di conformita'.
 
 ## Come si usa
 
@@ -233,15 +233,16 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obie
   - **Chiusura verificabile:** Registro aggiornamenti con asset, versione precedente e nuova, esito e prossima revisione.
   - **Responsabile:** IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.8.9, A.8.32.
   - **Fonti:** docs/operativita/vendor-management.md, docs/sicurezza/design-and-security.md, roadmap Fase 4, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-29):** 29/10: Seeweb indica target OPNsense 26.7.7, snapshot hypervisor e backup completo; due ore sono il massimo previsto dell'attivita, con fermo durante i riavvii. VPN critica e verifica dei servizi a nostro carico. Prima del via: console, posizione e ripristinabilita del backup, soglia di rollback, finestra e test congiunto IPsec, routing, NAT e servizi. Nessun upgrade eseguito.
-  - **Evidenza:** docs/firewall/firewall-seeweb-opnsense.md; screenshot_135 privato SHA-256 42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7
+  - **Ultimo stato (2026-10-30):** 30/10 pomeriggio, prima misura: lo strumento funziona (50 chiamate riuscite su 77) ma l'evidenza attesa non esiste. getLicenseInfo misura managePatchManagement a falso e il servizio risponde 403, quindi non c'e' nessuna fonte di CVE per endpoint; includeRiskScore e' rifiutato e nessun endpoint porta un punteggio di rischio, perche' anche Risk Management e' fuori licenza. In licenza restano correlatore di eventi, HyperDetect e Sandbox Analyzer. Cio' che si misura oggi: 29 endpoint gestiti su 27 posti occupati di 30, nessun agente con prodotto non aggiornato, tre con firme non aggiornate, quattro policy, un elemento in quarantena; copertura dei moduli per macchina con controllo dei dispositivi spento su cinque endpoint, anti-phishing su tre e scansione del traffico su tre. L'avanzamento sulle patch resta bloccato da una decisione commerciale, aperta fra i prerequisiti.
+  - **Evidenza:** output/bitdefender-snapshot.json del 30/10/2026 ore 11:16; docs/sicurezza/bitdefender-gravityzone-api.md sezione della prima misura
 
 - **ISO-28 | Remediation del vulnerability assessment** - **In corso**; FORNITURA CONDIZIONATA. Riscansione o consulenza esterna se gli strumenti interni non possono verificare i rimedi.
   - **Azione:** Attribuire i 174 interventi VA a asset, responsabile, priorita' e scadenza; verificare prima critici e alti con una nuova prova mirata.
   - **Chiusura verificabile:** Ogni chiusura ha output o verbale; i rilievi critici e alti sono riprovati.
   - **Responsabile:** RSGSI e IT Manager. **Dipendenze:** nessuna. **Controlli:** A.8.8, A.5.36.
   - **Fonti:** docs/sicurezza/vulnerability-assessment-nov2025.md, docs/sicurezza/design-and-security.md.
-  - **Ultimo stato (2026-10-14):** Secondo VA Onova consegnato il 14/10/2026: dieci rilievi unici per 87 istanze sul solo segmento delle postazioni, una Alta (firmware USG FLEX 500 5.42, CVE-2026-14818), otto Medie, una Bassa. Fotografia in docs/sicurezza/vulnerability-assessment-ott2026.md; gap propri 215-220. Il perimetro firmato non e' agli atti, quindi nessun rilievo del VA 2025 si chiude per assenza nel nuovo report. Nessuna remediation applicata in questo giro.
+  - **Ultimo stato (2026-10-30):** 30/10: la riconciliazione dei rilievi acquista una seconda fonte, con un raccordo diverso da quello atteso. GravityZone misura il punto cieco che Onova dichiara da se', cioe' lo stato interno dei sistemi che una scansione non autenticata non vede; ma la Public API non espone i rilievi nominali, quindi il confronto si fa fra le CVE delle patch mancanti e i plugin Nessus del rapporto, non fra due liste omologhe. Tre dei dieci rilievi (firmware del gateway, certificati degli apparati, inoltro IP) restano fuori perche' riguardano apparati senza agente; firma SMB e SMBv1 sulle postazioni sono invece verificabili da GravityZone.
+  - **Evidenza:** ADR-049; docs/sicurezza/bitdefender-gravityzone-api.md
 
 - **ISO-29 | Cifratura endpoint e dispositivo personale in RMM** - **Da fare**; FORNITURA CONDIZIONATA. Licenze MDM o altra gestione di conformita' solo dopo scelta del requisito di controllo centralizzato.
   - **Azione:** Misurare cifratura, TPM, protezioni e chiavi per dispositivo; definire trattamento del PC personale gestito dall'RMM e delle eccezioni.
@@ -254,8 +255,8 @@ Fotografia iniziale: 2026-09-28. Ultimo avanzamento registrato: 2026-10-29. Obie
   - **Chiusura verificabile:** Evento ricevuto, letto e preso in carico entro il tempo stabilito.
   - **Responsabile:** IT Manager e RSGSI. **Dipendenze:** nessuna. **Controlli:** A.8.15, A.8.16.
   - **Fonti:** docs/sicurezza/design-and-security.md, GAP-TBC #200, docs/osservabilita/log-collector-integrazione.md, docs/firewall/firewall-seeweb-opnsense.md, roadmap M31.
-  - **Ultimo stato (2026-10-29):** 29/10: MyOffice non fornisce audit Canon; ReadMeter 7 proposto sulla VM100 Windows Server 2022, senza installazione e con requisiti da chiarire. Modello iR-ADV C5840 e accesso via Remote Operation Viewer confermati dall'utente. Audit e Syslog nativi da verificare sul dispositivo con campione minimizzato; nessun nuovo flusso raccolto.
-  - **Evidenza:** docs/osservabilita/log-collector-integrazione.md; screenshot_170 e screenshot_173 nel livello privato
+  - **Ultimo stato (2026-10-30):** 30/10: postcheck indipendente del ricevitore Seeweb sulla VM completamente verde: hash live e backup, servizi, rsyslog, regola nftables e listener UDP 514. Manca test con eventi GUI/SSH reali dal provider, classificazione nel deposito tecnico e verifica assenza in AdS; nessun inoltro continuo.
+  - **Evidenza:** output SEEWEB_POSTCHECK_OK comunicato dall'IT Manager il 30/10; docs/osservabilita/sorgenti-log-seeweb.md
 
 - **ISO-31 | UPS dello switch Piano Terra** - **Da fare**; FORNITURA DA VERIFICARE. UPS dimensionato sul carico reale e possibile scheda SNMP; verificare se l'unita' prevista sia stata gia' acquistata.
   - **Azione:** Misurare carico dello switch incluso budget PoE, verificare se l'UPS previsto e' gia' disponibile, installarlo e provarne l'autonomia.

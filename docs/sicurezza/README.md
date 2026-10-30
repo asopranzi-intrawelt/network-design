@@ -10,6 +10,8 @@ Quest'area raccoglie ciò che serve al percorso ISO 27001 della rete: la roadmap
 | [Governance della sicurezza](cybersecurity-governance.md) | cronologia e stato delle attività di sicurezza 2024-2026 | registro |
 | [VA ottobre 2026](vulnerability-assessment-ott2026.md) | il secondo ciclo di verifica esterna, base corrente della riconciliazione | sintesi |
 | [VA novembre 2025](vulnerability-assessment-nov2025.md) | il primo ciclo, conservato per i rilievi storici | storico |
+| [API di Bitdefender GravityZone](bitdefender-gravityzone-api.md) | che cosa la console degli endpoint da' per via programmatica, che cosa non da', e come si lega al registro ISO e al VA | scheda tecnica |
+| [Custodia dei segreti operativi](custodia-dei-segreti-operativi.md) | come si proteggono chiavi API, materiale dell'autorita' e credenziali di terzi, e che fare della cartella riservata finche' manca il gestore delle password | pratiche |
 | [Continuità operativa](business-continuity-disaster-recovery.md) | ruoli, procedure d'urgenza, backup e ripristino | piano |
 | [Autorità di certificazione interna](autorita-certificazione-interna.md) | come nasce e dove vive la chiave dell'autorità aziendale | scheda |
 | [Migrazione dei segreti locali (M30)](runbook-migrazione-segreti-locali.md) | come i segreti della postazione passano al file privato e con quali gate | runbook |

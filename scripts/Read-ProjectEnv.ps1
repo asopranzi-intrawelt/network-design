@@ -10,7 +10,7 @@
 function Get-ProjectSecret {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)][ValidateSet('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE')][string]$Name,
+        [Parameter(Mandatory)][ValidateSet('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE', 'BITDEFENDER_API_URL', 'BITDEFENDER_API_KEY')][string]$Name,
         [Parameter(Mandatory)][string]$ProjectRoot
     )
 
@@ -22,7 +22,7 @@ function Get-ProjectSecret {
         $match = [regex]::Match($line, '^([A-Z_][A-Z0-9_]*)=("(?:[^"\\]|\\.)*")$')
         if (-not $match.Success) { throw 'Formato .env non valido' }
         $key = $match.Groups[1].Value
-        if ($key -notin @('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE')) {
+        if ($key -notin @('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE', 'BITDEFENDER_API_URL', 'BITDEFENDER_API_KEY')) {
             throw "Chiave non ammessa in .env: $key"
         }
         if ($values.ContainsKey($key)) { throw "Chiave duplicata in .env: $key" }

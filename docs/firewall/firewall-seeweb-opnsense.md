@@ -1,5 +1,9 @@
 # Firewall Seeweb: configurazione osservata e percorso di raccolta
 
+## Finestra serale richiesta, 30/10/2026
+
+Nello screenshot_206, copia privata SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`, Seeweb conferma che lo snapshot a livello hypervisor può essere eseguito a caldo e che può fornirci una seconda copia del backup di configurazione. Comunica operatività feriale 09:00-18:00 e domanda se preferiamo questa fascia. L'utente precisa che l'orario aziendale indicato era la fascia da evitare: per l'upgrade OPNsense chiede dopo le 19:00. Restano da concordare disponibilità del tecnico fuori orario, eventuali costi aggiuntivi e presidio fino a verifiche e possibile rollback. Non è stata autorizzata alcuna finestra o modifica all'appliance. Il test Syslog UDP è separato: il ricevitore locale è stato verificato, ma non è ancora arrivato alcun evento reale.
+
 ## Chiarimento del provider su 26.7.7, 29/10/2026
 
 Lo screenshot_135, copia privata SHA-256 `42967B6F4F40E57EE092618DA1283A8FAD3D9E83BC9EE2D7F792DD5911E951F7`, indica 26.7.7 come target OPNsense, snapshot della VM a livello hypervisor e backup dell'intera configurazione. Le due ore sono il tempo massimo previsto dell'attività; il disservizio è durante i riavvii. Seeweb segnala la VPN come possibile criticità per la diversa gestione delle configurazioni, non prevede modifiche Firewall/NAT e affida a noi la verifica dei servizi dopo l'upgrade, intervenendo in base alla gravità. La [release 26.7.7](https://docs.opnsense.org/releases/CE_26.7.html) è documentata da OPNsense; la [guida IPsec](https://docs.opnsense.org/manual/vpnet.html) descrive la migrazione legacy ma non prova la compatibilità del tunnel di questo cliente.

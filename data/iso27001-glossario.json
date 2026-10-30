@@ -757,6 +757,10 @@
     "#242": [
       "Correzione presente in un solo albero di lavoro",
       "La correzione della pubblicazione del database del sito vive in uno solo dei tre alberi di lavoro di quel progetto e non e' ancora committata; gli altri due portano nel proprio descrittore la pubblicazione su tutte le interfacce. Un comando di ricreazione lanciato da uno di quegli alberi riaprirebbe la porta senza errori, perche' ogni albero e' una copia completa del progetto."
+    ],
+    "ADR-049": [
+      "La postura endpoint entra fra le fonti vive",
+      "Lo snapshot di sola lettura della console di protezione degli endpoint misura patch mancanti con le loro CVE, moduli attivi macchina per macchina e agenti non aggiornati; e' la prima fonte che guarda da dentro l'endpoint, dove il vulnerability assessment non autenticato non arriva."
     ]
   }
 }

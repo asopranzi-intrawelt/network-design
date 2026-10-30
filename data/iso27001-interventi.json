@@ -1,7 +1,7 @@
 {
   "versione": 1,
   "data_base": "2026-09-28",
-  "aggiornato": "2026-10-29",
+  "aggiornato": "2026-10-30",
   "obiettivo": "certificazione ISO/IEC 27001 entro marzo 2027",
   "fasi": [
     {
@@ -1975,6 +1975,62 @@
       "stato": "in_corso",
       "nota": "29/10: MyOffice non fornisce audit Canon; ReadMeter 7 proposto sulla VM100 Windows Server 2022, senza installazione e con requisiti da chiarire. Modello iR-ADV C5840 e accesso via Remote Operation Viewer confermati dall'utente. Audit e Syslog nativi da verificare sul dispositivo con campione minimizzato; nessun nuovo flusso raccolto.",
       "evidenza": "docs/osservabilita/log-collector-integrazione.md; screenshot_170 e screenshot_173 nel livello privato"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-29",
+      "stato": "in_corso",
+      "nota": "29/10: bundle Seeweb trasferito e SHA-256 verificata; primo --check root fermato da ruleset nftables attivo diverso dal baseline. Nessun apply, ricevitore non installato e nessun evento Syslog ricevuto. Diagnostica delle impronte delle regole in sola lettura richiesta prima del via al provider.",
+      "evidenza": "docs/osservabilita/sorgenti-log-seeweb.md; uscita --check riportata dall'IT Manager il 29/10"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: preflight root del bundle Seeweb v2 riuscito sulla VM dopo correzione dell'handle nftables; ricevitore non ancora installato e nessun evento ricevuto. Seguono apply manuale, verifica del backup e dei servizi, poi campione UDP concordato con Seeweb.",
+      "evidenza": "output --check comunicato dall'IT Manager il 30/10; docs/osservabilita/sorgenti-log-seeweb.md"
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: strumento di misura della postura endpoint costruito, non ancora eseguito. scripts/Get-BitdefenderSnapshot.ps1 legge in sola lettura dalla Control Center API di GravityZone le patch mancanti con le loro CVE, lo stato dei moduli macchina per macchina, gli agenti con motore o firme non aggiornati e il dettaglio delle policy: e' la prima fonte del progetto che guarda da dentro l'endpoint, dove il VA non autenticato non arriva. Nessuna corsa reale finche' manca l'Access URL della console. Limite accertato sulla documentazione ufficiale (ADR-049): la Public API non espone i rilievi nominali di Risk Management, solo il punteggio aggregato e le CVE delle patch.",
+      "evidenza": "ADR-049; docs/sicurezza/bitdefender-gravityzone-api.md; parse PowerShell verde, nessuna esecuzione"
+    },
+    {
+      "id": "ISO-28",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: la riconciliazione dei rilievi acquista una seconda fonte, con un raccordo diverso da quello atteso. GravityZone misura il punto cieco che Onova dichiara da se', cioe' lo stato interno dei sistemi che una scansione non autenticata non vede; ma la Public API non espone i rilievi nominali, quindi il confronto si fa fra le CVE delle patch mancanti e i plugin Nessus del rapporto, non fra due liste omologhe. Tre dei dieci rilievi (firmware del gateway, certificati degli apparati, inoltro IP) restano fuori perche' riguardano apparati senza agente; firma SMB e SMBv1 sulle postazioni sono invece verificabili da GravityZone.",
+      "evidenza": "ADR-049; docs/sicurezza/bitdefender-gravityzone-api.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: pilot Seeweb v2 applicato sul collettore dopo preflight root riuscito; backup creato. Verifica indipendente dei file, servizi, regola e listener e prova UDP del provider ancora da eseguire; nessun evento reale confermato.",
+      "evidenza": "output --apply comunicato dall'IT Manager il 30/10; docs/osservabilita/log-collector-integrazione.md"
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: Seeweb conferma snapshot hypervisor eseguibile a caldo e seconda copia del backup configurazione; opera feriali 09:00-18:00. L'utente preferisce upgrade dopo le 19:00 per evitare impatto operativo: disponibilita, costi, presidio e rollback fuori orario da confermare. Nessun upgrade eseguito.",
+      "evidenza": "screenshot_206 privato SHA-256 D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE; docs/firewall/firewall-seeweb-opnsense.md"
+    },
+    {
+      "id": "ISO-30",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10: postcheck indipendente del ricevitore Seeweb sulla VM completamente verde: hash live e backup, servizi, rsyslog, regola nftables e listener UDP 514. Manca test con eventi GUI/SSH reali dal provider, classificazione nel deposito tecnico e verifica assenza in AdS; nessun inoltro continuo.",
+      "evidenza": "output SEEWEB_POSTCHECK_OK comunicato dall'IT Manager il 30/10; docs/osservabilita/sorgenti-log-seeweb.md"
+    },
+    {
+      "id": "ISO-27",
+      "data": "2026-10-30",
+      "stato": "in_corso",
+      "nota": "30/10 pomeriggio, prima misura: lo strumento funziona (50 chiamate riuscite su 77) ma l'evidenza attesa non esiste. getLicenseInfo misura managePatchManagement a falso e il servizio risponde 403, quindi non c'e' nessuna fonte di CVE per endpoint; includeRiskScore e' rifiutato e nessun endpoint porta un punteggio di rischio, perche' anche Risk Management e' fuori licenza. In licenza restano correlatore di eventi, HyperDetect e Sandbox Analyzer. Cio' che si misura oggi: 29 endpoint gestiti su 27 posti occupati di 30, nessun agente con prodotto non aggiornato, tre con firme non aggiornate, quattro policy, un elemento in quarantena; copertura dei moduli per macchina con controllo dei dispositivi spento su cinque endpoint, anti-phishing su tre e scansione del traffico su tre. L'avanzamento sulle patch resta bloccato da una decisione commerciale, aperta fra i prerequisiti.",
+      "evidenza": "output/bitdefender-snapshot.json del 30/10/2026 ore 11:16; docs/sicurezza/bitdefender-gravityzone-api.md sezione della prima misura"
     }
   ]
 }

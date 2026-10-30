@@ -1,5 +1,25 @@
 # Work-log
 
+## 30/10/2026 - Postcheck Seeweb e richiesta di finestra serale
+
+L'utente ha verificato sul collettore, dopo `--apply`, hash dei file live e backup, servizi, sintassi rsyslog, regola nftables e listener UDP 514: tutti verdi (`SEEWEB_POSTCHECK_OK`). Il test UDP dal provider non è ancora svolto e ISO-30 resta in corso. Letto screenshot_206 del ticket e copiato privatamente con SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`: snapshot hypervisor a caldo e seconda copia backup disponibili; Seeweb opera feriali 09:00-18:00. L'utente chiede l'upgrade dopo le 19:00 per non intaccare l'operatività; disponibilità, costo e presidio del ripristino sono da chiarire. Aggiornati contesto, memoria, dossier firewall e osservabilità, ISO-27/30 da sincronizzare, senza toccare il filone sito. Nessun ticket inviato dall'agente. **Template:** nessuna.
+
+## 30/10/2026 - Pilot Seeweb applicato sul collettore
+
+Dopo `--check` root passato, l'utente ha eseguito `--apply` del bundle v2 sul collettore. Output positivo con backup creato; l'ID completo resta nel livello privato. L'applicatore controlla hash, sintassi e servizi dopo il cambio. La verifica indipendente in sola lettura e il campione UDP Seeweb sono ancora da svolgere; non è stato ricevuto alcun evento reale. ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati contesto, memoria e dossier di rete, preservando il filone sito. **Template:** nessuna.
+
+## 30/10/2026 - Preflight Seeweb passato sul collettore
+
+L'utente ha trasferito il bundle corretto sulla VM, verificato l'archivio e ottenuto «Pilota Seeweb pronto; nessuna modifica» da `--check` root. Il confronto ora ignora solo gli handle nftables del kernel; 21 test e baseline Debian 13 erano verdi. Il ricevitore Seeweb non è ancora installato e nessun evento è stato ricevuto. `--apply`, controllo post applicazione e campione UDP del provider restano in sequenza; ISO-30 e Cliente-1 89/90 in corso. Aggiornati contesto, memoria e dossier della rete senza toccare il sito. **Template:** nessuna.
+
+## 29/10/2026 - Causa del blocco nftables Seeweb identificata
+
+La diagnostica root del collettore ha confrontato il ruleset live con Debian 13: tre chain e otto regole uguali; handle della tabella diverso. Corretto nel collettore il calcolo della SHA canonica escludendo gli handle kernel, con test rosso prima della modifica e 21 prove verdi dopo; policy e regole differenti restano rilevate. Baseline aggiornato `5669e86625948ba3453bfbb0bdd270da7b5a139005d703e842a7fa3b83f4a17a`, nuovo archivio privato SHA-256 `85561c963111e0ad24614aebc87dbd8387924ecea3aeda8eea29869d0a34bfc0` ancora da controllare sulla VM. Nessun `--apply` né evento Seeweb reale; ISO-30 e Cliente-1 89/90 restano in corso. Aggiornati contesto, memoria e dossier della rete, senza toccare il filone sito. **Template:** nessuna.
+
+## 29/10/2026 - Gate nftables del pilot Seeweb sulla VM
+
+L'utente ha completato `chiudi` del collettore a `4c34b88`, trasferito l'archivio del pilot e verificato SHA-256 su Windows e sulla VM. Il primo `--check` root si e' fermato prima dell'applicazione per differenza tra ruleset nftables attivo e baseline previsto. La riproduzione in container Debian 13 produce ancora le 12 righe canoniche e l'impronta attesa dal manifesto. Senza leggere il ruleset live come root non e' possibile attribuire la differenza a una regola o alla serializzazione. Chiesta una diagnostica in sola lettura che mostra solo forma e impronte delle righe. Nessun `--apply`, prova UDP o via a Seeweb; ISO-30 resta in corso.
+
 ## 29/10/2026 - MyOffice, Canon C5840 e ISO-30
 
 La risposta MyOffice (screenshot_170) richiede un host Windows acceso per ReadMeter 7 e non offre l'audit richiesto. VM100 Windows Server 2022 e' scelta come candidata, senza installazione. L'utente conferma Canon iR-ADV C5840 e mostra il pannello remoto con Canon Remote Operation Viewer 2.4 (screenshot_173). Evidenze e identificativi reali sono nel livello privato. Topologia e mappa sono aggiornate; ISO-30 resta in corso e la roadmap e' sincronizzata. L'audit Canon e Syslog sono ancora da verificare sul dispositivo; prima di installare ReadMeter sulla VM multiservizio servono requisiti, privilegi, destinazioni e ritorno. Nessun nuovo flusso e' attivo.
@@ -4186,3 +4206,81 @@ Consegna tecnica in sola lettura: installazioni, processi caricati e fonti uffic
 **Esito.** Progetto a 95.843 caratteri, regole sempre attive 81.525; bridge Claude/Codex OK con 20 skill. Pendenza del carico chiusa.
 
 **Template:** nessuna.
+
+## Bitdefender GravityZone fra le fonti vive, e due racconti da misurare, 30/10/2026
+
+**Falso positivo diagnosticato.** Le catture 196 e 197 della cartella Screenpresso non erano la minaccia: mostravano l'avviso di Bitdefender Endpoint Security Tools, che segnala `Gen:Illusion.Slingshot.PythonShell` su `ripristino-interattivo.ps1` di un altro progetto di questa macchina, lasciandolo fra i problemi rimanenti. Lo script e' stato letto e il payload base64 decodificato: apre SSH verso una macchina Linux ed esegue Python che controlla sistema operativo e driver, simula l'installazione di due pacchetti fissati, si ferma se il piano cambia, e solo allora installa. Contenuto innocuo, forma esattamente quella che la firma generica cerca. E' il secondo caso in diciotto giorni sulla stessa postazione dopo `Heur.BZC.PZQ.Boxter` del 12/10: la via indicata e' la firma di codice con l'autorita' interna, non un'esclusione per percorso.
+
+**Strumento nuovo.** `scripts/Get-BitdefenderSnapshot.ps1`, sola lettura, impianto di `Get-NinjaSnapshot.ps1`: licenza e moduli, compagnia, inventario con punteggio di rischio, endpoint, policy e loro dettaglio, quarantena di computer ed Exchange, incidenti EDR/XDR su v1.2, rapporti, tag, gruppi, attivita' di scansione, account e notifiche, integrazioni, push, pacchetti, uso mensile, finestre di manutenzione, blocklist, regole personalizzate, PHASR, e con `-IncludeHeavy` il dettaglio per endpoint e le patch mancanti con le loro CVE. Dove la documentazione nomina la sezione e non il segmento di URL, lo strumento prova i candidati e registra quale ha risposto. Parse PowerShell verde; nessuna corsa reale, perche' manca l'Access URL.
+
+**Misura.** Il catalogo dei metodi e' stato compilato dalla documentazione ufficiale Bitdefender da un subagent, con URL diretto per servizio. Perimetro: pagine lette per i metodi marcati, nome e URL soltanto per gli altri.
+
+**Limite che cambia l'aspettativa.** Non esiste un servizio pubblico Risk Management ne' un metodo che elenchi vulnerabilita' o rilievi nominali: il rischio torna come `riskScore` aggregato e come CVE dentro le patch. Il confronto con il rapporto Onova si fa quindi fra CVE e plugin Nessus, non fra due liste omologhe. Registrato in ADR-049.
+
+**Due racconti da misurare.** `cybersecurity-governance.md` dichiara il file integrity monitoring di GravityZone come controllo sull'accesso ai dati, senza lacuna accanto, mentre il 30/10 la console dichiara scaduto il modulo Integrity Monitoring; e la stessa scheda elenca Risk Management e Patch Management come pianificati, mentre la console ne mostra il menu e la chiave ne porta il permesso. Nessuna delle due e' stata corretta: entrambe sono andate in verifica aperta, perche' si chiudono con una misura e non con un'inferenza.
+
+**Segreti.** `BITDEFENDER_API_URL` e `BITDEFENDER_API_KEY` aggiunte alla lista chiusa di `.env`, con la modifica speculare in `Read-ProjectEnv.ps1` e `Set-ProjectSecret.ps1`. La chiave sta oggi in chiaro in una cartella sincronizzata del livello privato e porta tutti e quattordici i permessi: entrambe le cose sono da sanare, la seconda rigenerando la chiave sugli otto permessi di lettura che servono.
+
+**Subagent.** Uno, per il catalogo dei metodi dalla documentazione ufficiale.
+
+**Template:** nessuna.
+
+## Firma del codice adottata, chiave API sbloccata, modulo Integrity Monitoring risolto, 30/10/2026
+
+**Correzione a un'istruzione data.** I comandi consegnati nel giro precedente presupponevano che le due righe `BITDEFENDER_API_URL` e `BITDEFENDER_API_KEY` esistessero gia' in `.env`, e `Set-ProjectSecret.ps1` si e' fermato su entrambe con «chiave assente o duplicata». Il difetto non era dell'utente: lo strumento sapeva aggiornare una chiave e non crearla, e chiedere di aprire a mano un file di credenziali per aggiungervi una riga vuota e' la via peggiore. Lo script crea ora in coda una chiave ammessa ma non presente, e il `ValidateSet` resta il controllo che impedisce di scrivere una chiave estranea.
+
+**Access URL.** L'indirizzo fornito e' quello della console, non la base API. La normalizzazione dello snapshot toglie ora frammento e query, toglie un eventuale suffisso di versione e servizio, e se non resta percorso usa `/api`, stampandolo invece di assumerlo in silenzio; la prima chiamata, `getApiKeyDetails`, lo verifica subito.
+
+**Integrity Monitoring.** Il modulo che la console dichiarava scaduto e' stato risolto in giornata da Referente-PuntoInformatica-1. Il fatto e' comunicato dall'IT Manager, non misurato: la verifica aperta resta, perche' va chiusa con `getLicenseInfo` e perche' il difetto che l'episodio ha rivelato non e' la scadenza ma la riga che attribuiva il controllo a una funzione senza dire che dipende da un modulo che puo' scadere in silenzio. Riga della scheda di governance corretta con la dipendenza dichiarata.
+
+**Firma del codice, ADR-050.** `scripts/Sign-ProjectScripts.ps1`: carica il PKCS#12 senza importarlo, confronta l'impronta attesa prima di firmare, rifiuta la firma senza marca temporale, rilegge la firma dal file. Parse verde e guardia del PKCS#12 assente provata; nessuna firma reale apposta, perche' il materiale dell'autorita' sta nel livello privato e il percorso lo passa l'IT Manager. Dichiarato esplicitamente, qui e nell'ADR, che la firma non spegne un rilevamento euristico: serve a integrita', provenienza, AllSigned e all'esclusione per editore invece che per percorso.
+
+**Scadenze.** Aggiunta `BD-API-KEY` al 29/10/2027 con preavviso di 60 giorni: la chiave non si rinnova, si rigenera, e alla scadenza nessun allarme arriva dalla console. Il certificato di firma al 15/11/2027 era gia' sorvegliato come `PKI-FIRMA-CODICE`.
+
+**Stato della CA, riletto e non riassunto a memoria.** L'autorita' aziendale e il materiale di firma sono stati recuperati per intero dopo il guasto del supporto del 26/10/2026, dieci file, nessuno mancante; non stanno piu' su supporto rimovibile ma in una cartella locale sincronizzata, deroga consapevole ad ADR-025 gia' registrata. Ne discende che la firma e' praticabile oggi, e che la sua efficacia sulle postazioni resta legata alla distribuzione della radice, decisa il 14/10 e non eseguita.
+
+**Subagent.** Nessuno in questo giro.
+
+**Template:** nessuna.
+
+## Prima corsa dello snapshot: 401, schema di autenticazione sbagliato, 30/10/2026
+
+**Misura.** Prima esecuzione reale di `Get-BitdefenderSnapshot.ps1 -IncludeHeavy`: base API risolta correttamente in `.../api` dall'host della console, 46 avvisi, zero chiamate riuscite, tutte con HTTP 401. L'URL risponde, quindi la base e' giusta: il rifiuto e' sull'autenticazione.
+
+**Causa.** GravityZone ha due schemi e quale valga dipende da come la chiave e' stata creata. Le chiavi API personali vogliono HTTP Basic con la chiave come nome utente e password vuota; le service API key, legate a un account di servizio come quella creata il 30/10, vogliono l'header `X-API-Key`. Lo script usava solo il primo schema, letto dalla documentazione delle chiavi personali, ed e' questa la ragione dei 401.
+
+**Correzione.** Lo script negozia ora lo schema sulla chiamata di apertura: prova `X-API-Key`, e se riceve 401 o 403 passa a Basic, adottando per tutta la corsa quello che e' stato accettato. Un errore JSON-RPC torna con HTTP 200, quindi una risposta ricevuta vale come autenticazione passata anche se il metodo fosse negato dai permessi. Parse verde; la verifica vera e' la prossima corsa.
+
+**Nota di metodo.** La prima stesura aveva una fonte sola, la documentazione del tipo di chiave sbagliato, e nessun indizio in sessione avrebbe potuto smentirla: il 401 l'ha fatto in dieci secondi. Un trasporto che puo' autenticarsi in due modi si scrive da subito capace di provarli entrambi, invece di sceglierne uno e scoprirlo dall'esito.
+
+**Dove sta il materiale di firma.** Chiesto dall'IT Manager e verificato elencando i soli nomi dei file, senza aprirne nessuno: la copia di recupero del 26/10/2026 sta nella cartella riservata sincronizzata, dieci file piu' il log, con il PKCS#12 di firma sotto `ca-aziendale/firma-codice/`. Coincide con il conteggio gia' documentato. Il percorso reale resta nel livello privato.
+
+**Difetto di custodia trovato.** Nella stessa cartella sincronizzata convivono il materiale dell'autorita' e il file delle passphrase che lo protegge: la cifratura AES-256 del PKCS#12 non aggiunge nulla contro chi ottiene la cartella. Nessuna compromissione osservata. Nuova scheda `docs/sicurezza/custodia-dei-segreti-operativi.md` con il criterio e le pratiche per i segreti che il progetto sta aggiungendo, e voce fra i sanabili subito.
+
+**NinjaOne.** Il collegamento esiste gia' qui: `Get-NinjaSnapshot.ps1` (ADR-017) risolve le credenziali da parametro, variabile d'ambiente o prompt e non le scrive su disco. Il progetto gemello `D:/sviluppo-ninjaOne/telegram-notifications` tiene nel proprio `.env` le stesse variabili che questo strumento si aspetta. Non si duplicano qui: appartengono al fornitore, e si passano come variabili di sessione.
+
+**Subagent.** Nessuno.
+
+**Template:** nessuna.
+
+## La prima misura della postura endpoint, e tre aspettative smentite, 30/10/2026
+
+**Misura.** Corsa riuscita alle 11:16 con lo schema `X-API-Key`: 50 chiamate buone, 27 fallite, 29 endpoint gestiti, 27 posti occupati su 30. Moduli in licenza: correlatore di eventi (EDR), HyperDetect, Sandbox Analyzer. Fuori licenza, con flag a falso: Integrity Monitoring, Patch Management, Risk Management nelle forme esposte, Compliance Manager, PHASR, EASM, cifratura, mobile, posta. Abbonamento mensile. Perimetro: cio' che la console sa degli endpoint con agente, non la rete.
+
+**Prima aspettativa smentita, ed e' la piu' pesante.** Le CVE non sono leggibili: `managePatchManagement` falso e servizio 403. L'elenco delle patch mancanti era la materia prima che ADR-049 e la scheda indicavano per A.8.8, e non esiste finche' il modulo non viene licenziato. Il punteggio di rischio non arriva per la stessa ragione: `includeRiskScore` rifiutato come opzione sconosciuta, nessun endpoint con `riskScore`. Il confronto con i rilievi del VA resta sospeso a una decisione commerciale, non tecnica. Aperta fra i prerequisiti, perche' il VA non puo' colmare quella casella per costruzione.
+
+**Seconda.** Integrity Monitoring risulta non in licenza, quindi la risoluzione riferita in giornata non e' confermata dalla misura: il messaggio d'errore sulla postazione puo' essere sparito senza che l'abilitazione tornasse, e sono due cose diverse. L'affermazione della scheda di governance che attribuiva a quel modulo il controllo sull'accesso ai dati e' oggi falsa, e la riga e' stata riscritta come lacuna aperta. La verifica non si chiude: cambia forma in una decisione, licenziare o dichiarare mancante.
+
+**Terza, in senso opposto.** Il sospetto che la riga «Risk Management e Patch Management pianificati» fosse invecchiata era infondato: la riga era giusta. Resta il caso istruttivo, cioe' che la presenza di un menu in console e un permesso concesso alla chiave non provano un'abilitazione. Verifica chiusa dalla misura.
+
+**Cio' che si legge davvero, ed e' il valore residuo.** Inventario degli endpoint con sistema operativo, indirizzi e policy; freschezza dell'agente, con zero prodotti non aggiornati e tre firme non aggiornate, rilievo operativo che nessun'altra fonte del progetto vede; copertura dei moduli macchina per macchina, che misura la copertura reale invece di quella dichiarata, con controllo dei dispositivi spento su cinque endpoint, monitoraggio dell'integrita' su quattro, anti-phishing su tre, scansione del traffico su tre; quattro policy, un elemento in quarantena.
+
+**Discordanza non sciolta.** Il monitoraggio dell'integrita' risulta acceso sull'agente di 25 endpoint su 29 mentre il flag di licenza lo nega. La lettura plausibile e' che la policy lo preveda e l'abilitazione sia decaduta, ma resta un'ipotesi e si chiude chiedendo al fornitore, non leggendo un altro campo.
+
+**Difetti dello strumento corretti dopo la corsa.** Limite di frequenza: gli incidenti rispondevano 429, ora c'e' una distanza minima fra le chiamate e quattro tentativi con attesa crescente. Inventario: l'opzione arricchita faceva perdere l'intero inventario, ora si ripiega sulla forma povera. `getCustomGroupsList` non accetta paginazione e `getIntegrators` vuole un `integrationId`: chiamate nella forma attesa. Ordine dei candidati del patch management allineato a `enabledApis`, con il 403 spiegato negli avvisi invece che lasciato grezzo. Parse verde; la verifica e' la prossima corsa.
+
+**Subagent.** Nessuno.
+
+**Template:** nessuna.
+
+**Difetto del limitatore di frequenza, stesso giorno.** La correzione contro il 429 ha rotto la prima chiamata di ogni corsa: `$script:UltimaChiamata` partiva da `[DateTime]::MinValue` e la differenza, circa 63.928.956.238.283 millisecondi, non entra in un Int32, quindi `Invoke-GzApi` moriva sulla conversione prima ancora di chiamare. Corretto confrontando prima e convertendo dopo, con il valore limitato a cinque secondi, e inizializzando a un secondo fa. La lezione e' la mia: avevo verificato la sintassi e non la logica, e un parse verde non esercita nessun ramo. Il calcolo e' stato provato isolato nei tre casi: prima chiamata senza attesa, chiamata immediata successiva con 119 ms di attesa, e il vecchio valore ormai innocuo perche' il confronto precede la conversione.

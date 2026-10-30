@@ -184,6 +184,14 @@
       "preavviso_giorni": 60,
       "rompe": "Alla scadenza il sito smette di spedire le mail dei moduli senza nessun errore visibile al visitatore; il certificato nuovo va generato, caricato in Entra e installato prima",
       "dove": "docs/sito-vps/runbook-primo-rilascio-sito.md, sezione sulla posta del sito"
+    },
+    {
+      "id": "BD-API-KEY",
+      "cosa": "Service API key di Bitdefender GravityZone usata da scripts/Get-BitdefenderSnapshot.ps1, creata il 30/10/2026 con durata massima di un anno consentita dalla console. Non e' legata a un utente, quindi sopravvive ai cambi di personale, ma scade comunque e non si rinnova: si rigenera, e la nuova chiave si vede una volta sola",
+      "data": "2027-10-29",
+      "preavviso_giorni": 60,
+      "rompe": "Alla scadenza lo snapshot della postura endpoint smette di rispondere e il progetto torna cieco su patch mancanti, CVE aperte e stato dei moduli per macchina, cioe' sull'evidenza di ISO-27 e sulla meta' autenticata della riconciliazione del VA. Nessun allarme arriva dalla console: l'unico segnale sarebbe il fallimento dello strumento",
+      "dove": "ADR-049; docs/sicurezza/bitdefender-gravityzone-api.md; chiave e Access URL nel livello privato"
     }
   ],
   "freschezza": [

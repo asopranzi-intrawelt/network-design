@@ -1,5 +1,9 @@
 # Collettore dei log amministrativi: integrazione con la rete
 
+## Pilot Seeweb verificato sulla VM, 30/10/2026
+
+Il pilot Seeweb v2 è applicato sul collettore. Il postcheck indipendente dell'utente ha dato `SEEWEB_POSTCHECK_OK`: hash dei due file live e del backup, servizi attivi, sintassi rsyslog, regola nftables per il solo mittente previsto e listener UDP 514. Questo prova la preparazione locale, non l'arrivo di eventi attraverso IPsec. Si può concordare un piccolo test UDP con Seeweb in una finestra separata, con pochi eventi GUI/SSH e verifica del deposito tecnico; nessun inoltro continuo o log di traffico. Lo screenshot_206 del ticket, copia privata SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`, conferma snapshot hypervisor eseguibile a caldo e seconda copia del backup disponibile. Seeweb opera nei feriali 09:00-18:00; l'utente preferisce l'upgrade OPNsense dopo le 19:00 per ridurre l'impatto. Disponibilità fuori orario, costi e presidio del ripristino devono ancora essere confermati. ISO-27/30 e Cliente-1 89/90 restano in corso.
+
 ## Risposta MyOffice e audit nativo Canon, 29/10/2026
 
 Nello screenshot_170 (copia privata SHA-256 `5F1D6C7C78A623C9F6F0F4EAAEEC4A15DCAE98AB488F73F1AEFE463EBDE99143`) MyOffice chiede di installare ReadMeter 7 su una macchina accesa per gran parte della giornata lavorativa, preferibilmente un server Windows, e dice di non poter fornire i log richiesti. L'utente sceglie VM100 Windows Server 2022 come host candidato; non risulta installata. La VM100 è multiservizio, ospita anche le presenze e nel censimento ha il firewall Windows disattivato: prima della finestra con il fornitore servono requisiti, privilegi, destinazioni in uscita, dati trasmessi, impatto e ritorno. La telemetria ReadMeter dei consumabili non equivale all'audit della Canon.

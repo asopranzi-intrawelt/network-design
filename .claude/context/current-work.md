@@ -2,6 +2,10 @@
 last-verified: 920c616
 ---
 
+## Pilot Seeweb verificato sulla VM, 30/10/2026
+
+Il pilot Seeweb v2 è applicato sul collettore. Il postcheck indipendente dell'utente ha dato `SEEWEB_POSTCHECK_OK`: hash dei due file live e del backup, servizi attivi, sintassi rsyslog, regola nftables per il solo mittente previsto e listener UDP 514. Questo prova la preparazione locale, non l'arrivo di eventi attraverso IPsec. Si può concordare un piccolo test UDP con Seeweb in una finestra separata, con pochi eventi GUI/SSH e verifica del deposito tecnico; nessun inoltro continuo o log di traffico. Lo screenshot_206 del ticket, copia privata SHA-256 `D113B90BF28BE35F8F09998B45659549066830DC48E448F0AC59665BCA8B34EE`, conferma snapshot hypervisor eseguibile a caldo e seconda copia del backup disponibile. Seeweb opera nei feriali 09:00-18:00; l'utente preferisce l'upgrade OPNsense dopo le 19:00 per ridurre l'impatto. Disponibilità fuori orario, costi e presidio del ripristino devono ancora essere confermati. ISO-27/30 e Cliente-1 89/90 restano in corso.
+
 ## MyOffice, VM100 e audit Canon, 29/10/2026
 
 Screenshot_170: ReadMeter 7 richiede un host acceso nella giornata, idealmente Windows Server; MyOffice non può fornire i log richiesti. L'utente sceglie VM100 Windows Server 2022 come candidata, senza installazione. La VM è multiservizio, include le presenze e il firewall Windows risulta spento: prima dell'intervento servono requisiti e ritorno. L'utente conferma la Canon iR-ADV C5840; screenshot_173 mostra Remote Operation Viewer 2.4 connesso. Canon documenta audit e Syslog per la serie C5800, ma firmware, menu e log effettivi non sono verificati. Ricognizione remota in sola lettura subito; integrazione dopo il gate Seeweb e un campione. ISO-30 in corso.

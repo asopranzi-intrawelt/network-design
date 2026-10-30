@@ -10,7 +10,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
-    [ValidateSet('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE')]
+    [ValidateSet('NEBULA_API_KEY', 'PROXMOX_URL', 'PROXMOX_TOKEN_NAME', 'PROXMOX_TOKEN_VALUE', 'BITDEFENDER_API_URL', 'BITDEFENDER_API_KEY')]
     [string]$Name,
     [string]$EnvPath,
     [SecureString]$SecureValue
@@ -27,7 +27,15 @@ $positions = @(
         if ($lines[$i] -match ('^' + [regex]::Escape($Name) + '=')) { $i }
     }
 )
-if ($positions.Count -ne 1) { throw "Chiave assente o duplicata in .env: $Name" }
+if ($positions.Count -gt 1) { throw "Chiave duplicata in .env: $Name" }
+# Una chiave ammessa ma non ancora presente si crea in coda: il ValidateSet e' gia' il
+# controllo che impedisce di scrivere una chiave estranea, e chiedere all'utente di
+# aprire a mano un file di credenziali per aggiungere una riga vuota e' peggio.
+if ($positions.Count -eq 0) {
+    $lines += "$Name=`"`""
+    $positions = @($lines.Length - 1)
+    Write-Host "Chiave non presente: viene creata in coda a .env - $Name" -ForegroundColor Yellow
+}
 
 $secure = $SecureValue
 if (-not $secure) { $secure = Read-Host -Prompt "Nuovo valore per $Name (non mostrato)" -AsSecureString }

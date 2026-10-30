@@ -154,8 +154,8 @@ Blocco schermo automatico dopo **5 minuti** di inattività.
 | Network Attack Defense | Attivo | |
 | Exploit Defense | Attivo | |
 | Sandbox Analyzer | Attivo (cloud) | |
-| Risk Management (VA interno) | Pianificato | Modulo da attivare |
-| Patch Management | Pianificato | Modulo da attivare |
+| Risk Management (VA interno) | Non in licenza | Misurato il 30/10/2026 con `getLicenseInfo`: flag a falso, opzione `includeRiskScore` rifiutata dalla API. La riga «pianificato» era corretta |
+| Patch Management | Non in licenza | Misurato il 30/10/2026: `managePatchManagement` falso, servizio 403. Senza questo modulo il progetto non ha nessuna fonte di CVE per endpoint |
 | Email Security | Coperta da Microsoft Defender per Office 365 (P1), non da Bitdefender | Vedi nota sotto |
 
 **Protezione LAN documentata in:**  
@@ -648,7 +648,7 @@ Fonte: `Cybersec & IT Governance/Data protection/Data protection.docx` Documento
 | DPO | Non nominato (size-exempt) | Valutare con crescita GDPR obligations |
 | Data retention | 1-3 anni su NAS on-premises + archivio offline | — |
 | Dispositivi | Solo corporate-managed; BYOD non consentito | — |
-| Accesso dati | File integrity monitoring via Bitdefender GravityZone | — |
+| Accesso dati | **Non attivo al 30/10/2026.** Il file integrity monitoring di GravityZone era dato qui per acquisito senza lacune; `getLicenseInfo` misura `manageIntegrityMonitoring` a falso, cioe' modulo non in licenza, e l'agente lo ha spento su 4 endpoint su 29 | Gap aperto: o si licenzia il modulo, o il controllo si dichiara mancante. Vedi `bitdefender-gravityzone-api.md` e la verifica in `docs/stato/pendenze-aperte.md` |
 | Terze parti | Nessun provider terzo ha accesso diretto ai dati cliente | — |
 | Dati in transito | Protetti via VPN IPsec; TLS 1.2 non implementato esplicitamente | Gap: no TLS 1.2 forzato |
 | Role-based access | RBAC implementato; richieste elevated access via email/ticketing | [TBC] completa struttura RBAC |
