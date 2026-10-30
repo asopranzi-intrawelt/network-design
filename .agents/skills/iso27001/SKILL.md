@@ -8,7 +8,7 @@ description: >
   treatment plans, Annex A controls, ISMS implementation, clause requirements, certification
   readiness, transitioning from 2013 to 2022, control implementation guidance, incident
   response policies, access control policies, supplier security, or any information security
-  management system (ISMS) topic. Trigger even if the user doesn't say "skill" — any ISO 27001
+  management system (ISMS) topic. Trigger even if the user doesn't say "skill" - any ISO 27001
   or ISMS question should use this skill.
 ---
 
